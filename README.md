@@ -1,5 +1,8 @@
 # Aftertake
 
+[Watch the 97-second demo](https://itssnowmobile.github.io/aftertake/) ·
+[Build evidence](docs/progress.md)
+
 **Direct where the impossible happens. And when.**
 
 Aftertake is an open-source VFX studio for short video clips. Paint a region,

@@ -465,6 +465,26 @@ download hit `ERR_BLOCKED_BY_CLIENT`; the user completed the ordinary download.
   under `.runtime/evidence/`. Public repository/demo upload remain pending;
   the GitHub connector still returns `UNAUTHORIZED` after the user's reconnect.
 
+## Publication preparation — October 17
+
+- Chrome has an authenticated GitHub browser session even though the connector
+  still returns `UNAUTHORIZED`. The repository importer can create the public
+  `ItsSNOWMOBILE/aftertake` repository; that name is available. Source credentials
+  are kept empty because the reviewed import source is public and read-only.
+- Audited 571 tracked historical blobs for excluded runtime paths, embedded
+  credential patterns, signed download links and machine-specific user paths;
+  no findings. All seven existing commits use the agent's non-personal identity.
+  The temporary export serves Git clone files only, with directory listing,
+  configuration files and writes unavailable. It exposes no running studio API.
+- `docs/index.html` and its assets provide the captioned 97-second demo,
+  source/setup links, hardware context and source/model attribution. The MP4 is
+  the verified v4 demo, copied unchanged. The document is prepared for GitHub
+  Pages publication from `/docs`; deployment remains to be verified.
+- Local document QA: desktop page widths both 1265, mobile widths both 375;
+  native video reaches readyState 4 with duration 97 s at 1280 × 720, and the
+  Watch action starts playback. The Copy commands control copied the exact
+  displayed setup commands. No model generation occurs on this document.
+
 ## Remaining work
 
 - Continue edge, motion-tracking and prompt-following quality work.
