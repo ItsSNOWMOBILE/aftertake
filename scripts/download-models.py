@@ -1,6 +1,7 @@
 """Resumable, SHA-256-verified downloads. Model metadata is retained for provenance."""
 from __future__ import annotations
 import concurrent.futures
+import argparse
 import hashlib
 import http.client
 import json
@@ -10,10 +11,11 @@ import urllib.error
 import urllib.parse
 import urllib.request
 import sys
+from model_storage import model_root
 
 ROOT = Path(__file__).resolve().parents[1]
 MODEL_ROOT = ROOT / '.runtime' / 'ComfyUI' / 'models'
-MANIFEST = ROOT / 'docs' / ('models-frame-editor.json' if '--frame-edit' in sys.argv else 'models-motion-track.json' if '--motion' in sys.argv else 'models-ltx25-experimental.json' if '--ltx25' in sys.argv else 'model-receipts.json')
+MANIFEST = ROOT / 'docs' / ('models-motion-transfer.json' if '--motion-transfer' in sys.argv else 'models-frame-editor.json' if '--frame-edit' in sys.argv else 'models-motion-track.json' if '--motion' in sys.argv else 'models-ltx25-experimental.json' if '--ltx25' in sys.argv else 'model-receipts.json')
 FILES = [
     ('Kijai/LTXV2_comfy', 'diffusion_models/ltx-2-19b-distilled_Q4_K_M.gguf', 'diffusion_models'),
     ('Kijai/LTXV2_comfy', 'VAE/LTX2_video_vae_bf16.safetensors', 'vae'),
@@ -94,7 +96,14 @@ def download(item):
     return receipt
 
 if __name__ == '__main__':
-    if any(flag in sys.argv for flag in ['--ltx25', '--motion', '--frame-edit']):
+    parser = argparse.ArgumentParser(description=__doc__)
+    profiles = parser.add_mutually_exclusive_group()
+    for flag in ['--ltx25', '--motion', '--frame-edit', '--motion-transfer']:
+        profiles.add_argument(flag, action='store_true')
+    parser.add_argument('--models-dir', help='Download to this disk and remember it for the engine and future downloads')
+    args = parser.parse_args()
+    MODEL_ROOT = model_root(args.models_dir)
+    if any(flag in sys.argv for flag in ['--ltx25', '--motion', '--frame-edit', '--motion-transfer']):
         FILES = [(entry['repository'], entry['path'], entry['category']) for entry in json.loads(MANIFEST.read_text(encoding='utf-8-sig'))]
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
         list(pool.map(download, FILES))
