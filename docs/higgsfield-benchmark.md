@@ -30,7 +30,7 @@ and repeatable starting points a major part of the experience.
 | --- | --- | --- |
 | Change a selected part of footage | Native inpainting, paint/erase, temporal fades, source-preserving composite, optional edited-first-frame conditioning in both stages | Prompt following and edge quality vary; arbitrary identity replacement is not established |
 | Prepare a new appearance inside the studio | Local Qwen-Image-Edit-2511 frame editor, optional subject image, seed, fast/detail modes, explicit review and selection, PNG and actual graph export | Single-image and two-image native tests passed on the forest; broader scene quality and arbitrary identity consistency remain under evaluation |
-| Reuse motion while rebuilding the scene | Original structure-guided regional pipeline | Full-scene motion transfer and character reference conditioning are not implemented |
+| Reuse motion with a new character and scene | Wan Animate 2 distilled with separate driving-video and appearance conditions; whole-frame or painted/timed output; source sound and content-bound recipes | Controlled original-character pilots passed, including a mirrored-driver control. Natural human footage, facial action and general identity fidelity need broader evaluation |
 | Animate a reference or connect two images | LTX-2.5 first-frame conditioning; optional ending image, upload/select/inspect or create with local Qwen; hash-bound recipe sharing; first/last guides with optional motion tracks | Real draft and finish transitions checked on the forest scene. Endpoints are soft constraints; broader scene and transition quality remain under evaluation |
 | Direct camera and look | Five movement suggestions, four lens characters, five lighting options; inspectable prompt; four output grades; optional motion-track conditioning | Prompt-only direction is unreliable. Guided pullback and static framing passed visual checks on one room; broader scene coverage and 3D camera reconstruction remain open |
 | Keep a film look across sources | Named local look library, built-in looks, settings preserved in recipes and MP4 metadata | No multi-user collaboration or identity lock |
@@ -73,8 +73,17 @@ Downloaded proprietary bundles stay in ignored local research storage.
 
 ## Next replacement milestones
 
-1. Evaluate arbitrary object/character identity conditioning and full-scene
-   motion transfer across additional footage before exposing those capabilities.
+1. Expand motion-transfer testing across natural footage, body proportions,
+   camera movement and facial action. The new Wan Animate 2 mode has passed
+   controlled original-animation pilots; arbitrary human identity and general
+   motion fidelity remain unestablished.
+
+The separate **Transfer motion** mode now combines a driving video with an
+appearance image through the native Wan Animate 2 distilled workflow. It can
+generate the whole frame or use Aftertake's painted/timed composite. A matched
+pair of controlled pilots used the same appearance, seed and neutral prompts;
+mirroring only the driver changed which arm waved. This supplies an actual
+video-driven capability alongside the earlier LTX edited-first-frame path.
 
 The [current official inpainting guide](https://docs.ltx.io/open-source-model/feature-guides/editing-effects/in-outpainting)
 supports an edited first frame as an object-replacement aid. Draft and finish

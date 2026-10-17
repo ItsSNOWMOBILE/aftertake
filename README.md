@@ -57,6 +57,40 @@ hash alongside the normalized image's hash, so a shared generated PNG remains
 recognizable after metadata removal. Imported recipes bind to the normalized
 local file; rendering verifies that file's actual bytes.
 
+**Transfer motion** animates an appearance image with a driving video using
+local [Wan Animate 2](https://huggingface.co/Comfy-Org/Wan-Animate-2) distilled
+weights. Choose a video source, switch to Transfer motion, then upload/select
+an **Appearance image** or create one with the optional Qwen frame editor.
+Describe the finished character and scene in **Your direction**. The optional
+**Driving motion** caption describes the action in the source. Match pose,
+framing and body proportions; leave space for the full gesture.
+
+**Whole frame** generates the entire shot without requiring paint. **Painted
+and timed cue** composites the generated motion through the existing spatial
+mask, tracking and temporal fades. Source sound is preserved at the selected
+trim in either mode. Appearance images are center-cropped to the video's
+aspect ratio without stretching; inspect the appearance to preview the crop. Share both the driving video and appearance
+image with the recipe: both hashes are checked against the actual local files
+before submission. The exported graph uses `INPUT.mp4` and `APPEARANCE.png`.
+
+This separate public model profile adds approximately 25 GB. To install only
+the motion-transfer runtime/models, use `python scripts/setup.py --motion-transfer`.
+For an existing Aftertake runtime, add the profile, then restart the engine:
+
+```sh
+python scripts/download-models.py --motion-transfer
+```
+
+Revisions, sizes, licenses and SHA-256 values are pinned in
+[the motion-transfer manifest](docs/models-motion-transfer.json). The native
+workflow uses distinct appearance and raw driving-video conditions, an int8 draft / int4 Finish
+motion cache, ten distilled sampling steps, and reference-token removal before
+decoding. It contains no closed pose-estimation or inference API. Controlled
+original animation tests changed the waved arm when only the driving video
+was mirrored, keeping the appearance image, seed and neutral prompts fixed.
+This is evidence for that test, not a guarantee of arbitrary human identity,
+facial performance or motion fidelity. Review short takes before finishing.
+
 **Animate a frame** creates a new shot from a photo or a selected video frame.
 Choose camera movement, lens character, lighting and palette; save a named film
 look and apply it to another source. Camera, lens and lighting use inspectable
@@ -163,6 +197,20 @@ python scripts/engine.py
 pnpm dev
 ```
 
+For a separate model disk, add `--models-dir /path/to/models` to setup or a
+model download. For example, on Windows:
+
+```sh
+python scripts/download-models.py --motion-transfer --models-dir E:/Aftertake-Models
+```
+
+The ignored `.runtime/model-storage.json` remembers the absolute directory.
+Future downloads, the adapter importer and `python scripts/engine.py` reuse it;
+the original ComfyUI model folders remain available too. The engine can also
+choose/remember it with `--models-dir`. If the saved disk is unavailable,
+reconnect it or select a new directory before starting. No model files are
+moved or deleted. Restart the engine after adding a profile or changing disks.
+
 Open http://127.0.0.1:4310. Installation and rendering run locally. The included
 room clip is rendered procedurally from original code, with no external media.
 Import a short, steady clip, paint a region, set its cue and render a take.
@@ -219,7 +267,8 @@ Generated MP4 metadata also includes the recipe and executed graph.
 
 Export ComfyUI workflow produces the actual API-format graph. Replace the
 `AftertakeLoadClip` filenames with your uploaded source and edited-frame filenames.
-New graphs use `INPUT.mp4` and `EDITED_FIRST_FRAME.png` placeholders; recorded
+New graphs use `INPUT.mp4`, `EDITED_FIRST_FRAME.png`, `ENDING_FRAME.png` or
+`APPEARANCE.png` placeholders as appropriate; recorded
 executed graphs retain the filenames used by ComfyUI.
 This export requires the custom nodes and model files; it is not a bundled
 model distribution.
@@ -240,6 +289,11 @@ are ignored by Git. Download receipts record resolved revisions and SHA-256.
 
 App and Aftertake nodes: MIT. Model weights and third-party code retain their
 own licenses; the app license does not relicense them.
+
+- [Wan Animate 2](https://huggingface.co/Comfy-Org/Wan-Animate-2) motion-transfer
+  artifacts and [Qwen-Image-Edit-2511](https://huggingface.co/Qwen/Qwen-Image-Edit-2511)
+  retain their published Apache-2.0 licenses. Conversion and adapter repositories
+  are recorded in the corresponding immutable model manifests.
 
 - [ComfyUI](https://github.com/Comfy-Org/ComfyUI) — GPL-3.0.
 - [Comfy SDK](https://github.com/Comfy-Org/comfy-typescript-sdk) and

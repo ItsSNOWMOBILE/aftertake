@@ -1,6 +1,7 @@
 import { renderDimensions, type Recipe } from '../src/domain.js';
 import { cameraTracks, cinemaPrompt } from '../src/cinema.js';
 import { frameEditRequirements } from './frame-workflow.js';
+import { buildMotionTransferWorkflow, motionTransferRequirements } from './motion-workflow.js';
 export const modelFiles = {
   diffusion: 'ltx-2-19b-distilled_Q4_K_M.gguf',
   encoder: 'gemma_3_12B_it_fp4_mixed.safetensors',
@@ -19,6 +20,7 @@ export const inpaintModelFiles = {
 export const motionModelFile = 'ltx-2.3-22b-ic-lora-motion-track-control-ref0.5.safetensors';
 export function requirements(pipeline: Recipe['pipeline'] | 'motion' | 'frame-edit' = 'structure'): { nodes: string[]; menus: [string, string, string][] } {
   if (pipeline === 'frame-edit') return frameEditRequirements();
+  if (pipeline === 'motion-transfer') return motionTransferRequirements();
   if (pipeline === 'motion') {
     const base = requirements('cinema');
     return { nodes: [...base.nodes, 'LTXICLoRALoaderModelOnly', 'LTXVDrawTracks', 'LTXAddVideoICLoRAGuideAdvanced', 'LTXVCropGuides'],
@@ -43,6 +45,7 @@ export function requirements(pipeline: Recipe['pipeline'] | 'motion' | 'frame-ed
   return { nodes, menus };
 }
 export function buildWorkflow(recipe: Recipe): Record<string, unknown> {
+  if (recipe.pipeline === 'motion-transfer') return buildMotionTransferWorkflow(recipe);
   const d = renderDimensions(recipe);
   const n = (class_type: string, inputs: Record<string, unknown>) => ({ class_type, inputs });
   if (recipe.pipeline === 'cinema') {

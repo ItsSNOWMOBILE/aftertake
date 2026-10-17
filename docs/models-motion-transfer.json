@@ -1,0 +1,38 @@
+[
+  {
+    "repository": "Comfy-Org/Wan-Animate-2",
+    "revision": "e7181fe1896b7f2ce34120d1a3663413548240d7",
+    "path": "diffusion_models/wan_animate_2_distill_int8_convrot.safetensors",
+    "category": "diffusion_models",
+    "size": 16653175528,
+    "sha256": "d2e566ecac3f164cb1a6b63dc7d868d6678c9affa49fbceb3abe4f9458f89c8a",
+    "license": "apache-2.0"
+  },
+  {
+    "repository": "Comfy-Org/Wan-Animate-2",
+    "revision": "e7181fe1896b7f2ce34120d1a3663413548240d7",
+    "path": "text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+    "category": "text_encoders",
+    "size": 6735906897,
+    "sha256": "c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68",
+    "license": "apache-2.0"
+  },
+  {
+    "repository": "Comfy-Org/Wan-Animate-2",
+    "revision": "e7181fe1896b7f2ce34120d1a3663413548240d7",
+    "path": "clip_vision/clip_vision_h.safetensors",
+    "category": "clip_vision",
+    "size": 1264219396,
+    "sha256": "64a7ef761bfccbadbaa3da77366aac4185a6c58fa5de5f589b42a65bcc21f161",
+    "license": "apache-2.0"
+  },
+  {
+    "repository": "Comfy-Org/Wan-Animate-2",
+    "revision": "e7181fe1896b7f2ce34120d1a3663413548240d7",
+    "path": "vae/Wan2_1_VAE_bf16.safetensors",
+    "category": "vae",
+    "size": 253806278,
+    "sha256": "1ab9a32cc2c740f6e39d80d367ce5dcc28db8c71b79b28670546b8973e9d75f9",
+    "license": "apache-2.0"
+  }
+]

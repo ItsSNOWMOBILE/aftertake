@@ -19,6 +19,14 @@ motion-track conditioning supplies explicit framing trajectories, with the
 exact guide saved beside the result. Named film looks travel between sources;
 color grading is consistent across frames.
 
+Transfer motion combines a driving video with a separately chosen appearance
+image using local Wan Animate 2 distilled weights. Create the appearance in the
+Qwen editor or import it, inspect its actual center crop, then animate the whole
+frame or blend it through a painted/timed cue. Driving and appearance hashes,
+motion caption, seed and scope travel in the recipe. A controlled mirrored-driver
+pair changed the waved arm while appearance, seed and neutral prompts stayed
+fixed. Broader human identity and facial-performance claims remain unestablished.
+
 An optional ending image gives a shot a defined destination. Import it or
 design it with the local Qwen editor, explicitly review and select it, then
 generate the transition between both frames. Start/end guides can also be
@@ -52,6 +60,8 @@ weights through the official Comfy SDK and local Comfy v2 proxy.
 
 - React/TypeScript studio; official `@comfyorg/sdk` integration.
 - LTX-2.5 distilled GGUF, Gemma 4 encoder and video VAE.
+- Wan Animate 2 distilled int8 backbone, UMT5, CLIP vision and Wan VAE;
+  separate motion/appearance conditioning and compact native motion caches.
 - Native inpainting IC-LoRA and optional motion-track IC-LoRA.
 - Optional Qwen-Image-Edit-2511 GGUF, Qwen2.5-VL encoder and Lightning adapter
   for creating edited frames locally.
@@ -85,6 +95,8 @@ not been validated.
   workflows, setup and seven recorded examples. Anonymous Git access verified.
 - Demo: https://itssnowmobile.github.io/aftertake/ — live 97-second silent
   captioned video, verified at 1280 × 720 / 24 fps. Generation waits are omitted.
+  Refresh this cut with motion transfer and the ending-frame workflow before
+  the final social post and entry; those newer capabilities are local evidence.
 - Social post: draft below; no post has been sent.
 - Sign-up/submission: pending; inspect the final terms and required identity
   fields before submission. No registration or award is claimed.

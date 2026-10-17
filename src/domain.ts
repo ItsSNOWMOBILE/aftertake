@@ -22,22 +22,31 @@ export const projectSchema = z.object({
   clip: clipSchema, prompt: z.string().trim().min(5).max(2000),
   cue: cueSchema, seed: z.number().int().min(0).max(2 ** 32 - 1),
   quality: z.enum(['draft', 'final']), trimStart: z.number().min(0).max(3600),
-  pipeline: z.enum(['structure', 'inpaint', 'cinema']).optional(),
+  pipeline: z.enum(['structure', 'inpaint', 'cinema', 'motion-transfer']).optional(),
   cinema: cinemaSchema.optional(),
   directionStrength: z.number().min(1).max(4).optional(),
   editReference: clipSchema.extend({ kind: z.literal('image') }).optional(),
   endFrame: clipSchema.extend({ kind: z.literal('image') }).optional(),
+  transfer: z.object({
+    reference: clipSchema.extend({ kind: z.literal('image') }).optional(),
+    motionCaption: z.string().trim().max(2000).optional(),
+    scope: z.enum(['frame', 'cue']),
+  }).optional(),
 }).refine(recipe => !recipe.endFrame || recipe.pipeline === 'cinema',
   { message: 'An ending frame is available in Animate a frame.', path: ['endFrame'] })
   .refine(recipe => !recipe.endFrame || !editReferenceIssue(recipe.clip, recipe.endFrame),
-    { message: 'Choose an ending image with the same aspect ratio as the starting frame.', path: ['endFrame'] });
+    { message: 'Choose an ending image with the same aspect ratio as the starting frame.', path: ['endFrame'] })
+  .refine(recipe => !recipe.transfer || recipe.pipeline === 'motion-transfer',
+    { message: 'A motion reference belongs to Transfer motion.', path: ['transfer'] });
 export const recipeSchema = projectSchema
-  .refine(recipe => recipe.pipeline === 'cinema' || recipe.cue.strokes.some(stroke => stroke.mode !== 'erase'),
+  .refine(recipe => !usesCue(recipe) || recipe.cue.strokes.some(stroke => stroke.mode !== 'erase'),
     { message: 'Paint at least one region before rendering.', path: ['cue', 'strokes'] })
   .refine(recipe => recipe.clip.kind !== 'image' || (recipe.pipeline === 'cinema' && recipe.trimStart === 0),
     { message: 'Use Animate a frame for still images, with the reference time set to zero.', path: ['pipeline'] })
   .refine(recipe => !recipe.editReference || recipe.pipeline !== 'inpaint' || !editReferenceIssue(recipe.clip, recipe.editReference),
-    { message: 'Use an edited full frame with the same composition and aspect ratio as the source.', path: ['editReference'] });
+    { message: 'Use an edited full frame with the same composition and aspect ratio as the source.', path: ['editReference'] })
+  .refine(recipe => recipe.pipeline !== 'motion-transfer' || Boolean(recipe.transfer?.reference),
+    { message: 'Choose an appearance image before transferring motion.', path: ['transfer', 'reference'] });
 export type Recipe = z.infer<typeof projectSchema>;
 export type Cue = z.infer<typeof cueSchema>;
 export type Stroke = z.infer<typeof strokeSchema>;
@@ -57,7 +66,16 @@ export type Render = {
 };
 export type Engine = { connected: boolean; ready: boolean; gpu?: string; missing: string[]; message: string };
 
+export function usesCue(recipe: Pick<Recipe, 'pipeline' | 'transfer'>) {
+  return recipe.pipeline !== 'cinema' && !(recipe.pipeline === 'motion-transfer' && (recipe.transfer?.scope || 'frame') === 'frame');
+}
+
 export function renderSettingsKey(r: Recipe) {
+  if (r.pipeline === 'motion-transfer') {
+    return JSON.stringify([r.clip.sha256, r.prompt.trim(), r.seed, r.quality, r.trimStart, 'motion-transfer',
+      r.transfer?.reference?.sha256 || '', r.transfer?.motionCaption?.trim() || '', r.transfer?.scope || 'frame',
+      usesCue(r) ? cueSettingsKey(r.cue) : null]);
+  }
   if (r.pipeline === 'cinema') {
     const look = r.cinema || defaultCinema;
     return JSON.stringify([r.clip.sha256, r.prompt.trim(), r.seed, r.quality, r.trimStart, 'cinema',
@@ -68,6 +86,11 @@ export function renderSettingsKey(r: Recipe) {
     c.tracking || 'static', c.anchor || 0,
     c.strokes.map(s => [s.mode || 'paint', s.radius, s.points.map(p => [p.x, p.y])]),
     r.seed, r.quality, r.trimStart, r.pipeline || 'structure', r.directionStrength || 1, r.pipeline === 'inpaint' ? r.editReference?.sha256 || null : null]);
+}
+
+function cueSettingsKey(c: Cue) {
+  return [c.start, c.end, c.fade, c.feather, c.tracking || 'static', c.anchor || 0,
+    c.strokes.map(s => [s.mode || 'paint', s.radius, s.points.map(p => [p.x, p.y])])];
 }
 
 export function editReferenceIssue(source: Clip, reference: Clip): string | null {

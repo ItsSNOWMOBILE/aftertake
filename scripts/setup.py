@@ -4,6 +4,7 @@ import argparse
 import shutil
 import subprocess
 import sys
+from model_storage import model_root
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = ROOT / '.runtime'
@@ -18,11 +19,15 @@ def run(*args): subprocess.run([str(arg) for arg in args], cwd=ROOT, check=True)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--inpaint', action='store_true', help='Download the LTX-2.5 profile instead of the original structural profile')
+    profiles = parser.add_mutually_exclusive_group()
+    profiles.add_argument('--inpaint', action='store_true', help='Download the LTX-2.5 profile instead of the original structural profile')
+    profiles.add_argument('--motion-transfer', action='store_true', help='Download the Wan Animate 2 profile instead of the original structural profile')
+    parser.add_argument('--models-dir', help='Download to this disk and remember it for the engine and future downloads')
     parser.add_argument('--skip-models', action='store_true', help='Install runtime and sample only; reuse model files from an existing installation')
     args = parser.parse_args()
     if sys.version_info[:2] != (3, 12): raise SystemExit('Use Python 3.12 for the pinned runtime.')
     RUNTIME.mkdir(exist_ok=True)
+    if args.models_dir is not None: model_root(args.models_dir)
     if not PYTHON.exists(): run(sys.executable, '-m', 'venv', VENV)
     for url, target, revision in REPOS:
         if not (target / '.git').exists():
@@ -40,6 +45,6 @@ if __name__ == '__main__':
     run(PYTHON, '-m', 'pip', 'install', '-r', ROOT / 'requirements-runtime.txt')
     shutil.copytree(ROOT / 'custom_nodes/aftertake', RUNTIME / 'ComfyUI/custom_nodes/aftertake', dirs_exist_ok=True)
     if not args.skip_models:
-        run(PYTHON, ROOT / 'scripts/download-models.py', *(['--ltx25'] if args.inpaint else []))
+        run(PYTHON, ROOT / 'scripts/download-models.py', *(['--motion-transfer'] if args.motion_transfer else ['--ltx25'] if args.inpaint else []), *(['--models-dir', args.models_dir] if args.models_dir else []))
     run(PYTHON, ROOT / 'scripts/create-study.py')
     print('Runtime installed. Start it with: python scripts/engine.py')
