@@ -590,10 +590,65 @@ download hit `ERR_BLOCKED_BY_CLIENT`; the user completed the ordinary download.
 - This extends reference animation; it does not establish arbitrary character
   identity or motion transfer. General scene quality remains experimental.
 
+## Video-driven motion transfer — October 17
+
+- Added a separate Transfer motion surface using the pinned, public Wan
+  Animate 2 distilled model. A raw driving video supplies motion; an imported
+  or locally created appearance image supplies character and scene. The optional
+  driving caption, both input hashes, seed and whole-frame/painted-cue scope
+  survive recipe sharing. Source audio is connected in both scopes.
+- Matched 384 × 512 / 49-frame pilots kept the appearance, seed and neutral
+  prompts fixed. Mirroring only the driver changed the waved arm. SDK jobs:
+  `65047d0f-129d-4e4a-b576-5dca93721312` and
+  `d22ab8db-8300-4bcd-8457-126348f43938`. This establishes the controlled
+  original-character test, not arbitrary human identity or facial performance.
+- The normal browser studio completed 576 × 768 / 97-frame, 24 fps take
+  `fe95d08b-acd6-4124-8aeb-175655fc5632`, SDK job
+  `dfbe604b-d8c9-4b4d-a4c8-d1b6f3ee2aab`. The initial int8-cache version of
+  this longer test was canceled after severe memory pressure. The native int4
+  cache completed it in 259 seconds on the RTX 5080 / 32 GB machine. Draft
+  retains int8 caching. Idle GPU models are released after terminal jobs,
+  including canceled and failed generations.
+- The new mode's Qwen editor then created and explicitly applied appearance
+  `729c2e07-8881-4a36-8125-3f86ddd26efe`, SDK job
+  `93c34eec-58cd-4b67-b882-a9adc414da22`. It completed a second real 97-frame
+  motion take: `d18450f0-a9ca-4a2b-9d24-fd75d00664c6`, SDK job
+  `7ec51815-4c35-47d6-8268-9bb6743e9d78`. The executed conditions bind the
+  new source and generated PNG separately. The knitted appearance and arm
+  gesture remain coherent in representative frames; pose timing can vary.
+- A painted/timed draft with a 0.5-second source trim completed as
+  `f94a2209-fe53-4ed3-a9b0-a6482fd55c1f`, SDK job
+  `413ee209-1958-4f73-a2bf-53b4906585a3`: 384 × 512, 49 frames, 16 fps.
+  Its original synthetic 440 Hz tone survives at 48 kHz for 3.062 seconds.
+  Outside the zero-alpha cue, decoded RGB mean absolute error is 1.06 / 255;
+  the compositor's exact-source guarantee remains before lossy encoding.
+- A separate engine-offline workspace imported the shared source, generated
+  PNG and actual browser-exported recipe. It rebound both new asset IDs and
+  recognized the original PNG hash after normalization. RGB is unchanged and
+  private PNG metadata is empty. Re-export retains the normalized image hash,
+  motion caption and scope, and produces both portable input placeholders.
+  Importing/exporting settings created no jobs.
+- Appearance inspection previews the actual center crop without stretching.
+  At mobile width 375, the three creation modes and crop dialog have no
+  horizontal overflow. Escape restores focus to the inspection control.
+  Quality controls are disabled while restoring a project or rendering.
+- New take exports now use the executed graph embedded in the downloaded MP4,
+  after verifying its recipe; they no longer expose the pre-upload placeholder
+  graph as the recorded execution. Portable unrendered graphs retain placeholders.
+- The four Wan artifacts total 24,907,108,099 bytes, all SHA-256 verified.
+  Setup/download/engine scripts support a remembered separate model disk while
+  retaining the existing local folders. A normal supervisor restart found Wan,
+  LTX cinema, inpainting and Qwen profiles ready.
+- All 34 TypeScript tests, 17 Python tests, the production build and twenty-two
+  live workflow input/output-link contracts pass. Evidence is retained under
+  `.runtime/research/motion-transfer/` and `.runtime/evidence/motion-transfer*`.
+  These new local studies are not yet in the seven-example public media bundle.
+
 ## Remaining work
 
 - Continue edge, motion-tracking and prompt-following quality work.
 - Review the published demo against the final submission form requirements.
+- Refresh the public video with motion transfer and the ending-frame workflow.
 - Publish the required social post; register/submit the entry with final terms reviewed.
 - Award outcome remains external and unverified (official announcement date: November 6).
 
