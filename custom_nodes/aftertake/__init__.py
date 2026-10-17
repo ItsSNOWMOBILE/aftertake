@@ -54,12 +54,47 @@ def decode_clip(path, width, height, frames, fps, trim_start):
     return torch.stack(selected)
 
 
+def camera_flow(target, previous, grid_x, grid_y):
+    """Estimate a conservative camera prior where dense flow has no texture.
+
+    Require distributed, agreeing feature tracks; reject estimates supported
+    only in one small region. Return no prior when evidence is sparse or the
+    inter-frame transform is implausibly large.
+    """
+    import cv2
+    points = cv2.goodFeaturesToTrack(target, maxCorners=600, qualityLevel=.01, minDistance=8, blockSize=7)
+    if points is None or len(points) < 16:
+        return None
+    matches, status, errors = cv2.calcOpticalFlowPyrLK(target, previous, points, None,
+        winSize=(25, 25), maxLevel=4,
+        criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 30, .01))
+    if matches is None or status is None or errors is None:
+        return None
+    good = (status.ravel() == 1) & (errors.ravel() < 25) & np.isfinite(matches).all(axis=(1, 2))
+    source, destination = points[good], matches[good]
+    if len(source) < 16:
+        return None
+    affine, inliers = cv2.estimateAffinePartial2D(source, destination, method=cv2.RANSAC,
+        ransacReprojThreshold=1.5, maxIters=1000, confidence=.99, refineIters=10)
+    if affine is None or inliers is None or inliers.sum() < 16 or inliers.mean() < .65:
+        return None
+    reliable = source[inliers.ravel().astype(bool), 0, :]
+    height, width = target.shape
+    if np.ptp(reliable[:, 0]) < width * .4 or np.ptp(reliable[:, 1]) < height * .4:
+        return None
+    scale = np.linalg.norm(affine[0, :2])
+    if not .9 <= scale <= 1.1 or abs(affine[0, 2]) > width * .12 or abs(affine[1, 2]) > height * .12:
+        return None
+    return np.stack([affine[0, 0] * grid_x + affine[0, 1] * grid_y + affine[0, 2] - grid_x,
+                     affine[1, 0] * grid_x + affine[1, 1] * grid_y + affine[1, 2] - grid_y], axis=-1).astype(np.float32)
+
+
 def track_spatial_mask(spatial, images, anchor):
     """Advect a cue both ways from its painted frame using backward optical flow.
 
     Backward flow maps each target pixel to the previous frame. This avoids
-    holes from forward splatting. Dense flow is deterministic classical CV;
-    there is no network or additional inference service.
+    holes from forward splatting. Low-detail areas can use a guarded camera
+    prior. Both are classical CV, without a network or inference service.
     """
     import cv2
     source = (images.detach().cpu().clamp(0, 1).numpy() * 255).round().astype(np.uint8)
@@ -74,6 +109,13 @@ def track_spatial_mask(spatial, images, anchor):
             previous = index - 1 if index > anchor else index + 1
             flow = cv2.calcOpticalFlowFarneback(gray[index], gray[previous], None,
                                              .5, 4, 25, 5, 7, 1.5, 0)
+            camera = camera_flow(gray[index], gray[previous], grid_x, grid_y)
+            if camera is not None:
+                # The small structure-tensor eigenvalue detects the aperture
+                # problem too: one straight edge cannot determine 2D motion.
+                texture = cv2.cornerMinEigenVal(gray[index], blockSize=15, ksize=3)
+                weight = np.clip(texture / .00025, 0, 1)[..., None]
+                flow = flow * weight + camera * (1 - weight)
             tracked[index] = cv2.remap(tracked[previous], grid_x + flow[..., 0], grid_y + flow[..., 1],
                                        interpolation=cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=0)
     return torch.from_numpy(tracked).clamp(0, 1)
