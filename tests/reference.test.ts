@@ -4,13 +4,24 @@ import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
-import { editReferenceIssue, projectSchema, recipeSchema, renderSettingsKey, type Recipe } from '../src/domain.js';
+import { editReferenceIssue, findImportedClip, projectSchema, recipeSchema, renderSettingsKey, type Recipe } from '../src/domain.js';
 import { buildWorkflow } from '../server/workflow.js';
 import { RecipeAssetError, resolveRecipeAssets } from '../server/assets.js';
 import { applyTemplate, type Template } from '../src/templates.js';
 
 const base = JSON.parse(await readFile(new URL('../examples/portal/recipe.json', import.meta.url), 'utf8')) as Recipe;
 const reference = { ...base.clip, id: '00000000-0000-4000-8000-000000000001', name: 'edited.png', kind: 'image' as const, url: '/media/edited.png', duration: 1, sha256: 'a'.repeat(64) };
+
+test('recipe import recognizes the verified original image after normalization and prefers an exact stored file', () => {
+  const normalized = { ...reference, sha256: 'b'.repeat(64), originalSha256: reference.sha256 };
+  assert.equal(findImportedClip([normalized], reference), normalized);
+  assert.equal(findImportedClip([normalized, reference], reference), reference);
+  assert.equal(findImportedClip([normalized], { ...reference, sha256: 'c'.repeat(64) }), undefined);
+  assert.equal(findImportedClip([{ ...normalized, kind: 'video' }], reference), undefined);
+  assert.equal(findImportedClip([normalized], { ...reference, kind: 'video' }), undefined);
+  const rebound = recipeSchema.parse({ ...base, editReference: findImportedClip([normalized], reference) });
+  assert.equal(rebound.editReference?.sha256, normalized.sha256);
+});
 
 test('edited first frames are hash-bound images with source-compatible geometry', () => {
   const recipe = { ...base, editReference: reference };

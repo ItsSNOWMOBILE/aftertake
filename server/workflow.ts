@@ -1,5 +1,6 @@
 import { renderDimensions, type Recipe } from '../src/domain.js';
 import { cameraTracks, cinemaPrompt } from '../src/cinema.js';
+import { frameEditRequirements } from './frame-workflow.js';
 export const modelFiles = {
   diffusion: 'ltx-2-19b-distilled_Q4_K_M.gguf',
   encoder: 'gemma_3_12B_it_fp4_mixed.safetensors',
@@ -16,7 +17,8 @@ export const inpaintModelFiles = {
   lora: 'ltx-2.3-22b-ic-lora-in-outpainting-0.9.safetensors',
 };
 export const motionModelFile = 'ltx-2.3-22b-ic-lora-motion-track-control-ref0.5.safetensors';
-export function requirements(pipeline: Recipe['pipeline'] | 'motion' = 'structure'): { nodes: string[]; menus: [string, string, string][] } {
+export function requirements(pipeline: Recipe['pipeline'] | 'motion' | 'frame-edit' = 'structure'): { nodes: string[]; menus: [string, string, string][] } {
+  if (pipeline === 'frame-edit') return frameEditRequirements();
   if (pipeline === 'motion') {
     const base = requirements('cinema');
     return { nodes: [...base.nodes, 'LTXICLoRALoaderModelOnly', 'LTXVDrawTracks', 'LTXAddVideoICLoRAGuideAdvanced', 'LTXVCropGuides'],

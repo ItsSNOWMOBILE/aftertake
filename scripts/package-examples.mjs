@@ -15,6 +15,7 @@ const cases = [
   { slug: 'quiet-approach', title: 'A quiet approach', renderId: 'ade9d68a-6a3f-431d-8970-2b37f482aa4f', workspace: '.data-demo', studio: 'http://127.0.0.1:4312', credit: 'Curtis Adams / Pexels; still extracted from the licensed room source', sourceUrl: 'https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/', license: 'Pexels License; model terms also apply to generated results' },
   { slug: 'guided-pullback', title: 'Beyond the frame', renderId: '4d104079-d530-47dd-936f-dade1212be0b', workspace: '.data-demo', studio: 'http://127.0.0.1:4312', credit: 'Curtis Adams / Pexels; still extracted from the licensed room source', sourceUrl: 'https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/', license: 'Pexels License; model terms also apply to generated results' },
   { slug: 'reference-portal', title: 'An image to follow', renderId: '49b0792c-855f-43ed-b656-403351bb0976', workspace: '.runtime/showcase-data', studio: 'http://127.0.0.1:4314', credit: 'Curtis Adams / Pexels; edited reference extracted from the earlier Aftertake portal render', sourceUrl: 'https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/', license: 'Pexels License; model terms also apply to generated results and the edited reference' },
+  { slug: 'crystal-forest', title: 'The forest keeps a secret', renderId: 'bbe90566-782e-49c2-b308-43a1643103d9', frameEditId: '5009120d-9816-41d2-9733-032b32541a1f', workspace: '.runtime/showcase-v3-data', studio: 'http://127.0.0.1:4314', credit: 'Mikhail Nilov / Pexels; appearance edited locally with Qwen-Image-Edit-2511', sourceUrl: 'https://www.pexels.com/video/waterfall-in-the-middle-of-the-forest-6989026/', license: 'Pexels License; Qwen and LTX model terms apply to generated results' },
 ];
 const manifest = { format: 'aftertake-examples/1', featuredRenderId: cases[1].renderId, cases: [], files: [] };
 const seen = new Set();
@@ -39,7 +40,7 @@ for (const item of cases) {
   await copyFile(source, path.join(folder, sourceName));
   await json(path.join(folder, 'clip.json'), clip);
   await json(path.join(folder, 'recipe.json'), render.recipe);
-  let referenceName;
+  let referenceName, frameRecipeName;
   if (render.recipe.editReference) {
     const reference = render.recipe.editReference;
     const original = path.join(data, 'clips', path.basename(reference.url));
@@ -56,6 +57,16 @@ for (const item of cases) {
       const file = path.join(examples, target); await mkdir(path.dirname(file), { recursive: true });
       await writeFile(file, Buffer.from(await response.arrayBuffer())); await asset(file, target);
     }
+  }
+  if (item.frameEditId) {
+    const edit = JSON.parse(await readFile(path.join(data, 'frame-edits', `${item.frameEditId}.json`), 'utf8'));
+    if (edit.state !== 'succeeded' || edit.clip?.sha256 !== render.recipe.editReference?.sha256 || edit.request.clip.sha256 !== clip.sha256 || edit.request.trimStart !== render.recipe.trimStart) throw new Error('Frame-edit provenance does not match the video recipe');
+    if (/[A-Za-z]:[\\/]/.test(JSON.stringify(edit))) throw new Error('Refusing to package machine-specific frame-edit paths');
+    await json(path.join(folder, 'frame-edit.json'), edit);
+    await asset(path.join(folder, 'frame-edit.json'), `frame-edits/${edit.id}.json`);
+    frameRecipeName = 'frame-recipe.json';
+    await json(path.join(folder, frameRecipeName), { format: 'aftertake-frame-edit/1', request: edit.request, workflow: edit.workflow, output: edit.clip, jobId: edit.jobId });
+    await asset(path.join(folder, frameRecipeName), `frame-recipes/${render.id}.json`);
   }
   for (const [field, name, suffix] of [['output', 'result.mp4', ''], ['rawOutput', 'raw.mp4', '-raw'], ['coarseOutput', 'coarse.mp4', '-coarse'], ['guideOutput', 'guide.mp4', '-guide']]) {
     if (!render[field]) continue;
@@ -92,8 +103,8 @@ for (const item of cases) {
     await writeFile(file, Buffer.from(await response.arrayBuffer()));
     await asset(file, target);
   }
-  const { workspace, studio, ...publicItem } = item;
-  manifest.cases.push({ ...publicItem, source: `${item.slug}/${sourceName}`, result: `${item.slug}/result.mp4`, poster: `${item.slug}/poster.jpg`, ...(referenceName ? { reference: `${item.slug}/${referenceName}` } : {}), recipe: `${item.slug}/recipe.json`, workflow: `${item.slug}/workflow-api.json` });
+  const { workspace, studio, frameEditId, ...publicItem } = item;
+  manifest.cases.push({ ...publicItem, source: `${item.slug}/${sourceName}`, result: `${item.slug}/result.mp4`, poster: `${item.slug}/poster.jpg`, ...(referenceName ? { reference: `${item.slug}/${referenceName}` } : {}), ...(frameRecipeName ? { frameRecipe: `${item.slug}/${frameRecipeName}` } : {}), recipe: `${item.slug}/recipe.json`, workflow: `${item.slug}/workflow-api.json` });
 }
 await json(path.join(examples, 'manifest.json'), manifest);
 console.log(`Packaged ${cases.length} reviewed examples: ${(manifest.files.reduce((sum, f) => sum + f.size, 0) / 2 ** 20).toFixed(1)} MiB.`);

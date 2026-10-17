@@ -6,7 +6,7 @@ Aftertake is an open-source VFX studio for short video clips. Paint a region,
 set a temporal cue, describe a transformation, and render a remixable take with
 open-weight models through the official Comfy SDK.
 
-Open **Recipes** to browse six reviewed effects and camera examples. Search
+Open **Recipes** to browse seven reviewed effects and camera examples. Search
 by direction or tag, play the original and result, inspect the actual settings,
 then explore the recorded take or apply its direction to your own source.
 Region effects keep your painted cue and timing. Camera recipes keep your scene
@@ -23,6 +23,36 @@ The sixth example includes its edited reference, source, result and actual graph
 Share the source **and** edited image with a reference-guided recipe. Both are
 bound by content hashes and checked against local bytes before generation.
 Changing the source range or choosing a new effect clears the old reference.
+
+**Create an edited frame** makes that appearance reference inside the studio
+with local Qwen-Image-Edit-2511 weights. Describe a change, optionally supply a
+subject image, and choose a four-step or twenty-step edit. Review the image
+before selecting **Use this edited frame**; creation alone does not replace
+your current reference or start video generation. The frame editor retains
+its source hash, seed, settings, PNG and actual executed graph. Download
+**Frame recipe** alongside the source and optional subject to share the image
+edit itself. Choose the matching source/start time and use **Import frame recipe**
+inside the frame editor to restore its prompt, seed, quality and subject image.
+Importing settings starts no generation. Image consistency is experimental;
+inspect the full composition.
+This optional profile adds approximately 24 GB of model downloads:
+
+```sh
+python scripts/download-models.py --frame-edit
+```
+
+Run this after installing the normal runtime. It reuses the same engine and
+Comfy SDK. Image and video generation share one admission guard in a studio
+workspace. Submitted frame jobs persist across restarts; an ambiguous response
+can be checked with its original idempotency key rather than creating a new job.
+Weights, revisions, checksums and licenses are pinned in
+[the frame-editor manifest](docs/models-frame-editor.json). The generated PNG
+also retains its executed workflow metadata.
+The seventh example, **The forest keeps a secret**, includes the frame-edit
+recipe and its finished LTX video. Image imports retain the original upload's
+hash alongside the normalized image's hash, so a shared generated PNG remains
+recognizable after metadata removal. Imported recipes bind to the normalized
+local file; rendering verifies that file's actual bytes.
 
 **Animate a frame** creates a new shot from a photo or a selected video frame.
 Choose camera movement, lens character, lighting and palette; save a named film
@@ -54,7 +84,7 @@ the final composite. Outside the cue, source pixels are preserved exactly
 **before lossy video encoding**. Paint adds to the region; erase protects detail.
 
 This is an early competition build. Native inpainting and structural guidance
-have completed real local renders, including 768-pixel takes. Six examples
+have completed real local renders, including 768-pixel takes. Seven examples
 include source media, recipes and executed graphs. Visual quality remains
 experimental, and competition submission is still outstanding. See
 [build evidence](docs/progress.md) and the [Higgsfield feature benchmark](docs/higgsfield-benchmark.md).
@@ -76,7 +106,7 @@ pnpm install
 pnpm demo
 ```
 
-Open http://127.0.0.1:4312 to explore six real, pre-rendered examples in a
+Open http://127.0.0.1:4312 to explore seven real, pre-rendered examples in a
 separate workspace. No Python, GPU or model download is needed for this
 walkthrough. You can inspect the cues and export editable recipes and graphs.
 Generating new takes requires the runtime below. See

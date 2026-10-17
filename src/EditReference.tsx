@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowDownToLine, ImagePlus, LoaderCircle, Maximize2, Upload, X } from 'lucide-react';
+import { ArrowDownToLine, ImagePlus, LoaderCircle, Maximize2, Sparkles, Upload, X } from 'lucide-react';
 import { editReferenceIssue, type Clip, type Recipe } from './domain';
 
-export default function EditReference({ recipe, clips, disabled, onImport, onChange }: {
+export default function EditReference({ recipe, clips, disabled, onImport, onChange, onCreate, creating, canCreate }: {
   recipe: Recipe; clips: Clip[]; disabled: boolean; onImport: (clip: Clip) => void;
   onChange: (reference: Recipe['editReference']) => void;
+  onCreate: () => void; creating: boolean; canCreate: boolean;
 }) {
   const [uploading, setUploading] = useState(false), [exporting, setExporting] = useState(false), [error, setError] = useState('');
   const [inspecting, setInspecting] = useState(false);
@@ -45,6 +46,7 @@ export default function EditReference({ recipe, clips, disabled, onImport, onCha
   return <section className="edit-reference" aria-label="Edited first frame">
     <div className="edit-reference-heading"><ImagePlus size={14}/><strong>Edited first frame</strong><span>OPTIONAL</span></div>
     <p>Show the change in a full-frame edit of this shot. Keep the same composition and paint enough room for the new object.</p>
+    <button className="reference-create" disabled={!canCreate} onClick={onCreate}><Sparkles size={12}/>{creating ? 'Review frame edit…' : 'Create an edited frame'}</button>
     <button className="reference-export" disabled={disabled || exporting} onClick={() => void exportFrame()}>{exporting ? <LoaderCircle size={12} className="spin"/> : <ArrowDownToLine size={12}/>} {exporting ? 'Extracting frame…' : 'Export starting frame'}</button>
     {reference && <div className="reference-asset"><button ref={inspect} title="Inspect edited first frame" onClick={() => setInspecting(true)}><img src={reference.url} alt="Edited full frame guiding the masked region"/><Maximize2 size={13}/></button><span title={reference.name}>{reference.name}</span><button title="Remove edited first frame" disabled={disabled || uploading} onClick={() => choose()}><X size={14}/></button></div>}
     <div className="reference-picker"><select aria-label="Choose an edited first frame" value={reference?.id || ''} disabled={disabled || uploading} onChange={event => choose(clips.find(clip => clip.id === event.target.value))}><option value="">{reference ? 'No edited frame' : 'Choose an imported image…'}</option>{clips.filter(clip => clip.kind === 'image').map(clip => <option key={clip.id} value={clip.id}>{clip.name}</option>)}</select><button disabled={disabled || uploading} title={reference ? 'Replace edited first frame' : 'Upload edited first frame'} onClick={() => input.current?.click()}>{uploading ? <LoaderCircle size={14} className="spin"/> : <Upload size={14}/>}</button></div>

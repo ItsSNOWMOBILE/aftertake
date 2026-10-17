@@ -388,6 +388,83 @@ download hit `ERR_BLOCKED_BY_CLIENT`; the user completed the ordinary download.
   `.runtime/evidence/demo-v3-proof.json` and `demo-v3-contact.jpg`. Earlier
   drafts are retained. Publication and the public repository URL remain pending.
 
+## Local frame editing and the complete appearance chain — October 17
+
+- The studio can now create an edited appearance with Qwen-Image-Edit-2511,
+  using the selected source frame and an optional second image. Fast mode uses
+  the four-step Lightning adapter; Detailed uses twenty steps and the base
+  model. Both expose the seed. The result requires explicit review and selection
+  before it becomes a video reference. The spatial cue still applies to video
+  generation/compositing; the image editor receives the complete source frame.
+- Four optional model files total 23,732,843,846 bytes. Repository revisions,
+  SHA-256 hashes and Apache-2.0 license metadata are pinned in
+  `docs/models-frame-editor.json`; all downloads were verified. The installed
+  Comfy stack required no new custom-node dependency. Both image and video
+  submission use the official Comfy SDK and the existing local proxy.
+- Real UI Fast edit `5009120d-9816-41d2-9733-032b32541a1f`, SDK job
+  `ab6bc3ce-4672-4b69-b160-10e37658fae5`, created a turquoise crystal in the
+  licensed forest shot. The native engine reported 45.80 seconds. Its PNG is
+  768 × 432, SHA-256
+  `2723bccd53c823e306777d755d3dc0184f28b85e7b6a7bf4294688bea4944858`.
+- The reviewed frame was applied in the UI, the cue extended, and a Finish
+  video rendered: `bbe90566-782e-49c2-b308-43a1643103d9`, SDK job
+  `a8528116-b73d-4b05-a79a-3dd6b5655d15`. It decoded to 97 frames at
+  768 × 448 / 24 fps. The native engine reported 88.41 seconds. The crystal
+  stays coherent in the contact sheet and the temporal cue brings it in/out.
+  Both LTX stages use the same uploaded frame. Unselected pixels at 1.5 s have
+  mean absolute source difference 1.892 RGB levels after lossy encoding. Raw
+  opening-frame difference from the resized reference is 6.614 levels; reference
+  conditioning does not promise pixel-exact reproduction. Evidence:
+  `.runtime/evidence/frame-editor-chain-proof.json` and `crystal-video-contact.jpg`.
+- Detailed two-image edit `d3a00f2a-7cf1-406d-9285-25eaafde09e3`, SDK job
+  `12af69ed-acf6-4b3b-aee8-18a9bf8e5186`, reused the turquoise crystal as its
+  second reference and changed it to ruby red. The native engine reported
+  197.64 seconds. During generation the web server was stopped and restarted;
+  the same job ID resumed, with one running native job and none pending.
+  The final PNG retains the pointed shape and red material. Evidence:
+  `.runtime/evidence/frame-editor-detail-proof.json`. This is one synthetic
+  object test, not a general character/identity benchmark.
+- Frame jobs, outputs and actual PNG-embedded graphs persist. A frame becomes
+  available only after its complete PNG, dimensions and workflow are verified.
+  Recovery preserves the idempotency key after an ambiguous submission. Image
+  and video admission share a guard in each studio workspace. Automated tests
+  cover these paths and incomplete/missing PNG metadata.
+- Sharing exposed a real normalization edge case: the downloaded generated PNG
+  contains workflow metadata, while importing an image strips metadata. Imports
+  now retain a verified original-file hash as well as the normalized-file hash.
+  Recipe matching prefers exact bytes, then recognizes an original image upload
+  and rebinds to its normalized local file. A clean-workspace browser test
+  imported the original video recipe with new asset IDs, preserving cue/prompt.
+  The normalized reference has identical RGB pixels, no EXIF/workflow metadata,
+  and its actual bytes pass canonical asset verification. Evidence:
+  `.runtime/evidence/frame-recipe-roundtrip-proof.json` and `frame-recipe-roundtrip.png`.
+- The frame editor also imports its own shared recipes. In the same clean
+  workspace, the Detailed two-image recipe resolved the normalized subject by
+  its original upload hash and restored its prompt, twenty-step mode and seed
+  732. Importing created no GPU job. Screenshot:
+  `.runtime/evidence/frame-edit-recipe-import.png`.
+- The seventh packaged case includes both image/video recipes, generated frame,
+  raw/refined video stages and actual graphs. The manifest verifies 373 runtime
+  files / 22,653,766 bytes. The example workspace also includes the completed
+  frame-edit record, so the frame editor can display its history offline.
+- At 1280 × 900, page client/scroll widths are both 1280; the frame dialog is
+  1100 × 828 with client/scroll widths both 1088. At 390 × 844 the page widths
+  are both 375 and the dialog client/scroll widths both 354. History selection,
+  Escape/focus restoration and Chrome frame-recipe download passed. With no
+  Python or engine, the bundled frame loads, source/result players reach
+  readyState 4, and new frame generation remains disabled. Screenshots:
+  `.runtime/evidence/frame-editor-desktop.png` and `frame-editor-mobile.png`.
+- Latest checks: 27 TypeScript + 14 Python tests, production build, and all
+  fourteen live workflow input/output-link contracts pass. These contract
+  checks submit no jobs. Model quality evidence remains limited to this GPU
+  and the documented scenes.
+- The updated demo includes actual in-studio appearance editing and the crystal
+  video: `.runtime/demo-output/aftertake-demo-v4.mp4`, 97 seconds / 2,328 decoded
+  frames, 1280 × 720 / 24 fps, 7,068,830 bytes. Representative frames were
+  visually reviewed. Evidence: `demo-v4-proof.json` and `demo-v4-contact.jpg`
+  under `.runtime/evidence/`. Public repository/demo upload remain pending;
+  the GitHub connector still returns `UNAUTHORIZED` after the user's reconnect.
+
 ## Remaining work
 
 - Continue edge, motion-tracking and prompt-following quality work.

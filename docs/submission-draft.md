@@ -24,12 +24,18 @@ masked edit. It enters both native generation stages while the original cue
 controls the visible region and timing. The source and edited frame are hash-bound
 and checked before submission. A complete reference-led example is included.
 
+Create that appearance inside the studio with local Qwen-Image-Edit-2511.
+An optional subject reference supports a second image; fast and detailed modes
+retain the seed and executed graph. Review the frame before attaching it to the
+video recipe. The crystal-forest example includes both the image-editing recipe
+and the finished two-stage LTX video, all generated with local open weights.
+
 An editable film desk trims and orders up to eight completed takes, preserving
 source sound where available. Its 720p exports include a portable shot manifest
 with output hashes, recipes and actual workflows. Rotated phone footage stays
 upright throughout import, cue preview and generation.
 
-Six real examples include source media, recipes, actual graphs and outputs.
+Seven real examples include source media, recipes, actual graphs and outputs.
 The searchable recipe library shows actual source/result previews, opens the
 recorded take, or applies its direction while keeping the user's source and cue.
 The example workspace works without Python, model downloads or a GPU; new
@@ -41,6 +47,8 @@ weights through the official Comfy SDK and local Comfy v2 proxy.
 - React/TypeScript studio; official `@comfyorg/sdk` integration.
 - LTX-2.5 distilled GGUF, Gemma 4 encoder and video VAE.
 - Native inpainting IC-LoRA and optional motion-track IC-LoRA.
+- Optional Qwen-Image-Edit-2511 GGUF, Qwen2.5-VL encoder and Lightning adapter
+  for creating edited frames locally.
 - Custom Comfy nodes for source sampling, editable masks, temporal envelopes,
   exact-source compositing, stable output grading and recipe-bearing MP4s.
 - Optional classical OpenCV optical-flow mask tracking and CPU mask previews.
@@ -81,7 +89,7 @@ Paint what changes. Erase what stays. Choose when it happens. Animate a still
 with motion-track framing guides, then pass on the editable recipe and actual
 ComfyUI graph.
 
-Local open weights through the Comfy SDK. MIT app code. Six real examples
+Local open weights through the Comfy SDK. MIT app code. Seven real examples
 you can explore without downloading the models.
 
 [Demo URL pending] · [Repository URL pending]

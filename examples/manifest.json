@@ -79,6 +79,21 @@
       "reference": "reference-portal/edited-first-frame.png",
       "recipe": "reference-portal/recipe.json",
       "workflow": "reference-portal/workflow-api.json"
+    },
+    {
+      "slug": "crystal-forest",
+      "title": "The forest keeps a secret",
+      "renderId": "bbe90566-782e-49c2-b308-43a1643103d9",
+      "credit": "Mikhail Nilov / Pexels; appearance edited locally with Qwen-Image-Edit-2511",
+      "sourceUrl": "https://www.pexels.com/video/waterfall-in-the-middle-of-the-forest-6989026/",
+      "license": "Pexels License; Qwen and LTX model terms apply to generated results",
+      "source": "crystal-forest/source.mp4",
+      "result": "crystal-forest/result.mp4",
+      "poster": "crystal-forest/poster.jpg",
+      "reference": "crystal-forest/edited-first-frame.png",
+      "frameRecipe": "crystal-forest/frame-recipe.json",
+      "recipe": "crystal-forest/recipe.json",
+      "workflow": "crystal-forest/workflow-api.json"
     }
   ],
   "files": [
@@ -2259,6 +2274,66 @@
       "target": "renders/49b0792c-855f-43ed-b656-403351bb0976.json",
       "sha256": "f464983bdcf9662efc21025e4e22d0db4588b2d5b3cd6067661cba4fc59cafdb",
       "size": 16902
+    },
+    {
+      "source": "crystal-forest/edited-first-frame.png",
+      "target": "clips/5009120d-9816-41d2-9733-032b32541a1f.png",
+      "sha256": "2723bccd53c823e306777d755d3dc0184f28b85e7b6a7bf4294688bea4944858",
+      "size": 604385
+    },
+    {
+      "source": "crystal-forest/reference.json",
+      "target": "clips/5009120d-9816-41d2-9733-032b32541a1f.json",
+      "sha256": "46bcf9cb918c7d51093d906a2fc28c9d7f3f21ad6f08937f6cc272a50b2c7077",
+      "size": 381
+    },
+    {
+      "source": "previews/d8b08c0ddc5f956f9dbc95a9fd144eb0a3d03e74230d8c707c36de703785bfb1.jpg",
+      "target": "previews/d8b08c0ddc5f956f9dbc95a9fd144eb0a3d03e74230d8c707c36de703785bfb1.jpg",
+      "sha256": "6ad490e429ddd199364753b2f475834d948bc3092ceccc98e9a638bbf5a8816d",
+      "size": 16242
+    },
+    {
+      "source": "crystal-forest/frame-edit.json",
+      "target": "frame-edits/5009120d-9816-41d2-9733-032b32541a1f.json",
+      "sha256": "05df25f5546d982eac5fb0cbe5567b8290b25bc398ee7e6252badcb88497dd09",
+      "size": 5782
+    },
+    {
+      "source": "crystal-forest/frame-recipe.json",
+      "target": "frame-recipes/bbe90566-782e-49c2-b308-43a1643103d9.json",
+      "sha256": "3a7514e24283d239c263c5807dbd5af079a7f582f9ffdd38a30f694757338779",
+      "size": 5617
+    },
+    {
+      "source": "crystal-forest/result.mp4",
+      "target": "outputs/bbe90566-782e-49c2-b308-43a1643103d9.mp4",
+      "sha256": "17a4173b0141878daf1c4540e39c4779add64ddde463dad86bc588bfcca8ef5f",
+      "size": 1548565
+    },
+    {
+      "source": "crystal-forest/raw.mp4",
+      "target": "outputs/bbe90566-782e-49c2-b308-43a1643103d9-raw.mp4",
+      "sha256": "b036b1a5515d87ad1a1b38c5e3f8a5ef61eae7efcf5e01f709eee17299a69304",
+      "size": 2164284
+    },
+    {
+      "source": "crystal-forest/coarse.mp4",
+      "target": "outputs/bbe90566-782e-49c2-b308-43a1643103d9-coarse.mp4",
+      "sha256": "ee46d074f60567604742021477676861b6617d33844d557c900f1674440187da",
+      "size": 1198240
+    },
+    {
+      "source": "crystal-forest/poster.jpg",
+      "target": "posters/crystal-forest.jpg",
+      "sha256": "e43334484fb74c01b09ce25017d8ce889c70b30bfc407c9fab6130cb5b8eb3cb",
+      "size": 60543
+    },
+    {
+      "source": "crystal-forest/render.json",
+      "target": "renders/bbe90566-782e-49c2-b308-43a1643103d9.json",
+      "sha256": "08cb11f5a7b864761bc40306247353051d8bf835225754349d60b76154e638b9",
+      "size": 20351
     }
   ]
 }

@@ -29,11 +29,12 @@ and repeatable starting points a major part of the experience.
 | User job | Aftertake implementation | Remaining gap |
 | --- | --- | --- |
 | Change a selected part of footage | Native inpainting, paint/erase, temporal fades, source-preserving composite, optional edited-first-frame conditioning in both stages | Prompt following and edge quality vary; arbitrary identity replacement is not established |
+| Prepare a new appearance inside the studio | Local Qwen-Image-Edit-2511 frame editor, optional subject image, seed, fast/detail modes, explicit review and selection, PNG and actual graph export | Single-image and two-image native tests passed on the forest; broader scene quality and arbitrary identity consistency remain under evaluation |
 | Reuse motion while rebuilding the scene | Original structure-guided regional pipeline | Full-scene motion transfer and character reference conditioning are not implemented |
 | Animate a reference | LTX-2.5 first-frame conditioning; video-frame selection or normalized PNG/JPEG/WebP import; draft and finish sizes | GPU quality evidence recorded separately in progress.md; no end-frame reference yet |
 | Direct camera and look | Five movement suggestions, four lens characters, five lighting options; inspectable prompt; four output grades; optional motion-track conditioning | Prompt-only direction is unreliable. Guided pullback and static framing passed visual checks on one room; broader scene coverage and 3D camera reconstruction remain open |
 | Keep a film look across sources | Named local look library, built-in looks, settings preserved in recipes and MP4 metadata | No multi-user collaboration or identity lock |
-| Start from an effect | Searchable library of six reviewed effects/camera recipes with actual source/result previews; inspect/import recorded takes or apply direction to your source and cue | More varied scenes and effects needed |
+| Start from an effect | Searchable library of seven reviewed effects/camera recipes with actual source/result previews; inspect/import recorded takes or apply direction to your source and cue | More varied scenes and effects needed |
 | Iterate and remix | Durable takes, source/result/compare, seeds, editable recipes, exact executed graph export | Batch variation grid and collections needed |
 | Finish a longer film | Trim and join up to eight finished takes; three 720p canvas shapes, source audio, portable hash-bound shot manifest | Longer continuous generation, transitions and 1080p delivery remain open |
 

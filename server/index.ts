@@ -14,6 +14,7 @@ import { submissionRejected } from './submission.js';
 import { filmRouter } from './films.js';
 import { templateRouter } from './templates.js';
 import { resolveRecipeAssets, RecipeAssetError } from './assets.js';
+import { frameEditorRouter } from './frame-edits.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 process.loadEnvFile && await stat(path.join(root, '.env')).then(() => process.loadEnvFile('.env')).catch(() => {});
@@ -54,7 +55,7 @@ for (const filename of await readdir(renderDir)) {
   } catch (error) { console.error(`Could not read saved render ${filename}:`, error); }
 }
 const healthCache = new Map<string, { until: number; value: Engine }>();
-async function engine(pipeline: 'structure' | 'inpaint' | 'cinema' | 'motion' = 'structure'): Promise<Engine> {
+async function engine(pipeline: 'structure' | 'inpaint' | 'cinema' | 'motion' | 'frame-edit' = 'structure'): Promise<Engine> {
   const cached = healthCache.get(pipeline);
   if (cached && cached.until > Date.now()) return cached.value;
   let result: Engine;
@@ -169,7 +170,7 @@ app.get('/previews/:name', (req, res) => {
   if (!/^[a-f0-9]{64}\.png$/.test(req.params.name)) return void res.sendStatus(404);
   res.sendFile(req.params.name, { root: previewDir, dotfiles: 'deny' });
 });
-app.get('/api/engine', async (req, res) => { res.json(await engine(req.query.pipeline === 'motion' ? 'motion' : req.query.pipeline === 'cinema' ? 'cinema' : req.query.pipeline === 'inpaint' ? 'inpaint' : 'structure')); });
+app.get('/api/engine', async (req, res) => { res.json(await engine(req.query.pipeline === 'frame-edit' ? 'frame-edit' : req.query.pipeline === 'motion' ? 'motion' : req.query.pipeline === 'cinema' ? 'cinema' : req.query.pipeline === 'inpaint' ? 'inpaint' : 'structure')); });
 app.get('/api/workspace', (_req, res) => {
   res.json({ examples: process.env.AFTERTAKE_EXAMPLES === '1', exampleCount: Number(process.env.AFTERTAKE_EXAMPLE_COUNT || 3),
     exampleNames: { ...bundledTitles, ...JSON.parse(process.env.AFTERTAKE_EXAMPLE_TITLES || '{}') }, featuredRenderId: process.env.AFTERTAKE_FEATURED_RENDER || null });
@@ -232,7 +233,9 @@ app.post('/api/clips', express.raw({ type: 'application/octet-stream', limit: '1
     if (meta.duration < 1) throw new Error('Use a clip at least one second long.');
     if (image) { await unlink(dest); await rename(normalized, path.join(clipDir, `${id}.png`)); }
     const bytes = image ? await readFile(path.join(clipDir, `${id}.png`)) : req.body;
-    const clip: Clip = { id, name, sha256: createHash('sha256').update(bytes).digest('hex'), ...meta, url: `/media/${image ? `${id}.png` : filename}` };
+    const clip: Clip = { id, name, sha256: createHash('sha256').update(bytes).digest('hex'),
+      ...(image ? { originalSha256: createHash('sha256').update(req.body).digest('hex') } : {}),
+      ...meta, url: `/media/${image ? `${id}.png` : filename}` };
     await writeFile(path.join(clipDir, `${id}.json`), JSON.stringify(clip, null, 2));
     res.status(201).json(clip);
   } catch {
@@ -241,6 +244,10 @@ app.post('/api/clips', express.raw({ type: 'application/octet-stream', limit: '1
   }
 });
 app.use(express.json({ limit: '2mb' }));
+const frameEdits = await frameEditorRouter({ data, client, uiUrl, engine: () => engine('frame-edit'),
+  takeBusy: () => admittingRender || [...renders.values()].some(r => !terminal.has(r.state)),
+  setAdmitting: value => { admittingRender = value; } });
+app.use('/api/frame-edits', frameEdits.router);
 app.use('/api/templates', await templateRouter(root, data, renders));
 app.use('/api/films', await filmRouter(root, data, python, renders));
 app.post('/api/cue-preview', async (req, res) => {
@@ -276,7 +283,7 @@ app.post('/api/renders', async (req, res) => {
   try {
   let recipe = recipeSchema.parse(req.body);
   if (!(await engine(recipe.pipeline === 'cinema' && recipe.cinema?.guidance === 'tracks' ? 'motion' : recipe.pipeline)).ready) return void res.status(409).json({ error: 'The selected local workflow is not ready. Check the engine panel.' });
-  if ([...renders.values()].some(r => !terminal.has(r.state))) return void res.status(409).json({ error: 'A take is already active. Let it finish, cancel it, or reconcile its submission before starting another.' });
+  if ([...renders.values()].some(r => !terminal.has(r.state)) || frameEdits.busy()) return void res.status(409).json({ error: 'A generation is already active. Let it finish, cancel it, or reconcile its submission before starting another.' });
   try { recipe = await resolveRecipeAssets(recipe, clipDir); }
   catch (error) { if (error instanceof RecipeAssetError) return void res.status(409).json({ error: error.message }); throw error; }
   const storedClip = recipe.clip;

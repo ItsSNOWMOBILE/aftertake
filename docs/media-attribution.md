@@ -56,3 +56,15 @@ from frame 36 of the earlier Aftertake portal output. The image therefore also
 carries the applicable LTX model terms. No closed model or external image-editing
 service was used to create this reference. The source recipe and executed graph
 are included with the new output.
+### Crystal forest / local appearance editing
+
+The seventh example uses the same Mikhail Nilov / Pexels waterfall source as
+**The golden falls**. Its turquoise crystal frame was produced locally with
+Qwen-Image-Edit-2511 Q4_K_M, the Qwen2.5-VL encoder and the four-step Lightning
+adapter; the video was generated with LTX-2.5 and the native inpainting adapter.
+The optional Qwen profile's repositories, immutable revisions, hashes and
+Apache-2.0 license metadata are recorded in `models-frame-editor.json`.
+No new third-party image or closed image API supplied the crystal. The image
+recipe, generated PNG, video recipe and actual workflows are included under
+`examples/crystal-forest/`. The local ruby-red two-reference test is evidence
+only and is not part of the packaged seven-example library.

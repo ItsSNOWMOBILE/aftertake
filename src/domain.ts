@@ -11,6 +11,7 @@ export const cueSchema = z.object({
 }).refine(cue => cue.end > cue.start, 'Cue must end after it starts');
 export const clipSchema = z.object({
   id: z.string().uuid(), name: z.string().max(200), sha256: z.string().regex(/^[a-f0-9]{64}$/),
+  originalSha256: z.string().regex(/^[a-f0-9]{64}$/).optional(),
   width: z.number().int().positive(), height: z.number().int().positive(),
   duration: z.number().positive(), url: z.string().startsWith('/media/'),
   kind: z.enum(['video', 'image']).optional(),
@@ -37,6 +38,10 @@ export type Recipe = z.infer<typeof projectSchema>;
 export type Cue = z.infer<typeof cueSchema>;
 export type Stroke = z.infer<typeof strokeSchema>;
 export type Clip = z.infer<typeof clipSchema>;
+export function findImportedClip(clips: Clip[], requested: Clip): Clip | undefined {
+  return clips.find(clip => clip.sha256 === requested.sha256) ||
+    clips.find(clip => clip.kind === 'image' && requested.kind === 'image' && clip.originalSha256 === requested.sha256);
+}
 export type Render = {
   id: string; recipe: Recipe; state: string; progress: number | null;
   createdAt: string; updatedAt: string; jobId?: string; error?: string;

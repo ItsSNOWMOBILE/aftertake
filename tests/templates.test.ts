@@ -47,7 +47,7 @@ test('reviewed examples import real bytes once without Python, GPU jobs or sourc
   const url = `http://127.0.0.1:${address.port}/templates`;
   try {
     const catalog = await fetch(url).then(r => r.json()) as Template[];
-    assert.equal(catalog.length, 6);
+    assert.equal(catalog.length, 7);
     assert.equal((await fetch(url + '/portal/poster')).headers.get('content-type'), 'image/jpeg');
     assert.equal((await fetch(url + '/portal/private')).status, 404);
     assert.equal((await fetch(url + '/missing/open', { method: 'POST' })).status, 404);
@@ -74,6 +74,10 @@ test('reviewed examples import real bytes once without Python, GPU jobs or sourc
     assert.equal(createHash('sha256').update(await readFile(path.join(directory, 'clips', path.basename(image.url)))).digest('hex'), image.sha256);
     assert.notEqual(image.id, '732369a3-0434-4d46-a327-e74fe29d143f');
     assert.equal((await fetch(url + '/reference-portal/reference')).headers.get('content-type'), 'image/png');
+    const appearance = await fetch(url + '/crystal-forest/frame-recipe').then(r => r.json());
+    assert.equal(appearance.request.mode, 'fast');
+    assert.equal(appearance.output.sha256, catalog.find(item => item.slug === 'crystal-forest')?.recipe.editReference?.sha256);
+    assert.equal(appearance.workflow['17'].inputs.steps, 4);
   } finally {
     await new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
     assert.equal(path.dirname(path.resolve(directory)), path.resolve(tmpdir()));

@@ -4,11 +4,12 @@ import { readFile, writeFile, readdir, stat, copyFile } from 'node:fs/promises';
 import path from 'node:path';
 import { templateNotes, type Template } from '../src/templates.js';
 import { clipSchema, recipeSchema, type Clip, type Render } from '../src/domain.js';
+import { frameEditRequestSchema } from '../src/frame-edit.js';
 
 export async function templateRouter(root: string, data: string, renders: Map<string, Render>) {
   const folder = path.join(root, 'examples'), router = Router();
   const manifest = JSON.parse(await readFile(path.join(folder, 'manifest.json'), 'utf8')) as {
-    format: string; cases: { slug: string; title: string; renderId: string; source: string; result: string; poster: string; reference?: string; credit: string; license: string; sourceUrl?: string }[];
+    format: string; cases: { slug: string; title: string; renderId: string; source: string; result: string; poster: string; reference?: string; frameRecipe?: string; credit: string; license: string; sourceUrl?: string }[];
     files: { source: string; size: number; sha256: string }[];
   };
   if (manifest.format !== 'aftertake-examples/1') throw Error('Unsupported recipe example manifest.');
@@ -35,19 +36,27 @@ export async function templateRouter(root: string, data: string, renders: Map<st
       if (!item.reference) throw Error('The packaged example needs its edited first frame.');
       await verified(item.reference, record.recipe.editReference.sha256);
     }
+    if (item.frameRecipe) {
+      const creation = JSON.parse((await verified(item.frameRecipe)).toString('utf8'));
+      const request = frameEditRequestSchema.parse(creation.request);
+      if (creation.output?.sha256 !== record.recipe.editReference?.sha256 || request.clip.sha256 !== record.recipe.clip.sha256 || request.trimStart !== record.recipe.trimStart) throw Error('The packaged appearance recipe does not match this video.');
+    }
     bundled.set(item.slug, record);
     templates.push({ ...item, ...templateNotes[item.slug], recipe: record.recipe,
       poster: `/api/templates/${item.slug}/poster`, result: `/api/templates/${item.slug}/result`, source: `/api/templates/${item.slug}/source`,
-      reference: item.reference ? `/api/templates/${item.slug}/reference` : undefined });
+      reference: item.reference ? `/api/templates/${item.slug}/reference` : undefined,
+      frameRecipe: item.frameRecipe ? `/api/templates/${item.slug}/frame-recipe` : undefined });
   }
   const locks = new Set<string>();
   router.get('/', (_req, res) => { res.json(templates); });
   router.get('/:slug/:asset', (req, res) => {
     const item = manifest.cases.find(item => item.slug === req.params.slug);
     const asset = req.params.asset;
-    if (!item || !['poster', 'result', 'source', 'reference'].includes(asset) || (asset === 'reference' && !item.reference)) return void res.sendStatus(404);
+    if (!item || !['poster', 'result', 'source', 'reference', 'frame-recipe'].includes(asset)) return void res.sendStatus(404);
+    const file = asset === 'frame-recipe' ? item.frameRecipe : item[asset as 'poster' | 'result' | 'source' | 'reference'];
+    if (!file) return void res.sendStatus(404);
     res.setHeader('Cache-Control', 'private, max-age=3600');
-    res.sendFile(contained(item[asset as 'poster' | 'result' | 'source' | 'reference']!));
+    res.sendFile(contained(file));
   });
   router.post('/:slug/open', async (req, res) => {
     const source = bundled.get(req.params.slug), template = templates.find(item => item.slug === req.params.slug);
