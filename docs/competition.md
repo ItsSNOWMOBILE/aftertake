@@ -38,11 +38,12 @@ remain the source, rather than relying on a text model to preserve them.
 
 - [x] Official Comfy SDK integration exercised against real ComfyUI, not a mock.
 - [x] Full generation graph uses only open-weight models, no partner nodes or closed inference APIs.
-- [x] Three reviewed outputs with sources/recipes/graphs are bundled under `examples/`.
+- [x] Seven reviewed outputs with sources/recipes/graphs are bundled under `examples/`.
 - [x] Spatial and temporal controls visibly affect the actual generation/composite.
 - [x] Fresh Windows runtime install, actual import/render, UI import/export and source-hash matching exercised. Other hardware/OS combinations remain unverified.
-- [ ] Public repository with MIT license, setup, model inventory, third-party attribution.
-- [ ] Demo explains the innovation and shows actual input, interaction, and output.
+- [x] [Public repository](https://github.com/ItsSNOWMOBILE/aftertake) with MIT license, setup, model inventory, third-party attribution.
+- [x] [97-second captioned demo](https://itssnowmobile.github.io/aftertake/) explains the innovation and shows actual input, interaction, and output. Public playback verified October 17.
+- [ ] Required social post linking the demo with #OpenSourceHiggsfield published.
 - [ ] Registration and submission completed with the correct category and links.
 - [ ] Award decision checked when published (official page currently says November 6).
 
