@@ -6,6 +6,13 @@ Aftertake is an open-source VFX studio for short video clips. Paint a region,
 set a temporal cue, describe a transformation, and render a remixable take with
 open-weight models through the official Comfy SDK.
 
+Open **Recipes** to browse five reviewed effects and camera examples. Search
+by direction or tag, play the original and result, inspect the actual settings,
+then explore the recorded take or apply its direction to your own source.
+Region effects keep your painted cue and timing. Camera recipes keep your scene
+description. Previews are actual renders; opening an example requires no Python,
+GPU or inference service. Applying a recipe prepares an editable new take.
+
 **Animate a frame** creates a new shot from a photo or a selected video frame.
 Choose camera movement, lens character, lighting and palette; save a named film
 look and apply it to another source. Camera, lens and lighting use inspectable

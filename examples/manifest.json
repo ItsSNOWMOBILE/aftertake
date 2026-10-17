@@ -11,7 +11,8 @@
       "source": "reclaimed/source.mp4",
       "result": "reclaimed/result.mp4",
       "recipe": "reclaimed/recipe.json",
-      "workflow": "reclaimed/workflow-api.json"
+      "workflow": "reclaimed/workflow-api.json",
+      "poster": "reclaimed/poster.jpg"
     },
     {
       "slug": "portal",
@@ -23,7 +24,8 @@
       "source": "portal/source.mp4",
       "result": "portal/result.mp4",
       "recipe": "portal/recipe.json",
-      "workflow": "portal/workflow-api.json"
+      "workflow": "portal/workflow-api.json",
+      "poster": "portal/poster.jpg"
     },
     {
       "slug": "golden-falls",
@@ -35,7 +37,8 @@
       "source": "golden-falls/source.mp4",
       "result": "golden-falls/result.mp4",
       "recipe": "golden-falls/recipe.json",
-      "workflow": "golden-falls/workflow-api.json"
+      "workflow": "golden-falls/workflow-api.json",
+      "poster": "golden-falls/poster.jpg"
     },
     {
       "slug": "quiet-approach",
@@ -47,7 +50,8 @@
       "source": "quiet-approach/source.png",
       "result": "quiet-approach/result.mp4",
       "recipe": "quiet-approach/recipe.json",
-      "workflow": "quiet-approach/workflow-api.json"
+      "workflow": "quiet-approach/workflow-api.json",
+      "poster": "quiet-approach/poster.jpg"
     },
     {
       "slug": "guided-pullback",
@@ -59,7 +63,8 @@
       "source": "guided-pullback/source.png",
       "result": "guided-pullback/result.mp4",
       "recipe": "guided-pullback/recipe.json",
-      "workflow": "guided-pullback/workflow-api.json"
+      "workflow": "guided-pullback/workflow-api.json",
+      "poster": "guided-pullback/poster.jpg"
     }
   ],
   "files": [
@@ -2162,6 +2167,36 @@
       "target": "renders/4d104079-d530-47dd-936f-dade1212be0b.json",
       "sha256": "3331de77d3e434e6021be02ab297e938f72ddaa625d85af3089f8a6135b1b4b9",
       "size": 33598
+    },
+    {
+      "source": "reclaimed/poster.jpg",
+      "target": "posters/reclaimed.jpg",
+      "sha256": "4ef8a10c0e3ad51b975353b68f4f8e12c5747aaa94abde4d8dc70e9ec8295548",
+      "size": 37629
+    },
+    {
+      "source": "portal/poster.jpg",
+      "target": "posters/portal.jpg",
+      "sha256": "9328191f10d20d36a4bf35d0c887e8cdb7af34b041759227268f47bdd64d078c",
+      "size": 23648
+    },
+    {
+      "source": "golden-falls/poster.jpg",
+      "target": "posters/golden-falls.jpg",
+      "sha256": "e421925281d7cf4d96acb75bbdf4a1f4b0aca002d892d7a3617b72b1eca7d8cd",
+      "size": 60014
+    },
+    {
+      "source": "quiet-approach/poster.jpg",
+      "target": "posters/quiet-approach.jpg",
+      "sha256": "6a79602c00aef9c25e1239c09c7524b19cd58aa5e3568937608f5161398d9819",
+      "size": 16518
+    },
+    {
+      "source": "guided-pullback/poster.jpg",
+      "target": "posters/guided-pullback.jpg",
+      "sha256": "7dc8e63587c6affa3dde678f4fe4181738fe4a4a6985da9e30b88bffbca6b6de",
+      "size": 17475
     }
   ]
 }

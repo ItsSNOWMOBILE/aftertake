@@ -48,6 +48,8 @@ for (const item of cases) {
   const meta = JSON.parse(execFileSync(python, ['-c', 'import av,json,sys\nwith av.open(sys.argv[1]) as c: print(c.metadata["comment"])', path.join(folder, 'result.mp4')], { encoding: 'utf8', maxBuffer: 2 ** 20 }));
   if (/[A-Za-z]:[\\/]/.test(JSON.stringify(meta))) throw new Error('Refusing to package machine-specific paths');
   render.workflow = meta.workflow;
+  execFileSync(python, [path.join(root, 'scripts/make-poster.py'), path.join(folder, 'result.mp4'), path.join(folder, 'poster.jpg')]);
+  await asset(path.join(folder, 'poster.jpg'), `posters/${item.slug}.jpg`);
   await json(path.join(folder, 'workflow-api.json'), meta.workflow);
   await json(path.join(folder, 'render.json'), render);
   await asset(path.join(folder, sourceName), `clips/${path.basename(clip.url)}`);
@@ -72,7 +74,7 @@ for (const item of cases) {
     await asset(file, target);
   }
   const { workspace, studio, ...publicItem } = item;
-  manifest.cases.push({ ...publicItem, source: `${item.slug}/${sourceName}`, result: `${item.slug}/result.mp4`, recipe: `${item.slug}/recipe.json`, workflow: `${item.slug}/workflow-api.json` });
+  manifest.cases.push({ ...publicItem, source: `${item.slug}/${sourceName}`, result: `${item.slug}/result.mp4`, poster: `${item.slug}/poster.jpg`, recipe: `${item.slug}/recipe.json`, workflow: `${item.slug}/workflow-api.json` });
 }
 await json(path.join(examples, 'manifest.json'), manifest);
 console.log(`Packaged ${cases.length} reviewed examples: ${(manifest.files.reduce((sum, f) => sum + f.size, 0) / 2 ** 20).toFixed(1)} MiB.`);

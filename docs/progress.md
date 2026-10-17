@@ -287,6 +287,50 @@ download hit `ERR_BLOCKED_BY_CLIENT`; the user completed the ordinary download.
 - The example-only workspace still starts without Python or an engine. Its film
   list returns successfully; export reports the missing local runtime explicitly.
 
+## Searchable recipes and first-frame pilots — October 17
+
+- The Recipes library presents five real, reviewed outputs with their source
+  previews, actual render settings, direction, attribution and license notices.
+  Three region effects and two camera recipes can be searched by words/tags and
+  filtered by category. Posters are extracted from the actual output at 1.5 s.
+- Explore an example opens its recorded source and result without generating.
+  Existing native/example outputs are reused only after checking source/output
+  hashes. New local copies retain the original render identity in an explicit
+  example-origin field. Repeated opens reuse the imported take. Shared still
+  sources are deduplicated; existing source bytes are checked before reuse.
+- Use on my source preserves source identity, trim, quality, seed and painted
+  cue. Region effects apply the recorded prompt/method. Camera recipes apply
+  camera/look settings and retain the user's scene direction. Still images
+  cannot accept a region effect. The library pauses background studio playback.
+- Actual browser checks covered search, source/result playback, applying gold
+  to the current room cue, offline example opening/playback, and the still-image
+  compatibility guard. No Python or engine was available to the offline app.
+  At 390 × 844: page client/scroll widths both 375, dialog widths both 349.
+  At 1280 × 900: page widths both 1265, dialog widths both 1038. Keyboard focus
+  stays within the library and Escape restores focus to its trigger.
+- The packaged manifest now verifies 355 runtime files / 15,763,202 bytes,
+  including five posters. The five original renders and their metadata are
+  unchanged. No additional illustrative media is presented as generated output.
+- Latest suite: 20 TypeScript + 13 Python tests; production build and all eight
+  live required-input/output-link contracts pass.
+- Reference research: the official LTX-2.5 inpainting workflow supports an edited
+  first frame for replacement. A draft SDK pilot inserted LTXVImgToVideoInplace
+  before the inpainting guide, conditioned on a prior edited room frame. Job
+  `ec0da214-d934-4b1e-92e9-2654657ca372` produced 49 frames at 512 × 288 / 16 fps.
+  The opening raw frame differed from the resized reference by mean 2.135 levels
+  per RGB channel (8-bit scale); the portal remained stable in the contact sheet.
+- A finish pilot conditioned both stages, including the re-encoded high-res
+  latent. Job `16e201a4-96dd-491f-99ba-c1469f5f79c0` produced 97 frames at
+  768 × 448 / 24 fps. Opening-frame mean difference was 1.764 levels; the portal
+  remained stable across the four-second shot. Raw/full composites and actual
+  workflow metadata are retained in `.runtime/reference-inpaint/`, with
+  `contact-final.jpg` and `verification-final.json`. These are internal pilots,
+  not a user-facing identity-swap feature or a general reference-consistency
+  benchmark. Product integration and broader scenes remain to be done.
+- The separate LTX-2.3 Ingredients adapter requires its own publisher access
+  gate and a matching 2.3 stack. It was not downloaded. The successful pilots
+  use the installed 2.5 weights and existing inpainting adapter.
+
 ## Remaining work
 
 - Continue edge, motion-tracking and prompt-following quality work.

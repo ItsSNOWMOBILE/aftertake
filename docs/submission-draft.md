@@ -25,6 +25,8 @@ with output hashes, recipes and actual workflows. Rotated phone footage stays
 upright throughout import, cue preview and generation.
 
 Five real examples include source media, recipes, actual graphs and outputs.
+The searchable recipe library shows actual source/result previews, opens the
+recorded take, or applies its direction while keeping the user's source and cue.
 The example workspace works without Python, model downloads or a GPU; new
 generation uses a connected local Comfy engine. All inference uses open
 weights through the official Comfy SDK and local Comfy v2 proxy.

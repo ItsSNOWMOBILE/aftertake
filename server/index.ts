@@ -12,6 +12,7 @@ import { recipeSchema, renderDimensions, type Clip, type Engine, type Render } f
 import { buildWorkflow, requirements } from './workflow.js';
 import { submissionRejected } from './submission.js';
 import { filmRouter } from './films.js';
+import { templateRouter } from './templates.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 process.loadEnvFile && await stat(path.join(root, '.env')).then(() => process.loadEnvFile('.env')).catch(() => {});
@@ -34,6 +35,8 @@ let thumbnailQueue = Promise.resolve();
 const client = new Comfy();
 const terminal = new Set(['succeeded', 'failed', 'canceled', 'expired', 'output_error']);
 const idPattern = /^[0-9a-f-]{36}$/;
+const bundledTitles = Object.fromEntries((JSON.parse(await readFile(path.join(root, 'examples/manifest.json'), 'utf8')).cases as { renderId: string; title: string }[])
+  .map(item => [item.renderId, item.title]));
 
 async function persist(render: Render) {
   render.updatedAt = new Date().toISOString();
@@ -168,7 +171,7 @@ app.get('/previews/:name', (req, res) => {
 app.get('/api/engine', async (req, res) => { res.json(await engine(req.query.pipeline === 'motion' ? 'motion' : req.query.pipeline === 'cinema' ? 'cinema' : req.query.pipeline === 'inpaint' ? 'inpaint' : 'structure')); });
 app.get('/api/workspace', (_req, res) => {
   res.json({ examples: process.env.AFTERTAKE_EXAMPLES === '1', exampleCount: Number(process.env.AFTERTAKE_EXAMPLE_COUNT || 3),
-    exampleNames: JSON.parse(process.env.AFTERTAKE_EXAMPLE_TITLES || '{}'), featuredRenderId: process.env.AFTERTAKE_FEATURED_RENDER || null });
+    exampleNames: { ...bundledTitles, ...JSON.parse(process.env.AFTERTAKE_EXAMPLE_TITLES || '{}') }, featuredRenderId: process.env.AFTERTAKE_FEATURED_RENDER || null });
 });
 app.get('/api/thumbnails/:id', async (req, res) => {
   if (!idPattern.test(req.params.id)) return void res.sendStatus(404);
@@ -221,6 +224,7 @@ app.post('/api/clips', express.raw({ type: 'application/octet-stream', limit: '1
   }
 });
 app.use(express.json({ limit: '2mb' }));
+app.use('/api/templates', await templateRouter(root, data, renders));
 app.use('/api/films', await filmRouter(root, data, python, renders));
 app.post('/api/cue-preview', async (req, res) => {
   if (!(await stat(python).catch(() => null))) return void res.status(409).json({ error: 'Install the local runtime to compute motion previews. See the engine panel.' });

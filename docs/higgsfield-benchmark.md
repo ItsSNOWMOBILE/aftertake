@@ -33,9 +33,9 @@ and repeatable starting points a major part of the experience.
 | Animate a reference | LTX-2.5 first-frame conditioning; video-frame selection or normalized PNG/JPEG/WebP import; draft and finish sizes | GPU quality evidence recorded separately in progress.md; no end-frame reference yet |
 | Direct camera and look | Five movement suggestions, four lens characters, five lighting options; inspectable prompt; four output grades; optional motion-track conditioning | Prompt-only direction is unreliable. Guided pullback and static framing passed visual checks on one room; broader scene coverage and 3D camera reconstruction remain open |
 | Keep a film look across sources | Named local look library, built-in looks, settings preserved in recipes and MP4 metadata | No multi-user collaboration or identity lock |
-| Start from an effect | Three transformation directions and three fully recorded example workflows | Broader searchable catalog and more varied effects needed |
+| Start from an effect | Searchable library of five reviewed effects/camera recipes with actual source/result previews; inspect/import recorded takes or apply direction to your source and cue | More varied scenes and effects needed |
 | Iterate and remix | Durable takes, source/result/compare, seeds, editable recipes, exact executed graph export | Batch variation grid and collections needed |
-| Finish a longer film | Short outputs up to 97 frames, local download | Multi-shot assembly, sound, longer continuous clips and 1080p delivery remain open |
+| Finish a longer film | Trim and join up to eight finished takes; three 720p canvas shapes, source audio, portable hash-bound shot manifest | Longer continuous generation, transitions and 1080p delivery remain open |
 
 The frame-animation path loads the same public LTX-2.5 backbone, text encoder
 and VAE as masked editing, with **no inpainting adapter**. Camera and look
@@ -72,9 +72,17 @@ Downloaded proprietary bundles stay in ignored local research storage.
 
 ## Next replacement milestones
 
-1. Add an effects browser with honest previews and recipe-based starting points.
-2. Evaluate open-weight reference conditioning for object/character replacement
+1. Evaluate open-weight reference conditioning for object/character replacement
    and full-scene motion transfer before exposing those capabilities.
+
+The [current official inpainting guide](https://docs.ltx.io/open-source-model/feature-guides/editing-effects/in-outpainting)
+supports an edited first frame as an object-replacement aid. An internal
+49-frame draft and a 97-frame finish native LTX-2.5 pilot successfully conditioned on a prior edited room
+frame; the portal stayed stable across the shot. It is not yet exposed in the
+product and does not prove arbitrary identity replacement. The separate
+[Ingredients adapter](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Ingredients)
+targets LTX-2.3 reference sheets and has a separate publisher access gate; it
+has not been downloaded or represented as an installed capability.
 
 First-frame animation, saved film looks and guided framing have completed real
 SDK renders. The film desk now trims and orders up to eight completed takes,

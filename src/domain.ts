@@ -41,6 +41,7 @@ export type Render = {
   coarseOutput?: string;
   guideOutput?: string;
   stage?: string;
+  origin?: { kind: 'example'; slug: string; renderId: string };
 };
 export type Engine = { connected: boolean; ready: boolean; gpu?: string; missing: string[]; message: string };
 
