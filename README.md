@@ -38,6 +38,10 @@ edit itself. Choose the matching source/start time and use **Import frame recipe
 inside the frame editor to restore its prompt, seed, quality and subject image.
 Importing settings starts no generation. Image consistency is experimental;
 inspect the full composition.
+Reopening the editor restores the latest frame settings for that source and
+starting time. **Reuse these settings** loads a viewed history item's direction,
+seed, quality and subject reference without starting a job. If its subject image
+is missing, import that matching image before reusing the settings.
 This optional profile adds approximately 24 GB of model downloads:
 
 ```sh
