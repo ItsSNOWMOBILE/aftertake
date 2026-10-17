@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, mkdtemp, mkdir, rm } from 'node:fs/promises';
+import { cp, readFile, mkdtemp, mkdir, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
@@ -36,8 +36,10 @@ test('recipe search combines tags and words without losing category filtering', 
   assert.equal(filterTemplates(templates, 'all', '   ').length, 2);
 });
 
-test('reviewed examples import real bytes once without Python, GPU jobs or source overwrite', async () => {
-  const root = fileURLToPath(new URL('../', import.meta.url)), directory = await mkdtemp(path.join(tmpdir(), 'aftertake-template-test-'));
+test('reviewed examples work from a hidden checkout and import real bytes without Python, GPU jobs or source overwrite', async () => {
+  const sourceRoot = fileURLToPath(new URL('../', import.meta.url)), directory = await mkdtemp(path.join(tmpdir(), 'aftertake-template-test-'));
+  const root = path.join(directory, '.checkout');
+  await mkdir(root); await cp(path.join(sourceRoot, 'examples'), path.join(root, 'examples'), { recursive: true });
   await Promise.all(['clips', 'outputs', 'renders', 'previews'].map(name => mkdir(path.join(directory, name))));
   const renders = new Map<string, Render>();
   const app = express(); app.use(express.json()); app.use('/templates', await templateRouter(root, directory, renders));
