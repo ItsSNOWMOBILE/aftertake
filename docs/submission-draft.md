@@ -1,4 +1,4 @@
-# Submission draft — pending publication
+# Submission draft — source and demo published
 
 Project: **Aftertake**
 
@@ -75,8 +75,10 @@ not been validated.
 
 ## Publication checklist
 
-- Repository: pending; source is committed locally under MIT.
-- Demo: 97-second silent captioned MP4 prepared locally; upload pending.
+- Repository: https://github.com/ItsSNOWMOBILE/aftertake — public MIT source,
+  workflows, setup and seven recorded examples. Anonymous Git access verified.
+- Demo: https://itssnowmobile.github.io/aftertake/ — live 97-second silent
+  captioned video, verified at 1280 × 720 / 24 fps. Generation waits are omitted.
 - Social post: draft below; no post has been sent.
 - Sign-up/submission: pending; inspect the final terms and required identity
   fields before submission. No registration or award is claimed.
@@ -92,6 +94,7 @@ ComfyUI graph.
 Local open weights through the Comfy SDK. MIT app code. Seven real examples
 you can explore without downloading the models.
 
-[Demo URL pending] · [Repository URL pending]
+https://itssnowmobile.github.io/aftertake/
+https://github.com/ItsSNOWMOBILE/aftertake
 
 #OpenSourceHiggsfield
