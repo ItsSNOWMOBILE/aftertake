@@ -5,6 +5,7 @@ from pathlib import Path
 import shutil
 import sys
 import urllib.request
+from model_storage import model_root
 
 root = Path(__file__).resolve().parents[1]
 name = 'ltx-2.3-22b-ic-lora-in-outpainting-0.9.safetensors'
@@ -14,7 +15,7 @@ digest = hashlib.sha256()
 with source.open('rb') as stream:
     while chunk := stream.read(16 * 1024 * 1024): digest.update(chunk)
 if digest.hexdigest() != expected: raise SystemExit('Hash mismatch: the file is incomplete or is not the expected published adapter.')
-target = root / '.runtime/ComfyUI/models/loras' / name
+target = model_root() / 'loras' / name
 target.parent.mkdir(parents=True, exist_ok=True)
 if not target.exists():
     temp = target.with_suffix('.safetensors.importing')
