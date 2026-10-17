@@ -260,7 +260,9 @@ app.post('/api/cue-preview', async (req, res) => {
     if (clip.sha256 !== recipe.clip.sha256) throw new Error('The source clip does not match this recipe.');
     const dims = renderDimensions({ ...recipe, clip });
     const settings = { ...dims, clip, cue: recipe.cue, trimStart: recipe.trimStart };
-    const key = createHash('sha256').update(JSON.stringify(settings)).digest('hex');
+    // Version the cached pixels when tracking changes, keeping CPU previews
+    // aligned with the masks computed by the current generation nodes.
+    const key = createHash('sha256').update('cue-preview/2:').update(JSON.stringify(settings)).digest('hex');
     const existing = await stat(path.join(previewDir, `${key}.png`)).catch(() => null);
     if (!existing) {
       await writeFile(path.join(previewDir, `${key}.json`), JSON.stringify(settings));
