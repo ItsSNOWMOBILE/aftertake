@@ -644,6 +644,16 @@ download hit `ERR_BLOCKED_BY_CLIENT`; the user completed the ordinary download.
   `.runtime/research/motion-transfer/` and `.runtime/evidence/motion-transfer*`.
   These new local studies are not yet in the seven-example public media bundle.
 
+## Frame-history reuse — October 17
+
+- Reopening the frame editor restores its latest matching direction, seed,
+  fast/detail mode and available subject reference. A viewed history item has
+  an explicit Reuse these settings action; missing subject images are reported.
+  Mode-specific placeholder text describes character or ending-frame edits.
+- Browser QA reopened the completed robot-to-bear edit, replaced its direction
+  temporarily, then restored the exact saved settings without starting a job.
+  The production build passes. The refreshed demo uses this actual review UI.
+
 ## Remaining work
 
 - Continue edge, motion-tracking and prompt-following quality work.
