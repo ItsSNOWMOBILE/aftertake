@@ -53,6 +53,9 @@ test('workflow connects the same cue to generation guidance and final compositin
   assert.deepEqual(graph['12'].inputs.attention_mask, ['9', 1]);
   assert.deepEqual(graph['20'].inputs.mask, ['9', 0]);
   assert.deepEqual(graph['20'].inputs.original, ['8', 0]);
+  assert.deepEqual(graph['21'].inputs.source_audio, ['8', 1]);
+  assert.equal(graph['21'].inputs.audio_start, recipe.trimStart);
+  assert.equal('source_audio' in graph['22'].inputs, false);
   assert.equal(JSON.parse(String(graph['21'].inputs.recipe_json)).seed, 42);
   assert.equal(Object.values(graph).some(node => /API|Partner|Router/.test(node.class_type)), false);
 });
@@ -112,6 +115,7 @@ test('frame animation conditions only the opening frame and generates without th
   const graph = buildWorkflow(r) as Record<string, { class_type: string; inputs: Record<string, unknown> }>;
   assert.equal(graph['8'].inputs.frames, 1);
   assert.equal(graph['8'].inputs.trim_start, 4.9);
+  assert.equal('source_audio' in graph['21'].inputs, false);
   assert.equal(graph['12'].class_type, 'LTXVImgToVideoInplace');
   assert.deepEqual(graph['16'].inputs.model, ['1', 0]);
   assert.deepEqual(graph['21'].inputs.images, ['20', 0]);

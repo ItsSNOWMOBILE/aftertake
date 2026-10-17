@@ -40,7 +40,16 @@ have completed real local renders, including 768-pixel takes. Five examples
 include source media, recipes and executed graphs. Visual quality remains
 experimental, and competition submission is still outstanding. See
 [build evidence](docs/progress.md) and the [Higgsfield feature benchmark](docs/higgsfield-benchmark.md).
-Exports are currently silent; source-audio preservation is a remaining replacement task.
+New region-edit exports preserve source sound at the selected trim point. Frame
+animation is silent. Rotated and mirrored phone footage uses the same upright
+orientation in the browser, cue preview and render.
+
+The film desk joins up to eight finished takes with editable cuts. Export a
+720p landscape, portrait or square MP4 and a portable shot manifest containing
+the source recipes, actual workflows and output hashes. Original sound carries
+through; silent takes receive silence. Import a manifest to restore its cut list
+when the matching finished takes are present. Assembly needs the Python runtime,
+but no GPU or additional model downloads.
 
 ## Try the examples first
 
@@ -128,6 +137,9 @@ To use an existing ComfyUI installation, install the `custom_nodes/aftertake`
 folder, ComfyUI-GGUF and ComfyUI-LTXVideo, and use the model filenames in
 `server/workflow.ts`. Run `comfy-api-proxy` alongside it. Copy `.env.example` to
 `.env` to change the engine endpoints. The browser never receives an API key.
+Install `av==19.0.1`, `Pillow==12.3.0` and `imageio-ffmpeg==0.6.0` in that engine's
+Python environment for orientation and source-audio export. Restart the engine
+after updating the custom nodes. The supplied setup installs these dependencies.
 
 ## Recipes and reproducibility
 

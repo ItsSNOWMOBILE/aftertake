@@ -72,9 +72,12 @@ Downloaded proprietary bundles stay in ignored local research storage.
 
 ## Next replacement milestones
 
-1. Verify first-frame animation quality, playback, photo orientation and
-   reusable looks through the real app and SDK.
-2. Add an effects browser with honest previews and recipe-based starting points.
-3. Add multi-shot project assembly and portable shot lists.
-4. Evaluate open-weight reference conditioning for object/character replacement
+1. Add an effects browser with honest previews and recipe-based starting points.
+2. Evaluate open-weight reference conditioning for object/character replacement
    and full-scene motion transfer before exposing those capabilities.
+
+First-frame animation, saved film looks and guided framing have completed real
+SDK renders. The film desk now trims and orders up to eight completed takes,
+exports 720p MP4s with original audio or silence, and saves a hash-bound shot
+manifest. Upright phone-video handling and trimmed source sound also passed a
+native masked-edit render on the local RTX 5080.

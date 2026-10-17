@@ -1,10 +1,12 @@
 import importlib.util
 import unittest
+import sys
 from pathlib import Path
 import torch
 
 spec = importlib.util.spec_from_file_location('aftertake', Path(__file__).resolve().parents[1] / 'custom_nodes/aftertake/__init__.py')
 nodes = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = nodes
 spec.loader.exec_module(nodes)
 
 class CueTests(unittest.TestCase):

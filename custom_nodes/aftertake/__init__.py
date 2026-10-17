@@ -9,6 +9,7 @@ import av
 import numpy as np
 import torch
 import torch.nn.functional as F
+from .media_utils import display_transform, oriented_image, mux_source_audio
 
 
 def smoothstep(x):
@@ -26,7 +27,11 @@ def decode_clip(path, width, height, frames, fps, trim_start):
             timestamp = float(frame.time or 0) - origin
             if timestamp + 1e-6 < next_time:
                 continue
-            array = frame.reformat(width=width, height=height, format='rgb24').to_ndarray()
+            if display_transform(frame) is None:
+                array = frame.reformat(width=width, height=height, format='rgb24').to_ndarray()
+            else:
+                from PIL import Image
+                array = np.asarray(oriented_image(frame).resize((width, height), Image.Resampling.BICUBIC))
             last = torch.from_numpy(array.copy()).float() / 255
             while timestamp + 1e-6 >= next_time and len(selected) < frames:
                 selected.append(last)
@@ -146,7 +151,8 @@ class AftertakeLoadClip:
             'fps': ('FLOAT', {'default': 16, 'min': 1, 'max': 60}),
             'trim_start': ('FLOAT', {'default': 0, 'min': 0, 'max': 3600}),
         }}
-    RETURN_TYPES = ('IMAGE',)
+    RETURN_TYPES = ('IMAGE', 'STRING')
+    RETURN_NAMES = ('frames', 'source_audio')
     FUNCTION = 'execute'
     CATEGORY = 'Aftertake'
 
@@ -165,7 +171,7 @@ class AftertakeLoadClip:
         input_root = os.path.realpath(folder_paths.get_input_directory())
         if os.path.commonpath([path, input_root]) != input_root:
             raise ValueError('Source must be in the ComfyUI input directory')
-        return (decode_clip(path, width, height, frames, fps, trim_start),)
+        return decode_clip(path, width, height, frames, fps, trim_start), path
 
 
 class AftertakeComposite:
@@ -220,13 +226,16 @@ class AftertakeSaveVideo:
             'images': ('IMAGE',), 'fps': ('FLOAT', {'default': 16, 'min': 1, 'max': 60}),
             'filename_prefix': ('STRING', {'default': 'aftertake/shot'}),
             'recipe_json': ('STRING', {'default': '{}', 'multiline': True}),
+        }, 'optional': {
+            'source_audio': ('STRING', {'default': ''}),
+            'audio_start': ('FLOAT', {'default': 0, 'min': 0, 'max': 3600}),
         }, 'hidden': {'prompt': 'PROMPT'}}
     RETURN_TYPES = ()
     FUNCTION = 'execute'
     CATEGORY = 'Aftertake'
     OUTPUT_NODE = True
 
-    def execute(self, images, fps, filename_prefix, recipe_json, prompt=None):
+    def execute(self, images, fps, filename_prefix, recipe_json, prompt=None, source_audio='', audio_start=0):
         import folder_paths
         folder, name, counter, subfolder, _ = folder_paths.get_save_image_path(filename_prefix, folder_paths.get_output_directory())
         filename = f'{name}_{counter:05}_.mp4'
@@ -242,6 +251,12 @@ class AftertakeSaveVideo:
                     container.mux(packet)
             for packet in stream.encode():
                 container.mux(packet)
+        if source_audio:
+            source = os.path.realpath(source_audio)
+            input_root = os.path.realpath(folder_paths.get_input_directory())
+            if os.path.commonpath([source, input_root]) != input_root:
+                raise ValueError('Audio source must be in the ComfyUI input directory')
+            mux_source_audio(os.path.join(folder, filename), source, audio_start, len(images) / fps)
         # Comfy's v2 proxy recognizes video outputs under the established gifs key.
         return {'ui': {'gifs': [{'filename': filename, 'subfolder': subfolder, 'type': 'output', 'format': 'video/mp4'}]}}
 

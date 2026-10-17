@@ -106,7 +106,7 @@ export function buildWorkflow(recipe: Recipe): Record<string, unknown> {
     '18': n('LTXVCropGuides', { positive: ['12', 0], negative: ['12', 1], latent: ['17', 0] }),
     '19': n('VAEDecodeTiled', { samples: ['18', 2], vae: ['3', 0], tile_size: 256, overlap: 64, temporal_size: 32, temporal_overlap: 8 }),
     '20': n('AftertakeComposite', { original: ['8', 0], generated: ['19', 0], mask: ['9', 0] }),
-    '21': n('AftertakeSaveVideo', { images: ['20', 0], fps: d.fps, filename_prefix: 'aftertake/composite', recipe_json: JSON.stringify(recipe) }),
+    '21': n('AftertakeSaveVideo', { images: ['20', 0], fps: d.fps, filename_prefix: 'aftertake/composite', recipe_json: JSON.stringify(recipe), source_audio: ['8', 1], audio_start: recipe.trimStart }),
     '22': n('AftertakeSaveVideo', { images: ['19', 0], fps: d.fps, filename_prefix: 'aftertake/generation', recipe_json: JSON.stringify(recipe) }),
   };
   if (recipe.pipeline === 'inpaint') {

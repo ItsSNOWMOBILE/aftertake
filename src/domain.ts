@@ -14,6 +14,7 @@ export const clipSchema = z.object({
   width: z.number().int().positive(), height: z.number().int().positive(),
   duration: z.number().positive(), url: z.string().startsWith('/media/'),
   kind: z.enum(['video', 'image']).optional(),
+  hasAudio: z.boolean().optional(),
 });
 export const projectSchema = z.object({
   format: z.literal('aftertake/1'), name: z.string().min(1).max(100),

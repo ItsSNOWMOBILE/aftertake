@@ -236,12 +236,60 @@ download hit `ERR_BLOCKED_BY_CLIENT`; the user completed the ordinary download.
   independent guide output even when the main output is invalid, so successful
   admission alone is not treated as a usable take.
 
+## Sound, upright footage and film assembly — October 17
+
+- The native loader, probe and thumbnails share one display-matrix handler.
+  All eight orthogonal rotation/mirror combinations match FFmpeg autorotation.
+  Image EXIF normalization remains separate and still strips source metadata.
+- Region-edit output node 21 muxes the original first audio stream, starting at
+  the same source trim as the visual frames. It copies the encoded picture,
+  pads a short audio track with silence and retains recipe/workflow metadata.
+  Raw generation and reference-frame animation remain silent.
+- Actual SDK masked edit `d8b43e02-0dc3-4d9f-b163-664841ee5745`, job
+  `bccc81f3-88a0-4884-b752-2bf64a21ebdf`, completed on the RTX 5080:
+  49 upright frames, 512 × 288, 16 fps, 3.0625 seconds. Source has a 90-degree
+  display matrix and a procedural two-tone audio fixture. After a 0.5-second
+  trim, decoded output has the expected 440 Hz / 880 Hz transition. Evidence:
+  `.runtime/evidence/audio-native-proof.json` and `upright-audio-native.jpg`.
+- The preview mute control directs sound to exactly one player: source or
+  output. Comparison uses the output track. Switching views pauses playback
+  and preserves the playhead; metadata load restores the result's position.
+- The film desk adds, orders, removes and trims up to eight finished takes.
+  Canvas options are 1280 × 720, 720 × 1280 and 720 × 720, all 24 fps.
+  It letterboxes to preserve framing, retains source audio and supplies silence
+  for silent takes. A CPU-only FFmpeg filter timeline encodes the cuts together.
+- Film exports and in-progress state persist. Interrupted assembly is reported
+  as failed with its cut list retained. A portable manifest embeds recipes,
+  actual workflows and output SHA-256 hashes. Manifest import resolves matching
+  local output bytes, independent of render IDs, before restoring the cut list.
+- A real three-shot browser export `c1f62857-9fed-4932-b92c-9611fac594ef`
+  decoded to exactly 254 frames / 10.583333 seconds. Two additional real exports,
+  portrait `e3cc88cb-d2f1-44bd-add0-dba37c19f5ac` and square
+  `dcec93a9-47e7-4482-b558-df99cf763cf7`, decoded to exactly 96 frames / 4 seconds,
+  retained the two tone frequencies, and had zero sound in the silent second cut.
+  Evidence: `.runtime/evidence/film-assembly-proof.json`.
+- The first film iteration hit Windows' command-line length limit with full
+  motion-track graphs. Metadata now travels in a UTF-8 FFmetadata file. A test
+  round-trips over 100 KB including escape characters. A second iteration exposed
+  a two-frame mixed-rate shortfall; explicit frame-grid trims and one concat
+  filter fixed it. Failed/earlier iterations are retained locally as evidence.
+- Manifest download/import passed through the in-app browser. Chrome playback
+  reached readyState 4 and played the exported 10.583333-second film. Film controls
+  have no horizontal overflow at 1280 × 900 or 390 × 844. Chrome's extension file
+  upload setting was unavailable; its UI was tested by adding takes directly.
+- Latest suite: 17 TypeScript + 13 Python tests; production build and all eight
+  live Comfy workflow contracts pass. No additional GPU generation is required
+  for film assembly.
+- The captioned demo now includes the actual film desk and reviewed three-shot
+  export: `.runtime/demo-output/aftertake-demo-v2.mp4`, exactly 85 seconds,
+  2,040 decoded frames, 1280 × 720 at 24 fps, approximately 5.9 MB. The original
+  68-second draft is retained. No fabricated app state or render progress is used.
+- The example-only workspace still starts without Python or an engine. Its film
+  list returns successfully; export reports the missing local runtime explicitly.
+
 ## Remaining work
 
 - Continue edge, motion-tracking and prompt-following quality work.
-- Preserve source audio and add multi-shot project assembly.
-- Verify encoded-video rotation metadata so phone footage conditions the model
-  in the same orientation as browser playback.
 - Finalize the captioned submission demo with the public repository URL.
 - Publish source repository: the GitHub connector currently requires reauthentication.
 - Prepare the required social post; register/submit the entry.

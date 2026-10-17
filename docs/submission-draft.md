@@ -19,6 +19,11 @@ motion-track conditioning supplies explicit framing trajectories, with the
 exact guide saved beside the result. Named film looks travel between sources;
 color grading is consistent across frames.
 
+An editable film desk trims and orders up to eight completed takes, preserving
+source sound where available. Its 720p exports include a portable shot manifest
+with output hashes, recipes and actual workflows. Rotated phone footage stays
+upright throughout import, cue preview and generation.
+
 Five real examples include source media, recipes, actual graphs and outputs.
 The example workspace works without Python, model downloads or a GPU; new
 generation uses a connected local Comfy engine. All inference uses open
@@ -32,6 +37,7 @@ weights through the official Comfy SDK and local Comfy v2 proxy.
 - Custom Comfy nodes for source sampling, editable masks, temporal envelopes,
   exact-source compositing, stable output grading and recipe-bearing MP4s.
 - Optional classical OpenCV optical-flow mask tracking and CPU mask previews.
+- PyAV display-matrix normalization and frame-aligned FFmpeg film assembly.
 - Original procedural source and attributed Pexels examples; local OFL fonts.
 
 ## Novelty to show
@@ -47,13 +53,15 @@ graph. The demo should make the protected fan and timed portal visibly clear.
 Camera guidance is experimental. Prompt-only control is unreliable; guided
 pullback and static framing have been checked on one room. Quality varies
 with scene, mask and prompt. Output sizes are rounded for the model's latent
-grid. Exports are currently short and silent. Other GPU/OS combinations have
+grid. Individual generated shots are short; the film desk joins and trims up to
+eight finished takes. Region edits preserve source sound; reference-frame
+animation is silent. Other GPU/OS combinations have
 not been validated.
 
 ## Publication checklist
 
 - Repository: pending; source is committed locally under MIT.
-- Demo: 68-second silent captioned MP4 prepared locally; upload pending.
+- Demo: 85-second silent captioned MP4 prepared locally; upload pending.
 - Social post: draft below; no post has been sent.
 - Sign-up/submission: pending; inspect the final terms and required identity
   fields before submission. No registration or award is claimed.

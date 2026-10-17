@@ -11,6 +11,7 @@ import { ZodError } from 'zod';
 import { recipeSchema, renderDimensions, type Clip, type Engine, type Render } from '../src/domain.js';
 import { buildWorkflow, requirements } from './workflow.js';
 import { submissionRejected } from './submission.js';
+import { filmRouter } from './films.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 process.loadEnvFile && await stat(path.join(root, '.env')).then(() => process.loadEnvFile('.env')).catch(() => {});
@@ -64,6 +65,7 @@ async function engine(pipeline: 'structure' | 'inpaint' | 'cinema' | 'motion' = 
     const stats = await responses[1].json() as { devices?: { name: string }[] };
     const needed = requirements(pipeline);
     const missing = needed.nodes.filter(name => !nodes[name]).map(name => `Node: ${name}`);
+    if (nodes.AftertakeLoadClip && nodes.AftertakeLoadClip.output?.length !== 2) missing.push('Update Aftertake nodes and restart the engine for source audio');
     if (pipeline === 'inpaint' && nodes.AftertakeCueMask?.output?.length < 3) missing.push('Update Aftertake nodes and restart the engine');
     const menus = needed.menus;
     for (const [node, input, filename] of menus) {
@@ -219,6 +221,7 @@ app.post('/api/clips', express.raw({ type: 'application/octet-stream', limit: '1
   }
 });
 app.use(express.json({ limit: '2mb' }));
+app.use('/api/films', await filmRouter(root, data, python, renders));
 app.post('/api/cue-preview', async (req, res) => {
   if (!(await stat(python).catch(() => null))) return void res.status(409).json({ error: 'Install the local runtime to compute motion previews. See the engine panel.' });
   if (previewBusy) return void res.status(409).json({ error: 'A motion preview is already being computed. Try again in a moment.' });

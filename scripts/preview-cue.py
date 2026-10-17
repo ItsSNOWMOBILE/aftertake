@@ -17,6 +17,7 @@ folder = data / 'previews'
 settings = json.loads((folder / f'{key}.json').read_text(encoding='utf-8'))
 spec = importlib.util.spec_from_file_location('aftertake_preview', root / 'custom_nodes/aftertake/__init__.py')
 nodes = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = nodes
 spec.loader.exec_module(nodes)
 width, height, frames, fps = [settings[k] for k in ['width', 'height', 'frames', 'fps']]
 images = nodes.decode_clip(data / 'clips' / Path(settings['clip']['url']).name,
