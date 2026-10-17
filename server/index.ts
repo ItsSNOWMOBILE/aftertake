@@ -302,6 +302,8 @@ app.post('/api/renders', async (req, res) => {
       wf.setInput('45', 'filename', image);
       if (recipe.quality === 'final') wf.setInput('47', 'filename', image);
     }
+    if (recipe.pipeline === 'cinema' && recipe.endFrame)
+      wf.setInput('45', 'filename', client.assets.fromFile(path.join(clipDir, path.basename(recipe.endFrame.url))));
     const job = await client.submit(wf, { idempotencyKey: render.id });
     render.jobId = job.id;
     render.state = job.status === 'succeeded' ? 'finalizing' : job.status;
