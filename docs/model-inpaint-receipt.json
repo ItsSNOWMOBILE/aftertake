@@ -1,0 +1,11 @@
+{
+  "repository": "Lightricks/LTX-2.3-22b-IC-LoRA-In-Outpainting",
+  "revision": "554060ba18950e5fd5e91e6a9ab2f55852fd05a4",
+  "path": "ltx-2.3-22b-ic-lora-in-outpainting-0.9.safetensors",
+  "category": "loras",
+  "size": 1308778338,
+  "sha256": "73dd0841c0d4f0eb26fb1f017781b841b2752021944ac5ecefe57917f6dae6b5",
+  "gated": true,
+  "license": "other",
+  "installation": "User-approved gated download via browser"
+}

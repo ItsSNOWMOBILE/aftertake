@@ -1,0 +1,42 @@
+[
+  {
+    "repository": "Comfy-Org/LTX-2",
+    "revision": "ccde4ba417d7900669fd56dd292a883cee11ff37",
+    "path": "split_files/text_encoders/gemma_3_12B_it_fp4_mixed.safetensors",
+    "size": 9447702218,
+    "sha256": "aaca463d11e6d8d2a4bdb0d6299214c15ef78a3f73e0ef8113d5a9d0219b3f6d",
+    "license": "other"
+  },
+  {
+    "repository": "Kijai/LTXV2_comfy",
+    "revision": "adf96f9c128c0aa59189f4dc78a622aa4b353621",
+    "path": "diffusion_models/ltx-2-19b-distilled_Q4_K_M.gguf",
+    "size": 12651789536,
+    "sha256": "e5323192fd3270de547ef63dd1a4d393287e40e9268605c134c3a860bc0dd3d2",
+    "license": "other"
+  },
+  {
+    "repository": "Kijai/LTXV2_comfy",
+    "revision": "adf96f9c128c0aa59189f4dc78a622aa4b353621",
+    "path": "text_encoders/ltx-2-19b-embeddings_connector_distill_bf16.safetensors",
+    "size": 2862983784,
+    "sha256": "8990ec3fe88396ca33ac1795c89b1771d88190e51e24084b21f54b25399acbed",
+    "license": "other"
+  },
+  {
+    "repository": "Lightricks/LTX-2-19b-IC-LoRA-Canny-Control",
+    "revision": "28be96236294914042a1605f37e3f7812b45f43f",
+    "path": "ltx-2-19b-ic-lora-canny-control.safetensors",
+    "size": 654465256,
+    "sha256": "a95878f53b9fc19e2a3043472f32cc9dd9674b04293abcad4d553fe6114a62e2",
+    "license": "other"
+  },
+  {
+    "repository": "Kijai/LTXV2_comfy",
+    "revision": "adf96f9c128c0aa59189f4dc78a622aa4b353621",
+    "path": "VAE/LTX2_video_vae_bf16.safetensors",
+    "size": 2445008522,
+    "sha256": "8ea083ef4e7118c7fb5c78834fc6b76106bd31464b0c7912bb9dbc7557b0b91d",
+    "license": "other"
+  }
+]
