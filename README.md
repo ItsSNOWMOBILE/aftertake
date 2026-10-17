@@ -14,6 +14,17 @@ grading is applied consistently after generation. The input frame is
 conditioned directly into the video latent. No inpainting adapter is needed
 for this mode.
 
+For stronger framing guidance, enable **Guide framing with tracks**. The app
+shows the exact screen-space trajectories that enter LTX's motion-control
+IC-LoRA and saves its rendered guide alongside the output. Pullback and static
+framing have been visually checked; this remains experimental and does not
+reconstruct a 3D camera. Add the public 327 MB adapter after installing the
+native runtime:
+
+```sh
+python scripts/download-models.py --motion
+```
+
 Optional motion tracking advects the painted region from an anchor frame using
 dense optical flow. A CPU-only preview shows the actual per-frame render mask
 before spending GPU time. This is experimental: occlusions, large motion and
@@ -25,10 +36,11 @@ the final composite. Outside the cue, source pixels are preserved exactly
 **before lossy video encoding**. Paint adds to the region; erase protects detail.
 
 This is an early competition build. Native inpainting and structural guidance
-have completed real local renders, including 768-pixel takes. Four examples
+have completed real local renders, including 768-pixel takes. Five examples
 include source media, recipes and executed graphs. Visual quality remains
 experimental, and competition submission is still outstanding. See
 [build evidence](docs/progress.md) and the [Higgsfield feature benchmark](docs/higgsfield-benchmark.md).
+Exports are currently silent; source-audio preservation is a remaining replacement task.
 
 ## Try the examples first
 
@@ -37,7 +49,7 @@ pnpm install
 pnpm demo
 ```
 
-Open http://127.0.0.1:4312 to explore four real, pre-rendered examples in a
+Open http://127.0.0.1:4312 to explore five real, pre-rendered examples in a
 separate workspace. No Python, GPU or model download is needed for this
 walkthrough. You can inspect the cues and export editable recipes and graphs.
 Generating new takes requires the runtime below. See

@@ -48,6 +48,18 @@
       "result": "quiet-approach/result.mp4",
       "recipe": "quiet-approach/recipe.json",
       "workflow": "quiet-approach/workflow-api.json"
+    },
+    {
+      "slug": "guided-pullback",
+      "title": "Beyond the frame",
+      "renderId": "4d104079-d530-47dd-936f-dade1212be0b",
+      "credit": "Curtis Adams / Pexels; still extracted from the licensed room source",
+      "sourceUrl": "https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/",
+      "license": "Pexels License; model terms also apply to generated results",
+      "source": "guided-pullback/source.png",
+      "result": "guided-pullback/result.mp4",
+      "recipe": "guided-pullback/recipe.json",
+      "workflow": "guided-pullback/workflow-api.json"
     }
   ],
   "files": [
@@ -2126,6 +2138,30 @@
       "target": "previews/6fe2251c241512575873b28569c09b72bef3b65d405b9665da3cdffe8e2702d6.jpg",
       "sha256": "b81131c6de4ccf4916d9a5f4bb4c04851e5df1cf08749a4f1737a0246a501e58",
       "size": 8177
+    },
+    {
+      "source": "guided-pullback/result.mp4",
+      "target": "outputs/4d104079-d530-47dd-936f-dade1212be0b.mp4",
+      "sha256": "548d4fbc53b6c4381b34a1c0f2c9e7c0fcfeda1dddae7288e4a5710178b7dc74",
+      "size": 212475
+    },
+    {
+      "source": "guided-pullback/raw.mp4",
+      "target": "outputs/4d104079-d530-47dd-936f-dade1212be0b-raw.mp4",
+      "sha256": "79bc8b6574227fd5fe6e055d39a799299ca5aeb2e80f5d480b436fd0d2f2cd06",
+      "size": 228191
+    },
+    {
+      "source": "guided-pullback/guide.mp4",
+      "target": "outputs/4d104079-d530-47dd-936f-dade1212be0b-guide.mp4",
+      "sha256": "5acabedeb86b6562dad0bd8d80c96502c3412dbb1ba44a2869812a18ab1933e0",
+      "size": 64115
+    },
+    {
+      "source": "guided-pullback/render.json",
+      "target": "renders/4d104079-d530-47dd-936f-dade1212be0b.json",
+      "sha256": "3331de77d3e434e6021be02ab297e938f72ddaa625d85af3089f8a6135b1b4b9",
+      "size": 33598
     }
   ]
 }

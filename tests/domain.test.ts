@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { cueEnvelope, projectSchema, recipeSchema, renderDimensions, renderSettingsKey, type Recipe } from '../src/domain.js';
 import { buildWorkflow, requirements } from '../server/workflow.js';
-import { cinemaPrompt, defaultCinema } from '../src/cinema.js';
+import { cameraTracks, cinemaPrompt, cinemaSchema, defaultCinema } from '../src/cinema.js';
 import { spatialMask } from '../src/mask.js';
 const recipe: Recipe = {
   format: 'aftertake/1', name: 'Test take',
@@ -18,7 +18,7 @@ test('temporal cue is zero outside the interval and smoothly reaches full streng
   assert.equal(cueEnvelope(3, recipe.cue), 0);
   assert.equal(cueEnvelope(.4, { ...recipe.cue, fade: 0 }), 1);
 });
-test('short and portrait videos produce valid non-stretching LTX frame geometry', () => {
+test('short and portrait videos produce valid LTX geometry near the source aspect ratio', () => {
   for (const [width, height, duration] of [[1920, 1080, 5], [1080, 1920, 1.1], [1000, 1000, 2]]) {
     const d = renderDimensions({ ...recipe, clip: { ...recipe.clip, width, height, duration } });
     assert.equal(d.width % 32, 0); assert.equal(d.height % 32, 0);
@@ -137,4 +137,30 @@ test('still sources animate from frame zero and cannot masquerade as moving foot
   assert.equal(renderDimensions({ ...still, quality: 'final' }).frames, 97);
   assert.equal(recipeSchema.safeParse({ ...still, pipeline: 'inpaint' }).success, false);
   assert.equal(recipeSchema.safeParse({ ...still, trimStart: .5 }).success, false);
+});
+
+test('framing tracks have the requested temporal direction and enter the actual motion guide', () => {
+  const pull = cameraTracks(512, 288, 49, 'pull');
+  assert.equal(pull.length, 12);
+  for (const track of pull) {
+    assert.equal(track.length, 49);
+    const startDistance = Math.hypot(track[0].x - 256, track[0].y - 144);
+    const endDistance = Math.hypot(track[48].x - 256, track[48].y - 144);
+    assert.ok(endDistance < startDistance);
+    for (const point of track) assert.ok(point.x >= 0 && point.x <= 512 && point.y >= 0 && point.y <= 288);
+  }
+  for (const track of cameraTracks(512, 288, 49, 'locked')) assert.deepEqual(track[0], track[48]);
+  for (const track of cameraTracks(512, 288, 49, 'pan')) assert.ok(track[48].x > track[0].x);
+  assert.equal(cinemaSchema.safeParse({ ...defaultCinema, movement: 'orbit', guidance: 'tracks' }).success, false);
+  const r: Recipe = { ...recipe, pipeline: 'cinema', cinema: { ...defaultCinema, movement: 'pull', guidance: 'tracks' } };
+  const graph = buildWorkflow(r) as Record<string, { class_type: string; inputs: Record<string, unknown> }>;
+  const d = renderDimensions(r);
+  assert.equal(d.width % 64, 0); assert.equal(d.height % 64, 0);
+  assert.ok(Math.abs(d.width / d.height - 1920 / 1080) < .04);
+  assert.deepEqual(JSON.parse(String(graph['41'].inputs.tracks)), cameraTracks(d.width, d.height, d.frames, 'pull'));
+  assert.deepEqual(graph['42'].inputs.image, ['41', 0]);
+  assert.deepEqual(graph['17'].inputs.latent_image, ['42', 2]);
+  assert.deepEqual(graph['19'].inputs.samples, ['18', 2]);
+  assert.deepEqual(graph['44'].inputs.images, ['41', 0]);
+  assert.match(String(graph['4'].inputs.lora_name), /motion-track-control/);
 });

@@ -10,5 +10,6 @@ with Image.open(source) as original:
         raise ValueError('Use an image at least 64 pixels on each side, up to 4K.')
     image = ImageOps.exif_transpose(original).convert('RGB')
     image.load()
+    image.info.clear()
     image.save(destination, format='PNG')
     print(json.dumps({'width': image.width, 'height': image.height, 'duration': 1, 'kind': 'image'}))

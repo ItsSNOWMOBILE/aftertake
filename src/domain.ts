@@ -38,6 +38,7 @@ export type Render = {
   createdAt: string; updatedAt: string; jobId?: string; error?: string;
   output?: string; rawOutput?: string; workflow?: Record<string, unknown>;
   coarseOutput?: string;
+  guideOutput?: string;
   stage?: string;
 };
 export type Engine = { connected: boolean; ready: boolean; gpu?: string; missing: string[]; message: string };
@@ -46,7 +47,7 @@ export function renderSettingsKey(r: Recipe) {
   if (r.pipeline === 'cinema') {
     const look = r.cinema || defaultCinema;
     return JSON.stringify([r.clip.sha256, r.prompt.trim(), r.seed, r.quality, r.trimStart, 'cinema',
-      look.movement, look.lens, look.lighting, look.palette]);
+      look.movement, look.lens, look.lighting, look.palette, look.guidance || 'prompt']);
   }
   const c = r.cue;
   return JSON.stringify([r.clip.sha256, r.prompt.trim(), c.start, c.end, c.fade, c.feather,
@@ -63,8 +64,20 @@ export function renderDimensions(recipe: Recipe) {
   const frames = recipe.pipeline === 'cinema' ? maxFrames : Math.min(maxFrames, Math.floor((remaining * fps - 1) / 8) * 8 + 1);
   const longEdge = recipe.quality === 'draft' ? 512 : 768;
   const ratio = recipe.clip.width / recipe.clip.height;
-  const width = Math.max(64, Math.round((ratio >= 1 ? longEdge : longEdge * ratio) / 32) * 32);
-  const height = Math.max(64, Math.round((ratio >= 1 ? longEdge / ratio : longEdge) / 32) * 32);
+  let width = Math.max(64, Math.round((ratio >= 1 ? longEdge : longEdge * ratio) / 32) * 32);
+  let height = Math.max(64, Math.round((ratio >= 1 ? longEdge / ratio : longEdge) / 32) * 32);
+  if (recipe.pipeline === 'cinema' && recipe.cinema?.guidance === 'tracks') {
+    // The ref0.5 motion adapter needs both latent dimensions divisible by 2:
+    // pixel geometry must be multiples of 64. Choose a nearby size close to
+    // the source aspect ratio, instead of rounding a 16:9 draft to 512x320.
+    const options = [-64, 0, 64].map(offset => {
+      const long = longEdge + offset;
+      const w = ratio >= 1 ? long : Math.max(64, Math.round(long * ratio / 64) * 64);
+      const h = ratio >= 1 ? Math.max(64, Math.round(long / ratio / 64) * 64) : long;
+      return { width: w, height: h, score: Math.abs(Math.log(w / h / ratio)) * 8 + Math.abs(Math.log(long / longEdge)) };
+    }).sort((a, b) => a.score - b.score);
+    width = options[0].width; height = options[0].height;
+  }
   return { width, height, frames, fps, duration: frames / fps };
 }
 

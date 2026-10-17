@@ -41,11 +41,17 @@ class MediaTests(unittest.TestCase):
             image.paste((220, 70, 25), (0, 0, 48, 128))
             exif = Image.Exif()
             exif[274] = 6
+            exif[270] = 'Metadata fixture; do not carry this into the normalized reference'
             image.save(photo, quality=98, exif=exif)
             imported = subprocess.run([sys.executable, str(ROOT / 'scripts/import-image.py'), str(photo), str(normalized)], check=True, capture_output=True, text=True)
             meta = json.loads(imported.stdout)
             self.assertEqual((meta['width'], meta['height']), (128, 96))
             self.assertEqual(meta['kind'], 'image')
+            with Image.open(normalized) as cleaned:
+                self.assertFalse(cleaned.getexif())
+            normalized_again = directory / 'again.png'
+            subprocess.run([sys.executable, str(ROOT / 'scripts/import-image.py'), str(normalized), str(normalized_again)], check=True, capture_output=True)
+            self.assertEqual(normalized.read_bytes(), normalized_again.read_bytes())
             decoded = nodes.decode_clip(normalized, 128, 96, 1, 16, 0)
             self.assertEqual(tuple(decoded.shape), (1, 96, 128, 3))
             # Rotation moves the red half to the top, blue half to the bottom.

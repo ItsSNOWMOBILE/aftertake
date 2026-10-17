@@ -23,6 +23,7 @@ require the Python runtime. Rendering requires the model files and local engine.
 | An opening elsewhere | Paint replaces a window with a portal; erase protects the original ceiling fan. The cue fades in and out. |
 | The golden falls | Localized molten-gold waterfall with the surrounding forest retained from the source. |
 | A quiet approach | A still image conditions the opening frame of a genuinely generated forward camera move. Camera/look settings appear in the actual encoder prompt. |
+| Beyond the frame | Screen-space tracks drive a generated pullback. Compare the saved guide, raw generation and consistently graded monochrome result. |
 
 Each folder contains the source clip, editable recipe, API graph, original
 render record, final output and available raw/coarse outputs. MP4 metadata
@@ -62,6 +63,9 @@ actor footage used during local research is excluded.
 `quiet-approach/source.png` is an RGB still extracted from the first frame of
 the credited Curtis Adams room excerpt. It retains the Pexels License. The
 generated video adds new camera movement; it does not replay the original clip.
+`guided-pullback/source.png` uses that same credited still. Its `guide.mp4`
+is the actual IC-LoRA control signal; the output reveals model-generated space
+beyond the starting frame.
 
 Maintainers can regenerate this reviewed selection with
 `node scripts/package-examples.mjs` while the local studio is running and the

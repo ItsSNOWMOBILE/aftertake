@@ -5,7 +5,8 @@ export const cinemaSchema = z.object({
   lens: z.enum(['natural', 'wide', 'portrait', 'anamorphic']),
   lighting: z.enum(['source', 'daylight', 'tungsten', 'moonlight', 'neon']),
   palette: z.enum(['source', 'warm', 'cool', 'monochrome']),
-});
+  guidance: z.enum(['prompt', 'tracks']).optional(),
+}).refine(look => !(look.guidance === 'tracks' && look.movement === 'orbit'), 'Orbit currently uses prompt guidance only.');
 export type Cinema = z.infer<typeof cinemaSchema>;
 export const defaultCinema: Cinema = { movement: 'push', lens: 'natural', lighting: 'source', palette: 'source' };
 export const cinemaOptions = {
@@ -14,7 +15,7 @@ export const cinemaOptions = {
   lighting: [['source', 'Follow the reference'], ['daylight', 'Soft daylight'], ['tungsten', 'Warm practical light'], ['moonlight', 'Moonlit'], ['neon', 'Neon glow']],
   palette: [['source', 'Follow the reference'], ['warm', 'Warm amber'], ['cool', 'Cool blue'], ['monochrome', 'Black and white']],
 } as const;
-const language: { [K in keyof Cinema]: Record<Cinema[K], string> } = {
+const language: { [K in Exclude<keyof Cinema, 'guidance'>]: Record<Cinema[K], string> } = {
   movement: {
     locked: 'A stationary locked-off shot. The camera does not translate, rotate or zoom. Framing and perspective remain unchanged; any subject motion happens inside this fixed composition.',
     push: 'The camera moves slowly forward in one smooth continuous dolly, gently approaching the subject with visible parallax.',
@@ -43,7 +44,7 @@ const language: { [K in keyof Cinema]: Record<Cinema[K], string> } = {
   },
 };
 export function cinemaPrompt(prompt: string, settings: Cinema = defaultCinema) {
-  return [language.movement[settings.movement], prompt.trim(), 'One continuous cinematic shot, beginning from the supplied reference frame.',
+  return [settings.guidance === 'tracks' ? 'One coherent continuous shot. Follow the supplied motion tracks while preserving scene geometry.' : language.movement[settings.movement], prompt.trim(), 'One continuous cinematic shot, beginning from the supplied reference frame.',
     language.lens[settings.lens],
     language.lighting[settings.lighting], language.palette[settings.palette],
     'The scene remains coherent over time.'].join(' ');
@@ -55,3 +56,17 @@ export const cinemaLooks: SavedLook[] = [
   { name: 'After hours', settings: { movement: 'orbit', lens: 'anamorphic', lighting: 'neon', palette: 'cool' } },
   { name: 'Silver screen', settings: { movement: 'locked', lens: 'portrait', lighting: 'source', palette: 'monochrome' } },
 ];
+
+// Screen-space framing hints, not a reconstruction of the scene's 3D camera.
+// These exact trajectories feed the model and the source-view overlay.
+export function cameraTracks(width: number, height: number, frames: number, movement: Cinema['movement']) {
+  if (movement === 'orbit') return [];
+  return [.25, .5, .75].flatMap(y => [.2, .4, .6, .8].map(x =>
+    Array.from({ length: frames }, (_, frame) => {
+      const fraction = frame / Math.max(1, frames - 1);
+      const ease = fraction * fraction * (3 - 2 * fraction);
+      const scale = movement === 'push' ? 1 + .18 * ease : movement === 'pull' ? 1 - .18 * ease : 1;
+      return { x: ((x - .5) * scale + .5 + (movement === 'pan' ? .12 * ease : 0)) * width,
+        y: ((y - .5) * scale + .5) * height };
+    })));
+}

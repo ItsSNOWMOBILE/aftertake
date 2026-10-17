@@ -9,8 +9,9 @@ if (!response.ok) throw new Error('Start the local engine before checking its no
 const schema = await response.json();
 const sample = JSON.parse(await readFile(new URL('../examples/portal/recipe.json', import.meta.url), 'utf8'));
 const failures = [];
-for (const pipeline of ['structure', 'inpaint', 'cinema']) for (const quality of ['draft', 'final']) {
-  const graph = buildWorkflow({ ...sample, pipeline, quality, cinema: defaultCinema });
+for (const profile of ['structure', 'inpaint', 'cinema', 'motion']) for (const quality of ['draft', 'final']) {
+  const pipeline = profile === 'motion' ? 'cinema' : profile;
+  const graph = buildWorkflow({ ...sample, pipeline, quality, cinema: { ...defaultCinema, guidance: profile === 'motion' ? 'tracks' : 'prompt' } });
   for (const [id, node] of Object.entries(graph)) {
     const definition = schema[node.class_type];
     if (!definition) { failures.push(`${pipeline}/${quality}: missing ${node.class_type}`); continue; }
@@ -25,4 +26,4 @@ for (const pipeline of ['structure', 'inpaint', 'cinema']) for (const quality of
   }
 }
 if (failures.length) throw new Error(failures.join('\n'));
-console.log('All six workflow variants satisfy the live required-input and output-link contracts. No jobs submitted.');
+console.log('All eight workflow variants satisfy the live required-input and output-link contracts. No jobs submitted.');

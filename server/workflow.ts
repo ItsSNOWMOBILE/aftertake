@@ -1,5 +1,5 @@
 import { renderDimensions, type Recipe } from '../src/domain.js';
-import { cinemaPrompt } from '../src/cinema.js';
+import { cameraTracks, cinemaPrompt } from '../src/cinema.js';
 export const modelFiles = {
   diffusion: 'ltx-2-19b-distilled_Q4_K_M.gguf',
   encoder: 'gemma_3_12B_it_fp4_mixed.safetensors',
@@ -15,7 +15,13 @@ export const inpaintModelFiles = {
   vae: 'ltx-2.5-video-vae-conv-bf16.safetensors',
   lora: 'ltx-2.3-22b-ic-lora-in-outpainting-0.9.safetensors',
 };
-export function requirements(pipeline: Recipe['pipeline'] = 'structure') {
+export const motionModelFile = 'ltx-2.3-22b-ic-lora-motion-track-control-ref0.5.safetensors';
+export function requirements(pipeline: Recipe['pipeline'] | 'motion' = 'structure'): { nodes: string[]; menus: [string, string, string][] } {
+  if (pipeline === 'motion') {
+    const base = requirements('cinema');
+    return { nodes: [...base.nodes, 'LTXICLoRALoaderModelOnly', 'LTXVDrawTracks', 'LTXAddVideoICLoRAGuideAdvanced', 'LTXVCropGuides'],
+      menus: [...base.menus, ['LTXICLoRALoaderModelOnly', 'lora_name', motionModelFile] as [string, string, string]] };
+  }
   if (pipeline === 'cinema') return {
     nodes: ['UnetLoaderGGUF', 'CLIPLoader', 'VAELoader', 'AftertakeLoadClip', 'AftertakeFilmGrade', 'AftertakeSaveVideo', 'LTXVImgToVideoInplace'],
     menus: [
@@ -37,7 +43,8 @@ export function requirements(pipeline: Recipe['pipeline'] = 'structure') {
 export function buildWorkflow(recipe: Recipe): Record<string, unknown> {
   const d = renderDimensions(recipe);
   const n = (class_type: string, inputs: Record<string, unknown>) => ({ class_type, inputs });
-  if (recipe.pipeline === 'cinema') return {
+  if (recipe.pipeline === 'cinema') {
+    const graph = {
     '1': n('UnetLoaderGGUF', { unet_name: inpaintModelFiles.diffusion }),
     '2': n('CLIPLoader', { clip_name: inpaintModelFiles.encoder, type: 'ltxv', device: 'default' }),
     '3': n('VAELoader', { vae_name: inpaintModelFiles.vae }),
@@ -56,7 +63,23 @@ export function buildWorkflow(recipe: Recipe): Record<string, unknown> {
     '20': n('AftertakeFilmGrade', { images: ['19', 0], palette: recipe.cinema?.palette || 'source' }),
     '21': n('AftertakeSaveVideo', { images: ['20', 0], fps: d.fps, filename_prefix: 'aftertake/cinema', recipe_json: JSON.stringify(recipe) }),
     '22': n('AftertakeSaveVideo', { images: ['19', 0], fps: d.fps, filename_prefix: 'aftertake/generation', recipe_json: JSON.stringify(recipe) }),
-  };
+    } as Record<string, { class_type: string; inputs: Record<string, unknown> }>;
+    if (recipe.cinema?.guidance === 'tracks') {
+      graph['4'] = n('LTXICLoRALoaderModelOnly', { model: ['1', 0], lora_name: motionModelFile, strength_model: 1 });
+      graph['41'] = n('LTXVDrawTracks', { tracks: JSON.stringify(cameraTracks(d.width, d.height, d.frames, recipe.cinema.movement)), width: d.width, height: d.height });
+      graph['42'] = n('LTXAddVideoICLoRAGuideAdvanced', {
+        positive: ['7', 0], negative: ['7', 1], vae: ['3', 0], latent: ['12', 0], image: ['41', 0],
+        frame_idx: 0, strength: 1, latent_downscale_factor: ['4', 1], crop: 'disabled',
+        use_tiled_encode: false, tile_size: 256, tile_overlap: 64, attention_strength: 1,
+      });
+      graph['16'].inputs.model = ['4', 0]; graph['16'].inputs.conditioning = ['42', 0];
+      graph['17'].inputs.latent_image = ['42', 2];
+      graph['18'] = n('LTXVCropGuides', { positive: ['42', 0], negative: ['42', 1], latent: ['17', 0] });
+      graph['19'].inputs.samples = ['18', 2];
+      graph['44'] = n('AftertakeSaveVideo', { images: ['41', 0], fps: d.fps, filename_prefix: 'aftertake/framing-guide', recipe_json: JSON.stringify(recipe) });
+    }
+    return graph;
+  }
   const graph: Record<string, { class_type: string; inputs: Record<string, unknown> }> = {
     '1': n('UnetLoaderGGUF', { unet_name: modelFiles.diffusion }),
     '2': n('DualCLIPLoader', { clip_name1: modelFiles.encoder, clip_name2: modelFiles.connector, type: 'ltxv', device: 'default' }),

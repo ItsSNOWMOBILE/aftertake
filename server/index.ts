@@ -49,7 +49,7 @@ for (const filename of await readdir(renderDir)) {
   } catch (error) { console.error(`Could not read saved render ${filename}:`, error); }
 }
 const healthCache = new Map<string, { until: number; value: Engine }>();
-async function engine(pipeline: 'structure' | 'inpaint' | 'cinema' = 'structure'): Promise<Engine> {
+async function engine(pipeline: 'structure' | 'inpaint' | 'cinema' | 'motion' = 'structure'): Promise<Engine> {
   const cached = healthCache.get(pipeline);
   if (cached && cached.until > Date.now()) return cached.value;
   let result: Engine;
@@ -109,13 +109,16 @@ async function track(render: Render, initial?: Job) {
         const output = job.getOutputs('21')[0];
         const raw = job.getOutputs('22')[0];
         const coarse = job.getOutputs('40')[0];
+        const guide = job.getOutputs('44')[0];
         if (!output) throw new Error('The workflow finished without a composite video.');
         await output.toFile(path.join(outputDir, `${render.id}.mp4`));
         if (raw) await raw.toFile(path.join(outputDir, `${render.id}-raw.mp4`));
         if (coarse) await coarse.toFile(path.join(outputDir, `${render.id}-coarse.mp4`));
+        if (guide) await guide.toFile(path.join(outputDir, `${render.id}-guide.mp4`));
         render.output = `/outputs/${render.id}.mp4`;
         if (raw) render.rawOutput = `/outputs/${render.id}-raw.mp4`;
         if (coarse) render.coarseOutput = `/outputs/${render.id}-coarse.mp4`;
+        if (guide) render.guideOutput = `/outputs/${render.id}-guide.mp4`;
         // Release the model cache when the engine is idle so browser video
         // decoders can recover their VRAM after a generation on 16 GB cards.
         try {
@@ -160,9 +163,10 @@ app.get('/previews/:name', (req, res) => {
   if (!/^[a-f0-9]{64}\.png$/.test(req.params.name)) return void res.sendStatus(404);
   res.sendFile(req.params.name, { root: previewDir, dotfiles: 'deny' });
 });
-app.get('/api/engine', async (req, res) => { res.json(await engine(req.query.pipeline === 'cinema' ? 'cinema' : req.query.pipeline === 'inpaint' ? 'inpaint' : 'structure')); });
+app.get('/api/engine', async (req, res) => { res.json(await engine(req.query.pipeline === 'motion' ? 'motion' : req.query.pipeline === 'cinema' ? 'cinema' : req.query.pipeline === 'inpaint' ? 'inpaint' : 'structure')); });
 app.get('/api/workspace', (_req, res) => {
-  res.json({ examples: process.env.AFTERTAKE_EXAMPLES === '1', exampleCount: Number(process.env.AFTERTAKE_EXAMPLE_COUNT || 3), featuredRenderId: process.env.AFTERTAKE_FEATURED_RENDER || null });
+  res.json({ examples: process.env.AFTERTAKE_EXAMPLES === '1', exampleCount: Number(process.env.AFTERTAKE_EXAMPLE_COUNT || 3),
+    exampleNames: JSON.parse(process.env.AFTERTAKE_EXAMPLE_TITLES || '{}'), featuredRenderId: process.env.AFTERTAKE_FEATURED_RENDER || null });
 });
 app.get('/api/thumbnails/:id', async (req, res) => {
   if (!idPattern.test(req.params.id)) return void res.sendStatus(404);
@@ -247,7 +251,7 @@ app.post('/api/renders', async (req, res) => {
   admittingRender = true;
   try {
   const recipe = recipeSchema.parse(req.body);
-  if (!(await engine(recipe.pipeline)).ready) return void res.status(409).json({ error: 'The selected local workflow is not ready. Check the engine panel.' });
+  if (!(await engine(recipe.pipeline === 'cinema' && recipe.cinema?.guidance === 'tracks' ? 'motion' : recipe.pipeline)).ready) return void res.status(409).json({ error: 'The selected local workflow is not ready. Check the engine panel.' });
   if ([...renders.values()].some(r => !terminal.has(r.state))) return void res.status(409).json({ error: 'A take is already active. Let it finish, cancel it, or reconcile its submission before starting another.' });
   const storedClip = JSON.parse(await readFile(path.join(clipDir, `${recipe.clip.id}.json`), 'utf8')) as Clip;
   if (storedClip.sha256 !== recipe.clip.sha256) return void res.status(409).json({ error: 'This recipe needs its original source clip. Import it before rendering.' });

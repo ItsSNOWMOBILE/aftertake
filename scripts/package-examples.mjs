@@ -13,6 +13,7 @@ const cases = [
   { slug: 'portal', title: 'An opening elsewhere', renderId: '2a7c74eb-8313-499e-8276-6d598b0ac6d1', credit: 'Curtis Adams / Pexels', sourceUrl: 'https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/', license: 'Pexels License; model terms also apply to generated results' },
   { slug: 'golden-falls', title: 'The golden falls', renderId: 'c729f8fb-5919-4152-be2c-8eeb56c3ffcf', credit: 'Mikhail Nilov / Pexels', sourceUrl: 'https://www.pexels.com/video/waterfall-in-the-middle-of-the-forest-6989026/', license: 'Pexels License; model terms also apply to generated results' },
   { slug: 'quiet-approach', title: 'A quiet approach', renderId: 'ade9d68a-6a3f-431d-8970-2b37f482aa4f', workspace: '.data-demo', studio: 'http://127.0.0.1:4312', credit: 'Curtis Adams / Pexels; still extracted from the licensed room source', sourceUrl: 'https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/', license: 'Pexels License; model terms also apply to generated results' },
+  { slug: 'guided-pullback', title: 'Beyond the frame', renderId: '4d104079-d530-47dd-936f-dade1212be0b', workspace: '.data-demo', studio: 'http://127.0.0.1:4312', credit: 'Curtis Adams / Pexels; still extracted from the licensed room source', sourceUrl: 'https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/', license: 'Pexels License; model terms also apply to generated results' },
 ];
 const manifest = { format: 'aftertake-examples/1', featuredRenderId: cases[1].renderId, cases: [], files: [] };
 const seen = new Set();
@@ -37,7 +38,7 @@ for (const item of cases) {
   await copyFile(source, path.join(folder, sourceName));
   await json(path.join(folder, 'clip.json'), clip);
   await json(path.join(folder, 'recipe.json'), render.recipe);
-  for (const [field, name, suffix] of [['output', 'result.mp4', ''], ['rawOutput', 'raw.mp4', '-raw'], ['coarseOutput', 'coarse.mp4', '-coarse']]) {
+  for (const [field, name, suffix] of [['output', 'result.mp4', ''], ['rawOutput', 'raw.mp4', '-raw'], ['coarseOutput', 'coarse.mp4', '-coarse'], ['guideOutput', 'guide.mp4', '-guide']]) {
     if (!render[field]) continue;
     const destination = path.join(folder, name);
     await copyFile(path.join(data, 'outputs', path.basename(render[field])), destination);

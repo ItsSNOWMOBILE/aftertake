@@ -178,10 +178,71 @@ download hit `ERR_BLOCKED_BY_CLIENT`; the user completed the ordinary download.
 - GitHub was reconnected by the user, but connector reads still return
   `UNAUTHORIZED`; publication is not yet verified.
 
+### Motion-conditioned framing
+
+- Downloaded the public motion adapter from pinned publisher revision
+  `572bb9c9a1ba3d8e8724cce69783ffc2422386db`; 327,309,314 bytes,
+  SHA-256 `e279807ee3aa3db1ce60188d665ff83342860367dcd6bac19f8bd5a99a9e1dca`.
+  No additional account gate or credentials were needed.
+- The app derives 12 screen-space trajectories from the framing direction.
+  Its source overlay and native `LTXVDrawTracks` use the same coordinates.
+  The guide conditions the IC-LoRA; guide tokens are cropped before decode.
+  The exact guide video is downloaded alongside raw and graded results.
+- Initial guided attempt `9863fb84-9d63-4684-8176-dceb45a77642` failed because
+  the ref0.5 adapter needs pixel dimensions divisible by 64. Draft geometry
+  now selects a nearby aspect-preserving 64-pixel grid (576 × 320 for this room).
+- `4d104079-d530-47dd-936f-dade1212be0b` / job
+  `04f16b30-2195-4cd3-b857-6e0baf1978df`: guided pullback completed. Visual
+  inspection shows the room receding and new surrounding space appearing.
+- `d6f1b874-8c93-49d4-b4f4-672fa9ddda9e` / job
+  `e7385a8d-5401-482a-a2aa-c64336b9c8ab`: stationary tracks held the room's
+  framing while the fan moved.
+- `60dfef1a-02ef-4151-bb20-a2cfca21c676` / job
+  `8c32f17a-7957-48e0-a253-ed891f5c6d9d`: guided finish also completed,
+  97 frames at 768 × 448 / 24 fps, with the reference colors retained.
+  The full-resolution pullback and its actual guide were visually inspected.
+- First-to-last LK features + RANSAC partial-affine scale estimates:
+  prompt pullback 1.0857, guided pullback 0.8681, prompt static 1.0487,
+  guided static 1.00004. This is a screen-space engineering check on one
+  room with different output sizes, not a calibrated 3D camera or controlled
+  model benchmark. The directions agree with visual inspection.
+- Orbit remains prompt-only. Track guidance, lens look and scene relighting
+  need broader footage/scene testing before a reliability claim.
+- Five reviewed examples are packaged (about 14.9 MiB), now including the
+  successful guided pullback and its actual guide video.
+- Latest suite: 15 TypeScript + 10 Python tests. Eight workflow variants pass
+  the live required-input and output-link schema checks. Production build passes.
+- A 68-second captioned submission-demo draft has been composed from actual
+  app captures and generated outputs. Export QA passed: 1,632 decoded frames,
+  1280 × 720, 24 fps, exactly 68 seconds, approximately 4.1 MB. Captions and
+  representative frames were visually reviewed. No
+  simulated progress, cloud inference, voice service or external music is used.
+- All five examples played from a fresh data directory with Python set to an
+  absent executable and both engine endpoints offline. The guided example
+  reached readyState 4 and played; an edited pan workflow exported 12 correctly
+  directed tracks without the runtime.
+- The five-case manifest verifies all 350 runtime assets (15,607,918 bytes).
+  Display titles are curated independently of the original render records;
+  original names, timestamps, job IDs and MP4 metadata stay intact.
+- At 390 × 844, the animation controls and source picker have no horizontal
+  overflow (clientWidth = scrollWidth = 375). A saved film look survived a
+  source change and reload. Scene text resets for the new source while the
+  film look persists. A reload bug selecting the cue view for an unfinished
+  animation was fixed.
+- A real rejected SDK submission returned `InvalidWorkflow`, code
+  `invalid_workflow`, HTTP 422. Error classification was corrected to recognize
+  the high-level SDK `ComfyError` as well as protocol `ApiError`; unknown
+  transport results remain ambiguous. Partial workflows can execute a valid
+  independent guide output even when the main output is invalid, so successful
+  admission alone is not treated as a usable take.
+
 ## Remaining work
 
 - Continue edge, motion-tracking and prompt-following quality work.
-- Complete the edited two-minute submission demo and final source review.
+- Preserve source audio and add multi-shot project assembly.
+- Verify encoded-video rotation metadata so phone footage conditions the model
+  in the same orientation as browser playback.
+- Finalize the captioned submission demo with the public repository URL.
 - Publish source repository: the GitHub connector currently requires reauthentication.
 - Prepare the required social post; register/submit the entry.
 - Award outcome remains external and unverified (official announcement date: November 6).
