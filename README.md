@@ -1,5 +1,6 @@
 # Aftertake
 
+[Try the browser editor](https://itssnowmobile.github.io/aftertake/studio/) ·
 [Watch the 97-second demo](https://itssnowmobile.github.io/aftertake/) ·
 [Build evidence](docs/progress.md)
 
@@ -8,6 +9,14 @@
 Aftertake is an open-source VFX studio for short video clips. Paint a region,
 set a temporal cue, describe a transformation, and render a remixable take with
 open-weight models through the official Comfy SDK.
+
+The **[browser editor](https://itssnowmobile.github.io/aftertake/studio/)** opens
+seven real, recorded examples without installation. Paint and erase cues,
+change their timing, compare source and result, review edited frames, and
+download recipes, portable workflows or the original recorded files. Changes
+affect the exported recipe; recorded results stay unchanged. Importing new media,
+generation, optical-flow tracking and film export require the local studio below.
+The public trial has no inference endpoint and uploads no user media.
 
 Open **Recipes** to browse seven reviewed effects and camera examples. Search
 by direction or tag, play the original and result, inspect the actual settings,
@@ -169,6 +178,22 @@ separate workspace. No Python, GPU or model download is needed for this
 walkthrough. You can inspect the cues and export editable recipes and graphs.
 Generating new takes requires the runtime below. See
 [example provenance and remixing instructions](examples/README.md).
+
+## Build the public browser trial
+
+```sh
+pnpm install --frozen-lockfile
+pnpm build:browser-demo
+```
+
+This writes the static editor into `docs/studio/`, alongside the existing
+GitHub Pages landing page. Its seven-example media snapshot is pinned to a
+published commit. The builder verifies every manifest asset and extracts each
+recorded take's executed graph from its MP4. Pass `--media-ref=<published SHA>`
+to use another published media revision. Publish that media first: the browser
+fetches its source clips and results directly from immutable GitHub URLs.
+Keep `licenses.txt` and the bundled notices with the generated files. Normal
+`pnpm build` and the local server retain the full studio.
 
 ## Run locally
 
