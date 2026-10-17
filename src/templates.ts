@@ -18,7 +18,7 @@ export const templateNotes: Record<string, Pick<Template, 'description' | 'categ
 export function applyTemplate(current: Recipe, template: Template): Recipe {
   if (current.clip.kind === 'image' && template.recipe.pipeline !== 'cinema') throw Error('Choose a video source for a region effect.');
   const cinema = template.recipe.pipeline === 'cinema';
-  const result: Recipe = { ...current, pipeline: template.recipe.pipeline, editReference: undefined, directionStrength: template.recipe.directionStrength || 1,
+  const result: Recipe = { ...current, pipeline: template.recipe.pipeline, editReference: undefined, endFrame: undefined, directionStrength: template.recipe.directionStrength || 1,
     ...(cinema ? { cinema: { ...template.recipe.cinema! }, prompt: current.pipeline === 'cinema' ? current.prompt : 'A calm, realistic continuous shot of this place. Fine textures stay coherent, with gentle natural motion.' }
       : { prompt: template.recipe.prompt }) };
   const d = renderDimensions(result);
