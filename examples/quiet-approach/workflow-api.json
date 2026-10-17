@@ -1,0 +1,195 @@
+{
+  "1": {
+    "class_type": "UnetLoaderGGUF",
+    "inputs": {
+      "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+      "type": "ltxv",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+    }
+  },
+  "5": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "A bright empty living room with a ceiling fan, white walls, a window at the far end and soft sunlight falling across a gray carpet. Realistic architectural cinematography, a peaceful continuous shot. One continuous cinematic shot, beginning from the supplied reference frame. The camera moves slowly forward in one smooth continuous dolly, gently approaching the subject with visible parallax. Natural perspective, crisp believable detail and moderate depth of field. Lighting direction and exposure remain consistent with the reference frame. Keep the reference color relationships coherent throughout the shot. The scene remains coherent over time."
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": ""
+    }
+  },
+  "7": {
+    "class_type": "LTXVConditioning",
+    "inputs": {
+      "positive": [
+        "5",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "frame_rate": 16
+    }
+  },
+  "8": {
+    "class_type": "AftertakeLoadClip",
+    "inputs": {
+      "filename": "f3fe6177-e57e-4b0e-8a9d-11c85ac9cc9d.png",
+      "width": 512,
+      "height": 288,
+      "frames": 1,
+      "fps": 16,
+      "trim_start": 0
+    },
+    "is_changed": [
+      "d9f4b5376666cf39a964f85cd4a605d46cdeab9a93e9e136d3212d56eedab6a7"
+    ]
+  },
+  "11": {
+    "class_type": "EmptyLTXVLatentVideo",
+    "inputs": {
+      "width": 512,
+      "height": 288,
+      "length": 49,
+      "batch_size": 1
+    }
+  },
+  "12": {
+    "class_type": "LTXVImgToVideoInplace",
+    "inputs": {
+      "vae": [
+        "3",
+        0
+      ],
+      "image": [
+        "8",
+        0
+      ],
+      "latent": [
+        "11",
+        0
+      ],
+      "strength": 1,
+      "bypass": false
+    }
+  },
+  "13": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 42
+    }
+  },
+  "14": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "euler_ancestral"
+    }
+  },
+  "15": {
+    "class_type": "ManualSigmas",
+    "inputs": {
+      "sigmas": "1., 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+    }
+  },
+  "16": {
+    "class_type": "BasicGuider",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "conditioning": [
+        "7",
+        0
+      ]
+    }
+  },
+  "17": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "13",
+        0
+      ],
+      "guider": [
+        "16",
+        0
+      ],
+      "sampler": [
+        "14",
+        0
+      ],
+      "sigmas": [
+        "15",
+        0
+      ],
+      "latent_image": [
+        "12",
+        0
+      ]
+    }
+  },
+  "19": {
+    "class_type": "VAEDecodeTiled",
+    "inputs": {
+      "samples": [
+        "17",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "tile_size": 256,
+      "overlap": 64,
+      "temporal_size": 32,
+      "temporal_overlap": 8
+    }
+  },
+  "21": {
+    "class_type": "AftertakeSaveVideo",
+    "inputs": {
+      "images": [
+        "19",
+        0
+      ],
+      "fps": 16,
+      "filename_prefix": "aftertake/cinema",
+      "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"A quiet approach — frame animation\",\"clip\":{\"id\":\"f3fe6177-e57e-4b0e-8a9d-11c85ac9cc9d\",\"name\":\"room-reference.png\",\"sha256\":\"d9f4b5376666cf39a964f85cd4a605d46cdeab9a93e9e136d3212d56eedab6a7\",\"width\":768,\"height\":432,\"duration\":1,\"kind\":\"image\",\"url\":\"/media/f3fe6177-e57e-4b0e-8a9d-11c85ac9cc9d.png\"},\"prompt\":\"A bright empty living room with a ceiling fan, white walls, a window at the far end and soft sunlight falling across a gray carpet. Realistic architectural cinematography, a peaceful continuous shot.\",\"cue\":{\"start\":0.4,\"end\":0.5625,\"fade\":0.4,\"feather\":0.055,\"strokes\":[]},\"seed\":42,\"quality\":\"draft\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"push\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\"}}"
+    }
+  },
+  "22": {
+    "class_type": "AftertakeSaveVideo",
+    "inputs": {
+      "images": [
+        "19",
+        0
+      ],
+      "fps": 16,
+      "filename_prefix": "aftertake/generation",
+      "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"A quiet approach — frame animation\",\"clip\":{\"id\":\"f3fe6177-e57e-4b0e-8a9d-11c85ac9cc9d\",\"name\":\"room-reference.png\",\"sha256\":\"d9f4b5376666cf39a964f85cd4a605d46cdeab9a93e9e136d3212d56eedab6a7\",\"width\":768,\"height\":432,\"duration\":1,\"kind\":\"image\",\"url\":\"/media/f3fe6177-e57e-4b0e-8a9d-11c85ac9cc9d.png\"},\"prompt\":\"A bright empty living room with a ceiling fan, white walls, a window at the far end and soft sunlight falling across a gray carpet. Realistic architectural cinematography, a peaceful continuous shot.\",\"cue\":{\"start\":0.4,\"end\":0.5625,\"fade\":0.4,\"feather\":0.055,\"strokes\":[]},\"seed\":42,\"quality\":\"draft\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"push\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\"}}"
+    }
+  }
+}

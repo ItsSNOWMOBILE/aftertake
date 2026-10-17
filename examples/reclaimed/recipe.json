@@ -1,0 +1,53 @@
+{
+  "format": "aftertake/1",
+  "name": "Living walls - sampling and resolution check",
+  "clip": {
+    "id": "a7e24e70-2168-4e9c-b97f-06ae1401f558",
+    "name": "The light room · camera study.mp4",
+    "sha256": "c54ab72b1e49289da2ea7df20e950a492e27a3c791da89d9e74da44031849b4b",
+    "width": 768,
+    "height": 448,
+    "duration": 5,
+    "url": "/media/a7e24e70-2168-4e9c-b97f-06ae1401f558.mp4"
+  },
+  "prompt": "Thick living emerald moss, delicate green ferns and trailing ivy completely cover the surface. Rich botanical detail, tiny leaves sway gently, realistic natural lighting and coherent perspective.",
+  "cue": {
+    "start": 0,
+    "end": 4.041666666666667,
+    "fade": 0.3,
+    "feather": 0.08,
+    "anchor": 1,
+    "strokes": [
+      {
+        "points": [
+          {
+            "x": 0.12,
+            "y": 0.2
+          },
+          {
+            "x": 0.18,
+            "y": 0.85
+          }
+        ],
+        "radius": 0.48
+      },
+      {
+        "points": [
+          {
+            "x": 0.88,
+            "y": 0.2
+          },
+          {
+            "x": 0.82,
+            "y": 0.85
+          }
+        ],
+        "radius": 0.48
+      }
+    ]
+  },
+  "seed": 104,
+  "quality": "final",
+  "trimStart": 0,
+  "pipeline": "inpaint"
+}

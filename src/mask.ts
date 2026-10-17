@@ -4,6 +4,7 @@ export function spatialMask(width: number, height: number, cue: Cue): Uint8Clamp
   const alpha = new Float32Array(width * height);
   const short = Math.min(width, height), feather = Math.max(.001, cue.feather) * short;
   for (const stroke of cue.strokes) {
+    const strokeAlpha = new Float32Array(width * height);
     const points = stroke.points;
     const radius = stroke.radius * short;
     for (let segment = 0; segment < Math.max(1, points.length - 1); segment++) {
@@ -16,9 +17,12 @@ export function spatialMask(width: number, height: number, cue: Cue): Uint8Clamp
         const t = Math.max(0, Math.min(1, ((x + .5 - ax) * dx + (y + .5 - ay) * dy) / length2));
         const distance = Math.hypot(x + .5 - ax - t * dx, y + .5 - ay - t * dy);
         const v = Math.max(0, Math.min(1, (distance - radius + feather) / feather));
-        alpha[y * width + x] = Math.max(alpha[y * width + x], 1 - v * v * (3 - 2 * v));
+        const i = y * width + x;
+        strokeAlpha[i] = Math.max(strokeAlpha[i], 1 - v * v * (3 - 2 * v));
       }
     }
+    for (let i = 0; i < alpha.length; i++) alpha[i] = stroke.mode === 'erase'
+      ? alpha[i] * (1 - strokeAlpha[i]) : Math.max(alpha[i], strokeAlpha[i]);
   }
   const pixels = new Uint8ClampedArray(width * height * 4);
   for (let i = 0; i < alpha.length; i++) { pixels[i * 4] = 215; pixels[i * 4 + 1] = 232; pixels[i * 4 + 2] = 145; pixels[i * 4 + 3] = Math.round(alpha[i] * 255); }

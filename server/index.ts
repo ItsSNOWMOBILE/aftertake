@@ -7,14 +7,16 @@ import { fileURLToPath } from 'node:url';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { Comfy, type Job } from '@comfyorg/sdk';
+import { ZodError } from 'zod';
 import { recipeSchema, renderDimensions, type Clip, type Engine, type Render } from '../src/domain.js';
 import { buildWorkflow, requirements } from './workflow.js';
+import { submissionRejected } from './submission.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 process.loadEnvFile && await stat(path.join(root, '.env')).then(() => process.loadEnvFile('.env')).catch(() => {});
 process.env.COMFY_BASE_URL ||= 'http://127.0.0.1:8189';
 const uiUrl = process.env.COMFY_UI_URL || 'http://127.0.0.1:8188';
-const data = path.join(root, '.data');
+const data = path.resolve(root, process.env.AFTERTAKE_DATA_DIR || '.data');
 const clipDir = path.join(data, 'clips');
 const renderDir = path.join(data, 'renders');
 const outputDir = path.join(data, 'outputs');
@@ -27,6 +29,7 @@ const handles = new Map<string, Job>();
 const active = new Set<string>();
 let admittingRender = false;
 let previewBusy = false;
+let thumbnailQueue = Promise.resolve();
 const client = new Comfy();
 const terminal = new Set(['succeeded', 'failed', 'canceled', 'expired', 'output_error']);
 const idPattern = /^[0-9a-f-]{36}$/;
@@ -46,7 +49,7 @@ for (const filename of await readdir(renderDir)) {
   } catch (error) { console.error(`Could not read saved render ${filename}:`, error); }
 }
 const healthCache = new Map<string, { until: number; value: Engine }>();
-async function engine(pipeline: 'structure' | 'inpaint' = 'structure'): Promise<Engine> {
+async function engine(pipeline: 'structure' | 'inpaint' | 'cinema' = 'structure'): Promise<Engine> {
   const cached = healthCache.get(pipeline);
   if (cached && cached.until > Date.now()) return cached.value;
   let result: Engine;
@@ -61,6 +64,7 @@ async function engine(pipeline: 'structure' | 'inpaint' = 'structure'): Promise<
     const stats = await responses[1].json() as { devices?: { name: string }[] };
     const needed = requirements(pipeline);
     const missing = needed.nodes.filter(name => !nodes[name]).map(name => `Node: ${name}`);
+    if (pipeline === 'inpaint' && nodes.AftertakeCueMask?.output?.length < 3) missing.push('Update Aftertake nodes and restart the engine');
     const menus = needed.menus;
     for (const [node, input, filename] of menus) {
       const options = nodes[node]?.input?.required?.[input]?.[0];
@@ -87,7 +91,9 @@ async function track(render: Render, initial?: Job) {
     void (async () => {
       for await (const event of job.events(eventsController.signal)) {
         if (event.kind === 'progress') {
-          streamedProgress = event.value;
+          // Some local proxy events omit the current node and report 100% for
+          // intermediate operations. An indeterminate indicator is honest here.
+          streamedProgress = event.currentNode && event.value < 1 ? event.value : null;
           const stages: Record<string, string> = { '5': 'Reading direction', '6': 'Reading direction', '8': 'Reading source', '9': 'Tracking cue', '12': 'Encoding guides', '17': 'Sampling video', '19': 'Decoding frames', '20': 'Compositing', '21': 'Saving video', '22': 'Saving video', '30': 'Encoding refinement', '33': 'Refining video', '34': 'Decoding refined frames', '35': 'Blending boundaries' };
           render.stage = stages[event.currentNode || ''] || event.currentNodeClass || event.message || 'Processing workflow';
         }
@@ -95,19 +101,32 @@ async function track(render: Render, initial?: Job) {
     })().catch(() => {});
     while (true) {
       await job.refresh();
-      render.state = job.status;
-      render.progress = streamedProgress ?? job.progress?.value ?? null;
+      render.state = job.status === 'succeeded' ? 'finalizing' : job.status;
+      render.progress = streamedProgress;
+      delete render.error;
       if (job.status === 'succeeded') {
         render.stage = 'Downloading outputs';
         const output = job.getOutputs('21')[0];
         const raw = job.getOutputs('22')[0];
+        const coarse = job.getOutputs('40')[0];
         if (!output) throw new Error('The workflow finished without a composite video.');
         await output.toFile(path.join(outputDir, `${render.id}.mp4`));
         if (raw) await raw.toFile(path.join(outputDir, `${render.id}-raw.mp4`));
+        if (coarse) await coarse.toFile(path.join(outputDir, `${render.id}-coarse.mp4`));
         render.output = `/outputs/${render.id}.mp4`;
         if (raw) render.rawOutput = `/outputs/${render.id}-raw.mp4`;
+        if (coarse) render.coarseOutput = `/outputs/${render.id}-coarse.mp4`;
+        // Release the model cache when the engine is idle so browser video
+        // decoders can recover their VRAM after a generation on 16 GB cards.
+        try {
+          const queue = await fetch(`${uiUrl}/queue`, { signal: AbortSignal.timeout(3000) }).then(r => r.json()) as { queue_running?: unknown[]; queue_pending?: unknown[] };
+          if (queue.queue_running?.length === 0 && queue.queue_pending?.length === 0) {
+            await fetch(`${uiUrl}/free`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ unload_models: true, free_memory: true }), signal: AbortSignal.timeout(3000) });
+          }
+        } catch (error) { console.warn('Could not release idle GPU cache:', error); }
         render.progress = 1;
         render.stage = 'Complete';
+        render.state = 'succeeded';
       } else if (job.status === 'failed') {
         render.error = JSON.stringify(job.error);
       }
@@ -141,7 +160,27 @@ app.get('/previews/:name', (req, res) => {
   if (!/^[a-f0-9]{64}\.png$/.test(req.params.name)) return void res.sendStatus(404);
   res.sendFile(req.params.name, { root: previewDir, dotfiles: 'deny' });
 });
-app.get('/api/engine', async (req, res) => { res.json(await engine(req.query.pipeline === 'inpaint' ? 'inpaint' : 'structure')); });
+app.get('/api/engine', async (req, res) => { res.json(await engine(req.query.pipeline === 'cinema' ? 'cinema' : req.query.pipeline === 'inpaint' ? 'inpaint' : 'structure')); });
+app.get('/api/workspace', (_req, res) => {
+  res.json({ examples: process.env.AFTERTAKE_EXAMPLES === '1', exampleCount: Number(process.env.AFTERTAKE_EXAMPLE_COUNT || 3), featuredRenderId: process.env.AFTERTAKE_FEATURED_RENDER || null });
+});
+app.get('/api/thumbnails/:id', async (req, res) => {
+  if (!idPattern.test(req.params.id)) return void res.sendStatus(404);
+  const clip = JSON.parse(await readFile(path.join(clipDir, `${req.params.id}.json`), 'utf8')) as Clip;
+  const requested = Number(req.query.time || 0);
+  if (!Number.isFinite(requested)) return void res.sendStatus(400);
+  const time = clip.kind === 'image' ? 0 : Math.round(Math.max(0, Math.min(clip.duration - .05, requested)) * 24) / 24;
+  const key = createHash('sha256').update(`thumbnail/1:${clip.sha256}:${time}`).digest('hex');
+  const filename = `${key}.jpg`;
+  const task = thumbnailQueue.then(async () => {
+    if (await stat(path.join(previewDir, filename)).catch(() => null)) return;
+    await exec(python, [path.join(root, 'scripts/thumbnail.py'), path.join(clipDir, path.basename(clip.url)), path.join(previewDir, filename), String(time)], { timeout: 30000 });
+  });
+  thumbnailQueue = task.catch(() => {});
+  await task;
+  res.setHeader('Cache-Control', 'private, max-age=3600');
+  res.sendFile(filename, { root: previewDir, dotfiles: 'deny' });
+});
 app.get('/api/clips', async (_req, res) => {
   const clips: Clip[] = [];
   for (const file of await readdir(clipDir)) {
@@ -151,27 +190,33 @@ app.get('/api/clips', async (_req, res) => {
 });
 app.post('/api/clips', express.raw({ type: 'application/octet-stream', limit: '100mb' }), async (req, res) => {
   if (!Buffer.isBuffer(req.body) || !req.body.length) return void res.status(400).json({ error: 'Choose a video file.' });
+  if (!(await stat(python).catch(() => null))) return void res.status(409).json({ error: 'Install the Python runtime before importing new clips. You can explore the included examples now.' });
   const name = path.basename(String(req.query.name || 'source.mp4')).slice(0, 200);
   const extension = path.extname(name).toLowerCase();
-  if (!['.mp4', '.mov', '.webm', '.mkv', '.m4v'].includes(extension)) return void res.status(400).json({ error: 'Use an MP4, MOV, WebM or MKV video.' });
+  const image = ['.png', '.jpg', '.jpeg', '.webp'].includes(extension);
+  if (!image && !['.mp4', '.mov', '.webm', '.mkv', '.m4v'].includes(extension)) return void res.status(400).json({ error: 'Use an MP4, MOV, WebM or MKV video, or a PNG, JPEG or WebP image.' });
   const id = randomUUID();
   const filename = `${id}${extension}`;
   const dest = path.join(clipDir, filename);
   await writeFile(dest, req.body);
   try {
-    const { stdout } = await exec(python, [path.join(root, 'scripts/probe.py'), dest], { timeout: 30000 });
+    const normalized = path.join(clipDir, `${id}.normalized.png`);
+    const { stdout } = await exec(python, image ? [path.join(root, 'scripts/import-image.py'), dest, normalized] : [path.join(root, 'scripts/probe.py'), dest], { timeout: 30000 });
     const meta = JSON.parse(stdout);
     if (meta.duration < 1) throw new Error('Use a clip at least one second long.');
-    const clip: Clip = { id, name, sha256: createHash('sha256').update(req.body).digest('hex'), ...meta, url: `/media/${filename}` };
+    if (image) { await unlink(dest); await rename(normalized, path.join(clipDir, `${id}.png`)); }
+    const bytes = image ? await readFile(path.join(clipDir, `${id}.png`)) : req.body;
+    const clip: Clip = { id, name, sha256: createHash('sha256').update(bytes).digest('hex'), ...meta, url: `/media/${image ? `${id}.png` : filename}` };
     await writeFile(path.join(clipDir, `${id}.json`), JSON.stringify(clip, null, 2));
     res.status(201).json(clip);
   } catch {
-    await unlink(dest);
-    res.status(422).json({ error: 'Could not read this video. Use a valid 1-second to 10-minute clip, up to 4K.' });
+    await Promise.all([dest, path.join(clipDir, `${id}.png`), path.join(clipDir, `${id}.normalized.png`)].map(file => unlink(file).catch(() => {})));
+    res.status(422).json({ error: 'Could not read this source. Use a valid video from 1 second to 10 minutes, or a still image, up to 4K.' });
   }
 });
 app.use(express.json({ limit: '2mb' }));
 app.post('/api/cue-preview', async (req, res) => {
+  if (!(await stat(python).catch(() => null))) return void res.status(409).json({ error: 'Install the local runtime to compute motion previews. See the engine panel.' });
   if (previewBusy) return void res.status(409).json({ error: 'A motion preview is already being computed. Try again in a moment.' });
   previewBusy = true;
   try {
@@ -207,6 +252,7 @@ app.post('/api/renders', async (req, res) => {
   const storedClip = JSON.parse(await readFile(path.join(clipDir, `${recipe.clip.id}.json`), 'utf8')) as Clip;
   if (storedClip.sha256 !== recipe.clip.sha256) return void res.status(409).json({ error: 'This recipe needs its original source clip. Import it before rendering.' });
   recipe.clip = storedClip;
+  recipeSchema.parse(recipe);
   const render: Render = { id: randomUUID(), recipe, state: 'submitting', progress: null,
     createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
   render.workflow = buildWorkflow(recipe);
@@ -217,13 +263,13 @@ app.post('/api/renders', async (req, res) => {
     wf.setInput('8', 'filename', client.assets.fromFile(path.join(clipDir, path.basename(storedClip.url))));
     const job = await client.submit(wf, { idempotencyKey: render.id });
     render.jobId = job.id;
-    render.state = job.status;
+    render.state = job.status === 'succeeded' ? 'finalizing' : job.status;
     await persist(render);
     void track(render, job);
     res.status(201).json(render);
   } catch (error) {
     // A submit may reach the server before a network failure. Never retry it blindly.
-    render.state = 'submission_unknown';
+    render.state = submissionRejected(error) ? 'failed' : 'submission_unknown';
     render.error = error instanceof Error ? error.message : String(error);
     await persist(render);
     res.status(502).json({ error: render.error, render });
@@ -240,19 +286,20 @@ app.post('/api/renders/:id/cancel', async (req, res) => {
   res.json(render);
 });
 
+const httpServer = createServer(app);
 if (process.argv.includes('--production')) app.use(express.static(path.join(root, 'dist')));
 else {
   const { createServer: createVite } = await import('vite');
-  const vite = await createVite({ server: { middlewareMode: true }, appType: 'spa' });
+  const vite = await createVite({ server: { middlewareMode: true, ws: { server: httpServer } }, appType: 'spa' });
   app.use(vite.middlewares);
 }
 app.use((error: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  const message = error instanceof Error ? error.message : 'Request failed.';
+  const message = error instanceof ZodError ? error.issues[0]?.message || 'Check the project settings.' : error instanceof Error ? error.message : 'Request failed.';
   console.error(message);
   res.status(400).json({ error: message });
 });
 const port = Number(process.env.PORT || 4310);
-createServer(app).listen(port, '127.0.0.1', () => console.log(`Aftertake studio: http://127.0.0.1:${port}`));
+httpServer.listen(port, '127.0.0.1', () => console.log(`Aftertake studio: http://127.0.0.1:${port}`));
 for (const render of renders.values()) {
   if (render.jobId && !terminal.has(render.state)) void track(render);
   else if (render.state === 'submitting') { render.state = 'submission_unknown'; await persist(render); }

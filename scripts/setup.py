@@ -1,5 +1,6 @@
 """Install the known ComfyUI stack and original sample. Run with Python 3.12+."""
 from pathlib import Path
+import argparse
 import shutil
 import subprocess
 import sys
@@ -16,7 +17,11 @@ REPOS = [
 def run(*args): subprocess.run([str(arg) for arg in args], cwd=ROOT, check=True)
 
 if __name__ == '__main__':
-    if sys.version_info < (3, 12): raise SystemExit('Use Python 3.12 or newer.')
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--inpaint', action='store_true', help='Download the LTX-2.5 profile instead of the original structural profile')
+    parser.add_argument('--skip-models', action='store_true', help='Install runtime and sample only; reuse model files from an existing installation')
+    args = parser.parse_args()
+    if sys.version_info[:2] != (3, 12): raise SystemExit('Use Python 3.12 for the pinned runtime.')
     RUNTIME.mkdir(exist_ok=True)
     if not PYTHON.exists(): run(sys.executable, '-m', 'venv', VENV)
     for url, target, revision in REPOS:
@@ -34,6 +39,7 @@ if __name__ == '__main__':
     run(PYTHON, '-m', 'pip', 'install', 'torch==2.11.0', 'torchvision==0.26.0', 'torchaudio==2.11.0', '--index-url', 'https://download.pytorch.org/whl/cu130')
     run(PYTHON, '-m', 'pip', 'install', '-r', ROOT / 'requirements-runtime.txt')
     shutil.copytree(ROOT / 'custom_nodes/aftertake', RUNTIME / 'ComfyUI/custom_nodes/aftertake', dirs_exist_ok=True)
-    run(PYTHON, ROOT / 'scripts/download-models.py')
+    if not args.skip_models:
+        run(PYTHON, ROOT / 'scripts/download-models.py', *(['--ltx25'] if args.inpaint else []))
     run(PYTHON, ROOT / 'scripts/create-study.py')
     print('Runtime installed. Start it with: python scripts/engine.py')

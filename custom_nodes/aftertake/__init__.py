@@ -65,7 +65,15 @@ def track_spatial_mask(spatial, images, anchor):
     return torch.from_numpy(tracked).clamp(0, 1)
 
 
-def build_cue_mask(width, height, frames, fps, cue, images=None):
+def temporal_envelope(frames, fps, cue):
+    times = torch.arange(frames, dtype=torch.float32) / fps
+    start, end = cue['start'], cue['end']
+    fade = min(max(0, cue['fade']), (end - start) / 2)
+    active = ((times >= start) & (times <= end)).float()
+    return active if fade == 0 else active * smoothstep(torch.minimum((times - start) / fade, (end - times) / fade))
+
+
+def build_cue_mask(width, height, frames, fps, cue, images=None, apply_envelope=True):
     """Normalized brush paths; radius and feather are fractions of the SHORT edge.
 
     Evaluate distance to line segments, rather than sampled points, so sparsely
@@ -94,17 +102,15 @@ def build_cue_mask(width, height, frames, fps, cue, images=None):
             t = t.clamp(0, 1)
             segment = ((xx - ax - t * dx).square() + (yy - ay - t * dy).square()).sqrt()
             distance = torch.minimum(distance, segment)
-        spatial = torch.maximum(spatial, 1 - smoothstep((distance - radius + feather) / feather))
-    times = torch.arange(frames, dtype=torch.float32) / fps
-    start, end = cue['start'], cue['end']
-    fade = min(max(0, cue['fade']), (end - start) / 2)
-    active = ((times >= start) & (times <= end)).float()
-    envelope = active if fade == 0 else active * smoothstep(torch.minimum((times - start) / fade, (end - times) / fade))
+        stroke_mask = 1 - smoothstep((distance - radius + feather) / feather)
+        spatial = spatial * (1 - stroke_mask) if stroke.get('mode') == 'erase' else torch.maximum(spatial, stroke_mask)
     if cue.get('tracking', 'static') == 'flow':
         if images is None or images.shape[:3] != (frames, height, width):
             raise ValueError('Motion tracking requires source frames matching the cue dimensions')
         spatial = track_spatial_mask(spatial, images, round(cue.get('anchor', 0) * fps))
-    return envelope[:, None, None] * spatial
+    if spatial.ndim == 2:
+        spatial = spatial.unsqueeze(0).expand(frames, -1, -1)
+    return temporal_envelope(frames, fps, cue)[:, None, None] * spatial if apply_envelope else spatial
 
 
 class AftertakeCueMask:
@@ -117,14 +123,16 @@ class AftertakeCueMask:
             'fps': ('FLOAT', {'default': 16, 'min': 1, 'max': 60}),
             'cue_json': ('STRING', {'multiline': True, 'default': '{}'}),
         }, 'optional': {'images': ('IMAGE',)}}
-    RETURN_TYPES = ('MASK', 'MASK')
-    RETURN_NAMES = ('edit_mask', 'preserve_attention_mask')
+    RETURN_TYPES = ('MASK', 'MASK', 'MASK')
+    RETURN_NAMES = ('edit_mask', 'preserve_attention_mask', 'spatial_region')
     FUNCTION = 'execute'
     CATEGORY = 'Aftertake'
 
     def execute(self, width, height, frames, fps, cue_json, images=None):
-        mask = build_cue_mask(width, height, frames, fps, json.loads(cue_json), images)
-        return mask, 1 - mask
+        cue = json.loads(cue_json)
+        spatial = build_cue_mask(width, height, frames, fps, cue, images, apply_envelope=False)
+        mask = temporal_envelope(frames, fps, cue)[:, None, None] * spatial
+        return mask, 1 - mask, spatial
 
 
 class AftertakeLoadClip:
@@ -180,6 +188,31 @@ class AftertakeComposite:
         return (original + alpha * (generated.to(original) - original),)
 
 
+class AftertakeFilmGrade:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {'required': {'images': ('IMAGE',), 'palette': (['source', 'warm', 'cool', 'monochrome'],)}}
+    RETURN_TYPES = ('IMAGE',)
+    FUNCTION = 'execute'
+    CATEGORY = 'Aftertake'
+
+    def execute(self, images, palette):
+        if palette == 'source':
+            return (images,)
+        luma = (images[..., :3] * images.new_tensor([.2126, .7152, .0722])).sum(-1, keepdim=True)
+        if palette == 'monochrome':
+            return (luma.expand_as(images),)
+        red, green, blue = images[..., 0], images[..., 1], images[..., 2]
+        shadow = 1 - luma[..., 0]
+        if palette == 'warm':
+            graded = torch.stack((red * 1.04 + .025 * shadow, green, blue * .92), -1)
+        elif palette == 'cool':
+            graded = torch.stack((red * .92, green, blue * 1.04 + .02 * shadow), -1)
+        else:
+            raise ValueError('Unknown film grade')
+        return (graded.clamp(0, 1),)
+
+
 class AftertakeSaveVideo:
     @classmethod
     def INPUT_TYPES(cls):
@@ -213,5 +246,5 @@ class AftertakeSaveVideo:
         return {'ui': {'gifs': [{'filename': filename, 'subfolder': subfolder, 'type': 'output', 'format': 'video/mp4'}]}}
 
 
-NODE_CLASS_MAPPINGS = {cls.__name__: cls for cls in [AftertakeCueMask, AftertakeLoadClip, AftertakeComposite, AftertakeSaveVideo]}
+NODE_CLASS_MAPPINGS = {cls.__name__: cls for cls in [AftertakeCueMask, AftertakeLoadClip, AftertakeComposite, AftertakeFilmGrade, AftertakeSaveVideo]}
 NODE_DISPLAY_NAME_MAPPINGS = {key: key.replace('Aftertake', 'Aftertake · ') for key in NODE_CLASS_MAPPINGS}

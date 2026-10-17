@@ -44,6 +44,14 @@ class CueTests(unittest.TestCase):
         self.assertEqual(mask[24, 32, 64], 1)
         self.assertEqual(mask[24, 32, 0], 0)
 
+    def test_inpaint_conditioning_region_is_present_even_before_the_effect_cue(self):
+        cue = self.cue()
+        edit, preserve, spatial = nodes.AftertakeCueMask().execute(128, 64, 49, 16, __import__('json').dumps(cue))
+        self.assertEqual(edit[0, 32, 64], 0)
+        self.assertEqual(preserve[0, 32, 64], 1)
+        self.assertEqual(spatial[0, 32, 64], 1)
+        self.assertTrue(torch.equal(spatial[0], spatial[-1]))
+
     def test_motion_tracking_follows_texture_in_both_directions_from_anchor(self):
         torch.manual_seed(11)
         texture = torch.rand(64, 128, 3)
@@ -57,5 +65,17 @@ class CueTests(unittest.TestCase):
         for index, center in enumerate(centers):
             self.assertAlmostEqual(center, 63.5 + (index - 4) * 2, delta=1.5)
         with self.assertRaises(ValueError): nodes.build_cue_mask(128, 64, 9, 16, cue)
+
+    def test_eraser_protects_source_and_later_paint_can_restore_the_region(self):
+        cue = self.cue()
+        cue['strokes'].append({'mode': 'erase', 'radius': .06, 'points': [{'x': .5, 'y': .5}]})
+        mask = nodes.build_cue_mask(128, 64, 49, 16, cue)
+        self.assertEqual(mask[24, 32, 64], 0)
+        self.assertEqual(mask[24, 32, 40], 1)
+        source = torch.rand(49, 64, 128, 3)
+        composite = nodes.AftertakeComposite().execute(source, torch.ones_like(source), mask)[0]
+        self.assertTrue(torch.equal(composite[24, 32, 64], source[24, 32, 64]))
+        cue['strokes'].append({'radius': .04, 'points': [{'x': .5, 'y': .5}]})
+        self.assertEqual(nodes.build_cue_mask(128, 64, 49, 16, cue)[24, 32, 64], 1)
 
 if __name__ == '__main__': unittest.main()

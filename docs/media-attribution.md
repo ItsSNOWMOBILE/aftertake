@@ -23,3 +23,27 @@ https://mango.blender.org/production/4-tb-original-4k-footage-available-as-cc-by
 
 This research footage is ignored under `.runtime/sources/`; it is not a
 required installation asset or part of the source repository.
+
+## Licensed demo candidates
+
+Downloaded through Pexels' normal browser download on October 17, 2026.
+The [Pexels license](https://www.pexels.com/license/) permits free use and
+modification, including in apps and promotional videos. No endorsement is implied.
+The app's MIT license does not relicense these clips. Keep author credits in
+the demo and alongside any distributed excerpt.
+
+- Curtis Adams, [Empty room with ceiling fan and carpet](https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/).
+  Original download SHA-256 and size are retained locally in
+  `.runtime/sources/pexels-downloads.json`. Test excerpt: first 101 frames at
+  24 fps, resized to 768 × 432 and made silent. Excerpt SHA-256:
+  `f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2`.
+- Mikhail Nilov, [Waterfall in the middle of the forest](https://www.pexels.com/video/waterfall-in-the-middle-of-the-forest-6989026/).
+  Test excerpt: starts at 12 seconds, 101 frames at 24 fps, resized to
+  768 × 432 and made silent. Excerpt SHA-256:
+  `b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57`.
+
+Generated derivatives add localized model-generated VFX and temporal blending.
+Reviewed source excerpts and generated results are now included under
+`examples/portal` and `examples/golden-falls`, with license/credit notes in
+`examples/README.md` and a SHA-256 manifest. Research footage with actors is
+excluded from that bundle.

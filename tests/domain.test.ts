@@ -1,7 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { cueEnvelope, recipeSchema, renderDimensions, type Recipe } from '../src/domain.js';
-import { buildWorkflow } from '../server/workflow.js';
+import { cueEnvelope, projectSchema, recipeSchema, renderDimensions, renderSettingsKey, type Recipe } from '../src/domain.js';
+import { buildWorkflow, requirements } from '../server/workflow.js';
+import { cinemaPrompt, defaultCinema } from '../src/cinema.js';
 import { spatialMask } from '../src/mask.js';
 const recipe: Recipe = {
   format: 'aftertake/1', name: 'Test take',
@@ -32,6 +33,21 @@ test('invalid recipes cannot request unbounded masks or arbitrary source URLs', 
   assert.equal(recipeSchema.safeParse({ ...recipe, cue: { ...recipe.cue, end: .2 } }).success, false);
   assert.equal(recipeSchema.safeParse({ ...recipe, seed: -1 }).success, false);
 });
+test('an unpainted project survives save and reload while generation still needs paint', () => {
+  const empty = { ...recipe, cue: { ...recipe.cue, strokes: [] } };
+  assert.equal(projectSchema.safeParse(JSON.parse(JSON.stringify(empty))).success, true);
+  assert.equal(recipeSchema.safeParse(empty).success, false);
+  const erased = { ...empty, cue: { ...empty.cue, strokes: [{ mode: 'erase', radius: .1, points: [{ x: .5, y: .5 }] }] } };
+  assert.equal(projectSchema.safeParse(erased).success, true);
+  assert.equal(recipeSchema.safeParse(erased).success, false);
+});
+test('render matching follows source content and settings, independent of local names or ids', () => {
+  const remapped = { ...recipe, name: 'Renamed project', clip: { ...recipe.clip, id: '00000000-0000-0000-0000-000000000001', url: '/media/remapped.mp4' },
+    pipeline: 'structure' as const, directionStrength: 1, cue: { ...recipe.cue, tracking: 'static' as const, anchor: 0 } };
+  assert.equal(renderSettingsKey(recipe), renderSettingsKey(remapped));
+  assert.notEqual(renderSettingsKey(recipe), renderSettingsKey({ ...recipe, seed: 43 }));
+  assert.notEqual(renderSettingsKey(recipe), renderSettingsKey({ ...recipe, cue: { ...recipe.cue, end: 2.5 } }));
+});
 test('workflow connects the same cue to generation guidance and final compositing', () => {
   const graph = buildWorkflow(recipe) as Record<string, { class_type: string; inputs: Record<string, unknown> }>;
   assert.deepEqual(graph['12'].inputs.attention_mask, ['9', 1]);
@@ -45,12 +61,21 @@ test('editor mask has a fully selected center and zero outside the brush', () =>
   assert.equal(pixels[(32 * 128 + 64) * 4 + 3], 255);
   assert.equal(pixels[(2 * 128 + 64) * 4 + 3], 0);
 });
+test('eraser protects an interior region and later paint restores it', () => {
+  const paint = { radius: .2, points: [{ x: .5, y: .5 }] };
+  const erase = { ...paint, radius: .1, mode: 'erase' as const };
+  const cue = { ...recipe.cue, feather: .01, strokes: [paint, erase] };
+  assert.equal(spatialMask(128, 64, cue)[(32 * 128 + 64) * 4 + 3], 0);
+  assert.equal(spatialMask(128, 64, cue)[(32 * 128 + 72) * 4 + 3], 255);
+  cue.strokes.push({ ...paint, radius: .05 });
+  assert.equal(spatialMask(128, 64, cue)[(32 * 128 + 64) * 4 + 3], 255);
+});
 test('native inpainting uses the masked source plate instead of structural edges', () => {
   const graph = buildWorkflow({ ...recipe, pipeline: 'inpaint' }) as Record<string, { class_type: string; inputs: Record<string, unknown> }>;
   assert.equal(graph['2'].class_type, 'CLIPLoader');
   assert.equal(graph['10'].class_type, 'LTXVInpaintPreprocess');
   assert.deepEqual(graph['10'].inputs.images, ['8', 0]);
-  assert.deepEqual(graph['23'].inputs.mask, ['9', 0]);
+  assert.deepEqual(graph['23'].inputs.mask, ['9', 2]);
   assert.equal('attention_mask' in graph['12'].inputs, false);
   assert.deepEqual(graph['20'].inputs.mask, ['9', 0]);
 });
@@ -78,4 +103,38 @@ test('finish workflows have complete acyclic links and refine to the requested s
       assert.deepEqual(graph['20'].inputs.mask, ['9', 0]);
     }
   }
+});
+
+test('frame animation conditions only the opening frame and generates without the masked-edit adapter', () => {
+  const r: Recipe = { ...recipe, pipeline: 'cinema', cinema: defaultCinema, trimStart: 4.9, cue: { ...recipe.cue, strokes: [] } };
+  assert.equal(recipeSchema.safeParse(r).success, true);
+  assert.equal(renderDimensions(r).frames, 49);
+  const graph = buildWorkflow(r) as Record<string, { class_type: string; inputs: Record<string, unknown> }>;
+  assert.equal(graph['8'].inputs.frames, 1);
+  assert.equal(graph['8'].inputs.trim_start, 4.9);
+  assert.equal(graph['12'].class_type, 'LTXVImgToVideoInplace');
+  assert.deepEqual(graph['16'].inputs.model, ['1', 0]);
+  assert.deepEqual(graph['21'].inputs.images, ['20', 0]);
+  assert.equal(graph['20'].class_type, 'AftertakeFilmGrade');
+  assert.equal(Object.values(graph).some(n => /ICLoRA|Composite|CueMask|API/.test(n.class_type)), false);
+  assert.equal(requirements('cinema').menus.some(([, input]) => input === 'lora_name'), false);
+});
+
+test('cinema settings change the actual encoder prompt and survive a recipe round trip', () => {
+  const r: Recipe = { ...recipe, pipeline: 'cinema', cinema: { ...defaultCinema, movement: 'orbit', palette: 'monochrome' } };
+  const restored = recipeSchema.parse(JSON.parse(JSON.stringify(r)));
+  const prompt = cinemaPrompt(restored.prompt, restored.cinema);
+  assert.match(prompt, /small smooth arc/);
+  assert.match(prompt, /Black-and-white/);
+  assert.notEqual(prompt, cinemaPrompt(r.prompt, defaultCinema));
+  assert.notEqual(renderSettingsKey(r), renderSettingsKey({ ...r, cinema: defaultCinema }));
+  assert.equal(renderSettingsKey(r), renderSettingsKey({ ...r, cue: { ...r.cue, strokes: [] } }));
+});
+
+test('still sources animate from frame zero and cannot masquerade as moving footage', () => {
+  const still = { ...recipe, clip: { ...recipe.clip, kind: 'image' as const, duration: 1 }, pipeline: 'cinema' as const, cue: { ...recipe.cue, strokes: [] } };
+  assert.equal(recipeSchema.safeParse(still).success, true);
+  assert.equal(renderDimensions({ ...still, quality: 'final' }).frames, 97);
+  assert.equal(recipeSchema.safeParse({ ...still, pipeline: 'inpaint' }).success, false);
+  assert.equal(recipeSchema.safeParse({ ...still, trimStart: .5 }).success, false);
 });

@@ -7,6 +7,25 @@ Primary target: Open Weights Only. Secondary: Most Innovative. Best Overall is u
 Source: https://comfy.org/open-source-higgsfield/ (verified October 17, 2026).
 Deadline: October 30, 2026, 09:00 Pacific / 12:00 America/Toronto.
 
+## Submission details verified in the official page's expanded sections
+
+- Use Comfy Router and/or the Comfy SDK.
+- Public GitHub app code, workflow files, open-source license and local setup.
+- Demo video: **two minutes maximum**. Explain all combined tools and techniques;
+  explain the novelty explicitly for Most Innovative.
+- A social post linking the demo on Reddit, X, Instagram, LinkedIn, YouTube or
+  TikTok, tagged **#OpenSourceHiggsfield**.
+- Deployed app or endpoint is optional but strongly encouraged.
+- One submission per person. Work must be lawful and SFW, without unlicensed
+  IP or likenesses. Submission permits the listed organizers and partners to
+  feature the work with credit.
+- Sign-up: https://form.typeform.com/to/Ayn9Cwfj
+- Submission: https://form.typeform.com/to/V1dSQrkS
+
+Read the form's final terms before submitting. Local research footage with
+actors is excluded from public demo assets; use original or clearly licensed
+sources without recognizable people for the entry.
+
 ## Product thesis
 
 Aftertake is a VFX instrument for short clips: draw the region that can change,
@@ -17,11 +36,11 @@ remain the source, rather than relying on a text model to preserve them.
 
 ## Required evidence before submission
 
-- [ ] Official Comfy SDK integration exercised against real ComfyUI, not a mock.
-- [ ] Full generation graph uses only open-weight models, no partner nodes or closed inference APIs.
-- [ ] Good outputs on at least three materially different source clips.
-- [ ] Spatial and temporal controls visibly affect the actual generation/composite.
-- [ ] A new user can install, import a clip, render, export, and remix.
+- [x] Official Comfy SDK integration exercised against real ComfyUI, not a mock.
+- [x] Full generation graph uses only open-weight models, no partner nodes or closed inference APIs.
+- [x] Three reviewed outputs with sources/recipes/graphs are bundled under `examples/`.
+- [x] Spatial and temporal controls visibly affect the actual generation/composite.
+- [x] Fresh Windows runtime install, actual import/render, UI import/export and source-hash matching exercised. Other hardware/OS combinations remain unverified.
 - [ ] Public repository with MIT license, setup, model inventory, third-party attribution.
 - [ ] Demo explains the innovation and shows actual input, interaction, and output.
 - [ ] Registration and submission completed with the correct category and links.

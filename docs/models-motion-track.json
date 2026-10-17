@@ -1,0 +1,12 @@
+[
+  {
+    "repository": "Lightricks/LTX-2.3-22b-IC-LoRA-Motion-Track-Control",
+    "revision": "572bb9c9a1ba3d8e8724cce69783ffc2422386db",
+    "path": "ltx-2.3-22b-ic-lora-motion-track-control-ref0.5.safetensors",
+    "category": "loras",
+    "size": 327309314,
+    "sha256": "e279807ee3aa3db1ce60188d665ff83342860367dcd6bac19f8bd5a99a9e1dca",
+    "license": "ltx-2-community-license",
+    "source": "https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Motion-Track-Control"
+  }
+]

@@ -21,7 +21,7 @@ if __name__ == '__main__':
         raise SystemExit('A ComfyUI engine or proxy already uses ports 8188/8189. Reuse it or stop it before launching this supervisor.')
     shutil.copytree(ROOT / 'custom_nodes/aftertake', RUNTIME / 'ComfyUI/custom_nodes/aftertake', dirs_exist_ok=True)
     commands = [
-        [str(PYTHON), str(RUNTIME / 'ComfyUI/main.py'), '--listen', '127.0.0.1', '--port', '8188', '--disable-auto-launch', '--disable-partner-nodes', '--reserve-vram', '2', '--preview-method', 'none'],
+        [str(PYTHON), str(RUNTIME / 'ComfyUI/main.py'), '--listen', '127.0.0.1', '--port', '8188', '--disable-auto-launch', '--disable-partner-nodes', '--reserve-vram', '3', '--preview-method', 'none'],
         [str(PYTHON.with_name('comfy-api-proxy.exe' if sys.platform == 'win32' else 'comfy-api-proxy')), 'run', '--comfyui', 'http://127.0.0.1:8188', '--port', '8189', '--comfyui-base-dir', str(RUNTIME / 'ComfyUI'), '--state-dir', str(RUNTIME / 'proxy-state')],
     ]
     children = []
