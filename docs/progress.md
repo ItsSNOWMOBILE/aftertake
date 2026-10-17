@@ -654,6 +654,27 @@ download hit `ERR_BLOCKED_BY_CLIENT`; the user completed the ordinary download.
   temporarily, then restored the exact saved settings without starting a job.
   The production build passes. The refreshed demo uses this actual review UI.
 
+## Browser editor trial — October 17
+
+- Added a static editor at `/aftertake/studio/` with the seven already-public
+  recorded examples. It uses the same React editor, paint/erase cue, timeline,
+  comparison, recipe library and frame-history review UI as the local studio.
+  The disclosure explains that edits affect exports while recorded results
+  stay unchanged. Importing new media, generation, tracking and film export
+  require the local studio; unsupported actions create no simulated jobs.
+- The build verifies the published manifest and media hashes, extracts the
+  executed graphs from recorded MP4s and pins all media to one immutable
+  public Git revision. It bundles local OFL fonts and app/dependency notices.
+- Browser QA played actual remote source/result videos, loaded all ten timeline
+  thumbnails, changed a temporal cue, painted a new stroke and undid it.
+  The original cue was restored exactly. Portable graphs retained the edited
+  cue and source hash; the recorded graph matched the original execution.
+  Downloaded video and Qwen PNG hashes matched the published bytes, and the
+  frame recipe matched its original. No generation jobs were created.
+- At 375 px, the disclosure and local-setup link fit without horizontal overflow.
+  Both the normal and browser builds pass; all 36 TypeScript tests on this
+  branch pass, including immutable-record and portable-workflow checks.
+
 ## Remaining work
 
 - Continue edge, motion-tracking and prompt-following quality work.

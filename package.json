@@ -8,6 +8,7 @@
     "dev": "tsx watch server/index.ts",
     "demo": "node scripts/run-demo.mjs",
     "build": "tsc --noEmit && vite build",
+    "build:browser-demo": "tsx scripts/build-browser-demo.mts",
     "start": "tsx server/index.ts --production",
     "test": "tsx --test tests/*.test.ts"
   },

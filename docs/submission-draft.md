@@ -93,6 +93,9 @@ not been validated.
 
 - Repository: https://github.com/ItsSNOWMOBILE/aftertake — public MIT source,
   workflows, setup and seven recorded examples. Anonymous Git access verified.
+- Try the editor: https://itssnowmobile.github.io/aftertake/studio/ — browser
+  trial with seven recorded examples, editable cues and workflow exports.
+  Recorded results stay unchanged; new generation runs in the local studio.
 - Demo: https://itssnowmobile.github.io/aftertake/ — live 97-second silent
   captioned video, verified at 1280 × 720 / 24 fps. Generation waits are omitted.
   Refresh this cut with motion transfer and the ending-frame workflow before
