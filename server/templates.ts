@@ -56,7 +56,7 @@ export async function templateRouter(root: string, data: string, renders: Map<st
     const file = asset === 'frame-recipe' ? item.frameRecipe : item[asset as 'poster' | 'result' | 'source' | 'reference'];
     if (!file) return void res.sendStatus(404);
     res.setHeader('Cache-Control', 'private, max-age=3600');
-    res.sendFile(contained(file));
+    res.sendFile(path.relative(folder, contained(file)), { root: folder, dotfiles: 'deny' });
   });
   router.post('/:slug/open', async (req, res) => {
     const source = bundled.get(req.params.slug), template = templates.find(item => item.slug === req.params.slug);
