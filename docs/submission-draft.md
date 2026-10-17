@@ -19,6 +19,12 @@ motion-track conditioning supplies explicit framing trajectories, with the
 exact guide saved beside the result. Named film looks travel between sources;
 color grading is consistent across frames.
 
+An optional ending image gives a shot a defined destination. Import it or
+design it with the local Qwen editor, explicitly review and select it, then
+generate the transition between both frames. Start/end guides can also be
+combined with motion tracks. Both input assets are hash-bound, verified before
+generation and retained in shared recipes. Endpoints remain soft constraints.
+
 Optional edited-first-frame conditioning sets the intended appearance for a
 masked edit. It enters both native generation stages while the original cue
 controls the visible region and timing. The source and edited frame are hash-bound
