@@ -21,6 +21,7 @@ export default function FrameEditor({ recipe, clips, edits, onUpdate, onImport, 
   const dialog = useRef<HTMLElement>(null), direction = useRef<HTMLTextAreaElement>(null), input = useRef<HTMLInputElement>(null);
   const recipeInput = useRef<HTMLInputElement>(null);
   const pending = edits.find(frameEditBusy);
+  const ending = recipe.pipeline === 'cinema';
   const history = edits.filter(edit => edit.request.clip.sha256 === recipe.clip.sha256 && Math.abs(edit.request.trimStart - recipe.trimStart) < .001);
   const viewed = history.find(edit => edit.id === selected) || history[0];
   const subject = clips.find(clip => clip.id === subjectId && clip.kind === 'image');
@@ -71,7 +72,7 @@ export default function FrameEditor({ recipe, clips, edits, onUpdate, onImport, 
       setNotice('Frame recipe loaded. Create an edited frame to run these settings.');
     } catch (error) { setError((error as Error).message); }
   }
-  return <div className="modal-backdrop" onClick={onClose}><section ref={dialog} className="modal frame-editor" role="dialog" aria-modal="true" aria-label="Create an edited frame" onClick={event => event.stopPropagation()} onKeyDown={event => {
+  return <div className="modal-backdrop" onClick={onClose}><section ref={dialog} className="modal frame-editor" role="dialog" aria-modal="true" aria-label={ending ? 'Create an ending frame' : 'Create an edited frame'} onClick={event => event.stopPropagation()} onKeyDown={event => {
     event.stopPropagation();
     if (event.key === 'Escape') onClose();
     if (event.key === 'Tab') {
@@ -82,11 +83,11 @@ export default function FrameEditor({ recipe, clips, edits, onUpdate, onImport, 
     }
   }}>
     <button className="modal-close" title="Close frame editor" onClick={onClose}><X size={20}/></button>
-    <div className="eyebrow">LOCAL APPEARANCE EDIT / QWEN IMAGE EDIT</div><h2>Give the shot a new appearance.</h2>
-    <p className="frame-editor-intro">Describe a change to the starting frame. Review the image, then use it to guide your video. Keep the composition and give the new object room inside your painted cue.</p>
+    <div className="eyebrow">LOCAL APPEARANCE EDIT / QWEN IMAGE EDIT</div><h2>{ending ? 'Design the final moment.' : 'Give the shot a new appearance.'}</h2>
+    <p className="frame-editor-intro">{ending ? 'Edit the starting frame into the ending you imagine. Review the image, then use it as the destination for your video transition.' : 'Describe a change to the starting frame. Review the image, then use it to guide your video. Keep the composition and give the new object room inside your painted cue.'}</p>
     <div className="frame-editor-grid"><div className="frame-editor-preview"><div className="frame-preview-tabs"><button className={source || !viewed?.clip ? 'active' : ''} onClick={() => setSource(true)}>Source frame</button><button disabled={!viewed?.clip} className={!source && viewed?.clip ? 'active' : ''} onClick={() => setSource(false)}>Edited frame</button><span>{recipe.trimStart.toFixed(2)}s INTO SOURCE</span></div>
-      <img src={!source && viewed?.clip ? viewed.clip.url : `/api/thumbnails/${recipe.clip.id}?time=${recipe.trimStart}`} alt={!source && viewed?.clip ? 'Generated edited first frame' : 'Selected starting frame before editing'}/>
-      {viewed?.clip && <div className="frame-result-actions"><button className="button frame-use" disabled={busy} onClick={() => { if (onUse(viewed)) onClose(); }}>Use this edited frame<ArrowUpRight size={14}/></button><a href={viewed.clip.url} download="aftertake-edited-frame.png" title="Download edited frame"><Download size={16}/></a><a href={`/api/frame-edits/${viewed.id}/recipe`} download>Frame recipe ↗</a></div>}
+      <img src={!source && viewed?.clip ? viewed.clip.url : `/api/thumbnails/${recipe.clip.id}?time=${recipe.trimStart}`} alt={!source && viewed?.clip ? ending ? 'Generated ending frame' : 'Generated edited first frame' : 'Selected starting frame before editing'}/>
+      {viewed?.clip && <div className="frame-result-actions"><button className="button frame-use" disabled={busy} onClick={() => { if (onUse(viewed)) onClose(); }}>{ending ? 'Use as ending frame' : 'Use this edited frame'}<ArrowUpRight size={14}/></button><a href={viewed.clip.url} download={ending ? 'aftertake-ending-frame.png' : 'aftertake-edited-frame.png'} title="Download edited frame"><Download size={16}/></a><a href={`/api/frame-edits/${viewed.id}/recipe`} download>Frame recipe ↗</a></div>}
       {viewed && <div className="frame-result-detail"><span>{viewed.state === 'succeeded' ? 'READY FOR YOUR REVIEW' : viewed.state.replaceAll('_', ' ').toUpperCase()} · SEED {viewed.request.seed} · {viewed.request.mode === 'fast' ? '4' : '20'} STEPS</span><p>{viewed.request.prompt}</p>{viewed.error && <p className="error-note">{viewed.error}</p>}{['output_error', 'connection_lost', 'submission_unknown'].includes(viewed.state) && <button className="button" disabled={sending} onClick={() => void act(viewed, 'reconcile')}>Check submitted job</button>}</div>}
       {pending && <div className="frame-edit-progress" role="status"><LoaderCircle size={16} className="spin"/><div><strong>{pending.stage || pending.state.replaceAll('_', ' ')}</strong><small>{pending.request.clip.name}{pending.progress !== null ? ` · ${Math.round(pending.progress * 100)}%` : ''}</small></div>{pending.jobId && pending.state !== 'finalizing' && <button disabled={sending} onClick={() => void act(pending, 'cancel')}>Cancel</button>}{!pending.jobId && <button disabled={sending} onClick={() => void act(pending, 'reconcile')}>Check submission</button>}</div>}
       {history.length > 1 && <div className="frame-edit-history" aria-label="Previous frame edits">{history.filter(edit => edit.clip).map(edit => <button key={edit.id} className={edit.id === viewed?.id ? 'active' : ''} title={edit.request.prompt} onClick={() => { setSelected(edit.id); setSource(false); }}><img src={edit.clip!.url} alt={`Edited frame, seed ${edit.request.seed}`}/><span>Seed {edit.request.seed}</span></button>)}</div>}
