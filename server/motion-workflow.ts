@@ -40,7 +40,7 @@ export function buildMotionTransferWorkflow(recipe: Recipe): Record<string, unkn
     '13': n('WanAnimate2ToVideo', { positive: ['5', 0], negative: ['6', 0], vae: ['3', 0], width: d.width, height: d.height,
       length: d.frames, batch_size: 1, reference_image: ['46', 0], pose_video: ['8', 0], clip_vision_output: ['11', 0],
       positive_pose: ['7', 0], clip_vision_output_pose: ['12', 0], video_frame_offset: 0,
-      pose_strength: 1, pose_start_percent: 0, pose_end_percent: 1, reference_image_strength: 1 }),
+      pose_strength: recipe.transfer?.poseStrength ?? 1, pose_start_percent: 0, pose_end_percent: 1, reference_image_strength: 1 }),
     '14': n('WanAnimate2Cache', { model: ['1', 0], device: 'gpu', dtype: recipe.quality === 'final' ? 'int4' : 'int8' }),
     '15': n('ModelSamplingSD3', { model: ['14', 0], shift: 5 }),
     '16': n('BasicScheduler', { model: ['14', 0], scheduler: 'simple', steps: 10, denoise: 1 }),
