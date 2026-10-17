@@ -485,12 +485,46 @@ download hit `ERR_BLOCKED_BY_CLIENT`; the user completed the ordinary download.
   Watch action starts playback. The Copy commands control copied the exact
   displayed setup commands. No model generation occurs on this document.
 
+## Clean-clone portability correction — October 17
+
+- A complete clone from the read-only HTTPS export installed its frozen pnpm
+  lockfile and built successfully. Its template HTTP test exposed a hidden-path
+  issue: Express rejected an absolute media path containing `.runtime` in the
+  checkout location. Example assets now use a contained relative path and an
+  explicit root, retaining the dotfile-denial policy inside that root.
+- The regression test copies the real example catalog into a hidden checkout
+  and exercises preview serving and source/result imports without Python or a
+  GPU. All 27 TypeScript tests and the production build pass after the fix. The
+  HTTPS clone was then fast-forwarded to the fix, passed its own tests/build,
+  and launched all seven examples with Python absent and engine URLs offline.
+  Poster, video, reference PNG and frame-recipe routes returned their expected
+  MIME types. Evidence: `.runtime/publication/clean-clone-proof.json`.
+- GitHub initially returned HTTP 500 in the import view and no anonymous Git
+  refs. The importer subsequently recovered; public access was verified below.
+
+## Public source and demo — October 17
+
+- [The MIT repository](https://github.com/ItsSNOWMOBILE/aftertake) is public.
+  Anonymous HTTPS Git fetch returns the published branch and complete source.
+  Its application files, tests and example assets match the independently
+  tested clean clone; the hidden-checkout media fix and regression are included.
+- [The demo document](https://itssnowmobile.github.io/aftertake/) is live on
+  GitHub Pages from the repository's `/docs` folder. Its native video reaches
+  readyState 4, plays successfully, and reports 97 seconds at 1280 × 720.
+  The public MP4 is the reviewed v4 file, SHA-256
+  `4e3b93a34e16890dd103aeff897ca3c05fea5e2f0fb720586ea5948a136bf066`.
+- The GitHub connector remains unauthorized, but the authenticated browser
+  allowed import, source updates and Pages deployment. The separate Git device
+  authorization was not needed and expired without completion. Its tab is
+  closed. The temporary read-only Git export and tunnel have been stopped.
+- Publication does not constitute competition registration, a social post,
+  submission, category acceptance or an award. Those remain outstanding.
+
 ## Remaining work
 
 - Continue edge, motion-tracking and prompt-following quality work.
-- Finalize the captioned submission demo with the public repository URL.
-- Publish source repository: the GitHub connector currently requires reauthentication.
-- Prepare the required social post; register/submit the entry.
+- Review the published demo against the final submission form requirements.
+- Publish the required social post; register/submit the entry with final terms reviewed.
 - Award outcome remains external and unverified (official announcement date: November 6).
 
 The included source study is original procedural media. Blender-derived
