@@ -25,7 +25,7 @@ export function requirements(pipeline: Recipe['pipeline'] | 'motion' | 'frame-ed
       menus: [...base.menus, ['LTXICLoRALoaderModelOnly', 'lora_name', motionModelFile] as [string, string, string]] };
   }
   if (pipeline === 'cinema') return {
-    nodes: ['UnetLoaderGGUF', 'CLIPLoader', 'VAELoader', 'AftertakeLoadClip', 'AftertakeFilmGrade', 'AftertakeSaveVideo', 'LTXVImgToVideoInplace'],
+    nodes: ['UnetLoaderGGUF', 'CLIPLoader', 'VAELoader', 'AftertakeLoadClip', 'AftertakeFilmGrade', 'AftertakeSaveVideo', 'LTXVImgToVideoInplace', 'LTXVAddGuide', 'LTXVCropGuides'],
     menus: [
       ['UnetLoaderGGUF', 'unet_name', inpaintModelFiles.diffusion],
       ['CLIPLoader', 'clip_name', inpaintModelFiles.encoder],
@@ -66,11 +66,21 @@ export function buildWorkflow(recipe: Recipe): Record<string, unknown> {
     '21': n('AftertakeSaveVideo', { images: ['20', 0], fps: d.fps, filename_prefix: 'aftertake/cinema', recipe_json: JSON.stringify(recipe) }),
     '22': n('AftertakeSaveVideo', { images: ['19', 0], fps: d.fps, filename_prefix: 'aftertake/generation', recipe_json: JSON.stringify(recipe) }),
     } as Record<string, { class_type: string; inputs: Record<string, unknown> }>;
+    if (recipe.endFrame) {
+      // The official first/last template uses two image guides, then crops
+      // their appended latent tokens before decoding the generated frames.
+      graph['12'] = n('LTXVAddGuide', { positive: ['7', 0], negative: ['7', 1], vae: ['3', 0], latent: ['11', 0], image: ['8', 0], frame_idx: 0, strength: .7 });
+      graph['45'] = n('AftertakeLoadClip', { filename: 'ENDING_FRAME.png', width: d.width, height: d.height, frames: 1, fps: d.fps, trim_start: 0 });
+      graph['46'] = n('LTXVAddGuide', { positive: ['12', 0], negative: ['12', 1], vae: ['3', 0], latent: ['12', 2], image: ['45', 0], frame_idx: -1, strength: .7 });
+      graph['16'].inputs.conditioning = ['46', 0]; graph['17'].inputs.latent_image = ['46', 2];
+      graph['18'] = n('LTXVCropGuides', { positive: ['46', 0], negative: ['46', 1], latent: ['17', 0] });
+      graph['19'].inputs.samples = ['18', 2];
+    }
     if (recipe.cinema?.guidance === 'tracks') {
       graph['4'] = n('LTXICLoRALoaderModelOnly', { model: ['1', 0], lora_name: motionModelFile, strength_model: 1 });
       graph['41'] = n('LTXVDrawTracks', { tracks: JSON.stringify(cameraTracks(d.width, d.height, d.frames, recipe.cinema.movement)), width: d.width, height: d.height });
       graph['42'] = n('LTXAddVideoICLoRAGuideAdvanced', {
-        positive: ['7', 0], negative: ['7', 1], vae: ['3', 0], latent: ['12', 0], image: ['41', 0],
+        positive: [recipe.endFrame ? '46' : '7', 0], negative: [recipe.endFrame ? '46' : '7', 1], vae: ['3', 0], latent: recipe.endFrame ? ['46', 2] : ['12', 0], image: ['41', 0],
         frame_idx: 0, strength: 1, latent_downscale_factor: ['4', 1], crop: 'disabled',
         use_tiled_encode: false, tile_size: 256, tile_overlap: 64, attention_strength: 1,
       });
