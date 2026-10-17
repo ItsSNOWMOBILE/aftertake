@@ -78,6 +78,12 @@ Describe the finished character and scene in **Your direction**. The optional
 **Driving motion** caption describes the action in the source. Match pose,
 framing and body proportions; leave space for the full gesture.
 
+**Motion strength** adjusts how strongly Wan follows the driving video, from
+0.50 to 1.50. The model default is 1.00. Higher values can emphasize a gesture
+and also exaggerate details; use a short take to review the tradeoff. **Reset**
+restores the default. The value survives sharing/import, changes take matching
+and reaches the native workflow. Existing recipes retain their original default.
+
 **Whole frame** generates the entire shot without requiring paint. **Painted
 and timed cue** composites the generated motion through the existing spatial
 mask, tracking and temporal fades. Source sound is preserved at the selected

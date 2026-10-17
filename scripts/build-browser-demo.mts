@@ -28,7 +28,7 @@ for (const name of ['react', 'react-dom', 'lucide-react', 'zod', 'scheduler']) {
   if (!license) throw Error('Missing dependency license: ' + name);
   notices.push(name + '\n' + await readFile(path.join(folder, license), 'utf8'));
 }
-const licenseText = notices.join('\n\n----------------------------------------\n\n');
+const licenseText = notices.join('\n\n----------------------------------------\n\n').split(/\r?\n/).map(line => line.trimEnd()).join('\n').trimEnd();
 await build({ root, base: './', publicDir: false, define: { 'import.meta.env.VITE_BROWSER_DEMO': JSON.stringify('1') },
   plugins: [{ name: 'browser-demo-fonts', enforce: 'pre', transform(code, id) {
     if (!id.replaceAll('\\', '/').endsWith('/src/style.css')) return;

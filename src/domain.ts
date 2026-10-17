@@ -30,6 +30,7 @@ export const projectSchema = z.object({
   transfer: z.object({
     reference: clipSchema.extend({ kind: z.literal('image') }).optional(),
     motionCaption: z.string().trim().max(2000).optional(),
+    poseStrength: z.number().min(0.5).max(1.5).multipleOf(0.01).optional(),
     scope: z.enum(['frame', 'cue']),
   }).optional(),
 }).refine(recipe => !recipe.endFrame || recipe.pipeline === 'cinema',
@@ -74,6 +75,7 @@ export function renderSettingsKey(r: Recipe) {
   if (r.pipeline === 'motion-transfer') {
     return JSON.stringify([r.clip.sha256, r.prompt.trim(), r.seed, r.quality, r.trimStart, 'motion-transfer',
       r.transfer?.reference?.sha256 || '', r.transfer?.motionCaption?.trim() || '', r.transfer?.scope || 'frame',
+      r.transfer?.poseStrength ?? 1,
       usesCue(r) ? cueSettingsKey(r.cue) : null]);
   }
   if (r.pipeline === 'cinema') {

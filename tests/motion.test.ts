@@ -32,12 +32,30 @@ test('whole-frame motion needs a still appearance and video driver; painted moti
 test('motion take identity follows both media hashes, captions and scope while ignoring inactive paint', () => {
   const key = renderSettingsKey(recipe);
   assert.equal(key, renderSettingsKey({ ...recipe, cue: base.cue }));
+  assert.equal(key, renderSettingsKey({ ...recipe, transfer: { ...recipe.transfer!, poseStrength: 1 } }));
+  assert.notEqual(key, renderSettingsKey({ ...recipe, transfer: { ...recipe.transfer!, poseStrength: 1.4 } }));
   assert.equal(key, renderSettingsKey({ ...recipe, transfer: { ...recipe.transfer!, reference: { ...image, id: base.clip.id, url: '/media/rebound.png' } } }));
   assert.notEqual(key, renderSettingsKey({ ...recipe, transfer: { ...recipe.transfer!, reference: { ...image, sha256: 'b'.repeat(64) } } }));
   assert.notEqual(key, renderSettingsKey({ ...recipe, transfer: { ...recipe.transfer!, motionCaption: 'A character jumps.' } }));
   const cued = { ...recipe, transfer: { ...recipe.transfer!, scope: 'cue' as const }, cue: base.cue };
   assert.notEqual(key, renderSettingsKey(cued));
   assert.notEqual(renderSettingsKey(cued), renderSettingsKey({ ...cued, cue: { ...base.cue, end: base.cue.end - .1 } }));
+});
+
+test('motion strength survives recipe sharing within bounds and reaches the native guidance input', () => {
+  const changed = { ...recipe, transfer: { ...recipe.transfer!, poseStrength: 1.4 } };
+  const restored = recipeSchema.parse(JSON.parse(JSON.stringify(changed)));
+  assert.equal(restored.transfer?.poseStrength, 1.4);
+  for (const strength of [0, 0.49, 1.51, 2, 1.234, NaN])
+    assert.equal(projectSchema.safeParse({ ...recipe, transfer: { ...recipe.transfer!, poseStrength: strength } }).success, false);
+  for (const strength of [0.5, 1, 1.4, 1.5]) {
+    const r = recipeSchema.parse({ ...recipe, transfer: { ...recipe.transfer!, poseStrength: strength } });
+    const graph = buildWorkflow(r) as Record<string, { inputs: Record<string, any> }>;
+    assert.equal(graph['13'].inputs.pose_strength, strength);
+    assert.equal(graph['13'].inputs.reference_image_strength, 1);
+    assert.equal(JSON.parse(graph['21'].inputs.recipe_json).transfer.poseStrength, strength);
+  }
+  assert.equal((buildWorkflow(recipe) as any)['13'].inputs.pose_strength, 1);
 });
 
 test('motion graph conditions appearance and driving pixels separately, crops without stretching and preserves source audio', () => {
@@ -67,7 +85,7 @@ test('motion submission resolves canonical appearance bytes and rejects a forged
   const hash = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
   const source = { ...base.clip, url: '/media/source.mp4', sha256: hash(sourceBytes) };
   const appearance = { ...image, sha256: hash(imageBytes) };
-  const r = { ...recipe, clip: source, transfer: { ...recipe.transfer!, reference: appearance } };
+  const r = { ...recipe, clip: source, transfer: { ...recipe.transfer!, reference: appearance, poseStrength: 1.4 } };
   try {
     await writeFile(path.join(folder, `${source.id}.json`), JSON.stringify(source));
     await writeFile(path.join(folder, `${appearance.id}.json`), JSON.stringify(appearance));
@@ -76,6 +94,7 @@ test('motion submission resolves canonical appearance bytes and rejects a forged
     const resolved = await resolveRecipeAssets({ ...r, transfer: { ...r.transfer, reference: { ...appearance, url: '/media/forged.png', width: 1 } } }, folder);
     assert.equal(resolved.transfer?.reference?.url, appearance.url);
     assert.equal(resolved.transfer?.reference?.width, appearance.width);
+    assert.equal(resolved.transfer?.poseStrength, 1.4);
     await assert.rejects(resolveRecipeAssets({ ...r, transfer: { ...r.transfer, reference: { ...appearance, sha256: 'b'.repeat(64) } } }, folder), RecipeAssetError);
     await writeFile(path.join(folder, 'character.png'), 'changed');
     await assert.rejects(resolveRecipeAssets(r, folder), RecipeAssetError);
