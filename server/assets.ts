@@ -24,5 +24,11 @@ export async function resolveRecipeAssets(recipe: Recipe, folder: string): Promi
     if (reference.kind !== 'image') throw new RecipeAssetError('The edited first frame must be a still image.');
     editReference = { ...reference, kind: 'image' };
   }
-  return recipeSchema.parse({ ...recipe, clip, editReference });
+  let endFrame = recipe.endFrame;
+  if (recipe.pipeline === 'cinema' && endFrame) {
+    const ending = await resolveClipAsset(endFrame, folder, 'ending frame');
+    if (ending.kind !== 'image') throw new RecipeAssetError('The ending frame must be a still image.');
+    endFrame = { ...ending, kind: 'image' };
+  }
+  return recipeSchema.parse({ ...recipe, clip, editReference, endFrame });
 }
