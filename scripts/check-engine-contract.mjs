@@ -25,13 +25,15 @@ function check(label, graph) {
     }
   }
 }
-for (const profile of ['structure', 'inpaint', 'cinema', 'motion', 'inpaint-reference']) for (const quality of ['draft', 'final']) {
-  const pipeline = profile === 'motion' ? 'cinema' : profile === 'inpaint-reference' ? 'inpaint' : profile;
-  const graph = buildWorkflow({ ...sample, pipeline, quality, editReference: profile === 'inpaint-reference' ? reference : undefined, cinema: { ...defaultCinema, guidance: profile === 'motion' ? 'tracks' : 'prompt' } });
+for (const profile of ['structure', 'inpaint', 'cinema', 'motion', 'inpaint-reference', 'cinema-ending', 'motion-ending']) for (const quality of ['draft', 'final']) {
+  const pipeline = ['motion', 'cinema-ending', 'motion-ending'].includes(profile) ? 'cinema' : profile === 'inpaint-reference' ? 'inpaint' : profile;
+  const graph = buildWorkflow({ ...sample, pipeline, quality, editReference: profile === 'inpaint-reference' ? reference : undefined,
+    endFrame: profile.endsWith('-ending') ? { ...reference, kind: 'image' } : undefined,
+    cinema: { ...defaultCinema, guidance: profile.startsWith('motion') ? 'tracks' : 'prompt' } });
   check(`${profile}/${quality}`, graph);
 }
 for (const mode of ['fast', 'detail']) for (const subject of [undefined, { ...reference, kind: 'image' }])
   check(`frame-edit/${mode}/${subject ? 'subject' : 'source-only'}`, buildFrameEditWorkflow({ format: 'aftertake-frame-edit/1', clip: sample.clip,
     trimStart: 0, prompt: 'Replace the selected object, preserving the surrounding scene.', seed: 731, mode, subject }));
 if (failures.length) throw new Error(failures.join('\n'));
-console.log('All fourteen workflow variants satisfy the live required-input and output-link contracts. No jobs submitted.');
+console.log('All eighteen workflow variants satisfy the live required-input and output-link contracts. No jobs submitted.');
