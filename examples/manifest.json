@@ -10,9 +10,9 @@
       "license": "MIT source; model terms apply to generated results",
       "source": "reclaimed/source.mp4",
       "result": "reclaimed/result.mp4",
+      "poster": "reclaimed/poster.jpg",
       "recipe": "reclaimed/recipe.json",
-      "workflow": "reclaimed/workflow-api.json",
-      "poster": "reclaimed/poster.jpg"
+      "workflow": "reclaimed/workflow-api.json"
     },
     {
       "slug": "portal",
@@ -23,9 +23,9 @@
       "license": "Pexels License; model terms also apply to generated results",
       "source": "portal/source.mp4",
       "result": "portal/result.mp4",
+      "poster": "portal/poster.jpg",
       "recipe": "portal/recipe.json",
-      "workflow": "portal/workflow-api.json",
-      "poster": "portal/poster.jpg"
+      "workflow": "portal/workflow-api.json"
     },
     {
       "slug": "golden-falls",
@@ -36,9 +36,9 @@
       "license": "Pexels License; model terms also apply to generated results",
       "source": "golden-falls/source.mp4",
       "result": "golden-falls/result.mp4",
+      "poster": "golden-falls/poster.jpg",
       "recipe": "golden-falls/recipe.json",
-      "workflow": "golden-falls/workflow-api.json",
-      "poster": "golden-falls/poster.jpg"
+      "workflow": "golden-falls/workflow-api.json"
     },
     {
       "slug": "quiet-approach",
@@ -49,9 +49,9 @@
       "license": "Pexels License; model terms also apply to generated results",
       "source": "quiet-approach/source.png",
       "result": "quiet-approach/result.mp4",
+      "poster": "quiet-approach/poster.jpg",
       "recipe": "quiet-approach/recipe.json",
-      "workflow": "quiet-approach/workflow-api.json",
-      "poster": "quiet-approach/poster.jpg"
+      "workflow": "quiet-approach/workflow-api.json"
     },
     {
       "slug": "guided-pullback",
@@ -62,9 +62,23 @@
       "license": "Pexels License; model terms also apply to generated results",
       "source": "guided-pullback/source.png",
       "result": "guided-pullback/result.mp4",
+      "poster": "guided-pullback/poster.jpg",
       "recipe": "guided-pullback/recipe.json",
-      "workflow": "guided-pullback/workflow-api.json",
-      "poster": "guided-pullback/poster.jpg"
+      "workflow": "guided-pullback/workflow-api.json"
+    },
+    {
+      "slug": "reference-portal",
+      "title": "An image to follow",
+      "renderId": "49b0792c-855f-43ed-b656-403351bb0976",
+      "credit": "Curtis Adams / Pexels; edited reference extracted from the earlier Aftertake portal render",
+      "sourceUrl": "https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/",
+      "license": "Pexels License; model terms also apply to generated results and the edited reference",
+      "source": "reference-portal/source.mp4",
+      "result": "reference-portal/result.mp4",
+      "poster": "reference-portal/poster.jpg",
+      "reference": "reference-portal/edited-first-frame.png",
+      "recipe": "reference-portal/recipe.json",
+      "workflow": "reference-portal/workflow-api.json"
     }
   ],
   "files": [
@@ -85,6 +99,12 @@
       "target": "outputs/ca56f918-ba61-4935-86ca-13814f22d56c-coarse.mp4",
       "sha256": "1ea0cbddad98821b3903810a129c404a95e8fca2cefb2805eb5d198af73b9796",
       "size": 791942
+    },
+    {
+      "source": "reclaimed/poster.jpg",
+      "target": "posters/reclaimed.jpg",
+      "sha256": "4ef8a10c0e3ad51b975353b68f4f8e12c5747aaa94abde4d8dc70e9ec8295548",
+      "size": 37629
     },
     {
       "source": "reclaimed/source.mp4",
@@ -843,6 +863,12 @@
       "size": 207479
     },
     {
+      "source": "portal/poster.jpg",
+      "target": "posters/portal.jpg",
+      "sha256": "9328191f10d20d36a4bf35d0c887e8cdb7af34b041759227268f47bdd64d078c",
+      "size": 23648
+    },
+    {
       "source": "portal/source.mp4",
       "target": "clips/1a8778db-f724-43e2-ac8b-7ea0d7e6181a.mp4",
       "sha256": "f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2",
@@ -1485,6 +1511,12 @@
       "size": 1234298
     },
     {
+      "source": "golden-falls/poster.jpg",
+      "target": "posters/golden-falls.jpg",
+      "sha256": "e421925281d7cf4d96acb75bbdf4a1f4b0aca002d892d7a3617b72b1eca7d8cd",
+      "size": 60014
+    },
+    {
       "source": "golden-falls/source.mp4",
       "target": "clips/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4",
       "sha256": "b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57",
@@ -2121,6 +2153,12 @@
       "size": 182047
     },
     {
+      "source": "quiet-approach/poster.jpg",
+      "target": "posters/quiet-approach.jpg",
+      "sha256": "6a79602c00aef9c25e1239c09c7524b19cd58aa5e3568937608f5161398d9819",
+      "size": 16518
+    },
+    {
       "source": "quiet-approach/source.png",
       "target": "clips/f3fe6177-e57e-4b0e-8a9d-11c85ac9cc9d.png",
       "sha256": "d9f4b5376666cf39a964f85cd4a605d46cdeab9a93e9e136d3212d56eedab6a7",
@@ -2163,40 +2201,64 @@
       "size": 64115
     },
     {
+      "source": "guided-pullback/poster.jpg",
+      "target": "posters/guided-pullback.jpg",
+      "sha256": "7dc8e63587c6affa3dde678f4fe4181738fe4a4a6985da9e30b88bffbca6b6de",
+      "size": 17475
+    },
+    {
       "source": "guided-pullback/render.json",
       "target": "renders/4d104079-d530-47dd-936f-dade1212be0b.json",
       "sha256": "3331de77d3e434e6021be02ab297e938f72ddaa625d85af3089f8a6135b1b4b9",
       "size": 33598
     },
     {
-      "source": "reclaimed/poster.jpg",
-      "target": "posters/reclaimed.jpg",
-      "sha256": "4ef8a10c0e3ad51b975353b68f4f8e12c5747aaa94abde4d8dc70e9ec8295548",
-      "size": 37629
+      "source": "reference-portal/edited-first-frame.png",
+      "target": "clips/732369a3-0434-4d46-a327-e74fe29d143f.png",
+      "sha256": "eb1e002ac8b403d8dee60f9f233d5c67c2d9a1d693be3a83156c38cdfc10aaf4",
+      "size": 213427
     },
     {
-      "source": "portal/poster.jpg",
-      "target": "posters/portal.jpg",
-      "sha256": "9328191f10d20d36a4bf35d0c887e8cdb7af34b041759227268f47bdd64d078c",
-      "size": 23648
+      "source": "reference-portal/reference.json",
+      "target": "clips/732369a3-0434-4d46-a327-e74fe29d143f.json",
+      "sha256": "e05872edc70282ea09df4d6364b9094d03844f638a56010dd5ebe43332d5fd8d",
+      "size": 296
     },
     {
-      "source": "golden-falls/poster.jpg",
-      "target": "posters/golden-falls.jpg",
-      "sha256": "e421925281d7cf4d96acb75bbdf4a1f4b0aca002d892d7a3617b72b1eca7d8cd",
-      "size": 60014
+      "source": "previews/168eeb8b4bf003ff01848642d4ce3177182d2f1b8a7b181e6787ef216f43d54f.jpg",
+      "target": "previews/168eeb8b4bf003ff01848642d4ce3177182d2f1b8a7b181e6787ef216f43d54f.jpg",
+      "sha256": "6755ea6b14147d322facb0f071a13692def3346337abc8db204c16ff6c6a5844",
+      "size": 7759
     },
     {
-      "source": "quiet-approach/poster.jpg",
-      "target": "posters/quiet-approach.jpg",
-      "sha256": "6a79602c00aef9c25e1239c09c7524b19cd58aa5e3568937608f5161398d9819",
-      "size": 16518
+      "source": "reference-portal/result.mp4",
+      "target": "outputs/49b0792c-855f-43ed-b656-403351bb0976.mp4",
+      "sha256": "7c5d819f2b46b1eb13ec714fd0584303459f1511c0025324b9622ac70fe5964a",
+      "size": 394538
     },
     {
-      "source": "guided-pullback/poster.jpg",
-      "target": "posters/guided-pullback.jpg",
-      "sha256": "7dc8e63587c6affa3dde678f4fe4181738fe4a4a6985da9e30b88bffbca6b6de",
-      "size": 17475
+      "source": "reference-portal/raw.mp4",
+      "target": "outputs/49b0792c-855f-43ed-b656-403351bb0976-raw.mp4",
+      "sha256": "b76b6186c814f7c9b4b1b17da546aa4c72558db9d3f231e8f4e243fd0b9edb71",
+      "size": 409404
+    },
+    {
+      "source": "reference-portal/coarse.mp4",
+      "target": "outputs/49b0792c-855f-43ed-b656-403351bb0976-coarse.mp4",
+      "sha256": "2783cdacf7a5c0cea5ba0a4a600a5edd72116d8cc9cd8f7480b4c8320a9a8a63",
+      "size": 200810
+    },
+    {
+      "source": "reference-portal/poster.jpg",
+      "target": "posters/reference-portal.jpg",
+      "sha256": "2c5e4adbdee6387a6f685bce56a9aab7be41a39a120130a5a18ef2734c754654",
+      "size": 23038
+    },
+    {
+      "source": "reference-portal/render.json",
+      "target": "renders/49b0792c-855f-43ed-b656-403351bb0976.json",
+      "sha256": "f464983bdcf9662efc21025e4e22d0db4588b2d5b3cd6067661cba4fc59cafdb",
+      "size": 16902
     }
   ]
 }

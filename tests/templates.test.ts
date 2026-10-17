@@ -47,7 +47,7 @@ test('reviewed examples import real bytes once without Python, GPU jobs or sourc
   const url = `http://127.0.0.1:${address.port}/templates`;
   try {
     const catalog = await fetch(url).then(r => r.json()) as Template[];
-    assert.equal(catalog.length, 5);
+    assert.equal(catalog.length, 6);
     assert.equal((await fetch(url + '/portal/poster')).headers.get('content-type'), 'image/jpeg');
     assert.equal((await fetch(url + '/portal/private')).status, 404);
     assert.equal((await fetch(url + '/missing/open', { method: 'POST' })).status, 404);
@@ -67,6 +67,13 @@ test('reviewed examples import real bytes once without Python, GPU jobs or sourc
     assert.ok(guided.render.guideOutput);
     assert.notEqual(first.render.recipe.clip.id, quiet.render.recipe.clip.id);
     assert.deepEqual(await readFile(path.join(directory, 'outputs', first.render.id + '.mp4')), bytes);
+    const edited = await fetch(url + '/reference-portal/open', { method: 'POST' }).then(r => r.json()) as { render: Render };
+    assert.equal(edited.render.recipe.clip.id, first.render.recipe.clip.id);
+    const image = edited.render.recipe.editReference!;
+    assert.equal(image.kind, 'image');
+    assert.equal(createHash('sha256').update(await readFile(path.join(directory, 'clips', path.basename(image.url)))).digest('hex'), image.sha256);
+    assert.notEqual(image.id, '732369a3-0434-4d46-a327-e74fe29d143f');
+    assert.equal((await fetch(url + '/reference-portal/reference')).headers.get('content-type'), 'image/png');
   } finally {
     await new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
     assert.equal(path.dirname(path.resolve(directory)), path.resolve(tmpdir()));

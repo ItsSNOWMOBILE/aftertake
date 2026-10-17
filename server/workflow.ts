@@ -31,7 +31,7 @@ export function requirements(pipeline: Recipe['pipeline'] | 'motion' = 'structur
     ] as [string, string, string][],
   };
   const inpaint = pipeline === 'inpaint', files = inpaint ? inpaintModelFiles : modelFiles;
-  const nodes = inpaint ? requiredNodes.filter(n => n !== 'DualCLIPLoader').concat('CLIPLoader', 'LTXVInpaintPreprocess', 'ThresholdMask', 'LTXVLaplacianPyramidBlend') : requiredNodes;
+  const nodes = inpaint ? requiredNodes.filter(n => n !== 'DualCLIPLoader').concat('CLIPLoader', 'LTXVInpaintPreprocess', 'ThresholdMask', 'LTXVLaplacianPyramidBlend', 'LTXVImgToVideoInplace') : requiredNodes;
   const menus: [string, string, string][] = [
     ['UnetLoaderGGUF', 'unet_name', files.diffusion],
     [inpaint ? 'CLIPLoader' : 'DualCLIPLoader', inpaint ? 'clip_name' : 'clip_name1', files.encoder],
@@ -158,6 +158,16 @@ export function buildWorkflow(recipe: Recipe): Record<string, unknown> {
       graph['20'].inputs.generated = ['35', 0];
       graph['22'].inputs.images = ['34', 0];
       graph['40'] = n('AftertakeSaveVideo', { images: ['19', 0], fps: d.fps, filename_prefix: 'aftertake/coarse', recipe_json: JSON.stringify(recipe) });
+    }
+    if (recipe.editReference) {
+      graph['45'] = n('AftertakeLoadClip', { filename: 'EDITED_FIRST_FRAME.png', width: graph['11'].inputs.width, height: graph['11'].inputs.height, frames: 1, fps: d.fps, trim_start: 0 });
+      graph['46'] = n('LTXVImgToVideoInplace', { vae: ['3', 0], image: ['45', 0], latent: ['11', 0], strength: 1, bypass: false });
+      graph['12'].inputs.latent = ['46', 0];
+      if (recipe.quality === 'final') {
+        graph['47'] = n('AftertakeLoadClip', { filename: 'EDITED_FIRST_FRAME.png', width: d.width, height: d.height, frames: 1, fps: d.fps, trim_start: 0 });
+        graph['48'] = n('LTXVImgToVideoInplace', { vae: ['3', 0], image: ['47', 0], latent: ['30', 0], strength: 1, bypass: false });
+        graph['33'].inputs.latent_image = ['48', 0];
+      }
     }
   }
   return graph;

@@ -6,12 +6,23 @@ Aftertake is an open-source VFX studio for short video clips. Paint a region,
 set a temporal cue, describe a transformation, and render a remixable take with
 open-weight models through the official Comfy SDK.
 
-Open **Recipes** to browse five reviewed effects and camera examples. Search
+Open **Recipes** to browse six reviewed effects and camera examples. Search
 by direction or tag, play the original and result, inspect the actual settings,
 then explore the recorded take or apply its direction to your own source.
 Region effects keep your painted cue and timing. Camera recipes keep your scene
 description. Previews are actual renders; opening an example requires no Python,
 GPU or inference service. Applying a recipe prepares an editable new take.
+
+**Edited first frame** guides a masked edit with a full-frame appearance reference.
+Export the selected starting frame, edit it while keeping the shot's composition,
+then upload the result or choose an imported image. LTX conditions the reference
+in both native generation stages; your painted region and temporal cue still
+control the final composite. The source video supplies motion and original sound.
+This is experimental and does not guarantee arbitrary character/object identity.
+The sixth example includes its edited reference, source, result and actual graph.
+Share the source **and** edited image with a reference-guided recipe. Both are
+bound by content hashes and checked against local bytes before generation.
+Changing the source range or choosing a new effect clears the old reference.
 
 **Animate a frame** creates a new shot from a photo or a selected video frame.
 Choose camera movement, lens character, lighting and palette; save a named film
@@ -43,7 +54,7 @@ the final composite. Outside the cue, source pixels are preserved exactly
 **before lossy video encoding**. Paint adds to the region; erase protects detail.
 
 This is an early competition build. Native inpainting and structural guidance
-have completed real local renders, including 768-pixel takes. Five examples
+have completed real local renders, including 768-pixel takes. Six examples
 include source media, recipes and executed graphs. Visual quality remains
 experimental, and competition submission is still outstanding. See
 [build evidence](docs/progress.md) and the [Higgsfield feature benchmark](docs/higgsfield-benchmark.md).
@@ -65,7 +76,7 @@ pnpm install
 pnpm demo
 ```
 
-Open http://127.0.0.1:4312 to explore five real, pre-rendered examples in a
+Open http://127.0.0.1:4312 to explore six real, pre-rendered examples in a
 separate workspace. No Python, GPU or model download is needed for this
 walkthrough. You can inspect the cues and export editable recipes and graphs.
 Generating new takes requires the runtime below. See
@@ -157,7 +168,9 @@ content hash. Render history, source files and outputs persist under `.data/`.
 Generated MP4 metadata also includes the recipe and executed graph.
 
 Export ComfyUI workflow produces the actual API-format graph. Replace the
-`AftertakeLoadClip` filename `INPUT.mp4` with your uploaded source filename.
+`AftertakeLoadClip` filenames with your uploaded source and edited-frame filenames.
+New graphs use `INPUT.mp4` and `EDITED_FIRST_FRAME.png` placeholders; recorded
+executed graphs retain the filenames used by ComfyUI.
 This export requires the custom nodes and model files; it is not a bundled
 model distribution.
 

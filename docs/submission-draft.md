@@ -19,12 +19,17 @@ motion-track conditioning supplies explicit framing trajectories, with the
 exact guide saved beside the result. Named film looks travel between sources;
 color grading is consistent across frames.
 
+Optional edited-first-frame conditioning sets the intended appearance for a
+masked edit. It enters both native generation stages while the original cue
+controls the visible region and timing. The source and edited frame are hash-bound
+and checked before submission. A complete reference-led example is included.
+
 An editable film desk trims and orders up to eight completed takes, preserving
 source sound where available. Its 720p exports include a portable shot manifest
 with output hashes, recipes and actual workflows. Rotated phone footage stays
 upright throughout import, cue preview and generation.
 
-Five real examples include source media, recipes, actual graphs and outputs.
+Six real examples include source media, recipes, actual graphs and outputs.
 The searchable recipe library shows actual source/result previews, opens the
 recorded take, or applies its direction while keeping the user's source and cue.
 The example workspace works without Python, model downloads or a GPU; new
@@ -63,7 +68,7 @@ not been validated.
 ## Publication checklist
 
 - Repository: pending; source is committed locally under MIT.
-- Demo: 85-second silent captioned MP4 prepared locally; upload pending.
+- Demo: 97-second silent captioned MP4 prepared locally; upload pending.
 - Social post: draft below; no post has been sent.
 - Sign-up/submission: pending; inspect the final terms and required identity
   fields before submission. No registration or award is claimed.
@@ -76,7 +81,7 @@ Paint what changes. Erase what stays. Choose when it happens. Animate a still
 with motion-track framing guides, then pass on the editable recipe and actual
 ComfyUI graph.
 
-Local open weights through the Comfy SDK. MIT app code. Five real examples
+Local open weights through the Comfy SDK. MIT app code. Six real examples
 you can explore without downloading the models.
 
 [Demo URL pending] · [Repository URL pending]

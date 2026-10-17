@@ -14,6 +14,7 @@ const cases = [
   { slug: 'golden-falls', title: 'The golden falls', renderId: 'c729f8fb-5919-4152-be2c-8eeb56c3ffcf', credit: 'Mikhail Nilov / Pexels', sourceUrl: 'https://www.pexels.com/video/waterfall-in-the-middle-of-the-forest-6989026/', license: 'Pexels License; model terms also apply to generated results' },
   { slug: 'quiet-approach', title: 'A quiet approach', renderId: 'ade9d68a-6a3f-431d-8970-2b37f482aa4f', workspace: '.data-demo', studio: 'http://127.0.0.1:4312', credit: 'Curtis Adams / Pexels; still extracted from the licensed room source', sourceUrl: 'https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/', license: 'Pexels License; model terms also apply to generated results' },
   { slug: 'guided-pullback', title: 'Beyond the frame', renderId: '4d104079-d530-47dd-936f-dade1212be0b', workspace: '.data-demo', studio: 'http://127.0.0.1:4312', credit: 'Curtis Adams / Pexels; still extracted from the licensed room source', sourceUrl: 'https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/', license: 'Pexels License; model terms also apply to generated results' },
+  { slug: 'reference-portal', title: 'An image to follow', renderId: '49b0792c-855f-43ed-b656-403351bb0976', workspace: '.runtime/showcase-data', studio: 'http://127.0.0.1:4314', credit: 'Curtis Adams / Pexels; edited reference extracted from the earlier Aftertake portal render', sourceUrl: 'https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/', license: 'Pexels License; model terms also apply to generated results and the edited reference' },
 ];
 const manifest = { format: 'aftertake-examples/1', featuredRenderId: cases[1].renderId, cases: [], files: [] };
 const seen = new Set();
@@ -38,6 +39,24 @@ for (const item of cases) {
   await copyFile(source, path.join(folder, sourceName));
   await json(path.join(folder, 'clip.json'), clip);
   await json(path.join(folder, 'recipe.json'), render.recipe);
+  let referenceName;
+  if (render.recipe.editReference) {
+    const reference = render.recipe.editReference;
+    const original = path.join(data, 'clips', path.basename(reference.url));
+    if (digest(await readFile(original)) !== reference.sha256) throw new Error(`${item.slug} reference hash mismatch`);
+    referenceName = 'edited-first-frame.png';
+    await copyFile(original, path.join(folder, referenceName));
+    await json(path.join(folder, 'reference.json'), reference);
+    await asset(path.join(folder, referenceName), `clips/${path.basename(reference.url)}`);
+    await asset(path.join(folder, 'reference.json'), `clips/${reference.id}.json`);
+    const key = digest(`thumbnail/1:${reference.sha256}:0`), target = `previews/${key}.jpg`;
+    if (!seen.has(target)) {
+      const response = await fetch(`${item.studio || 'http://127.0.0.1:4310'}/api/thumbnails/${reference.id}?time=0`);
+      if (!response.ok || !response.headers.get('content-type')?.includes('image/jpeg')) throw new Error('Reference thumbnail generation failed');
+      const file = path.join(examples, target); await mkdir(path.dirname(file), { recursive: true });
+      await writeFile(file, Buffer.from(await response.arrayBuffer())); await asset(file, target);
+    }
+  }
   for (const [field, name, suffix] of [['output', 'result.mp4', ''], ['rawOutput', 'raw.mp4', '-raw'], ['coarseOutput', 'coarse.mp4', '-coarse'], ['guideOutput', 'guide.mp4', '-guide']]) {
     if (!render[field]) continue;
     const destination = path.join(folder, name);
@@ -74,7 +93,7 @@ for (const item of cases) {
     await asset(file, target);
   }
   const { workspace, studio, ...publicItem } = item;
-  manifest.cases.push({ ...publicItem, source: `${item.slug}/${sourceName}`, result: `${item.slug}/result.mp4`, poster: `${item.slug}/poster.jpg`, recipe: `${item.slug}/recipe.json`, workflow: `${item.slug}/workflow-api.json` });
+  manifest.cases.push({ ...publicItem, source: `${item.slug}/${sourceName}`, result: `${item.slug}/result.mp4`, poster: `${item.slug}/poster.jpg`, ...(referenceName ? { reference: `${item.slug}/${referenceName}` } : {}), recipe: `${item.slug}/recipe.json`, workflow: `${item.slug}/workflow-api.json` });
 }
 await json(path.join(examples, 'manifest.json'), manifest);
 console.log(`Packaged ${cases.length} reviewed examples: ${(manifest.files.reduce((sum, f) => sum + f.size, 0) / 2 ** 20).toFixed(1)} MiB.`);

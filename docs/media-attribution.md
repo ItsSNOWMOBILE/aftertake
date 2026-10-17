@@ -47,3 +47,12 @@ Reviewed source excerpts and generated results are now included under
 `examples/portal` and `examples/golden-falls`, with license/credit notes in
 `examples/README.md` and a SHA-256 manifest. Research footage with actors is
 excluded from that bundle.
+
+## Edited-first-frame example
+
+`examples/reference-portal/` uses the same licensed Curtis Adams / Pexels room
+source as `portal/`. Its `edited-first-frame.png` is a normalized still extracted
+from frame 36 of the earlier Aftertake portal output. The image therefore also
+carries the applicable LTX model terms. No closed model or external image-editing
+service was used to create this reference. The source recipe and executed graph
+are included with the new output.

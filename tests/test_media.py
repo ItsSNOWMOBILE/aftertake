@@ -22,6 +22,25 @@ film_spec.loader.exec_module(film_assembler)
 
 
 class MediaTests(unittest.TestCase):
+    def test_exported_start_frame_matches_trimmed_render_including_the_final_display_interval(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            source, target = directory / 'timed.mp4', directory / 'frame.png'
+            with av.open(str(source), 'w') as container:
+                stream = container.add_stream('libx264', rate=8)
+                stream.width, stream.height, stream.pix_fmt = 128, 96, 'yuv420p'
+                for index in range(12):
+                    image = Image.new('RGB', (128, 96), ['red', 'green', 'blue'][index // 4])
+                    for packet in stream.encode(av.VideoFrame.from_image(image)): container.mux(packet)
+                for packet in stream.encode(): container.mux(packet)
+            for seconds in [0, .55, 1.05, 1.46]:
+                with self.subTest(seconds=seconds):
+                    subprocess.run([sys.executable, str(ROOT / 'scripts/extract-frame.py'), str(source), str(target), str(seconds)], check=True, capture_output=True)
+                    with Image.open(target) as exported:
+                        actual = nodes.decode_clip(source, 128, 96, 1, 16, seconds)[0].numpy()
+                        self.assertLess(float(np.abs(actual * 255 - np.asarray(exported).astype(float)).mean()), .01)
+            with self.assertRaises(ValueError): nodes.decode_clip(source, 128, 96, 1, 16, 1.7)
+
     def test_film_cuts_mix_frame_rates_aspect_ratios_audio_and_silence(self):
         with tempfile.TemporaryDirectory() as temporary:
             directory = Path(temporary)
@@ -88,6 +107,13 @@ class MediaTests(unittest.TestCase):
                     with Image.open(thumbnail) as preview:
                         self.assertEqual(preview.size, reference.size)
                         self.assertLess(float(np.abs(np.asarray(preview).astype(float) - np.asarray(reference).astype(float)).mean()), 4)
+                    exported = directory / 'full-frame.png'
+                    subprocess.run([sys.executable, str(ROOT / 'scripts/extract-frame.py'), str(source), str(exported), '.25'],
+                        check=True, capture_output=True)
+                    with Image.open(exported) as image:
+                        self.assertEqual(image.size, reference.size)
+                        self.assertLess(float(np.abs(np.asarray(image).astype(float) - np.asarray(reference).astype(float)).mean()), 1)
+                        self.assertFalse(image.getexif())
 
     def test_audio_trim_preserves_video_pixels_metadata_and_full_duration(self):
         with tempfile.TemporaryDirectory() as temporary:

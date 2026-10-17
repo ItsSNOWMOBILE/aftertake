@@ -17,27 +17,36 @@ def smoothstep(x):
 
 
 def decode_clip(path, width, height, frames, fps, trim_start):
-    selected, next_time, last = [], trim_start, None
+    def pixels(frame):
+        if display_transform(frame) is None:
+            array = frame.reformat(width=width, height=height, format='rgb24').to_ndarray()
+        else:
+            from PIL import Image
+            array = np.asarray(oriented_image(frame).resize((width, height), Image.Resampling.BICUBIC))
+        return torch.from_numpy(array.copy()).float() / 255
+
+    selected, next_time, last, last_decoded = [], trim_start, None, None
     with av.open(str(path)) as container:
         stream = container.streams.video[0]
         origin = float(stream.start_time * stream.time_base) if stream.start_time else 0
+        duration = float(stream.duration * stream.time_base) if stream.duration else float(container.duration or 0) / av.time_base
         if trim_start > 0:
             container.seek(int((trim_start + origin) * av.time_base), backward=True)
         for frame in container.decode(video=0):
+            last_decoded = frame
             timestamp = float(frame.time or 0) - origin
             if timestamp + 1e-6 < next_time:
                 continue
-            if display_transform(frame) is None:
-                array = frame.reformat(width=width, height=height, format='rgb24').to_ndarray()
-            else:
-                from PIL import Image
-                array = np.asarray(oriented_image(frame).resize((width, height), Image.Resampling.BICUBIC))
-            last = torch.from_numpy(array.copy()).float() / 255
+            last = pixels(frame)
             while timestamp + 1e-6 >= next_time and len(selected) < frames:
                 selected.append(last)
                 next_time = trim_start + len(selected) / fps
             if len(selected) == frames:
                 break
+        # A time inside the final frame's display interval has no later PTS.
+        # Hold that frame, as the browser and full-frame export do.
+        if last is None and last_decoded is not None and trim_start < duration:
+            last = pixels(last_decoded)
     if last is None:
         raise ValueError('No decodable frames in the selected source range')
     while len(selected) < frames:

@@ -8,7 +8,7 @@ import { clipSchema, recipeSchema, type Clip, type Render } from '../src/domain.
 export async function templateRouter(root: string, data: string, renders: Map<string, Render>) {
   const folder = path.join(root, 'examples'), router = Router();
   const manifest = JSON.parse(await readFile(path.join(folder, 'manifest.json'), 'utf8')) as {
-    format: string; cases: { slug: string; title: string; renderId: string; source: string; result: string; poster: string; credit: string; license: string; sourceUrl?: string }[];
+    format: string; cases: { slug: string; title: string; renderId: string; source: string; result: string; poster: string; reference?: string; credit: string; license: string; sourceUrl?: string }[];
     files: { source: string; size: number; sha256: string }[];
   };
   if (manifest.format !== 'aftertake-examples/1') throw Error('Unsupported recipe example manifest.');
@@ -31,18 +31,23 @@ export async function templateRouter(root: string, data: string, renders: Map<st
     const record = JSON.parse((await verified(`${item.slug}/render.json`)).toString('utf8')) as Render;
     record.recipe = recipeSchema.parse(record.recipe);
     await Promise.all([verified(item.result), verified(item.source, record.recipe.clip.sha256), verified(item.poster)]);
+    if (record.recipe.editReference) {
+      if (!item.reference) throw Error('The packaged example needs its edited first frame.');
+      await verified(item.reference, record.recipe.editReference.sha256);
+    }
     bundled.set(item.slug, record);
     templates.push({ ...item, ...templateNotes[item.slug], recipe: record.recipe,
-      poster: `/api/templates/${item.slug}/poster`, result: `/api/templates/${item.slug}/result`, source: `/api/templates/${item.slug}/source` });
+      poster: `/api/templates/${item.slug}/poster`, result: `/api/templates/${item.slug}/result`, source: `/api/templates/${item.slug}/source`,
+      reference: item.reference ? `/api/templates/${item.slug}/reference` : undefined });
   }
   const locks = new Set<string>();
   router.get('/', (_req, res) => { res.json(templates); });
   router.get('/:slug/:asset', (req, res) => {
     const item = manifest.cases.find(item => item.slug === req.params.slug);
     const asset = req.params.asset;
-    if (!item || !['poster', 'result', 'source'].includes(asset)) return void res.sendStatus(404);
+    if (!item || !['poster', 'result', 'source', 'reference'].includes(asset) || (asset === 'reference' && !item.reference)) return void res.sendStatus(404);
     res.setHeader('Cache-Control', 'private, max-age=3600');
-    res.sendFile(contained(item[asset as 'poster' | 'result' | 'source']));
+    res.sendFile(contained(item[asset as 'poster' | 'result' | 'source' | 'reference']!));
   });
   router.post('/:slug/open', async (req, res) => {
     const source = bundled.get(req.params.slug), template = templates.find(item => item.slug === req.params.slug);
@@ -52,30 +57,35 @@ export async function templateRouter(root: string, data: string, renders: Map<st
     try {
       const existing = [...renders.values()].find(render => render.origin?.slug === template.slug || render.id === template.renderId);
       if (existing?.state === 'succeeded') {
-        const [output, input] = await Promise.all([
+        const [output, input, reference] = await Promise.all([
           readFile(path.join(data, 'outputs', `${existing.id}.mp4`)).catch(() => null),
           readFile(path.join(data, 'clips', path.basename(existing.recipe.clip.url))).catch(() => null),
+          existing.recipe.editReference ? readFile(path.join(data, 'clips', path.basename(existing.recipe.editReference.url))).catch(() => null) : null,
         ]);
         const resultPath = manifest.cases.find(item => item.slug === template.slug)!.result;
-        if (output && input && createHash('sha256').update(output).digest('hex') === files.get(resultPath)?.sha256 &&
+        const referenceMatches = !source.recipe.editReference || (reference && createHash('sha256').update(reference).digest('hex') === source.recipe.editReference.sha256);
+        if (referenceMatches && output && input && createHash('sha256').update(output).digest('hex') === files.get(resultPath)?.sha256 &&
           createHash('sha256').update(input).digest('hex') === source.recipe.clip.sha256) return void res.json({ render: existing, clip: existing.recipe.clip });
       }
-      let clip: Clip | undefined;
-      for (const file of await readdir(path.join(data, 'clips'))) {
-        if (!file.endsWith('.json')) continue;
-        const candidate = clipSchema.parse(JSON.parse(await readFile(path.join(data, 'clips', file), 'utf8')));
-        if (candidate.sha256 === source.recipe.clip.sha256) {
-          const original = await readFile(path.join(data, 'clips', path.basename(candidate.url))).catch(() => null);
-          if (original && createHash('sha256').update(original).digest('hex') === candidate.sha256) { clip = candidate; break; }
+      async function importClip(requested: Clip, asset: string): Promise<Clip> {
+        for (const file of await readdir(path.join(data, 'clips'))) {
+          if (!file.endsWith('.json')) continue;
+          const candidate = clipSchema.parse(JSON.parse(await readFile(path.join(data, 'clips', file), 'utf8')));
+          if (candidate.sha256 === requested.sha256) {
+            const original = await readFile(path.join(data, 'clips', path.basename(candidate.url))).catch(() => null);
+            if (original && createHash('sha256').update(original).digest('hex') === candidate.sha256) return candidate;
+          }
         }
-      }
-      if (!clip) {
-        const id = randomUUID(), filename = id + (source.recipe.clip.kind === 'image' ? '.png' : '.mp4');
-        clip = { ...source.recipe.clip, id, url: `/media/${filename}` };
-        await writeFile(path.join(data, 'clips', filename), await verified(manifest.cases.find(item => item.slug === template.slug)!.source, source.recipe.clip.sha256), { flag: 'wx' });
+        const id = randomUUID(), filename = id + (requested.kind === 'image' ? '.png' : '.mp4');
+        const clip = { ...requested, id, url: `/media/${filename}` };
+        await writeFile(path.join(data, 'clips', filename), await verified(asset, requested.sha256), { flag: 'wx' });
         await writeFile(path.join(data, 'clips', `${id}.json`), JSON.stringify(clip, null, 2), { flag: 'wx' });
+        return clip;
       }
-      const id = randomUUID(), render: Render = { ...source, id, recipe: { ...source.recipe, clip },
+      const item = manifest.cases.find(item => item.slug === template.slug)!;
+      const clip = await importClip(source.recipe.clip, item.source);
+      const reference = source.recipe.editReference ? await importClip(source.recipe.editReference, item.reference!) : undefined;
+      const id = randomUUID(), render: Render = { ...source, id, recipe: { ...source.recipe, clip, editReference: reference ? { ...reference, kind: 'image' } : undefined },
         origin: { kind: 'example', slug: template.slug, renderId: template.renderId },
         createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
       for (const [field, file, suffix] of [['output', 'result.mp4', ''], ['rawOutput', 'raw.mp4', '-raw'], ['coarseOutput', 'coarse.mp4', '-coarse'], ['guideOutput', 'guide.mp4', '-guide']] as const) {

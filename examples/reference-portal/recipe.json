@@ -1,0 +1,57 @@
+{
+  "format": "aftertake/1",
+  "name": "An image to follow",
+  "clip": {
+    "id": "1a8778db-f724-43e2-ac8b-7ea0d7e6181a",
+    "name": "Empty room - Curtis Adams.mp4",
+    "sha256": "f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2",
+    "width": 768,
+    "height": 432,
+    "duration": 4.208333333333333,
+    "url": "/media/1a8778db-f724-43e2-ac8b-7ea0d7e6181a.mp4"
+  },
+  "prompt": "A luminous circular portal filled with swirling deep blue nebula clouds, tiny stars and brilliant electric cyan filaments. The glowing rim shimmers with light. Photorealistic cinematic visual effects, coherent perspective.",
+  "cue": {
+    "start": 0.35,
+    "end": 3.8,
+    "fade": 0.3,
+    "feather": 0.035,
+    "anchor": 0,
+    "strokes": [
+      {
+        "points": [
+          {
+            "x": 0.5,
+            "y": 0.55
+          }
+        ],
+        "radius": 0.42
+      },
+      {
+        "points": [
+          {
+            "x": 0.5,
+            "y": 0.12
+          }
+        ],
+        "radius": 0.19,
+        "mode": "erase"
+      }
+    ]
+  },
+  "seed": 731,
+  "quality": "final",
+  "trimStart": 0,
+  "pipeline": "inpaint",
+  "directionStrength": 1,
+  "editReference": {
+    "id": "732369a3-0434-4d46-a327-e74fe29d143f",
+    "name": "edited-first-frame.png",
+    "sha256": "eb1e002ac8b403d8dee60f9f233d5c67c2d9a1d693be3a83156c38cdfc10aaf4",
+    "width": 768,
+    "height": 448,
+    "duration": 1,
+    "url": "/media/732369a3-0434-4d46-a327-e74fe29d143f.png",
+    "kind": "image"
+  }
+}

@@ -28,12 +28,12 @@ and repeatable starting points a major part of the experience.
 
 | User job | Aftertake implementation | Remaining gap |
 | --- | --- | --- |
-| Change a selected part of footage | Native inpainting, paint/erase, temporal fades, source-preserving composite; real room, foliage and waterfall outputs reviewed | Prompt following and edge quality vary; reference-image object identity not implemented |
+| Change a selected part of footage | Native inpainting, paint/erase, temporal fades, source-preserving composite, optional edited-first-frame conditioning in both stages | Prompt following and edge quality vary; arbitrary identity replacement is not established |
 | Reuse motion while rebuilding the scene | Original structure-guided regional pipeline | Full-scene motion transfer and character reference conditioning are not implemented |
 | Animate a reference | LTX-2.5 first-frame conditioning; video-frame selection or normalized PNG/JPEG/WebP import; draft and finish sizes | GPU quality evidence recorded separately in progress.md; no end-frame reference yet |
 | Direct camera and look | Five movement suggestions, four lens characters, five lighting options; inspectable prompt; four output grades; optional motion-track conditioning | Prompt-only direction is unreliable. Guided pullback and static framing passed visual checks on one room; broader scene coverage and 3D camera reconstruction remain open |
 | Keep a film look across sources | Named local look library, built-in looks, settings preserved in recipes and MP4 metadata | No multi-user collaboration or identity lock |
-| Start from an effect | Searchable library of five reviewed effects/camera recipes with actual source/result previews; inspect/import recorded takes or apply direction to your source and cue | More varied scenes and effects needed |
+| Start from an effect | Searchable library of six reviewed effects/camera recipes with actual source/result previews; inspect/import recorded takes or apply direction to your source and cue | More varied scenes and effects needed |
 | Iterate and remix | Durable takes, source/result/compare, seeds, editable recipes, exact executed graph export | Batch variation grid and collections needed |
 | Finish a longer film | Trim and join up to eight finished takes; three 720p canvas shapes, source audio, portable hash-bound shot manifest | Longer continuous generation, transitions and 1080p delivery remain open |
 
@@ -72,14 +72,16 @@ Downloaded proprietary bundles stay in ignored local research storage.
 
 ## Next replacement milestones
 
-1. Evaluate open-weight reference conditioning for object/character replacement
-   and full-scene motion transfer before exposing those capabilities.
+1. Evaluate arbitrary object/character identity conditioning and full-scene
+   motion transfer across additional footage before exposing those capabilities.
 
 The [current official inpainting guide](https://docs.ltx.io/open-source-model/feature-guides/editing-effects/in-outpainting)
-supports an edited first frame as an object-replacement aid. An internal
-49-frame draft and a 97-frame finish native LTX-2.5 pilot successfully conditioned on a prior edited room
-frame; the portal stayed stable across the shot. It is not yet exposed in the
-product and does not prove arbitrary identity replacement. The separate
+supports an edited first frame as an object-replacement aid. Draft and finish
+pilots passed, followed by a real finished app render. The product now supports
+uploading/selecting this reference, exporting the starting frame, and preserving
+its hash through recipe sharing. The sixth bundled case contains both images
+and its actual workflow. This does not establish arbitrary identity replacement.
+The separate
 [Ingredients adapter](https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-Ingredients)
 targets LTX-2.3 reference sheets and has a separate publisher access gate; it
 has not been downloaded or represented as an installed capability.

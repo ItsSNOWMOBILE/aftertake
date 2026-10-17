@@ -13,6 +13,7 @@ import { buildWorkflow, requirements } from './workflow.js';
 import { submissionRejected } from './submission.js';
 import { filmRouter } from './films.js';
 import { templateRouter } from './templates.js';
+import { resolveRecipeAssets, RecipeAssetError } from './assets.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 process.loadEnvFile && await stat(path.join(root, '.env')).then(() => process.loadEnvFile('.env')).catch(() => {});
@@ -99,7 +100,7 @@ async function track(render: Render, initial?: Job) {
           // Some local proxy events omit the current node and report 100% for
           // intermediate operations. An indeterminate indicator is honest here.
           streamedProgress = event.currentNode && event.value < 1 ? event.value : null;
-          const stages: Record<string, string> = { '5': 'Reading direction', '6': 'Reading direction', '8': 'Reading source', '9': 'Tracking cue', '12': 'Encoding guides', '17': 'Sampling video', '19': 'Decoding frames', '20': 'Compositing', '21': 'Saving video', '22': 'Saving video', '30': 'Encoding refinement', '33': 'Refining video', '34': 'Decoding refined frames', '35': 'Blending boundaries' };
+          const stages: Record<string, string> = { '5': 'Reading direction', '6': 'Reading direction', '8': 'Reading source', '9': 'Tracking cue', '12': 'Encoding guides', '17': 'Sampling video', '19': 'Decoding frames', '20': 'Compositing', '21': 'Saving video', '22': 'Saving video', '30': 'Encoding refinement', '33': 'Refining video', '34': 'Decoding refined frames', '35': 'Blending boundaries', '45': 'Reading edited frame', '46': 'Conditioning appearance', '47': 'Reading edited frame', '48': 'Refining appearance' };
           render.stage = stages[event.currentNode || ''] || event.currentNodeClass || event.message || 'Processing workflow';
         }
       }
@@ -197,6 +198,22 @@ app.get('/api/clips', async (_req, res) => {
   }
   res.json(clips);
 });
+app.get('/api/clips/:id/frame', async (req, res) => {
+  if (!idPattern.test(req.params.id)) return void res.sendStatus(404);
+  if (!(await stat(python).catch(() => null))) return void res.status(409).json({ error: 'Install the Python runtime to export a source frame.' });
+  const clip = JSON.parse(await readFile(path.join(clipDir, `${req.params.id}.json`), 'utf8')) as Clip;
+  const requested = Number(req.query.time || 0);
+  if (!Number.isFinite(requested)) return void res.status(400).json({ error: 'Choose a valid source time.' });
+  const time = clip.kind === 'image' ? 0 : Math.max(0, Math.min(clip.duration - .05, requested));
+  const key = createHash('sha256').update(`source-frame/1:${clip.sha256}:${time}`).digest('hex');
+  const filename = `frame-${key}.png`, target = path.join(previewDir, filename);
+  const task = thumbnailQueue.then(async () => {
+    if (await stat(target).catch(() => null)) return;
+    await exec(python, [path.join(root, 'scripts/extract-frame.py'), path.join(clipDir, path.basename(clip.url)), target, String(time)], { timeout: 30000 });
+  });
+  thumbnailQueue = task.catch(() => {}); await task;
+  res.attachment('aftertake-starting-frame.png').sendFile(filename, { root: previewDir });
+});
 app.post('/api/clips', express.raw({ type: 'application/octet-stream', limit: '100mb' }), async (req, res) => {
   if (!Buffer.isBuffer(req.body) || !req.body.length) return void res.status(400).json({ error: 'Choose a video file.' });
   if (!(await stat(python).catch(() => null))) return void res.status(409).json({ error: 'Install the Python runtime before importing new clips. You can explore the included examples now.' });
@@ -257,13 +274,12 @@ app.post('/api/renders', async (req, res) => {
   if (admittingRender) return void res.status(409).json({ error: 'A take is already being submitted.' });
   admittingRender = true;
   try {
-  const recipe = recipeSchema.parse(req.body);
+  let recipe = recipeSchema.parse(req.body);
   if (!(await engine(recipe.pipeline === 'cinema' && recipe.cinema?.guidance === 'tracks' ? 'motion' : recipe.pipeline)).ready) return void res.status(409).json({ error: 'The selected local workflow is not ready. Check the engine panel.' });
   if ([...renders.values()].some(r => !terminal.has(r.state))) return void res.status(409).json({ error: 'A take is already active. Let it finish, cancel it, or reconcile its submission before starting another.' });
-  const storedClip = JSON.parse(await readFile(path.join(clipDir, `${recipe.clip.id}.json`), 'utf8')) as Clip;
-  if (storedClip.sha256 !== recipe.clip.sha256) return void res.status(409).json({ error: 'This recipe needs its original source clip. Import it before rendering.' });
-  recipe.clip = storedClip;
-  recipeSchema.parse(recipe);
+  try { recipe = await resolveRecipeAssets(recipe, clipDir); }
+  catch (error) { if (error instanceof RecipeAssetError) return void res.status(409).json({ error: error.message }); throw error; }
+  const storedClip = recipe.clip;
   const render: Render = { id: randomUUID(), recipe, state: 'submitting', progress: null,
     createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
   render.workflow = buildWorkflow(recipe);
@@ -272,6 +288,11 @@ app.post('/api/renders', async (req, res) => {
   try {
     const wf = client.workflows.fromJson(structuredClone(render.workflow));
     wf.setInput('8', 'filename', client.assets.fromFile(path.join(clipDir, path.basename(storedClip.url))));
+    if (recipe.pipeline === 'inpaint' && recipe.editReference) {
+      const image = client.assets.fromFile(path.join(clipDir, path.basename(recipe.editReference.url)));
+      wf.setInput('45', 'filename', image);
+      if (recipe.quality === 'final') wf.setInput('47', 'filename', image);
+    }
     const job = await client.submit(wf, { idempotencyKey: render.id });
     render.jobId = job.id;
     render.state = job.status === 'succeeded' ? 'finalizing' : job.status;

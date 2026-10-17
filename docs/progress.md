@@ -331,6 +331,63 @@ download hit `ERR_BLOCKED_BY_CLIENT`; the user completed the ordinary download.
   gate and a matching 2.3 stack. It was not downloaded. The successful pilots
   use the installed 2.5 weights and existing inpainting adapter.
 
+## Edited first frames and six-case walkthrough — October 17
+
+- Native masked edits now accept an optional edited full frame. Export the
+  selected starting frame as an upright, full-resolution PNG, edit it, then
+  upload or select the reference. Incompatible image geometry is rejected
+  without replacing the current reference. Source/range changes and new effect
+  directions clear an old reference; manual prompt edits preserve it.
+- `LTXVImgToVideoInplace` conditions the coarse latent and, for Finish, the
+  refinement latent. Both stages receive the same SDK-uploaded image. Source
+  compositing and audio continue to use the original video. Source and reference
+  are rebound to canonical local metadata and their actual bytes are checked
+  against SHA-256 hashes before GPU submission.
+- Real app render `49b0792c-855f-43ed-b656-403351bb0976`, SDK job
+  `2d52f915-4304-4f3f-81b6-cdf6a49c25a5`, completed on the RTX 5080:
+  97 frames, 768 × 448, 24 fps, 4.041667 seconds. Its raw opening frame has
+  mean absolute difference 1.764 RGB levels from the resized reference on an
+  8-bit scale. Unselected pixels at 1.5 s differ from the resized source by
+  1.319 levels after lossy encoding. The contact sheet shows the timed portal
+  appearing and disappearing while the fan stays protected. Evidence:
+  `.runtime/evidence/reference-app-proof.json` and `reference-app-contact.jpg`.
+- The reference is a frame from the prior local portal output, based on the
+  attributed Curtis Adams / Pexels source. No closed image API was used.
+  Reference SHA-256:
+  `eb1e002ac8b403d8dee60f9f233d5c67c2d9a1d693be3a83156c38cdfc10aaf4`.
+  This proves this edited-frame workflow on one scene, not general arbitrary
+  identity replacement.
+- Browser checks covered full-resolution source export, upload, inspection,
+  rendering, recipe download/removal/re-import, and rejection of a portrait
+  reference while retaining the valid image. Recipes resolve both assets by
+  content hash, independent of local IDs. The exported starting frame matched
+  the decoded source RGB pixels and contained no EXIF metadata.
+- The sixth reviewed case, **An image to follow**, includes its edited frame,
+  source, output, both generation stages, recipe and executed graph. The
+  manifest verifies 363 runtime files / 17,029,376 bytes. A fresh example
+  workspace opens all six cases. Without Python or an engine, the reference
+  preview and source/result playback work, both videos reach readyState 4,
+  thumbnails load, and new generation stays disabled.
+- Desktop panes now scroll independently and keep the render action visible.
+  Checks at 1280 × 900 show the full preview, cue timeline and render button;
+  page client/scroll widths are both 1280. At 390 × 844 the page widths are
+  both 375 and the reference dialog widths both 349. Reference selection
+  survives reload. Screenshots: `reference-desktop.png`, `reference-mobile.png`
+  in `.runtime/evidence/`.
+- Fixed sampling inside the final source frame's display interval. Automated
+  checks compare full-frame export and native loading at multiple timestamps;
+  out-of-range trim still fails. A real native loader-only SDK job
+  `37e427ee-9632-4b65-a3a6-ddde91c4994d` also passed after the engine restart.
+- Latest checks: 23 TypeScript + 14 Python tests, production build, and all ten
+  live workflow required-input/output-link contracts pass. Contract checking
+  submits no GPU jobs.
+- The updated captioned demo includes the six-case recipe library and actual
+  edited-frame output: `.runtime/demo-output/aftertake-demo-v3.mp4`, exactly
+  97 seconds / 2,328 decoded frames, 1280 × 720 at 24 fps, 6,329,320 bytes.
+  Representative frames were visually reviewed; all frames decoded. Evidence:
+  `.runtime/evidence/demo-v3-proof.json` and `demo-v3-contact.jpg`. Earlier
+  drafts are retained. Publication and the public repository URL remain pending.
+
 ## Remaining work
 
 - Continue edge, motion-tracking and prompt-following quality work.

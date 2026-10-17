@@ -24,12 +24,15 @@ export const projectSchema = z.object({
   pipeline: z.enum(['structure', 'inpaint', 'cinema']).optional(),
   cinema: cinemaSchema.optional(),
   directionStrength: z.number().min(1).max(4).optional(),
+  editReference: clipSchema.extend({ kind: z.literal('image') }).optional(),
 });
 export const recipeSchema = projectSchema
   .refine(recipe => recipe.pipeline === 'cinema' || recipe.cue.strokes.some(stroke => stroke.mode !== 'erase'),
     { message: 'Paint at least one region before rendering.', path: ['cue', 'strokes'] })
   .refine(recipe => recipe.clip.kind !== 'image' || (recipe.pipeline === 'cinema' && recipe.trimStart === 0),
-    { message: 'Use Animate a frame for still images, with the reference time set to zero.', path: ['pipeline'] });
+    { message: 'Use Animate a frame for still images, with the reference time set to zero.', path: ['pipeline'] })
+  .refine(recipe => !recipe.editReference || recipe.pipeline !== 'inpaint' || !editReferenceIssue(recipe.clip, recipe.editReference),
+    { message: 'Use an edited full frame with the same composition and aspect ratio as the source.', path: ['editReference'] });
 export type Recipe = z.infer<typeof projectSchema>;
 export type Cue = z.infer<typeof cueSchema>;
 export type Stroke = z.infer<typeof strokeSchema>;
@@ -55,7 +58,14 @@ export function renderSettingsKey(r: Recipe) {
   return JSON.stringify([r.clip.sha256, r.prompt.trim(), c.start, c.end, c.fade, c.feather,
     c.tracking || 'static', c.anchor || 0,
     c.strokes.map(s => [s.mode || 'paint', s.radius, s.points.map(p => [p.x, p.y])]),
-    r.seed, r.quality, r.trimStart, r.pipeline || 'structure', r.directionStrength || 1, null]);
+    r.seed, r.quality, r.trimStart, r.pipeline || 'structure', r.directionStrength || 1, r.pipeline === 'inpaint' ? r.editReference?.sha256 || null : null]);
+}
+
+export function editReferenceIssue(source: Clip, reference: Clip): string | null {
+  if (reference.kind !== 'image') return 'Choose a PNG, JPEG or WebP image for the edited first frame.';
+  if (Math.abs(Math.log((reference.width / reference.height) / (source.width / source.height))) > .06)
+    return 'Use an edited full frame with the same composition and aspect ratio as the source.';
+  return null;
 }
 
 export function renderDimensions(recipe: Recipe) {
