@@ -15,6 +15,7 @@ import { filmRouter } from './films.js';
 import { templateRouter } from './templates.js';
 import { resolveRecipeAssets, RecipeAssetError } from './assets.js';
 import { frameEditorRouter } from './frame-edits.js';
+import { inspectVideoMetadata } from './video-metadata.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 process.loadEnvFile && await stat(path.join(root, '.env')).then(() => process.loadEnvFile('.env')).catch(() => {});
@@ -119,6 +120,9 @@ async function track(render: Render, initial?: Job) {
         const guide = job.getOutputs('44')[0];
         if (!output) throw new Error('The workflow finished without a composite video.');
         await output.toFile(path.join(outputDir, `${render.id}.mp4`));
+        // Export the graph embedded by the executing native nodes, including
+        // resolved asset names, rather than the pre-upload placeholder graph.
+        render.workflow = inspectVideoMetadata(await readFile(path.join(outputDir, `${render.id}.mp4`)), render.recipe).workflow;
         if (raw) await raw.toFile(path.join(outputDir, `${render.id}-raw.mp4`));
         if (coarse) await coarse.toFile(path.join(outputDir, `${render.id}-coarse.mp4`));
         if (guide) await guide.toFile(path.join(outputDir, `${render.id}-guide.mp4`));
