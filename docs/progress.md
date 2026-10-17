@@ -520,6 +520,38 @@ download hit `ERR_BLOCKED_BY_CLIENT`; the user completed the ordinary download.
 - Publication does not constitute competition registration, a social post,
   submission, category acceptance or an award. Those remain outstanding.
 
+## Tracking on low-detail camera moves — October 17
+
+- Controlled camera transforms of the licensed room and forest starting frames
+  exposed distortion over blank walls. Dense flow now uses a guarded camera
+  estimate where the local image cannot determine motion. Distributed feature
+  tracks must agree before this fallback is used; textured regions retain dense
+  flow. It requires no additional model or service.
+- At 512 × 288 over 49 frames, mask intersection-over-union against the known
+  transform improved as follows. These are synthetic camera moves on frozen
+  real textures, not a general natural-video or occlusion benchmark.
+
+  | Scene / move | Original mean IoU | Updated mean IoU |
+  | --- | --- | --- |
+  | Room / pan | 0.913 | 0.992 |
+  | Room / pan, zoom and roll | 0.896 | 0.990 |
+  | Forest / pan | 0.988 | 0.989 |
+  | Forest / pan, zoom and roll | 0.988 | 0.988 |
+
+- Separate synthetic checks retain independently moving textured foregrounds
+  with both static and moving backgrounds. A completely blank source safely
+  falls back without inventing a camera estimate. Three meaningful regression
+  tests bring the Python suite to 17 passing tests; all 27 TypeScript tests,
+  production build and fourteen live node contracts also pass.
+- The real CPU preview endpoint processed a compressed controlled-pan clip in
+  3.30 seconds. Its decoded sprite alpha matches current node masks exactly.
+  Preview cache versioning prevents an old mask from being reused after this
+  algorithm update. Evidence is retained under `.runtime/evidence/` as
+  `tracking-camera*-proof.json` and `tracking-preview-http-proof.json`.
+- The idle engine was restarted with the updated nodes; installed source bytes
+  match. No generation was active or queued. General tracking, occlusion and
+  independently moving low-detail objects remain experimental.
+
 ## Remaining work
 
 - Continue edge, motion-tracking and prompt-following quality work.
