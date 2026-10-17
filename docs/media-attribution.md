@@ -68,3 +68,17 @@ No new third-party image or closed image API supplied the crystal. The image
 recipe, generated PNG, video recipe and actual workflows are included under
 `examples/crystal-forest/`. The local ruby-red two-reference test is evidence
 only and is not part of the packaged seven-example library.
+
+## Motion-transfer studies
+
+`scripts/create-motion-study.py` draws the articulated blue robot, its joints,
+studio background and gesture from original code under the project's MIT
+license. The 576 × 768 framing retains the whole gesture. A local audio test
+adds an original, quiet synthetic sine tone. No actor footage or external motion
+pack supplies these tests.
+
+Mint knitted-bear appearance frames were generated locally with the pinned
+Qwen-Image-Edit-2511 profile. Motion was generated locally with the pinned
+Wan Animate 2 distilled profile. Their model licenses remain applicable.
+These motion studies are retained as local build evidence; they are not part
+of the published seven-example bundle or the current 97-second public demo.
