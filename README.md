@@ -65,6 +65,23 @@ grading is applied consistently after generation. The input frame is
 conditioned directly into the video latent. No inpainting adapter is needed
 for this mode.
 
+Add an optional **Ending frame** to give the shot a destination. Choose an
+imported image, upload a PNG/JPEG/WebP, or **Create an ending frame** with the
+local Qwen editor. Review the image before selecting **Use as ending frame**.
+The model then generates the motion between the selected starting frame and
+the ending image. Use the same aspect ratio and describe the transition. Both
+images guide generation; the result can differ from either reference.
+
+First/last conditioning has completed actual draft and 768 × 448 / 97-frame
+renders, including a draft with motion tracks. It uses the existing public
+LTX-2.5 stack and needs no extra weights. The workflow follows the
+[official first/last-frame guide](https://docs.ltx.io/open-source-model/usage-guides/image-to-video/#first-and-last-frame):
+two image guides, followed by guide-token removal before video decoding. This
+is single-stage generation. Share the starting source and ending image with
+the recipe; both are content-bound and checked before a render. A shared
+generated PNG remains recognizable after metadata normalization, and the
+imported recipe binds to the actual normalized file.
+
 For stronger framing guidance, enable **Guide framing with tracks**. The app
 shows the exact screen-space trajectories that enter LTX's motion-control
 IC-LoRA and saves its rendered guide alongside the output. Pullback and static
