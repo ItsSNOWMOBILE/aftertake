@@ -55,7 +55,7 @@ for (const filename of await readdir(renderDir)) {
   } catch (error) { console.error(`Could not read saved render ${filename}:`, error); }
 }
 const healthCache = new Map<string, { until: number; value: Engine }>();
-async function engine(pipeline: 'structure' | 'inpaint' | 'cinema' | 'motion' | 'frame-edit' = 'structure'): Promise<Engine> {
+async function engine(pipeline: 'structure' | 'inpaint' | 'cinema' | 'motion-transfer' | 'motion' | 'frame-edit' = 'structure'): Promise<Engine> {
   const cached = healthCache.get(pipeline);
   if (cached && cached.until > Date.now()) return cached.value;
   let result: Engine;
@@ -126,19 +126,21 @@ async function track(render: Render, initial?: Job) {
         if (raw) render.rawOutput = `/outputs/${render.id}-raw.mp4`;
         if (coarse) render.coarseOutput = `/outputs/${render.id}-coarse.mp4`;
         if (guide) render.guideOutput = `/outputs/${render.id}-guide.mp4`;
-        // Release the model cache when the engine is idle so browser video
-        // decoders can recover their VRAM after a generation on 16 GB cards.
+        render.progress = 1;
+        render.stage = 'Complete';
+        render.state = 'succeeded';
+      } else if (job.status === 'failed') {
+        render.error = JSON.stringify(job.error);
+      }
+      if (terminal.has(job.status)) {
+        // Release idle caches after cancellation/failure as well as success,
+        // so browser video decoders can recover their VRAM on 16 GB cards.
         try {
           const queue = await fetch(`${uiUrl}/queue`, { signal: AbortSignal.timeout(3000) }).then(r => r.json()) as { queue_running?: unknown[]; queue_pending?: unknown[] };
           if (queue.queue_running?.length === 0 && queue.queue_pending?.length === 0) {
             await fetch(`${uiUrl}/free`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ unload_models: true, free_memory: true }), signal: AbortSignal.timeout(3000) });
           }
         } catch (error) { console.warn('Could not release idle GPU cache:', error); }
-        render.progress = 1;
-        render.stage = 'Complete';
-        render.state = 'succeeded';
-      } else if (job.status === 'failed') {
-        render.error = JSON.stringify(job.error);
       }
       await persist(render);
       if (terminal.has(job.status)) break;
@@ -170,7 +172,7 @@ app.get('/previews/:name', (req, res) => {
   if (!/^[a-f0-9]{64}\.png$/.test(req.params.name)) return void res.sendStatus(404);
   res.sendFile(req.params.name, { root: previewDir, dotfiles: 'deny' });
 });
-app.get('/api/engine', async (req, res) => { res.json(await engine(req.query.pipeline === 'frame-edit' ? 'frame-edit' : req.query.pipeline === 'motion' ? 'motion' : req.query.pipeline === 'cinema' ? 'cinema' : req.query.pipeline === 'inpaint' ? 'inpaint' : 'structure')); });
+app.get('/api/engine', async (req, res) => { res.json(await engine(req.query.pipeline === 'frame-edit' ? 'frame-edit' : req.query.pipeline === 'motion-transfer' ? 'motion-transfer' : req.query.pipeline === 'motion' ? 'motion' : req.query.pipeline === 'cinema' ? 'cinema' : req.query.pipeline === 'inpaint' ? 'inpaint' : 'structure')); });
 app.get('/api/workspace', (_req, res) => {
   res.json({ examples: process.env.AFTERTAKE_EXAMPLES === '1', exampleCount: Number(process.env.AFTERTAKE_EXAMPLE_COUNT || 3),
     exampleNames: { ...bundledTitles, ...JSON.parse(process.env.AFTERTAKE_EXAMPLE_TITLES || '{}') }, featuredRenderId: process.env.AFTERTAKE_FEATURED_RENDER || null });
@@ -304,6 +306,8 @@ app.post('/api/renders', async (req, res) => {
     }
     if (recipe.pipeline === 'cinema' && recipe.endFrame)
       wf.setInput('45', 'filename', client.assets.fromFile(path.join(clipDir, path.basename(recipe.endFrame.url))));
+    if (recipe.pipeline === 'motion-transfer' && recipe.transfer?.reference)
+      wf.setInput('45', 'filename', client.assets.fromFile(path.join(clipDir, path.basename(recipe.transfer.reference.url))));
     const job = await client.submit(wf, { idempotencyKey: render.id });
     render.jobId = job.id;
     render.state = job.status === 'succeeded' ? 'finalizing' : job.status;
