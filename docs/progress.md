@@ -675,6 +675,26 @@ download hit `ERR_BLOCKED_BY_CLIENT`; the user completed the ordinary download.
   Both the normal and browser builds pass; all 36 TypeScript tests on this
   branch pass, including immutable-record and portable-workflow checks.
 
+## Motion-strength control — October 17
+
+- Motion transfer now exposes a 0.50–1.50 strength control with an explicit
+  reset to 1. Its value survives recipe exports/imports, changes take identity
+  and reaches Wan's native `pose_strength` input. Appearance strength remains 1.
+  Higher values can exaggerate detail; this is guidance rather than a fidelity
+  guarantee. Old recipes retain the default value.
+- Previous browser QA verified a 1.4 recipe/workflow export, import restoration,
+  reset, disabled controls during generation and a 375 px mobile layout.
+  Normal app render `fa3f5c76-d46b-44d0-bbbd-460ca1598d20` recorded 1.4 in its
+  actual graph and embedded recipe. Its decoded frames matched the corresponding
+  fixed-input native probe exactly. The licensed-film research input and result
+  stay local and are excluded from the public demo and examples.
+- The public editor build is refreshed from the same source. Its media remains
+  the seven published examples; the nine-example media refresh is separate.
+- All 37 release-branch TypeScript tests and both builds pass. Static-editor
+  QA exported a 1.4 recipe and native graph, reset to 1, then imported the saved
+  recipe and restored 1.4. At 375 px, the slider fits and the page has no horizontal
+  overflow. These checks created no GPU jobs.
+
 ## Remaining work
 
 - Continue edge, motion-tracking and prompt-following quality work.
