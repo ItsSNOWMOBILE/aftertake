@@ -26,7 +26,11 @@ export const projectSchema = z.object({
   cinema: cinemaSchema.optional(),
   directionStrength: z.number().min(1).max(4).optional(),
   editReference: clipSchema.extend({ kind: z.literal('image') }).optional(),
-});
+  endFrame: clipSchema.extend({ kind: z.literal('image') }).optional(),
+}).refine(recipe => !recipe.endFrame || recipe.pipeline === 'cinema',
+  { message: 'An ending frame is available in Animate a frame.', path: ['endFrame'] })
+  .refine(recipe => !recipe.endFrame || !editReferenceIssue(recipe.clip, recipe.endFrame),
+    { message: 'Choose an ending image with the same aspect ratio as the starting frame.', path: ['endFrame'] });
 export const recipeSchema = projectSchema
   .refine(recipe => recipe.pipeline === 'cinema' || recipe.cue.strokes.some(stroke => stroke.mode !== 'erase'),
     { message: 'Paint at least one region before rendering.', path: ['cue', 'strokes'] })
@@ -57,7 +61,7 @@ export function renderSettingsKey(r: Recipe) {
   if (r.pipeline === 'cinema') {
     const look = r.cinema || defaultCinema;
     return JSON.stringify([r.clip.sha256, r.prompt.trim(), r.seed, r.quality, r.trimStart, 'cinema',
-      look.movement, look.lens, look.lighting, look.palette, look.guidance || 'prompt']);
+      look.movement, look.lens, look.lighting, look.palette, look.guidance || 'prompt', r.endFrame?.sha256 || '']);
   }
   const c = r.cue;
   return JSON.stringify([r.clip.sha256, r.prompt.trim(), c.start, c.end, c.fade, c.feather,
