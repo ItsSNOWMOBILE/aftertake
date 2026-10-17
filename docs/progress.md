@@ -552,6 +552,44 @@ download hit `ERR_BLOCKED_BY_CLIENT`; the user completed the ordinary download.
   match. No generation was active or queued. General tracking, occlusion and
   independently moving low-detail objects remain experimental.
 
+## First and last frames — October 17
+
+- Added the Cinema Studio start/end workflow to Animate a frame. The ending
+  image can be uploaded, selected from imported images, inspected or created
+  inside the existing Qwen frame editor. Applying a frame edit remains an
+  explicit review action. Selecting the already-active mode retains the work.
+- Followed the official LTX-2.5 first/last template: image guides at frame 0
+  and -1, each at strength 0.7; appended guide tokens are removed before decode.
+  This is single-stage video generation, using the installed public backbone,
+  encoder and VAE. No new model or hosted inference API is required.
+- Real SDK pilots completed at 512 × 288 / 49 frames and, with motion-track
+  conditioning, 576 × 320 / 49 frames. Their job IDs are
+  `c8e4ea68-7563-4f82-8968-0a17eafeba2e` and
+  `6de350ed-e5eb-48a5-a20a-7b834fa4f11f`. Representative frames show a continuous
+  forest waterfall-to-crystal transition, rather than an edited crossfade.
+- The normal editor then submitted finished take
+  `373aeb55-1569-411f-a541-7a7367617ec3`, SDK job
+  `56c4d2a8-f985-46b8-ad9a-ef61346ea985`: 768 × 448, 97 frames, 24 fps.
+  The executed graph retains both guide bindings and the ending-image hash.
+  Decoded first/last RGB MAE to their respective resized references is 9.00 /
+  9.12 on a 0–255 scale. Endpoints are soft constraints, not exact copied pixels.
+- A separate engine-offline workspace imported the original source and the
+  generated ending PNG. The actual browser recipe import found both new local
+  identities after PNG metadata removal. Its exported recipe binds the ending
+  to normalized SHA-256 `55294df019ef562cb1c8d1c34642bb9340443507e156cc62f5712c4d6d5c63ff`;
+  original-hash matching recognizes the shared PNG. Normalized RGB is identical
+  and image metadata is empty. Workflow export contains both guides and the
+  portable `ENDING_FRAME.png` placeholder. Importing settings creates no jobs.
+- Mobile width 375 has no horizontal overflow in the new controls or ending
+  editor. Escape closes the dialog and restores focus. Evidence is retained
+  in `.runtime/first-last-pilot/` and
+  `.runtime/evidence/ending-frame-roundtrip-proof.json`.
+- All 29 TypeScript tests, the production build and eighteen live workflow
+  input/output-link contracts pass. The unchanged Python suite previously
+  passed all 17 tests. Contract checks submit no generation jobs.
+- This extends reference animation; it does not establish arbitrary character
+  identity or motion transfer. General scene quality remains experimental.
+
 ## Remaining work
 
 - Continue edge, motion-tracking and prompt-following quality work.
