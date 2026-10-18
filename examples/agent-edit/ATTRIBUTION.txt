@@ -1,0 +1,5 @@
+Footage: Michael Burrows / Pexels. Pexels License: https://www.pexels.com/license/
+Original URLs, receipts and hashes: examples/social-ad/sources.json
+Changes: source trims, portrait edit, editable kinetic captions and local generic af_heart Kokoro narration.
+Fictional coffee concept. No affiliation, endorsement or actual offer.
+Models and media retain their own licenses. App code is MIT.

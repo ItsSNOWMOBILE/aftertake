@@ -2,14 +2,14 @@
 from pathlib import Path
 import sys
 import av
-from PIL import Image
+from PIL import Image, ImageOps
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'custom_nodes/aftertake'))
 from media_utils import oriented_image
 
 source, destination, seconds = Path(sys.argv[1]), Path(sys.argv[2]), float(sys.argv[3])
-if source.suffix.lower() == '.png':
+if source.suffix.lower() in {'.png', '.jpg', '.jpeg', '.webp'}:
     with Image.open(source) as original:
-        image = original.convert('RGB')
+        image = ImageOps.exif_transpose(original).convert('RGB')
 else:
   with av.open(str(source)) as container:
     stream = container.streams.video[0]
@@ -22,7 +22,10 @@ else:
             break
     if image is None:
         raise ValueError('No thumbnail frame in the requested range')
-image.thumbnail((320, 180))
+width = int(sys.argv[4]) if len(sys.argv) > 4 else 320
+if not 16 <= width <= 960:
+    raise ValueError('Choose a thumbnail width from 16 to 960 pixels')
+image.thumbnail((width, round(width * 9 / 16)))
 temporary = destination.with_suffix('.tmp')
 image.save(temporary, format='JPEG', quality=82)
 temporary.replace(destination)

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#141815">
+  <meta name="description" content="Watch real coastal footage become a fantasy castle in Aftertake. Actual local open-weight video output, with a direct MP4 download.">
+  <title>Coastal castle — Aftertake</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#141815;color:#edf0e8;font:16px/1.6 system-ui,sans-serif}main{max-width:1080px;margin:auto;padding:30px 24px 50px}nav{display:flex;justify-content:space-between;gap:18px;align-items:center;border-bottom:1px solid #3a4433;padding-bottom:20px}a{color:#d5e991;text-underline-offset:4px}.brand{font-size:23px;letter-spacing:-1px;font-weight:700;text-decoration:none}.eyebrow{font-size:11px;letter-spacing:2px;color:#acbe95;margin:36px 0 8px}h1{font-size:clamp(29px,6vw,50px);letter-spacing:-1.8px;line-height:1.15;font-weight:600;margin:0 0 18px}h2{font-size:18px;font-weight:550;margin:0 0 8px}p{color:#acb6a1;margin:12px 0 22px;max-width:750px}video{display:block;width:100%;background:#090e08;border:1px solid #3f4e32;border-radius:9px;aspect-ratio:16/9;object-fit:contain}button,.download{display:inline-flex;align-items:center;justify-content:center;padding:12px 17px;border:1px solid #6c8051;border-radius:6px;background:#d5e991;color:#223015;font:600 14px system-ui;text-decoration:none;cursor:pointer}.download{background:#26331e;color:#d5e991}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0}.fine{font-size:12px;color:#98a88a;line-height:1.8}section{margin-top:40px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.grid p{font-size:13px;margin:10px 0}footer{margin-top:34px;border-top:1px solid #3a4433;padding-top:20px}a:focus-visible,button:focus-visible{outline:3px solid #e8ffab;outline-offset:4px}@media(max-width:600px){main{padding:22px 16px 38px}.grid{grid-template-columns:1fr;gap:28px}nav{font-size:12px}.eyebrow{margin-top:28px}.actions>*{flex:1;white-space:nowrap}p{font-size:14px}h1{letter-spacing:-1px}}
+  </style>
+</head>
+<body><main>
+  <nav><a class="brand" href="../">aftertake ↗</a><a href="../studio/">Explore the studio</a></nav>
+  <div class="eyebrow">FRESH LOCAL RENDER / OPEN WEIGHTS</div>
+  <h1>A lighthouse.<br>A different world.</h1>
+  <p>Real coastal footage becomes a fantasy castle, then returns to the original shot. This is an actual Aftertake render with a painted region and timed transformation.</p>
+  <video id="transformation" controls playsinline muted loop preload="metadata" poster="poster.jpg" aria-label="Aftertake coastal castle transformation"><source src="../examples/coastal-kingdom/result.mp4" type="video/mp4"></video>
+  <div class="actions"><button id="play" type="button">Play transformation</button><a class="download" href="../examples/coastal-kingdom/result.mp4" download="aftertake-coastal-castle.mp4">Download MP4</a></div>
+  <p class="fine">4.04 seconds · 768 × 432 · actual local Qwen Image Edit + LTX-2.5 output through the Comfy SDK. Silent clip. Generation waits omitted.</p>
+  <section class="grid" aria-label="Source and camera take">
+    <article><h2>The original footage</h2><video controls playsinline muted loop preload="metadata" poster="source-poster.jpg" aria-label="Original lighthouse source footage"><source src="../examples/coastal-kingdom/source.mp4" type="video/mp4"></video><p>Licensed coastal drone footage by <a href="https://www.pexels.com/video/a-lighthouse-is-seen-from-above-on-the-coast-20730898/">Dean Diemert / Pexels</a>.</p></article>
+    <article><h2>A new camera take</h2><video controls playsinline muted loop preload="metadata" poster="camera-poster.jpg" aria-label="Aftertake castle camera take"><source src="../examples/castle-pullback/result.mp4" type="video/mp4"></video><p>A separate generated shot from the edited castle frame, with pullback guidance.</p></article>
+  </section>
+  <footer class="fine">App code: MIT. Original source: <a href="https://www.pexels.com/license/">Pexels License</a>; model terms also apply to generated media. No creator endorsement is implied.<br><a href="recipe.json" download>Editable transformation recipe</a> · <a href="workflow-api.json" download>Actual executed ComfyUI workflow</a> · <a href="edited-frame.png" download>Edited reference frame</a> · <a href="provenance.json">Media receipts and input filenames</a> · <a href="https://github.com/ItsSNOWMOBILE/aftertake">Open-source project</a></footer>
+</main>
+<script type="module" src="../assets/recorded-video-preview.js"></script>
+<script>const video=document.getElementById('transformation'),button=document.getElementById('play');button.addEventListener('click',()=>video.paused?video.play().catch(()=>{}):video.pause());video.addEventListener('play',()=>button.textContent='Pause transformation');video.addEventListener('pause',()=>button.textContent='Play transformation');</script>
+</body></html>

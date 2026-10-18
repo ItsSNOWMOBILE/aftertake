@@ -153,6 +153,42 @@ class MediaTests(unittest.TestCase):
             self.assertFalse(nodes.mux_source_audio(silent, silent, 0, .75))
             self.assertEqual(silent.read_bytes(), unchanged)
 
+    def test_generated_audio_preserves_video_pixels_metadata_channels_and_full_duration(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            result = directory / 'generated.mp4'
+            subprocess.run([imageio_ffmpeg.get_ffmpeg_exe(), '-v', 'error', '-y', '-f', 'lavfi',
+                '-i', 'testsrc2=s=128x96:r=24:d=0.75', '-metadata', 'comment=generated audio fixture',
+                '-c:v', 'libx264', str(result)], check=True, capture_output=True)
+            with av.open(str(result)) as container:
+                before = [f.to_ndarray(format='rgb24') for f in container.decode(video=0)]
+            rate = 24000
+            time = np.arange(int(rate * .3)) / rate
+            waveform = np.stack([.2 * np.sin(2 * np.pi * frequency * time) for frequency in (440, 660)])[None].astype(np.float32)
+            nodes.mux_generated_audio(result, {'waveform': waveform, 'sample_rate': rate}, .75)
+            with av.open(str(result)) as container:
+                self.assertEqual(container.metadata['comment'], 'generated audio fixture')
+                after = [f.to_ndarray(format='rgb24') for f in container.decode(video=0)]
+            self.assertEqual(len(after), 18)
+            self.assertTrue(all(np.array_equal(a, b) for a, b in zip(before, after)))
+            with av.open(str(result)) as container:
+                track = container.streams.audio[0]
+                self.assertAlmostEqual(float(track.duration * track.time_base), .75, delta=.01)
+                audio = np.concatenate([f.to_ndarray() for f in container.decode(audio=0)], axis=1)
+                self.assertEqual(audio.shape[0], 2)
+                for channel, frequency in enumerate((440, 660)):
+                    segment = audio[channel, int(rate * .03):int(rate * .25)]
+                    power = np.abs(np.fft.rfft(segment * np.hanning(len(segment))))
+                    actual = np.fft.rfftfreq(len(segment), 1 / rate)[power.argmax()]
+                    self.assertAlmostEqual(actual, frequency, delta=8)
+                self.assertLess(float(np.square(audio[:, int(rate * .4):int(rate * .7)]).mean()), 1e-6)
+            stable = result.read_bytes()
+            for invalid in [np.full((1, 2, 100), np.nan), np.zeros((2, 2, 100)), np.zeros((1, 3, 100))]:
+                with self.assertRaisesRegex(ValueError, 'finite mono/stereo'):
+                    nodes.mux_generated_audio(result, {'waveform': invalid, 'sample_rate': rate}, .75)
+                self.assertEqual(result.read_bytes(), stable)
+            self.assertFalse(list(directory.glob('aftertake-generated-audio-*')))
+
     def test_color_grade_is_temporally_consistent_and_preserves_the_untouched_mode(self):
         frame = torch.rand(1, 12, 16, 3)
         frames = frame.expand(4, -1, -1, -1)

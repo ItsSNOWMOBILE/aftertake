@@ -1,0 +1,33 @@
+{
+  "text": "Start with the grounds.",
+  "fullPhonemes": "st\u02c8\u0251\u02d0\u0279t w\u026a\u00f0\u00f0\u0259 \u0261\u0279\u02c8a\u028andz.",
+  "modelGroups": [
+    "st\u02c8\u0251\u02d0\u0279t",
+    "w\u026a\u00f0\u00f0\u0259",
+    "\u0261\u0279\u02c8a\u028andz."
+  ],
+  "duration": 1.3899583333333334,
+  "wordTiming": [
+    {
+      "text": "Start",
+      "start": 0.13666666666666666,
+      "end": 0.38666666666666666
+    },
+    {
+      "text": "with",
+      "start": 0.4116666666666667,
+      "end": 0.5366666666666666
+    },
+    {
+      "text": "the",
+      "start": 0.5366666666666666,
+      "end": 0.5866666666666667
+    },
+    {
+      "text": "grounds.",
+      "start": 0.6366666666666667,
+      "end": 1.28
+    }
+  ],
+  "method": "Exact per-word phoneme strings match the complete timed model sequence; split only at recorded phoneme boundaries."
+}

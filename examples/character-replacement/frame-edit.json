@@ -1,0 +1,267 @@
+{
+  "id": "deaafec5-fcb8-421e-9c8e-fffc07252d22",
+  "request": {
+    "format": "aftertake-frame-edit/1",
+    "clip": {
+      "id": "00d3c2d1-1716-441f-9a71-0cf288030e2d",
+      "name": "Bridge - Blender Foundation research.mp4",
+      "sha256": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19",
+      "width": 768,
+      "height": 432,
+      "duration": 3.125,
+      "url": "/media/00d3c2d1-1716-441f-9a71-0cf288030e2d.mp4"
+    },
+    "trimStart": 0,
+    "subject": {
+      "id": "80f5fd3d-9656-4e77-ab3b-9ae22c9bcbe0",
+      "name": "Natural-human-reference.png",
+      "sha256": "2246e339a602bd225113795eefa3a5603ea840f138eb4dcf0e8ff01122832052",
+      "originalSha256": "226a4418213dc0a5c8ff810a5e9482f9d9af1db6ffa2fb2ea354bac3bcff27f9",
+      "width": 768,
+      "height": 1152,
+      "duration": 1,
+      "url": "/media/80f5fd3d-9656-4e77-ab3b-9ae22c9bcbe0.png",
+      "kind": "image"
+    },
+    "prompt": "Replace the man on the left with the man in Picture 2. Match the light. Keep the scene.",
+    "seed": 5091,
+    "mode": "detail"
+  },
+  "workflow": {
+    "1": {
+      "class_type": "UnetLoaderGGUF",
+      "inputs": {
+        "unet_name": "qwen-image-edit-2511-Q4_K_M.gguf"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+        "type": "qwen_image",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "qwen_image_vae.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "ModelSamplingAuraFlow",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "shift": 3.1
+      }
+    },
+    "5": {
+      "class_type": "CFGNorm",
+      "inputs": {
+        "model": [
+          "4",
+          0
+        ],
+        "strength": 1,
+        "pre_cfg": false
+      }
+    },
+    "8": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "00d3c2d1-1716-441f-9a71-0cf288030e2d.mp4",
+        "width": 768,
+        "height": 432,
+        "frames": 1,
+        "fps": 1,
+        "trim_start": 0
+      },
+      "is_changed": [
+        "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19"
+      ]
+    },
+    "9": {
+      "class_type": "FluxKontextImageScale",
+      "inputs": {
+        "image": [
+          "8",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "TextEncodeQwenImageEditPlus",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "image1": [
+          "9",
+          0
+        ],
+        "prompt": "Replace the man on the left with the man in Picture 2. Match the light. Keep the scene.",
+        "image2": [
+          "23",
+          0
+        ]
+      }
+    },
+    "11": {
+      "class_type": "TextEncodeQwenImageEditPlus",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "image1": [
+          "9",
+          0
+        ],
+        "prompt": "",
+        "image2": [
+          "23",
+          0
+        ]
+      }
+    },
+    "12": {
+      "class_type": "FluxKontextMultiReferenceLatentMethod",
+      "inputs": {
+        "conditioning": [
+          "10",
+          0
+        ],
+        "reference_latents_method": "index_timestep_zero"
+      }
+    },
+    "13": {
+      "class_type": "FluxKontextMultiReferenceLatentMethod",
+      "inputs": {
+        "conditioning": [
+          "11",
+          0
+        ],
+        "reference_latents_method": "index_timestep_zero"
+      }
+    },
+    "14": {
+      "class_type": "VAEEncode",
+      "inputs": {
+        "pixels": [
+          "9",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "17": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "5",
+          0
+        ],
+        "seed": 5091,
+        "steps": 20,
+        "cfg": 4,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "positive": [
+          "12",
+          0
+        ],
+        "negative": [
+          "13",
+          0
+        ],
+        "latent_image": [
+          "14",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "20": {
+      "class_type": "ImageScale",
+      "inputs": {
+        "image": [
+          "19",
+          0
+        ],
+        "upscale_method": "lanczos",
+        "width": 768,
+        "height": 432,
+        "crop": "disabled"
+      }
+    },
+    "21": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "20",
+          0
+        ],
+        "filename_prefix": "aftertake/frame-edit"
+      }
+    },
+    "23": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "80f5fd3d-9656-4e77-ab3b-9ae22c9bcbe0.png",
+        "width": 768,
+        "height": 1152,
+        "frames": 1,
+        "fps": 1,
+        "trim_start": 0
+      },
+      "is_changed": [
+        "2246e339a602bd225113795eefa3a5603ea840f138eb4dcf0e8ff01122832052"
+      ]
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-18T04:40:45.441Z",
+  "updatedAt": "2026-10-18T04:44:04.528Z",
+  "jobId": "51c95960-fb5d-4f07-8c58-467248e1552e",
+  "stage": "Ready to review",
+  "clip": {
+    "id": "deaafec5-fcb8-421e-9c8e-fffc07252d22",
+    "name": "Edited frame · Replace the man on the left with the man in Picture 2. Match the light",
+    "kind": "image",
+    "width": 768,
+    "height": 432,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7",
+    "url": "/media/deaafec5-fcb8-421e-9c8e-fffc07252d22.png"
+  }
+}

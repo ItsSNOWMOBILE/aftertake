@@ -1,0 +1,37 @@
+{
+  "requestId": "headphones-shot-v1",
+  "recipe": {
+    "format": "aftertake/1",
+    "name": "Field / a closer look",
+    "clip": {
+      "id": "60ed4915-fa00-4333-a67a-4bc87479632e",
+      "name": "Field / headphone concept",
+      "kind": "image",
+      "width": 1024,
+      "height": 1024,
+      "duration": 1,
+      "hasAudio": false,
+      "sha256": "2f69acaeaf9c85ed5f975bf67ec9cd4713ae3ccf2b834bbc0e75172dc6303b66",
+      "url": "/media/60ed4915-fa00-4333-a67a-4bc87479632e.png"
+    },
+    "prompt": "A smooth, very slow camera push toward the stationary graphite headphones on an ivory circular plinth. The headphones retain their exact rigid shape, symmetrical earcups and lime trim. Soft warm studio reflections move gently across the matte surfaces. Keep the forest green background clean and still. One continuous premium product shot, stable geometry and gentle motion.",
+    "cue": {
+      "start": 0,
+      "end": 4,
+      "fade": 0.3,
+      "feather": 0.035,
+      "strokes": []
+    },
+    "seed": 90305090,
+    "quality": "final",
+    "trimStart": 0,
+    "pipeline": "cinema",
+    "cinema": {
+      "movement": "push",
+      "lens": "natural",
+      "lighting": "source",
+      "palette": "source",
+      "guidance": "tracks"
+    }
+  }
+}

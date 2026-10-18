@@ -1,0 +1,25 @@
+{
+  "format": "aftertake-face-performance/1",
+  "frames": 73,
+  "fps": 24,
+  "base": {
+    "path": "../performer-focus/result.mp4",
+    "sha256": "619e6e44b7c4d1632de970791859c44c97289f32045073cc3f49fa75c2d076e2",
+    "box": [
+      0.33203125,
+      0.046296296296296294,
+      0.4622395833333333,
+      0.2777777777777778
+    ]
+  },
+  "driver": {
+    "path": "../character-replacement/source.mp4",
+    "sha256": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19",
+    "box": [
+      0.33203125,
+      0.046296296296296294,
+      0.4622395833333333,
+      0.2777777777777778
+    ]
+  }
+}

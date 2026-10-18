@@ -1,0 +1,41 @@
+{
+  "profile": "optional-local-motion-matting",
+  "model": "facebook/sam2.1-hiera-tiny",
+  "revision": "de431c4043854a71d8101e17995dfe596bf101a5",
+  "license": "Apache-2.0",
+  "modelCard": "https://huggingface.co/facebook/sam2.1-hiera-tiny",
+  "licenseURL": "https://github.com/facebookresearch/sam2/blob/main/LICENSE",
+  "runtime": {
+    "package": "transformers",
+    "testedVersion": "5.20.1",
+    "device": "CUDA or CPU"
+  },
+  "files": [
+    {
+      "name": "config.json",
+      "bytes": 5695,
+      "sha256": "860aff9751b139d83a4ad7df1e5535416fded533e0ead02625edbefcb9953cce"
+    },
+    {
+      "name": "model.safetensors",
+      "bytes": 155908064,
+      "sha256": "48c14467e5cf9e51870511feb72c89688e82dd74523142c0538b663e193ac2a7"
+    },
+    {
+      "name": "preprocessor_config.json",
+      "bytes": 683,
+      "sha256": "6ebf229ee259368ce4a8d4f2fe893a72b053023710853e257253939e601f583d"
+    },
+    {
+      "name": "processor_config.json",
+      "bytes": 95,
+      "sha256": "f8a68e865cfad115c1c2763f3d93eca7b1c622da06da2a9273eb437fb2389b6d"
+    },
+    {
+      "name": "video_preprocessor_config.json",
+      "bytes": 705,
+      "sha256": "9fccfe5f464ec38c2f236d0e6a68e95511c80c22132fc2fa4b9f7b65f24fad95"
+    }
+  ],
+  "method": "Local point/box prompted video segmentation. Review tracking and foreground occlusions. No video upload."
+}

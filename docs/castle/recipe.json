@@ -1,0 +1,60 @@
+{
+  "format": "aftertake/1",
+  "name": "Coastal kingdom / matched source color and framing",
+  "clip": {
+    "id": "5699b7f7-a921-4311-8296-7e99a16ab544",
+    "name": "Lighthouse - Dean Diemert - Pexels.mp4",
+    "sha256": "5029ea3c92f7fd79fe154116804bb12c76b7b88669d40980443813ac62f2b88b",
+    "width": 768,
+    "height": 432,
+    "duration": 4.208333333333333,
+    "url": "/media/5699b7f7-a921-4311-8296-7e99a16ab544.mp4",
+    "hasAudio": false
+  },
+  "prompt": "A magnificent ancient stone castle with tall slender towers, ornate turrets and warm amber windows rises from the rocky coastal cliff. The castle is solid stone and remains consistent through the shot. Keep the original coastline, sunset, ocean waves and camera movement. Photorealistic cinematic fantasy visual effects.",
+  "cue": {
+    "start": 0.35,
+    "end": 3.85,
+    "fade": 0.35,
+    "feather": 0.035,
+    "tracking": "flow",
+    "anchor": 1.5,
+    "strokes": [
+      {
+        "points": [
+          {
+            "x": 0.79,
+            "y": 0.25
+          },
+          {
+            "x": 0.79,
+            "y": 0.55
+          },
+          {
+            "x": 0.79,
+            "y": 0.8
+          }
+        ],
+        "radius": 0.35,
+        "mode": "paint"
+      }
+    ]
+  },
+  "seed": 2960,
+  "quality": "final",
+  "trimStart": 0,
+  "pipeline": "inpaint",
+  "directionStrength": 1,
+  "matchSourceColor": true,
+  "editReference": {
+    "id": "b1262e85-c2ba-4334-bc61-8faa573b106d",
+    "name": "Edited frame · Replace the small white lighthouse and adjacent buildings on the cliff",
+    "sha256": "43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa",
+    "width": 768,
+    "height": 432,
+    "duration": 1,
+    "url": "/media/b1262e85-c2ba-4334-bc61-8faa573b106d.png",
+    "kind": "image",
+    "hasAudio": false
+  }
+}

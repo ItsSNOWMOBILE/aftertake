@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "tsx watch server/index.ts",
     "demo": "node scripts/run-demo.mjs",
+    "mcp": "tsx server/mcp.ts",
     "build": "tsc --noEmit && vite build",
     "build:browser-demo": "tsx scripts/build-browser-demo.mts",
     "start": "tsx server/index.ts --production",
@@ -17,6 +18,7 @@
   },
   "dependencies": {
     "@comfyorg/sdk": "^0.5.0",
+    "@modelcontextprotocol/server": "2.3.1",
     "express": "^5.3.0",
     "lucide-react": "^1.58.0",
     "react": "^19.3.1",
@@ -24,6 +26,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@modelcontextprotocol/client": "2.3.1",
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.5",
     "@types/react": "^19.3.0",

@@ -1,0 +1,369 @@
+{
+  "format": "aftertake-film/2",
+  "name": "Slow Mornings / follow the voice",
+  "aspect": "portrait",
+  "shots": [
+    {
+      "assetId": "cf321755-57ed-4c4b-9348-fc201c173fbf",
+      "dissolve": 0,
+      "start": 0.5,
+      "end": 2.1666666666666665,
+      "title": "pour.mp4",
+      "sha256": "b3c109ce61d1232263d6cc8dfaa9c5319104ead2de21b951cdeb5d53068ef0a7",
+      "asset": {
+        "kind": "video",
+        "duration": 10,
+        "width": 720,
+        "height": 1280,
+        "id": "cf321755-57ed-4c4b-9348-fc201c173fbf",
+        "name": "pour.mp4",
+        "extension": ".mp4",
+        "sha256": "b3c109ce61d1232263d6cc8dfaa9c5319104ead2de21b951cdeb5d53068ef0a7",
+        "url": "/api/films/assets/cf321755-57ed-4c4b-9348-fc201c173fbf/media",
+        "createdAt": "2026-10-18T10:33:18.612Z"
+      }
+    },
+    {
+      "assetId": "9736d25f-9f79-48a5-8d7d-157518606acc",
+      "dissolve": 0.125,
+      "start": 0.75,
+      "end": 2.625,
+      "title": "grounds.mp4",
+      "sha256": "dab9e9c00d04452151729afb659df56baf2651c94b28cfd53279192deaa13e32",
+      "asset": {
+        "kind": "video",
+        "duration": 10,
+        "width": 720,
+        "height": 1280,
+        "id": "9736d25f-9f79-48a5-8d7d-157518606acc",
+        "name": "grounds.mp4",
+        "extension": ".mp4",
+        "sha256": "dab9e9c00d04452151729afb659df56baf2651c94b28cfd53279192deaa13e32",
+        "url": "/api/films/assets/9736d25f-9f79-48a5-8d7d-157518606acc/media",
+        "createdAt": "2026-10-18T10:33:29.603Z"
+      }
+    },
+    {
+      "assetId": "5f947a79-d19b-43aa-8f88-e5a03d9b3eba",
+      "dissolve": 0.125,
+      "start": 0.5,
+      "end": 3.1666666666666665,
+      "title": "brew.mp4",
+      "sha256": "5977671f7d993691838c1e84e81c231f7fddb308990ccf2b10be966a2c858466",
+      "asset": {
+        "kind": "video",
+        "duration": 10,
+        "width": 720,
+        "height": 1280,
+        "id": "5f947a79-d19b-43aa-8f88-e5a03d9b3eba",
+        "name": "brew.mp4",
+        "extension": ".mp4",
+        "sha256": "5977671f7d993691838c1e84e81c231f7fddb308990ccf2b10be966a2c858466",
+        "url": "/api/films/assets/5f947a79-d19b-43aa-8f88-e5a03d9b3eba/media",
+        "createdAt": "2026-10-18T10:33:40.638Z"
+      }
+    }
+  ],
+  "titles": [
+    {
+      "id": "112c3505-8791-46ac-90be-cfc9bae2427b",
+      "text": "Your morning called.",
+      "start": 0.125,
+      "end": 1.4582916666666668,
+      "style": "headline",
+      "position": "center",
+      "animation": "spoken",
+      "words": [
+        {
+          "text": "Your",
+          "start": 0.119,
+          "end": 0.244,
+          "phrase": 0
+        },
+        {
+          "text": "morning",
+          "start": 0.294,
+          "end": 0.594,
+          "phrase": 0
+        },
+        {
+          "text": "called.",
+          "start": 0.644,
+          "end": 1.1733333333333333,
+          "phrase": 0
+        }
+      ],
+      "fontSize": 132,
+      "color": "#d5e991"
+    },
+    {
+      "id": "61b9755a-a2fa-4669-9c96-ad7b8166053b",
+      "text": "Start with fresh grounds.",
+      "start": 1.6666666666666667,
+      "end": 3.242,
+      "style": "headline",
+      "position": "center",
+      "animation": "spoken",
+      "words": [
+        {
+          "text": "Start",
+          "start": 0.11533333333333333,
+          "end": 0.3403333333333333,
+          "phrase": 0
+        },
+        {
+          "text": "with",
+          "start": 0.36533333333333334,
+          "end": 0.49033333333333334,
+          "phrase": 0
+        },
+        {
+          "text": "fresh",
+          "start": 0.5403333333333333,
+          "end": 0.7403333333333333,
+          "phrase": 0
+        },
+        {
+          "text": "grounds.",
+          "start": 0.7903333333333333,
+          "end": 1.3653333333333333,
+          "phrase": 0
+        }
+      ],
+      "fontSize": 132,
+      "color": "#d5e991"
+    },
+    {
+      "id": "8f2fd14e-c9bc-4ba3-b804-4108ecff1a8b",
+      "text": "Pour slowly. Savor the moment.",
+      "start": 3.4166666666666665,
+      "end": 5.752,
+      "style": "headline",
+      "position": "center",
+      "animation": "spoken",
+      "words": [
+        {
+          "text": "Pour",
+          "start": 0.069,
+          "end": 0.294,
+          "phrase": 0
+        },
+        {
+          "text": "slowly.",
+          "start": 0.369,
+          "end": 0.919,
+          "phrase": 0
+        },
+        {
+          "text": "Savor",
+          "start": 1.1840000000000002,
+          "end": 1.484,
+          "phrase": 1
+        },
+        {
+          "text": "the",
+          "start": 1.5090000000000001,
+          "end": 1.5590000000000002,
+          "phrase": 1
+        },
+        {
+          "text": "moment.",
+          "start": 1.609,
+          "end": 2.095333333333333,
+          "phrase": 1
+        }
+      ],
+      "fontSize": 132,
+      "color": "#d5e991"
+    }
+  ],
+  "audio": [
+    {
+      "assetId": "c38d630a-749c-4014-9962-09045dca0358",
+      "start": 0.125,
+      "sourceStart": 0,
+      "sourceEnd": 1.2532916666666667,
+      "volume": 1,
+      "sha256": "93f608a517de08a43558edda2a979d60d98e6de0ce93b744eca76cb7bfe901ae",
+      "asset": {
+        "kind": "audio",
+        "duration": 1.2532916666666667,
+        "narration": {
+          "text": "Your morning called.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Your",
+                "start": 0.119,
+                "end": 0.244
+              },
+              {
+                "text": "morning",
+                "start": 0.294,
+                "end": 0.594
+              },
+              {
+                "text": "called.",
+                "start": 0.644,
+                "end": 1.1733333333333333
+              }
+            ]
+          }
+        },
+        "id": "c38d630a-749c-4014-9962-09045dca0358",
+        "name": "Narration · Your morning called.",
+        "extension": ".wav",
+        "sha256": "93f608a517de08a43558edda2a979d60d98e6de0ce93b744eca76cb7bfe901ae",
+        "url": "/api/films/assets/c38d630a-749c-4014-9962-09045dca0358/media",
+        "createdAt": "2026-10-18T10:34:08.791Z"
+      }
+    },
+    {
+      "assetId": "e73bcee5-17de-4d2d-8173-2a50d17e0b8a",
+      "start": 1.6666666666666667,
+      "sourceStart": 0,
+      "sourceEnd": 1.4953333333333334,
+      "volume": 1,
+      "sha256": "e1bb268b3caf9ea95b1a6285ade1017c880945b1630b59089e61e1d743d1e415",
+      "asset": {
+        "kind": "audio",
+        "duration": 1.4953333333333334,
+        "narration": {
+          "text": "Start with fresh grounds.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Start",
+                "start": 0.11533333333333333,
+                "end": 0.3403333333333333
+              },
+              {
+                "text": "with",
+                "start": 0.36533333333333334,
+                "end": 0.49033333333333334
+              },
+              {
+                "text": "fresh",
+                "start": 0.5403333333333333,
+                "end": 0.7403333333333333
+              },
+              {
+                "text": "grounds.",
+                "start": 0.7903333333333333,
+                "end": 1.3653333333333333
+              }
+            ]
+          }
+        },
+        "id": "e73bcee5-17de-4d2d-8173-2a50d17e0b8a",
+        "name": "Narration · Start with fresh grounds.",
+        "extension": ".wav",
+        "sha256": "e1bb268b3caf9ea95b1a6285ade1017c880945b1630b59089e61e1d743d1e415",
+        "url": "/api/films/assets/e73bcee5-17de-4d2d-8173-2a50d17e0b8a/media",
+        "createdAt": "2026-10-18T10:34:10.759Z"
+      }
+    },
+    {
+      "assetId": "81dca322-f17f-46d6-b5c7-74335b9c8a59",
+      "start": 3.4166666666666665,
+      "sourceStart": 0,
+      "sourceEnd": 2.255333333333333,
+      "volume": 1,
+      "sha256": "992569def73399286316087c5701af7918689df9ce60516d92061ab78d7500bb",
+      "asset": {
+        "kind": "audio",
+        "duration": 2.255333333333333,
+        "narration": {
+          "text": "Pour slowly. Savor the moment.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Pour",
+                "start": 0.069,
+                "end": 0.294
+              },
+              {
+                "text": "slowly.",
+                "start": 0.369,
+                "end": 0.919
+              },
+              {
+                "text": "Savor",
+                "start": 1.1840000000000002,
+                "end": 1.484
+              },
+              {
+                "text": "the",
+                "start": 1.5090000000000001,
+                "end": 1.5590000000000002
+              },
+              {
+                "text": "moment.",
+                "start": 1.609,
+                "end": 2.095333333333333
+              }
+            ]
+          }
+        },
+        "id": "81dca322-f17f-46d6-b5c7-74335b9c8a59",
+        "name": "Narration · Pour slowly. Savor the moment.",
+        "extension": ".wav",
+        "sha256": "992569def73399286316087c5701af7918689df9ce60516d92061ab78d7500bb",
+        "url": "/api/films/assets/81dca322-f17f-46d6-b5c7-74335b9c8a59/media",
+        "createdAt": "2026-10-18T10:34:12.903Z"
+      }
+    }
+  ],
+  "sourceVolume": 0,
+  "normalizeAudio": true,
+  "sourceFiles": {
+    "cf321755-57ed-4c4b-9348-fc201c173fbf": {
+      "path": "examples/social-ad/media/pour.mp4",
+      "sha256": "b3c109ce61d1232263d6cc8dfaa9c5319104ead2de21b951cdeb5d53068ef0a7"
+    },
+    "9736d25f-9f79-48a5-8d7d-157518606acc": {
+      "path": "examples/social-ad/media/grounds.mp4",
+      "sha256": "dab9e9c00d04452151729afb659df56baf2651c94b28cfd53279192deaa13e32"
+    },
+    "5f947a79-d19b-43aa-8f88-e5a03d9b3eba": {
+      "path": "examples/social-ad/media/brew.mp4",
+      "sha256": "5977671f7d993691838c1e84e81c231f7fddb308990ccf2b10be966a2c858466"
+    },
+    "c38d630a-749c-4014-9962-09045dca0358": {
+      "path": "examples/spoken-type/media/voice-1.wav",
+      "sha256": "93f608a517de08a43558edda2a979d60d98e6de0ce93b744eca76cb7bfe901ae"
+    },
+    "e73bcee5-17de-4d2d-8173-2a50d17e0b8a": {
+      "path": "examples/spoken-type/media/voice-2.wav",
+      "sha256": "e1bb268b3caf9ea95b1a6285ade1017c880945b1630b59089e61e1d743d1e415"
+    },
+    "81dca322-f17f-46d6-b5c7-74335b9c8a59": {
+      "path": "examples/spoken-type/media/voice-3.wav",
+      "sha256": "992569def73399286316087c5701af7918689df9ce60516d92061ab78d7500bb"
+    }
+  }
+}

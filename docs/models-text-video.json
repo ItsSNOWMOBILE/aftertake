@@ -1,0 +1,38 @@
+[
+  {
+    "repository": "unsloth/LTX-2.5-GGUF",
+    "revision": "ac3c540c6025903784336e99b2dc179385c4c3b7",
+    "path": "distilled/ltx-2.5-22b-distilled-Q4_K_M.gguf",
+    "category": "diffusion_models",
+    "size": 13584703872,
+    "sha256": "ba40d53770314e69e88361661e55c6cc3b12a363646ba2ea53c8bcd459b66747",
+    "license": "other"
+  },
+  {
+    "repository": "unsloth/LTX-2.5-GGUF",
+    "revision": "ac3c540c6025903784336e99b2dc179385c4c3b7",
+    "path": "text_encoders/gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+    "category": "text_encoders",
+    "size": 26263858182,
+    "sha256": "ef7243612fdae7a75cb4d5cee9433e81380675fb6c213bd98ae74a9cd16561d1",
+    "license": "other"
+  },
+  {
+    "repository": "unsloth/LTX-2.5-GGUF",
+    "revision": "ac3c540c6025903784336e99b2dc179385c4c3b7",
+    "path": "vae/ltx-2.5-video-vae-conv-bf16.safetensors",
+    "category": "vae",
+    "size": 1452269922,
+    "sha256": "685b06ee3d9b2039647698fc4ea33175112462fc374e2777312c907897dfce8d",
+    "license": "other"
+  },
+  {
+    "repository": "unsloth/LTX-2.5-GGUF",
+    "revision": "ac3c540c6025903784336e99b2dc179385c4c3b7",
+    "path": "vae/ltx-2.5-audio-vae-bf16.safetensors",
+    "category": "vae",
+    "size": 364866540,
+    "sha256": "c52733d37f6a7fb7949c3dc0fb468c6cb2169e4d836983a73babb9f0d54837a5",
+    "license": "other"
+  }
+]

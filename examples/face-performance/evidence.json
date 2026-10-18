@@ -1,0 +1,53 @@
+{
+  "format": "aftertake-face-performance-review/1",
+  "status": "Candidate for Jay review; not submitted",
+  "frames": 73,
+  "fps": 24,
+  "frameTimestampMaxDeviationSeconds": 0,
+  "outputSHA256": "7311d6f3fac791e49a2207baa430bf9fd8256cff5479d5d526f8081b8d6b5518",
+  "baseSHA256": "619e6e44b7c4d1632de970791859c44c97289f32045073cc3f49fa75c2d076e2",
+  "sourceSHA256": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19",
+  "modelsVerified": true,
+  "completeFrameReview": "All 73 decoded face crops inspected, plus synchronized browser playback and selected full-frame boundary views. This does not certify general quality.",
+  "mouthGeometry": {
+    "scope": "Single-clip, automatically tracked 203-point lip aperture/width ratio against the silent source performance. Not viseme or perceptual-quality validation.",
+    "before": {
+      "name": "current",
+      "meanAbsLipRatioError": 0.12288440018892288,
+      "maximumLipRatio": 1.2492039203643799,
+      "originalMaximum": 1.079776406288147,
+      "sameClockCorrelation": 0.8426259650308962,
+      "bestLagFrames": -1,
+      "bestLagMeanAbsError": 0.09936359524726868,
+      "meanAbsSecondDifference": 0.08043244481086731,
+      "frames": 73
+    },
+    "after": {
+      "name": "production",
+      "meanAbsLipRatioError": 0.09361620247364044,
+      "maximumLipRatio": 1.0223090648651123,
+      "originalMaximum": 1.079776406288147,
+      "sameClockCorrelation": 0.9532745656490305,
+      "bestLagFrames": 0,
+      "bestLagMeanAbsError": 0.09361620247364044,
+      "meanAbsSecondDifference": 0.06726005673408508,
+      "frames": 73
+    },
+    "meanAbsErrorReductionFraction": 0.23817667393326913
+  },
+  "encodedOutsideMatteRGBMAE": {
+    "mean": 1.6850456133015055,
+    "maximumPerFrame": 1.8569542218029045
+  },
+  "wholeFrameRGBMAE": 1.726496892110075,
+  "protectedPixelsExactBeforeEncoding": true,
+  "headPoseModified": false,
+  "audioDriven": false,
+  "limits": [
+    "Head-turn fidelity remains limited; this pass changes the lower-face region only.",
+    "No spoken dialogue or phonetic/viseme alignment was tested.",
+    "Mouth-shape tracking is an automatically measured single-scene diagnostic, not a general quality score.",
+    "The source contains expressive acting, including a wide open mouth.",
+    "Ordinary codec differences affect some decoded pixels outside the matte."
+  ]
+}

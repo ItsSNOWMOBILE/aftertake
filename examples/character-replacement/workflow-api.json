@@ -1,0 +1,390 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "wan_animate_2_distill_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "type": "wan",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "Wan2_1_VAE_bf16.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "CLIPVisionLoader",
+    "inputs": {
+      "clip_name": "clip_vision_h.safetensors"
+    }
+  },
+  "5": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers, stands on the left beside a woman at a canal bridge railing. He follows the left performer's head turns, speaking gestures and hand movements from the driving video. Preserve his identity, jacket and realistic proportions from the appearance image. Match the soft daylight and natural contrast of the original scene. Keep the woman, railing, buildings, trees and camera unchanged. One continuous realistic shot."
+    }
+  },
+  "6": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "frozen motion, blurred hands, malformed limbs, extra arms, text, logos"
+    }
+  },
+  "7": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "Two people stand at a bridge railing in a medium-wide shot. The man on the left speaks, opens his mouth, lifts and turns his head, then turns toward the woman on the right. His hands rest near the railing. The woman turns toward him and gestures. The camera remains almost stationary."
+    }
+  },
+  "8": {
+    "class_type": "AftertakeLoadClip",
+    "inputs": {
+      "filename": "00d3c2d1-1716-441f-9a71-0cf288030e2d.mp4",
+      "width": 768,
+      "height": 448,
+      "frames": 73,
+      "fps": 24.0,
+      "trim_start": 0.0
+    },
+    "is_changed": [
+      "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19"
+    ]
+  },
+  "9": {
+    "class_type": "AftertakeCueMask",
+    "inputs": {
+      "width": 768,
+      "height": 448,
+      "frames": 73,
+      "fps": 24.0,
+      "cue_json": "{\"start\":0,\"end\":3.05,\"fade\":0,\"feather\":0.02,\"tracking\":\"static\",\"anchor\":0,\"strokes\":[{\"points\":[{\"x\":0.39,\"y\":0.02},{\"x\":0.39,\"y\":0.3},{\"x\":0.39,\"y\":0.6},{\"x\":0.39,\"y\":0.98}],\"radius\":0.27},{\"points\":[{\"x\":0.24,\"y\":0.38},{\"x\":0.24,\"y\":0.76}],\"radius\":0.15,\"mode\":\"paint\"}]}",
+      "images": [
+        "8",
+        0
+      ]
+    }
+  },
+  "10": {
+    "class_type": "ImageFromBatch",
+    "inputs": {
+      "image": [
+        "8",
+        0
+      ],
+      "batch_index": 0,
+      "length": 1
+    }
+  },
+  "11": {
+    "class_type": "CLIPVisionEncode",
+    "inputs": {
+      "clip_vision": [
+        "4",
+        0
+      ],
+      "image": [
+        "46",
+        0
+      ],
+      "crop": "none"
+    }
+  },
+  "12": {
+    "class_type": "CLIPVisionEncode",
+    "inputs": {
+      "clip_vision": [
+        "4",
+        0
+      ],
+      "image": [
+        "10",
+        0
+      ],
+      "crop": "none"
+    }
+  },
+  "13": {
+    "class_type": "WanAnimate2ToVideo",
+    "inputs": {
+      "positive": [
+        "5",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "width": 768,
+      "height": 448,
+      "length": 73,
+      "batch_size": 1,
+      "reference_image": [
+        "46",
+        0
+      ],
+      "pose_video": [
+        "8",
+        0
+      ],
+      "clip_vision_output": [
+        "11",
+        0
+      ],
+      "positive_pose": [
+        "7",
+        0
+      ],
+      "clip_vision_output_pose": [
+        "12",
+        0
+      ],
+      "video_frame_offset": 0,
+      "pose_strength": 1.4,
+      "pose_start_percent": 0,
+      "pose_end_percent": 1,
+      "reference_image_strength": 1
+    }
+  },
+  "14": {
+    "class_type": "WanAnimate2Cache",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "device": "gpu",
+      "dtype": "int4"
+    }
+  },
+  "15": {
+    "class_type": "ModelSamplingSD3",
+    "inputs": {
+      "model": [
+        "14",
+        0
+      ],
+      "shift": 5
+    }
+  },
+  "16": {
+    "class_type": "BasicScheduler",
+    "inputs": {
+      "model": [
+        "14",
+        0
+      ],
+      "scheduler": "simple",
+      "steps": 10,
+      "denoise": 1
+    }
+  },
+  "17": {
+    "class_type": "SamplerCustom",
+    "inputs": {
+      "model": [
+        "15",
+        0
+      ],
+      "add_noise": true,
+      "noise_seed": 5091,
+      "cfg": 1,
+      "positive": [
+        "13",
+        0
+      ],
+      "negative": [
+        "13",
+        1
+      ],
+      "sampler": [
+        "23",
+        0
+      ],
+      "sigmas": [
+        "16",
+        0
+      ],
+      "latent_image": [
+        "13",
+        2
+      ]
+    }
+  },
+  "18": {
+    "class_type": "TrimVideoLatent",
+    "inputs": {
+      "samples": [
+        "17",
+        0
+      ],
+      "trim_amount": [
+        "13",
+        3
+      ]
+    }
+  },
+  "19": {
+    "class_type": "AftertakeLoadClip",
+    "inputs": {
+      "filename": "c9eb8940-13d3-48b4-9872-c0c535d473d1.mp4",
+      "width": 768,
+      "height": 448,
+      "frames": 73,
+      "fps": 24.0,
+      "trim_start": 0.0
+    },
+    "is_changed": [
+      "a672061730237c24376a67dd5b1fe9df7d1e5123c46c47a17692b5a2f0fb8083"
+    ]
+  },
+  "20": {
+    "class_type": "AftertakeComposite",
+    "inputs": {
+      "original": [
+        "8",
+        0
+      ],
+      "generated": [
+        "19",
+        0
+      ],
+      "mask": [
+        "51",
+        0
+      ],
+      "match_color": false,
+      "spatial_mask": [
+        "9",
+        2
+      ]
+    }
+  },
+  "21": {
+    "class_type": "AftertakeSaveVideo",
+    "inputs": {
+      "images": [
+        "20",
+        0
+      ],
+      "fps": 24.0,
+      "filename_prefix": "aftertake/motion-transfer",
+      "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Natural character / complete silhouette and protected foreground\",\"clip\":{\"id\":\"00d3c2d1-1716-441f-9a71-0cf288030e2d\",\"name\":\"Bridge - Blender Foundation research.mp4\",\"sha256\":\"2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19\",\"width\":768,\"height\":432,\"duration\":3.125,\"url\":\"/media/00d3c2d1-1716-441f-9a71-0cf288030e2d.mp4\"},\"prompt\":\"A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers, stands on the left beside a woman at a canal bridge railing. He follows the left performer's head turns, speaking gestures and hand movements from the driving video. Preserve his identity, jacket and realistic proportions from the appearance image. Match the soft daylight and natural contrast of the original scene. Keep the woman, railing, buildings, trees and camera unchanged. One continuous realistic shot.\",\"cue\":{\"start\":0,\"end\":3.05,\"fade\":0,\"feather\":0.02,\"tracking\":\"static\",\"anchor\":0,\"strokes\":[{\"points\":[{\"x\":0.39,\"y\":0.02},{\"x\":0.39,\"y\":0.3},{\"x\":0.39,\"y\":0.6},{\"x\":0.39,\"y\":0.98}],\"radius\":0.27},{\"points\":[{\"x\":0.24,\"y\":0.38},{\"x\":0.24,\"y\":0.76}],\"radius\":0.15,\"mode\":\"paint\"}]},\"seed\":5091,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"motion-transfer\",\"transfer\":{\"reference\":{\"id\":\"deaafec5-fcb8-421e-9c8e-fffc07252d22\",\"name\":\"Edited frame · Replace the man on the left with the man in Picture 2. Match the light\",\"sha256\":\"35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/deaafec5-fcb8-421e-9c8e-fffc07252d22.png\",\"kind\":\"image\",\"hasAudio\":false},\"motionCaption\":\"Two people stand at a bridge railing in a medium-wide shot. The man on the left speaks, opens his mouth, lifts and turns his head, then turns toward the woman on the right. His hands rest near the railing. The woman turns toward him and gestures. The camera remains almost stationary.\",\"poseStrength\":1.4,\"scope\":\"cue\",\"finish\":{\"generation\":{\"id\":\"8dd6a338-e411-4d5b-91d8-3922bbe439fe\",\"name\":\"Natural-human-raw-generation.mp4\",\"sha256\":\"a672061730237c24376a67dd5b1fe9df7d1e5123c46c47a17692b5a2f0fb8083\",\"width\":768,\"height\":448,\"duration\":3.0416666666666665,\"url\":\"/media/8dd6a338-e411-4d5b-91d8-3922bbe439fe.mp4\",\"hasAudio\":false},\"matte\":{\"id\":\"5636aed1-e7bb-436d-9a28-d1faa82898db\",\"name\":\"Tracked-human-subject-matte.mp4\",\"sha256\":\"078e7c5f801a26a62ba5107dc33767e6fa03cf89a9bc4313e78e2e6c16e4439d\",\"width\":768,\"height\":432,\"duration\":3.0416666666666665,\"url\":\"/media/5636aed1-e7bb-436d-9a28-d1faa82898db.mp4\",\"hasAudio\":false},\"settingsKey\":\"[\\\"2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19\\\",\\\"A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers, stands on the left beside a woman at a canal bridge railing. He follows the left performer's head turns, speaking gestures and hand movements from the driving video. Preserve his identity, jacket and realistic proportions from the appearance image. Match the soft daylight and natural contrast of the original scene. Keep the woman, railing, buildings, trees and camera unchanged. One continuous realistic shot.\\\",5091,\\\"final\\\",0,\\\"35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7\\\",\\\"Two people stand at a bridge railing in a medium-wide shot. The man on the left speaks, opens his mouth, lifts and turns his head, then turns toward the woman on the right. His hands rest near the railing. The woman turns toward him and gestures. The camera remains almost stationary.\\\",1.4]\"}}}",
+      "source_audio": [
+        "8",
+        1
+      ],
+      "audio_start": 0.0,
+      "display_width": 768,
+      "display_height": 432
+    }
+  },
+  "22": {
+    "class_type": "AftertakeSaveVideo",
+    "inputs": {
+      "images": [
+        "19",
+        0
+      ],
+      "fps": 24.0,
+      "filename_prefix": "aftertake/generation",
+      "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Natural character / complete silhouette and protected foreground\",\"clip\":{\"id\":\"00d3c2d1-1716-441f-9a71-0cf288030e2d\",\"name\":\"Bridge - Blender Foundation research.mp4\",\"sha256\":\"2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19\",\"width\":768,\"height\":432,\"duration\":3.125,\"url\":\"/media/00d3c2d1-1716-441f-9a71-0cf288030e2d.mp4\"},\"prompt\":\"A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers, stands on the left beside a woman at a canal bridge railing. He follows the left performer's head turns, speaking gestures and hand movements from the driving video. Preserve his identity, jacket and realistic proportions from the appearance image. Match the soft daylight and natural contrast of the original scene. Keep the woman, railing, buildings, trees and camera unchanged. One continuous realistic shot.\",\"cue\":{\"start\":0,\"end\":3.05,\"fade\":0,\"feather\":0.02,\"tracking\":\"static\",\"anchor\":0,\"strokes\":[{\"points\":[{\"x\":0.39,\"y\":0.02},{\"x\":0.39,\"y\":0.3},{\"x\":0.39,\"y\":0.6},{\"x\":0.39,\"y\":0.98}],\"radius\":0.27},{\"points\":[{\"x\":0.24,\"y\":0.38},{\"x\":0.24,\"y\":0.76}],\"radius\":0.15,\"mode\":\"paint\"}]},\"seed\":5091,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"motion-transfer\",\"transfer\":{\"reference\":{\"id\":\"deaafec5-fcb8-421e-9c8e-fffc07252d22\",\"name\":\"Edited frame · Replace the man on the left with the man in Picture 2. Match the light\",\"sha256\":\"35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/deaafec5-fcb8-421e-9c8e-fffc07252d22.png\",\"kind\":\"image\",\"hasAudio\":false},\"motionCaption\":\"Two people stand at a bridge railing in a medium-wide shot. The man on the left speaks, opens his mouth, lifts and turns his head, then turns toward the woman on the right. His hands rest near the railing. The woman turns toward him and gestures. The camera remains almost stationary.\",\"poseStrength\":1.4,\"scope\":\"cue\",\"finish\":{\"generation\":{\"id\":\"8dd6a338-e411-4d5b-91d8-3922bbe439fe\",\"name\":\"Natural-human-raw-generation.mp4\",\"sha256\":\"a672061730237c24376a67dd5b1fe9df7d1e5123c46c47a17692b5a2f0fb8083\",\"width\":768,\"height\":448,\"duration\":3.0416666666666665,\"url\":\"/media/8dd6a338-e411-4d5b-91d8-3922bbe439fe.mp4\",\"hasAudio\":false},\"matte\":{\"id\":\"5636aed1-e7bb-436d-9a28-d1faa82898db\",\"name\":\"Tracked-human-subject-matte.mp4\",\"sha256\":\"078e7c5f801a26a62ba5107dc33767e6fa03cf89a9bc4313e78e2e6c16e4439d\",\"width\":768,\"height\":432,\"duration\":3.0416666666666665,\"url\":\"/media/5636aed1-e7bb-436d-9a28-d1faa82898db.mp4\",\"hasAudio\":false},\"settingsKey\":\"[\\\"2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19\\\",\\\"A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers, stands on the left beside a woman at a canal bridge railing. He follows the left performer's head turns, speaking gestures and hand movements from the driving video. Preserve his identity, jacket and realistic proportions from the appearance image. Match the soft daylight and natural contrast of the original scene. Keep the woman, railing, buildings, trees and camera unchanged. One continuous realistic shot.\\\",5091,\\\"final\\\",0,\\\"35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7\\\",\\\"Two people stand at a bridge railing in a medium-wide shot. The man on the left speaks, opens his mouth, lifts and turns his head, then turns toward the woman on the right. His hands rest near the railing. The woman turns toward him and gestures. The camera remains almost stationary.\\\",1.4]\"}}}"
+    }
+  },
+  "23": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "lcm"
+    }
+  },
+  "45": {
+    "class_type": "AftertakeLoadClip",
+    "inputs": {
+      "filename": "deaafec5-fcb8-421e-9c8e-fffc07252d22.png",
+      "width": 768,
+      "height": 432,
+      "frames": 1,
+      "fps": 24,
+      "trim_start": 0
+    },
+    "is_changed": [
+      "35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7"
+    ]
+  },
+  "46": {
+    "class_type": "ImageScale",
+    "inputs": {
+      "image": [
+        "45",
+        0
+      ],
+      "upscale_method": "lanczos",
+      "width": 768,
+      "height": 448,
+      "crop": "disabled"
+    }
+  },
+  "49": {
+    "class_type": "AftertakeLoadClip",
+    "inputs": {
+      "filename": "5636aed1-e7bb-436d-9a28-d1faa82898db.mp4",
+      "width": 768,
+      "height": 448,
+      "frames": 73,
+      "fps": 24.0,
+      "trim_start": 0.0
+    },
+    "is_changed": [
+      "078e7c5f801a26a62ba5107dc33767e6fa03cf89a9bc4313e78e2e6c16e4439d"
+    ]
+  },
+  "50": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "49",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "51": {
+    "class_type": "MaskComposite",
+    "inputs": {
+      "destination": [
+        "9",
+        0
+      ],
+      "source": [
+        "50",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "operation": "multiply"
+    }
+  }
+}

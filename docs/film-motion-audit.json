@@ -1,0 +1,109 @@
+{
+  "method": "OpenCV corner tracking and RANSAC similarity between consecutive decoded frames at 960x540. Report 95th percentile changes in estimated translation. Top and central picture only; bottom captions excluded. Diagnostic, not a perceptual quality score.",
+  "baselineFilmId": "3e2f3bd3-e952-41ed-a710-8b716110bc99",
+  "updatedFilmId": "4533e81a-0037-47d1-aad4-e3fbc51300b2",
+  "renderBug": "zoompan rounded crop rectangle and chroma to whole input pixels; replaced with floating-point perspective mapping in 4:4:4.",
+  "baseline": [
+    {
+      "label": "source coast",
+      "p95PairTranslationChange": 0.14815318670407762,
+      "medianNonRigidResidual": 0.12352368407139022,
+      "frames": 96,
+      "intervalMin": 0.04166666666666652,
+      "intervalMax": 0.04166666666666696
+    },
+    {
+      "label": "coast coarse",
+      "p95PairTranslationChange": 0.47150496587010676,
+      "medianNonRigidResidual": 0.1356382343118242,
+      "frames": 96,
+      "intervalMin": 0.04166666666666652,
+      "intervalMax": 0.04166666666666696
+    },
+    {
+      "label": "coast raw",
+      "p95PairTranslationChange": 0.7786196709811289,
+      "medianNonRigidResidual": 0.1583528439513631,
+      "frames": 96,
+      "intervalMin": 0.04166666666666652,
+      "intervalMax": 0.04166666666666696
+    },
+    {
+      "label": "coast composite",
+      "p95PairTranslationChange": 0.42184865533818583,
+      "medianNonRigidResidual": 0.14070708547559144,
+      "frames": 96,
+      "intervalMin": 0.04166666666666652,
+      "intervalMax": 0.04166666666666696
+    },
+    {
+      "label": "castle cinema",
+      "p95PairTranslationChange": 0.9911800963596936,
+      "medianNonRigidResidual": 0.1056863995171403,
+      "frames": 96,
+      "intervalMin": 0.04166666666666652,
+      "intervalMax": 0.04166666666666696
+    },
+    {
+      "label": "film source",
+      "p95PairTranslationChange": 0.2079928432746605,
+      "medianNonRigidResidual": 0.13066598711154134,
+      "frames": 54,
+      "intervalMin": 0.04166666666666652,
+      "intervalMax": 0.04166666666666696
+    },
+    {
+      "label": "film cinema",
+      "p95PairTranslationChange": 1.1220360436580257,
+      "medianNonRigidResidual": 0.11077099265867765,
+      "frames": 50,
+      "intervalMin": 0.041666666666666075,
+      "intervalMax": 0.04166666666666696
+    },
+    {
+      "label": "film UI frame zoom",
+      "p95PairTranslationChange": 2.137595301460059,
+      "medianNonRigidResidual": 0.060938399251322384,
+      "frames": 56,
+      "intervalMin": 0.041666666666666075,
+      "intervalMax": 0.04166666666666785
+    },
+    {
+      "label": "film UI settings zoom",
+      "p95PairTranslationChange": 2.816045356861209,
+      "medianNonRigidResidual": 0.08948239390414536,
+      "frames": 93,
+      "intervalMin": 0.0416666666666643,
+      "intervalMax": 0.04166666666666785
+    }
+  ],
+  "updated": [
+    {
+      "label": "UI frame subpixel",
+      "p95PairTranslationChange": 0.03474689173035731,
+      "medianNonRigidResidual": 0.02134432876916302,
+      "frames": 56,
+      "intervalMin": 0.041666666666666075,
+      "intervalMax": 0.04166666666666785
+    },
+    {
+      "label": "UI settings subpixel",
+      "p95PairTranslationChange": 0.08394595858227923,
+      "medianNonRigidResidual": 0.03891721096499451,
+      "frames": 93,
+      "intervalMin": 0.0416666666666643,
+      "intervalMax": 0.04166666666666785
+    }
+  ],
+  "regression": {
+    "oldRendererMaximumMarkerAccelerationPixels": 3.3661225243384405,
+    "maximumAllowed": 0.2,
+    "newRendererPasses": true,
+    "includesOffCenterAnchorAndRequestedEndScale": true
+  },
+  "limitations": [
+    "The generated castle video still has native motion wobble. This patch changes Film framing only.",
+    "No stabilization or interpolation applied to generation outputs.",
+    "Constant 24fps presentation timestamps do not guarantee model temporal coherence."
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "format": "aftertake-text-video-evidence/1",
+  "cases": [
+    {
+      "id": "54e7d106-bb5f-4ea1-b319-7cff0972aee5",
+      "jobId": "cc7f580c-7f39-4d73-9239-a12c36aa72ad",
+      "sha256": "4e2b3059ad5b22ff84fbe01335526fcf87d78d1d52c6b50f557b0c30aae4111a",
+      "engineSeconds": 82.68,
+      "decoded": {
+        "width": 576,
+        "height": 1024,
+        "fps": 24,
+        "frames": 73,
+        "hasAudio": true,
+        "regularTimestamps": true,
+        "firstTimestamp": 0,
+        "duration": 3.0416666666666665,
+        "audio": {
+          "sampleRate": 48000,
+          "channels": 2,
+          "samples": 145968,
+          "duration": 3.041,
+          "firstTimestamp": 0,
+          "regularTimestamps": true
+        }
+      },
+      "reviewedFrames": [
+        0,
+        24,
+        48,
+        72
+      ],
+      "metadataAndDecodedClockVerified": true,
+      "sourceImageOrVideoInputs": 0,
+      "source": "native LTX-2.5 empty AV latents and text conditioning",
+      "modelManifest": "docs/models-text-video.json"
+    },
+    {
+      "id": "c045fee5-9891-4484-9e20-ffba476c9c05",
+      "jobId": "71e6ff7a-f2a1-4152-afde-64e8b0729df0",
+      "sha256": "839bc3d4273dd2f2078e41d67e435bf8422fef5e275498ec8cef661bd1529e30",
+      "engineSeconds": 61.13,
+      "decoded": {
+        "width": 512,
+        "height": 512,
+        "fps": 24,
+        "frames": 49,
+        "hasAudio": false,
+        "regularTimestamps": true,
+        "firstTimestamp": 0,
+        "duration": 2.0416666666666665
+      },
+      "reviewedFrames": [
+        0,
+        16,
+        32,
+        48
+      ],
+      "metadataAndDecodedClockVerified": true,
+      "sourceImageOrVideoInputs": 0,
+      "source": "native LTX-2.5 empty AV latents and text conditioning",
+      "modelManifest": "docs/models-text-video.json"
+    }
+  ],
+  "ui": {
+    "nativeVideoCreation": true,
+    "recipeDownloadedAndReimported": true,
+    "portraitFinalSoundAndSeedRestored": true,
+    "filmDuplicateBytesReused": true
+  },
+  "counts": {
+    "nativeRuns": 3,
+    "packagedOutputs": 2,
+    "typescriptTests": 85,
+    "pythonTests": 50,
+    "liveGraphContracts": 39
+  },
+  "competitionSubmitted": false,
+  "filmIntegration": {
+    "nativeUiImportAndExport": true,
+    "id": "28106f7f-1427-4d6b-b438-1c9676069a6f",
+    "sha256": "419be6b4abd6c4be685b6285250f150e3f706d3642bc5b02ea67947038432e21",
+    "sourceSha256": "4e2b3059ad5b22ff84fbe01335526fcf87d78d1d52c6b50f557b0c30aae4111a",
+    "decoded": {
+      "width": 720,
+      "height": 1280,
+      "fps": 24.0,
+      "frames": 73,
+      "hasAudio": true,
+      "regularTimestamps": true,
+      "firstTimestamp": 0.0,
+      "duration": 3.0416666666666665,
+      "audio": {
+        "sampleRate": 48000,
+        "channels": 2,
+        "samples": 145968,
+        "duration": 3.041,
+        "firstTimestamp": 0.0,
+        "regularTimestamps": true
+      }
+    },
+    "cuts": 1,
+    "editableTitles": 1,
+    "note": "A local integration-test export, not a new public marketing edit. The two main H3 demo exports are unchanged."
+  }
+}

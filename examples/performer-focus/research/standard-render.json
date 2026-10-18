@@ -1,0 +1,505 @@
+{
+  "id": "8c69c817-cbea-4511-83e5-d6bfb0c72804",
+  "recipe": {
+    "format": "aftertake/1",
+    "name": "Natural character / focused strength one",
+    "clip": {
+      "id": "ccc9adc3-ee75-4385-81bd-b4c682827586",
+      "name": "Bridge - Blender Foundation - CC BY 3.0.mp4",
+      "sha256": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19",
+      "width": 768,
+      "height": 432,
+      "duration": 3.125,
+      "url": "/media/ccc9adc3-ee75-4385-81bd-b4c682827586.mp4",
+      "hasAudio": false
+    },
+    "prompt": "Character appearance description: A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers. Background description: A green metal railing on a canal bridge, softly focused leafy trees and buildings, soft natural daylight, realistic contrast.",
+    "cue": {
+      "start": 0,
+      "end": 3.05,
+      "fade": 0,
+      "feather": 0.02,
+      "tracking": "static",
+      "anchor": 0,
+      "strokes": [
+        {
+          "points": [
+            {
+              "x": 0.39,
+              "y": 0.02
+            },
+            {
+              "x": 0.39,
+              "y": 0.3
+            },
+            {
+              "x": 0.39,
+              "y": 0.6
+            },
+            {
+              "x": 0.39,
+              "y": 0.98
+            }
+          ],
+          "radius": 0.27
+        },
+        {
+          "points": [
+            {
+              "x": 0.24,
+              "y": 0.38
+            },
+            {
+              "x": 0.24,
+              "y": 0.76
+            }
+          ],
+          "radius": 0.15,
+          "mode": "paint"
+        }
+      ]
+    },
+    "seed": 5091,
+    "quality": "final",
+    "trimStart": 0,
+    "pipeline": "motion-transfer",
+    "transfer": {
+      "reference": {
+        "id": "9614cce3-3187-4361-b2a2-f4cbec5a99f2",
+        "name": "Natural fictional human - scene-matched Qwen reference.png",
+        "sha256": "220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f",
+        "originalSha256": "35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7",
+        "width": 768,
+        "height": 432,
+        "duration": 1,
+        "url": "/media/9614cce3-3187-4361-b2a2-f4cbec5a99f2.png",
+        "kind": "image"
+      },
+      "motionCaption": "A man stands at a bridge railing, speaks expressively, opens his mouth, lifts and turns his head, then turns toward someone on his right. His hands rest near the railing. The camera remains almost stationary.",
+      "focus": {
+        "x": 0.1875,
+        "y": 0,
+        "width": 0.4375,
+        "height": 1
+      },
+      "scope": "cue"
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-18T08:41:23.134Z",
+  "updatedAt": "2026-10-18T08:44:38.299Z",
+  "workflow": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "wan_animate_2_distill_int8_convrot.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        "type": "wan",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "Wan2_1_VAE_bf16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "CLIPVisionLoader",
+      "inputs": {
+        "clip_name": "clip_vision_h.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "Character appearance description: A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers. Background description: A green metal railing on a canal bridge, softly focused leafy trees and buildings, soft natural daylight, realistic contrast."
+      }
+    },
+    "6": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "frozen motion, blurred hands, malformed limbs, extra arms, text, logos"
+      }
+    },
+    "7": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "A man stands at a bridge railing, speaks expressively, opens his mouth, lifts and turns his head, then turns toward someone on his right. His hands rest near the railing. The camera remains almost stationary."
+      }
+    },
+    "8": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "00d3c2d1-1716-441f-9a71-0cf288030e2d.mp4",
+        "width": 768,
+        "height": 448,
+        "frames": 73,
+        "fps": 24,
+        "trim_start": 0
+      },
+      "is_changed": [
+        "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19"
+      ]
+    },
+    "9": {
+      "class_type": "AftertakeCueMask",
+      "inputs": {
+        "width": 768,
+        "height": 448,
+        "frames": 73,
+        "fps": 24,
+        "cue_json": "{\"start\":0,\"end\":3.05,\"fade\":0,\"feather\":0.02,\"tracking\":\"static\",\"anchor\":0,\"strokes\":[{\"points\":[{\"x\":0.39,\"y\":0.02},{\"x\":0.39,\"y\":0.3},{\"x\":0.39,\"y\":0.6},{\"x\":0.39,\"y\":0.98}],\"radius\":0.27},{\"points\":[{\"x\":0.24,\"y\":0.38},{\"x\":0.24,\"y\":0.76}],\"radius\":0.15,\"mode\":\"paint\"}]}",
+        "images": [
+          "8",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "ImageFromBatch",
+      "inputs": {
+        "image": [
+          "52",
+          0
+        ],
+        "batch_index": 0,
+        "length": 1
+      }
+    },
+    "11": {
+      "class_type": "CLIPVisionEncode",
+      "inputs": {
+        "clip_vision": [
+          "4",
+          0
+        ],
+        "image": [
+          "46",
+          0
+        ],
+        "crop": "none"
+      }
+    },
+    "12": {
+      "class_type": "CLIPVisionEncode",
+      "inputs": {
+        "clip_vision": [
+          "4",
+          0
+        ],
+        "image": [
+          "10",
+          0
+        ],
+        "crop": "none"
+      }
+    },
+    "13": {
+      "class_type": "WanAnimate2ToVideo",
+      "inputs": {
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "width": 608,
+        "height": 768,
+        "length": 73,
+        "batch_size": 1,
+        "reference_image": [
+          "46",
+          0
+        ],
+        "pose_video": [
+          "52",
+          0
+        ],
+        "clip_vision_output": [
+          "11",
+          0
+        ],
+        "positive_pose": [
+          "7",
+          0
+        ],
+        "clip_vision_output_pose": [
+          "12",
+          0
+        ],
+        "video_frame_offset": 0,
+        "pose_strength": 1,
+        "pose_start_percent": 0,
+        "pose_end_percent": 1,
+        "reference_image_strength": 1
+      }
+    },
+    "14": {
+      "class_type": "WanAnimate2Cache",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "device": "gpu",
+        "dtype": "int4"
+      }
+    },
+    "15": {
+      "class_type": "ModelSamplingSD3",
+      "inputs": {
+        "model": [
+          "14",
+          0
+        ],
+        "shift": 5
+      }
+    },
+    "16": {
+      "class_type": "BasicScheduler",
+      "inputs": {
+        "model": [
+          "14",
+          0
+        ],
+        "scheduler": "simple",
+        "steps": 10,
+        "denoise": 1
+      }
+    },
+    "17": {
+      "class_type": "SamplerCustom",
+      "inputs": {
+        "model": [
+          "15",
+          0
+        ],
+        "add_noise": true,
+        "noise_seed": 5091,
+        "cfg": 1,
+        "positive": [
+          "13",
+          0
+        ],
+        "negative": [
+          "13",
+          1
+        ],
+        "sampler": [
+          "23",
+          0
+        ],
+        "sigmas": [
+          "16",
+          0
+        ],
+        "latent_image": [
+          "13",
+          2
+        ]
+      }
+    },
+    "18": {
+      "class_type": "TrimVideoLatent",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "trim_amount": [
+          "13",
+          3
+        ]
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "18",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "20": {
+      "class_type": "AftertakeComposite",
+      "inputs": {
+        "original": [
+          "8",
+          0
+        ],
+        "generated": [
+          "54",
+          0
+        ],
+        "mask": [
+          "9",
+          0
+        ],
+        "match_color": false,
+        "spatial_mask": [
+          "9",
+          2
+        ]
+      }
+    },
+    "21": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "20",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/motion-transfer",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Natural character / focused strength one\",\"clip\":{\"id\":\"ccc9adc3-ee75-4385-81bd-b4c682827586\",\"name\":\"Bridge - Blender Foundation - CC BY 3.0.mp4\",\"sha256\":\"2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19\",\"width\":768,\"height\":432,\"duration\":3.125,\"url\":\"/media/ccc9adc3-ee75-4385-81bd-b4c682827586.mp4\",\"hasAudio\":false},\"prompt\":\"Character appearance description: A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers. Background description: A green metal railing on a canal bridge, softly focused leafy trees and buildings, soft natural daylight, realistic contrast.\",\"cue\":{\"start\":0,\"end\":3.05,\"fade\":0,\"feather\":0.02,\"tracking\":\"static\",\"anchor\":0,\"strokes\":[{\"points\":[{\"x\":0.39,\"y\":0.02},{\"x\":0.39,\"y\":0.3},{\"x\":0.39,\"y\":0.6},{\"x\":0.39,\"y\":0.98}],\"radius\":0.27},{\"points\":[{\"x\":0.24,\"y\":0.38},{\"x\":0.24,\"y\":0.76}],\"radius\":0.15,\"mode\":\"paint\"}]},\"seed\":5091,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"motion-transfer\",\"transfer\":{\"reference\":{\"id\":\"9614cce3-3187-4361-b2a2-f4cbec5a99f2\",\"name\":\"Natural fictional human - scene-matched Qwen reference.png\",\"sha256\":\"220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f\",\"originalSha256\":\"35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/9614cce3-3187-4361-b2a2-f4cbec5a99f2.png\",\"kind\":\"image\"},\"motionCaption\":\"A man stands at a bridge railing, speaks expressively, opens his mouth, lifts and turns his head, then turns toward someone on his right. His hands rest near the railing. The camera remains almost stationary.\",\"focus\":{\"x\":0.1875,\"y\":0,\"width\":0.4375,\"height\":1},\"scope\":\"cue\"}}",
+        "source_audio": [
+          "8",
+          1
+        ],
+        "audio_start": 0,
+        "display_width": 768,
+        "display_height": 432
+      }
+    },
+    "22": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "54",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/generation",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Natural character / focused strength one\",\"clip\":{\"id\":\"ccc9adc3-ee75-4385-81bd-b4c682827586\",\"name\":\"Bridge - Blender Foundation - CC BY 3.0.mp4\",\"sha256\":\"2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19\",\"width\":768,\"height\":432,\"duration\":3.125,\"url\":\"/media/ccc9adc3-ee75-4385-81bd-b4c682827586.mp4\",\"hasAudio\":false},\"prompt\":\"Character appearance description: A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers. Background description: A green metal railing on a canal bridge, softly focused leafy trees and buildings, soft natural daylight, realistic contrast.\",\"cue\":{\"start\":0,\"end\":3.05,\"fade\":0,\"feather\":0.02,\"tracking\":\"static\",\"anchor\":0,\"strokes\":[{\"points\":[{\"x\":0.39,\"y\":0.02},{\"x\":0.39,\"y\":0.3},{\"x\":0.39,\"y\":0.6},{\"x\":0.39,\"y\":0.98}],\"radius\":0.27},{\"points\":[{\"x\":0.24,\"y\":0.38},{\"x\":0.24,\"y\":0.76}],\"radius\":0.15,\"mode\":\"paint\"}]},\"seed\":5091,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"motion-transfer\",\"transfer\":{\"reference\":{\"id\":\"9614cce3-3187-4361-b2a2-f4cbec5a99f2\",\"name\":\"Natural fictional human - scene-matched Qwen reference.png\",\"sha256\":\"220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f\",\"originalSha256\":\"35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/9614cce3-3187-4361-b2a2-f4cbec5a99f2.png\",\"kind\":\"image\"},\"motionCaption\":\"A man stands at a bridge railing, speaks expressively, opens his mouth, lifts and turns his head, then turns toward someone on his right. His hands rest near the railing. The camera remains almost stationary.\",\"focus\":{\"x\":0.1875,\"y\":0,\"width\":0.4375,\"height\":1},\"scope\":\"cue\"}}"
+      }
+    },
+    "23": {
+      "class_type": "KSamplerSelect",
+      "inputs": {
+        "sampler_name": "lcm"
+      }
+    },
+    "45": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "9614cce3-3187-4361-b2a2-f4cbec5a99f2.png",
+        "width": 768,
+        "height": 432,
+        "frames": 1,
+        "fps": 24,
+        "trim_start": 0
+      },
+      "is_changed": [
+        "220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f"
+      ]
+    },
+    "46": {
+      "class_type": "AftertakeCropRegion",
+      "inputs": {
+        "images": [
+          "53",
+          0
+        ],
+        "x": 144,
+        "y": 0,
+        "width": 336,
+        "height": 448,
+        "target_width": 608,
+        "target_height": 768
+      }
+    },
+    "52": {
+      "class_type": "AftertakeCropRegion",
+      "inputs": {
+        "images": [
+          "8",
+          0
+        ],
+        "x": 144,
+        "y": 0,
+        "width": 336,
+        "height": 448,
+        "target_width": 608,
+        "target_height": 768
+      }
+    },
+    "53": {
+      "class_type": "ImageScale",
+      "inputs": {
+        "image": [
+          "45",
+          0
+        ],
+        "upscale_method": "lanczos",
+        "width": 768,
+        "height": 448,
+        "crop": "disabled"
+      }
+    },
+    "54": {
+      "class_type": "AftertakeRestoreRegion",
+      "inputs": {
+        "original": [
+          "8",
+          0
+        ],
+        "generated": [
+          "19",
+          0
+        ],
+        "x": 144,
+        "y": 0,
+        "width": 336,
+        "height": 448
+      }
+    },
+    "55": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/focused-generation",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Natural character / focused strength one\",\"clip\":{\"id\":\"ccc9adc3-ee75-4385-81bd-b4c682827586\",\"name\":\"Bridge - Blender Foundation - CC BY 3.0.mp4\",\"sha256\":\"2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19\",\"width\":768,\"height\":432,\"duration\":3.125,\"url\":\"/media/ccc9adc3-ee75-4385-81bd-b4c682827586.mp4\",\"hasAudio\":false},\"prompt\":\"Character appearance description: A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers. Background description: A green metal railing on a canal bridge, softly focused leafy trees and buildings, soft natural daylight, realistic contrast.\",\"cue\":{\"start\":0,\"end\":3.05,\"fade\":0,\"feather\":0.02,\"tracking\":\"static\",\"anchor\":0,\"strokes\":[{\"points\":[{\"x\":0.39,\"y\":0.02},{\"x\":0.39,\"y\":0.3},{\"x\":0.39,\"y\":0.6},{\"x\":0.39,\"y\":0.98}],\"radius\":0.27},{\"points\":[{\"x\":0.24,\"y\":0.38},{\"x\":0.24,\"y\":0.76}],\"radius\":0.15,\"mode\":\"paint\"}]},\"seed\":5091,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"motion-transfer\",\"transfer\":{\"reference\":{\"id\":\"9614cce3-3187-4361-b2a2-f4cbec5a99f2\",\"name\":\"Natural fictional human - scene-matched Qwen reference.png\",\"sha256\":\"220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f\",\"originalSha256\":\"35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/9614cce3-3187-4361-b2a2-f4cbec5a99f2.png\",\"kind\":\"image\"},\"motionCaption\":\"A man stands at a bridge railing, speaks expressively, opens his mouth, lifts and turns his head, then turns toward someone on his right. His hands rest near the railing. The camera remains almost stationary.\",\"focus\":{\"x\":0.1875,\"y\":0,\"width\":0.4375,\"height\":1},\"scope\":\"cue\"}}"
+      }
+    }
+  },
+  "jobId": "f2f86610-5f1d-4b65-bf14-c2973012a555",
+  "stage": "Complete",
+  "output": "/outputs/8c69c817-cbea-4511-83e5-d6bfb0c72804.mp4",
+  "rawOutput": "/outputs/8c69c817-cbea-4511-83e5-d6bfb0c72804-raw.mp4",
+  "focusOutput": "/outputs/8c69c817-cbea-4511-83e5-d6bfb0c72804-focused.mp4"
+}

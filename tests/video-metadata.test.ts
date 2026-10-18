@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { inspectVideoMetadata } from '../server/video-metadata.js';
 
 test('executed graphs come from actual bundled MP4 metadata and reject a different recipe or truncated output', async () => {
-  for (const slug of ['portal', 'golden-falls', 'crystal-forest']) {
+  for (const slug of ['portal', 'golden-falls', 'crystal-forest', 'signal', 'crystal-transition']) {
     const bytes = await readFile(new URL(`../examples/${slug}/result.mp4`, import.meta.url));
     const recipe = JSON.parse(await readFile(new URL(`../examples/${slug}/recipe.json`, import.meta.url), 'utf8'));
     const inspected = inspectVideoMetadata(bytes, recipe);

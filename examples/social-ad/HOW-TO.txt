@@ -1,0 +1,5 @@
+Slow Mornings — editable portrait coffee ads
+
+Extract this pack. In the local Aftertake Film editor, import the media/ files (three MP4s, a canvas PNG and the WAV voice recordings), then choose Import film project and project-a.json or project-b.json. Sources resolve by checksum, not by their original machine-specific asset IDs. Adjust text, timing, motion, voice or trims; then Export film. The main source snapshot includes the app.
+
+The sourceFiles paths are relative to the full source checkout. The MP4 ad exports can be viewed directly. App code is MIT; media and model licenses apply separately. See ATTRIBUTION.txt and sources.json.

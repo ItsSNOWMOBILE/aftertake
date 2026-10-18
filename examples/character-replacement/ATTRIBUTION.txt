@@ -1,0 +1,8 @@
+Tears of Steel (2012) - Blender Foundation / mango.blender.org
+Source: https://mango.blender.org/about/
+Source download: https://download.blender.org/demo/movies/ToS/tears_of_steel_720p.mov
+License: CC BY 3.0 - https://creativecommons.org/licenses/by/3.0/
+Changes: silent short excerpt, resize, generated human character appearance with local Qwen Image Edit and Wan Animate 2, painted-region composite. The soundtrack is excluded. No actor or creator endorsement is implied.
+The fictional human reference was generated locally from text with Z-Image Turbo (Apache-2.0), then normalized on import. Its generation request and executed graph are in character-reference-origin.json; imported metadata is in character-reference-import.json. No real person identity reference was used.
+The finishing composite uses a local SAM 2.1 tracked subject matte and a separate protected foreground subject. SAM 2.1 tiny weights are Apache-2.0; revisions and checksums are pinned in docs/models-matting.json.
+App code is MIT. Qwen and Wan model terms apply separately.

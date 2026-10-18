@@ -1,0 +1,190 @@
+{
+  "method": "Local Whisper base.en CPU int8; no initial prompt or expected text supplied. ASR timing is an independent estimate, not a ground-truth boundary.",
+  "lines": [
+    {
+      "expected": "Your morning called.",
+      "transcript": "Your morning called.",
+      "normalizedWordsMatch": true,
+      "independentWords": [
+        {
+          "text": "Your",
+          "start": 0.0,
+          "end": 0.16
+        },
+        {
+          "text": "morning",
+          "start": 0.16,
+          "end": 0.42
+        },
+        {
+          "text": "called.",
+          "start": 0.42,
+          "end": 0.76
+        }
+      ],
+      "timingComparison": [
+        {
+          "text": "Your",
+          "modelStart": 0.119,
+          "asrStart": 0.0,
+          "startDifference": 0.119,
+          "modelEnd": 0.244,
+          "asrEnd": 0.16
+        },
+        {
+          "text": "morning",
+          "modelStart": 0.294,
+          "asrStart": 0.16,
+          "startDifference": 0.13399999999999998,
+          "modelEnd": 0.594,
+          "asrEnd": 0.42
+        },
+        {
+          "text": "called.",
+          "modelStart": 0.644,
+          "asrStart": 0.42,
+          "startDifference": 0.22400000000000003,
+          "modelEnd": 1.1733333333333333,
+          "asrEnd": 0.76
+        }
+      ]
+    },
+    {
+      "expected": "Start with fresh grounds.",
+      "transcript": "Start with fresh grounds.",
+      "normalizedWordsMatch": true,
+      "independentWords": [
+        {
+          "text": "Start",
+          "start": 0.0,
+          "end": 0.24
+        },
+        {
+          "text": "with",
+          "start": 0.24,
+          "end": 0.38
+        },
+        {
+          "text": "fresh",
+          "start": 0.38,
+          "end": 0.56
+        },
+        {
+          "text": "grounds.",
+          "start": 0.56,
+          "end": 0.98
+        }
+      ],
+      "timingComparison": [
+        {
+          "text": "Start",
+          "modelStart": 0.11533333333333333,
+          "asrStart": 0.0,
+          "startDifference": 0.11533333333333333,
+          "modelEnd": 0.3403333333333333,
+          "asrEnd": 0.24
+        },
+        {
+          "text": "with",
+          "modelStart": 0.36533333333333334,
+          "asrStart": 0.24,
+          "startDifference": 0.12533333333333335,
+          "modelEnd": 0.49033333333333334,
+          "asrEnd": 0.38
+        },
+        {
+          "text": "fresh",
+          "modelStart": 0.5403333333333333,
+          "asrStart": 0.38,
+          "startDifference": 0.16033333333333333,
+          "modelEnd": 0.7403333333333333,
+          "asrEnd": 0.56
+        },
+        {
+          "text": "grounds.",
+          "modelStart": 0.7903333333333333,
+          "asrStart": 0.56,
+          "startDifference": 0.23033333333333328,
+          "modelEnd": 1.3653333333333333,
+          "asrEnd": 0.98
+        }
+      ]
+    },
+    {
+      "expected": "Pour slowly. Savor the moment.",
+      "transcript": "Pour slowly, savor the moment.",
+      "normalizedWordsMatch": true,
+      "independentWords": [
+        {
+          "text": "Pour",
+          "start": 0.0,
+          "end": 0.18
+        },
+        {
+          "text": "slowly,",
+          "start": 0.18,
+          "end": 0.62
+        },
+        {
+          "text": "savor",
+          "start": 0.98,
+          "end": 1.42
+        },
+        {
+          "text": "the",
+          "start": 1.42,
+          "end": 1.5
+        },
+        {
+          "text": "moment.",
+          "start": 1.5,
+          "end": 1.78
+        }
+      ],
+      "timingComparison": [
+        {
+          "text": "Pour",
+          "modelStart": 0.069,
+          "asrStart": 0.0,
+          "startDifference": 0.069,
+          "modelEnd": 0.294,
+          "asrEnd": 0.18
+        },
+        {
+          "text": "slowly.",
+          "modelStart": 0.369,
+          "asrStart": 0.18,
+          "startDifference": 0.189,
+          "modelEnd": 0.919,
+          "asrEnd": 0.62
+        },
+        {
+          "text": "Savor",
+          "modelStart": 1.1840000000000002,
+          "asrStart": 0.98,
+          "startDifference": 0.20400000000000018,
+          "modelEnd": 1.484,
+          "asrEnd": 1.42
+        },
+        {
+          "text": "the",
+          "modelStart": 1.5090000000000001,
+          "asrStart": 1.42,
+          "startDifference": 0.08900000000000019,
+          "modelEnd": 1.5590000000000002,
+          "asrEnd": 1.5
+        },
+        {
+          "text": "moment.",
+          "modelStart": 1.609,
+          "asrStart": 1.5,
+          "startDifference": 0.10899999999999999,
+          "modelEnd": 2.095333333333333,
+          "asrEnd": 1.78
+        }
+      ]
+    }
+  ],
+  "wholeTranscript": "You're morning called. Start with fresh grounds. Pour slowly, savor the moment.",
+  "maximumStartDifferenceOnMatchedLines": 0.23033333333333328
+}

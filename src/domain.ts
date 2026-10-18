@@ -25,14 +25,18 @@ export const projectSchema = z.object({
   pipeline: z.enum(['structure', 'inpaint', 'cinema', 'motion-transfer']).optional(),
   cinema: cinemaSchema.optional(),
   directionStrength: z.number().min(1).max(4).optional(),
+  matchSourceColor: z.boolean().optional(),
   editReference: clipSchema.extend({ kind: z.literal('image') }).optional(),
   endFrame: clipSchema.extend({ kind: z.literal('image') }).optional(),
   transfer: z.object({
     reference: clipSchema.extend({ kind: z.literal('image') }).optional(),
     motionCaption: z.string().trim().max(2000).optional(),
     poseStrength: z.number().min(0.5).max(1.5).multipleOf(0.01).optional(),
+    focus: z.object({x:z.number().min(0).max(.95),y:z.number().min(0).max(.95),width:z.number().min(.05).max(1),height:z.number().min(.05).max(1)})
+      .refine(box=>box.x+box.width<=1.000001 && box.y+box.height<=1.000001,'Keep the focus inside the source frame.').optional(),
     scope: z.enum(['frame', 'cue']),
-  }).optional(),
+    finish: z.object({generation:clipSchema,matte:clipSchema,settingsKey:z.string().min(1).max(10000)}).optional(),
+  }).refine(transfer=>!transfer.focus || transfer.scope==='cue','A performer focus needs a painted cue.').optional(),
 }).refine(recipe => !recipe.endFrame || recipe.pipeline === 'cinema',
   { message: 'An ending frame is available in Animate a frame.', path: ['endFrame'] })
   .refine(recipe => !recipe.endFrame || !editReferenceIssue(recipe.clip, recipe.endFrame),
@@ -47,7 +51,12 @@ export const recipeSchema = projectSchema
   .refine(recipe => !recipe.editReference || recipe.pipeline !== 'inpaint' || !editReferenceIssue(recipe.clip, recipe.editReference),
     { message: 'Use an edited full frame with the same composition and aspect ratio as the source.', path: ['editReference'] })
   .refine(recipe => recipe.pipeline !== 'motion-transfer' || Boolean(recipe.transfer?.reference),
-    { message: 'Choose an appearance image before transferring motion.', path: ['transfer', 'reference'] });
+    { message: 'Choose an appearance image before transferring motion.', path: ['transfer', 'reference'] })
+  .refine(recipe=>!recipe.transfer?.focus || !recipe.transfer.reference || Math.abs(Math.log((recipe.transfer.reference.width/recipe.transfer.reference.height)/(recipe.clip.width/recipe.clip.height)))<.06,
+    {message:'Use an appearance frame with the same framing and aspect ratio before focusing a performer.',path:['transfer','focus']})
+  .refine(recipe => !recipe.transfer?.finish || recipe.transfer.scope==='cue' && recipe.transfer.finish.generation.kind!=='image' && recipe.transfer.finish.matte.kind!=='image'
+    && recipe.transfer.finish.settingsKey===motionGenerationKey(recipe),
+    {message:'A saved generation and video matte must match this motion setup and use a painted cue.',path:['transfer','finish']});
 export type Recipe = z.infer<typeof projectSchema>;
 export type Cue = z.infer<typeof cueSchema>;
 export type Stroke = z.infer<typeof strokeSchema>;
@@ -57,11 +66,13 @@ export function findImportedClip(clips: Clip[], requested: Clip): Clip | undefin
     clips.find(clip => clip.kind === 'image' && requested.kind === 'image' && clip.originalSha256 === requested.sha256);
 }
 export type Render = {
+  requestKey?:string;requestDigest?:string;
   id: string; recipe: Recipe; state: string; progress: number | null;
   createdAt: string; updatedAt: string; jobId?: string; error?: string;
   output?: string; rawOutput?: string; workflow?: Record<string, unknown>;
   coarseOutput?: string;
   guideOutput?: string;
+  focusOutput?: string;
   stage?: string;
   origin?: { kind: 'example'; slug: string; renderId: string };
 };
@@ -71,12 +82,24 @@ export function usesCue(recipe: Pick<Recipe, 'pipeline' | 'transfer'>) {
   return recipe.pipeline !== 'cinema' && !(recipe.pipeline === 'motion-transfer' && (recipe.transfer?.scope || 'frame') === 'frame');
 }
 
+export function recipeReference(recipe: Recipe) {
+  return recipe.pipeline === 'cinema' ? recipe.endFrame : recipe.pipeline === 'motion-transfer' ? recipe.transfer?.reference : recipe.pipeline === 'inpaint' ? recipe.editReference : undefined;
+}
+
+export function bindRecipeReference(recipe: Recipe, reference: Recipe['editReference']): Recipe {
+  return { ...recipe, editReference: recipe.pipeline === 'inpaint' ? reference : undefined,
+    endFrame: recipe.pipeline === 'cinema' ? reference : undefined,
+    transfer: recipe.pipeline === 'motion-transfer' ? { ...recipe.transfer, scope: recipe.transfer?.scope || 'frame', reference,
+      ...(reference?.sha256!==recipe.transfer?.reference?.sha256?{finish:undefined}:{}) } : undefined };
+}
+
 export function renderSettingsKey(r: Recipe) {
   if (r.pipeline === 'motion-transfer') {
     return JSON.stringify([r.clip.sha256, r.prompt.trim(), r.seed, r.quality, r.trimStart, 'motion-transfer',
       r.transfer?.reference?.sha256 || '', r.transfer?.motionCaption?.trim() || '', r.transfer?.scope || 'frame',
       r.transfer?.poseStrength ?? 1,
-      usesCue(r) ? cueSettingsKey(r.cue) : null]);
+      usesCue(r) ? [cueSettingsKey(r.cue),r.matchSourceColor || false,r.transfer?.finish?.generation.sha256 || '',r.transfer?.finish?.matte.sha256 || ''] : null,
+      ...(r.transfer?.focus?[[r.transfer.focus.x,r.transfer.focus.y,r.transfer.focus.width,r.transfer.focus.height]]:[])]);
   }
   if (r.pipeline === 'cinema') {
     const look = r.cinema || defaultCinema;
@@ -87,7 +110,12 @@ export function renderSettingsKey(r: Recipe) {
   return JSON.stringify([r.clip.sha256, r.prompt.trim(), c.start, c.end, c.fade, c.feather,
     c.tracking || 'static', c.anchor || 0,
     c.strokes.map(s => [s.mode || 'paint', s.radius, s.points.map(p => [p.x, p.y])]),
-    r.seed, r.quality, r.trimStart, r.pipeline || 'structure', r.directionStrength || 1, r.pipeline === 'inpaint' ? r.editReference?.sha256 || null : null]);
+    r.seed, r.quality, r.trimStart, r.pipeline || 'structure', r.directionStrength || 1, r.pipeline === 'inpaint' ? r.editReference?.sha256 || null : null,r.matchSourceColor || false]);
+}
+
+export function motionGenerationKey(r: Recipe) {
+  return JSON.stringify([r.clip.sha256,r.prompt.trim(),r.seed,r.quality,r.trimStart,
+    r.transfer?.reference?.sha256 || '',r.transfer?.motionCaption?.trim() || '',r.transfer?.poseStrength ?? 1,...(r.transfer?.focus?[[r.transfer.focus.x,r.transfer.focus.y,r.transfer.focus.width,r.transfer.focus.height]]:[])]);
 }
 
 function cueSettingsKey(c: Cue) {
@@ -125,6 +153,12 @@ export function renderDimensions(recipe: Recipe) {
     width = options[0].width; height = options[0].height;
   }
   return { width, height, frames, fps, duration: frames / fps };
+}
+
+export function displayDimensions(recipe: Recipe) {
+  const d=renderDimensions(recipe),ratio=recipe.clip.width/recipe.clip.height;
+  return {width:ratio>=1?d.width:Math.max(2,Math.round(d.height*ratio/2)*2),
+    height:ratio>=1?Math.max(2,Math.round(d.width/ratio/2)*2):d.height};
 }
 
 export const presets = [

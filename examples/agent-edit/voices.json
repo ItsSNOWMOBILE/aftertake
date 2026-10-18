@@ -1,0 +1,59 @@
+[
+  {
+    "kind": "audio",
+    "duration": 1.316,
+    "narration": {
+      "text": "Start with the beans.",
+      "voice": "af_heart",
+      "speed": 1.05,
+      "model": "Kokoro-82M v1.0 (Apache-2.0)",
+      "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+      "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+      "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+    },
+    "id": "dc7aea90-90fe-4a19-ae14-b315fded1776",
+    "name": "Narration · Start with the beans.",
+    "extension": ".wav",
+    "sha256": "3ee2aac106ca9c9621914d879378be36f4a9107daeba02b494f064a96cc57280",
+    "url": "/api/films/assets/dc7aea90-90fe-4a19-ae14-b315fded1776/media",
+    "createdAt": "2026-10-18T06:29:44.272Z"
+  },
+  {
+    "kind": "audio",
+    "duration": 1.1066666666666667,
+    "narration": {
+      "text": "Take your time.",
+      "voice": "af_heart",
+      "speed": 1.05,
+      "model": "Kokoro-82M v1.0 (Apache-2.0)",
+      "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+      "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+      "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+    },
+    "id": "2bdd78dd-3766-4d75-970f-6b0e591ed651",
+    "name": "Narration · Take your time.",
+    "extension": ".wav",
+    "sha256": "36e67476d043d7bd4a43fba5be4b5006d4c28c4196a0f6fc3550413aed9d7a1d",
+    "url": "/api/films/assets/2bdd78dd-3766-4d75-970f-6b0e591ed651/media",
+    "createdAt": "2026-10-18T06:29:46.204Z"
+  },
+  {
+    "kind": "audio",
+    "duration": 1.504,
+    "narration": {
+      "text": "Make mornings yours.",
+      "voice": "af_heart",
+      "speed": 1.05,
+      "model": "Kokoro-82M v1.0 (Apache-2.0)",
+      "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+      "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+      "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+    },
+    "id": "2ddacd50-883c-4a27-ae94-78eaa79fc68a",
+    "name": "Narration · Make mornings yours.",
+    "extension": ".wav",
+    "sha256": "66cb744c810062d99aeae5fd2d13159d293c4cbaea1e36b9a2c328a9b6be43c8",
+    "url": "/api/films/assets/2ddacd50-883c-4a27-ae94-78eaa79fc68a/media",
+    "createdAt": "2026-10-18T06:29:48.246Z"
+  }
+]

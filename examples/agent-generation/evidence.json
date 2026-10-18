@@ -1,0 +1,93 @@
+{
+  "format": "aftertake-agent-generation-proof/1",
+  "recordedAt": "2026-10-18",
+  "tools": 16,
+  "generationProtocol": 1,
+  "source": "Actual official MCP client \u2192 native local studio \u2192 Comfy SDK \u2192 local open-weight generation \u2192 native Film export",
+  "gpu": "NVIDIA GeForce RTX 5080 / 16 GB",
+  "image": {
+    "id": "60ed4915-fa00-4333-a67a-4bc87479632e",
+    "requestId": "headphones-reference-v1",
+    "width": 1024,
+    "height": 1024,
+    "model": "Z-Image Turbo",
+    "seed": 90305090
+  },
+  "take": {
+    "id": "d95efc76-8216-41f2-bdee-8762fae5bb66",
+    "requestId": "headphones-shot-v1",
+    "model": "LTX-2.5 distilled / Q4_K_M",
+    "guide": "LTX-2.3 motion tracks IC-LoRA ref0.5",
+    "seed": 90305090,
+    "width": 768,
+    "height": 768,
+    "frames": 97,
+    "fps": 24,
+    "duration": 4.041666666666667
+  },
+  "film": {
+    "id": "bb5a69f7-da3e-48b2-b56d-4a334bd50948",
+    "duration": 2.5,
+    "width": 720,
+    "height": 720,
+    "frames": 60,
+    "fps": 24,
+    "embeddedProjectMatches": true,
+    "maxVideoTimestampDeviationSeconds": 2.983724378680108e-16
+  },
+  "voice": {
+    "text": "Built for your next move.",
+    "duration": 1.494,
+    "model": "Kokoro-82M v1.0 (Apache-2.0)",
+    "wholeClipAudioCorrelation": 0.9999711893078381,
+    "mixerDelaySamplesAt48kHz": 239,
+    "allFiveWordTimingsRetained": true
+  },
+  "rejoin": {
+    "imageSameNativeId": true,
+    "takeSameNativeId": true,
+    "filmSameNativeId": true,
+    "afterNativeRestart": {
+      "imageId": "60ed4915-fa00-4333-a67a-4bc87479632e",
+      "takeId": "d95efc76-8216-41f2-bdee-8762fae5bb66",
+      "imageState": "succeeded",
+      "takeState": "succeeded",
+      "nativeTakeCountBefore": 14,
+      "nativeTakeCountAfter": 14
+    }
+  },
+  "review": {
+    "image": "Single coherent headphone product, legible materials, no generated text or logos.",
+    "takeFrames": [
+      0,
+      1,
+      2,
+      3.9
+    ],
+    "findings": "Reviewed frames preserve the rigid headphone silhouette during a gentle push. This short product shot does not demonstrate arbitrary object consistency, human replacement or long-form generation.",
+    "nativeEditor": "Matching project imported through the actual Film UI; picture, title, five word timings and complete audio remained editable.",
+    "limits": "Technical checks and selected frames do not establish general visual quality; final listening and creative approval remain with Jay."
+  },
+  "files": {
+    "reference": {
+      "path": "examples/agent-generation/reference.png",
+      "sha256": "2f69acaeaf9c85ed5f975bf67ec9cd4713ae3ccf2b834bbc0e75172dc6303b66",
+      "bytes": 1006174
+    },
+    "take": {
+      "path": "examples/agent-generation/take.mp4",
+      "sha256": "c69e0a67c931af788e0c66616640d6217ca990982cebb54068825e6db2aad90c",
+      "bytes": 664434
+    },
+    "film": {
+      "path": "examples/agent-generation/result.mp4",
+      "sha256": "afcf28e4e7cf6e27e29974bf0cea2fc2a1dec4bf9c3c881881fde77f27174607",
+      "bytes": 355337
+    },
+    "voice": {
+      "path": "examples/agent-generation/voice.wav",
+      "sha256": "bd4fe090b679ab89ba97c9cf05392840c312e54330ff664f6bda4e814d7fc06e",
+      "bytes": 71756
+    }
+  }
+}

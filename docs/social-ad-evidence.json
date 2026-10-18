@@ -1,0 +1,252 @@
+{
+  "source": "Actual native Film editor / Export film button, in each variant",
+  "reviewStatus": "Awaiting Jay; not submitted",
+  "exports": [
+    {
+      "variant": "a",
+      "filmId": "9535fa45-7638-4262-8e5b-15c92fc10545",
+      "bytes": 2152266,
+      "sha256": "bcfa0cee54b90dd578b90fa233d596f586a6e17dd9bbd13c9ef73b258a72df28",
+      "duration": 10.5,
+      "frames": 252,
+      "width": 720,
+      "height": 1280,
+      "fps": 24,
+      "cuts": 5,
+      "titleLayers": 7,
+      "voiceClips": 5,
+      "embeddedProjectMatchesNativeExport": true,
+      "sourceHashesVerified": true,
+      "wholeVoiceAlignment": [
+        {
+          "source": "voice-hook-a.wav",
+          "correlation": 0.9950690269470215,
+          "offsetMs": 5
+        },
+        {
+          "source": "voice-ground.wav",
+          "correlation": 0.9988623261451721,
+          "offsetMs": 5
+        },
+        {
+          "source": "voice-pour.wav",
+          "correlation": 0.9997249841690063,
+          "offsetMs": 5
+        },
+        {
+          "source": "voice-pause.wav",
+          "correlation": 0.9985762238502502,
+          "offsetMs": 5
+        },
+        {
+          "source": "voice-cta.wav",
+          "correlation": 0.9985715746879578,
+          "offsetMs": 5
+        }
+      ]
+    },
+    {
+      "variant": "b",
+      "filmId": "b80fd92d-c00c-47eb-8991-b965ae07888e",
+      "bytes": 2176569,
+      "sha256": "a7bda9fce4ba15423ccf41e44582caa29c5ccabf525abc045c400f550f02d83c",
+      "duration": 10.5,
+      "frames": 252,
+      "width": 720,
+      "height": 1280,
+      "fps": 24,
+      "cuts": 5,
+      "titleLayers": 7,
+      "voiceClips": 5,
+      "embeddedProjectMatchesNativeExport": true,
+      "sourceHashesVerified": true,
+      "wholeVoiceAlignment": [
+        {
+          "source": "voice-hook-b.wav",
+          "correlation": 0.9983822703361511,
+          "offsetMs": 5
+        },
+        {
+          "source": "voice-ground.wav",
+          "correlation": 0.9988602995872498,
+          "offsetMs": 5
+        },
+        {
+          "source": "voice-pour.wav",
+          "correlation": 0.9997255802154541,
+          "offsetMs": 5
+        },
+        {
+          "source": "voice-pause.wav",
+          "correlation": 0.9985789060592651,
+          "offsetMs": 5
+        },
+        {
+          "source": "voice-cta.wav",
+          "correlation": 0.9985182285308838,
+          "offsetMs": 5
+        }
+      ]
+    }
+  ],
+  "transcripts": {
+    "a": [
+      {
+        "start": 0.0,
+        "end": 8.9,
+        "text": " Your morning called, ground, poor, pause, slow mornings, find your next cup.",
+        "words": [
+          {
+            "word": " Your",
+            "start": 0.0,
+            "end": 0.34
+          },
+          {
+            "word": " morning",
+            "start": 0.34,
+            "end": 0.62
+          },
+          {
+            "word": " called,",
+            "start": 0.62,
+            "end": 0.96
+          },
+          {
+            "word": " ground,",
+            "start": 1.52,
+            "end": 3.34
+          },
+          {
+            "word": " poor,",
+            "start": 4.3,
+            "end": 4.58
+          },
+          {
+            "word": " pause,",
+            "start": 5.52,
+            "end": 5.96
+          },
+          {
+            "word": " slow",
+            "start": 6.8,
+            "end": 7.16
+          },
+          {
+            "word": " mornings,",
+            "start": 7.16,
+            "end": 7.52
+          },
+          {
+            "word": " find",
+            "start": 7.98,
+            "end": 8.26
+          },
+          {
+            "word": " your",
+            "start": 8.26,
+            "end": 8.44
+          },
+          {
+            "word": " next",
+            "start": 8.44,
+            "end": 8.58
+          },
+          {
+            "word": " cup.",
+            "start": 8.58,
+            "end": 8.9
+          }
+        ]
+      }
+    ],
+    "b": [
+      {
+        "start": 0.0,
+        "end": 8.92,
+        "text": " Make your morning a little slower, ground, poor, pause, slow mornings, find your next cup.",
+        "words": [
+          {
+            "word": " Make",
+            "start": 0.0,
+            "end": 0.38
+          },
+          {
+            "word": " your",
+            "start": 0.38,
+            "end": 0.54
+          },
+          {
+            "word": " morning",
+            "start": 0.54,
+            "end": 0.8
+          },
+          {
+            "word": " a",
+            "start": 0.8,
+            "end": 0.98
+          },
+          {
+            "word": " little",
+            "start": 0.98,
+            "end": 1.12
+          },
+          {
+            "word": " slower,",
+            "start": 1.12,
+            "end": 1.5
+          },
+          {
+            "word": " ground,",
+            "start": 2.02,
+            "end": 3.44
+          },
+          {
+            "word": " poor,",
+            "start": 4.26,
+            "end": 4.6
+          },
+          {
+            "word": " pause,",
+            "start": 5.52,
+            "end": 6.08
+          },
+          {
+            "word": " slow",
+            "start": 6.54,
+            "end": 7.16
+          },
+          {
+            "word": " mornings,",
+            "start": 7.16,
+            "end": 7.52
+          },
+          {
+            "word": " find",
+            "start": 7.98,
+            "end": 8.26
+          },
+          {
+            "word": " your",
+            "start": 8.26,
+            "end": 8.44
+          },
+          {
+            "word": " next",
+            "start": 8.44,
+            "end": 8.6
+          },
+          {
+            "word": " cup.",
+            "start": 8.6,
+            "end": 8.92
+          }
+        ]
+      }
+    ]
+  },
+  "limitations": [
+    "Fictional coffee concept using licensed stock footage, not generated product motion.",
+    "Hooks prepared manually; no automatic campaign optimization or performance test.",
+    "ASR writes pour as its homophone poor; word timestamps are diagnostic only."
+  ]
+}

@@ -1,0 +1,62 @@
+5.958s — 7.277s
+This is Aftertake.
+
+7.542s — 11.074s
+Write a line for each picture. Kokoro voices it locally.
+
+11.333s — 14.086s
+Highlight the spoken words. Adjust any word.
+
+14.375s — 16.403s
+Change the hook. Keep the edit.
+
+16.667s — 20.727s
+Agents inspect footage, pair whole lines, and rejoin exports.
+
+21.042s — 22.964s
+Create an image with Z Image.
+
+23.417s — 25.221s
+Animate it with L T X.
+
+25.792s — 27.004s
+Direct the camera.
+
+27.667s — 29.249s
+Or set the ending frame.
+
+30.042s — 31.813s
+Qwen prepares your reference.
+
+32.417s — 34.637s
+Paint where and when the scene changes.
+
+35.792s — 38.566s
+The same cue guides generation and the blend.
+
+39.708s — 41.162s
+Cast your own character.
+
+43.833s — 45.765s
+H3 keeps the performance.
+
+46.750s — 48.247s
+Reuse the recipe.
+
+48.500s — 50.634s
+Sam two tracks the reviewed mask.
+
+51.417s — 56.227s
+React and TypeScript, Comfy's S D K, and Py A V with F F mpeg.
+
+56.792s — 62.824s
+One open chain: protected scenes, inspectable workflows, and agent edits you can reopen.
+
+63.083s — 64.018s
+The twist?
+
+64.292s — 66.650s
+Even this demo was made in Aftertake.
+
+67.417s — 69.019s
+Make the next take yours.

@@ -39,6 +39,50 @@ class CueTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             nodes.AftertakeComposite().execute(torch.zeros(5, 64, 64, 3), torch.zeros(4, 64, 64, 3), torch.zeros(5, 64, 64))
 
+    def test_focused_motion_restores_position_and_preserves_every_outside_pixel_and_frame(self):
+        source=torch.rand(5,32,64,3);original=source.clone()
+        crop=nodes.AftertakeCropRegion().execute(source,8,0,24,32,48,64)[0]
+        self.assertEqual(tuple(crop.shape),(5,64,48,3))
+        generated=torch.zeros_like(crop)
+        for i in range(5):generated[i,:,:,i%3]=(i+1)/5
+        restored=nodes.AftertakeRestoreRegion().execute(source,generated,8,0,24,32)[0]
+        self.assertTrue(torch.equal(source,original))
+        self.assertTrue(torch.equal(restored[:,:,:8],source[:,:,:8]))
+        self.assertTrue(torch.equal(restored[:,:,32:],source[:,:,32:]))
+        for i in range(5):self.assertTrue(torch.allclose(restored[i,:,8:32,i%3],torch.full((32,24),(i+1)/5),atol=1e-6))
+        with self.assertRaises(ValueError):nodes.AftertakeRestoreRegion().execute(source,generated[:4],8,0,24,32)
+        with self.assertRaises(ValueError):nodes.AftertakeCropRegion().execute(source,48,0,24,32,48,64)
+
+    def test_boundary_color_match_removes_cast_without_erasing_new_detail_or_protected_pixels(self):
+        source=torch.full((3,64,96,3),.4)
+        target=source+torch.tensor([-.03,0,.06])
+        target[:,20:44,40:56,0]+=.22
+        spatial=torch.zeros(3,64,96);spatial[:,8:56,24:72]=1
+        alpha=spatial*torch.tensor([0,.5,1])[:,None,None]
+        corrected=nodes.AftertakeComposite().execute(source,target,alpha,True,spatial)[0]
+        self.assertTrue(torch.equal(corrected[alpha==0],source[alpha==0]))
+        self.assertLess(float((corrected[2,10:15,30:60]-source[2,10:15,30:60]).abs().max()),.005)
+        self.assertGreater(float(corrected[2,30,48,0]-corrected[2,12,48,0]),.20)
+        self.assertTrue(torch.allclose(corrected[1]-source[1],(corrected[2]-source[2])*.5,atol=1e-6))
+
+    def test_video_presentation_geometry_is_independent_of_latent_grid(self):
+        import av,json,tempfile,types
+        with tempfile.TemporaryDirectory(prefix='aftertake-display-') as folder:
+            previous=sys.modules.get('folder_paths')
+            sys.modules['folder_paths']=types.SimpleNamespace(get_output_directory=lambda:folder,
+                get_save_image_path=lambda *_:(folder,'display',1,'',None))
+            try:
+                images=torch.zeros(4,64,96,3);images[:,16:48,24:72,1]=1
+                nodes.AftertakeSaveVideo().execute(images,16,'display','{}',display_width=96,display_height=54)
+                with av.open(str(Path(folder)/'display_00001_.mp4')) as c:
+                    frames=list(c.decode(video=0))
+                    self.assertEqual((frames[0].width,frames[0].height),(96,54))
+                    self.assertEqual(len(frames),4)
+                    self.assertEqual(json.loads(c.metadata['comment'])['recipe'],{})
+            finally:
+                if previous is None:del sys.modules['folder_paths']
+                else:sys.modules['folder_paths']=previous
+
     def test_single_point_stroke_works(self):
         cue = self.cue()
         cue['strokes'][0]['points'] = [{'x': .5, 'y': .5}]

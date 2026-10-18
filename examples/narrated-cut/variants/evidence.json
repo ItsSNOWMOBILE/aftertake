@@ -1,0 +1,15 @@
+{
+  "filmId": "4cf19674-dd9f-419d-b3a0-3ed2cab6feb4",
+  "sha256": "bb6ccc6df952fd87a80f8c550a0bcb5608c2fe55bec7252609628bc49151aa60",
+  "frames": 141,
+  "fps": 24,
+  "duration": 5.875,
+  "sameSourceTrimsBegin": true,
+  "bodyVoicesReused": true,
+  "changedHook": "A slower start.",
+  "bodyVoices": [
+    "7503a331-08a7-423a-a0a5-bc0db7239735",
+    "e5303629-2035-47ab-ae9e-e07a70a5676b"
+  ],
+  "source": "Actual narrated-cut UI prepare, apply and export."
+}

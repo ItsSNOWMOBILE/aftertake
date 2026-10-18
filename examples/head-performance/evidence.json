@@ -1,0 +1,45 @@
+{
+  "format": "aftertake-head-performance-evidence/1",
+  "status": "Reviewed local candidate; separate from the current judge-film export. Jay retains final creative review and submission.",
+  "frames": 73,
+  "fps": 24,
+  "durationSeconds": 3.0416666666666665,
+  "dimensions": [
+    768,
+    432
+  ],
+  "allFrameTimestampsVerified": true,
+  "requestAndModelsBoundByReceipt": true,
+  "files": {
+    "result.mp4": {
+      "bytes": 603711,
+      "sha256": "5492bafb10ebc0044f4277e5996e40ecac53f6f328caa26d8aff6d185ec9db68"
+    },
+    "result-matte.mp4": {
+      "bytes": 38396,
+      "sha256": "0c64ce3e8926bbd7635a9d0690f8140a6bb352cffe7a05cdf8a2ab67a02cac1d"
+    },
+    "result-subjects.npz": {
+      "bytes": 88079,
+      "sha256": "10aba293286f1ff0b258226458792a95a177163d52ea12142318cab839c770cc"
+    },
+    "portrait.png": {
+      "bytes": 244069,
+      "sha256": "7c390808f752a32362ae43ab0c24b868e6dd2605574a1028c394d499a3d6008f"
+    }
+  },
+  "decodedProtectedRGBMAE": {
+    "mean": 1.6685491884894563,
+    "maxFrame": 1.8389887321237688,
+    "scale": "0\u2013255 RGB; outside both incoming-head alpha and exposed-old-head fill"
+  },
+  "protectedPixelsPerFrame": {
+    "min": 325219,
+    "max": 326297
+  },
+  "review": "All 73 face crops inspected; synchronized original-speed and half-speed playback reviewed. Fixed portrait retains head appearance while the source video drives relative pose and direct lip expression. This is one shot, not a general quality or viseme benchmark.",
+  "headContourFill": "SAM source and generated contours; local Telea fill only where the old head is exposed. Small background/neck seams still need creative review.",
+  "audioDriven": false,
+  "judgeFilmSHA256Unchanged": "18118eb01090267c8cbf8589b262d7510473e4f96cbc5f7a82776d759db52a72",
+  "contestSubmitted": false
+}

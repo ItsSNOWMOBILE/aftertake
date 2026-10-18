@@ -1,0 +1,81 @@
+{
+  "method": "Local Whisper base.en, CPU int8, no initial prompt, no expected text supplied.",
+  "perLine": [
+    {
+      "expected": "Your morning called.",
+      "transcript": "Your morning called."
+    },
+    {
+      "expected": "Start with fresh grounds.",
+      "transcript": "Start with fresh grounds."
+    },
+    {
+      "expected": "Pour slowly. Savor the moment.",
+      "transcript": "Pour slowly, savor the moment."
+    }
+  ],
+  "wholeTranscript": "You're morning called. Start with fresh grounds. Pour slowly, savor the moment.",
+  "expectedWordsMatch": false,
+  "words": [
+    {
+      "word": "You're",
+      "start": 0.0,
+      "end": 0.32
+    },
+    {
+      "word": "morning",
+      "start": 0.32,
+      "end": 0.52
+    },
+    {
+      "word": "called.",
+      "start": 0.52,
+      "end": 0.88
+    },
+    {
+      "word": "Start",
+      "start": 1.72,
+      "end": 1.88
+    },
+    {
+      "word": "with",
+      "start": 1.88,
+      "end": 2.04
+    },
+    {
+      "word": "fresh",
+      "start": 2.04,
+      "end": 2.24
+    },
+    {
+      "word": "grounds.",
+      "start": 2.24,
+      "end": 2.62
+    },
+    {
+      "word": "Pour",
+      "start": 3.4,
+      "end": 3.58
+    },
+    {
+      "word": "slowly,",
+      "start": 3.58,
+      "end": 3.94
+    },
+    {
+      "word": "savor",
+      "start": 4.4,
+      "end": 4.82
+    },
+    {
+      "word": "the",
+      "start": 4.82,
+      "end": 4.92
+    },
+    {
+      "word": "moment.",
+      "start": 4.92,
+      "end": 5.2
+    }
+  ]
+}

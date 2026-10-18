@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="300" viewBox="0 0 1280 300" role="img" aria-labelledby="title desc">
+  <title id="title">Aftertake</title>
+  <desc id="desc">An open creative studio. Your next ad. Your next impossible take.</desc>
+  <rect width="1280" height="300" rx="24" fill="#10170d"/>
+  <g fill="none" stroke="#b9d180" stroke-opacity=".14">
+    <path d="M913 0v300M1034 0v300M1155 0v300M859 62h421M859 150h421M859 238h421"/>
+    <rect x="954" y="83" width="194" height="134" rx="16" stroke-opacity=".32"/>
+    <rect x="976" y="61" width="194" height="134" rx="16" stroke-opacity=".55"/>
+  </g>
+  <path d="M1028 158l66-66m-49 0h49v49" fill="none" stroke="#d5eb94" stroke-width="10" stroke-linecap="square"/>
+  <text x="64" y="57" fill="#a5b58b" font-family="Arial, Helvetica, sans-serif" font-size="14" letter-spacing="4">AN OPEN CREATIVE STUDIO</text>
+  <text x="58" y="181" fill="#e7eedb" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="114" letter-spacing="-6">aftertake<tspan fill="#d5eb94">.</tspan></text>
+  <text x="64" y="239" fill="#c3d4a6" font-family="Arial, Helvetica, sans-serif" font-size="26">Your next ad. Your next impossible take.</text>
+</svg>

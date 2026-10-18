@@ -73,12 +73,16 @@ test('accepted-but-unobserved frame submissions recover by the same key and publ
   app.get('/queue', (_req, res) => { res.json({ queue_running: [1], queue_pending: [] }); });
   const server = createServer(app).listen(0, '127.0.0.1'); await once(server, 'listening');
   const address = server.address(); assert.ok(address && typeof address !== 'string'); context.uiUrl = `http://127.0.0.1:${address.port}`;
-  const post = (url: string, body?: unknown) => fetch(context.uiUrl + url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  const post = (url: string, body?: unknown,key?:string) => fetch(context.uiUrl + url, { method: 'POST', headers: { 'Content-Type': 'application/json',...(key?{'Idempotency-Key':key}:{}) }, body: JSON.stringify(body) });
   try {
-    const initial = await post('/api/frame-edits', { ...request, clip: { ...source, name: 'forged name', url: '/media/forged.png' } });
+    const input={ ...request, clip: { ...source, name: 'forged name', url: '/media/forged.png' } };
+    const initial = await post('/api/frame-edits',input,'frame-original');
     assert.equal(initial.status, 502); const { edit } = await initial.json();
     assert.equal(edit.state, 'submission_unknown'); assert.equal(edit.request.clip.url, source.url); assert.equal(editor.busy(), true);
     assert.equal((await post('/api/frame-edits', request)).status, 409); assert.equal(keys.length, 1);
+    const rejoined=await post('/api/frame-edits',input,'frame-original');assert.equal(rejoined.status,202);assert.equal((await rejoined.json()).id,edit.id);assert.equal(keys.length,1);
+    assert.equal((await post('/api/frame-edits',{...input,seed:input.seed+1},'frame-original')).status,409);assert.equal(keys.length,1);
+    admitting=true;assert.equal((await post(`/api/frame-edits/${edit.id}/reconcile`)).status,409);assert.equal(keys.length,1);admitting=false;
     assert.equal((await post(`/api/frame-edits/${edit.id}/reconcile`)).status, 200);
     assert.equal(keys.length, 2); assert.equal(keys[0], keys[1]);
     assert.equal(bindings[0][2], path.join(data, 'clips', path.basename(source.url)));
@@ -95,6 +99,7 @@ test('accepted-but-unobserved frame submissions recover by the same key and publ
     assert.deepEqual(recipe.workflow, executed); assert.deepEqual(recipe.output, completed.clip);
     const stored = JSON.parse(await readFile(path.join(data, 'clips', `${edit.id}.json`), 'utf8'));
     assert.equal(stored.kind, 'image'); assert.equal(stored.width, source.width);
+    const finished=await post('/api/frame-edits',input,'frame-original');assert.equal(finished.status,200);assert.equal((await finished.json()).id,edit.id);assert.equal(keys.length,2);
   } finally {
     job.status = 'canceled'; server.close(); server.closeAllConnections();
     assert.equal(path.dirname(path.resolve(data)), path.resolve(tmpdir())); assert.ok(path.basename(data).startsWith('aftertake-frame-test-'));

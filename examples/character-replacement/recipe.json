@@ -1,0 +1,102 @@
+{
+  "format": "aftertake/1",
+  "name": "Natural character / complete silhouette and protected foreground",
+  "clip": {
+    "id": "00d3c2d1-1716-441f-9a71-0cf288030e2d",
+    "name": "Bridge - Blender Foundation research.mp4",
+    "sha256": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19",
+    "width": 768,
+    "height": 432,
+    "duration": 3.125,
+    "url": "/media/00d3c2d1-1716-441f-9a71-0cf288030e2d.mp4"
+  },
+  "prompt": "A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers, stands on the left beside a woman at a canal bridge railing. He follows the left performer's head turns, speaking gestures and hand movements from the driving video. Preserve his identity, jacket and realistic proportions from the appearance image. Match the soft daylight and natural contrast of the original scene. Keep the woman, railing, buildings, trees and camera unchanged. One continuous realistic shot.",
+  "cue": {
+    "start": 0,
+    "end": 3.05,
+    "fade": 0,
+    "feather": 0.02,
+    "tracking": "static",
+    "anchor": 0,
+    "strokes": [
+      {
+        "points": [
+          {
+            "x": 0.39,
+            "y": 0.02
+          },
+          {
+            "x": 0.39,
+            "y": 0.3
+          },
+          {
+            "x": 0.39,
+            "y": 0.6
+          },
+          {
+            "x": 0.39,
+            "y": 0.98
+          }
+        ],
+        "radius": 0.27
+      },
+      {
+        "points": [
+          {
+            "x": 0.24,
+            "y": 0.38
+          },
+          {
+            "x": 0.24,
+            "y": 0.76
+          }
+        ],
+        "radius": 0.15,
+        "mode": "paint"
+      }
+    ]
+  },
+  "seed": 5091,
+  "quality": "final",
+  "trimStart": 0,
+  "pipeline": "motion-transfer",
+  "transfer": {
+    "reference": {
+      "id": "deaafec5-fcb8-421e-9c8e-fffc07252d22",
+      "name": "Edited frame · Replace the man on the left with the man in Picture 2. Match the light",
+      "sha256": "35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7",
+      "width": 768,
+      "height": 432,
+      "duration": 1,
+      "url": "/media/deaafec5-fcb8-421e-9c8e-fffc07252d22.png",
+      "kind": "image",
+      "hasAudio": false
+    },
+    "motionCaption": "Two people stand at a bridge railing in a medium-wide shot. The man on the left speaks, opens his mouth, lifts and turns his head, then turns toward the woman on the right. His hands rest near the railing. The woman turns toward him and gestures. The camera remains almost stationary.",
+    "poseStrength": 1.4,
+    "scope": "cue",
+    "finish": {
+      "generation": {
+        "id": "8dd6a338-e411-4d5b-91d8-3922bbe439fe",
+        "name": "Natural-human-raw-generation.mp4",
+        "sha256": "a672061730237c24376a67dd5b1fe9df7d1e5123c46c47a17692b5a2f0fb8083",
+        "width": 768,
+        "height": 448,
+        "duration": 3.0416666666666665,
+        "url": "/media/8dd6a338-e411-4d5b-91d8-3922bbe439fe.mp4",
+        "hasAudio": false
+      },
+      "matte": {
+        "id": "5636aed1-e7bb-436d-9a28-d1faa82898db",
+        "name": "Tracked-human-subject-matte.mp4",
+        "sha256": "078e7c5f801a26a62ba5107dc33767e6fa03cf89a9bc4313e78e2e6c16e4439d",
+        "width": 768,
+        "height": 432,
+        "duration": 3.0416666666666665,
+        "url": "/media/5636aed1-e7bb-436d-9a28-d1faa82898db.mp4",
+        "hasAudio": false
+      },
+      "settingsKey": "[\"2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19\",\"A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers, stands on the left beside a woman at a canal bridge railing. He follows the left performer's head turns, speaking gestures and hand movements from the driving video. Preserve his identity, jacket and realistic proportions from the appearance image. Match the soft daylight and natural contrast of the original scene. Keep the woman, railing, buildings, trees and camera unchanged. One continuous realistic shot.\",5091,\"final\",0,\"35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7\",\"Two people stand at a bridge railing in a medium-wide shot. The man on the left speaks, opens his mouth, lifts and turns his head, then turns toward the woman on the right. His hands rest near the railing. The woman turns toward him and gestures. The camera remains almost stationary.\",1.4]"
+    }
+  }
+}

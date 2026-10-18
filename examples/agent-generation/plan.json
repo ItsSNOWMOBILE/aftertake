@@ -1,0 +1,49 @@
+{
+  "plan": {
+    "name": "Field / built for your next move",
+    "aspect": "square",
+    "sourceVolume": 0,
+    "normalizeAudio": true,
+    "beats": [
+      {
+        "name": "Product hook",
+        "visuals": [
+          {
+            "renderId": "d95efc76-8216-41f2-bdee-8762fae5bb66",
+            "start": 0,
+            "end": 2.5,
+            "sha256": "c69e0a67c931af788e0c66616640d6217ca990982cebb54068825e6db2aad90c"
+          }
+        ],
+        "voice": {
+          "assetId": "14e05946-fee3-448f-939e-a8d939fd1df6",
+          "sha256": "bd4fe090b679ab89ba97c9cf05392840c312e54330ff664f6bda4e814d7fc06e"
+        },
+        "voiceLead": 0.125,
+        "tail": 0.25,
+        "animation": "spoken",
+        "style": "headline",
+        "position": "bottom",
+        "captionTail": 0.08,
+        "fontSize": 88,
+        "color": "#d5e991"
+      }
+    ]
+  },
+  "ledger": [
+    {
+      "name": "Product hook",
+      "start": 0,
+      "end": 2.5,
+      "voiceStart": 0.125,
+      "voiceEnd": 1.619,
+      "spokenText": "Built for your next move.",
+      "caption": "Built for your next move.",
+      "shotNumbers": [
+        1
+      ]
+    }
+  ],
+  "duration": 2.5,
+  "identity": "d0dc4dab293a7f814f1ba5514cee36af3bbb9d6d82ecc8103d2c46f96f92c526"
+}

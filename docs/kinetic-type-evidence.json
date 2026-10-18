@@ -1,0 +1,22 @@
+{
+  "filmId": "f5222e71-c90f-476a-b11f-979f949d2a35",
+  "source": "Actual Film editor / Export film button",
+  "duration": 12,
+  "frames": 288,
+  "fps": 24,
+  "width": 1280,
+  "height": 720,
+  "bytes": 179108,
+  "sha256": "f7c6a700fe85ed68c29f87873a96f90fd3caaa3c05f18ba7de237a3542f0dd51",
+  "presets": [
+    "build",
+    "typewriter",
+    "impact",
+    "wipe"
+  ],
+  "editableProject": "examples/kinetic-type/project.json",
+  "silentSample": true,
+  "previewReplayObserved": true,
+  "cutPhaseRegressionPasses": true,
+  "automaticWordAlignment": false
+}

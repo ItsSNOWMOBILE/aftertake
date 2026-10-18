@@ -1,0 +1,2169 @@
+{
+  "format": "aftertake-film/2",
+  "name": "Aftertake / an open creative chain",
+  "aspect": "landscape",
+  "shots": [
+    {
+      "assetId": "58f52b23-f5c8-446c-b4c6-428d07df4805",
+      "sha256": "fdac1b08cd4fa4d49d32f0019ecfb1c1f87c5a3b47e454f5f1da5c22a1da74e1",
+      "start": 0,
+      "end": 5.958333333333333,
+      "dissolve": 0
+    },
+    {
+      "assetId": "ac1f5640-59cb-4d2e-87fd-e56be1c4bfe6",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "start": 0,
+      "end": 1.7083333333333333,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "52e027dc-4cc0-4a98-b4ec-fd6a66f3d537",
+      "sha256": "509a00e7440fb8f726b6c395a00ae4a656d2dacdf4f996d26123c1d67a1a0aa6",
+      "start": 0,
+      "end": 1.5,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "5aeec28a-e889-4381-bdc0-491b2bb328f4",
+      "sha256": "75eb0846ca30d2128ba64337dd64c345e6062483a60fb6aceb3593f5cd41b794",
+      "start": 0.5,
+      "end": 3.0416666666666665,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "de292f34-d13c-4a51-b729-4fd00a1a41d3",
+      "sha256": "0b85989a6357e5ee89a1791a6d5c67e3863c5922d046ce699399117ecd83182e",
+      "start": 0.25,
+      "end": 3.4166666666666665,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "c0b31756-6e8c-4cc1-8bed-ab0ad356b25d",
+      "sha256": "746be361f83ef5e0cfd3e1125d39faae09e6bf7284f074c825e714c42ed75e27",
+      "start": 0,
+      "end": 1.25,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "c0b31756-6e8c-4cc1-8bed-ab0ad356b25d",
+      "sha256": "746be361f83ef5e0cfd3e1125d39faae09e6bf7284f074c825e714c42ed75e27",
+      "start": 3.25,
+      "end": 4.541666666666666,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "20e84d3a-4ca6-47b2-ad87-145b92e7226b",
+      "sha256": "a76176a81206d5286569547da57951301e5565d44d4ec7d36ba8be425691003f",
+      "start": 0.5,
+      "end": 5.0,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "5f6644b6-116a-4273-9841-d2e9d31c102e",
+      "sha256": "30e5cb13228dd5d30fa9cf533b70462be26f4f9db1a3058645d8ce8bffc5525b",
+      "start": 0,
+      "end": 2.5,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "5bb90d7d-d618-4874-8035-8a3679a043ad",
+      "sha256": "087e24783cc8ab0dc37bb2ce40858e3e6e66d005a2e8b24cacb54ec5f91baec7",
+      "start": 0.25,
+      "end": 2.75,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "04e7feab-83ee-4509-9b1c-3450bd7913da",
+      "sha256": "acf81564a94ed42ee3f0f5e84c9d2d91b204a012131e3bb45c2ddf5984b2d19d",
+      "start": 0,
+      "end": 2.0,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "34795b3f-19e2-4523-b733-75735368976a",
+      "sha256": "af17dc2ab5dce172658bd506ee2d6fe362572b7c66fe075fefc516bd50707858",
+      "start": 0.25,
+      "end": 2.75,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "678cc792-b4af-44cc-b00f-c0dc595711ad",
+      "sha256": "b65819302ec2ad740def73adc999bdd72821ba43f578a177a58ba33be0eae42f",
+      "start": 0.25,
+      "end": 2.75,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "19a3790f-a43f-4dbb-866b-4df7902ee9aa",
+      "sha256": "d053e8498738017b7cfda7f7b9b54a9145284d22bcac3bef24be59027fb1d0e5",
+      "start": 0.25,
+      "end": 3.75,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "6e94257f-10e5-4965-8274-2b405bd67f1d",
+      "sha256": "5029ea3c92f7fd79fe154116804bb12c76b7b88669d40980443813ac62f2b88b",
+      "start": 0,
+      "end": 0.75,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "ad61d7c9-7d81-4549-9a0c-0e7682403b5d",
+      "sha256": "e3373be04dce7bb375284939bd12a06d07e8033732c41f5c80c73d154425fb99",
+      "start": 0.625,
+      "end": 4.041666666666667,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "30f6faac-c674-4d5a-8106-5da8764c908b",
+      "sha256": "bf1124b7a4fe87f239fcbc55ea526b8f1c07528ab382ae622e59a70760c8bf74",
+      "start": 0,
+      "end": 4.25,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "790d6610-acd3-4332-8c50-0eaa1635194b",
+      "sha256": "be7b92b9fa173d498ee372dda5f7e0a2082c5349d242fb276dfc356b8237d42e",
+      "start": 0,
+      "end": 0.75,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "f9f9a3f7-126d-4187-b13c-e1c4bf4c26df",
+      "sha256": "127518cc682b27c15f36438b9866a7b399c20ea913733add8a1ad89ebe9df03e",
+      "start": 0.625,
+      "end": 3.0416666666666665,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "8699c6ff-0741-4167-874e-c6de6593e3be",
+      "sha256": "16c73b24bdbd8da49ae7912c018dea81388b5995bf1305e240db2dc1930d3cb7",
+      "start": 0.25,
+      "end": 2.125,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "ed68019b-4846-45bb-9064-8126a98545ea",
+      "sha256": "016d27683ef0a81af7772c9325436c0038466c2a025e6dd2c373f2fb421c3382",
+      "start": 0,
+      "end": 3.0416666666666665,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "ac1f5640-59cb-4d2e-87fd-e56be1c4bfe6",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "start": 0,
+      "end": 5.5,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "ad61d7c9-7d81-4549-9a0c-0e7682403b5d",
+      "sha256": "e3373be04dce7bb375284939bd12a06d07e8033732c41f5c80c73d154425fb99",
+      "start": 0,
+      "end": 2,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "678cc792-b4af-44cc-b00f-c0dc595711ad",
+      "sha256": "b65819302ec2ad740def73adc999bdd72821ba43f578a177a58ba33be0eae42f",
+      "start": 0.75,
+      "end": 2.75,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "20e84d3a-4ca6-47b2-ad87-145b92e7226b",
+      "sha256": "a76176a81206d5286569547da57951301e5565d44d4ec7d36ba8be425691003f",
+      "start": 2,
+      "end": 4.666666666666667,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "ac1f5640-59cb-4d2e-87fd-e56be1c4bfe6",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "start": 0,
+      "end": 1.3333333333333333,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "de34a594-3ece-4f32-b410-459405ba6617",
+      "sha256": "fe0fe2d916459e806890b970cc53826dcc0bcbd7b46cb2345e5d26aaf6b84e97",
+      "start": 0.25,
+      "end": 3.5,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "ac1f5640-59cb-4d2e-87fd-e56be1c4bfe6",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "start": 0,
+      "end": 2.0,
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "ac1f5640-59cb-4d2e-87fd-e56be1c4bfe6",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "start": 0,
+      "end": 2.5,
+      "dissolve": 0.125
+    }
+  ],
+  "titles": [
+    {
+      "id": "b37906db-90b7-5f68-94c1-df79b9067776",
+      "text": "AFTERTAKE",
+      "start": 5.958333333333333,
+      "end": 7.461666666666667,
+      "style": "headline",
+      "position": "center",
+      "animation": "impact",
+      "fontSize": 118,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "b33159fa-66e4-5418-8ddc-05c31a0c7587",
+      "text": "ADS. REELS. IMPOSSIBLE SCENES.",
+      "start": 5.958333333333333,
+      "end": 7.461666666666667,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 27,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "b4fa9558-6fab-557f-bcbd-f8103682cc3d",
+      "text": "Write a line for each picture. Kokoro voices it locally.",
+      "start": 7.541666666666667,
+      "end": 11.253333333333334,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "c196dc47-145b-5805-ac4b-ae06f18ff6c5",
+      "text": "WRITE → LOCAL VOICE → EDITABLE CUT",
+      "start": 7.541666666666667,
+      "end": 11.253333333333334,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "41585fcc-6c7a-5f05-8ec4-d28661a6bfc7",
+      "text": "Highlight the spoken words. Adjust any word.",
+      "start": 11.333333333333334,
+      "end": 14.295,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "78c572a5-35d8-5ddb-a8f8-6432bba8f830",
+      "text": "FOLLOW VOICE · EDITABLE WORD TIMES",
+      "start": 11.333333333333334,
+      "end": 14.295,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "8344817e-8efa-57a5-88ea-24b84e55087c",
+      "text": "Change the hook. Keep the edit.",
+      "start": 14.375,
+      "end": 16.58666666666667,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "e3a6889c-84ce-5c02-b85e-0d4cfc31d893",
+      "text": "ONE NEW HOOK · SAME BODY & FOOTAGE",
+      "start": 14.375,
+      "end": 16.58666666666667,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "46591b3c-b03e-5f79-9a38-1aa70074b6ea",
+      "text": "Agents inspect footage, pair whole lines, and rejoin exports.",
+      "start": 16.666666666666668,
+      "end": 20.96166666666667,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "c57de990-7788-543a-985c-98af1ddfcda4",
+      "text": "LOCAL MCP · INSPECT / PLAN / EXPORT / REVIEW",
+      "start": 16.666666666666668,
+      "end": 20.96166666666667,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "f6037405-5a96-5e50-b2b3-12c22394ebc4",
+      "text": "Create an image with Z-Image.",
+      "start": 21.041666666666668,
+      "end": 23.33666666666667,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "8cc58250-ae29-5557-b09e-83c4a8547b1a",
+      "text": "Z-IMAGE TURBO · TEXT TO IMAGE",
+      "start": 21.041666666666668,
+      "end": 23.33666666666667,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "1fba6216-fd8b-5a96-8d7c-9a9f58ee0745",
+      "text": "Animate it with LTX.",
+      "start": 23.416666666666668,
+      "end": 25.71166666666667,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "cc10ea34-581b-5e57-b268-231c330dd569",
+      "text": "LTX · IMAGE TO VIDEO",
+      "start": 23.416666666666668,
+      "end": 25.71166666666667,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "0016bc2c-f455-5af8-9c3f-266a42afd337",
+      "text": "Direct the camera.",
+      "start": 25.791666666666668,
+      "end": 27.58666666666667,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "d4de5ad3-d996-5d04-a7fc-9dfe71ab9a50",
+      "text": "CAMERA · FRAMING GUIDANCE",
+      "start": 25.791666666666668,
+      "end": 27.58666666666667,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "aebce162-7574-535d-9ed6-80166b1b8ab0",
+      "text": "Or set the ending frame.",
+      "start": 27.666666666666668,
+      "end": 29.96166666666667,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "3c9cbb79-d388-5fd0-94b2-f09ec715ff4d",
+      "text": "START + END IMAGE GUIDES",
+      "start": 27.666666666666668,
+      "end": 29.96166666666667,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "f32d5fda-a0e9-5f67-96aa-ed2228795596",
+      "text": "Qwen Image Edit prepares your reference.",
+      "start": 30.041666666666668,
+      "end": 32.336666666666666,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "a5165cb7-53d1-57a3-82f4-65a7d499657b",
+      "text": "QWEN IMAGE EDIT · SAME COMPOSITION",
+      "start": 30.041666666666668,
+      "end": 32.336666666666666,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "1375c863-2ae2-5258-858b-a7bf6dedbdfc",
+      "text": "Paint where and when the scene changes.",
+      "start": 32.416666666666664,
+      "end": 35.711666666666666,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "73cffb90-1bfe-5979-9969-0a463cc67c8d",
+      "text": "ONE CUE · SPACE + TIME",
+      "start": 32.416666666666664,
+      "end": 35.711666666666666,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "9cd88d23-2031-5521-8f36-6e99da4b47a9",
+      "text": "The same cue guides generation and the blend.",
+      "start": 35.791666666666664,
+      "end": 39.62833333333334,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "6203d7cd-7061-54fe-be38-dba0442803e4",
+      "text": "LTX MASK GUIDANCE + SOURCE COMPOSITE",
+      "start": 35.791666666666664,
+      "end": 39.62833333333334,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "9a0f0da0-74b9-5681-b21c-88d918e4cfa1",
+      "text": "Cast your own character.",
+      "start": 39.708333333333336,
+      "end": 43.75333333333334,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "80dd7802-c118-5721-ac9f-dc690107fec1",
+      "text": "NATURAL FICTIONAL APPEARANCE",
+      "start": 39.708333333333336,
+      "end": 43.75333333333334,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "5358691e-3794-5bb6-9c39-f447b662daca",
+      "text": "H3 keeps the performance.",
+      "start": 43.833333333333336,
+      "end": 46.67,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "fe3b26a2-fd10-51d9-a3a5-857fdbca47c2",
+      "text": "H3 CHARACTER SWAP",
+      "start": 43.833333333333336,
+      "end": 46.67,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 18,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "32bbad18-094b-5ed1-99bb-23698f7a2d7b",
+      "text": "Reuse the recipe.",
+      "start": 46.75,
+      "end": 48.42,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "27d86f8f-65ad-5c98-a820-13c96c42b6c8",
+      "text": "RECIPES + EXECUTED WORKFLOWS",
+      "start": 46.75,
+      "end": 48.42,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "60d415ad-13ca-5d06-a5c4-92c345405855",
+      "text": "SAM 2.1 tracks the reviewed mask.",
+      "start": 48.5,
+      "end": 51.336666666666666,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "823d7078-a301-57de-901b-224f66dab4ec",
+      "text": "SAM 2.1 · REVIEWED SUBJECT MATTE",
+      "start": 48.5,
+      "end": 51.336666666666666,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "685ff4ed-0bfe-5e39-9e8a-68589823717a",
+      "text": "OPEN CODE · LOCAL OPEN-WEIGHT WORKFLOWS",
+      "start": 51.416666666666664,
+      "end": 56.711666666666666,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "ec2d4d74-8e67-53f7-918d-daa8d904ce84",
+      "text": "REACT + TYPESCRIPT\nCOMFY SDK\nPYAV + FFMPEG",
+      "start": 51.416666666666664,
+      "end": 56.711666666666666,
+      "style": "headline",
+      "position": "center",
+      "animation": "build",
+      "fontSize": 67,
+      "color": "#ffffff",
+      "motionDuration": 1.5
+    },
+    {
+      "id": "94ad7467-e456-53a9-a9d0-b630fe535a53",
+      "text": "One open chain: protected scenes, inspectable workflows, and agent edits you can reopen.",
+      "start": 56.791666666666664,
+      "end": 63.00333333333334,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "1230c38e-e3e2-5c71-96fa-5ebf70bfd9bb",
+      "text": "ONE EDITABLE CREATIVE CHAIN",
+      "start": 56.791666666666664,
+      "end": 63.00333333333334,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 23,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "cc3051b3-0712-5565-82e7-c8d7c0635532",
+      "text": "PROTECT THE SCENE.",
+      "start": 56.791666666666664,
+      "end": 58.541666666666664,
+      "style": "headline",
+      "position": "center",
+      "animation": "rise",
+      "fontSize": 64,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "48bece47-c400-5611-a125-e29824f864d5",
+      "text": "INSPECT THE WORK.",
+      "start": 58.666666666666664,
+      "end": 60.416666666666664,
+      "style": "headline",
+      "position": "center",
+      "animation": "rise",
+      "fontSize": 64,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "245463ef-20f1-52e5-9258-8f64675da1f9",
+      "text": "REOPEN THE EDIT.",
+      "start": 60.541666666666664,
+      "end": 62.958333333333336,
+      "style": "headline",
+      "position": "center",
+      "animation": "rise",
+      "fontSize": 64,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "8b681508-19d3-5ea1-a72c-f3626f5406f5",
+      "text": "THE TWIST?",
+      "start": 63.083333333333336,
+      "end": 64.21166666666667,
+      "style": "headline",
+      "position": "center",
+      "animation": "impact",
+      "fontSize": 118,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "4611975a-de64-514d-8331-201639dc323c",
+      "text": "Even this demo was made in Aftertake.",
+      "start": 64.29166666666667,
+      "end": 67.33666666666667,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 34,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "a60cc0a6-b3fd-5ce5-ae6a-1a963e5e2ce0",
+      "text": "MAKE THE NEXT TAKE\nYOURS.",
+      "start": 67.41666666666667,
+      "end": 69.21166666666667,
+      "style": "headline",
+      "position": "center",
+      "animation": "build",
+      "fontSize": 92,
+      "color": "#d5e991",
+      "motionDuration": 0.65
+    },
+    {
+      "id": "e3c1e80e-0356-5362-8127-428c26701bf6",
+      "text": "OPEN CODE. OPEN WEIGHTS.",
+      "start": 69.29166666666667,
+      "end": 71.58666666666667,
+      "style": "headline",
+      "position": "center",
+      "animation": "fade",
+      "fontSize": 76,
+      "color": "#d5e991",
+      "motionDuration": 0.3
+    },
+    {
+      "id": "810f45e9-a428-5135-8823-0cf2f67acaf0",
+      "text": "MICHAEL BURROWS + DEAN DIEMERT / PEXELS\nTEARS OF STEEL · BLENDER FOUNDATION · CC BY 3.0\nFictional coffee concept · Generation waits omitted",
+      "start": 69.29166666666667,
+      "end": 71.58666666666667,
+      "style": "kicker",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 20,
+      "color": "#ffffff",
+      "motionDuration": 0.3
+    }
+  ],
+  "audio": [
+    {
+      "assetId": "f5fc625a-3553-4644-8ab6-4c99151c5047",
+      "sha256": "ba5c1c92d671601a9f2871beba8a14461fa9312acb85974f9fe9ad0033da2763",
+      "start": 5.958333333333333,
+      "sourceStart": 0,
+      "sourceEnd": 1.3186666666666667,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "ba5c1c92d671601a9f2871beba8a14461fa9312acb85974f9fe9ad0033da2763",
+        "duration": 1.3186666666666667,
+        "narration": {
+          "text": "This is Aftertake.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "This",
+                "start": 0.09766666666666667,
+                "end": 0.24766666666666667
+              },
+              {
+                "text": "is",
+                "start": 0.2976666666666667,
+                "end": 0.39766666666666667
+              },
+              {
+                "text": "Aftertake.",
+                "start": 0.4726666666666667,
+                "end": 1.2586666666666666
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "cab7f6f8-3bf2-4845-b42c-3ac9c5371537",
+      "sha256": "fa561ca2bc93fc80b4d389328f15b5968a470e1b09efe93601bcc87410262b9f",
+      "start": 7.541666666666667,
+      "sourceStart": 0,
+      "sourceEnd": 3.532,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "fa561ca2bc93fc80b4d389328f15b5968a470e1b09efe93601bcc87410262b9f",
+        "duration": 3.532,
+        "narration": {
+          "text": "Write a line for each picture. Kokoro voices it locally.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Write",
+                "start": 0.094,
+                "end": 0.269
+              },
+              {
+                "text": "a",
+                "start": 0.294,
+                "end": 0.319
+              },
+              {
+                "text": "line",
+                "start": 0.369,
+                "end": 0.669
+              },
+              {
+                "text": "for",
+                "start": 0.719,
+                "end": 0.819
+              },
+              {
+                "text": "each",
+                "start": 0.844,
+                "end": 1.019
+              },
+              {
+                "text": "picture.",
+                "start": 1.069,
+                "end": 1.644
+              },
+              {
+                "text": "Kokoro",
+                "start": 1.844,
+                "end": 2.269
+              },
+              {
+                "text": "voices",
+                "start": 2.319,
+                "end": 2.669
+              },
+              {
+                "text": "it",
+                "start": 2.719,
+                "end": 2.794
+              },
+              {
+                "text": "locally.",
+                "start": 2.844,
+                "end": 3.392
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "bdd959ac-a0b7-423b-ada1-4912dd978311",
+      "sha256": "23ae23e1a0ff7740fda6e6e59a945cfd35076259c007f78599bcd2216422bf94",
+      "start": 11.333333333333334,
+      "sourceStart": 0,
+      "sourceEnd": 2.752666666666667,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "23ae23e1a0ff7740fda6e6e59a945cfd35076259c007f78599bcd2216422bf94",
+        "duration": 2.752666666666667,
+        "narration": {
+          "text": "Highlight the spoken words. Adjust any word.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Highlight",
+                "start": 0.11533333333333333,
+                "end": 0.49033333333333334
+              },
+              {
+                "text": "the",
+                "start": 0.5153333333333333,
+                "end": 0.5653333333333334
+              },
+              {
+                "text": "spoken",
+                "start": 0.6153333333333333,
+                "end": 0.9403333333333334
+              },
+              {
+                "text": "words.",
+                "start": 0.9903333333333333,
+                "end": 1.5153333333333334
+              },
+              {
+                "text": "Adjust",
+                "start": 1.6653333333333333,
+                "end": 1.9903333333333333
+              },
+              {
+                "text": "any",
+                "start": 2.0153333333333334,
+                "end": 2.1653333333333333
+              },
+              {
+                "text": "word.",
+                "start": 2.215333333333333,
+                "end": 2.6026666666666665
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "05b29523-6e19-438b-97ed-94da56b989d3",
+      "sha256": "41998c94055dbaef70ea9442ac784e626cd0298a526400f2d58b1e31fbc2a197",
+      "start": 14.375,
+      "sourceStart": 0,
+      "sourceEnd": 2.028,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "41998c94055dbaef70ea9442ac784e626cd0298a526400f2d58b1e31fbc2a197",
+        "duration": 2.028,
+        "narration": {
+          "text": "Change the hook. Keep the edit.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Change",
+                "start": 0.09033333333333333,
+                "end": 0.36533333333333334
+              },
+              {
+                "text": "the",
+                "start": 0.3903333333333333,
+                "end": 0.44033333333333335
+              },
+              {
+                "text": "hook.",
+                "start": 0.49033333333333334,
+                "end": 0.8153333333333334
+              },
+              {
+                "text": "Keep",
+                "start": 1.0803333333333334,
+                "end": 1.2553333333333332
+              },
+              {
+                "text": "the",
+                "start": 1.2803333333333335,
+                "end": 1.3803333333333332
+              },
+              {
+                "text": "edit.",
+                "start": 1.4303333333333335,
+                "end": 1.8679999999999999
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "58262d4b-15a7-419b-8201-954d5c7ca136",
+      "sha256": "f68c8d0f75d908cab7e5947eae6bc429de27ec53b27117e6fa643ae5896f9171",
+      "start": 16.666666666666668,
+      "sourceStart": 0,
+      "sourceEnd": 4.059958333333333,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "f68c8d0f75d908cab7e5947eae6bc429de27ec53b27117e6fa643ae5896f9171",
+        "duration": 4.059958333333333,
+        "narration": {
+          "text": "Agents inspect footage, pair whole lines, and rejoin exports.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Agents",
+                "start": 0.069,
+                "end": 0.444
+              },
+              {
+                "text": "inspect",
+                "start": 0.494,
+                "end": 0.919
+              },
+              {
+                "text": "footage,",
+                "start": 0.969,
+                "end": 1.519
+              },
+              {
+                "text": "pair",
+                "start": 1.644,
+                "end": 1.844
+              },
+              {
+                "text": "whole",
+                "start": 1.894,
+                "end": 2.069
+              },
+              {
+                "text": "lines,",
+                "start": 2.119,
+                "end": 2.569
+              },
+              {
+                "text": "and",
+                "start": 2.694,
+                "end": 2.7689999999999997
+              },
+              {
+                "text": "rejoin",
+                "start": 2.819,
+                "end": 3.219
+              },
+              {
+                "text": "exports.",
+                "start": 3.2689999999999997,
+                "end": 3.8899999999999997
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "d5a9cb5c-93a9-411a-b538-ac5f67cd3a15",
+      "sha256": "65ca04c484e3353b705d9523a5e1188074aa6e94b008dd5adacadca94e82ec23",
+      "start": 21.041666666666668,
+      "sourceStart": 0,
+      "sourceEnd": 1.922,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "65ca04c484e3353b705d9523a5e1188074aa6e94b008dd5adacadca94e82ec23",
+        "duration": 1.922,
+        "narration": {
+          "text": "Create an image with Z Image.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Create",
+                "start": 0.09033333333333333,
+                "end": 0.3403333333333333
+              },
+              {
+                "text": "an",
+                "start": 0.36533333333333334,
+                "end": 0.41533333333333333
+              },
+              {
+                "text": "image",
+                "start": 0.4653333333333333,
+                "end": 0.8153333333333334
+              },
+              {
+                "text": "with",
+                "start": 0.8653333333333333,
+                "end": 1.0153333333333334
+              },
+              {
+                "text": "Z",
+                "start": 1.0903333333333334,
+                "end": 1.2653333333333334
+              },
+              {
+                "text": "Image.",
+                "start": 1.3153333333333332,
+                "end": 1.792
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "9f34f735-5680-4261-8ce2-526e076e7f2d",
+      "sha256": "1dd6329d96a3384387b6db39f89c84de79f3d88f64ac03872d5877cf2e124baf",
+      "start": 23.416666666666668,
+      "sourceStart": 0,
+      "sourceEnd": 1.804,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "1dd6329d96a3384387b6db39f89c84de79f3d88f64ac03872d5877cf2e124baf",
+        "duration": 1.804,
+        "narration": {
+          "text": "Animate it with L T X.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Animate",
+                "start": 0.14033333333333334,
+                "end": 0.5153333333333333
+              },
+              {
+                "text": "it",
+                "start": 0.5403333333333333,
+                "end": 0.5903333333333334
+              },
+              {
+                "text": "with",
+                "start": 0.6153333333333333,
+                "end": 0.7403333333333333
+              },
+              {
+                "text": "L",
+                "start": 0.8153333333333334,
+                "end": 0.9653333333333334
+              },
+              {
+                "text": "T",
+                "start": 1.0153333333333334,
+                "end": 1.1903333333333332
+              },
+              {
+                "text": "X.",
+                "start": 1.2403333333333333,
+                "end": 1.664
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "82f6b014-a2be-4d9a-9161-aa4330b1a441",
+      "sha256": "6100e2ac141314b7793b225730ed68602e9610103b78df6555d9707c567ab032",
+      "start": 25.791666666666668,
+      "sourceStart": 0,
+      "sourceEnd": 1.212,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "6100e2ac141314b7793b225730ed68602e9610103b78df6555d9707c567ab032",
+        "duration": 1.212,
+        "narration": {
+          "text": "Direct the camera.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Direct",
+                "start": 0.09766666666666667,
+                "end": 0.4226666666666667
+              },
+              {
+                "text": "the",
+                "start": 0.44766666666666666,
+                "end": 0.49766666666666665
+              },
+              {
+                "text": "camera.",
+                "start": 0.5476666666666666,
+                "end": 1.152
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "cbbd1e7b-5a43-4550-b8dc-ae9b652e2918",
+      "sha256": "6572cfcbb8f8c2bce7059c0a8b5c13097fb4f5f83c2459e9425ef47a384eddec",
+      "start": 27.666666666666668,
+      "sourceStart": 0,
+      "sourceEnd": 1.5819583333333334,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "6572cfcbb8f8c2bce7059c0a8b5c13097fb4f5f83c2459e9425ef47a384eddec",
+        "duration": 1.5819583333333334,
+        "narration": {
+          "text": "Or set the ending frame.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Or",
+                "start": 0.13666666666666666,
+                "end": 0.2866666666666667
+              },
+              {
+                "text": "set",
+                "start": 0.3616666666666667,
+                "end": 0.5116666666666667
+              },
+              {
+                "text": "the",
+                "start": 0.5366666666666666,
+                "end": 0.6116666666666667
+              },
+              {
+                "text": "ending",
+                "start": 0.6616666666666666,
+                "end": 0.9366666666666666
+              },
+              {
+                "text": "frame.",
+                "start": 0.9866666666666667,
+                "end": 1.472
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "206a29fa-096e-4909-bbbd-480e3dddaca9",
+      "sha256": "73e388311eaa8d10df3200ef9cfddd8a65810c98e1a7d0680d6b6f77cc5ec438",
+      "start": 30.041666666666668,
+      "sourceStart": 0,
+      "sourceEnd": 1.7713333333333334,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "73e388311eaa8d10df3200ef9cfddd8a65810c98e1a7d0680d6b6f77cc5ec438",
+        "duration": 1.7713333333333334,
+        "narration": {
+          "text": "Qwen prepares your reference.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Qwen",
+                "start": 0.09033333333333333,
+                "end": 0.4653333333333333
+              },
+              {
+                "text": "prepares",
+                "start": 0.5153333333333333,
+                "end": 0.8653333333333333
+              },
+              {
+                "text": "your",
+                "start": 0.8903333333333333,
+                "end": 0.9653333333333334
+              },
+              {
+                "text": "reference.",
+                "start": 1.0153333333333334,
+                "end": 1.6213333333333333
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "d32c57d4-08aa-4e49-b2dd-b274381d04b2",
+      "sha256": "00efc214e20accf974c4486ccdd4a73def897110969defccb69320625e0e8ec2",
+      "start": 32.416666666666664,
+      "sourceStart": 0,
+      "sourceEnd": 2.220666666666667,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "00efc214e20accf974c4486ccdd4a73def897110969defccb69320625e0e8ec2",
+        "duration": 2.220666666666667,
+        "narration": {
+          "text": "Paint where and when the scene changes.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Paint",
+                "start": 0.09033333333333333,
+                "end": 0.3403333333333333
+              },
+              {
+                "text": "where",
+                "start": 0.3903333333333333,
+                "end": 0.7653333333333333
+              },
+              {
+                "text": "and",
+                "start": 0.8403333333333334,
+                "end": 0.9153333333333333
+              },
+              {
+                "text": "when",
+                "start": 0.9403333333333334,
+                "end": 1.0153333333333334
+              },
+              {
+                "text": "the",
+                "start": 1.0403333333333333,
+                "end": 1.0903333333333334
+              },
+              {
+                "text": "scene",
+                "start": 1.1403333333333334,
+                "end": 1.3403333333333334
+              },
+              {
+                "text": "changes.",
+                "start": 1.3903333333333334,
+                "end": 2.0906666666666665
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "1549acb8-0ec3-4faf-a7ae-6aae9713488c",
+      "sha256": "8c377c03ec250b40ac26d58431945c1cce3a605b54457f264d22f1a6c17283f0",
+      "start": 35.791666666666664,
+      "sourceStart": 0,
+      "sourceEnd": 2.774,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "8c377c03ec250b40ac26d58431945c1cce3a605b54457f264d22f1a6c17283f0",
+        "duration": 2.774,
+        "narration": {
+          "text": "The same cue guides generation and the blend.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "The",
+                "start": 0.09033333333333333,
+                "end": 0.16533333333333333
+              },
+              {
+                "text": "same",
+                "start": 0.24033333333333334,
+                "end": 0.49033333333333334
+              },
+              {
+                "text": "cue",
+                "start": 0.5653333333333334,
+                "end": 0.7153333333333334
+              },
+              {
+                "text": "guides",
+                "start": 0.7653333333333333,
+                "end": 1.0653333333333332
+              },
+              {
+                "text": "generation",
+                "start": 1.1153333333333333,
+                "end": 1.8653333333333333
+              },
+              {
+                "text": "and",
+                "start": 1.9653333333333334,
+                "end": 2.0403333333333333
+              },
+              {
+                "text": "the",
+                "start": 2.0653333333333332,
+                "end": 2.1153333333333335
+              },
+              {
+                "text": "blend.",
+                "start": 2.1653333333333333,
+                "end": 2.624
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "f3cacffb-9736-49a0-986c-13f1083d46be",
+      "sha256": "8eb20c946893a1520ff2ffbbd3b9da33ee39a246c79a304f7796739c3ab8c50b",
+      "start": 39.708333333333336,
+      "sourceStart": 0,
+      "sourceEnd": 1.4539583333333332,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "8eb20c946893a1520ff2ffbbd3b9da33ee39a246c79a304f7796739c3ab8c50b",
+        "duration": 1.4539583333333332,
+        "narration": {
+          "text": "Cast your own character.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Cast",
+                "start": 0.09033333333333333,
+                "end": 0.3403333333333333
+              },
+              {
+                "text": "your",
+                "start": 0.36533333333333334,
+                "end": 0.44033333333333335
+              },
+              {
+                "text": "own",
+                "start": 0.49033333333333334,
+                "end": 0.6403333333333333
+              },
+              {
+                "text": "character.",
+                "start": 0.6903333333333334,
+                "end": 1.344
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "59c5d4db-e273-42f8-b0ad-70e41b2ead5d",
+      "sha256": "5117fb1096cc7911c0352be8e126bcfe0bb997126af2e5ef051dbfe9ce99d797",
+      "start": 43.833333333333336,
+      "sourceStart": 0,
+      "sourceEnd": 1.932,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "5117fb1096cc7911c0352be8e126bcfe0bb997126af2e5ef051dbfe9ce99d797",
+        "duration": 1.932,
+        "narration": {
+          "text": "H3 keeps the performance.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "H3",
+                "start": 0.11533333333333333,
+                "end": 0.6903333333333334
+              },
+              {
+                "text": "keeps",
+                "start": 0.7403333333333333,
+                "end": 0.9653333333333334
+              },
+              {
+                "text": "the",
+                "start": 0.9903333333333333,
+                "end": 1.0403333333333333
+              },
+              {
+                "text": "performance.",
+                "start": 1.0903333333333334,
+                "end": 1.792
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "f1660552-d78c-4d4e-9e13-1e6669f4bfef",
+      "sha256": "e296547db20b0839136d79b26978ae1bf147dbb9317d7d1d33a58134ad85aa18",
+      "start": 46.75,
+      "sourceStart": 0,
+      "sourceEnd": 1.496625,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "e296547db20b0839136d79b26978ae1bf147dbb9317d7d1d33a58134ad85aa18",
+        "duration": 1.496625,
+        "narration": {
+          "text": "Reuse the recipe.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Reuse",
+                "start": 0.119,
+                "end": 0.544
+              },
+              {
+                "text": "the",
+                "start": 0.569,
+                "end": 0.619
+              },
+              {
+                "text": "recipe.",
+                "start": 0.669,
+                "end": 1.3866666666666667
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "e601297e-cb58-42f4-bd98-17a81bac11f3",
+      "sha256": "26a6e617c36deb96a0fa327ed6b3a5e8745496a81a7764c10ee86b92cdb74af9",
+      "start": 48.5,
+      "sourceStart": 0,
+      "sourceEnd": 2.134,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "26a6e617c36deb96a0fa327ed6b3a5e8745496a81a7764c10ee86b92cdb74af9",
+        "duration": 2.134,
+        "narration": {
+          "text": "Sam two tracks the reviewed mask.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Sam",
+                "start": 0.119,
+                "end": 0.344
+              },
+              {
+                "text": "two",
+                "start": 0.419,
+                "end": 0.719
+              },
+              {
+                "text": "tracks",
+                "start": 0.769,
+                "end": 1.069
+              },
+              {
+                "text": "the",
+                "start": 1.094,
+                "end": 1.144
+              },
+              {
+                "text": "reviewed",
+                "start": 1.194,
+                "end": 1.469
+              },
+              {
+                "text": "mask.",
+                "start": 1.519,
+                "end": 1.984
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "8db833b7-3b2c-4acf-99ad-ef3a1ddca007",
+      "sha256": "e867cccb7bbb204d3d428ac5dd41ba8403b261a3c1600c501124792080fe6d30",
+      "start": 51.416666666666664,
+      "sourceStart": 0,
+      "sourceEnd": 4.810666666666667,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "e867cccb7bbb204d3d428ac5dd41ba8403b261a3c1600c501124792080fe6d30",
+        "duration": 4.810666666666667,
+        "narration": {
+          "text": "React and TypeScript, Comfy's S D K, and Py A V with F F mpeg.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "React",
+                "start": 0.094,
+                "end": 0.469
+              },
+              {
+                "text": "and",
+                "start": 0.494,
+                "end": 0.569
+              },
+              {
+                "text": "TypeScript,",
+                "start": 0.619,
+                "end": 1.369
+              },
+              {
+                "text": "Comfy's",
+                "start": 1.494,
+                "end": 1.794
+              },
+              {
+                "text": "S",
+                "start": 1.844,
+                "end": 1.994
+              },
+              {
+                "text": "D",
+                "start": 2.044,
+                "end": 2.169
+              },
+              {
+                "text": "K,",
+                "start": 2.219,
+                "end": 2.744
+              },
+              {
+                "text": "and",
+                "start": 2.869,
+                "end": 2.944
+              },
+              {
+                "text": "Py",
+                "start": 2.994,
+                "end": 3.219
+              },
+              {
+                "text": "A",
+                "start": 3.244,
+                "end": 3.269
+              },
+              {
+                "text": "V",
+                "start": 3.319,
+                "end": 3.494
+              },
+              {
+                "text": "with",
+                "start": 3.519,
+                "end": 3.644
+              },
+              {
+                "text": "F",
+                "start": 3.719,
+                "end": 3.894
+              },
+              {
+                "text": "F",
+                "start": 3.944,
+                "end": 4.094
+              },
+              {
+                "text": "mpeg.",
+                "start": 4.144,
+                "end": 4.650666666666667
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "ebda60ac-dc39-4abb-9e5c-834846d40f96",
+      "sha256": "61bbcd3a1ca2fc9dac374f0f1f26e9b95ffaba0a1287b83ead660b82e38469af",
+      "start": 56.791666666666664,
+      "sourceStart": 0,
+      "sourceEnd": 6.032666666666667,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "61bbcd3a1ca2fc9dac374f0f1f26e9b95ffaba0a1287b83ead660b82e38469af",
+        "duration": 6.032666666666667,
+        "narration": {
+          "text": "One open chain: protected scenes, inspectable workflows, and agent edits you can reopen.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "One",
+                "start": 0.094,
+                "end": 0.319
+              },
+              {
+                "text": "open",
+                "start": 0.369,
+                "end": 0.694
+              },
+              {
+                "text": "chain:",
+                "start": 0.744,
+                "end": 1.344
+              },
+              {
+                "text": "protected",
+                "start": 1.469,
+                "end": 1.969
+              },
+              {
+                "text": "scenes,",
+                "start": 2.044,
+                "end": 2.594
+              },
+              {
+                "text": "inspectable",
+                "start": 2.694,
+                "end": 3.319
+              },
+              {
+                "text": "workflows,",
+                "start": 3.369,
+                "end": 3.994
+              },
+              {
+                "text": "and",
+                "start": 4.119,
+                "end": 4.194
+              },
+              {
+                "text": "agent",
+                "start": 4.244,
+                "end": 4.569
+              },
+              {
+                "text": "edits",
+                "start": 4.619,
+                "end": 4.968999999999999
+              },
+              {
+                "text": "you",
+                "start": 5.019,
+                "end": 5.093999999999999
+              },
+              {
+                "text": "can",
+                "start": 5.144,
+                "end": 5.269
+              },
+              {
+                "text": "reopen.",
+                "start": 5.319,
+                "end": 5.852666666666667
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "2d330aee-c01d-463d-96e5-c720b8682952",
+      "sha256": "06e7d3b9a6d2f93ca37eedce546113046b136e31ece24ad6c93a4c959417adeb",
+      "start": 63.083333333333336,
+      "sourceStart": 0,
+      "sourceEnd": 0.9346666666666666,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "06e7d3b9a6d2f93ca37eedce546113046b136e31ece24ad6c93a4c959417adeb",
+        "duration": 0.9346666666666666,
+        "narration": {
+          "text": "The twist?",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "The",
+                "start": 0.12266666666666666,
+                "end": 0.19766666666666666
+              },
+              {
+                "text": "twist?",
+                "start": 0.24766666666666667,
+                "end": 0.8726666666666667
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "881e02b2-0901-4e4c-9841-301b66a0b7fa",
+      "sha256": "5eed58d106d2dead15c0a78b635802def0e62f9aef2e64dbd2fbb69a7292eebc",
+      "start": 64.29166666666667,
+      "sourceStart": 0,
+      "sourceEnd": 2.3586666666666667,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "5eed58d106d2dead15c0a78b635802def0e62f9aef2e64dbd2fbb69a7292eebc",
+        "duration": 2.3586666666666667,
+        "narration": {
+          "text": "Even this demo was made in Aftertake.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Even",
+                "start": 0.094,
+                "end": 0.344
+              },
+              {
+                "text": "this",
+                "start": 0.394,
+                "end": 0.569
+              },
+              {
+                "text": "demo",
+                "start": 0.619,
+                "end": 0.944
+              },
+              {
+                "text": "was",
+                "start": 0.994,
+                "end": 1.119
+              },
+              {
+                "text": "made",
+                "start": 1.169,
+                "end": 1.369
+              },
+              {
+                "text": "in",
+                "start": 1.394,
+                "end": 1.469
+              },
+              {
+                "text": "Aftertake.",
+                "start": 1.544,
+                "end": 2.2186666666666666
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "9c6d6464-7cf0-4c27-889b-391d2cfa9c0a",
+      "sha256": "604d31295f8c88de72c6924b70670c6a54123d45e25289481ebc8536ca08f241",
+      "start": 67.41666666666667,
+      "sourceStart": 0,
+      "sourceEnd": 1.602,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "604d31295f8c88de72c6924b70670c6a54123d45e25289481ebc8536ca08f241",
+        "duration": 1.602,
+        "narration": {
+          "text": "Make the next take yours.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Make",
+                "start": 0.13666666666666666,
+                "end": 0.31166666666666665
+              },
+              {
+                "text": "the",
+                "start": 0.33666666666666667,
+                "end": 0.38666666666666666
+              },
+              {
+                "text": "next",
+                "start": 0.43666666666666665,
+                "end": 0.6616666666666666
+              },
+              {
+                "text": "take",
+                "start": 0.6866666666666666,
+                "end": 0.8616666666666667
+              },
+              {
+                "text": "yours.",
+                "start": 0.9116666666666666,
+                "end": 1.472
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "sourceVolume": 0.7,
+  "normalizeAudio": true,
+  "sourceFiles": {
+    "58f52b23-f5c8-446c-b4c6-428d07df4805": {
+      "path": "examples/spoken-type/result.mp4",
+      "sha256": "fdac1b08cd4fa4d49d32f0019ecfb1c1f87c5a3b47e454f5f1da5c22a1da74e1"
+    },
+    "ac1f5640-59cb-4d2e-87fd-e56be1c4bfe6": {
+      "path": "examples/submission-film/media/type-canvas.png",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77"
+    },
+    "52e027dc-4cc0-4a98-b4ec-fd6a66f3d537": {
+      "path": "examples/judges-film/media/entry-ui-builder-lines.mp4",
+      "sha256": "509a00e7440fb8f726b6c395a00ae4a656d2dacdf4f996d26123c1d67a1a0aa6"
+    },
+    "5aeec28a-e889-4381-bdc0-491b2bb328f4": {
+      "path": "examples/judges-film/media/entry-ui-builder.mp4",
+      "sha256": "75eb0846ca30d2128ba64337dd64c345e6062483a60fb6aceb3593f5cd41b794"
+    },
+    "de292f34-d13c-4a51-b729-4fd00a1a41d3": {
+      "path": "examples/judges-film/media/entry-ui-words.mp4",
+      "sha256": "0b85989a6357e5ee89a1791a6d5c67e3863c5922d046ce699399117ecd83182e"
+    },
+    "c0b31756-6e8c-4cc1-8bed-ab0ad356b25d": {
+      "path": "examples/judges-film/media/entry-ui-hook.mp4",
+      "sha256": "746be361f83ef5e0cfd3e1125d39faae09e6bf7284f074c825e714c42ed75e27"
+    },
+    "20e84d3a-4ca6-47b2-ad87-145b92e7226b": {
+      "path": "examples/judges-film/media/entry-ui-agent.mp4",
+      "sha256": "a76176a81206d5286569547da57951301e5565d44d4ec7d36ba8be425691003f"
+    },
+    "5f6644b6-116a-4273-9841-d2e9d31c102e": {
+      "path": "examples/submission-film/media/ui-image.png",
+      "sha256": "30e5cb13228dd5d30fa9cf533b70462be26f4f9db1a3058645d8ce8bffc5525b"
+    },
+    "5bb90d7d-d618-4874-8035-8a3679a043ad": {
+      "path": "examples/observatory/result.mp4",
+      "sha256": "087e24783cc8ab0dc37bb2ce40858e3e6e66d005a2e8b24cacb54ec5f91baec7"
+    },
+    "04e7feab-83ee-4509-9b1c-3450bd7913da": {
+      "path": "examples/judges-film/media/entry-ui-camera.mp4",
+      "sha256": "acf81564a94ed42ee3f0f5e84c9d2d91b204a012131e3bb45c2ddf5984b2d19d"
+    },
+    "34795b3f-19e2-4523-b733-75735368976a": {
+      "path": "examples/judges-film/media/entry-ui-ending.mp4",
+      "sha256": "af17dc2ab5dce172658bd506ee2d6fe362572b7c66fe075fefc516bd50707858"
+    },
+    "678cc792-b4af-44cc-b00f-c0dc595711ad": {
+      "path": "examples/judges-film/media/entry-ui-reference.mp4",
+      "sha256": "b65819302ec2ad740def73adc999bdd72821ba43f578a177a58ba33be0eae42f"
+    },
+    "19a3790f-a43f-4dbb-866b-4df7902ee9aa": {
+      "path": "examples/judges-film/media/entry-ui-cue.mp4",
+      "sha256": "d053e8498738017b7cfda7f7b9b54a9145284d22bcac3bef24be59027fb1d0e5"
+    },
+    "6e94257f-10e5-4965-8274-2b405bd67f1d": {
+      "path": "examples/coastal-kingdom/source.mp4",
+      "sha256": "5029ea3c92f7fd79fe154116804bb12c76b7b88669d40980443813ac62f2b88b"
+    },
+    "ad61d7c9-7d81-4549-9a0c-0e7682403b5d": {
+      "path": "examples/coastal-kingdom/result.mp4",
+      "sha256": "e3373be04dce7bb375284939bd12a06d07e8033732c41f5c80c73d154425fb99"
+    },
+    "30f6faac-c674-4d5a-8106-5da8764c908b": {
+      "path": "examples/submission-film/media/ui-character-prompt.mp4",
+      "sha256": "bf1124b7a4fe87f239fcbc55ea526b8f1c07528ab382ae622e59a70760c8bf74"
+    },
+    "790d6610-acd3-4332-8c50-0eaa1635194b": {
+      "path": "examples/character-h3/prepared-source.mp4",
+      "sha256": "be7b92b9fa173d498ee372dda5f7e0a2082c5349d242fb276dfc356b8237d42e"
+    },
+    "f9f9a3f7-126d-4187-b13c-e1c4bf4c26df": {
+      "path": "examples/character-h3/result.mp4",
+      "sha256": "127518cc682b27c15f36438b9866a7b399c20ea913733add8a1ad89ebe9df03e"
+    },
+    "8699c6ff-0741-4167-874e-c6de6593e3be": {
+      "path": "examples/judges-film/media/entry-ui-library.mp4",
+      "sha256": "16c73b24bdbd8da49ae7912c018dea81388b5995bf1305e240db2dc1930d3cb7"
+    },
+    "ed68019b-4846-45bb-9064-8126a98545ea": {
+      "path": "examples/performer-focus/subject-matte.mp4",
+      "sha256": "016d27683ef0a81af7772c9325436c0038466c2a025e6dd2c373f2fb421c3382"
+    },
+    "de34a594-3ece-4f32-b410-459405ba6617": {
+      "path": "examples/judges-film/media/entry-ui-reveal.mp4",
+      "sha256": "fe0fe2d916459e806890b970cc53826dcc0bcbd7b46cb2345e5d26aaf6b84e97"
+    },
+    "f5fc625a-3553-4644-8ab6-4c99151c5047": {
+      "path": "examples/judges-film/media/entry-voice-brand.wav",
+      "sha256": "ba5c1c92d671601a9f2871beba8a14461fa9312acb85974f9fe9ad0033da2763"
+    },
+    "cab7f6f8-3bf2-4845-b42c-3ac9c5371537": {
+      "path": "examples/judges-film/media/entry-voice-builder.wav",
+      "sha256": "fa561ca2bc93fc80b4d389328f15b5968a470e1b09efe93601bcc87410262b9f"
+    },
+    "bdd959ac-a0b7-423b-ada1-4912dd978311": {
+      "path": "examples/judges-film/media/entry-voice-words.wav",
+      "sha256": "23ae23e1a0ff7740fda6e6e59a945cfd35076259c007f78599bcd2216422bf94"
+    },
+    "05b29523-6e19-438b-97ed-94da56b989d3": {
+      "path": "examples/judges-film/media/entry-voice-hook.wav",
+      "sha256": "41998c94055dbaef70ea9442ac784e626cd0298a526400f2d58b1e31fbc2a197"
+    },
+    "58262d4b-15a7-419b-8201-954d5c7ca136": {
+      "path": "examples/judges-film/media/entry-voice-agent-editing.wav",
+      "sha256": "f68c8d0f75d908cab7e5947eae6bc429de27ec53b27117e6fa643ae5896f9171"
+    },
+    "d5a9cb5c-93a9-411a-b538-ac5f67cd3a15": {
+      "path": "examples/judges-film/media/entry-voice-image.wav",
+      "sha256": "65ca04c484e3353b705d9523a5e1188074aa6e94b008dd5adacadca94e82ec23"
+    },
+    "9f34f735-5680-4261-8ce2-526e076e7f2d": {
+      "path": "examples/judges-film/media/entry-voice-animation.wav",
+      "sha256": "1dd6329d96a3384387b6db39f89c84de79f3d88f64ac03872d5877cf2e124baf"
+    },
+    "82f6b014-a2be-4d9a-9161-aa4330b1a441": {
+      "path": "examples/judges-film/media/entry-voice-camera.wav",
+      "sha256": "6100e2ac141314b7793b225730ed68602e9610103b78df6555d9707c567ab032"
+    },
+    "cbbd1e7b-5a43-4550-b8dc-ae9b652e2918": {
+      "path": "examples/judges-film/media/entry-voice-ending.wav",
+      "sha256": "6572cfcbb8f8c2bce7059c0a8b5c13097fb4f5f83c2459e9425ef47a384eddec"
+    },
+    "206a29fa-096e-4909-bbbd-480e3dddaca9": {
+      "path": "examples/judges-film/media/entry-voice-reference.wav",
+      "sha256": "73e388311eaa8d10df3200ef9cfddd8a65810c98e1a7d0680d6b6f77cc5ec438"
+    },
+    "d32c57d4-08aa-4e49-b2dd-b274381d04b2": {
+      "path": "examples/judges-film/media/entry-voice-paint.wav",
+      "sha256": "00efc214e20accf974c4486ccdd4a73def897110969defccb69320625e0e8ec2"
+    },
+    "1549acb8-0ec3-4faf-a7ae-6aae9713488c": {
+      "path": "examples/judges-film/media/entry-voice-vfx.wav",
+      "sha256": "8c377c03ec250b40ac26d58431945c1cce3a605b54457f264d22f1a6c17283f0"
+    },
+    "f3cacffb-9736-49a0-986c-13f1083d46be": {
+      "path": "examples/judges-film/media/entry-voice-character-prompt.wav",
+      "sha256": "8eb20c946893a1520ff2ffbbd3b9da33ee39a246c79a304f7796739c3ab8c50b"
+    },
+    "59c5d4db-e273-42f8-b0ad-70e41b2ead5d": {
+      "path": "examples/judges-film/media/entry-voice-character-result.wav",
+      "sha256": "5117fb1096cc7911c0352be8e126bcfe0bb997126af2e5ef051dbfe9ce99d797"
+    },
+    "f1660552-d78c-4d4e-9e13-1e6669f4bfef": {
+      "path": "examples/judges-film/media/entry-voice-recipes.wav",
+      "sha256": "e296547db20b0839136d79b26978ae1bf147dbb9317d7d1d33a58134ad85aa18"
+    },
+    "e601297e-cb58-42f4-bd98-17a81bac11f3": {
+      "path": "examples/judges-film/media/entry-voice-subject-matte.wav",
+      "sha256": "26a6e617c36deb96a0fa327ed6b3a5e8745496a81a7764c10ee86b92cdb74af9"
+    },
+    "8db833b7-3b2c-4acf-99ad-ef3a1ddca007": {
+      "path": "examples/judges-film/media/entry-voice-build-stack.wav",
+      "sha256": "e867cccb7bbb204d3d428ac5dd41ba8403b261a3c1600c501124792080fe6d30"
+    },
+    "ebda60ac-dc39-4abb-9e5c-834846d40f96": {
+      "path": "examples/judges-film/media/entry-voice-contribution.wav",
+      "sha256": "61bbcd3a1ca2fc9dac374f0f1f26e9b95ffaba0a1287b83ead660b82e38469af"
+    },
+    "2d330aee-c01d-463d-96e5-c720b8682952": {
+      "path": "examples/judges-film/media/entry-voice-twist.wav",
+      "sha256": "06e7d3b9a6d2f93ca37eedce546113046b136e31ece24ad6c93a4c959417adeb"
+    },
+    "881e02b2-0901-4e4c-9841-301b66a0b7fa": {
+      "path": "examples/judges-film/media/entry-voice-reveal.wav",
+      "sha256": "5eed58d106d2dead15c0a78b635802def0e62f9aef2e64dbd2fbb69a7292eebc"
+    },
+    "9c6d6464-7cf0-4c27-889b-391d2cfa9c0a": {
+      "path": "examples/judges-film/media/entry-voice-yours.wav",
+      "sha256": "604d31295f8c88de72c6924b70670c6a54123d45e25289481ebc8536ca08f241"
+    }
+  },
+  "notes": "Native H3 character replacement with SAM3 tracking and original fictional reference. Actual local UI captures, native Film export and measured Kokoro narration. Generation waits omitted. Review cut; Jay submits personally."
+}

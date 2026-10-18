@@ -1,0 +1,962 @@
+{
+  "format": "aftertake-film/2",
+  "name": "Aftertake — ads, reels and impossible takes / H3 review",
+  "aspect": "landscape",
+  "shots": [
+    {
+      "assetId": "dfcb703b-1aa3-43f8-99e9-ce11c45e241c",
+      "start": 0,
+      "end": 2,
+      "sha256": "bcfa0cee54b90dd578b90fa233d596f586a6e17dd9bbd13c9ef73b258a72df28"
+    },
+    {
+      "assetId": "dfcb703b-1aa3-43f8-99e9-ce11c45e241c",
+      "start": 3,
+      "end": 4.125,
+      "sha256": "bcfa0cee54b90dd578b90fa233d596f586a6e17dd9bbd13c9ef73b258a72df28"
+    },
+    {
+      "assetId": "dfcb703b-1aa3-43f8-99e9-ce11c45e241c",
+      "start": 4.25,
+      "end": 5.375,
+      "sha256": "bcfa0cee54b90dd578b90fa233d596f586a6e17dd9bbd13c9ef73b258a72df28"
+    },
+    {
+      "assetId": "dfcb703b-1aa3-43f8-99e9-ce11c45e241c",
+      "start": 5.5,
+      "end": 6.625,
+      "sha256": "bcfa0cee54b90dd578b90fa233d596f586a6e17dd9bbd13c9ef73b258a72df28"
+    },
+    {
+      "assetId": "dfcb703b-1aa3-43f8-99e9-ce11c45e241c",
+      "start": 6.75,
+      "end": 9.5,
+      "sha256": "bcfa0cee54b90dd578b90fa233d596f586a6e17dd9bbd13c9ef73b258a72df28"
+    },
+    {
+      "assetId": "ac1f5640-59cb-4d2e-87fd-e56be1c4bfe6",
+      "start": 0,
+      "end": 1.625,
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "dissolve": 0.16666666666666666
+    },
+    {
+      "assetId": "39f7e477-0f3d-4420-ba38-88130c8808d6",
+      "start": 0,
+      "end": 2.0,
+      "sha256": "80a0497e9c8e43a7a0c3f95cb7cf51dbd3d11741ef39ce505cf60fb0d13314c7",
+      "dissolve": 0.16666666666666666
+    },
+    {
+      "assetId": "a1905bd8-27e6-4f5f-a37f-f88357f65076",
+      "start": 0,
+      "end": 1.5,
+      "sha256": "b443b12befe67143e68f37779b61ab3f474da098e43b9b1a4cb0274cc84582d5",
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "39f7e477-0f3d-4420-ba38-88130c8808d6",
+      "start": 4,
+      "end": 6.541666666666666,
+      "sha256": "80a0497e9c8e43a7a0c3f95cb7cf51dbd3d11741ef39ce505cf60fb0d13314c7",
+      "dissolve": 0.125
+    },
+    {
+      "assetId": "5f6644b6-116a-4273-9841-d2e9d31c102e",
+      "start": 0,
+      "end": 2.0,
+      "sha256": "30e5cb13228dd5d30fa9cf533b70462be26f4f9db1a3058645d8ce8bffc5525b",
+      "dissolve": 0.16666666666666666
+    },
+    {
+      "assetId": "a81f0a5c-1548-4d30-b0c0-d4c54f62c947",
+      "start": 0,
+      "end": 0.5,
+      "sha256": "d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5",
+      "dissolve": 0.16666666666666666
+    },
+    {
+      "start": 0.5,
+      "end": 2.5,
+      "sha256": "087e24783cc8ab0dc37bb2ce40858e3e6e66d005a2e8b24cacb54ec5f91baec7",
+      "assetId": "5bb90d7d-d618-4874-8035-8a3679a043ad"
+    },
+    {
+      "assetId": "e3e0ea95-2ccf-4e39-87d2-39eb56009b10",
+      "start": 0,
+      "end": 2.0,
+      "sha256": "fe7a1367fcba2d8a592d6f24909faf8a597d1540b8e6e979281bb3a44154af0c",
+      "dissolve": 0.16666666666666666
+    },
+    {
+      "assetId": "6e94257f-10e5-4965-8274-2b405bd67f1d",
+      "start": 0,
+      "end": 0.5,
+      "sha256": "5029ea3c92f7fd79fe154116804bb12c76b7b88669d40980443813ac62f2b88b",
+      "dissolve": 0.16666666666666666
+    },
+    {
+      "start": 0.5,
+      "end": 2.75,
+      "sha256": "e3373be04dce7bb375284939bd12a06d07e8033732c41f5c80c73d154425fb99",
+      "assetId": "ad61d7c9-7d81-4549-9a0c-0e7682403b5d"
+    },
+    {
+      "assetId": "30f6faac-c674-4d5a-8106-5da8764c908b",
+      "start": 0,
+      "end": 4.25,
+      "sha256": "bf1124b7a4fe87f239fcbc55ea526b8f1c07528ab382ae622e59a70760c8bf74",
+      "dissolve": 0.16666666666666666
+    },
+    {
+      "assetId": "790d6610-acd3-4332-8c50-0eaa1635194b",
+      "start": 0,
+      "end": 0.4583333333333333,
+      "sha256": "be7b92b9fa173d498ee372dda5f7e0a2082c5349d242fb276dfc356b8237d42e"
+    },
+    {
+      "assetId": "f9f9a3f7-126d-4187-b13c-e1c4bf4c26df",
+      "start": 0.4583333333333333,
+      "end": 3.0416666666666665,
+      "sha256": "127518cc682b27c15f36438b9866a7b399c20ea913733add8a1ad89ebe9df03e"
+    },
+    {
+      "assetId": "716fd066-1b08-4eb4-9d9d-dd1e9d1afeb7",
+      "start": 0,
+      "end": 1.8333333333333333,
+      "sha256": "ad59788118e80632598f24f6eb66f498dad6c4609f31cdb5e73ac2a6590a1411",
+      "dissolve": 0.16666666666666666
+    },
+    {
+      "assetId": "ac1f5640-59cb-4d2e-87fd-e56be1c4bfe6",
+      "start": 0,
+      "end": 3.6666666666666665,
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "dissolve": 0.16666666666666666
+    },
+    {
+      "assetId": "ac1f5640-59cb-4d2e-87fd-e56be1c4bfe6",
+      "start": 0,
+      "end": 1.25,
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "dissolve": 0.16666666666666666
+    },
+    {
+      "assetId": "564c42ed-6aa5-4b61-b83c-49f250f34040",
+      "start": 0,
+      "end": 3.25,
+      "sha256": "dd5f34feb9823485178dc32a0d783393d5d259eaadc5ca554799715d36ab6841",
+      "dissolve": 0.16666666666666666
+    },
+    {
+      "assetId": "ac1f5640-59cb-4d2e-87fd-e56be1c4bfe6",
+      "start": 0,
+      "end": 2.0,
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "dissolve": 0.16666666666666666
+    },
+    {
+      "assetId": "ac1f5640-59cb-4d2e-87fd-e56be1c4bfe6",
+      "start": 0,
+      "end": 2.5,
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "dissolve": 0.16666666666666666
+    }
+  ],
+  "titles": [
+    {
+      "id": "7f0d7064-b8a7-5260-9e2e-4afc0971db58",
+      "text": "AFTERTAKE",
+      "start": 8.078333333333333,
+      "end": 9.503333333333332,
+      "style": "headline",
+      "position": "center",
+      "animation": "wipe",
+      "color": "#ffffff",
+      "motionDuration": 0.4,
+      "fontSize": 130
+    },
+    {
+      "id": "a086476f-eed0-5d35-be02-5a9e5bf77ff4",
+      "text": "AN OPEN CREATIVE STUDIO",
+      "start": 8.078333333333333,
+      "end": 9.503333333333332,
+      "style": "kicker",
+      "position": "bottom",
+      "animation": "fade",
+      "color": "#d5e991"
+    },
+    {
+      "id": "8b2e3979-0b78-55d1-a97e-f73fa5b55b89",
+      "text": "Make ads and reels.",
+      "start": 9.536666666666665,
+      "end": 11.336666666666666,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "color": "#ffffff"
+    },
+    {
+      "id": "425c5d30-8673-5d3e-bc54-37b1731517ef",
+      "text": "Try another hook.",
+      "start": 11.411666666666665,
+      "end": 12.711666666666666,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "color": "#ffffff"
+    },
+    {
+      "id": "6a0dfcd4-beab-5d9d-9c7d-b25427aa3e60",
+      "text": "Change the words, voice and timing.",
+      "start": 12.786666666666665,
+      "end": 15.128333333333332,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "color": "#ffffff"
+    },
+    {
+      "id": "ba16d3bf-6d7a-5106-8c14-bb278927c235",
+      "text": "Generate an image.",
+      "start": 15.161666666666665,
+      "end": 16.961666666666666,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "color": "#ffffff"
+    },
+    {
+      "id": "237771ea-3670-5c65-b627-bcfdcac7b41f",
+      "text": "Bring it into motion.",
+      "start": 16.994999999999997,
+      "end": 19.294999999999998,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "fade",
+      "color": "#ffffff"
+    },
+    {
+      "id": "ba5bc3c4-274f-5831-934a-048b13075865",
+      "text": "Choose what changes.",
+      "start": 19.32833333333333,
+      "end": 21.12833333333333,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "color": "#ffffff"
+    },
+    {
+      "id": "a49c1fdf-1797-5b38-b4c1-421ebe5d66f0",
+      "text": "Change reality.",
+      "start": 21.16166666666666,
+      "end": 23.711666666666662,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "fade",
+      "color": "#ffffff"
+    },
+    {
+      "id": "bf7f2fb8-0d43-5a4b-8c44-1e9cc09c7186",
+      "text": "Cast your own character.",
+      "start": 23.744999999999994,
+      "end": 27.794999999999995,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "color": "#ffffff"
+    },
+    {
+      "id": "a5ea0691-0031-58e2-8d46-cab63ea6ff60",
+      "text": "New character. Same scene.",
+      "start": 27.994999999999994,
+      "end": 30.836666666666662,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "color": "#ffffff"
+    },
+    {
+      "id": "2ce3c991-9af6-59d6-a149-d5789df83a1c",
+      "text": "H3 CHARACTER SWAP",
+      "start": 27.994999999999994,
+      "end": 30.836666666666662,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "color": "#d5e991",
+      "fontSize": 18
+    },
+    {
+      "id": "f94f914f-d21f-55b1-a660-7f564843b40f",
+      "text": "Reuse the recipe.",
+      "start": 30.869999999999994,
+      "end": 32.50333333333333,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "color": "#ffffff"
+    },
+    {
+      "id": "ad95ceca-555d-5c91-ba0f-455a2304fb2b",
+      "text": "Comfy SDK.\nOpen code. Open weights.",
+      "start": 32.53666666666666,
+      "end": 36.00333333333333,
+      "style": "headline",
+      "position": "center",
+      "animation": "fade",
+      "color": "#ffffff"
+    },
+    {
+      "id": "86456544-5ed1-5593-92c6-5a787d454358",
+      "text": "The twist?",
+      "start": 36.03666666666666,
+      "end": 37.086666666666666,
+      "style": "headline",
+      "position": "center",
+      "animation": "typewriter",
+      "color": "#ffffff",
+      "motionDuration": 0.45,
+      "fontSize": 88
+    },
+    {
+      "id": "59bb0ad8-f067-5663-9837-1973a096c9f9",
+      "text": "Made in Aftertake.",
+      "start": 37.12,
+      "end": 40.17,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "color": "#ffffff"
+    },
+    {
+      "id": "ebbee130-217f-5e7c-b6b2-1ecfd3f628a6",
+      "text": "CUT · TITLED · VOICED · EXPORTED HERE",
+      "start": 37.12,
+      "end": 40.17,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "color": "#d5e991"
+    },
+    {
+      "id": "0c2dde82-ecd2-5355-a850-12a0653ac2a1",
+      "text": "Make the next take yours.",
+      "start": 40.20333333333333,
+      "end": 42.00333333333334,
+      "style": "headline",
+      "position": "center",
+      "animation": "build",
+      "color": "#ffffff",
+      "motionDuration": 0.8,
+      "fontSize": 112
+    },
+    {
+      "id": "7d8c7afb-08b4-5d4b-af6d-298007193aa8",
+      "text": "AFTERTAKE",
+      "start": 41.99666666666667,
+      "end": 44.31666666666667,
+      "style": "headline",
+      "position": "center",
+      "animation": "fade",
+      "color": "#d5e991"
+    },
+    {
+      "id": "81c99720-53a3-56b4-9f63-c7d05847f868",
+      "text": "FOOTAGE · MICHAEL BURROWS + DEAN DIEMERT / PEXELS\nTEARS OF STEEL · BLENDER FOUNDATION · CC BY 3.0\nZ-IMAGE · QWEN IMAGE EDIT · H3 CHARACTER SWAP · LTX-2.5 · SAM3 · KOKORO\nFictional coffee concept · Generation waits omitted",
+      "start": 41.99666666666667,
+      "end": 44.31666666666667,
+      "style": "kicker",
+      "position": "bottom",
+      "animation": "fade",
+      "color": "#ffffff"
+    }
+  ],
+  "audio": [
+    {
+      "assetId": "31433706-1719-43af-957f-6ae18d146764",
+      "start": 0.16,
+      "sourceStart": 0,
+      "sourceEnd": 1.2846666666666666,
+      "volume": 1,
+      "sha256": "e13dcc89511b83c2cd241a95dc9919fbbd19ec95630b0e34b193f652fe2eb4ab",
+      "asset": {
+        "kind": "audio",
+        "sha256": "e13dcc89511b83c2cd241a95dc9919fbbd19ec95630b0e34b193f652fe2eb4ab",
+        "duration": 1.2846666666666666,
+        "narration": {
+          "text": "Your morning called.",
+          "voice": "af_heart",
+          "speed": 1,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "cb1c9b2c-8a44-4059-9215-6732c0284784",
+      "start": 2.12,
+      "sourceStart": 0,
+      "sourceEnd": 0.8746666666666667,
+      "volume": 1,
+      "sha256": "f5e1a42860494279cd37fa8995a88944cba4d6f985a0a96da2791446744823a6",
+      "asset": {
+        "kind": "audio",
+        "sha256": "f5e1a42860494279cd37fa8995a88944cba4d6f985a0a96da2791446744823a6",
+        "duration": 0.8746666666666667,
+        "narration": {
+          "text": "Ground.",
+          "voice": "af_heart",
+          "speed": 1,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "5dbca9f8-66c4-4e66-85cf-4b6b0fa22093",
+      "start": 3.245,
+      "sourceStart": 0,
+      "sourceEnd": 0.8106666666666666,
+      "volume": 1,
+      "sha256": "2aa7563b32a2512cb955a840506fe79d197866028bb66eda9a9c4dc1ab679d94",
+      "asset": {
+        "kind": "audio",
+        "sha256": "2aa7563b32a2512cb955a840506fe79d197866028bb66eda9a9c4dc1ab679d94",
+        "duration": 0.8106666666666666,
+        "narration": {
+          "text": "Pour.",
+          "voice": "af_heart",
+          "speed": 1,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "8b5ba581-e44f-4542-a66f-bf93677d7b7d",
+      "start": 4.370000000000001,
+      "sourceStart": 0,
+      "sourceEnd": 0.8746666666666667,
+      "volume": 1,
+      "sha256": "b344ad3dd222acb48b768137621b392674a4f8b45c9ece271a417a1db737e7e8",
+      "asset": {
+        "kind": "audio",
+        "sha256": "b344ad3dd222acb48b768137621b392674a4f8b45c9ece271a417a1db737e7e8",
+        "duration": 0.8746666666666667,
+        "narration": {
+          "text": "Pause.",
+          "voice": "af_heart",
+          "speed": 1,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "8829be4e-2038-496b-889b-65b629f35c0b",
+      "start": 5.555,
+      "sourceStart": 0,
+      "sourceEnd": 2.4073333333333333,
+      "volume": 1,
+      "sha256": "8e72d41d75ed5daa0bce1607f983afaf3387687e3a26402474d4e7b1d8d7d4ac",
+      "asset": {
+        "kind": "audio",
+        "sha256": "8e72d41d75ed5daa0bce1607f983afaf3387687e3a26402474d4e7b1d8d7d4ac",
+        "duration": 2.4073333333333333,
+        "narration": {
+          "text": "Slow mornings. Find your next cup.",
+          "voice": "af_heart",
+          "speed": 1,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "e401fdc2-4048-4e43-a218-4ddac618a04c",
+      "start": 8.078333333333333,
+      "sourceStart": 0,
+      "sourceEnd": 1.3186666666666667,
+      "volume": 1,
+      "sha256": "b0dbab29213d8af77cdbf35144a7559918c9a1cf4991510371f0f163fb220041",
+      "asset": {
+        "kind": "audio",
+        "sha256": "b0dbab29213d8af77cdbf35144a7559918c9a1cf4991510371f0f163fb220041",
+        "duration": 1.3186666666666667,
+        "narration": {
+          "text": "This is Aftertake.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "7ecdda27-9e6e-46c9-9df7-fe16ba2124b7",
+      "start": 9.536666666666665,
+      "sourceStart": 0,
+      "sourceEnd": 1.43,
+      "volume": 1,
+      "sha256": "392eff290e44dea8117e2daa54df8dc417e1845c17a60c89ca3e272b46f6b53d",
+      "asset": {
+        "kind": "audio",
+        "sha256": "392eff290e44dea8117e2daa54df8dc417e1845c17a60c89ca3e272b46f6b53d",
+        "duration": 1.43,
+        "narration": {
+          "text": "Make ads and reels.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "869c6eb3-3cc3-43fe-a62b-308f09564c9e",
+      "start": 11.411666666666665,
+      "sourceStart": 0,
+      "sourceEnd": 1.1679583333333334,
+      "volume": 1,
+      "sha256": "da33c1cf0cb22b1a8cc65804866ee8571b6cdd2a8d59aeae3cc5f22014be25d2",
+      "asset": {
+        "kind": "audio",
+        "sha256": "da33c1cf0cb22b1a8cc65804866ee8571b6cdd2a8d59aeae3cc5f22014be25d2",
+        "duration": 1.1679583333333334,
+        "narration": {
+          "text": "Try another hook.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "3c068cb7-7f09-48a3-869d-90bf8f5308bb",
+      "start": 12.786666666666665,
+      "sourceStart": 0,
+      "sourceEnd": 2.232,
+      "volume": 1,
+      "sha256": "fb57ad18b5140d54127a378fbe5cca71f2dee3e7dbd1e730407b02170fe580a7",
+      "asset": {
+        "kind": "audio",
+        "sha256": "fb57ad18b5140d54127a378fbe5cca71f2dee3e7dbd1e730407b02170fe580a7",
+        "duration": 2.232,
+        "narration": {
+          "text": "Change the words, voice, and timing.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "32a6227c-1cff-4c73-87e4-9cf4862ba1ae",
+      "start": 15.161666666666665,
+      "sourceStart": 0,
+      "sourceEnd": 1.3786666666666667,
+      "volume": 1,
+      "sha256": "adcd91fe5c75a412893ea3a97bb61b4086922bc97a73c730fc710538dfd3677f",
+      "asset": {
+        "kind": "audio",
+        "sha256": "adcd91fe5c75a412893ea3a97bb61b4086922bc97a73c730fc710538dfd3677f",
+        "duration": 1.3786666666666667,
+        "narration": {
+          "text": "Generate an image.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "00990339-0a05-46ec-9f8f-9a2ecf5b78b0",
+      "start": 16.994999999999997,
+      "sourceStart": 0,
+      "sourceEnd": 1.4752916666666667,
+      "volume": 1,
+      "sha256": "460030df725d3600988af4158b551100870229bfd4556908a65853151d9b79b9",
+      "asset": {
+        "kind": "audio",
+        "sha256": "460030df725d3600988af4158b551100870229bfd4556908a65853151d9b79b9",
+        "duration": 1.4752916666666667,
+        "narration": {
+          "text": "Bring it into motion.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "47c72242-dcba-4534-8518-109cec057772",
+      "start": 19.32833333333333,
+      "sourceStart": 0,
+      "sourceEnd": 1.41,
+      "volume": 1,
+      "sha256": "f6c98329342903c7c6a74751b08957bbc72ed281d76d1c3c8902c5f492770bd6",
+      "asset": {
+        "kind": "audio",
+        "sha256": "f6c98329342903c7c6a74751b08957bbc72ed281d76d1c3c8902c5f492770bd6",
+        "duration": 1.41,
+        "narration": {
+          "text": "Choose what changes.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "5e0815d9-8f24-4d71-85cb-b9e794b597d7",
+      "start": 21.16166666666666,
+      "sourceStart": 0,
+      "sourceEnd": 1.432625,
+      "volume": 1,
+      "sha256": "73f671ed6bcac5dc5a1f0228918b8ce17b75f3627b0ddfd10fdb7e4f06b67bd3",
+      "asset": {
+        "kind": "audio",
+        "sha256": "73f671ed6bcac5dc5a1f0228918b8ce17b75f3627b0ddfd10fdb7e4f06b67bd3",
+        "duration": 1.432625,
+        "narration": {
+          "text": "Or change reality.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "7897a198-2734-4854-bcca-530ce6d732f1",
+      "start": 23.744999999999994,
+      "sourceStart": 0,
+      "sourceEnd": 1.4539583333333332,
+      "volume": 1,
+      "sha256": "b634d0bd1159def1d5704afd49aa7ec94380cda9e95122f5f91ee284c315b4d4",
+      "asset": {
+        "kind": "audio",
+        "sha256": "b634d0bd1159def1d5704afd49aa7ec94380cda9e95122f5f91ee284c315b4d4",
+        "duration": 1.4539583333333332,
+        "narration": {
+          "text": "Cast your own character.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "0c895f92-c3f3-4c2b-a487-441fe171430b",
+      "start": 27.994999999999994,
+      "sourceStart": 0,
+      "sourceEnd": 2.0593333333333335,
+      "volume": 1,
+      "sha256": "ad521c99dbfb61c19a8c9232c94ffd90f7db78591314bb12b0ea4d8504f0a03b",
+      "asset": {
+        "kind": "audio",
+        "sha256": "ad521c99dbfb61c19a8c9232c94ffd90f7db78591314bb12b0ea4d8504f0a03b",
+        "duration": 2.0593333333333335,
+        "narration": {
+          "text": "New character. Same scene.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "e2d0c4ee-9635-4994-af6f-1bc9a428b533",
+      "start": 30.869999999999994,
+      "sourceStart": 0,
+      "sourceEnd": 1.496625,
+      "volume": 1,
+      "sha256": "2b791a4f4d005ae2bb6464e78a5bce4d9016b3e9b8b2d26a3daaaedb9036be22",
+      "asset": {
+        "kind": "audio",
+        "sha256": "2b791a4f4d005ae2bb6464e78a5bce4d9016b3e9b8b2d26a3daaaedb9036be22",
+        "duration": 1.496625,
+        "narration": {
+          "text": "Reuse the recipe.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "112d49c6-8121-4675-8a1c-f9638b49272a",
+      "start": 32.53666666666666,
+      "sourceStart": 0,
+      "sourceEnd": 3.3292916666666668,
+      "volume": 1,
+      "sha256": "d40ad30831ca108ccd07f284f1ad44f2e5213219d263d1343a35cce17f745d96",
+      "asset": {
+        "kind": "audio",
+        "sha256": "d40ad30831ca108ccd07f284f1ad44f2e5213219d263d1343a35cce17f745d96",
+        "duration": 3.3292916666666668,
+        "narration": {
+          "text": "Comfy S D K. Open code. Open weights.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "e8c108cb-51a1-453a-aaff-0524aa08edbf",
+      "start": 36.03666666666666,
+      "sourceStart": 0,
+      "sourceEnd": 0.936,
+      "volume": 1,
+      "sha256": "32e2940433a914366cc1c1037bf9c5a66072214171dad71c8c963e2017b1e5a9",
+      "asset": {
+        "kind": "audio",
+        "sha256": "32e2940433a914366cc1c1037bf9c5a66072214171dad71c8c963e2017b1e5a9",
+        "duration": 0.936,
+        "narration": {
+          "text": "The twist?",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "029fec29-a049-44af-a567-43466fdc8863",
+      "start": 37.12,
+      "sourceStart": 0,
+      "sourceEnd": 2.3586666666666667,
+      "volume": 1,
+      "sha256": "8b4e00444e0d58ccbdd6555951a52c8f4d69b8c3218af513b55ee072d27f7fe2",
+      "asset": {
+        "kind": "audio",
+        "sha256": "8b4e00444e0d58ccbdd6555951a52c8f4d69b8c3218af513b55ee072d27f7fe2",
+        "duration": 2.3586666666666667,
+        "narration": {
+          "text": "Even this demo was made in Aftertake.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    },
+    {
+      "assetId": "268dbd1e-e1b5-43a1-92f5-8887d286562b",
+      "start": 40.20333333333333,
+      "sourceStart": 0,
+      "sourceEnd": 1.602,
+      "volume": 1,
+      "sha256": "123b60665d11669fc5129cae65f14b1e2db8a02f3335d40fb6c61d6a6ed5ee8d",
+      "asset": {
+        "kind": "audio",
+        "sha256": "123b60665d11669fc5129cae65f14b1e2db8a02f3335d40fb6c61d6a6ed5ee8d",
+        "duration": 1.602,
+        "narration": {
+          "text": "Make the next take yours.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        }
+      }
+    }
+  ],
+  "sourceVolume": 0,
+  "normalizeAudio": true,
+  "sourceFiles": {
+    "dfcb703b-1aa3-43f8-99e9-ce11c45e241c": {
+      "path": "examples/social-ad/ad-a.mp4",
+      "sha256": "bcfa0cee54b90dd578b90fa233d596f586a6e17dd9bbd13c9ef73b258a72df28"
+    },
+    "ac1f5640-59cb-4d2e-87fd-e56be1c4bfe6": {
+      "path": "examples/submission-film/media/type-canvas.png",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77"
+    },
+    "39f7e477-0f3d-4420-ba38-88130c8808d6": {
+      "path": "examples/submission-film/media/ui-social-editor.mp4",
+      "sha256": "80a0497e9c8e43a7a0c3f95cb7cf51dbd3d11741ef39ce505cf60fb0d13314c7"
+    },
+    "a1905bd8-27e6-4f5f-a37f-f88357f65076": {
+      "path": "examples/submission-film/media/ui-social-hook.mp4",
+      "sha256": "b443b12befe67143e68f37779b61ab3f474da098e43b9b1a4cb0274cc84582d5"
+    },
+    "5f6644b6-116a-4273-9841-d2e9d31c102e": {
+      "path": "examples/submission-film/media/ui-image.png",
+      "sha256": "30e5cb13228dd5d30fa9cf533b70462be26f4f9db1a3058645d8ce8bffc5525b"
+    },
+    "a81f0a5c-1548-4d30-b0c0-d4c54f62c947": {
+      "path": "examples/observatory/source.png",
+      "sha256": "d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5"
+    },
+    "5bb90d7d-d618-4874-8035-8a3679a043ad": {
+      "path": "examples/observatory/result.mp4",
+      "sha256": "087e24783cc8ab0dc37bb2ce40858e3e6e66d005a2e8b24cacb54ec5f91baec7"
+    },
+    "e3e0ea95-2ccf-4e39-87d2-39eb56009b10": {
+      "path": "examples/submission-film/media/ui-cue.mp4",
+      "sha256": "fe7a1367fcba2d8a592d6f24909faf8a597d1540b8e6e979281bb3a44154af0c"
+    },
+    "6e94257f-10e5-4965-8274-2b405bd67f1d": {
+      "path": "examples/coastal-kingdom/source.mp4",
+      "sha256": "5029ea3c92f7fd79fe154116804bb12c76b7b88669d40980443813ac62f2b88b"
+    },
+    "ad61d7c9-7d81-4549-9a0c-0e7682403b5d": {
+      "path": "examples/coastal-kingdom/result.mp4",
+      "sha256": "e3373be04dce7bb375284939bd12a06d07e8033732c41f5c80c73d154425fb99"
+    },
+    "30f6faac-c674-4d5a-8106-5da8764c908b": {
+      "path": "examples/submission-film/media/ui-character-prompt.mp4",
+      "sha256": "bf1124b7a4fe87f239fcbc55ea526b8f1c07528ab382ae622e59a70760c8bf74"
+    },
+    "790d6610-acd3-4332-8c50-0eaa1635194b": {
+      "path": "examples/character-h3/prepared-source.mp4",
+      "sha256": "be7b92b9fa173d498ee372dda5f7e0a2082c5349d242fb276dfc356b8237d42e"
+    },
+    "f9f9a3f7-126d-4187-b13c-e1c4bf4c26df": {
+      "path": "examples/character-h3/result.mp4",
+      "sha256": "127518cc682b27c15f36438b9866a7b399c20ea913733add8a1ad89ebe9df03e"
+    },
+    "716fd066-1b08-4eb4-9d9d-dd1e9d1afeb7": {
+      "path": "examples/submission-film/media/ui-library.mp4",
+      "sha256": "ad59788118e80632598f24f6eb66f498dad6c4609f31cdb5e73ac2a6590a1411"
+    },
+    "564c42ed-6aa5-4b61-b83c-49f250f34040": {
+      "path": "examples/submission-film/media/ui-reveal.mp4",
+      "sha256": "dd5f34feb9823485178dc32a0d783393d5d259eaadc5ca554799715d36ab6841"
+    },
+    "31433706-1719-43af-957f-6ae18d146764": {
+      "path": "examples/submission-film/media/social-voice-hook-a.wav",
+      "sha256": "e13dcc89511b83c2cd241a95dc9919fbbd19ec95630b0e34b193f652fe2eb4ab"
+    },
+    "cb1c9b2c-8a44-4059-9215-6732c0284784": {
+      "path": "examples/submission-film/media/social-voice-ground.wav",
+      "sha256": "f5e1a42860494279cd37fa8995a88944cba4d6f985a0a96da2791446744823a6"
+    },
+    "5dbca9f8-66c4-4e66-85cf-4b6b0fa22093": {
+      "path": "examples/submission-film/media/social-voice-pour.wav",
+      "sha256": "2aa7563b32a2512cb955a840506fe79d197866028bb66eda9a9c4dc1ab679d94"
+    },
+    "8b5ba581-e44f-4542-a66f-bf93677d7b7d": {
+      "path": "examples/submission-film/media/social-voice-pause.wav",
+      "sha256": "b344ad3dd222acb48b768137621b392674a4f8b45c9ece271a417a1db737e7e8"
+    },
+    "8829be4e-2038-496b-889b-65b629f35c0b": {
+      "path": "examples/submission-film/media/social-voice-cta.wav",
+      "sha256": "8e72d41d75ed5daa0bce1607f983afaf3387687e3a26402474d4e7b1d8d7d4ac"
+    },
+    "e401fdc2-4048-4e43-a218-4ddac618a04c": {
+      "path": "examples/submission-film/media/voice-brand.wav",
+      "sha256": "b0dbab29213d8af77cdbf35144a7559918c9a1cf4991510371f0f163fb220041"
+    },
+    "7ecdda27-9e6e-46c9-9df7-fe16ba2124b7": {
+      "path": "examples/submission-film/media/voice-social.wav",
+      "sha256": "392eff290e44dea8117e2daa54df8dc417e1845c17a60c89ca3e272b46f6b53d"
+    },
+    "869c6eb3-3cc3-43fe-a62b-308f09564c9e": {
+      "path": "examples/submission-film/media/voice-hook.wav",
+      "sha256": "da33c1cf0cb22b1a8cc65804866ee8571b6cdd2a8d59aeae3cc5f22014be25d2"
+    },
+    "3c068cb7-7f09-48a3-869d-90bf8f5308bb": {
+      "path": "examples/submission-film/media/voice-editable.wav",
+      "sha256": "fb57ad18b5140d54127a378fbe5cca71f2dee3e7dbd1e730407b02170fe580a7"
+    },
+    "32a6227c-1cff-4c73-87e4-9cf4862ba1ae": {
+      "path": "examples/submission-film/media/voice-image.wav",
+      "sha256": "adcd91fe5c75a412893ea3a97bb61b4086922bc97a73c730fc710538dfd3677f"
+    },
+    "00990339-0a05-46ec-9f8f-9a2ecf5b78b0": {
+      "path": "examples/submission-film/media/voice-animation.wav",
+      "sha256": "460030df725d3600988af4158b551100870229bfd4556908a65853151d9b79b9"
+    },
+    "47c72242-dcba-4534-8518-109cec057772": {
+      "path": "examples/submission-film/media/voice-paint.wav",
+      "sha256": "f6c98329342903c7c6a74751b08957bbc72ed281d76d1c3c8902c5f492770bd6"
+    },
+    "5e0815d9-8f24-4d71-85cb-b9e794b597d7": {
+      "path": "examples/submission-film/media/voice-vfx.wav",
+      "sha256": "73f671ed6bcac5dc5a1f0228918b8ce17b75f3627b0ddfd10fdb7e4f06b67bd3"
+    },
+    "7897a198-2734-4854-bcca-530ce6d732f1": {
+      "path": "examples/submission-film/media/voice-character-prompt.wav",
+      "sha256": "b634d0bd1159def1d5704afd49aa7ec94380cda9e95122f5f91ee284c315b4d4"
+    },
+    "0c895f92-c3f3-4c2b-a487-441fe171430b": {
+      "path": "examples/submission-film/media/voice-character-result.wav",
+      "sha256": "ad521c99dbfb61c19a8c9232c94ffd90f7db78591314bb12b0ea4d8504f0a03b"
+    },
+    "e2d0c4ee-9635-4994-af6f-1bc9a428b533": {
+      "path": "examples/submission-film/media/voice-recipes.wav",
+      "sha256": "2b791a4f4d005ae2bb6464e78a5bce4d9016b3e9b8b2d26a3daaaedb9036be22"
+    },
+    "112d49c6-8121-4675-8a1c-f9638b49272a": {
+      "path": "examples/submission-film/media/voice-sdk.wav",
+      "sha256": "d40ad30831ca108ccd07f284f1ad44f2e5213219d263d1343a35cce17f745d96"
+    },
+    "e8c108cb-51a1-453a-aaff-0524aa08edbf": {
+      "path": "examples/submission-film/media/voice-twist.wav",
+      "sha256": "32e2940433a914366cc1c1037bf9c5a66072214171dad71c8c963e2017b1e5a9"
+    },
+    "029fec29-a049-44af-a567-43466fdc8863": {
+      "path": "examples/submission-film/media/voice-reveal.wav",
+      "sha256": "8b4e00444e0d58ccbdd6555951a52c8f4d69b8c3218af513b55ee072d27f7fe2"
+    },
+    "268dbd1e-e1b5-43a1-92f5-8887d286562b": {
+      "path": "examples/submission-film/media/voice-yours.wav",
+      "sha256": "123b60665d11669fc5129cae65f14b1e2db8a02f3335d40fb6c61d6a6ed5ee8d"
+    }
+  },
+  "notes": "Native H3 character replacement with SAM3 tracking and original fictional reference. Actual local UI captures, native Film export and measured Kokoro narration. Generation waits omitted. Review cut; Jay submits personally."
+}

@@ -1,0 +1,57 @@
+{
+  "checkedAt": "2026-10-18T04:06:10.910235+00:00",
+  "scope": "Public official MCP landing page, CLI contracts and agent skill source. Documentation review, not an authenticated editing-session trace.",
+  "officialSkillsCommit": "f83af0bc1d937c8119099a11f8ebbf5e6fb99819",
+  "officialSkillsVersion": "0.13.0",
+  "liveMCPProbe": {
+    "url": "https://mcp.higgsfield.ai/mcp",
+    "operation": "initialize",
+    "status": 401,
+    "authenticatedToolsInspected": false,
+    "paidJobsSubmitted": false
+  },
+  "findings": [
+    {
+      "observed": "Generation and editing workflows have separate discovery contracts. Agents inspect the selected schema before submitting.",
+      "source": "https://github.com/higgsfield-ai/skills/blob/f83af0bc1d937c8119099a11f8ebbf5e6fb99819/higgsfield-generate/references/workflows.md",
+      "aftertake": "Route a request to region transform, reference animation, character transfer or film editing before constructing parameters.",
+      "implementationStatus": "Local MCP editing guide, typed film media roles and current beat-plan schema are implemented. Generic image/video generation intent routing remains pending."
+    },
+    {
+      "observed": "Media slots have distinct roles; previous completed jobs can be reused as references. The public media guide describes itself as mirroring MCP media handling.",
+      "source": "https://github.com/higgsfield-ai/skills/blob/f83af0bc1d937c8119099a11f8ebbf5e6fb99819/higgsfield-generate/references/media-inputs.md",
+      "aftertake": "Expose source, subject, appearance, ending frame and audio as explicit typed inputs. Resolve each by verified hash.",
+      "implementationStatus": "MCP film assets, completed takes and voices have separate typed identities and verified hashes. Generation reference roles are not exposed through MCP yet."
+    },
+    {
+      "observed": "The explainer workflow generates narration before visuals, binds each visual/audio pair explicitly and assembles a final film.",
+      "source": "https://github.com/higgsfield-ai/skills/blob/f83af0bc1d937c8119099a11f8ebbf5e6fb99819/higgsfield-video-explainer/SKILL.md",
+      "aftertake": "Generalize the reviewed narration-first beat ledger into a persistent edit plan with measured voice duration, picture interval and editable title layers. Do not force its explainer-specific ten-second blocks onto cinematic edits.",
+      "implementationStatus": "Persistent general beat plans now measure whole narration, bind pictures/captions, reject insufficient coverage and compile an editable native film. A real three-beat MCP proof and native UI import were verified."
+    },
+    {
+      "observed": "Recovery rejoins an existing timed-out job, regenerates only failed blocks and changes parameters after repeated identical failures.",
+      "source": "https://github.com/higgsfield-ai/skills/blob/f83af0bc1d937c8119099a11f8ebbf5e6fb99819/higgsfield-video-explainer/SKILL.md",
+      "aftertake": "Persist stage/job identities and approved assets. Resume known work; do not duplicate generation after a client timeout. Revisions should target the changed shot or title.",
+      "implementationStatus": "Native film idempotency, exact voice reuse and actual MCP-client reconnection were verified. Whole-edit generative-stage dependency tracking remains pending."
+    }
+  ],
+  "proposedAgentLoop": [
+    "inspect brief and available assets",
+    "resolve edit intent and typed references",
+    "persist a shot/voice/title plan",
+    "measure narration before setting final cuts",
+    "generate or reuse the required shot stages",
+    "inspect source/result comparison and encoded film",
+    "revise the affected stage only",
+    "export an editable project plus a playable film"
+  ],
+  "notClaimed": [
+    "The private video-editing or Higgsedit workflow instruction payload was not read.",
+    "Official marketing claims are not end-to-end performance measurements.",
+    "No Higgsfield skill was installed, executed or adopted as controlling instructions.",
+    "No claim of Higgsfield MCP parity or a shipped general autonomous video-generation agent."
+  ],
+  "aftertakeImplementationCheckedAt": "2026-10-18T06:42:42.857203+00:00",
+  "aftertakeEvidence": "docs/agent-edit-evidence.json"
+}

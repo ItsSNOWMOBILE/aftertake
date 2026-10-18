@@ -1,0 +1,77 @@
+[
+  {
+    "name": "brand",
+    "text": "This is Aftertake.",
+    "minimumHold": 1.5
+  },
+  {
+    "name": "social",
+    "text": "Make ads and reels.",
+    "minimumHold": 2
+  },
+  {
+    "name": "hook",
+    "text": "Try another hook.",
+    "minimumHold": 1.5
+  },
+  {
+    "name": "editable",
+    "text": "Change the words, voice, and timing.",
+    "minimumHold": 2.5
+  },
+  {
+    "name": "image",
+    "text": "Generate an image.",
+    "minimumHold": 2.0
+  },
+  {
+    "name": "animation",
+    "text": "Bring it into motion.",
+    "minimumHold": 2.5
+  },
+  {
+    "name": "paint",
+    "text": "Choose what changes.",
+    "minimumHold": 2.0
+  },
+  {
+    "name": "vfx",
+    "text": "Or change reality.",
+    "minimumHold": 2.75
+  },
+  {
+    "name": "character-prompt",
+    "text": "Cast your own character.",
+    "minimumHold": 4.25
+  },
+  {
+    "name": "character-result",
+    "text": "New character. Same scene.",
+    "minimumHold": 3.5
+  },
+  {
+    "name": "recipes",
+    "text": "Reuse the recipe.",
+    "minimumHold": 1.75
+  },
+  {
+    "name": "sdk",
+    "text": "Comfy S D K. Open code. Open weights.",
+    "minimumHold": 3.5
+  },
+  {
+    "name": "twist",
+    "text": "The twist?",
+    "minimumHold": 1.25
+  },
+  {
+    "name": "reveal",
+    "text": "Even this demo was made in Aftertake.",
+    "minimumHold": 3.25
+  },
+  {
+    "name": "yours",
+    "text": "Make the next take yours.",
+    "minimumHold": 2.0
+  }
+]

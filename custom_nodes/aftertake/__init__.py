@@ -9,11 +9,22 @@ import av
 import numpy as np
 import torch
 import torch.nn.functional as F
-from .media_utils import display_transform, oriented_image, mux_source_audio
+from .media_utils import display_transform, oriented_image, mux_source_audio, mux_generated_audio
 
 
 def smoothstep(x):
     return x.clamp(0, 1).square() * (3 - 2 * x.clamp(0, 1))
+
+
+def export_prompt(prompt):
+    """Comfy adds NaN cache sentinels beside node inputs during native loops.
+
+    Cache invalidation is not part of the executable recipe. Preserve the
+    actual class/inputs and other graph metadata; reject non-finite inputs.
+    """
+    if prompt is None:return None
+    return {key:{name:value for name,value in node.items() if name!='is_changed'}
+            for key,node in prompt.items()}
 
 
 def decode_clip(path, width, height, frames, fps, trim_start):
@@ -225,24 +236,93 @@ class AftertakeLoadClip:
         return decode_clip(path, width, height, frames, fps, trim_start), path
 
 
-class AftertakeComposite:
+def match_boundary_color(original, generated, spatial):
+    """Extend source-minus-generation boundary color smoothly into the edit.
+
+    Solve a low-resolution harmonic correction, retaining generated texture
+    and detail. Spatial masks keep the correction independent of temporal fades.
+    Final alpha compositing still preserves every unpainted source pixel.
+    """
+    import cv2
+    source=original.detach().cpu().numpy()
+    target=generated.detach().cpu().numpy()
+    regions=spatial.detach().cpu().numpy()
+    height,width=source.shape[1:3]
+    scale=min(1,64/max(width,height));size=(max(4,round(width*scale)),max(4,round(height*scale)))
+    corrections=[]
+    for a,b,mask in zip(source,target,regions):
+        delta=cv2.resize(a-b,size,interpolation=cv2.INTER_AREA)
+        delta=cv2.GaussianBlur(delta,(0,0),.8)
+        inside=cv2.resize(mask,size,interpolation=cv2.INTER_AREA)>.01
+        if not inside.any() or inside.all():
+            corrections.append(np.zeros_like(b));continue
+        ring=cv2.dilate(inside.astype(np.uint8),np.ones((3,3),np.uint8)).astype(bool)&~inside
+        correction=delta.copy();correction[inside]=np.median(delta[ring],axis=0)
+        for _ in range(400):
+            smoothed=cv2.blur(correction,(3,3),borderType=cv2.BORDER_REFLECT)
+            correction[inside]=smoothed[inside]
+        corrections.append(cv2.resize(correction,(width,height),interpolation=cv2.INTER_LINEAR).clip(-.15,.15))
+    return (generated+torch.from_numpy(np.stack(corrections)).to(generated)).clamp(0,1)
+
+
+class AftertakeCropRegion:
     @classmethod
     def INPUT_TYPES(cls):
-        return {'required': {'original': ('IMAGE',), 'generated': ('IMAGE',), 'mask': ('MASK',)}}
+        return {'required': {'images': ('IMAGE',), **{name: ('INT', {'default': 0 if name in ('x','y') else 64, 'min': 0 if name in ('x','y') else 1, 'max': 16384}) for name in ('x','y','width','height','target_width','target_height')}}}
     RETURN_TYPES = ('IMAGE',)
     FUNCTION = 'execute'
     CATEGORY = 'Aftertake'
 
-    def execute(self, original, generated, mask):
+    def execute(self, images, x, y, width, height, target_width, target_height):
+        if min(x,y)<0 or min(width,height,target_width,target_height)<1 or x+width>images.shape[2] or y+height>images.shape[1]:
+            raise ValueError('Keep the complete focus region inside the source frame')
+        cropped=images[:,y:y+height,x:x+width]
+        return (F.interpolate(cropped.movedim(-1,1),size=(target_height,target_width),mode='bicubic',align_corners=False).movedim(1,-1).clamp(0,1),)
+
+
+class AftertakeRestoreRegion:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {'required': {'original': ('IMAGE',), 'generated': ('IMAGE',), **{name: ('INT', {'default': 0 if name in ('x','y') else 64, 'min': 0 if name in ('x','y') else 1, 'max': 16384}) for name in ('x','y','width','height')}}}
+    RETURN_TYPES = ('IMAGE',)
+    FUNCTION = 'execute'
+    CATEGORY = 'Aftertake'
+
+    def execute(self, original, generated, x, y, width, height):
+        if min(x,y)<0 or min(width,height)<1 or x+width>original.shape[2] or y+height>original.shape[1]:
+            raise ValueError('Keep the complete focus region inside the source frame')
+        if original.shape[0]!=generated.shape[0]:raise ValueError('Focused generation must retain the complete source frame clock')
+        restored=original.clone()
+        region=F.interpolate(generated.movedim(-1,1),size=(height,width),mode='bicubic',align_corners=False).movedim(1,-1).to(original).clamp(0,1)
+        restored[:,y:y+height,x:x+width]=region
+        return (restored,)
+
+
+class AftertakeComposite:
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {'required': {'original': ('IMAGE',), 'generated': ('IMAGE',), 'mask': ('MASK',)},
+            'optional': {'match_color': ('BOOLEAN', {'default': False}), 'spatial_mask': ('MASK',)}}
+    RETURN_TYPES = ('IMAGE',)
+    FUNCTION = 'execute'
+    CATEGORY = 'Aftertake'
+
+    def execute(self, original, generated, mask, match_color=False, spatial_mask=None):
         if original.shape[0] != generated.shape[0] or mask.shape[0] != original.shape[0]:
             raise ValueError('Frame counts must match; refusing to silently truncate the shot')
         if original.shape != generated.shape:
             generated = F.interpolate(generated.movedim(-1, 1), size=original.shape[1:3], mode='bilinear', align_corners=False).movedim(1, -1)
         if mask.shape[1:3] != original.shape[1:3]:
             mask = F.interpolate(mask[:, None], size=original.shape[1:3], mode='bilinear', align_corners=False)[:, 0]
+        generated=generated.to(original)
+        if match_color:
+            spatial=spatial_mask if spatial_mask is not None else mask / mask.amax(dim=(1,2),keepdim=True).clamp_min(1e-6)
+            if spatial.shape != mask.shape:
+                raise ValueError('Spatial color-match masks must match the composite mask')
+            generated=match_boundary_color(original,generated,spatial)
         alpha = mask.to(device=original.device, dtype=original.dtype).clamp(0, 1)[..., None]
         # Source is bit-exact wherever alpha is zero, before lossy video encoding.
-        return (original + alpha * (generated.to(original) - original),)
+        return (original + alpha * (generated - original),)
 
 
 class AftertakeFilmGrade:
@@ -279,19 +359,28 @@ class AftertakeSaveVideo:
             'recipe_json': ('STRING', {'default': '{}', 'multiline': True}),
         }, 'optional': {
             'source_audio': ('STRING', {'default': ''}),
+            'generated_audio': ('AUDIO',),
             'audio_start': ('FLOAT', {'default': 0, 'min': 0, 'max': 3600}),
+            'display_width': ('INT', {'default': 0, 'min': 0, 'max': 4096}),
+            'display_height': ('INT', {'default': 0, 'min': 0, 'max': 4096}),
         }, 'hidden': {'prompt': 'PROMPT'}}
     RETURN_TYPES = ()
     FUNCTION = 'execute'
     CATEGORY = 'Aftertake'
     OUTPUT_NODE = True
 
-    def execute(self, images, fps, filename_prefix, recipe_json, prompt=None, source_audio='', audio_start=0):
+    def execute(self, images, fps, filename_prefix, recipe_json, prompt=None, source_audio='', audio_start=0, display_width=0, display_height=0, generated_audio=None):
         import folder_paths
+        if source_audio and generated_audio is not None:
+            raise ValueError('Choose either source sound or generated audio for this output.')
+        if bool(display_width) != bool(display_height) or display_width%2 or display_height%2:
+            raise ValueError('Display geometry needs two even dimensions')
+        if display_width and (images.shape[2]!=display_width or images.shape[1]!=display_height):
+            images=F.interpolate(images.movedim(-1,1),size=(display_height,display_width),mode='bicubic',align_corners=False).movedim(1,-1)
         folder, name, counter, subfolder, _ = folder_paths.get_save_image_path(filename_prefix, folder_paths.get_output_directory())
         filename = f'{name}_{counter:05}_.mp4'
         with av.open(os.path.join(folder, filename), 'w') as container:
-            container.metadata['comment'] = json.dumps({'recipe': json.loads(recipe_json), 'workflow': prompt})
+            container.metadata['comment'] = json.dumps({'recipe': json.loads(recipe_json), 'workflow': export_prompt(prompt)},allow_nan=False)
             stream = container.add_stream('libx264', rate=Fraction(str(fps)))
             stream.width, stream.height = images.shape[2], images.shape[1]
             stream.pix_fmt = 'yuv420p'
@@ -308,9 +397,15 @@ class AftertakeSaveVideo:
             if os.path.commonpath([source, input_root]) != input_root:
                 raise ValueError('Audio source must be in the ComfyUI input directory')
             mux_source_audio(os.path.join(folder, filename), source, audio_start, len(images) / fps)
+        elif generated_audio is not None:
+            mux_generated_audio(os.path.join(folder, filename), generated_audio, len(images) / fps)
         # Comfy's v2 proxy recognizes video outputs under the established gifs key.
         return {'ui': {'gifs': [{'filename': filename, 'subfolder': subfolder, 'type': 'output', 'format': 'video/mp4'}]}}
 
 
-NODE_CLASS_MAPPINGS = {cls.__name__: cls for cls in [AftertakeCueMask, AftertakeLoadClip, AftertakeComposite, AftertakeFilmGrade, AftertakeSaveVideo]}
+NODE_CLASS_MAPPINGS = {cls.__name__: cls for cls in [AftertakeCueMask, AftertakeLoadClip, AftertakeCropRegion, AftertakeRestoreRegion, AftertakeComposite, AftertakeFilmGrade, AftertakeSaveVideo]}
+from .character_nodes import CHARACTER_NODES
+from .memory_compat import install as install_safe_weight_copies
+install_safe_weight_copies()
+NODE_CLASS_MAPPINGS.update(CHARACTER_NODES)
 NODE_DISPLAY_NAME_MAPPINGS = {key: key.replace('Aftertake', 'Aftertake · ') for key in NODE_CLASS_MAPPINGS}

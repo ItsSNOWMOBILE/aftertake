@@ -1,0 +1,76 @@
+{
+  "format": "aftertake-spoken-type/1",
+  "status": "Awaiting Jay review; not submitted",
+  "filmId": "2141c3f0-96a2-4ba6-ae71-da3ef57e0470",
+  "planId": "1904e68396df0901ed87a0560c82ef97ab03d7e15afbb28d745fe92f9ee51aeb",
+  "rendererRevision": 3,
+  "sha256": "fdac1b08cd4fa4d49d32f0019ecfb1c1f87c5a3b47e454f5f1da5c22a1da74e1",
+  "bytes": 1961769,
+  "frames": 143,
+  "fps": 24,
+  "width": 720,
+  "height": 1280,
+  "duration": 5.958333333333333,
+  "cuts": 3,
+  "titles": 3,
+  "voices": 3,
+  "timedWords": 12,
+  "embeddedProjectMatches": true,
+  "allSourceFilesVerified": true,
+  "wholeVoiceAlignment": [
+    {
+      "line": 1,
+      "text": "Your morning called.",
+      "correlation": 0.9999772310256958,
+      "offsetSamples": 239,
+      "samplesCompared": 60158
+    },
+    {
+      "line": 2,
+      "text": "Start with fresh grounds.",
+      "correlation": 0.9999885559082031,
+      "offsetSamples": 239,
+      "samplesCompared": 71776
+    },
+    {
+      "line": 3,
+      "text": "Pour slowly. Savor the moment.",
+      "correlation": 0.9999014735221863,
+      "offsetSamples": 239,
+      "samplesCompared": 108256
+    }
+  ],
+  "voiceTimings": "Kokoro model-duration estimates from these exact generated WAVs, with trim/pause offsets retained; manually editable in Film.",
+  "uiReview": "Actual native source import, Follow voice preparation, candidate preview, timing edit and re-preparation through verified cached voices. Six assets remained: three pictures and three voices.",
+  "limits": [
+    "Model-duration estimates are not exact acoustic boundaries.",
+    "Ambiguous written/spoken unit counts refuse this style; clean captions remain available.",
+    "Written copy and selected footage; no campaign optimization."
+  ],
+  "submissionSent": false,
+  "independentAlignmentReview": {
+    "model": "facebook/wav2vec2-base-960h",
+    "revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+    "sha256": "8aa76ab2243c81747a1f832954586bc566090c83a0ac167df6f31f0fa917d74a",
+    "wordsCompared": 12,
+    "maximumWordStartDifference": 0.04899999999999999,
+    "limits": "Twelve words in this exact three-line example. Model estimates and forced-alignment estimates; no universal timing-accuracy claim. Review-only model, not an app dependency."
+  },
+  "repeatedUIExportReturnedSameJob": true,
+  "uiCopyEditClearedSpeechTiming": true,
+  "genericPresetSmokeChecks": {
+    "voices": [
+      "af_heart",
+      "af_sarah",
+      "am_michael",
+      "bm_george"
+    ],
+    "cases": [
+      "percentage expansion",
+      "contraction",
+      "short phrases",
+      "British English"
+    ],
+    "scope": "Actual local timing-generation and word mapping checks, not a perceptual quality certification."
+  }
+}

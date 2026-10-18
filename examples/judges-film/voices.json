@@ -1,0 +1,1256 @@
+{
+  "brand": {
+    "asset": {
+      "kind": "audio",
+      "duration": 1.3186666666666667,
+      "narration": {
+        "text": "This is Aftertake.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "This",
+              "start": 0.09766666666666667,
+              "end": 0.24766666666666667
+            },
+            {
+              "text": "is",
+              "start": 0.2976666666666667,
+              "end": 0.39766666666666667
+            },
+            {
+              "text": "Aftertake.",
+              "start": 0.4726666666666667,
+              "end": 1.2586666666666666
+            }
+          ]
+        }
+      },
+      "id": "47ed4ae2-6c7f-4b65-b242-31973600d2e5",
+      "name": "Narration · This is Aftertake.",
+      "extension": ".wav",
+      "sha256": "ba5c1c92d671601a9f2871beba8a14461fa9312acb85974f9fe9ad0033da2763",
+      "url": "/api/films/assets/47ed4ae2-6c7f-4b65-b242-31973600d2e5/media",
+      "createdAt": "2026-10-18T11:14:04.612Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-brand.wav"
+  },
+  "builder": {
+    "asset": {
+      "kind": "audio",
+      "duration": 3.532,
+      "narration": {
+        "text": "Write a line for each picture. Kokoro voices it locally.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Write",
+              "start": 0.094,
+              "end": 0.269
+            },
+            {
+              "text": "a",
+              "start": 0.294,
+              "end": 0.319
+            },
+            {
+              "text": "line",
+              "start": 0.369,
+              "end": 0.669
+            },
+            {
+              "text": "for",
+              "start": 0.719,
+              "end": 0.819
+            },
+            {
+              "text": "each",
+              "start": 0.844,
+              "end": 1.019
+            },
+            {
+              "text": "picture.",
+              "start": 1.069,
+              "end": 1.644
+            },
+            {
+              "text": "Kokoro",
+              "start": 1.844,
+              "end": 2.269
+            },
+            {
+              "text": "voices",
+              "start": 2.319,
+              "end": 2.669
+            },
+            {
+              "text": "it",
+              "start": 2.719,
+              "end": 2.794
+            },
+            {
+              "text": "locally.",
+              "start": 2.844,
+              "end": 3.392
+            }
+          ]
+        }
+      },
+      "id": "25697c8a-2346-43c3-8402-7bf032aa37c0",
+      "name": "Narration · Write a line for each picture. Kokoro voices it locally.",
+      "extension": ".wav",
+      "sha256": "fa561ca2bc93fc80b4d389328f15b5968a470e1b09efe93601bcc87410262b9f",
+      "url": "/api/films/assets/25697c8a-2346-43c3-8402-7bf032aa37c0/media",
+      "createdAt": "2026-10-18T11:14:07.258Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-builder.wav"
+  },
+  "words": {
+    "asset": {
+      "kind": "audio",
+      "duration": 2.752666666666667,
+      "narration": {
+        "text": "Highlight the spoken words. Adjust any word.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Highlight",
+              "start": 0.11533333333333333,
+              "end": 0.49033333333333334
+            },
+            {
+              "text": "the",
+              "start": 0.5153333333333333,
+              "end": 0.5653333333333334
+            },
+            {
+              "text": "spoken",
+              "start": 0.6153333333333333,
+              "end": 0.9403333333333334
+            },
+            {
+              "text": "words.",
+              "start": 0.9903333333333333,
+              "end": 1.5153333333333334
+            },
+            {
+              "text": "Adjust",
+              "start": 1.6653333333333333,
+              "end": 1.9903333333333333
+            },
+            {
+              "text": "any",
+              "start": 2.0153333333333334,
+              "end": 2.1653333333333333
+            },
+            {
+              "text": "word.",
+              "start": 2.215333333333333,
+              "end": 2.6026666666666665
+            }
+          ]
+        }
+      },
+      "id": "48521552-479e-4e93-be6b-2c87eeffa1d5",
+      "name": "Narration · Highlight the spoken words. Adjust any word.",
+      "extension": ".wav",
+      "sha256": "23ae23e1a0ff7740fda6e6e59a945cfd35076259c007f78599bcd2216422bf94",
+      "url": "/api/films/assets/48521552-479e-4e93-be6b-2c87eeffa1d5/media",
+      "createdAt": "2026-10-18T11:14:09.688Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-words.wav"
+  },
+  "hook": {
+    "asset": {
+      "kind": "audio",
+      "duration": 2.028,
+      "narration": {
+        "text": "Change the hook. Keep the edit.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Change",
+              "start": 0.09033333333333333,
+              "end": 0.36533333333333334
+            },
+            {
+              "text": "the",
+              "start": 0.3903333333333333,
+              "end": 0.44033333333333335
+            },
+            {
+              "text": "hook.",
+              "start": 0.49033333333333334,
+              "end": 0.8153333333333334
+            },
+            {
+              "text": "Keep",
+              "start": 1.0803333333333334,
+              "end": 1.2553333333333332
+            },
+            {
+              "text": "the",
+              "start": 1.2803333333333335,
+              "end": 1.3803333333333332
+            },
+            {
+              "text": "edit.",
+              "start": 1.4303333333333335,
+              "end": 1.8679999999999999
+            }
+          ]
+        }
+      },
+      "id": "603bf66c-a0be-4305-a38e-98a2b3cee487",
+      "name": "Narration · Change the hook. Keep the edit.",
+      "extension": ".wav",
+      "sha256": "41998c94055dbaef70ea9442ac784e626cd0298a526400f2d58b1e31fbc2a197",
+      "url": "/api/films/assets/603bf66c-a0be-4305-a38e-98a2b3cee487/media",
+      "createdAt": "2026-10-18T11:14:11.807Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-hook.wav"
+  },
+  "agent-editing": {
+    "asset": {
+      "kind": "audio",
+      "duration": 4.059958333333333,
+      "narration": {
+        "text": "Agents inspect footage, pair whole lines, and rejoin exports.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Agents",
+              "start": 0.069,
+              "end": 0.444
+            },
+            {
+              "text": "inspect",
+              "start": 0.494,
+              "end": 0.919
+            },
+            {
+              "text": "footage,",
+              "start": 0.969,
+              "end": 1.519
+            },
+            {
+              "text": "pair",
+              "start": 1.644,
+              "end": 1.844
+            },
+            {
+              "text": "whole",
+              "start": 1.894,
+              "end": 2.069
+            },
+            {
+              "text": "lines,",
+              "start": 2.119,
+              "end": 2.569
+            },
+            {
+              "text": "and",
+              "start": 2.694,
+              "end": 2.7689999999999997
+            },
+            {
+              "text": "rejoin",
+              "start": 2.819,
+              "end": 3.219
+            },
+            {
+              "text": "exports.",
+              "start": 3.2689999999999997,
+              "end": 3.8899999999999997
+            }
+          ]
+        }
+      },
+      "id": "ad19cefb-f6fd-4538-8ce0-f6e60494cf75",
+      "name": "Narration · Agents inspect footage, pair whole lines, and rejoin exports",
+      "extension": ".wav",
+      "sha256": "f68c8d0f75d908cab7e5947eae6bc429de27ec53b27117e6fa643ae5896f9171",
+      "url": "/api/films/assets/ad19cefb-f6fd-4538-8ce0-f6e60494cf75/media",
+      "createdAt": "2026-10-18T11:14:44.222Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-agent-editing.wav"
+  },
+  "image": {
+    "asset": {
+      "kind": "audio",
+      "duration": 1.922,
+      "narration": {
+        "text": "Create an image with Z Image.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Create",
+              "start": 0.09033333333333333,
+              "end": 0.3403333333333333
+            },
+            {
+              "text": "an",
+              "start": 0.36533333333333334,
+              "end": 0.41533333333333333
+            },
+            {
+              "text": "image",
+              "start": 0.4653333333333333,
+              "end": 0.8153333333333334
+            },
+            {
+              "text": "with",
+              "start": 0.8653333333333333,
+              "end": 1.0153333333333334
+            },
+            {
+              "text": "Z",
+              "start": 1.0903333333333334,
+              "end": 1.2653333333333334
+            },
+            {
+              "text": "Image.",
+              "start": 1.3153333333333332,
+              "end": 1.792
+            }
+          ]
+        }
+      },
+      "id": "b81a0de1-3a9d-4178-8ba7-7fe93dd4e1a0",
+      "name": "Narration · Create an image with Z Image.",
+      "extension": ".wav",
+      "sha256": "65ca04c484e3353b705d9523a5e1188074aa6e94b008dd5adacadca94e82ec23",
+      "url": "/api/films/assets/b81a0de1-3a9d-4178-8ba7-7fe93dd4e1a0/media",
+      "createdAt": "2026-10-18T11:20:39.135Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-image.wav"
+  },
+  "animation": {
+    "asset": {
+      "kind": "audio",
+      "duration": 1.804,
+      "narration": {
+        "text": "Animate it with L T X.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Animate",
+              "start": 0.14033333333333334,
+              "end": 0.5153333333333333
+            },
+            {
+              "text": "it",
+              "start": 0.5403333333333333,
+              "end": 0.5903333333333334
+            },
+            {
+              "text": "with",
+              "start": 0.6153333333333333,
+              "end": 0.7403333333333333
+            },
+            {
+              "text": "L",
+              "start": 0.8153333333333334,
+              "end": 0.9653333333333334
+            },
+            {
+              "text": "T",
+              "start": 1.0153333333333334,
+              "end": 1.1903333333333332
+            },
+            {
+              "text": "X.",
+              "start": 1.2403333333333333,
+              "end": 1.664
+            }
+          ]
+        }
+      },
+      "id": "8a01cfa4-6d3f-4018-bb2d-2655f59c0ce5",
+      "name": "Narration · Animate it with L T X.",
+      "extension": ".wav",
+      "sha256": "1dd6329d96a3384387b6db39f89c84de79f3d88f64ac03872d5877cf2e124baf",
+      "url": "/api/films/assets/8a01cfa4-6d3f-4018-bb2d-2655f59c0ce5/media",
+      "createdAt": "2026-10-18T11:20:41.265Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-animation.wav"
+  },
+  "camera": {
+    "asset": {
+      "kind": "audio",
+      "duration": 1.212,
+      "narration": {
+        "text": "Direct the camera.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Direct",
+              "start": 0.09766666666666667,
+              "end": 0.4226666666666667
+            },
+            {
+              "text": "the",
+              "start": 0.44766666666666666,
+              "end": 0.49766666666666665
+            },
+            {
+              "text": "camera.",
+              "start": 0.5476666666666666,
+              "end": 1.152
+            }
+          ]
+        }
+      },
+      "id": "2e2188b0-3f1b-4d2e-af0e-8a52180d81db",
+      "name": "Narration · Direct the camera.",
+      "extension": ".wav",
+      "sha256": "6100e2ac141314b7793b225730ed68602e9610103b78df6555d9707c567ab032",
+      "url": "/api/films/assets/2e2188b0-3f1b-4d2e-af0e-8a52180d81db/media",
+      "createdAt": "2026-10-18T11:14:17.900Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-camera.wav"
+  },
+  "ending": {
+    "asset": {
+      "kind": "audio",
+      "duration": 1.5819583333333334,
+      "narration": {
+        "text": "Or set the ending frame.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Or",
+              "start": 0.13666666666666666,
+              "end": 0.2866666666666667
+            },
+            {
+              "text": "set",
+              "start": 0.3616666666666667,
+              "end": 0.5116666666666667
+            },
+            {
+              "text": "the",
+              "start": 0.5366666666666666,
+              "end": 0.6116666666666667
+            },
+            {
+              "text": "ending",
+              "start": 0.6616666666666666,
+              "end": 0.9366666666666666
+            },
+            {
+              "text": "frame.",
+              "start": 0.9866666666666667,
+              "end": 1.472
+            }
+          ]
+        }
+      },
+      "id": "47389d06-d773-44af-be79-e2d906457e70",
+      "name": "Narration · Or set the ending frame.",
+      "extension": ".wav",
+      "sha256": "6572cfcbb8f8c2bce7059c0a8b5c13097fb4f5f83c2459e9425ef47a384eddec",
+      "url": "/api/films/assets/47389d06-d773-44af-be79-e2d906457e70/media",
+      "createdAt": "2026-10-18T11:14:19.961Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-ending.wav"
+  },
+  "reference": {
+    "asset": {
+      "kind": "audio",
+      "duration": 1.7713333333333334,
+      "narration": {
+        "text": "Qwen prepares your reference.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Qwen",
+              "start": 0.09033333333333333,
+              "end": 0.4653333333333333
+            },
+            {
+              "text": "prepares",
+              "start": 0.5153333333333333,
+              "end": 0.8653333333333333
+            },
+            {
+              "text": "your",
+              "start": 0.8903333333333333,
+              "end": 0.9653333333333334
+            },
+            {
+              "text": "reference.",
+              "start": 1.0153333333333334,
+              "end": 1.6213333333333333
+            }
+          ]
+        }
+      },
+      "id": "3193aaa8-59b2-48a8-b97d-6aa51239bb35",
+      "name": "Narration · Qwen prepares your reference.",
+      "extension": ".wav",
+      "sha256": "73e388311eaa8d10df3200ef9cfddd8a65810c98e1a7d0680d6b6f77cc5ec438",
+      "url": "/api/films/assets/3193aaa8-59b2-48a8-b97d-6aa51239bb35/media",
+      "createdAt": "2026-10-18T11:20:43.420Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-reference.wav"
+  },
+  "paint": {
+    "asset": {
+      "kind": "audio",
+      "duration": 2.220666666666667,
+      "narration": {
+        "text": "Paint where and when the scene changes.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Paint",
+              "start": 0.09033333333333333,
+              "end": 0.3403333333333333
+            },
+            {
+              "text": "where",
+              "start": 0.3903333333333333,
+              "end": 0.7653333333333333
+            },
+            {
+              "text": "and",
+              "start": 0.8403333333333334,
+              "end": 0.9153333333333333
+            },
+            {
+              "text": "when",
+              "start": 0.9403333333333334,
+              "end": 1.0153333333333334
+            },
+            {
+              "text": "the",
+              "start": 1.0403333333333333,
+              "end": 1.0903333333333334
+            },
+            {
+              "text": "scene",
+              "start": 1.1403333333333334,
+              "end": 1.3403333333333334
+            },
+            {
+              "text": "changes.",
+              "start": 1.3903333333333334,
+              "end": 2.0906666666666665
+            }
+          ]
+        }
+      },
+      "id": "9f63d30e-fb62-41c5-88bc-6d9a011fa748",
+      "name": "Narration · Paint where and when the scene changes.",
+      "extension": ".wav",
+      "sha256": "00efc214e20accf974c4486ccdd4a73def897110969defccb69320625e0e8ec2",
+      "url": "/api/films/assets/9f63d30e-fb62-41c5-88bc-6d9a011fa748/media",
+      "createdAt": "2026-10-18T11:20:45.650Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-paint.wav"
+  },
+  "vfx": {
+    "asset": {
+      "kind": "audio",
+      "duration": 2.774,
+      "narration": {
+        "text": "The same cue guides generation and the blend.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "The",
+              "start": 0.09033333333333333,
+              "end": 0.16533333333333333
+            },
+            {
+              "text": "same",
+              "start": 0.24033333333333334,
+              "end": 0.49033333333333334
+            },
+            {
+              "text": "cue",
+              "start": 0.5653333333333334,
+              "end": 0.7153333333333334
+            },
+            {
+              "text": "guides",
+              "start": 0.7653333333333333,
+              "end": 1.0653333333333332
+            },
+            {
+              "text": "generation",
+              "start": 1.1153333333333333,
+              "end": 1.8653333333333333
+            },
+            {
+              "text": "and",
+              "start": 1.9653333333333334,
+              "end": 2.0403333333333333
+            },
+            {
+              "text": "the",
+              "start": 2.0653333333333332,
+              "end": 2.1153333333333335
+            },
+            {
+              "text": "blend.",
+              "start": 2.1653333333333333,
+              "end": 2.624
+            }
+          ]
+        }
+      },
+      "id": "8d378e3a-c258-4d46-aa92-79daa1ea0d39",
+      "name": "Narration · The same cue guides generation and the blend.",
+      "extension": ".wav",
+      "sha256": "8c377c03ec250b40ac26d58431945c1cce3a605b54457f264d22f1a6c17283f0",
+      "url": "/api/films/assets/8d378e3a-c258-4d46-aa92-79daa1ea0d39/media",
+      "createdAt": "2026-10-18T11:20:48.073Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-vfx.wav"
+  },
+  "character-prompt": {
+    "asset": {
+      "kind": "audio",
+      "duration": 1.4539583333333332,
+      "narration": {
+        "text": "Cast your own character.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Cast",
+              "start": 0.09033333333333333,
+              "end": 0.3403333333333333
+            },
+            {
+              "text": "your",
+              "start": 0.36533333333333334,
+              "end": 0.44033333333333335
+            },
+            {
+              "text": "own",
+              "start": 0.49033333333333334,
+              "end": 0.6403333333333333
+            },
+            {
+              "text": "character.",
+              "start": 0.6903333333333334,
+              "end": 1.344
+            }
+          ]
+        }
+      },
+      "id": "6869ab19-b2ed-4c94-a9c6-b4f3333dddcf",
+      "name": "Narration · Cast your own character.",
+      "extension": ".wav",
+      "sha256": "8eb20c946893a1520ff2ffbbd3b9da33ee39a246c79a304f7796739c3ab8c50b",
+      "url": "/api/films/assets/6869ab19-b2ed-4c94-a9c6-b4f3333dddcf/media",
+      "createdAt": "2026-10-18T11:14:26.067Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-character-prompt.wav"
+  },
+  "character-result": {
+    "asset": {
+      "kind": "audio",
+      "duration": 1.932,
+      "narration": {
+        "text": "H3 keeps the performance.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTimingMapper": "phoneme-boundaries/2",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "H3",
+              "start": 0.11533333333333333,
+              "end": 0.6903333333333334
+            },
+            {
+              "text": "keeps",
+              "start": 0.7403333333333333,
+              "end": 0.9653333333333334
+            },
+            {
+              "text": "the",
+              "start": 0.9903333333333333,
+              "end": 1.0403333333333333
+            },
+            {
+              "text": "performance.",
+              "start": 1.0903333333333334,
+              "end": 1.792
+            }
+          ]
+        }
+      },
+      "id": "59c5d4db-e273-42f8-b0ad-70e41b2ead5d",
+      "name": "Narration · H3 keeps the performance.",
+      "extension": ".wav",
+      "sha256": "5117fb1096cc7911c0352be8e126bcfe0bb997126af2e5ef051dbfe9ce99d797",
+      "url": "/api/films/assets/59c5d4db-e273-42f8-b0ad-70e41b2ead5d/media",
+      "createdAt": "2026-10-18T19:30:31.377Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-character-result.wav"
+  },
+  "recipes": {
+    "asset": {
+      "kind": "audio",
+      "duration": 1.496625,
+      "narration": {
+        "text": "Reuse the recipe.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Reuse",
+              "start": 0.119,
+              "end": 0.544
+            },
+            {
+              "text": "the",
+              "start": 0.569,
+              "end": 0.619
+            },
+            {
+              "text": "recipe.",
+              "start": 0.669,
+              "end": 1.3866666666666667
+            }
+          ]
+        }
+      },
+      "id": "bade859d-913b-4582-9867-64e276232a7d",
+      "name": "Narration · Reuse the recipe.",
+      "extension": ".wav",
+      "sha256": "e296547db20b0839136d79b26978ae1bf147dbb9317d7d1d33a58134ad85aa18",
+      "url": "/api/films/assets/bade859d-913b-4582-9867-64e276232a7d/media",
+      "createdAt": "2026-10-18T11:14:30.298Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-recipes.wav"
+  },
+  "subject-matte": {
+    "asset": {
+      "kind": "audio",
+      "duration": 2.134,
+      "narration": {
+        "text": "Sam two tracks the reviewed mask.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Sam",
+              "start": 0.119,
+              "end": 0.344
+            },
+            {
+              "text": "two",
+              "start": 0.419,
+              "end": 0.719
+            },
+            {
+              "text": "tracks",
+              "start": 0.769,
+              "end": 1.069
+            },
+            {
+              "text": "the",
+              "start": 1.094,
+              "end": 1.144
+            },
+            {
+              "text": "reviewed",
+              "start": 1.194,
+              "end": 1.469
+            },
+            {
+              "text": "mask.",
+              "start": 1.519,
+              "end": 1.984
+            }
+          ]
+        }
+      },
+      "id": "639792c0-a32f-4b56-ac19-0cf114de70d9",
+      "name": "Narration · Sam two tracks the reviewed mask.",
+      "extension": ".wav",
+      "sha256": "26a6e617c36deb96a0fa327ed6b3a5e8745496a81a7764c10ee86b92cdb74af9",
+      "url": "/api/films/assets/639792c0-a32f-4b56-ac19-0cf114de70d9/media",
+      "createdAt": "2026-10-18T11:14:41.407Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-subject-matte.wav"
+  },
+  "build-stack": {
+    "asset": {
+      "kind": "audio",
+      "duration": 4.810666666666667,
+      "narration": {
+        "text": "React and TypeScript, Comfy's S D K, and Py A V with F F mpeg.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "React",
+              "start": 0.094,
+              "end": 0.469
+            },
+            {
+              "text": "and",
+              "start": 0.494,
+              "end": 0.569
+            },
+            {
+              "text": "TypeScript,",
+              "start": 0.619,
+              "end": 1.369
+            },
+            {
+              "text": "Comfy's",
+              "start": 1.494,
+              "end": 1.794
+            },
+            {
+              "text": "S",
+              "start": 1.844,
+              "end": 1.994
+            },
+            {
+              "text": "D",
+              "start": 2.044,
+              "end": 2.169
+            },
+            {
+              "text": "K,",
+              "start": 2.219,
+              "end": 2.744
+            },
+            {
+              "text": "and",
+              "start": 2.869,
+              "end": 2.944
+            },
+            {
+              "text": "Py",
+              "start": 2.994,
+              "end": 3.219
+            },
+            {
+              "text": "A",
+              "start": 3.244,
+              "end": 3.269
+            },
+            {
+              "text": "V",
+              "start": 3.319,
+              "end": 3.494
+            },
+            {
+              "text": "with",
+              "start": 3.519,
+              "end": 3.644
+            },
+            {
+              "text": "F",
+              "start": 3.719,
+              "end": 3.894
+            },
+            {
+              "text": "F",
+              "start": 3.944,
+              "end": 4.094
+            },
+            {
+              "text": "mpeg.",
+              "start": 4.144,
+              "end": 4.650666666666667
+            }
+          ]
+        }
+      },
+      "id": "61ff8368-8366-47f4-9a53-4c67ea577b44",
+      "name": "Narration · React and TypeScript, Comfy's S D K, and Py A V with F F mpe",
+      "extension": ".wav",
+      "sha256": "e867cccb7bbb204d3d428ac5dd41ba8403b261a3c1600c501124792080fe6d30",
+      "url": "/api/films/assets/61ff8368-8366-47f4-9a53-4c67ea577b44/media",
+      "createdAt": "2026-10-18T11:14:47.250Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-build-stack.wav"
+  },
+  "contribution": {
+    "asset": {
+      "kind": "audio",
+      "duration": 6.032666666666667,
+      "narration": {
+        "text": "One open chain: protected scenes, inspectable workflows, and agent edits you can reopen.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "One",
+              "start": 0.094,
+              "end": 0.319
+            },
+            {
+              "text": "open",
+              "start": 0.369,
+              "end": 0.694
+            },
+            {
+              "text": "chain:",
+              "start": 0.744,
+              "end": 1.344
+            },
+            {
+              "text": "protected",
+              "start": 1.469,
+              "end": 1.969
+            },
+            {
+              "text": "scenes,",
+              "start": 2.044,
+              "end": 2.594
+            },
+            {
+              "text": "inspectable",
+              "start": 2.694,
+              "end": 3.319
+            },
+            {
+              "text": "workflows,",
+              "start": 3.369,
+              "end": 3.994
+            },
+            {
+              "text": "and",
+              "start": 4.119,
+              "end": 4.194
+            },
+            {
+              "text": "agent",
+              "start": 4.244,
+              "end": 4.569
+            },
+            {
+              "text": "edits",
+              "start": 4.619,
+              "end": 4.968999999999999
+            },
+            {
+              "text": "you",
+              "start": 5.019,
+              "end": 5.093999999999999
+            },
+            {
+              "text": "can",
+              "start": 5.144,
+              "end": 5.269
+            },
+            {
+              "text": "reopen.",
+              "start": 5.319,
+              "end": 5.852666666666667
+            }
+          ]
+        }
+      },
+      "id": "bd8c301a-4718-47f0-a5b5-5d02aed8b274",
+      "name": "Narration · One open chain: protected scenes, inspectable workflows, and",
+      "extension": ".wav",
+      "sha256": "61bbcd3a1ca2fc9dac374f0f1f26e9b95ffaba0a1287b83ead660b82e38469af",
+      "url": "/api/films/assets/bd8c301a-4718-47f0-a5b5-5d02aed8b274/media",
+      "createdAt": "2026-10-18T11:14:50.674Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-contribution.wav"
+  },
+  "twist": {
+    "asset": {
+      "kind": "audio",
+      "duration": 0.9346666666666666,
+      "narration": {
+        "text": "The twist?",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "The",
+              "start": 0.12266666666666666,
+              "end": 0.19766666666666666
+            },
+            {
+              "text": "twist?",
+              "start": 0.24766666666666667,
+              "end": 0.8726666666666667
+            }
+          ]
+        }
+      },
+      "id": "f43c890f-56c9-4e9c-8afc-88902d3bcc60",
+      "name": "Narration · The twist?",
+      "extension": ".wav",
+      "sha256": "06e7d3b9a6d2f93ca37eedce546113046b136e31ece24ad6c93a4c959417adeb",
+      "url": "/api/films/assets/f43c890f-56c9-4e9c-8afc-88902d3bcc60/media",
+      "createdAt": "2026-10-18T11:14:52.631Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-twist.wav"
+  },
+  "reveal": {
+    "asset": {
+      "kind": "audio",
+      "duration": 2.3586666666666667,
+      "narration": {
+        "text": "Even this demo was made in Aftertake.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Even",
+              "start": 0.094,
+              "end": 0.344
+            },
+            {
+              "text": "this",
+              "start": 0.394,
+              "end": 0.569
+            },
+            {
+              "text": "demo",
+              "start": 0.619,
+              "end": 0.944
+            },
+            {
+              "text": "was",
+              "start": 0.994,
+              "end": 1.119
+            },
+            {
+              "text": "made",
+              "start": 1.169,
+              "end": 1.369
+            },
+            {
+              "text": "in",
+              "start": 1.394,
+              "end": 1.469
+            },
+            {
+              "text": "Aftertake.",
+              "start": 1.544,
+              "end": 2.2186666666666666
+            }
+          ]
+        }
+      },
+      "id": "b8ec1e45-44ee-45f2-8ece-fee43a7fc1e9",
+      "name": "Narration · Even this demo was made in Aftertake.",
+      "extension": ".wav",
+      "sha256": "5eed58d106d2dead15c0a78b635802def0e62f9aef2e64dbd2fbb69a7292eebc",
+      "url": "/api/films/assets/b8ec1e45-44ee-45f2-8ece-fee43a7fc1e9/media",
+      "createdAt": "2026-10-18T11:14:54.920Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-reveal.wav"
+  },
+  "yours": {
+    "asset": {
+      "kind": "audio",
+      "duration": 1.602,
+      "narration": {
+        "text": "Make the next take yours.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Make",
+              "start": 0.13666666666666666,
+              "end": 0.31166666666666665
+            },
+            {
+              "text": "the",
+              "start": 0.33666666666666667,
+              "end": 0.38666666666666666
+            },
+            {
+              "text": "next",
+              "start": 0.43666666666666665,
+              "end": 0.6616666666666666
+            },
+            {
+              "text": "take",
+              "start": 0.6866666666666666,
+              "end": 0.8616666666666667
+            },
+            {
+              "text": "yours.",
+              "start": 0.9116666666666666,
+              "end": 1.472
+            }
+          ]
+        }
+      },
+      "id": "f75c9baa-0883-4ffc-9a4d-f6d7e28ca17f",
+      "name": "Narration · Make the next take yours.",
+      "extension": ".wav",
+      "sha256": "604d31295f8c88de72c6924b70670c6a54123d45e25289481ebc8536ca08f241",
+      "url": "/api/films/assets/f75c9baa-0883-4ffc-9a4d-f6d7e28ca17f/media",
+      "createdAt": "2026-10-18T11:14:56.941Z"
+    },
+    "file": "examples/judges-film/media/entry-voice-yours.wav"
+  }
+}

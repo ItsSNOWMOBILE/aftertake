@@ -1,0 +1,304 @@
+{
+  "status": "review cut",
+  "duration": 44.41666666666667,
+  "beats": [
+    {
+      "name": "ad-1",
+      "start": 0,
+      "end": 2,
+      "spokenText": "Your morning called.",
+      "voiceStart": 0.16,
+      "voiceEnd": 1.4446666666666665,
+      "caption": "Your morning called.",
+      "shotNumbers": [
+        1
+      ],
+      "visual": "native vertical coffee concept ad",
+      "placeholder": false
+    },
+    {
+      "name": "ad-2",
+      "start": 2,
+      "end": 3.125,
+      "spokenText": "Ground.",
+      "voiceStart": 2.12,
+      "voiceEnd": 2.994666666666667,
+      "caption": "Ground.",
+      "shotNumbers": [
+        2
+      ],
+      "visual": "native vertical coffee concept ad",
+      "placeholder": false
+    },
+    {
+      "name": "ad-3",
+      "start": 3.125,
+      "end": 4.25,
+      "spokenText": "Pour.",
+      "voiceStart": 3.245,
+      "voiceEnd": 4.055666666666667,
+      "caption": "Pour.",
+      "shotNumbers": [
+        3
+      ],
+      "visual": "native vertical coffee concept ad",
+      "placeholder": false
+    },
+    {
+      "name": "ad-4",
+      "start": 4.25,
+      "end": 5.375,
+      "spokenText": "Pause.",
+      "voiceStart": 4.370000000000001,
+      "voiceEnd": 5.244666666666667,
+      "caption": "Pause.",
+      "shotNumbers": [
+        4
+      ],
+      "visual": "native vertical coffee concept ad",
+      "placeholder": false
+    },
+    {
+      "name": "ad-5",
+      "start": 5.375,
+      "end": 8.125,
+      "spokenText": "Slow mornings. Find your next cup.",
+      "voiceStart": 5.555,
+      "voiceEnd": 7.9623333333333335,
+      "caption": "Slow mornings. Find your next cup.",
+      "shotNumbers": [
+        5
+      ],
+      "visual": "native vertical coffee concept ad",
+      "placeholder": false
+    },
+    {
+      "name": "brand",
+      "start": 7.958333333333333,
+      "end": 9.583333333333332,
+      "spokenText": "This is Aftertake.",
+      "voiceStart": 8.078333333333333,
+      "voiceEnd": 9.397,
+      "caption": "AFTERTAKE",
+      "shotNumbers": [
+        6
+      ],
+      "visual": "brand",
+      "dissolveInFrames": 4,
+      "placeholder": false
+    },
+    {
+      "name": "social",
+      "start": 9.416666666666666,
+      "end": 11.416666666666666,
+      "spokenText": "Make ads and reels.",
+      "voiceStart": 9.536666666666665,
+      "voiceEnd": 10.966666666666665,
+      "caption": "Make ads and reels.",
+      "shotNumbers": [
+        7
+      ],
+      "visual": "social-editor",
+      "dissolveInFrames": 4,
+      "placeholder": false
+    },
+    {
+      "name": "hook",
+      "start": 11.291666666666666,
+      "end": 12.791666666666666,
+      "spokenText": "Try another hook.",
+      "voiceStart": 11.411666666666665,
+      "voiceEnd": 12.579624999999998,
+      "caption": "Try another hook.",
+      "shotNumbers": [
+        8
+      ],
+      "visual": "social-hook",
+      "dissolveInFrames": 3,
+      "placeholder": false
+    },
+    {
+      "name": "editable",
+      "start": 12.666666666666666,
+      "end": 15.208333333333332,
+      "spokenText": "Change the words, voice, and timing.",
+      "voiceStart": 12.786666666666665,
+      "voiceEnd": 15.018666666666665,
+      "caption": "Change the words, voice and timing.",
+      "shotNumbers": [
+        9
+      ],
+      "visual": "social-editor",
+      "dissolveInFrames": 3,
+      "placeholder": false
+    },
+    {
+      "name": "image",
+      "start": 15.041666666666666,
+      "end": 17.041666666666664,
+      "spokenText": "Generate an image.",
+      "voiceStart": 15.161666666666665,
+      "voiceEnd": 16.540333333333333,
+      "caption": "Generate an image.",
+      "shotNumbers": [
+        10
+      ],
+      "visual": "image",
+      "dissolveInFrames": 4,
+      "placeholder": false
+    },
+    {
+      "name": "animation",
+      "start": 16.874999999999996,
+      "end": 19.374999999999996,
+      "spokenText": "Bring it into motion.",
+      "voiceStart": 16.994999999999997,
+      "voiceEnd": 18.470291666666665,
+      "caption": "Bring it into motion.",
+      "shotNumbers": [
+        11,
+        12
+      ],
+      "visual": "animation",
+      "dissolveInFrames": 4,
+      "placeholder": false
+    },
+    {
+      "name": "paint",
+      "start": 19.20833333333333,
+      "end": 21.20833333333333,
+      "spokenText": "Choose what changes.",
+      "voiceStart": 19.32833333333333,
+      "voiceEnd": 20.73833333333333,
+      "caption": "Choose what changes.",
+      "shotNumbers": [
+        13
+      ],
+      "visual": "cue",
+      "dissolveInFrames": 4,
+      "placeholder": false
+    },
+    {
+      "name": "vfx",
+      "start": 21.04166666666666,
+      "end": 23.79166666666666,
+      "spokenText": "Or change reality.",
+      "voiceStart": 21.16166666666666,
+      "voiceEnd": 22.594291666666663,
+      "caption": "Change reality.",
+      "shotNumbers": [
+        14,
+        15
+      ],
+      "visual": "vfx",
+      "dissolveInFrames": 4,
+      "placeholder": false
+    },
+    {
+      "name": "character-prompt",
+      "start": 23.624999999999993,
+      "end": 27.874999999999993,
+      "spokenText": "Cast your own character.",
+      "voiceStart": 23.744999999999994,
+      "voiceEnd": 25.198958333333326,
+      "caption": "Cast your own character.",
+      "shotNumbers": [
+        16
+      ],
+      "visual": "character-prompt",
+      "dissolveInFrames": 4,
+      "placeholder": false
+    },
+    {
+      "name": "character-result",
+      "start": 27.874999999999993,
+      "end": 30.91666666666666,
+      "spokenText": "New character. Same scene.",
+      "voiceStart": 27.994999999999994,
+      "voiceEnd": 30.05433333333333,
+      "caption": "New character. Same scene.",
+      "shotNumbers": [
+        17,
+        18
+      ],
+      "visual": "character-result",
+      "dissolveInFrames": 0,
+      "placeholder": false
+    },
+    {
+      "name": "recipes",
+      "start": 30.749999999999993,
+      "end": 32.58333333333333,
+      "spokenText": "Reuse the recipe.",
+      "voiceStart": 30.869999999999994,
+      "voiceEnd": 32.36662499999999,
+      "caption": "Reuse the recipe.",
+      "shotNumbers": [
+        19
+      ],
+      "visual": "library",
+      "dissolveInFrames": 4,
+      "placeholder": false
+    },
+    {
+      "name": "sdk",
+      "start": 32.416666666666664,
+      "end": 36.08333333333333,
+      "spokenText": "Comfy S D K. Open code. Open weights.",
+      "voiceStart": 32.53666666666666,
+      "voiceEnd": 35.86595833333333,
+      "caption": "Comfy SDK.\nOpen code. Open weights.",
+      "shotNumbers": [
+        20
+      ],
+      "visual": "sdk",
+      "dissolveInFrames": 4,
+      "placeholder": false
+    },
+    {
+      "name": "twist",
+      "start": 35.916666666666664,
+      "end": 37.166666666666664,
+      "spokenText": "The twist?",
+      "voiceStart": 36.03666666666666,
+      "voiceEnd": 36.97266666666666,
+      "caption": "The twist?",
+      "shotNumbers": [
+        21
+      ],
+      "visual": "twist",
+      "dissolveInFrames": 4,
+      "placeholder": false
+    },
+    {
+      "name": "reveal",
+      "start": 37.0,
+      "end": 40.25,
+      "spokenText": "Even this demo was made in Aftertake.",
+      "voiceStart": 37.12,
+      "voiceEnd": 39.47866666666666,
+      "caption": "Made in Aftertake.",
+      "shotNumbers": [
+        22
+      ],
+      "visual": "reveal",
+      "dissolveInFrames": 4,
+      "placeholder": false
+    },
+    {
+      "name": "yours",
+      "start": 40.083333333333336,
+      "end": 42.083333333333336,
+      "spokenText": "Make the next take yours.",
+      "voiceStart": 40.20333333333333,
+      "voiceEnd": 41.80533333333333,
+      "caption": "Make the next take yours.",
+      "shotNumbers": [
+        23
+      ],
+      "visual": "yours",
+      "dissolveInFrames": 4,
+      "placeholder": false
+    }
+  ]
+}

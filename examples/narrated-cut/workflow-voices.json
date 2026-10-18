@@ -1,0 +1,68 @@
+{
+  "hook": {
+    "asset": {
+      "kind": "audio",
+      "duration": 2.028,
+      "narration": {
+        "text": "Change the hook. Keep the edit.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+      },
+      "id": "f41da1dd-48cb-4d43-bb66-7af02930e9ed",
+      "name": "Narration · Change the hook. Keep the edit.",
+      "extension": ".wav",
+      "sha256": "d3f44c83d57df966f5ec497f3b1b47d40e857d62ab983f8e5c72b9e56b17ed2f",
+      "url": "/api/films/assets/f41da1dd-48cb-4d43-bb66-7af02930e9ed/media",
+      "createdAt": "2026-10-18T09:50:04.724Z"
+    },
+    "file": "examples/narrated-cut/workflow-media/voice-hook.wav"
+  },
+  "pair": {
+    "asset": {
+      "kind": "audio",
+      "duration": 2.6719583333333334,
+      "narration": {
+        "text": "Voice first. Match the cuts and captions.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+      },
+      "id": "bbfe5695-e3ff-47d6-8067-062873bfd25e",
+      "name": "Narration · Voice first. Match the cuts and captions.",
+      "extension": ".wav",
+      "sha256": "b6dad2dc7a48a5c56b059a64fa9554694d7871ad204b2172c943806d63ca8bf8",
+      "url": "/api/films/assets/bbfe5695-e3ff-47d6-8067-062873bfd25e/media",
+      "createdAt": "2026-10-18T09:50:07.025Z"
+    },
+    "file": "examples/narrated-cut/workflow-media/voice-pair.wav"
+  },
+  "reveal": {
+    "asset": {
+      "kind": "audio",
+      "duration": 2.1486666666666667,
+      "narration": {
+        "text": "This walkthrough? Edited right here.",
+        "voice": "af_heart",
+        "speed": 1.05,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+      },
+      "id": "50bd7d16-e587-4da4-9a2d-68c8d5ef4dde",
+      "name": "Narration · This walkthrough? Edited right here.",
+      "extension": ".wav",
+      "sha256": "be5fa582c709e7d7bc360fa50bcd87b16acdf0c40d38e09faff5720ecf7d1bf3",
+      "url": "/api/films/assets/50bd7d16-e587-4da4-9a2d-68c8d5ef4dde/media",
+      "createdAt": "2026-10-18T09:50:09.136Z"
+    },
+    "file": "examples/narrated-cut/workflow-media/voice-reveal.wav"
+  }
+}

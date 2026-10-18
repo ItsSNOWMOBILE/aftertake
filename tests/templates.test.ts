@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { cp, readFile, mkdtemp, mkdir, rm } from 'node:fs/promises';
+import { cp, readFile, mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
@@ -36,6 +36,26 @@ test('recipe search combines tags and words without losing category filtering', 
   assert.equal(filterTemplates(templates, 'all', '   ').length, 2);
 });
 
+test('motion and transition templates retain user media without copying example references or scene descriptions', async () => {
+  const current = JSON.parse(await readFile(new URL('../examples/portal/recipe.json', import.meta.url), 'utf8'));
+  const motion = { recipe: JSON.parse(await readFile(new URL('../examples/signal/recipe.json', import.meta.url), 'utf8')) } as Template;
+  const next = applyTemplate(current, motion);
+  assert.equal(next.clip, current.clip); assert.equal(next.seed, current.seed);
+  assert.equal(next.pipeline, 'motion-transfer'); assert.equal(next.transfer?.scope, 'frame');
+  assert.equal(next.transfer?.reference, undefined); assert.equal(next.transfer?.motionCaption, undefined);
+  assert.doesNotMatch(next.prompt, /bear|robot|mint|studio background/i);
+  const owned = { ...next, prompt: 'My clay astronaut performs the driving action.', transfer: { ...motion.recipe.transfer!, motionCaption: 'A person jumps.', poseStrength: 0.75 } };
+  assert.equal(applyTemplate(owned, motion).transfer?.reference, owned.transfer.reference);
+  assert.equal(applyTemplate(owned, motion).transfer?.motionCaption, owned.transfer.motionCaption);
+  assert.equal(applyTemplate(owned, motion).transfer?.poseStrength, 0.75);
+  assert.equal(applyTemplate(owned, motion).prompt, owned.prompt);
+  const ending = { recipe: JSON.parse(await readFile(new URL('../examples/crystal-transition/recipe.json', import.meta.url), 'utf8')) } as Template;
+  const transition = applyTemplate(current, ending);
+  assert.equal(transition.endFrame, undefined); assert.equal(transition.clip, current.clip);
+  assert.doesNotMatch(transition.prompt, /forest|waterfall|crystal/i);
+  assert.throws(() => applyTemplate({ ...current, clip: { ...current.clip, kind: 'image' } }, motion), /video source/);
+});
+
 test('reviewed examples work from a hidden checkout and import real bytes without Python, GPU jobs or source overwrite', async () => {
   const sourceRoot = fileURLToPath(new URL('../', import.meta.url)), directory = await mkdtemp(path.join(tmpdir(), 'aftertake-template-test-'));
   const root = path.join(directory, '.checkout');
@@ -49,7 +69,8 @@ test('reviewed examples work from a hidden checkout and import real bytes withou
   const url = `http://127.0.0.1:${address.port}/templates`;
   try {
     const catalog = await fetch(url).then(r => r.json()) as Template[];
-    assert.equal(catalog.length, 7);
+    const manifest = JSON.parse(await readFile(path.join(root, 'examples/manifest.json'), 'utf8'));
+    assert.deepEqual(catalog.map(item => item.slug).sort(), manifest.cases.map((item: { slug: string }) => item.slug).sort());
     assert.equal((await fetch(url + '/portal/poster')).headers.get('content-type'), 'image/jpeg');
     assert.equal((await fetch(url + '/portal/private')).status, 404);
     assert.equal((await fetch(url + '/missing/open', { method: 'POST' })).status, 404);
@@ -80,6 +101,59 @@ test('reviewed examples work from a hidden checkout and import real bytes withou
     assert.equal(appearance.request.mode, 'fast');
     assert.equal(appearance.output.sha256, catalog.find(item => item.slug === 'crystal-forest')?.recipe.editReference?.sha256);
     assert.equal(appearance.workflow['17'].inputs.steps, 4);
+    const signal = await fetch(url + '/signal/open', { method: 'POST' }).then(r => r.json()) as { render: Render };
+    assert.equal(signal.render.recipe.pipeline, 'motion-transfer');
+    const character = signal.render.recipe.transfer!.reference!;
+    assert.equal(character.kind, 'image');
+    assert.equal(createHash('sha256').update(await readFile(path.join(directory, 'clips', path.basename(character.url)))).digest('hex'), character.sha256);
+    assert.equal((await fetch(url + '/signal/reference')).headers.get('content-type'), 'image/png');
+    const creation = await fetch(url + '/signal/frame-recipe').then(r => r.json());
+    assert.equal(creation.request.clip.sha256, signal.render.recipe.clip.sha256);
+    assert.equal(creation.output.sha256, character.sha256);
+    assert.equal((signal.render.workflow!['13'] as any).class_type, 'WanAnimate2ToVideo');
+    assert.equal((await fetch(url + '/signal/open', { method: 'POST' }).then(r => r.json()) as { render: Render }).render.id, signal.render.id);
+    await writeFile(path.join(directory, 'clips', path.basename(character.url)), 'corrupted test image');
+    const repaired = await fetch(url + '/signal/open', { method: 'POST' }).then(r => r.json()) as { render: Render };
+    assert.notEqual(repaired.render.id, signal.render.id);
+    assert.notEqual(repaired.render.recipe.transfer?.reference?.id, character.id);
+    assert.equal(await readFile(path.join(directory, 'clips', path.basename(character.url)), 'utf8'), 'corrupted test image');
+    const transition = await fetch(url + '/crystal-transition/open', { method: 'POST' }).then(r => r.json()) as { render: Render };
+    assert.equal(transition.render.recipe.pipeline, 'cinema');
+    assert.deepEqual(await readFile(path.join(directory, 'outputs', path.basename(transition.render.rawOutput!))), await readFile(path.join(root, 'examples/crystal-transition/result.mp4')));
+    assert.equal(transition.render.recipe.clip.id, (await fetch(url + '/golden-falls/open', { method: 'POST' }).then(r => r.json()) as { render: Render }).render.recipe.clip.id);
+    const ending = transition.render.recipe.endFrame!;
+    assert.equal(createHash('sha256').update(await readFile(path.join(directory, 'clips', path.basename(ending.url)))).digest('hex'), ending.sha256);
+    assert.equal((await fetch(url + '/crystal-transition/reference')).headers.get('content-type'), 'image/png');
+    const endingCreation = await fetch(url + '/crystal-transition/frame-recipe').then(r => r.json());
+    assert.equal(endingCreation.request.clip.sha256, transition.render.recipe.clip.sha256);
+    assert.equal(endingCreation.output.sha256, ending.sha256);
+    assert.equal(endingCreation.workflow['17'].inputs.steps, 4);
+    for (const slug of ['coastal-kingdom', 'winter-valley']) {
+      const opened = await fetch(url + '/' + slug + '/open', { method: 'POST' }).then(r => r.json()) as { render: Render };
+      assert.equal(opened.render.recipe.pipeline, 'inpaint');
+      assert.equal(opened.render.recipe.cue.tracking, 'flow');
+      const appearance = opened.render.recipe.editReference!;
+      assert.equal(createHash('sha256').update(await readFile(path.join(directory, 'clips', path.basename(appearance.url)))).digest('hex'), appearance.sha256);
+      const creation = await fetch(url + '/' + slug + '/frame-recipe').then(r => r.json());
+      assert.equal(creation.request.clip.sha256, opened.render.recipe.clip.sha256);
+      assert.equal(creation.output.sha256, appearance.sha256);
+      const expected = await readFile(path.join(root, 'examples', slug, 'result.mp4'));
+      assert.deepEqual(await readFile(path.join(directory, 'outputs', opened.render.id + '.mp4')), expected);
+    }
+    const castle = await fetch(url + '/castle-pullback/open', { method: 'POST' }).then(r => r.json()) as { render: Render };
+    assert.equal(castle.render.recipe.clip.kind, 'image');
+    assert.equal(castle.render.recipe.cinema?.guidance, 'tracks');
+    assert.deepEqual(await readFile(path.join(directory, 'outputs', path.basename(castle.render.rawOutput!))), await readFile(path.join(root, 'examples/castle-pullback/result.mp4')));
+    assert.equal(castle.render.recipe.cinema?.movement, 'pull');
+    const observatory = await fetch(url + '/observatory/open', { method: 'POST' }).then(r => r.json()) as { render: Render };
+    const imagined = await fetch(url + '/observatory/image-recipe').then(r => r.json());
+    assert.equal(imagined.format, 'aftertake-image/1');
+    assert.equal(imagined.request.seed, 5090); assert.equal(imagined.request.style, 'cinematic');
+    assert.equal(imagined.output.sha256, observatory.render.recipe.clip.sha256);
+    assert.equal(observatory.render.recipe.clip.width, 1152);
+    assert.equal(imagined.workflow['7'].class_type, 'EmptySD3LatentImage');
+    assert.equal(imagined.workflow['17'].inputs.steps, 8);
+    assert.equal(observatory.render.recipe.cinema?.guidance, 'tracks');
   } finally {
     await new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
     assert.equal(path.dirname(path.resolve(directory)), path.resolve(tmpdir()));

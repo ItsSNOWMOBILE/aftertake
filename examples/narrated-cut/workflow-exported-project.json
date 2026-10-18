@@ -1,0 +1,256 @@
+{
+  "format": "aftertake-film/2",
+  "id": "96776e61-5a23-43ce-86c6-efb9f2420f99",
+  "name": "The narrated-cut walkthrough",
+  "aspect": "landscape",
+  "shots": [
+    {
+      "assetId": "c82f9b14-a7f3-4e89-9167-1873192ca12c",
+      "dissolve": 0,
+      "start": 0,
+      "end": 5.958333333333333,
+      "title": "Ad-A.mp4",
+      "sha256": "bd4b6b1d1c2706148d32c0fe344d64485ebe39057ff5cee659c2781765315e9f",
+      "asset": {
+        "kind": "video",
+        "duration": 5.958333333333333,
+        "width": 720,
+        "height": 1280,
+        "id": "c82f9b14-a7f3-4e89-9167-1873192ca12c",
+        "name": "Ad-A.mp4",
+        "extension": ".mp4",
+        "sha256": "bd4b6b1d1c2706148d32c0fe344d64485ebe39057ff5cee659c2781765315e9f",
+        "url": "/api/films/assets/c82f9b14-a7f3-4e89-9167-1873192ca12c/media",
+        "createdAt": "2026-10-18T09:50:42.294Z"
+      }
+    },
+    {
+      "assetId": "2647036a-ccb5-4bf0-b897-fe57554d88cf",
+      "dissolve": 0.125,
+      "start": 0,
+      "end": 2.4166666666666665,
+      "title": "ui-hook.mp4",
+      "sha256": "a55ade2a65fd28d7d5df2a01a06cd7edd5b0aec24cef13f5ec4388cbfacd5812",
+      "asset": {
+        "kind": "video",
+        "duration": 4,
+        "width": 1280,
+        "height": 720,
+        "id": "2647036a-ccb5-4bf0-b897-fe57554d88cf",
+        "name": "ui-hook.mp4",
+        "extension": ".mp4",
+        "sha256": "a55ade2a65fd28d7d5df2a01a06cd7edd5b0aec24cef13f5ec4388cbfacd5812",
+        "url": "/api/films/assets/2647036a-ccb5-4bf0-b897-fe57554d88cf/media",
+        "createdAt": "2026-10-18T09:50:42.597Z"
+      }
+    },
+    {
+      "assetId": "ded4d218-96dc-4829-94d0-4bbe203ed82b",
+      "dissolve": 0.125,
+      "start": 2,
+      "end": 5.083333333333333,
+      "title": "ui-prepare.mp4",
+      "sha256": "8f9723bb433bd3e140393bde8a48e1fb13a76661e266018252314ec12f37b499",
+      "asset": {
+        "kind": "video",
+        "duration": 6,
+        "width": 1280,
+        "height": 720,
+        "id": "ded4d218-96dc-4829-94d0-4bbe203ed82b",
+        "name": "ui-prepare.mp4",
+        "extension": ".mp4",
+        "sha256": "8f9723bb433bd3e140393bde8a48e1fb13a76661e266018252314ec12f37b499",
+        "url": "/api/films/assets/ded4d218-96dc-4829-94d0-4bbe203ed82b/media",
+        "createdAt": "2026-10-18T09:50:42.756Z"
+      }
+    },
+    {
+      "assetId": "56852edd-9757-4c27-be22-73e8eaf37825",
+      "dissolve": 0.125,
+      "start": 0,
+      "end": 5.875,
+      "title": "Ad-B.mp4",
+      "sha256": "bb6ccc6df952fd87a80f8c550a0bcb5608c2fe55bec7252609628bc49151aa60",
+      "asset": {
+        "kind": "video",
+        "duration": 5.875,
+        "width": 720,
+        "height": 1280,
+        "id": "56852edd-9757-4c27-be22-73e8eaf37825",
+        "name": "Ad-B.mp4",
+        "extension": ".mp4",
+        "sha256": "bb6ccc6df952fd87a80f8c550a0bcb5608c2fe55bec7252609628bc49151aa60",
+        "url": "/api/films/assets/56852edd-9757-4c27-be22-73e8eaf37825/media",
+        "createdAt": "2026-10-18T09:50:42.444Z"
+      }
+    },
+    {
+      "assetId": "a23380ee-1569-4cf7-8737-f3cebb889a19",
+      "dissolve": 0.125,
+      "start": 0,
+      "end": 3.25,
+      "title": "ui-editor-reveal.mp4",
+      "sha256": "cf7c74b477f741da4a8b063bd386c7f26dee5aaa3d2d41b84b0996d7ad054f12",
+      "asset": {
+        "kind": "video",
+        "duration": 4.5,
+        "width": 1280,
+        "height": 720,
+        "id": "a23380ee-1569-4cf7-8737-f3cebb889a19",
+        "name": "ui-editor-reveal.mp4",
+        "extension": ".mp4",
+        "sha256": "cf7c74b477f741da4a8b063bd386c7f26dee5aaa3d2d41b84b0996d7ad054f12",
+        "url": "/api/films/assets/a23380ee-1569-4cf7-8737-f3cebb889a19/media",
+        "createdAt": "2026-10-18T09:52:58.275Z"
+      }
+    }
+  ],
+  "requestKey": "agent-973e0b8b141357449ef288146b065a37efe7b596d95726b1d25a5d15840ad3f1-0",
+  "requestDigest": "771bceada4effd7a0a34516cd38eee460b78e969fab262ab2825293c2a815741",
+  "titles": [
+    {
+      "id": "52f65a69-4f66-4249-8a12-a580937edd73",
+      "text": "HOOK A · NATIVE PORTRAIT EXPORT",
+      "start": 0.12,
+      "end": 5.878333333333333,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 24,
+      "color": "#d5e991"
+    },
+    {
+      "id": "dab2c355-802d-416b-88c7-8a4cb16e4c24",
+      "text": "Change the hook. Keep the edit.",
+      "start": 5.958333333333333,
+      "end": 8.066333333333333,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 42,
+      "color": "#ffffff"
+    },
+    {
+      "id": "c5d89e9e-b8e2-4551-843b-c21217d6385a",
+      "text": "Voice first. Match the cuts and captions.",
+      "start": 8.25,
+      "end": 11.001958333333333,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 42,
+      "color": "#ffffff"
+    },
+    {
+      "id": "b6833cf3-49f6-4110-a430-b3ec6c4dfaa2",
+      "text": "HOOK B · SAME FOOTAGE",
+      "start": 11.203333333333333,
+      "end": 16.878333333333334,
+      "style": "kicker",
+      "position": "top",
+      "animation": "fade",
+      "fontSize": 24,
+      "color": "#d5e991"
+    },
+    {
+      "id": "b1b14618-78de-41b8-bdd6-fbb78f04559f",
+      "text": "This walkthrough? Edited right here.",
+      "start": 16.958333333333332,
+      "end": 19.186999999999998,
+      "style": "headline",
+      "position": "center",
+      "animation": "build",
+      "fontSize": 72,
+      "color": "#ffffff"
+    }
+  ],
+  "audio": [
+    {
+      "assetId": "f41da1dd-48cb-4d43-bb66-7af02930e9ed",
+      "start": 5.958333333333333,
+      "sourceStart": 0,
+      "sourceEnd": 2.028,
+      "volume": 1,
+      "sha256": "d3f44c83d57df966f5ec497f3b1b47d40e857d62ab983f8e5c72b9e56b17ed2f",
+      "asset": {
+        "kind": "audio",
+        "duration": 2.028,
+        "narration": {
+          "text": "Change the hook. Keep the edit.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        },
+        "id": "f41da1dd-48cb-4d43-bb66-7af02930e9ed",
+        "name": "Narration · Change the hook. Keep the edit.",
+        "extension": ".wav",
+        "sha256": "d3f44c83d57df966f5ec497f3b1b47d40e857d62ab983f8e5c72b9e56b17ed2f",
+        "url": "/api/films/assets/f41da1dd-48cb-4d43-bb66-7af02930e9ed/media",
+        "createdAt": "2026-10-18T09:50:04.724Z"
+      }
+    },
+    {
+      "assetId": "bbfe5695-e3ff-47d6-8067-062873bfd25e",
+      "start": 8.25,
+      "sourceStart": 0,
+      "sourceEnd": 2.6719583333333334,
+      "volume": 1,
+      "sha256": "b6dad2dc7a48a5c56b059a64fa9554694d7871ad204b2172c943806d63ca8bf8",
+      "asset": {
+        "kind": "audio",
+        "duration": 2.6719583333333334,
+        "narration": {
+          "text": "Voice first. Match the cuts and captions.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        },
+        "id": "bbfe5695-e3ff-47d6-8067-062873bfd25e",
+        "name": "Narration · Voice first. Match the cuts and captions.",
+        "extension": ".wav",
+        "sha256": "b6dad2dc7a48a5c56b059a64fa9554694d7871ad204b2172c943806d63ca8bf8",
+        "url": "/api/films/assets/bbfe5695-e3ff-47d6-8067-062873bfd25e/media",
+        "createdAt": "2026-10-18T09:50:07.025Z"
+      }
+    },
+    {
+      "assetId": "50bd7d16-e587-4da4-9a2d-68c8d5ef4dde",
+      "start": 16.958333333333332,
+      "sourceStart": 0,
+      "sourceEnd": 2.1486666666666667,
+      "volume": 1,
+      "sha256": "be5fa582c709e7d7bc360fa50bcd87b16acdf0c40d38e09faff5720ecf7d1bf3",
+      "asset": {
+        "kind": "audio",
+        "duration": 2.1486666666666667,
+        "narration": {
+          "text": "This walkthrough? Edited right here.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider"
+        },
+        "id": "50bd7d16-e587-4da4-9a2d-68c8d5ef4dde",
+        "name": "Narration · This walkthrough? Edited right here.",
+        "extension": ".wav",
+        "sha256": "be5fa582c709e7d7bc360fa50bcd87b16acdf0c40d38e09faff5720ecf7d1bf3",
+        "url": "/api/films/assets/50bd7d16-e587-4da4-9a2d-68c8d5ef4dde/media",
+        "createdAt": "2026-10-18T09:50:09.136Z"
+      }
+    }
+  ],
+  "sourceVolume": 0.7,
+  "normalizeAudio": true,
+  "state": "ready",
+  "duration": 20.083333333333332,
+  "createdAt": "2026-10-18T10:11:30.094Z",
+  "output": "/api/films/96776e61-5a23-43ce-86c6-efb9f2420f99/video"
+}

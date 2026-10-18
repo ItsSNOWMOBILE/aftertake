@@ -1,0 +1,33 @@
+{
+  "filmId": "4e12d7c5-9914-49cb-9218-435e4b25886a",
+  "source": "Aftertake Film editor / Export film button",
+  "sha256": "4230cddbe41f7fce2fd8ce60b5b02121449b51d2b98bdade82232df7ce275a77",
+  "bytes": 19739546,
+  "duration": 116,
+  "frames": 2784,
+  "fps": 24,
+  "width": 1280,
+  "height": 720,
+  "audio": {
+    "rate": 48000,
+    "channels": 2,
+    "peak": 0.46766093373298645,
+    "voiceClipRms": [
+      0.04468117654323578,
+      0.04431700333952904,
+      0.04349050298333168,
+      0.04369815066456795,
+      0.04345789924263954,
+      0.04368451237678528,
+      0.04329570010304451,
+      0.04419919475913048,
+      0.04203153774142265
+    ]
+  },
+  "shots": 22,
+  "titleLayers": 24,
+  "voiceClips": 9,
+  "embeddedProjectMatchesAppExport": true,
+  "sourceHashesMatchPreparedProject": true,
+  "closedVoiceApis": false
+}

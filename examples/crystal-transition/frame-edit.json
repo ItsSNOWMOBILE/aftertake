@@ -1,0 +1,245 @@
+{
+  "id": "5009120d-9816-41d2-9733-032b32541a1f",
+  "request": {
+    "format": "aftertake-frame-edit/1",
+    "clip": {
+      "id": "53d9e920-db14-4c04-8c3f-24a3af56a177",
+      "name": "Forest falls - Mikhail Nilov.mp4",
+      "sha256": "b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57",
+      "width": 768,
+      "height": 432,
+      "duration": 4.208333333333333,
+      "url": "/media/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4"
+    },
+    "trimStart": 0,
+    "prompt": "Replace the waterfall in the center of this forest with a tall translucent turquoise crystal monolith. The monolith has sharply faceted gemstone surfaces and catches soft sunlight. Keep every surrounding tree, leaf, cliff and rock in exactly the same position, with the same camera angle, natural lighting and photorealistic appearance. Change only the waterfall.",
+    "seed": 731,
+    "mode": "fast"
+  },
+  "workflow": {
+    "1": {
+      "class_type": "UnetLoaderGGUF",
+      "inputs": {
+        "unet_name": "qwen-image-edit-2511-Q4_K_M.gguf"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+        "type": "qwen_image",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "qwen_image_vae.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "ModelSamplingAuraFlow",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "shift": 3.1
+      }
+    },
+    "5": {
+      "class_type": "CFGNorm",
+      "inputs": {
+        "model": [
+          "4",
+          0
+        ],
+        "strength": 1,
+        "pre_cfg": false
+      }
+    },
+    "6": {
+      "class_type": "LoraLoaderModelOnly",
+      "inputs": {
+        "model": [
+          "5",
+          0
+        ],
+        "lora_name": "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors",
+        "strength_model": 1
+      }
+    },
+    "8": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "53d9e920-db14-4c04-8c3f-24a3af56a177.mp4",
+        "width": 768,
+        "height": 432,
+        "frames": 1,
+        "fps": 1,
+        "trim_start": 0
+      },
+      "is_changed": [
+        "b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57"
+      ]
+    },
+    "9": {
+      "class_type": "FluxKontextImageScale",
+      "inputs": {
+        "image": [
+          "8",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "TextEncodeQwenImageEditPlus",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "image1": [
+          "9",
+          0
+        ],
+        "prompt": "Replace the waterfall in the center of this forest with a tall translucent turquoise crystal monolith. The monolith has sharply faceted gemstone surfaces and catches soft sunlight. Keep every surrounding tree, leaf, cliff and rock in exactly the same position, with the same camera angle, natural lighting and photorealistic appearance. Change only the waterfall."
+      }
+    },
+    "11": {
+      "class_type": "TextEncodeQwenImageEditPlus",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "image1": [
+          "9",
+          0
+        ],
+        "prompt": ""
+      }
+    },
+    "12": {
+      "class_type": "FluxKontextMultiReferenceLatentMethod",
+      "inputs": {
+        "conditioning": [
+          "10",
+          0
+        ],
+        "reference_latents_method": "index_timestep_zero"
+      }
+    },
+    "13": {
+      "class_type": "FluxKontextMultiReferenceLatentMethod",
+      "inputs": {
+        "conditioning": [
+          "11",
+          0
+        ],
+        "reference_latents_method": "index_timestep_zero"
+      }
+    },
+    "14": {
+      "class_type": "VAEEncode",
+      "inputs": {
+        "pixels": [
+          "9",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "17": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "6",
+          0
+        ],
+        "seed": 731,
+        "steps": 4,
+        "cfg": 1,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "positive": [
+          "12",
+          0
+        ],
+        "negative": [
+          "13",
+          0
+        ],
+        "latent_image": [
+          "14",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "20": {
+      "class_type": "ImageScale",
+      "inputs": {
+        "image": [
+          "19",
+          0
+        ],
+        "upscale_method": "lanczos",
+        "width": 768,
+        "height": 432,
+        "crop": "disabled"
+      }
+    },
+    "21": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "20",
+          0
+        ],
+        "filename_prefix": "aftertake/frame-edit"
+      }
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-17T18:46:11.475Z",
+  "updatedAt": "2026-10-17T18:46:58.213Z",
+  "jobId": "ab6bc3ce-4672-4b69-b160-10e37658fae5",
+  "stage": "Ready to review",
+  "clip": {
+    "id": "5009120d-9816-41d2-9733-032b32541a1f",
+    "name": "Edited frame · Replace the waterfall in the center of this forest with a tall translu",
+    "kind": "image",
+    "width": 768,
+    "height": 432,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "2723bccd53c823e306777d755d3dc0184f28b85e7b6a7bf4294688bea4944858",
+    "url": "/media/5009120d-9816-41d2-9733-032b32541a1f.png"
+  }
+}

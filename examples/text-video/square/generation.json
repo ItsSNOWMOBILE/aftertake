@@ -1,0 +1,239 @@
+{
+  "id": "c045fee5-9891-4484-9e20-ffba476c9c05",
+  "requestKey": "agent-video-a8ccc013cc0eac8d27c40d8a1e88774a3f3d1ac718478cd831a01ca46c279cf3",
+  "requestDigest": "ec486a16abed694abd5a9b859c3f8217942c67614a2610c05070ead114f7c1d3",
+  "request": {
+    "format": "aftertake-text-video/1",
+    "name": "Amber morning square",
+    "prompt": "A photorealistic product film. An unbranded amber glass fragrance bottle with a simple matte black cap stands on pale limestone beside a few fresh green leaves. Soft warm window light shines through the amber glass. A leaf shadow gently moves across the stone in a light breeze; the bottle stays still. Clear coherent glass edges and realistic reflections. No text, labels, logos or people. A single continuous locked-off macro shot, no camera shake. Quiet natural room ambience with a faint rustle of leaves. No speech or music.",
+    "seed": 509019,
+    "aspect": "square",
+    "quality": "draft",
+    "seconds": 2,
+    "sound": false,
+    "cinema": {
+      "movement": "push",
+      "lens": "portrait",
+      "lighting": "daylight",
+      "palette": "warm"
+    }
+  },
+  "workflow": {
+    "1": {
+      "class_type": "UnetLoaderGGUF",
+      "inputs": {
+        "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+        "type": "ltxv",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ltx-2.5-audio-vae-bf16.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "The camera moves slowly forward in one smooth continuous dolly, gently approaching the subject with visible parallax. A photorealistic product film. An unbranded amber glass fragrance bottle with a simple matte black cap stands on pale limestone beside a few fresh green leaves. Soft warm window light shines through the amber glass. A leaf shadow gently moves across the stone in a light breeze; the bottle stays still. Clear coherent glass edges and realistic reflections. No text, labels, logos or people. A single continuous locked-off macro shot, no camera shake. Quiet natural room ambience with a faint rustle of leaves. No speech or music. One continuous cinematic shot. Long-lens character with a gently blurred background, soft bokeh and shallow depth of field. Soft diffused daylight, gently modeled shadows and a natural range of brightness. A restrained warm amber color grade with soft, earthy shadows. The scene remains coherent over time."
+      }
+    },
+    "6": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "LTXVConditioning",
+      "inputs": {
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "frame_rate": 24
+      }
+    },
+    "8": {
+      "class_type": "EmptyLTXVLatentVideo",
+      "inputs": {
+        "width": 512,
+        "height": 512,
+        "length": 49,
+        "batch_size": 1
+      }
+    },
+    "9": {
+      "class_type": "LTXVEmptyLatentAudio",
+      "inputs": {
+        "frames_number": 49,
+        "frame_rate": 24,
+        "batch_size": 1,
+        "audio_vae": [
+          "4",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "LTXVConcatAVLatent",
+      "inputs": {
+        "video_latent": [
+          "8",
+          0
+        ],
+        "audio_latent": [
+          "9",
+          0
+        ]
+      }
+    },
+    "13": {
+      "class_type": "RandomNoise",
+      "inputs": {
+        "noise_seed": 509019
+      }
+    },
+    "14": {
+      "class_type": "KSamplerSelect",
+      "inputs": {
+        "sampler_name": "euler_ancestral"
+      }
+    },
+    "15": {
+      "class_type": "ManualSigmas",
+      "inputs": {
+        "sigmas": "1., 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+      }
+    },
+    "16": {
+      "class_type": "LTXVDualCFGGuider",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "positive": [
+          "7",
+          0
+        ],
+        "negative": [
+          "7",
+          1
+        ],
+        "video_cfg": 1,
+        "audio_cfg": 1
+      }
+    },
+    "17": {
+      "class_type": "SamplerCustomAdvanced",
+      "inputs": {
+        "noise": [
+          "13",
+          0
+        ],
+        "guider": [
+          "16",
+          0
+        ],
+        "sampler": [
+          "14",
+          0
+        ],
+        "sigmas": [
+          "15",
+          0
+        ],
+        "latent_image": [
+          "10",
+          0
+        ]
+      }
+    },
+    "18": {
+      "class_type": "LTXVSeparateAVLatent",
+      "inputs": {
+        "av_latent": [
+          "17",
+          0
+        ]
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "18",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "20": {
+      "class_type": "AftertakeFilmGrade",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "palette": "warm"
+      }
+    },
+    "21": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "20",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/text-video",
+        "recipe_json": "{\"format\":\"aftertake-text-video/1\",\"name\":\"Amber morning square\",\"prompt\":\"A photorealistic product film. An unbranded amber glass fragrance bottle with a simple matte black cap stands on pale limestone beside a few fresh green leaves. Soft warm window light shines through the amber glass. A leaf shadow gently moves across the stone in a light breeze; the bottle stays still. Clear coherent glass edges and realistic reflections. No text, labels, logos or people. A single continuous locked-off macro shot, no camera shake. Quiet natural room ambience with a faint rustle of leaves. No speech or music.\",\"seed\":509019,\"aspect\":\"square\",\"quality\":\"draft\",\"seconds\":2,\"sound\":false,\"cinema\":{\"movement\":\"push\",\"lens\":\"portrait\",\"lighting\":\"daylight\",\"palette\":\"warm\"}}"
+      }
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-18T20:45:48.365Z",
+  "updatedAt": "2026-10-18T20:46:50.486Z",
+  "jobId": "71e6ff7a-f2a1-4152-afde-64e8b0729df0",
+  "stage": "Ready to add to Film",
+  "clip": {
+    "id": "c045fee5-9891-4484-9e20-ffba476c9c05",
+    "name": "Amber morning square",
+    "kind": "video",
+    "width": 512,
+    "height": 512,
+    "duration": 2.0416666666666665,
+    "hasAudio": false,
+    "sha256": "839bc3d4273dd2f2078e41d67e435bf8422fef5e275498ec8cef661bd1529e30",
+    "url": "/media/c045fee5-9891-4484-9e20-ffba476c9c05.mp4"
+  }
+}

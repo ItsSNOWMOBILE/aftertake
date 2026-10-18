@@ -1,0 +1,109 @@
+{
+  "format": "aftertake-voice-project-roundtrip/1",
+  "status": "Actual native UI import, restore narration, prepare, apply and export; after server restart, all exact voices reused again.",
+  "filmId": "64dfa14f-face-45df-8144-9a21b8262868",
+  "duration": 5.958333333333333,
+  "frames": 143,
+  "maximumDecodedFrameRGBMAE": 0,
+  "completeDecodedAudioCorrelation": 1,
+  "voiceReceipts": [
+    {
+      "sha256": "93f608a517de08a43558edda2a979d60d98e6de0ce93b744eca76cb7bfe901ae",
+      "script": "Your morning called.",
+      "words": 3,
+      "timedAndPlainReuseSameAsset": true
+    },
+    {
+      "sha256": "e1bb268b3caf9ea95b1a6285ade1017c880945b1630b59089e61e1d743d1e415",
+      "script": "Start with fresh grounds.",
+      "words": 4,
+      "timedAndPlainReuseSameAsset": true
+    },
+    {
+      "sha256": "992569def73399286316087c5701af7918689df9ce60516d92061ab78d7500bb",
+      "script": "Pour slowly. Savor the moment.",
+      "words": 5,
+      "timedAndPlainReuseSameAsset": true
+    }
+  ],
+  "assetCountBefore": 6,
+  "assetCountAfter": 6,
+  "importedReceiptOriginPreserved": true,
+  "runtime": {
+    "python": "separate CPU film environment",
+    "torchInstalled": false,
+    "kokoroInstalled": false,
+    "configuredNarrationPythonExists": false,
+    "unavailableEnginePorts": [
+      8,
+      9
+    ]
+  },
+  "sha256": "92b1ba4da7ccaa5f4d9cd1ac99e7a3ba1c385e45880bf090266a19a0902f884b",
+  "sourceSHA256": "fdac1b08cd4fa4d49d32f0019ecfb1c1f87c5a3b47e454f5f1da5c22a1da74e1",
+  "limits": "This proves reopening and re-preparing the supplied lines. New scripts and image/video generation still need their documented models.",
+  "legacyProjectMigration": {
+    "changed": [
+      {
+        "project": "examples/agent-edit/project.json",
+        "voiceReceiptsRestored": 3
+      },
+      {
+        "project": "examples/judges-film/agent-project.json",
+        "voiceReceiptsRestored": 3
+      },
+      {
+        "project": "examples/judges-film/project.json",
+        "voiceReceiptsRestored": 21
+      },
+      {
+        "project": "examples/narrated-cut/project.json",
+        "voiceReceiptsRestored": 3
+      },
+      {
+        "project": "examples/narrated-cut/workflow-project.json",
+        "voiceReceiptsRestored": 3
+      },
+      {
+        "project": "examples/social-ad/project-a.json",
+        "voiceReceiptsRestored": 5
+      },
+      {
+        "project": "examples/social-ad/project-b.json",
+        "voiceReceiptsRestored": 5
+      },
+      {
+        "project": "examples/submission-film/project.json",
+        "voiceReceiptsRestored": 20
+      }
+    ],
+    "unresolved": []
+  },
+  "mcpPlanMigration": {
+    "planId": "67a65ef869321fa97edf99b43c1f21afe17f45e54170652f31296d41162b36c6",
+    "originalDraftAndLayerIDsPreserved": true,
+    "originalLedgerAndCreationTimePreserved": true,
+    "portableReceipts": 3,
+    "rejoinedFilmId": "9fb63236-6622-4973-a532-a675e653257d",
+    "newExportStarted": false
+  },
+  "checks": {
+    "typescriptTests": 70,
+    "rendererTests": 12,
+    "productionBuild": "passed",
+    "validatedFilmProjects": 17,
+    "inlineVoiceReceipts": 114,
+    "distinctProjectSourcesHashVerified": 102,
+    "actualUIStylesPreparedWithoutSynthesis": [
+      "spoken",
+      "bold"
+    ],
+    "phoneRecoveryControl": {
+      "viewportWidth": 390,
+      "documentWidth": 375,
+      "panelRight": 344,
+      "buttonRight": 188.21875,
+      "horizontalOverflow": false
+    }
+  }
+}

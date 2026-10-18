@@ -1,0 +1,90 @@
+{
+  "format": "aftertake-film/2",
+  "name": "Type in motion \u2014 four editable presets",
+  "aspect": "landscape",
+  "shots": [
+    {
+      "assetId": "c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "assetId": "c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "assetId": "c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "assetId": "c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "start": 0,
+      "end": 3
+    }
+  ],
+  "titles": [
+    {
+      "text": "Your words.\nIn motion.",
+      "start": 0.1,
+      "end": 2.8,
+      "style": "headline",
+      "position": "center",
+      "animation": "build",
+      "motionDuration": 0.85,
+      "color": "#d5e991",
+      "id": "00000000-0000-4000-8000-000000000001",
+      "fontSize": 112
+    },
+    {
+      "text": "Your next take.\nWritten here.",
+      "start": 3.1,
+      "end": 5.8,
+      "style": "headline",
+      "position": "center",
+      "animation": "typewriter",
+      "motionDuration": 1.7,
+      "color": "#d5e991",
+      "id": "00000000-0000-4000-8000-000000000002",
+      "fontSize": 112
+    },
+    {
+      "text": "MAKE IT\nYOUR OWN.",
+      "start": 6.1,
+      "end": 8.8,
+      "style": "headline",
+      "position": "center",
+      "animation": "impact",
+      "motionDuration": 0.85,
+      "color": "#d5e991",
+      "id": "00000000-0000-4000-8000-000000000003",
+      "fontSize": 112
+    },
+    {
+      "text": "OPEN CODE.\nOPEN POSSIBILITIES.",
+      "start": 9.1,
+      "end": 11.8,
+      "style": "headline",
+      "position": "center",
+      "animation": "wipe",
+      "motionDuration": 0.85,
+      "color": "#d5e991",
+      "id": "00000000-0000-4000-8000-000000000004",
+      "fontSize": 112
+    }
+  ],
+  "audio": [],
+  "sourceVolume": 0,
+  "normalizeAudio": false,
+  "sourceFiles": {
+    "c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f": {
+      "path": "examples/submission-film/media/type-canvas.png",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77"
+    }
+  }
+}

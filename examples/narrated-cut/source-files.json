@@ -1,0 +1,26 @@
+{
+  "6e241a40-611b-4ea0-b4ee-6207a131612a": {
+    "path": "examples/social-ad/media/pour.mp4",
+    "sha256": "b3c109ce61d1232263d6cc8dfaa9c5319104ead2de21b951cdeb5d53068ef0a7"
+  },
+  "b33d9f89-e52b-4db8-80a2-55c9c82baea8": {
+    "path": "examples/social-ad/media/grounds.mp4",
+    "sha256": "dab9e9c00d04452151729afb659df56baf2651c94b28cfd53279192deaa13e32"
+  },
+  "3a8c23b5-7da6-4938-8def-d334d21c43d2": {
+    "path": "examples/social-ad/media/brew.mp4",
+    "sha256": "5977671f7d993691838c1e84e81c231f7fddb308990ccf2b10be966a2c858466"
+  },
+  "f65ab055-57f7-41e2-82aa-a8868649f3f5": {
+    "path": "examples/narrated-cut/voices/line-01.wav",
+    "sha256": "aa3391aafe9d27f462899db5bbfa497e2f51aa11447caaa74658cc6b1a8e29bf"
+  },
+  "7503a331-08a7-423a-a0a5-bc0db7239735": {
+    "path": "examples/narrated-cut/voices/line-02.wav",
+    "sha256": "716698b77c99048010637dc0cad16d9bfcbf0741a589bdfce8f806d076ca92bf"
+  },
+  "e5303629-2035-47ab-ae9e-e07a70a5676b": {
+    "path": "examples/narrated-cut/voices/line-03.wav",
+    "sha256": "9fcfd8de68485755dab58cb3684625619e80a938c446415f1db90252a383b753"
+  }
+}

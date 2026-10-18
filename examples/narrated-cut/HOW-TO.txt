@@ -1,0 +1,38 @@
+Aftertake narrated-cut example and walkthrough
+
+Install the Node dependencies and CPU film runtime:
+  pnpm install
+  python scripts/setup-film.py
+  pnpm demo
+
+Import the exact supplied media and voices:
+  python scripts/import-film-project.py examples/narrated-cut/project.json --url http://127.0.0.1:4312
+  python scripts/import-film-project.py examples/narrated-cut/workflow-project.json --url http://127.0.0.1:4312
+
+In Film, select Import film project and the corresponding JSON.
+No new voice or video generation is required to reopen and export these projects.
+The original three clips remain under examples/social-ad/media/.
+
+To write and voice your own lines, also install local narration:
+  python scripts/setup-narration.py
+
+Arrange pictures, open Make a narrated cut, write one line per picture, prepare
+and review it, then choose Use this narrated cut. Every title and voice remains
+editable. A line must fit its selected In/Out range. The previous cut is retained
+for restoration. Narration uses generic Kokoro presets, not voice cloning.
+
+result.mp4 is the 5.96-second native portrait export.
+workflow.mp4 is the 20.08-second walkthrough, assembled by the local MCP through
+the same native Film renderer. Its ending shows the actual native project before
+its recorded reveal was substituted into the final shot. The final project
+contains that recorded video, and no capture-pass still.
+
+variants/ contains the alternate hook and its native export record. Its footage
+starts and body voices match the first version. workflow-media/ contains actual
+UI recordings and the technical narration. Both directories remain in the
+complete source ZIPs; public players use the finished exports.
+
+Footage: Michael Burrows / Pexels. Original links, licenses and checksums are in
+examples/social-ad/sources.json and ATTRIBUTION.txt. Fictional coffee concept;
+no real commercial offer or creator endorsement. Fonts: Manrope and DM Sans,
+OFL. App code: MIT. Kokoro model license applies separately.

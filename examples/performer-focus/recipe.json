@@ -1,0 +1,109 @@
+{
+  "format": "aftertake/1",
+  "name": "Natural character / focused matte finish",
+  "clip": {
+    "id": "ccc9adc3-ee75-4385-81bd-b4c682827586",
+    "name": "Bridge - Blender Foundation - CC BY 3.0.mp4",
+    "sha256": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19",
+    "width": 768,
+    "height": 432,
+    "duration": 3.125,
+    "url": "/media/ccc9adc3-ee75-4385-81bd-b4c682827586.mp4",
+    "hasAudio": false
+  },
+  "prompt": "Character appearance description: A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers. Background description: A green metal railing on a canal bridge, softly focused leafy trees and buildings, soft natural daylight, realistic contrast.",
+  "cue": {
+    "start": 0,
+    "end": 3.05,
+    "fade": 0,
+    "feather": 0.02,
+    "tracking": "static",
+    "anchor": 0,
+    "strokes": [
+      {
+        "points": [
+          {
+            "x": 0.39,
+            "y": 0.02
+          },
+          {
+            "x": 0.39,
+            "y": 0.3
+          },
+          {
+            "x": 0.39,
+            "y": 0.6
+          },
+          {
+            "x": 0.39,
+            "y": 0.98
+          }
+        ],
+        "radius": 0.27
+      },
+      {
+        "points": [
+          {
+            "x": 0.24,
+            "y": 0.38
+          },
+          {
+            "x": 0.24,
+            "y": 0.76
+          }
+        ],
+        "radius": 0.15,
+        "mode": "paint"
+      }
+    ]
+  },
+  "seed": 5091,
+  "quality": "final",
+  "trimStart": 0,
+  "pipeline": "motion-transfer",
+  "transfer": {
+    "reference": {
+      "id": "9614cce3-3187-4361-b2a2-f4cbec5a99f2",
+      "name": "Natural fictional human - scene-matched Qwen reference.png",
+      "sha256": "220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f",
+      "originalSha256": "35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7",
+      "width": 768,
+      "height": 432,
+      "duration": 1,
+      "url": "/media/9614cce3-3187-4361-b2a2-f4cbec5a99f2.png",
+      "kind": "image"
+    },
+    "motionCaption": "A man talks at a bridge railing, then smiles and turns his head toward the woman on his right. His hands rest near the railing. The camera remains almost stationary.",
+    "poseStrength": 1.4,
+    "focus": {
+      "x": 0.1875,
+      "y": 0,
+      "width": 0.4375,
+      "height": 1
+    },
+    "scope": "cue",
+    "finish": {
+      "generation": {
+        "id": "a0fc490f-9459-4c5f-8518-4680406904c8",
+        "name": "7fa2c03c-c285-45fa-ae6c-4ee486fc2969-raw.mp4",
+        "sha256": "274eb5d7a023cbdd1b382920e200ef9d06fc3d1bdcb77a04e3669932f7948eab",
+        "width": 768,
+        "height": 448,
+        "duration": 3.0416666666666665,
+        "url": "/media/a0fc490f-9459-4c5f-8518-4680406904c8.mp4",
+        "hasAudio": false
+      },
+      "matte": {
+        "id": "0ddfa8c0-6290-4ea5-88e2-5d7ff4ee36da",
+        "name": "focused-subject-matte.mp4",
+        "sha256": "016d27683ef0a81af7772c9325436c0038466c2a025e6dd2c373f2fb421c3382",
+        "width": 768,
+        "height": 432,
+        "duration": 3.0416666666666665,
+        "url": "/media/0ddfa8c0-6290-4ea5-88e2-5d7ff4ee36da.mp4",
+        "hasAudio": false
+      },
+      "settingsKey": "[\"2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19\",\"Character appearance description: A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers. Background description: A green metal railing on a canal bridge, softly focused leafy trees and buildings, soft natural daylight, realistic contrast.\",5091,\"final\",0,\"220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f\",\"A man talks at a bridge railing, then smiles and turns his head toward the woman on his right. His hands rest near the railing. The camera remains almost stationary.\",1.4,[0.1875,0,0.4375,1]]"
+    }
+  }
+}

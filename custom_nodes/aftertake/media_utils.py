@@ -69,3 +69,35 @@ def mux_source_audio(destination, source, trim_start, duration):
     finally:
         Path(temporary).unlink(missing_ok=True)
     return True
+
+
+def mux_generated_audio(destination, audio, duration):
+    """Mux a native Comfy AUDIO tensor without changing encoded video pixels.
+
+    The generated track starts at video time zero. Crop excess decoder context
+    or pad a short track to the exact video duration, as for source audio.
+    """
+    import imageio_ffmpeg
+
+    waveform = audio['waveform']
+    if hasattr(waveform, 'detach'):
+        waveform = waveform.detach().cpu().float().numpy()
+    waveform = np.asarray(waveform, dtype=np.float32)
+    rate = audio['sample_rate']
+    if (not isinstance(rate, int) or not 8000 <= rate <= 192000 or
+            waveform.ndim != 3 or waveform.shape[0] != 1 or waveform.shape[1] not in (1, 2) or
+            not 0 < waveform.shape[2] <= rate * 60 or not np.isfinite(waveform).all()):
+        raise ValueError('Generated audio needs one finite mono/stereo track and a valid sample rate.')
+    destination = Path(destination)
+    with tempfile.TemporaryDirectory(prefix='aftertake-generated-audio-', dir=destination.parent) as temporary:
+        raw, muxed = Path(temporary) / 'audio.f32', Path(temporary) / 'muxed.mp4'
+        waveform[0].T.astype('<f4').tofile(raw)
+        subprocess.run([
+            imageio_ffmpeg.get_ffmpeg_exe(), '-v', 'error', '-y', '-i', str(destination),
+            '-f', 'f32le', '-ar', str(rate), '-ac', str(waveform.shape[1]), '-i', str(raw),
+            '-map', '0:v:0', '-map', '1:a:0', '-c:v', 'copy',
+            '-af', 'apad', '-c:a', 'aac', '-b:a', '192k', '-t', str(duration),
+            '-map_metadata', '0', '-movflags', '+faststart', str(muxed),
+        ], check=True, capture_output=True, timeout=180,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+        os.replace(muxed, destination)

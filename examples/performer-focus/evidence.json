@@ -1,0 +1,177 @@
+{
+  "control": {
+    "renderId": "12369af5-b3e1-4b7f-a580-a018a97bac44",
+    "jobId": "a37982aa-1e24-4d18-8fb9-43058332eb70",
+    "frames": 73,
+    "fps": 24,
+    "dimensions": [
+      768,
+      448
+    ],
+    "sha256": "66a8167534747896c84ea5491dc439e65ef1fa728844c71c0a9dfff10909df2a",
+    "wholeFrameClock": true,
+    "embeddedRecipeMatches": true,
+    "focus": null,
+    "poseStrength": 1.4
+  },
+  "focus": {
+    "renderId": "3db07dd8-d9bf-4764-9920-bbb7867b2d29",
+    "jobId": "78de5e4f-c913-4e8e-8493-d2db1919fd99",
+    "frames": 73,
+    "fps": 24,
+    "dimensions": [
+      768,
+      448
+    ],
+    "sha256": "bdc27441f532f87220e408cefa2d96340bc221ccc14051c71258e69828a909c3",
+    "wholeFrameClock": true,
+    "embeddedRecipeMatches": true,
+    "focus": {
+      "x": 0.1875,
+      "y": 0,
+      "width": 0.4375,
+      "height": 1
+    },
+    "poseStrength": 1.4,
+    "actualFocusedGrid": [
+      608,
+      768
+    ],
+    "focusedOutputSHA256": "a4911059eea270c9c2114fc0468f16bc207b4d59a6b6a01281f04f4e806dc31c"
+  },
+  "standard": {
+    "renderId": "8c69c817-cbea-4511-83e5-d6bfb0c72804",
+    "jobId": "f2f86610-5f1d-4b65-bf14-c2973012a555",
+    "frames": 73,
+    "fps": 24,
+    "dimensions": [
+      768,
+      448
+    ],
+    "sha256": "af7af95cf82e2699039048b339ef8b0a91538377fc3d102ca1d86a9670e130e6",
+    "wholeFrameClock": true,
+    "embeddedRecipeMatches": true,
+    "focus": {
+      "x": 0.1875,
+      "y": 0,
+      "width": 0.4375,
+      "height": 1
+    },
+    "poseStrength": 1
+  },
+  "concise": {
+    "renderId": "7fa2c03c-c285-45fa-ae6c-4ee486fc2969",
+    "jobId": "03be5e50-33ef-4f71-84b0-6d8c036b0354",
+    "frames": 73,
+    "fps": 24,
+    "dimensions": [
+      768,
+      448
+    ],
+    "sha256": "274eb5d7a023cbdd1b382920e200ef9d06fc3d1bdcb77a04e3669932f7948eab",
+    "wholeFrameClock": true,
+    "embeddedRecipeMatches": true,
+    "focus": {
+      "x": 0.1875,
+      "y": 0,
+      "width": 0.4375,
+      "height": 1
+    },
+    "poseStrength": 1.4
+  },
+  "finish": {
+    "renderId": "2142bfcc-c491-4cf3-a2be-69e7b9408c91",
+    "jobId": "bfaa1c5c-08f2-48e4-a2b0-a0f2aaebea29",
+    "frames": 73,
+    "fps": 24,
+    "dimensions": [
+      768,
+      432
+    ],
+    "sha256": "619e6e44b7c4d1632de970791859c44c97289f32045073cc3f49fa75c2d076e2",
+    "wholeFrameClock": true,
+    "embeddedRecipeMatches": true,
+    "focus": {
+      "x": 0.1875,
+      "y": 0,
+      "width": 0.4375,
+      "height": 1
+    },
+    "poseStrength": 1.4
+  },
+  "pairedControl": {
+    "sameSourceAppearanceCaptionsSeedSamplerAndQuality": true,
+    "changedCondition": "Performer focus only, including its required crop/restore graph and generation grid.",
+    "scope": "Local natural-human shot; selected-frame visual comparison. No universal quality claim."
+  },
+  "format": "aftertake-performer-focus/1",
+  "selectedGeneration": "concise",
+  "resultSHA256": "619e6e44b7c4d1632de970791859c44c97289f32045073cc3f49fa75c2d076e2",
+  "finishedDimensions": [
+    768,
+    432
+  ],
+  "finishedFrames": 73,
+  "finishedFPS": 24,
+  "duration": 3.0416666666666665,
+  "encodedCompositeRGBMAE": 1.9360913038253784,
+  "protectedSubjectInteriorEncodedRGBMAE": 1.9913616180419922,
+  "zeroAlphaSourcePixelsExactBeforeResizeAndEncoding": true,
+  "sourceAttribution": "Tears of Steel (2012), Blender Foundation / mango.blender.org; CC BY 3.0. Silent excerpt; fictional generated character replacement.",
+  "matte": {
+    "format": "aftertake-matte-receipt/1",
+    "model": "facebook/sam2.1-hiera-tiny",
+    "revision": "de431c4043854a71d8101e17995dfe596bf101a5",
+    "license": "Apache-2.0",
+    "requestCanonicalSHA256": "0d69a3cef67bf18265ba314d44b4d46748639dc454ff26aadb6bcec5ca91b0e6",
+    "inputs": [
+      {
+        "role": "source",
+        "sha256": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19"
+      },
+      {
+        "role": "generation",
+        "sha256": "274eb5d7a023cbdd1b382920e200ef9d06fc3d1bdcb77a04e3669932f7948eab"
+      }
+    ],
+    "width": 768,
+    "height": 432,
+    "frames": 73,
+    "fps": 24,
+    "outputSHA256": "016d27683ef0a81af7772c9325436c0038466c2a025e6dd2c373f2fb421c3382",
+    "modelFilesVerified": true,
+    "network": "Model download only; local segmentation.",
+    "operation": "Union source and generated replacement subjects, dilate 2px and feather 0.8px; subtract protected subjects with a 1px guard."
+  },
+  "portableMatteRequest": {
+    "path": "matte-request.json",
+    "executedRequest": "research/matte-request.executed.json",
+    "onlyInputPathsRelocated": true,
+    "annotationsAndInputHashesIdentical": true
+  },
+  "review": {
+    "frames": [
+      0,
+      12,
+      24,
+      36,
+      48,
+      60,
+      68,
+      72
+    ],
+    "findings": "Matched source, matte and finished frames at 0, 12, 24, 36, 48, 60, 68 and 72 were visually inspected. Both replacement arms remain complete in those frames; the original woman, including her ending foreground hand and face, is retained. The ending head turn is stronger than the unfocused control. Mouth movement remains exaggerated. No general quality certification.",
+    "limits": [
+      "Mouth movement is exaggerated.",
+      "The head turn improves on this shot; identity, motion and lip-sync remain imperfect.",
+      "A scene-matched appearance and reviewed matte annotations are required.",
+      "No full Higgsfield feature parity or universal quality claim."
+    ]
+  },
+  "validation": {
+    "typescriptTests": 59,
+    "pythonTests": 30,
+    "productionBuild": "passed"
+  },
+  "submissionSent": false
+}

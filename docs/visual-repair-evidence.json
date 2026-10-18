@@ -1,0 +1,106 @@
+{
+  "format": "aftertake-visual-repair/1",
+  "review": 10,
+  "filmId": "74066217-0ffb-4b3f-aaa4-8dea17c036ba",
+  "character": {
+    "renderId": "78f8cf9f-20d3-4569-a8e3-3ee812d3a9be",
+    "jobId": "5edb2f81-d426-4a77-9e7c-acd92834418e",
+    "generationRenderId": "09216280-cc32-4ce8-8d4f-594afc702fcb",
+    "generationJobId": "ebc2352b-1f2a-4c9a-a183-e34453cb06b8",
+    "state": "succeeded",
+    "width": 768,
+    "height": 432,
+    "frames": 73,
+    "fps": 24,
+    "duration": 3.0416666666666665,
+    "embeddedRecipeMatches": true,
+    "driverAndAppearanceBoundSeparately": true,
+    "savedGenerationBoundByActualMP4Receipt": true,
+    "finishUsesExactSavedGeneration": true,
+    "matteSHA256": "078e7c5f801a26a62ba5107dc33767e6fa03cf89a9bc4313e78e2e6c16e4439d",
+    "result": "5ab72a5d19a4d0221c2bb7b682d58a2c9ad5cea7277ba052729aaf6b761bd065",
+    "editorialReview": {
+      "arm": "Expanded cue contains the complete gesture; subject matte bounds the replacement silhouette.",
+      "foreground": "Original woman and her raised metal forearm are protected by a separate tracked subject.",
+      "limitation": "The generated head turn still follows the driver less closely."
+    },
+    "hasAudio": false,
+    "poseStrength": 1.4,
+    "scope": "Local fictional human replacement; source woman and surrounding scene retained."
+  },
+  "matte": {
+    "format": "aftertake-matte-receipt/1",
+    "model": "facebook/sam2.1-hiera-tiny",
+    "revision": "de431c4043854a71d8101e17995dfe596bf101a5",
+    "license": "Apache-2.0",
+    "requestCanonicalSHA256": "a23d85af2549e1e492bcf228e4cbfc3ab4f6f4ae98e9c7eff48e13209f8c1a7e",
+    "inputs": [
+      {
+        "role": "source",
+        "sha256": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19"
+      },
+      {
+        "role": "generation",
+        "sha256": "a672061730237c24376a67dd5b1fe9df7d1e5123c46c47a17692b5a2f0fb8083"
+      }
+    ],
+    "width": 768,
+    "height": 432,
+    "frames": 73,
+    "fps": 24,
+    "outputSHA256": "078e7c5f801a26a62ba5107dc33767e6fa03cf89a9bc4313e78e2e6c16e4439d",
+    "modelFilesVerified": true,
+    "network": "Model download only; local segmentation.",
+    "operation": "Union source and generated replacement subjects, dilate 2px and feather 0.8px; subtract protected subjects with a 1px guard."
+  },
+  "castle": {
+    "renderId": "1139ebf1-6af1-475b-9a92-1e7d8f407f13",
+    "sdkJobId": "cfd82993-5824-4a60-97f0-f555c70eb784",
+    "resultSHA256": "e3373be04dce7bb375284939bd12a06d07e8033732c41f5c80c73d154425fb99",
+    "displayWidth": 768,
+    "displayHeight": 432,
+    "matchSourceColor": true,
+    "method": "Low-frequency correction from the spatial boundary before temporal fades. Generated detail is retained; zero-alpha source pixels are preserved before resizing and encoding."
+  },
+  "transitions": {
+    "method": "Integer-index PyAV picture joins; independent 48kHz audio joins. A moving-bar test checks every frame through two dissolves and an intervening cut, including EOF.",
+    "controlledTestFrames": 90,
+    "controlledMotionCentroidTolerancePx": 0.2,
+    "sourceResultClockContinuous": [
+      "castle",
+      "character"
+    ],
+    "uiZooms": false
+  },
+  "coverage": [
+    "vertical ads",
+    "editable hooks",
+    "typography and local narration",
+    "text-to-image",
+    "image-to-video",
+    "painted and timed region control",
+    "localized VFX",
+    "natural human replacement",
+    "recipe reuse",
+    "editable film export"
+  ],
+  "notDemonstrated": [
+    "ending-frame editing walkthrough",
+    "camera-track editing walkthrough",
+    "portable workflow import walkthrough"
+  ],
+  "limitations": [
+    "The generated character head turn follows the source incompletely.",
+    "SAM masks require reviewed annotations; this is not one-click arbitrary character replacement.",
+    "This is not full Higgsfield feature parity or evidence of general generation quality."
+  ],
+  "validation": {
+    "typescriptTests": 52,
+    "nodePythonTests": 12,
+    "filmPythonTests": 9,
+    "productionBuild": "passed",
+    "filmFrames": 1066,
+    "allVoiceClipsWhole": true
+  },
+  "submission": "Not submitted; Jay reviews and submits."
+}

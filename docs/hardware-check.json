@@ -1,0 +1,46 @@
+{
+  "checkedAt": "2026-10-18T00:41:00Z",
+  "cpu": "Intel Core Ultra 9 285K",
+  "gpu": "NVIDIA GeForce RTX 5080",
+  "npu": {
+    "name": "Intel AI Boost",
+    "windowsStatus": "OK",
+    "openvinoVersion": "2026.4.1-22982-e213a147257-releases/2026/4",
+    "availableDevices": [
+      "CPU",
+      "GPU.0",
+      "GPU.1",
+      "NPU"
+    ],
+    "capabilities": [
+      "FP16",
+      "INT8",
+      "EXPORT_IMPORT"
+    ],
+    "actualInferenceTest": {
+      "device": "NPU",
+      "model": "Static float32 add-and-ReLU, shape [1,32]",
+      "resultCorrect": true,
+      "compileAndInferSeconds": 0.6044637000013608
+    },
+    "kokoroConversion": {
+      "status": "unsupported-by-tested-converter",
+      "operations": [
+        "SequenceAt-17",
+        "SplitToSequence-17"
+      ],
+      "details": "OpenVINO could not convert the pinned Kokoro ONNX graph because of dynamic sequence operations. This is a converter limitation; no Kokoro inference on the NPU is claimed."
+    },
+    "useInCurrentApp": "Not enabled. Image/video generation uses the RTX through ComfyUI; Kokoro narration and the optional Qwen3 script draft use verified CPU runtimes.",
+    "languageModelEvaluation": {
+      "model": "OpenVINO/Phi-3.5-mini-instruct-int4-gq-ov",
+      "revision": "a978384bf94364f0962e0d3d2a9e1912d81fe214",
+      "device": "Intel(R) AI Boost",
+      "loadSeconds": 41.00118650001241,
+      "generationSeconds": 12.418848000001162,
+      "inferenceSucceeded": true,
+      "acceptedForApp": false,
+      "reason": "Unconstrained and schema-constrained copy failed wording, factual or format expectations. No NPU script feature is claimed."
+    }
+  }
+}

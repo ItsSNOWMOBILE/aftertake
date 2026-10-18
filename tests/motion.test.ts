@@ -4,7 +4,8 @@ import { readFile, mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { projectSchema, recipeSchema, renderSettingsKey, usesCue, type Recipe } from '../src/domain.js';
+import { displayDimensions, motionGenerationKey, projectSchema, recipeSchema, renderDimensions, renderSettingsKey, usesCue, type Recipe, type Clip } from '../src/domain.js';
+import { inspectVideoMetadata } from '../server/video-metadata.js';
 import { buildWorkflow, requirements } from '../server/workflow.js';
 import { RecipeAssetError, resolveRecipeAssets } from '../server/assets.js';
 
@@ -76,6 +77,59 @@ test('motion graph conditions appearance and driving pixels separately, crops wi
     assert.deepEqual(graph['21'].inputs.source_audio, ['8', 1]);
     assert.equal(JSON.parse(graph['21'].inputs.recipe_json).transfer.reference.sha256, image.sha256);
     assert.ok(requirements('motion-transfer').menus.every(([node]) => graph[Object.keys(graph).find(id => graph[id].class_type === node)!]));
+  }
+});
+
+test('scene-matched references share the driver transform and display geometry removes latent padding', () => {
+  const clip={...recipe.clip,width:768,height:432};
+  const r={...recipe,clip,quality:'final' as const,transfer:{...recipe.transfer!,reference:{...image,width:768,height:432}}};
+  const graph=buildWorkflow(r) as any;
+  assert.equal(graph['46'].inputs.crop,'disabled');
+  assert.deepEqual(displayDimensions(r),{width:768,height:432});
+  assert.equal(graph['21'].inputs.display_width,768);
+  assert.equal(graph['21'].inputs.display_height,432);
+  assert.equal(graph['8'].inputs.height,448);
+  const cued={...r,transfer:{...r.transfer,scope:'cue' as const},cue:base.cue,matchSourceColor:true};
+  assert.equal((buildWorkflow(cued) as any)['20'].inputs.match_color,true);
+  assert.notEqual(renderSettingsKey(cued),renderSettingsKey({...cued,matchSourceColor:false}));
+});
+
+test('saved motion finishing uses exact raw pixels and a matte, bound to the actual generation receipt', async () => {
+  const folder=await mkdtemp(path.join(tmpdir(),'aftertake-motion-finish-'));
+  const raw=await readFile(new URL('../examples/character-replacement/raw.mp4',import.meta.url));
+  const original=inspectVideoMetadata(raw).recipe,d=renderDimensions(original);
+  const digest=(bytes:Buffer)=>createHash('sha256').update(bytes).digest('hex');
+  const generation:Clip={id:'10000000-0000-4000-8000-000000000001',name:'Raw generation',url:'/media/generation.mp4',
+    sha256:digest(raw),width:d.width,height:d.height,duration:d.duration};
+  const source=await readFile(new URL('../examples/character-replacement/source.mp4',import.meta.url));
+  const appearance=await readFile(new URL('../examples/character-replacement/appearance.png',import.meta.url));
+  const matte:Clip={...original.clip,id:'10000000-0000-4000-8000-000000000002',name:'Matte',url:'/media/matte.mp4',sha256:digest(source)};
+  const draft:Recipe={...original,transfer:{...original.transfer!,scope:'cue',finish:{generation,matte,settingsKey:motionGenerationKey(original)}}};
+  const fixtures:[Clip,Buffer][]=[[draft.clip,source],[draft.transfer!.reference!,appearance],[generation,raw],[matte,source]];
+  try{
+    for(const [clip,bytes] of fixtures){
+      await writeFile(path.join(folder,`${clip.id}.json`),JSON.stringify(clip));
+      await writeFile(path.join(folder,path.basename(clip.url)),bytes);
+    }
+    const resolved=await resolveRecipeAssets(draft,folder);
+    assert.equal(resolved.transfer?.finish?.generation.sha256,generation.sha256);
+    const graph=buildWorkflow(resolved) as any;
+    assert.equal(graph['19'].class_type,'AftertakeLoadClip');
+    assert.equal(graph['19'].inputs.filename,'GENERATION.mp4');
+    assert.deepEqual(graph['51'].inputs,{destination:['9',0],source:['50',0],x:0,y:0,operation:'multiply'});
+    assert.deepEqual(graph['20'].inputs.mask,['51',0]);
+    assert.equal(recipeSchema.safeParse({...draft,transfer:{...draft.transfer,scope:'frame'}}).success,false);
+    const focused={...draft,transfer:{...draft.transfer!,focus:{x:0,y:0,width:1,height:1}}};
+    focused.transfer.finish={...focused.transfer.finish!,settingsKey:motionGenerationKey(focused)};
+    await assert.rejects(resolveRecipeAssets(focused,folder),/different source, appearance or generation settings/);
+    const changed={...draft,seed:draft.seed+1};changed.transfer={...changed.transfer!,finish:{...changed.transfer!.finish!,settingsKey:motionGenerationKey(changed)}};
+    await assert.rejects(resolveRecipeAssets(changed,folder),/different source, appearance or generation settings/);
+    await writeFile(path.join(folder,`${matte.id}.json`),JSON.stringify({...matte,duration:1}));
+    await assert.rejects(resolveRecipeAssets(draft,folder),/full-length video matte/);
+  }finally{
+    assert.equal(path.dirname(path.resolve(folder)),path.resolve(tmpdir()));
+    assert.ok(path.basename(folder).startsWith('aftertake-motion-finish-'));
+    await rm(folder,{recursive:true,force:true});
   }
 });
 

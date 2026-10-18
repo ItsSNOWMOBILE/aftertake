@@ -1,0 +1,47 @@
+{
+  "id": "230db78c-545f-4590-844a-a932e7af5e0e",
+  "requestDigest": "f89e80b7e5d61fcff971a295e7fd99bcba5ddd79af4dd6ed0a57a19276da25af",
+  "request": {
+    "brief": "Coffee beans for people who enjoy slow morning coffee. Warm and simple language. The only facts are coffee beans and brewing coffee. No discounts, claims or product features.",
+    "closingLine": "Make mornings yours.",
+    "variation": 0,
+    "pictures": [
+      {
+        "key": "972b7d03-3eb4-4cda-8db5-14a5eb3d39a7:0",
+        "name": "Dry coffee grounds being poured into a filter",
+        "seconds": 3.25
+      },
+      {
+        "key": "8e0609e4-0d96-470f-8bd3-c198b2d6f95a:0",
+        "name": "Clear water poured over the coffee grounds in the filter",
+        "seconds": 3.5
+      },
+      {
+        "key": "3621a523-131c-45b9-ad91-dd6ede2b2404:0",
+        "name": "Brewed coffee poured from a glass carafe into a ceramic cup",
+        "seconds": 3.5
+      }
+    ]
+  },
+  "state": "ready",
+  "createdAt": "2026-10-18T13:38:13.796Z",
+  "updatedAt": "2026-10-18T13:38:23.405Z",
+  "result": {
+    "lines": [
+      "Pouring coffee beans into a filter.",
+      "Water flows over the grounds.",
+      "Make mornings yours."
+    ],
+    "receipt": {
+      "model": "Qwen3-4B / OpenVINO INT4",
+      "revision": "b467368d16b75df14055562fe927ae8e1f15f7ef",
+      "weightsSha256": "074214fa29ab1b479536fc7184ef3036e7b355a5835e8590b61b70a8de1df2f9",
+      "runtime": "OpenVINO 2026.4.1-22982-e213a147257-releases/2026/4",
+      "device": "CPU",
+      "deviceName": "Intel(R) Core(TM) Ultra 9 285K",
+      "loadSeconds": 1.9277442999882624,
+      "generationSeconds": 5.91569769999478,
+      "structuredOutput": true
+    }
+  }
+}

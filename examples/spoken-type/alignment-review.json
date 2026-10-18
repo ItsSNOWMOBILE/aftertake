@@ -1,0 +1,158 @@
+{
+  "model": "facebook/wav2vec2-base-960h",
+  "revision": "22aad52d435eb6dbaf354bdad9b0da84ce7d6156",
+  "lines": [
+    {
+      "text": "Your morning called.",
+      "decoded": "YOUR MORNING CALLED",
+      "seconds": 0.14000000001396984,
+      "words": [
+        {
+          "text": "Your",
+          "start": 0.1,
+          "end": 0.22
+        },
+        {
+          "text": "morning",
+          "start": 0.28,
+          "end": 0.54
+        },
+        {
+          "text": "called.",
+          "start": 0.6,
+          "end": 0.9
+        }
+      ],
+      "modelWords": [
+        {
+          "text": "Your",
+          "start": 0.119,
+          "end": 0.244
+        },
+        {
+          "text": "morning",
+          "start": 0.294,
+          "end": 0.594
+        },
+        {
+          "text": "called.",
+          "start": 0.644,
+          "end": 1.1733333333333333
+        }
+      ]
+    },
+    {
+      "text": "Start with fresh grounds.",
+      "decoded": "START WITH FRESH GROUNDS",
+      "seconds": 0.10899999999674037,
+      "words": [
+        {
+          "text": "Start",
+          "start": 0.08,
+          "end": 0.28
+        },
+        {
+          "text": "with",
+          "start": 0.34,
+          "end": 0.44
+        },
+        {
+          "text": "fresh",
+          "start": 0.5,
+          "end": 0.68
+        },
+        {
+          "text": "grounds.",
+          "start": 0.76,
+          "end": 1.1400000000000001
+        }
+      ],
+      "modelWords": [
+        {
+          "text": "Start",
+          "start": 0.11533333333333333,
+          "end": 0.3403333333333333
+        },
+        {
+          "text": "with",
+          "start": 0.36533333333333334,
+          "end": 0.49033333333333334
+        },
+        {
+          "text": "fresh",
+          "start": 0.5403333333333333,
+          "end": 0.7403333333333333
+        },
+        {
+          "text": "grounds.",
+          "start": 0.7903333333333333,
+          "end": 1.3653333333333333
+        }
+      ]
+    },
+    {
+      "text": "Pour slowly. Savor the moment.",
+      "decoded": "POR SLOWLY SAVE OR THE MOMENT",
+      "seconds": 0.14100000000325963,
+      "words": [
+        {
+          "text": "Pour",
+          "start": 0.04,
+          "end": 0.22
+        },
+        {
+          "text": "slowly.",
+          "start": 0.32,
+          "end": 0.7000000000000001
+        },
+        {
+          "text": "Savor",
+          "start": 1.1400000000000001,
+          "end": 1.44
+        },
+        {
+          "text": "the",
+          "start": 1.48,
+          "end": 1.54
+        },
+        {
+          "text": "moment.",
+          "start": 1.6,
+          "end": 1.8800000000000001
+        }
+      ],
+      "modelWords": [
+        {
+          "text": "Pour",
+          "start": 0.069,
+          "end": 0.294
+        },
+        {
+          "text": "slowly.",
+          "start": 0.369,
+          "end": 0.919
+        },
+        {
+          "text": "Savor",
+          "start": 1.1840000000000002,
+          "end": 1.484
+        },
+        {
+          "text": "the",
+          "start": 1.5090000000000001,
+          "end": 1.5590000000000002
+        },
+        {
+          "text": "moment.",
+          "start": 1.609,
+          "end": 2.095333333333333
+        }
+      ]
+    }
+  ],
+  "modelSHA256": "8aa76ab2243c81747a1f832954586bc566090c83a0ac167df6f31f0fa917d74a",
+  "license": "Apache-2.0",
+  "method": "Local CPU, evaluation mode. Custom CTC Viterbi alignment supplied the existing script. Independent greedy transcripts are retained, including errors.",
+  "maximumWordStartDifference": 0.04899999999999999,
+  "scope": "Twelve words in this exact three-line example. Model estimates and forced-alignment estimates; no universal timing-accuracy claim. Review-only model, not an app dependency."
+}

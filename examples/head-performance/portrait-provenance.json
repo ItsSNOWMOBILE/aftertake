@@ -1,0 +1,519 @@
+{
+  "format": "aftertake-aligned-portrait-provenance/1",
+  "description": "Aligned 512-square RGB crop of the first frame of an actual local Wan Animate head-crop study. This still supplies identity to LivePortrait; the rejected full crop is not composited into the finished scene.",
+  "portraitSHA256": "7c390808f752a32362ae43ab0c24b868e6dd2605574a1028c394d499a3d6008f",
+  "nativeRenderId": "12d2f3dd-7bab-4f40-997a-159e1a6ec7f2",
+  "nativeSDKJobId": "46adf1af-33d8-445c-b2ac-3d56b720648c",
+  "nativeWorkflow": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "wan_animate_2_distill_int8_convrot.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        "type": "wan",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "Wan2_1_VAE_bf16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "CLIPVisionLoader",
+      "inputs": {
+        "clip_name": "clip_vision_h.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "Character appearance description: A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers. Background description: A green metal railing on a canal bridge, softly focused leafy trees and buildings, soft natural daylight, realistic contrast."
+      }
+    },
+    "6": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "frozen motion, blurred hands, malformed limbs, extra arms, text, logos"
+      }
+    },
+    "7": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "A man talks at a bridge railing, then smiles and turns his head toward the woman on his right. His hands rest near the railing. The camera remains almost stationary."
+      }
+    },
+    "8": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "00d3c2d1-1716-441f-9a71-0cf288030e2d.mp4",
+        "width": 768,
+        "height": 448,
+        "frames": 73,
+        "fps": 24,
+        "trim_start": 0
+      },
+      "is_changed": [
+        "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19"
+      ]
+    },
+    "9": {
+      "class_type": "AftertakeCueMask",
+      "inputs": {
+        "width": 768,
+        "height": 448,
+        "frames": 73,
+        "fps": 24,
+        "cue_json": "{\"start\":0,\"end\":3.05,\"fade\":0,\"feather\":0.02,\"tracking\":\"static\",\"anchor\":0,\"strokes\":[{\"points\":[{\"x\":0.39,\"y\":0.02},{\"x\":0.39,\"y\":0.3},{\"x\":0.39,\"y\":0.6},{\"x\":0.39,\"y\":0.98}],\"radius\":0.27},{\"points\":[{\"x\":0.24,\"y\":0.38},{\"x\":0.24,\"y\":0.76}],\"radius\":0.15,\"mode\":\"paint\"}]}",
+        "images": [
+          "8",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "ImageFromBatch",
+      "inputs": {
+        "image": [
+          "52",
+          0
+        ],
+        "batch_index": 0,
+        "length": 1
+      }
+    },
+    "11": {
+      "class_type": "CLIPVisionEncode",
+      "inputs": {
+        "clip_vision": [
+          "4",
+          0
+        ],
+        "image": [
+          "46",
+          0
+        ],
+        "crop": "none"
+      }
+    },
+    "12": {
+      "class_type": "CLIPVisionEncode",
+      "inputs": {
+        "clip_vision": [
+          "4",
+          0
+        ],
+        "image": [
+          "10",
+          0
+        ],
+        "crop": "none"
+      }
+    },
+    "13": {
+      "class_type": "WanAnimate2ToVideo",
+      "inputs": {
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "width": 768,
+        "height": 672,
+        "length": 73,
+        "batch_size": 1,
+        "reference_image": [
+          "46",
+          0
+        ],
+        "pose_video": [
+          "52",
+          0
+        ],
+        "clip_vision_output": [
+          "11",
+          0
+        ],
+        "positive_pose": [
+          "7",
+          0
+        ],
+        "clip_vision_output_pose": [
+          "12",
+          0
+        ],
+        "video_frame_offset": 0,
+        "pose_strength": 1.4,
+        "pose_start_percent": 0,
+        "pose_end_percent": 1,
+        "reference_image_strength": 1
+      }
+    },
+    "14": {
+      "class_type": "WanAnimate2Cache",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "device": "gpu",
+        "dtype": "int4"
+      }
+    },
+    "15": {
+      "class_type": "ModelSamplingSD3",
+      "inputs": {
+        "model": [
+          "14",
+          0
+        ],
+        "shift": 5
+      }
+    },
+    "16": {
+      "class_type": "BasicScheduler",
+      "inputs": {
+        "model": [
+          "14",
+          0
+        ],
+        "scheduler": "simple",
+        "steps": 10,
+        "denoise": 1
+      }
+    },
+    "17": {
+      "class_type": "SamplerCustom",
+      "inputs": {
+        "model": [
+          "15",
+          0
+        ],
+        "add_noise": true,
+        "noise_seed": 5091,
+        "cfg": 1,
+        "positive": [
+          "13",
+          0
+        ],
+        "negative": [
+          "13",
+          1
+        ],
+        "sampler": [
+          "23",
+          0
+        ],
+        "sigmas": [
+          "16",
+          0
+        ],
+        "latent_image": [
+          "13",
+          2
+        ]
+      }
+    },
+    "18": {
+      "class_type": "TrimVideoLatent",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "trim_amount": [
+          "13",
+          3
+        ]
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "18",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "20": {
+      "class_type": "AftertakeComposite",
+      "inputs": {
+        "original": [
+          "8",
+          0
+        ],
+        "generated": [
+          "54",
+          0
+        ],
+        "mask": [
+          "9",
+          0
+        ],
+        "match_color": false,
+        "spatial_mask": [
+          "9",
+          2
+        ]
+      }
+    },
+    "21": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "20",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/motion-transfer",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Head crop / paired motion study\",\"clip\":{\"id\":\"4696deaf-2aed-4318-b983-74aac999ab9a\",\"name\":\"Bridge-head-study.mp4\",\"sha256\":\"2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19\",\"width\":768,\"height\":432,\"duration\":3.125,\"url\":\"/media/4696deaf-2aed-4318-b983-74aac999ab9a.mp4\",\"hasAudio\":false},\"prompt\":\"Character appearance description: A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers. Background description: A green metal railing on a canal bridge, softly focused leafy trees and buildings, soft natural daylight, realistic contrast.\",\"cue\":{\"start\":0,\"end\":3.05,\"fade\":0,\"feather\":0.02,\"tracking\":\"static\",\"anchor\":0,\"strokes\":[{\"points\":[{\"x\":0.39,\"y\":0.02},{\"x\":0.39,\"y\":0.3},{\"x\":0.39,\"y\":0.6},{\"x\":0.39,\"y\":0.98}],\"radius\":0.27},{\"points\":[{\"x\":0.24,\"y\":0.38},{\"x\":0.24,\"y\":0.76}],\"radius\":0.15,\"mode\":\"paint\"}]},\"seed\":5091,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"motion-transfer\",\"transfer\":{\"reference\":{\"id\":\"760b9895-fd15-416c-a755-55f71139cc7e\",\"name\":\"Scene-matched-character.png\",\"sha256\":\"220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f\",\"originalSha256\":\"220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/760b9895-fd15-416c-a755-55f71139cc7e.png\",\"kind\":\"image\"},\"motionCaption\":\"A man talks at a bridge railing, then smiles and turns his head toward the woman on his right. His hands rest near the railing. The camera remains almost stationary.\",\"poseStrength\":1.4,\"focus\":{\"x\":0.25,\"y\":0,\"width\":0.25,\"height\":0.38},\"scope\":\"cue\"}}",
+        "source_audio": [
+          "8",
+          1
+        ],
+        "audio_start": 0,
+        "display_width": 768,
+        "display_height": 432
+      }
+    },
+    "22": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "54",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/generation",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Head crop / paired motion study\",\"clip\":{\"id\":\"4696deaf-2aed-4318-b983-74aac999ab9a\",\"name\":\"Bridge-head-study.mp4\",\"sha256\":\"2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19\",\"width\":768,\"height\":432,\"duration\":3.125,\"url\":\"/media/4696deaf-2aed-4318-b983-74aac999ab9a.mp4\",\"hasAudio\":false},\"prompt\":\"Character appearance description: A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers. Background description: A green metal railing on a canal bridge, softly focused leafy trees and buildings, soft natural daylight, realistic contrast.\",\"cue\":{\"start\":0,\"end\":3.05,\"fade\":0,\"feather\":0.02,\"tracking\":\"static\",\"anchor\":0,\"strokes\":[{\"points\":[{\"x\":0.39,\"y\":0.02},{\"x\":0.39,\"y\":0.3},{\"x\":0.39,\"y\":0.6},{\"x\":0.39,\"y\":0.98}],\"radius\":0.27},{\"points\":[{\"x\":0.24,\"y\":0.38},{\"x\":0.24,\"y\":0.76}],\"radius\":0.15,\"mode\":\"paint\"}]},\"seed\":5091,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"motion-transfer\",\"transfer\":{\"reference\":{\"id\":\"760b9895-fd15-416c-a755-55f71139cc7e\",\"name\":\"Scene-matched-character.png\",\"sha256\":\"220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f\",\"originalSha256\":\"220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/760b9895-fd15-416c-a755-55f71139cc7e.png\",\"kind\":\"image\"},\"motionCaption\":\"A man talks at a bridge railing, then smiles and turns his head toward the woman on his right. His hands rest near the railing. The camera remains almost stationary.\",\"poseStrength\":1.4,\"focus\":{\"x\":0.25,\"y\":0,\"width\":0.25,\"height\":0.38},\"scope\":\"cue\"}}"
+      }
+    },
+    "23": {
+      "class_type": "KSamplerSelect",
+      "inputs": {
+        "sampler_name": "lcm"
+      }
+    },
+    "45": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "9614cce3-3187-4361-b2a2-f4cbec5a99f2.png",
+        "width": 768,
+        "height": 432,
+        "frames": 1,
+        "fps": 24,
+        "trim_start": 0
+      },
+      "is_changed": [
+        "220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f"
+      ]
+    },
+    "46": {
+      "class_type": "AftertakeCropRegion",
+      "inputs": {
+        "images": [
+          "53",
+          0
+        ],
+        "x": 192,
+        "y": 0,
+        "width": 192,
+        "height": 171,
+        "target_width": 768,
+        "target_height": 672
+      }
+    },
+    "52": {
+      "class_type": "AftertakeCropRegion",
+      "inputs": {
+        "images": [
+          "8",
+          0
+        ],
+        "x": 192,
+        "y": 0,
+        "width": 192,
+        "height": 171,
+        "target_width": 768,
+        "target_height": 672
+      }
+    },
+    "53": {
+      "class_type": "ImageScale",
+      "inputs": {
+        "image": [
+          "45",
+          0
+        ],
+        "upscale_method": "lanczos",
+        "width": 768,
+        "height": 448,
+        "crop": "disabled"
+      }
+    },
+    "54": {
+      "class_type": "AftertakeRestoreRegion",
+      "inputs": {
+        "original": [
+          "8",
+          0
+        ],
+        "generated": [
+          "19",
+          0
+        ],
+        "x": 192,
+        "y": 0,
+        "width": 192,
+        "height": 171
+      }
+    },
+    "55": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/focused-generation",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Head crop / paired motion study\",\"clip\":{\"id\":\"4696deaf-2aed-4318-b983-74aac999ab9a\",\"name\":\"Bridge-head-study.mp4\",\"sha256\":\"2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19\",\"width\":768,\"height\":432,\"duration\":3.125,\"url\":\"/media/4696deaf-2aed-4318-b983-74aac999ab9a.mp4\",\"hasAudio\":false},\"prompt\":\"Character appearance description: A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers. Background description: A green metal railing on a canal bridge, softly focused leafy trees and buildings, soft natural daylight, realistic contrast.\",\"cue\":{\"start\":0,\"end\":3.05,\"fade\":0,\"feather\":0.02,\"tracking\":\"static\",\"anchor\":0,\"strokes\":[{\"points\":[{\"x\":0.39,\"y\":0.02},{\"x\":0.39,\"y\":0.3},{\"x\":0.39,\"y\":0.6},{\"x\":0.39,\"y\":0.98}],\"radius\":0.27},{\"points\":[{\"x\":0.24,\"y\":0.38},{\"x\":0.24,\"y\":0.76}],\"radius\":0.15,\"mode\":\"paint\"}]},\"seed\":5091,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"motion-transfer\",\"transfer\":{\"reference\":{\"id\":\"760b9895-fd15-416c-a755-55f71139cc7e\",\"name\":\"Scene-matched-character.png\",\"sha256\":\"220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f\",\"originalSha256\":\"220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/760b9895-fd15-416c-a755-55f71139cc7e.png\",\"kind\":\"image\"},\"motionCaption\":\"A man talks at a bridge railing, then smiles and turns his head toward the woman on his right. His hands rest near the railing. The camera remains almost stationary.\",\"poseStrength\":1.4,\"focus\":{\"x\":0.25,\"y\":0,\"width\":0.25,\"height\":0.38},\"scope\":\"cue\"}}"
+      }
+    }
+  },
+  "nativeRecipe": {
+    "format": "aftertake/1",
+    "name": "Head crop / paired motion study",
+    "clip": {
+      "id": "4696deaf-2aed-4318-b983-74aac999ab9a",
+      "name": "Bridge-head-study.mp4",
+      "sha256": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19",
+      "width": 768,
+      "height": 432,
+      "duration": 3.125,
+      "url": "/media/4696deaf-2aed-4318-b983-74aac999ab9a.mp4",
+      "hasAudio": false
+    },
+    "prompt": "Character appearance description: A natural-looking man with short wavy dark hair and light stubble, wearing a matte brown field jacket over an oatmeal sweater and charcoal trousers. Background description: A green metal railing on a canal bridge, softly focused leafy trees and buildings, soft natural daylight, realistic contrast.",
+    "cue": {
+      "start": 0,
+      "end": 3.05,
+      "fade": 0,
+      "feather": 0.02,
+      "tracking": "static",
+      "anchor": 0,
+      "strokes": [
+        {
+          "points": [
+            {
+              "x": 0.39,
+              "y": 0.02
+            },
+            {
+              "x": 0.39,
+              "y": 0.3
+            },
+            {
+              "x": 0.39,
+              "y": 0.6
+            },
+            {
+              "x": 0.39,
+              "y": 0.98
+            }
+          ],
+          "radius": 0.27
+        },
+        {
+          "points": [
+            {
+              "x": 0.24,
+              "y": 0.38
+            },
+            {
+              "x": 0.24,
+              "y": 0.76
+            }
+          ],
+          "radius": 0.15,
+          "mode": "paint"
+        }
+      ]
+    },
+    "seed": 5091,
+    "quality": "final",
+    "trimStart": 0,
+    "pipeline": "motion-transfer",
+    "transfer": {
+      "reference": {
+        "id": "760b9895-fd15-416c-a755-55f71139cc7e",
+        "name": "Scene-matched-character.png",
+        "sha256": "220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f",
+        "originalSha256": "220c6e0a3f8b49a31d1f073c4a854d310007b021d8f8c513acdc84b90c6edb3f",
+        "width": 768,
+        "height": 432,
+        "duration": 1,
+        "url": "/media/760b9895-fd15-416c-a755-55f71139cc7e.png",
+        "kind": "image"
+      },
+      "motionCaption": "A man talks at a bridge railing, then smiles and turns his head toward the woman on his right. His hands rest near the railing. The camera remains almost stationary.",
+      "poseStrength": 1.4,
+      "focus": {
+        "x": 0.25,
+        "y": 0,
+        "width": 0.25,
+        "height": 0.38
+      },
+      "scope": "cue"
+    }
+  },
+  "focusedMovieSHA256": "189babe12063e926bd5d774479f664c6cf88652eb65d066ffd22fb7b2b4170ef",
+  "selectedFrame": 0,
+  "alignment": {
+    "landmarkBoxOn768x672": [
+      210,
+      40,
+      680,
+      500
+    ],
+    "landmarkModel": "KlingTeam/LivePortrait landmark.onnx, pinned in docs/models-face-performance.json",
+    "crop": {
+      "dsize": 512,
+      "scale": 2.3,
+      "vy_ratio": -0.125
+    },
+    "implementation": "scripts/create-head-performance.py reads these already-aligned pixels directly."
+  },
+  "sourceAttribution": "Tears of Steel (2012), Blender Foundation, CC BY 3.0; fictional generated appearance. No actor or creator endorsement."
+}

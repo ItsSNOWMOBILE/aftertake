@@ -1,0 +1,65 @@
+{
+  "name": "Slow mornings / agent edit proof",
+  "aspect": "portrait",
+  "brief": "A short coffee concept ad. Pair every line with matching footage; keep the words and cuts editable.",
+  "sourceVolume": 0,
+  "normalizeAudio": true,
+  "beats": [
+    {
+      "name": "Beans",
+      "purpose": "Introduce the grounds",
+      "visuals": [
+        {
+          "assetId": "520102fc-80b0-4ad0-8eb6-56ae58027d2f",
+          "sha256": "dab9e9c00d04452151729afb659df56baf2651c94b28cfd53279192deaa13e32",
+          "start": 2.75,
+          "end": 5
+        }
+      ],
+      "voice": {
+        "assetId": "dc7aea90-90fe-4a19-ae14-b315fded1776",
+        "sha256": "3ee2aac106ca9c9621914d879378be36f4a9107daeba02b494f064a96cc57280"
+      },
+      "animation": "build",
+      "fontSize": 72
+    },
+    {
+      "name": "Pour",
+      "purpose": "Let the pouring action breathe",
+      "visuals": [
+        {
+          "assetId": "48975c40-f4a0-4de8-ab1a-5645fa5daff1",
+          "sha256": "b3c109ce61d1232263d6cc8dfaa9c5319104ead2de21b951cdeb5d53068ef0a7",
+          "start": 1,
+          "end": 3.25,
+          "dissolve": 0.125
+        }
+      ],
+      "voice": {
+        "assetId": "2bdd78dd-3766-4d75-970f-6b0e591ed651",
+        "sha256": "36e67476d043d7bd4a43fba5be4b5006d4c28c4196a0f6fc3550413aed9d7a1d"
+      },
+      "animation": "wipe",
+      "fontSize": 72
+    },
+    {
+      "name": "Brew",
+      "purpose": "Close on the brewing ritual",
+      "visuals": [
+        {
+          "assetId": "518444e0-1635-4017-a8c7-df15d08a837d",
+          "sha256": "5977671f7d993691838c1e84e81c231f7fddb308990ccf2b10be966a2c858466",
+          "start": 4,
+          "end": 6.25,
+          "dissolve": 0.125
+        }
+      ],
+      "voice": {
+        "assetId": "2ddacd50-883c-4a27-ae94-78eaa79fc68a",
+        "sha256": "66cb744c810062d99aeae5fd2d13159d293c4cbaea1e36b9a2c328a9b6be43c8"
+      },
+      "animation": "fade",
+      "fontSize": 72
+    }
+  ]
+}

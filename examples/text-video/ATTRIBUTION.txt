@@ -1,0 +1,21 @@
+Aftertake text-to-video examples, October 18, 2026
+
+Original prompts and locally generated fictional scenes by Aftertake contributors.
+No source image, footage, external audio recording, real product, actor likeness,
+brand affiliation or endorsement is used in these two examples.
+
+Model: Lightricks LTX-2.5, distilled GGUF conversion by Unsloth; native Gemma 4
+text encoder, LTX video VAE and audio VAE. Exact repositories, pinned revisions,
+file sizes and SHA-256 values: docs/models-text-video.json.
+https://huggingface.co/Lightricks/LTX-2.5
+https://huggingface.co/unsloth/LTX-2.5-GGUF
+
+LTX and Gemma model licenses/output terms apply separately from the MIT app.
+These files are research/demo examples; no general commercial-rights warranty
+or product-identity consistency is implied.
+
+Workflow reference: official ComfyUI LTX-2.5 native text-to-video template.
+https://docs.comfy.org/tutorials/video/ltx/ltx-2-5
+
+The studio capture includes Manrope / DM Sans fonts under SIL OFL; notices are
+included under public/fonts and docs/assets.

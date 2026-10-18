@@ -1,0 +1,39 @@
+{
+  "filmId": "219e93f4-3d04-4c25-9ec1-0e7227f61793",
+  "sha256": "69d709f353879959a0ba6c3183e3d1b69ab08d2237584c0dc0ab7c069369a4f1",
+  "video": "result.mp4",
+  "reviewDirectory": "examples/agent-edit",
+  "embeddedProjectMatches": true,
+  "width": 720,
+  "height": 1280,
+  "fps": 24,
+  "frameCount": 156,
+  "duration": 6.5,
+  "maxVideoTimestampDeviationSeconds": 5.898059818321144e-16,
+  "frames": [
+    {
+      "requestedTime": 1.125,
+      "decodedTime": 1.125,
+      "file": "review-1.jpg"
+    },
+    {
+      "requestedTime": 3.25,
+      "decodedTime": 3.25,
+      "file": "review-2.jpg"
+    },
+    {
+      "requestedTime": 5.375,
+      "decodedTime": 5.375,
+      "file": "review-3.jpg"
+    }
+  ],
+  "audio": {
+    "decodedValues": 624000,
+    "rms": 0.09940670471227872,
+    "samplePeak": 0.8414506316184998,
+    "samplesAtOrAboveFullScale": 0,
+    "maxTimestampGapSeconds": 8.881784197001252e-16
+  },
+  "notice": "Decoded sample diagnostics and selected frames; not a perceptual or editorial quality score.",
+  "review": "Inspect all returned frames and listen to the full film before declaring the edit acceptable."
+}

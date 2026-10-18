@@ -1,8 +1,8 @@
 import { renderDimensions, type Recipe } from './domain';
 
 export type Template = {
-  slug: string; title: string; description: string; category: 'effects' | 'camera'; tags: string[];
-  poster: string; result: string; source: string; reference?: string; frameRecipe?: string; credit: string; sourceUrl?: string; license: string;
+  slug: string; title: string; description: string; category: 'effects' | 'camera' | 'motion'; tags: string[];
+  poster: string; result: string; source: string; reference?: string; frameRecipe?: string; imageRecipe?: string; credit: string; sourceUrl?: string; license: string;
   recipe: Recipe; renderId: string;
 };
 export const templateNotes: Record<string, Pick<Template, 'description' | 'category' | 'tags'>> = {
@@ -13,14 +13,28 @@ export const templateNotes: Record<string, Pick<Template, 'description' | 'categ
   'guided-pullback': { description: 'Pull back from a still frame using explicit framing tracks and a consistent monochrome grade.', category: 'camera', tags: ['Pull back', 'Motion tracks', 'Black and white', 'Cinematography'] },
   'reference-portal': { description: 'Guide the appearance with an edited first frame, then choose where and when the portal appears.', category: 'effects', tags: ['Edited frame', 'Appearance', 'Portal', 'Inpainting'] },
   'crystal-forest': { description: 'Create a crystal appearance with local Qwen editing, then carry it into a timed forest transformation.', category: 'effects', tags: ['Crystal', 'Frame editor', 'Qwen', 'Edited frame', 'Inpainting'] },
+  signal: { description: 'Create a knitted character with local Qwen editing, then transfer an original robot performance with Wan Animate 2.', category: 'motion', tags: ['Character', 'Motion transfer', 'Wan Animate 2', 'Qwen', 'Appearance'] },
+  'crystal-transition': { description: 'Give a forest shot a crystalline destination with actual starting and ending image guides.', category: 'camera', tags: ['First and last', 'Ending frame', 'Transition', 'Crystal', 'LTX-2.5'] },
+  'coastal-kingdom': { description: 'Replace a coastal lighthouse with a fantasy castle using an edited frame and a timed, flow-tracked painted region.', category: 'effects', tags: ['Castle', 'Landscape', 'Frame editor', 'Qwen', 'Inpainting', 'Tracking'] },
+  'castle-pullback': { description: 'Generate a new coastal castle shot from a locally edited still, guided by explicit pullback framing tracks.', category: 'camera', tags: ['Castle', 'Pull back', 'Motion tracks', 'Still image', 'LTX-2.5'] },
+  'winter-valley': { description: 'Turn green alpine slopes into deep winter with a locally edited appearance and a timed, tracked cue.', category: 'effects', tags: ['Winter', 'Snow', 'Landscape', 'Qwen', 'Inpainting', 'Tracking'] },
+  observatory: { description: 'Imagine an observatory from words with Z-Image Turbo, then animate the generated frame with local LTX and pullback tracks.', category: 'camera', tags: ['Text to image', 'Z-Image Turbo', 'Pull back', 'Motion tracks', 'LTX-2.5'] },
 };
 
 export function applyTemplate(current: Recipe, template: Template): Recipe {
-  if (current.clip.kind === 'image' && template.recipe.pipeline !== 'cinema') throw Error('Choose a video source for a region effect.');
+  if (current.clip.kind === 'image' && template.recipe.pipeline !== 'cinema') throw Error('Choose a video source for this recipe.');
   const cinema = template.recipe.pipeline === 'cinema';
   const result: Recipe = { ...current, pipeline: template.recipe.pipeline, editReference: undefined, endFrame: undefined, transfer: undefined, directionStrength: template.recipe.directionStrength || 1,
     ...(cinema ? { cinema: { ...template.recipe.cinema! }, prompt: current.pipeline === 'cinema' ? current.prompt : 'A calm, realistic continuous shot of this place. Fine textures stay coherent, with gentle natural motion.' }
       : { prompt: template.recipe.prompt }) };
+  if (template.recipe.pipeline === 'motion-transfer') {
+    result.prompt = current.pipeline === 'motion-transfer' ? current.prompt : 'A continuous shot of the character in the appearance image performing the gesture from the driving video. Preserve the character and scene.';
+    result.transfer = { scope: template.recipe.transfer?.scope || 'frame', reference: current.pipeline === 'motion-transfer' ? current.transfer?.reference : undefined,
+      motionCaption: current.pipeline === 'motion-transfer' ? current.transfer?.motionCaption : undefined,
+      poseStrength: current.pipeline === 'motion-transfer' ? current.transfer?.poseStrength : undefined };
+  }
+  if (cinema && template.recipe.endFrame && current.pipeline !== 'cinema')
+    result.prompt = 'A smooth continuous transition from the selected starting frame to the chosen ending image. Keep the camera stable and the surrounding scene coherent.';
   const d = renderDimensions(result);
   result.cue = { ...current.cue, end: Math.min(current.cue.end, d.duration),
     start: Math.min(current.cue.start, Math.max(0, Math.min(current.cue.end, d.duration) - .1)),

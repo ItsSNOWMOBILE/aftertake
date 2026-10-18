@@ -1,0 +1,132 @@
+{
+  "id": "67a65ef869321fa97edf99b43c1f21afe17f45e54170652f31296d41162b36c6",
+  "createdAt": "2026-10-18T11:24:48.902Z",
+  "plan": {
+    "name": "Coffee / agent edit",
+    "aspect": "portrait",
+    "sourceVolume": 0,
+    "normalizeAudio": true,
+    "beats": [
+      {
+        "name": "Coffee line 1",
+        "visuals": [
+          {
+            "assetId": "cf321755-57ed-4c4b-9348-fc201c173fbf",
+            "dissolve": 0,
+            "start": 0.5,
+            "end": 2.1666666666666665,
+            "sha256": "b3c109ce61d1232263d6cc8dfaa9c5319104ead2de21b951cdeb5d53068ef0a7"
+          }
+        ],
+        "voice": {
+          "assetId": "c38d630a-749c-4014-9962-09045dca0358",
+          "sha256": "93f608a517de08a43558edda2a979d60d98e6de0ce93b744eca76cb7bfe901ae"
+        },
+        "voiceLead": 0.125,
+        "tail": 0.25,
+        "animation": "spoken",
+        "style": "headline",
+        "position": "center",
+        "captionTail": 0.08,
+        "fontSize": 132,
+        "color": "#d5e991"
+      },
+      {
+        "name": "Coffee line 2",
+        "visuals": [
+          {
+            "assetId": "9736d25f-9f79-48a5-8d7d-157518606acc",
+            "dissolve": 0.125,
+            "start": 0.75,
+            "end": 2.625,
+            "sha256": "dab9e9c00d04452151729afb659df56baf2651c94b28cfd53279192deaa13e32"
+          }
+        ],
+        "voice": {
+          "assetId": "e73bcee5-17de-4d2d-8173-2a50d17e0b8a",
+          "sha256": "e1bb268b3caf9ea95b1a6285ade1017c880945b1630b59089e61e1d743d1e415"
+        },
+        "voiceLead": 0.125,
+        "tail": 0.25,
+        "animation": "spoken",
+        "style": "headline",
+        "position": "center",
+        "captionTail": 0.08,
+        "fontSize": 132,
+        "color": "#d5e991"
+      },
+      {
+        "name": "Coffee line 3",
+        "visuals": [
+          {
+            "assetId": "5f947a79-d19b-43aa-8f88-e5a03d9b3eba",
+            "dissolve": 0.125,
+            "start": 0.5,
+            "end": 3.1666666666666665,
+            "sha256": "5977671f7d993691838c1e84e81c231f7fddb308990ccf2b10be966a2c858466"
+          }
+        ],
+        "voice": {
+          "assetId": "81dca322-f17f-46d6-b5c7-74335b9c8a59",
+          "sha256": "992569def73399286316087c5701af7918689df9ce60516d92061ab78d7500bb"
+        },
+        "voiceLead": 0.125,
+        "tail": 0.25,
+        "animation": "spoken",
+        "style": "headline",
+        "position": "center",
+        "captionTail": 0.08,
+        "fontSize": 132,
+        "color": "#d5e991"
+      }
+    ]
+  },
+  "ledger": [
+    {
+      "name": "Coffee line 1",
+      "start": 0,
+      "end": 1.6666666666666667,
+      "voiceStart": 0.125,
+      "voiceEnd": 1.3782916666666667,
+      "spokenText": "Your morning called.",
+      "caption": "Your morning called.",
+      "shotNumbers": [
+        1
+      ]
+    },
+    {
+      "name": "Coffee line 2",
+      "start": 1.5416666666666667,
+      "end": 3.4166666666666665,
+      "voiceStart": 1.6666666666666667,
+      "voiceEnd": 3.162,
+      "spokenText": "Start with fresh grounds.",
+      "caption": "Start with fresh grounds.",
+      "shotNumbers": [
+        2
+      ]
+    },
+    {
+      "name": "Coffee line 3",
+      "start": 3.2916666666666665,
+      "end": 5.958333333333333,
+      "voiceStart": 3.4166666666666665,
+      "voiceEnd": 5.672,
+      "spokenText": "Pour slowly. Savor the moment.",
+      "caption": "Pour slowly. Savor the moment.",
+      "shotNumbers": [
+        3
+      ]
+    }
+  ],
+  "duration": 5.958333333333333,
+  "execution": {
+    "filmId": "9fb63236-6622-4973-a532-a675e653257d",
+    "sha256": "9bcdd917ccce7fb7c18f6ffbfde50a78ee8ff07e8552076529dd7a6f3fe6ca3a",
+    "embeddedProjectMatches": true,
+    "repeatExportReturnedSameFilm": true,
+    "canonicalIntro": "examples/spoken-type/result.mp4",
+    "all143DecodedFramesRGBMeanAbsoluteError": 0.0,
+    "note": "The entry uses the existing canonical ad bytes. The separate fresh MCP export has identical decoded pictures; its different metadata/name change the file hash."
+  }
+}

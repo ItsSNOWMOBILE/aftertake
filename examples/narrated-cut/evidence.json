@@ -1,0 +1,155 @@
+{
+  "format": "aftertake-narrated-cut/1",
+  "status": "Awaiting Jay review; not submitted",
+  "filmId": "e9266e93-c034-4502-b2ad-60bf0e1dcd9d",
+  "planId": "0a9ac2610c87a7f795a16d5f4c33fe4db4e27fa7b818770f43ab5ccb7077bd3c",
+  "sha256": "bd4b6b1d1c2706148d32c0fe344d64485ebe39057ff5cee659c2781765315e9f",
+  "bytes": 2008521,
+  "frames": 143,
+  "fps": 24,
+  "duration": 5.958333333333333,
+  "width": 720,
+  "height": 1280,
+  "shots": 3,
+  "completeVoices": 3,
+  "titles": 3,
+  "embeddedProjectMatches": true,
+  "allVoiceAndCaptionTextsMatch": true,
+  "narrationDoesNotOverlap": true,
+  "titlesDoNotOverlap": true,
+  "audioTimestampMaxGap": 8.881784197001252e-16,
+  "wholeVoiceAlignment": [
+    {
+      "text": "Your morning called.",
+      "correlation": 0.9991790652275085,
+      "offsetMs": 5,
+      "wholeVoiceSamplesCompared": 60158
+    },
+    {
+      "text": "Start with fresh grounds.",
+      "correlation": 0.9987409114837646,
+      "offsetMs": 5,
+      "wholeVoiceSamplesCompared": 71776
+    },
+    {
+      "text": "Pour slowly. Savor the moment.",
+      "correlation": 0.9984044432640076,
+      "offsetMs": 5,
+      "wholeVoiceSamplesCompared": 108256
+    }
+  ],
+  "titleBounds": [
+    {
+      "text": "Your morning called.",
+      "bbox": [
+        116,
+        563,
+        597,
+        718
+      ]
+    },
+    {
+      "text": "Start with fresh grounds.",
+      "bbox": [
+        117,
+        1053,
+        604,
+        1111
+      ]
+    },
+    {
+      "text": "Pour slowly. Savor the moment.",
+      "bbox": [
+        147,
+        516,
+        572,
+        767
+      ]
+    }
+  ],
+  "ledger": [
+    {
+      "name": "Line 1",
+      "start": 0,
+      "end": 1.6666666666666667,
+      "voiceStart": 0.125,
+      "voiceEnd": 1.3782916666666667,
+      "spokenText": "Your morning called.",
+      "caption": "Your morning called.",
+      "shotNumbers": [
+        1
+      ]
+    },
+    {
+      "name": "Line 2",
+      "start": 1.5416666666666667,
+      "end": 3.4166666666666665,
+      "voiceStart": 1.6666666666666667,
+      "voiceEnd": 3.162,
+      "spokenText": "Start with fresh grounds.",
+      "caption": "Start with fresh grounds.",
+      "shotNumbers": [
+        2
+      ]
+    },
+    {
+      "name": "Line 3",
+      "start": 3.2916666666666665,
+      "end": 5.958333333333333,
+      "voiceStart": 3.4166666666666665,
+      "voiceEnd": 5.672,
+      "spokenText": "Pour slowly. Savor the moment.",
+      "caption": "Pour slowly. Savor the moment.",
+      "shotNumbers": [
+        3
+      ]
+    }
+  ],
+  "nativeUI": {
+    "imports": 3,
+    "prepareApplied": true,
+    "shortPictureRejected": true,
+    "previousCutRestored": true,
+    "voicesReusedAfterReconnect": true,
+    "repeatExportRejoined": true,
+    "authoritativeExportRecords": [
+      {
+        "id": "e9266e93-c034-4502-b2ad-60bf0e1dcd9d",
+        "state": "ready",
+        "requestKey": "film-2ecb6b078bc975442723c0c0011f8f6bc30dda0a940d8b70ae4084324d72436f"
+      },
+      {
+        "id": "d9afff8a-edef-43bb-a62c-246cc9c214cc",
+        "state": "ready",
+        "requestKey": "film-e9bc8faf1b9168974e454b69f68f458a046b452aee1b4fcde28ed24ce2a0ada1-retry-1"
+      },
+      {
+        "id": "5e4afdf2-12ef-43f4-9a7f-f861e5a92a22",
+        "state": "failed",
+        "requestKey": "film-e9bc8faf1b9168974e454b69f68f458a046b452aee1b4fcde28ed24ce2a0ada1"
+      }
+    ]
+  },
+  "rendererRepair": "A computed title boundary created an empty floating-point overlay. Title intersections, source trims and overlay enable windows now use integer frame indices; a decoded boundary regression passes.",
+  "sourceAttribution": "Michael Burrows / Pexels. Same licensed coffee pack as examples/social-ad. Fictional coffee concept; no real offer or endorsement.",
+  "review": {
+    "selectedFrames": [
+      12,
+      36,
+      41,
+      55,
+      78,
+      82,
+      102,
+      128,
+      142
+    ],
+    "finding": "Inspect contact.jpg and the complete film before publishing.",
+    "limits": [
+      "This prepares an editable cut from user-selected pictures and written lines. It does not select footage or write an ad automatically.",
+      "The caption follows whole-line timing; word motion is an entrance rather than forced word alignment.",
+      "No ad-performance, full Higgsfield parity or general editing-quality claim."
+    ]
+  },
+  "submissionSent": false
+}

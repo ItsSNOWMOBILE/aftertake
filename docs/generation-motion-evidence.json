@@ -1,0 +1,130 @@
+{
+  "method": "Corner tracking, RANSAC similarity between consecutive decoded frames at 960x540; 95th percentile change in estimated frame-to-frame translation. Diagnostic, not a perceptual quality score. Bottom captions excluded.",
+  "hardware": "RTX 5080, 16 GB VRAM; 32 GB host RAM",
+  "model": "ltx-2.5-22b-distilled-Q4_K_M.gguf",
+  "vae": "ltx-2.5-video-vae-conv-bf16.safetensors",
+  "finding": "Short external VAE chunks create ghosted edges and motion pulses. Keeping the bounded clip together removes most of those artifacts in the tested scenes.",
+  "controls": [
+    {
+      "label": "tiny tiles",
+      "p95PairTranslationChange": 0.9911800963596936,
+      "medianNonRigidResidual": 0.1056863995171403,
+      "frames": 96
+    },
+    {
+      "label": "wide spatial",
+      "p95PairTranslationChange": 0.7421518264643503,
+      "medianNonRigidResidual": 0.08486993404559133,
+      "frames": 96
+    },
+    {
+      "label": "long temporal",
+      "p95PairTranslationChange": 0.4257890411335162,
+      "medianNonRigidResidual": 0.08570156304623763,
+      "frames": 96
+    },
+    {
+      "label": "whole volume",
+      "p95PairTranslationChange": 0.1970527588781026,
+      "medianNonRigidResidual": 0.07087485971824942,
+      "frames": 96
+    },
+    {
+      "label": "observatory tiled baseline",
+      "p95PairTranslationChange": 1.7443527163882042,
+      "medianNonRigidResidual": 0.06874843433538266,
+      "frames": 96
+    },
+    {
+      "label": "observatory native decode",
+      "p95PairTranslationChange": 0.1391435145761262,
+      "medianNonRigidResidual": 0.040364662493705836,
+      "frames": 96
+    },
+    {
+      "label": "coast baseline",
+      "p95PairTranslationChange": 0.42184865533818583,
+      "medianNonRigidResidual": 0.14070708547559144,
+      "frames": 96
+    },
+    {
+      "label": "coast native",
+      "p95PairTranslationChange": 0.1926070345034235,
+      "medianNonRigidResidual": 0.12722899236918556,
+      "frames": 96
+    },
+    {
+      "label": "coast baseline-raw",
+      "p95PairTranslationChange": 0.7786196709811289,
+      "medianNonRigidResidual": 0.1583528439513631,
+      "frames": 96
+    },
+    {
+      "label": "coast native-raw",
+      "p95PairTranslationChange": 0.38522948925705325,
+      "medianNonRigidResidual": 0.13082960427172466,
+      "frames": 96
+    }
+  ],
+  "appOutputs": [
+    {
+      "case": "castle-pullback",
+      "renderId": "f15f0f87-510a-4ecb-9ef5-393fec7ea8e8",
+      "jobId": "ffb3a619-128c-4b29-9d0b-ad2762751028",
+      "sha256": "0082a7102a54f6419c76c8af860a3e9525beb267036a44239022948eba65ee96",
+      "codecNodes": {
+        "3": "VAELoader",
+        "19": "VAEDecode"
+      },
+      "motion": {
+        "p95PairTranslationChange": 0.1970527588781026,
+        "medianNonRigidResidual": 0.07087485971824942,
+        "frames": 96,
+        "intervalMin": 0.04166666666666652,
+        "intervalMax": 0.04166666666666696
+      }
+    },
+    {
+      "case": "coastal-kingdom",
+      "renderId": "a1bad2db-e904-4e76-a9a3-90d467dffcd9",
+      "jobId": "86a8d79a-b4a1-4b03-9695-7ba4b1309a25",
+      "sha256": "5e0f02c4878781df0af2aaee002b0c6bbed3ebad84fe1b33cc549b662df5af0b",
+      "codecNodes": {
+        "3": "VAELoader",
+        "19": "VAEDecode",
+        "30": "VAEEncode",
+        "34": "VAEDecode"
+      },
+      "motion": {
+        "p95PairTranslationChange": 0.1926070345034235,
+        "medianNonRigidResidual": 0.12722899236918556,
+        "frames": 96,
+        "intervalMin": 0.04166666666666652,
+        "intervalMax": 0.04166666666666696
+      }
+    },
+    {
+      "case": "observatory",
+      "renderId": "8abae2a5-bd8a-4f45-8d36-8f024635c8cf",
+      "jobId": "14af37f2-f3df-46d9-a592-5510df1aeaef",
+      "sha256": "087e24783cc8ab0dc37bb2ce40858e3e6e66d005a2e8b24cacb54ec5f91baec7",
+      "codecNodes": {
+        "3": "VAELoader",
+        "19": "VAEDecode"
+      },
+      "motion": {
+        "p95PairTranslationChange": 0.1391435145761262,
+        "medianNonRigidResidual": 0.040364662493705836,
+        "frames": 96,
+        "intervalMin": 0.04166666666666652,
+        "intervalMax": 0.04166666666666696
+      }
+    }
+  ],
+  "limitations": [
+    "Three scene tests do not establish every model, prompt or hardware configuration.",
+    "Native Comfy codecs can fall back to tiling if memory is insufficient.",
+    "Some model deformation and limited fine detail remain.",
+    "The optional diffusion decoder is experimental and is not required by the app."
+  ]
+}

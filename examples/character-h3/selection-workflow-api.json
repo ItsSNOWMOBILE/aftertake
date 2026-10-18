@@ -1,0 +1,181 @@
+{
+  "source": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "00d3c2d1-1716-441f-9a71-0cf288030e2d.mp4"
+    }
+  },
+  "slice": {
+    "class_type": "Video Slice",
+    "inputs": {
+      "video": [
+        "source",
+        0
+      ],
+      "start_time": 0,
+      "duration": 3.0416666666666665,
+      "strict_duration": true
+    }
+  },
+  "prepare": {
+    "class_type": "H3RelayPrepareSource",
+    "inputs": {
+      "video": [
+        "slice",
+        0
+      ],
+      "resolution": "480",
+      "duration_seconds": 0,
+      "missing_audio": "silence"
+    }
+  },
+  "frames": {
+    "class_type": "ImageFromBatch",
+    "inputs": {
+      "image": [
+        "prepare",
+        0
+      ],
+      "batch_index": 0,
+      "length": [
+        "prepare",
+        5
+      ]
+    }
+  },
+  "first": {
+    "class_type": "ImageFromBatch",
+    "inputs": {
+      "image": [
+        "frames",
+        0
+      ],
+      "batch_index": 0,
+      "length": 1
+    }
+  },
+  "points": {
+    "class_type": "AftertakeSubjectPoints",
+    "inputs": {
+      "images": [
+        "first",
+        0
+      ],
+      "source_width": 768,
+      "source_height": 432,
+      "points_json": "{\"positive\": [{\"x\": 0.3515625, \"y\": 0.2199074074074074}, {\"x\": 0.3515625, \"y\": 0.47453703703703703}], \"negative\": [{\"x\": 0.625, \"y\": 0.47453703703703703}]}"
+    }
+  },
+  "sam": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "sam3.1_multiplex_fp16.safetensors"
+    }
+  },
+  "people": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "sam",
+        1
+      ],
+      "text": "person:12"
+    }
+  },
+  "detect": {
+    "class_type": "SAM3_Detect",
+    "inputs": {
+      "model": [
+        "sam",
+        0
+      ],
+      "image": [
+        "first",
+        0
+      ],
+      "conditioning": [
+        "people",
+        0
+      ],
+      "threshold": 0.35,
+      "refine_iterations": 2,
+      "individual_masks": true
+    }
+  },
+  "choose": {
+    "class_type": "AftertakeSelectCharacterMask",
+    "inputs": {
+      "masks": [
+        "detect",
+        0
+      ],
+      "positive_coords": [
+        "points",
+        0
+      ],
+      "negative_coords": [
+        "points",
+        1
+      ]
+    }
+  },
+  "track": {
+    "class_type": "SAM3_VideoTrack",
+    "inputs": {
+      "images": [
+        "frames",
+        0
+      ],
+      "model": [
+        "sam",
+        0
+      ],
+      "initial_mask": [
+        "choose",
+        0
+      ],
+      "detection_threshold": 0.5,
+      "max_objects": 1,
+      "detect_interval": 1
+    }
+  },
+  "mask": {
+    "class_type": "SAM3_TrackToMask",
+    "inputs": {
+      "track_data": [
+        "track",
+        0
+      ],
+      "object_indices": "0"
+    }
+  },
+  "selection": {
+    "class_type": "AftertakeSaveCharacterSelection",
+    "inputs": {
+      "images": [
+        "frames",
+        0
+      ],
+      "masks": [
+        "mask",
+        0
+      ],
+      "filename_prefix": "aftertake/characters/f1193c37-d70e-425f-a0cb-9ed5d10655d2/selection",
+      "request_json": "{\"format\": \"aftertake-character-selection/1\", \"clip\": {\"id\": \"5036d2b7-0800-473b-8052-ce8921a9a574\", \"name\": \"h3-demo-source.mp4\", \"sha256\": \"2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19\", \"width\": 768, \"height\": 432, \"duration\": 3.125, \"url\": \"/media/5036d2b7-0800-473b-8052-ce8921a9a574.mp4\", \"hasAudio\": false}, \"trimStart\": 0, \"duration\": 3.0416666666666665, \"positive\": [{\"x\": 0.3515625, \"y\": 0.2199074074074074}, {\"x\": 0.3515625, \"y\": 0.47453703703703703}], \"negative\": [{\"x\": 0.625, \"y\": 0.47453703703703703}]}"
+    }
+  },
+  "source_save": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "prepare",
+        8
+      ],
+      "filename_prefix": "aftertake/characters/f1193c37-d70e-425f-a0cb-9ed5d10655d2/source",
+      "format": "mp4",
+      "format.codec": "h264",
+      "format.codec.encoding": "re-encode",
+      "format.codec.encoding.crf": 14
+    }
+  }
+}

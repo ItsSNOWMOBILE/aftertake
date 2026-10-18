@@ -1,0 +1,246 @@
+{
+  "id": "729c2e07-8881-4a36-8125-3f86ddd26efe",
+  "request": {
+    "format": "aftertake-frame-edit/1",
+    "clip": {
+      "id": "092e8306-3c2a-4d72-9810-7c69bea0172d",
+      "name": "robot-wave.mp4",
+      "sha256": "f857a4da415aa7e860e2ae742f51ac40b1d62e5e854056f74c69960c92623647",
+      "width": 576,
+      "height": 768,
+      "duration": 4.041666666666667,
+      "url": "/media/092e8306-3c2a-4d72-9810-7c69bea0172d.mp4",
+      "hasAudio": false
+    },
+    "trimStart": 0,
+    "prompt": "Replace the blue cartoon robot with a friendly mint-green knitted teddy bear mascot. Full body, standing upright in exactly the same starting pose and position, with both arms relaxed. Soft yarn texture, two small round ears, a cream-colored oval belly, short rounded paws and a simple friendly face. Keep the plain light gray background, floor, camera framing and full-body composition unchanged. No clothing, letters or logos.",
+    "seed": 2026,
+    "mode": "fast"
+  },
+  "workflow": {
+    "1": {
+      "class_type": "UnetLoaderGGUF",
+      "inputs": {
+        "unet_name": "qwen-image-edit-2511-Q4_K_M.gguf"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+        "type": "qwen_image",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "qwen_image_vae.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "ModelSamplingAuraFlow",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "shift": 3.1
+      }
+    },
+    "5": {
+      "class_type": "CFGNorm",
+      "inputs": {
+        "model": [
+          "4",
+          0
+        ],
+        "strength": 1,
+        "pre_cfg": false
+      }
+    },
+    "6": {
+      "class_type": "LoraLoaderModelOnly",
+      "inputs": {
+        "model": [
+          "5",
+          0
+        ],
+        "lora_name": "Qwen-Image-Edit-2511-Lightning-4steps-V1.0-bf16.safetensors",
+        "strength_model": 1
+      }
+    },
+    "8": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "092e8306-3c2a-4d72-9810-7c69bea0172d.mp4",
+        "width": 576,
+        "height": 768,
+        "frames": 1,
+        "fps": 1,
+        "trim_start": 0
+      },
+      "is_changed": [
+        "f857a4da415aa7e860e2ae742f51ac40b1d62e5e854056f74c69960c92623647"
+      ]
+    },
+    "9": {
+      "class_type": "FluxKontextImageScale",
+      "inputs": {
+        "image": [
+          "8",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "TextEncodeQwenImageEditPlus",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "image1": [
+          "9",
+          0
+        ],
+        "prompt": "Replace the blue cartoon robot with a friendly mint-green knitted teddy bear mascot. Full body, standing upright in exactly the same starting pose and position, with both arms relaxed. Soft yarn texture, two small round ears, a cream-colored oval belly, short rounded paws and a simple friendly face. Keep the plain light gray background, floor, camera framing and full-body composition unchanged. No clothing, letters or logos."
+      }
+    },
+    "11": {
+      "class_type": "TextEncodeQwenImageEditPlus",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "image1": [
+          "9",
+          0
+        ],
+        "prompt": ""
+      }
+    },
+    "12": {
+      "class_type": "FluxKontextMultiReferenceLatentMethod",
+      "inputs": {
+        "conditioning": [
+          "10",
+          0
+        ],
+        "reference_latents_method": "index_timestep_zero"
+      }
+    },
+    "13": {
+      "class_type": "FluxKontextMultiReferenceLatentMethod",
+      "inputs": {
+        "conditioning": [
+          "11",
+          0
+        ],
+        "reference_latents_method": "index_timestep_zero"
+      }
+    },
+    "14": {
+      "class_type": "VAEEncode",
+      "inputs": {
+        "pixels": [
+          "9",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "17": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "6",
+          0
+        ],
+        "seed": 2026,
+        "steps": 4,
+        "cfg": 1,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "positive": [
+          "12",
+          0
+        ],
+        "negative": [
+          "13",
+          0
+        ],
+        "latent_image": [
+          "14",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "20": {
+      "class_type": "ImageScale",
+      "inputs": {
+        "image": [
+          "19",
+          0
+        ],
+        "upscale_method": "lanczos",
+        "width": 576,
+        "height": 768,
+        "crop": "disabled"
+      }
+    },
+    "21": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "20",
+          0
+        ],
+        "filename_prefix": "aftertake/frame-edit"
+      }
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-17T21:05:14.201Z",
+  "updatedAt": "2026-10-17T21:05:52.870Z",
+  "jobId": "93c34eec-58cd-4b67-b882-a9adc414da22",
+  "stage": "Ready to review",
+  "clip": {
+    "id": "729c2e07-8881-4a36-8125-3f86ddd26efe",
+    "name": "Edited frame · Replace the blue cartoon robot with a friendly mint-green knitted tedd",
+    "kind": "image",
+    "width": 576,
+    "height": 768,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "556bd07f92441cbf8ee2bb45e77e39ccfce01502bc7382c6945b234ecdbe2c53",
+    "url": "/media/729c2e07-8881-4a36-8125-3f86ddd26efe.png"
+  }
+}

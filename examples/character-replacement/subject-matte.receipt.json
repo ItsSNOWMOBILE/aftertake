@@ -1,0 +1,25 @@
+{
+  "format": "aftertake-matte-receipt/1",
+  "model": "facebook/sam2.1-hiera-tiny",
+  "revision": "de431c4043854a71d8101e17995dfe596bf101a5",
+  "license": "Apache-2.0",
+  "requestCanonicalSHA256": "a23d85af2549e1e492bcf228e4cbfc3ab4f6f4ae98e9c7eff48e13209f8c1a7e",
+  "inputs": [
+    {
+      "role": "source",
+      "sha256": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19"
+    },
+    {
+      "role": "generation",
+      "sha256": "a672061730237c24376a67dd5b1fe9df7d1e5123c46c47a17692b5a2f0fb8083"
+    }
+  ],
+  "width": 768,
+  "height": 432,
+  "frames": 73,
+  "fps": 24,
+  "outputSHA256": "078e7c5f801a26a62ba5107dc33767e6fa03cf89a9bc4313e78e2e6c16e4439d",
+  "modelFilesVerified": true,
+  "network": "Model download only; local segmentation.",
+  "operation": "Union source and generated replacement subjects, dilate 2px and feather 0.8px; subtract protected subjects with a 1px guard."
+}

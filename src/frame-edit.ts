@@ -12,6 +12,7 @@ export const frameEditRequestSchema = z.object({
   'Choose a starting frame inside the source clip.');
 export type FrameEditRequest = z.infer<typeof frameEditRequestSchema>;
 export type FrameEdit = {
+  requestKey?:string;requestDigest?:string;
   id: string; request: FrameEditRequest; state: string; progress: number | null;
   createdAt: string; updatedAt: string; jobId?: string; stage?: string; error?: string;
   workflow: Record<string, unknown>; clip?: Clip;

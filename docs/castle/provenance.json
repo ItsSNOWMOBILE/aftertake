@@ -1,0 +1,69 @@
+{
+  "format": "aftertake-castle-review/1",
+  "files": {
+    "transformation.mp4": {
+      "bytes": 1114017,
+      "sha256": "e3373be04dce7bb375284939bd12a06d07e8033732c41f5c80c73d154425fb99",
+      "frames": 97,
+      "fps": 24.0,
+      "width": 768,
+      "height": 432,
+      "duration": 4.041666666666667
+    },
+    "camera-take.mp4": {
+      "bytes": 1486252,
+      "sha256": "0082a7102a54f6419c76c8af860a3e9525beb267036a44239022948eba65ee96",
+      "frames": 97,
+      "fps": 24.0,
+      "width": 768,
+      "height": 448,
+      "duration": 4.041666666666667
+    },
+    "source.mp4": {
+      "bytes": 1252907,
+      "sha256": "5029ea3c92f7fd79fe154116804bb12c76b7b88669d40980443813ac62f2b88b",
+      "frames": 101,
+      "fps": 24.0,
+      "width": 768,
+      "height": 432,
+      "duration": 4.208333333333333
+    },
+    "edited-frame.png": {
+      "bytes": 474967,
+      "sha256": "43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa"
+    }
+  },
+  "transformation": {
+    "renderId": "1139ebf1-6af1-475b-9a92-1e7d8f407f13",
+    "sdkJobId": "cfd82993-5824-4a60-97f0-f555c70eb784",
+    "workflowSource": "Unmodified recipe and actual executed graph extracted from transformation.mp4 metadata.",
+    "inputFiles": {
+      "5699b7f7-a921-4311-8296-7e99a16ab544.mp4": "source.mp4",
+      "b1262e85-c2ba-4334-bc61-8faa573b106d.png": "edited-frame.png"
+    },
+    "matchSourceColor": true,
+    "displayGeometryMatchesSource": true
+  },
+  "cameraTake": {
+    "renderId": "f15f0f87-510a-4ecb-9ef5-393fec7ea8e8",
+    "sdkJobId": "ffb3a619-128c-4b29-9d0b-ad2762751028"
+  },
+  "source": {
+    "author": "Dean Diemert",
+    "url": "https://www.pexels.com/video/a-lighthouse-is-seen-from-above-on-the-coast-20730898/",
+    "license": "https://www.pexels.com/license/",
+    "excerptStart": 3,
+    "originalWidth": 1920,
+    "originalHeight": 1080,
+    "originalSHA256": "dc60869a0327d078c8bc13762168365f141df267c0a4adbf3b9ad670027f83b5"
+  },
+  "models": "Local open-weight Qwen Image Edit followed by LTX-2.5 and LTX-2.3 IC in/outpainting adapter. Model licenses apply separately.",
+  "audio": "Silent",
+  "notice": "App demonstration excerpt and generated outputs. No creator endorsement implied.",
+  "nativeVideoCodecReview": "docs/generation-motion-evidence.json",
+  "hostedFiles": {
+    "transformation.mp4": "../examples/coastal-kingdom/result.mp4",
+    "source.mp4": "../examples/coastal-kingdom/source.mp4",
+    "camera-take.mp4": "../examples/castle-pullback/result.mp4"
+  }
+}

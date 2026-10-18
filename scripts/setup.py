@@ -22,6 +22,8 @@ if __name__ == '__main__':
     profiles = parser.add_mutually_exclusive_group()
     profiles.add_argument('--inpaint', action='store_true', help='Download the LTX-2.5 profile instead of the original structural profile')
     profiles.add_argument('--motion-transfer', action='store_true', help='Download the Wan Animate 2 profile instead of the original structural profile')
+    profiles.add_argument('--image-gen', action='store_true', help='Download the Z-Image Turbo text-to-image profile instead of the original structural profile')
+    profiles.add_argument('--character-swap', action='store_true', help='Install the native H3 character replacement and SAM3 profile')
     parser.add_argument('--models-dir', help='Download to this disk and remember it for the engine and future downloads')
     parser.add_argument('--skip-models', action='store_true', help='Install runtime and sample only; reuse model files from an existing installation')
     args = parser.parse_args()
@@ -29,7 +31,10 @@ if __name__ == '__main__':
     RUNTIME.mkdir(exist_ok=True)
     if args.models_dir is not None: model_root(args.models_dir)
     if not PYTHON.exists(): run(sys.executable, '-m', 'venv', VENV)
-    for url, target, revision in REPOS:
+    repos = [*REPOS]
+    if args.character_swap:
+        repos.append(('https://github.com/akatz-ai/h3-relay.git', RUNTIME / 'ComfyUI/custom_nodes/h3-relay', '64341d5c1259f32ab2a780285e1a19accb4dfe07'))
+    for url, target, revision in repos:
         if not (target / '.git').exists():
             target.mkdir(parents=True, exist_ok=True)
             run('git', 'init', target)
@@ -45,6 +50,7 @@ if __name__ == '__main__':
     run(PYTHON, '-m', 'pip', 'install', '-r', ROOT / 'requirements-runtime.txt')
     shutil.copytree(ROOT / 'custom_nodes/aftertake', RUNTIME / 'ComfyUI/custom_nodes/aftertake', dirs_exist_ok=True)
     if not args.skip_models:
-        run(PYTHON, ROOT / 'scripts/download-models.py', *(['--motion-transfer'] if args.motion_transfer else ['--ltx25'] if args.inpaint else []), *(['--models-dir', args.models_dir] if args.models_dir else []))
+        profile = ['--character-swap'] if args.character_swap else ['--image-gen'] if args.image_gen else ['--motion-transfer'] if args.motion_transfer else ['--ltx25'] if args.inpaint else []
+        run(PYTHON, ROOT / 'scripts/download-models.py', *profile, *(['--models-dir', args.models_dir] if args.models_dir else []))
     run(PYTHON, ROOT / 'scripts/create-study.py')
     print('Runtime installed. Start it with: python scripts/engine.py')

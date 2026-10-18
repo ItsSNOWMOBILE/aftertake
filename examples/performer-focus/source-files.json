@@ -1,0 +1,9 @@
+{
+  "source": "../character-replacement/source.mp4",
+  "appearance": "research/appearance.png",
+  "placedGeneration": "research/placed-generation.mp4",
+  "modelCrop": "research/focused-generation.mp4",
+  "matte": "subject-matte.mp4",
+  "result": "result.mp4",
+  "note": "Research media is retained in the complete source ZIPs; the public page uses the finished take."
+}

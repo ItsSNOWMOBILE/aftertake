@@ -43,10 +43,11 @@ const language: { [K in Exclude<keyof Cinema, 'guidance'>]: Record<Cinema[K], st
     monochrome: 'Black-and-white cinematography with nuanced grayscale and deep tonal separation.',
   },
 };
-export function cinemaPrompt(prompt: string, settings: Cinema = defaultCinema) {
-  return [settings.guidance === 'tracks' ? 'One coherent continuous shot. Follow the supplied motion tracks while preserving scene geometry.' : language.movement[settings.movement], prompt.trim(), 'One continuous cinematic shot, beginning from the supplied reference frame.',
+export function cinemaPrompt(prompt: string, settings: Cinema = defaultCinema, reference=true) {
+  return [settings.guidance === 'tracks' ? 'One coherent continuous shot. Follow the supplied motion tracks while preserving scene geometry.' : language.movement[settings.movement], prompt.trim(), reference?'One continuous cinematic shot, beginning from the supplied reference frame.':'One continuous cinematic shot.',
     language.lens[settings.lens],
-    language.lighting[settings.lighting], language.palette[settings.palette],
+    !reference&&settings.lighting==='source'?'Keep lighting direction and exposure consistent throughout the shot.':language.lighting[settings.lighting],
+    !reference&&settings.palette==='source'?'Keep natural color relationships coherent throughout the shot.':language.palette[settings.palette],
     'The scene remains coherent over time.'].join(' ');
 }
 export const savedLookSchema = z.object({ name: z.string().trim().min(1).max(40), settings: cinemaSchema });

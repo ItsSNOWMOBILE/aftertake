@@ -1,0 +1,115 @@
+{
+  "format": "aftertake-character-example/1",
+  "files": [
+    {
+      "file": "ATTRIBUTION.txt",
+      "bytes": 1054,
+      "sha256": "e06c8d1bab9b63e65ac33a54ddf4491e3b999fe735592951cf9bb518b1e84ce0"
+    },
+    {
+      "file": "appearance.png",
+      "bytes": 453067,
+      "sha256": "35ddc77f6a18e1f6170be1e8ed6893bae155772e60ad4c75d3d8fda73afcaff7"
+    },
+    {
+      "file": "character-reference-import.json",
+      "bytes": 390,
+      "sha256": "81d4558c31907fbe1b8f8ddabf40515478d0cdb9b56bf49999d85da705afcc21"
+    },
+    {
+      "file": "character-reference-origin.json",
+      "bytes": 4285,
+      "sha256": "77bbcacb22d47043fbb8819c3310ec422d83c059b1f03b8941495f5f35484ba5"
+    },
+    {
+      "file": "character-reference-origin.png",
+      "bytes": 1028939,
+      "sha256": "226a4418213dc0a5c8ff810a5e9482f9d9af1db6ffa2fb2ea354bac3bcff27f9"
+    },
+    {
+      "file": "character-reference.png",
+      "bytes": 1003435,
+      "sha256": "2246e339a602bd225113795eefa3a5603ea840f138eb4dcf0e8ff01122832052"
+    },
+    {
+      "file": "contact-frame.jpg",
+      "bytes": 107031,
+      "sha256": "069e59c7050c2b75d949196b83edca5a6e83dbc29c289cc1e50df625ab992d49"
+    },
+    {
+      "file": "contact.jpg",
+      "bytes": 426299,
+      "sha256": "986f739f8c5ae6a9c09bfa22834fa65011fe59eb15643cb8294292e268a4959b"
+    },
+    {
+      "file": "frame-edit.json",
+      "bytes": 5904,
+      "sha256": "3cc3a02478bd338c7cc12235ce013d8c15d38c17098a35f916517b233579b01e"
+    },
+    {
+      "file": "frame-recipe.json",
+      "bytes": 5739,
+      "sha256": "e523b504fee01ff25085293b8a24ba3ffb6dddf873752e49ee192688564c1023"
+    },
+    {
+      "file": "generation-render.json",
+      "bytes": 15178,
+      "sha256": "f86a18776716bfcb3a9645d703a126daa88afb1d72edc6b331e25ee1cc67efd2"
+    },
+    {
+      "file": "generation-source.mp4",
+      "bytes": 481932,
+      "sha256": "a672061730237c24376a67dd5b1fe9df7d1e5123c46c47a17692b5a2f0fb8083"
+    },
+    {
+      "file": "matte-request.json",
+      "bytes": 2418,
+      "sha256": "22fc29935bebdc21c0d2dc10a3df6855fea0566c655aff8aaf9e39e8ea05c218"
+    },
+    {
+      "file": "proof.json",
+      "bytes": 1155,
+      "sha256": "78ec3665baefdaf838940d74906a1096052cb20d10f3cd34bf37582898e65d80"
+    },
+    {
+      "file": "raw.mp4",
+      "bytes": 481813,
+      "sha256": "84b8e3de258d6f49156a319ea537e08b727f6a7439b73f68e6690fa5ea4c6b56"
+    },
+    {
+      "file": "recipe.json",
+      "bytes": 4500,
+      "sha256": "5c5d2390c090133719a856305fa48f8be6c7ea7abc6beff3b7c244aa9d7199f3"
+    },
+    {
+      "file": "render.json",
+      "bytes": 21523,
+      "sha256": "8d7001c680fe0e1171f16bdc4a785977c60d2ddd6027d4fb9a28588990ae0520"
+    },
+    {
+      "file": "result.mp4",
+      "bytes": 518610,
+      "sha256": "5ab72a5d19a4d0221c2bb7b682d58a2c9ad5cea7277ba052729aaf6b761bd065"
+    },
+    {
+      "file": "source.mp4",
+      "bytes": 672912,
+      "sha256": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19"
+    },
+    {
+      "file": "subject-matte.mp4",
+      "bytes": 198570,
+      "sha256": "078e7c5f801a26a62ba5107dc33767e6fa03cf89a9bc4313e78e2e6c16e4439d"
+    },
+    {
+      "file": "subject-matte.receipt.json",
+      "bytes": 906,
+      "sha256": "971d54e6c9059b2dec524415b138ff9f3042d0e93265b5ae4309f491fa551a11"
+    },
+    {
+      "file": "workflow-api.json",
+      "bytes": 15646,
+      "sha256": "8a785ac6ae0cb7ee953bcb51584ec86a7b428a0c5068a08853891d9cf8a57c28"
+    }
+  ]
+}

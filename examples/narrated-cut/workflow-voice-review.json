@@ -1,0 +1,269 @@
+{
+  "method": "Local Whisper base.en, CPU int8; no initial prompt or expected text supplied.",
+  "perLine": [
+    {
+      "name": "A1",
+      "expected": "Your morning called.",
+      "transcript": "Your morning called."
+    },
+    {
+      "name": "A2",
+      "expected": "Start with fresh grounds.",
+      "transcript": "Start with fresh grounds."
+    },
+    {
+      "name": "A3",
+      "expected": "Pour slowly. Savor the moment.",
+      "transcript": "Pour slowly, savor the moment."
+    },
+    {
+      "name": "hook",
+      "expected": "Change the hook. Keep the edit.",
+      "transcript": "Change the hook, keep the edit."
+    },
+    {
+      "name": "pair",
+      "expected": "Voice first. Match the cuts and captions.",
+      "transcript": "Voice First, match the cuts and captions. You"
+    },
+    {
+      "name": "B1",
+      "expected": "A slower start.",
+      "transcript": "A slower start."
+    },
+    {
+      "name": "B2",
+      "expected": "Start with fresh grounds.",
+      "transcript": "Start with fresh grounds."
+    },
+    {
+      "name": "B3",
+      "expected": "Pour slowly. Savor the moment.",
+      "transcript": "Pour slowly, savor the moment."
+    },
+    {
+      "name": "reveal",
+      "expected": "This walkthrough? Edited right here.",
+      "transcript": "This walkthrough edited right here."
+    }
+  ],
+  "wholeTranscript": "Your morning called, start with fresh grounds, pour slowly, savor the moment, change the hook, keep the edit, voice first, match the cuts and captions, a slower start, start with fresh grounds, pour slowly, savor the moment, this walk through, edited right here.",
+  "expectedWordsMatch": false,
+  "words": [
+    {
+      "word": "Your",
+      "start": 0.0,
+      "end": 0.3
+    },
+    {
+      "word": "morning",
+      "start": 0.3,
+      "end": 0.56
+    },
+    {
+      "word": "called,",
+      "start": 0.56,
+      "end": 0.84
+    },
+    {
+      "word": "start",
+      "start": 1.88,
+      "end": 1.88
+    },
+    {
+      "word": "with",
+      "start": 1.88,
+      "end": 2.06
+    },
+    {
+      "word": "fresh",
+      "start": 2.06,
+      "end": 2.24
+    },
+    {
+      "word": "grounds,",
+      "start": 2.24,
+      "end": 2.6
+    },
+    {
+      "word": "pour",
+      "start": 3.18,
+      "end": 3.56
+    },
+    {
+      "word": "slowly,",
+      "start": 3.56,
+      "end": 3.94
+    },
+    {
+      "word": "savor",
+      "start": 4.38,
+      "end": 4.84
+    },
+    {
+      "word": "the",
+      "start": 4.84,
+      "end": 4.94
+    },
+    {
+      "word": "moment,",
+      "start": 4.94,
+      "end": 5.2
+    },
+    {
+      "word": "change",
+      "start": 5.66,
+      "end": 6.1
+    },
+    {
+      "word": "the",
+      "start": 6.1,
+      "end": 6.36
+    },
+    {
+      "word": "hook,",
+      "start": 6.36,
+      "end": 6.52
+    },
+    {
+      "word": "keep",
+      "start": 6.88,
+      "end": 7.1
+    },
+    {
+      "word": "the",
+      "start": 7.1,
+      "end": 7.26
+    },
+    {
+      "word": "edit,",
+      "start": 7.26,
+      "end": 7.48
+    },
+    {
+      "word": "voice",
+      "start": 8.18,
+      "end": 8.42
+    },
+    {
+      "word": "first,",
+      "start": 8.42,
+      "end": 8.74
+    },
+    {
+      "word": "match",
+      "start": 9.18,
+      "end": 9.38
+    },
+    {
+      "word": "the",
+      "start": 9.38,
+      "end": 9.64
+    },
+    {
+      "word": "cuts",
+      "start": 9.64,
+      "end": 9.82
+    },
+    {
+      "word": "and",
+      "start": 9.82,
+      "end": 10.0
+    },
+    {
+      "word": "captions,",
+      "start": 10.0,
+      "end": 10.54
+    },
+    {
+      "word": "a",
+      "start": 11.14,
+      "end": 11.3
+    },
+    {
+      "word": "slower",
+      "start": 11.3,
+      "end": 11.5
+    },
+    {
+      "word": "start,",
+      "start": 11.5,
+      "end": 11.88
+    },
+    {
+      "word": "start",
+      "start": 12.52,
+      "end": 12.88
+    },
+    {
+      "word": "with",
+      "start": 12.88,
+      "end": 13.04
+    },
+    {
+      "word": "fresh",
+      "start": 13.04,
+      "end": 13.24
+    },
+    {
+      "word": "grounds,",
+      "start": 13.24,
+      "end": 13.6
+    },
+    {
+      "word": "pour",
+      "start": 14.28,
+      "end": 14.56
+    },
+    {
+      "word": "slowly,",
+      "start": 14.56,
+      "end": 14.92
+    },
+    {
+      "word": "savor",
+      "start": 15.4,
+      "end": 15.82
+    },
+    {
+      "word": "the",
+      "start": 15.82,
+      "end": 15.92
+    },
+    {
+      "word": "moment,",
+      "start": 15.92,
+      "end": 16.22
+    },
+    {
+      "word": "this",
+      "start": 16.72,
+      "end": 17.12
+    },
+    {
+      "word": "walk",
+      "start": 17.12,
+      "end": 17.36
+    },
+    {
+      "word": "through,",
+      "start": 17.36,
+      "end": 17.64
+    },
+    {
+      "word": "edited",
+      "start": 17.94,
+      "end": 18.14
+    },
+    {
+      "word": "right",
+      "start": 18.14,
+      "end": 18.48
+    },
+    {
+      "word": "here.",
+      "start": 18.48,
+      "end": 18.72
+    }
+  ]
+}

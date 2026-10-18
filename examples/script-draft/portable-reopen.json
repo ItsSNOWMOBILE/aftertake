@@ -1,0 +1,17 @@
+{
+  "filmId": "14064d4a-b3db-492f-8955-b85abc61f35b",
+  "freshCpuWorkspace": true,
+  "comfyEndpointsUnavailable": true,
+  "scriptRuntimeAbsent": true,
+  "narrationRuntimeAbsent": true,
+  "pictures": 3,
+  "titles": 3,
+  "completeVoices": 3,
+  "wordTimings": 11,
+  "joinedWordMapperPreserved": true,
+  "repeatedExportSameId": true,
+  "framesCompared": 128,
+  "maximumFrameRgbMeanAbsoluteError": 0.0,
+  "completeDecodedAudioCorrelation": 0.9999999999999999,
+  "exportSha256": "63c7557c9571d43e73478e822f84053d03ab2f826a6781bbe68885bf395dafdc"
+}

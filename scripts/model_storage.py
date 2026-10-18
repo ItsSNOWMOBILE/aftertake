@@ -4,7 +4,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / '.runtime' / 'model-storage.json'
-CATEGORIES = ('diffusion_models', 'text_encoders', 'clip_vision', 'vae', 'loras', 'latent_upscale_models')
+CATEGORIES = ('diffusion_models', 'text_encoders', 'clip_vision', 'vae', 'loras', 'latent_upscale_models', 'checkpoints')
 
 
 def model_root(directory=None):

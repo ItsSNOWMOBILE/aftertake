@@ -1,0 +1,370 @@
+{
+  "id": "d18450f0-a9ca-4a2b-9d24-fd75d00664c6",
+  "recipe": {
+    "format": "aftertake/1",
+    "name": "Signal — created inside the studio",
+    "clip": {
+      "id": "092e8306-3c2a-4d72-9810-7c69bea0172d",
+      "name": "robot-wave.mp4",
+      "sha256": "f857a4da415aa7e860e2ae742f51ac40b1d62e5e854056f74c69960c92623647",
+      "width": 576,
+      "height": 768,
+      "duration": 4.041666666666667,
+      "url": "/media/092e8306-3c2a-4d72-9810-7c69bea0172d.mp4",
+      "hasAudio": false
+    },
+    "prompt": "A friendly mint-green knitted teddy bear mascot standing upright against a plain light-gray studio background. The bear performs the gesture from the driving video. Soft yarn texture and cream-colored belly remain consistent. One full-body shot, fixed camera.",
+    "cue": {
+      "start": 0.4,
+      "end": 2.9,
+      "fade": 0.4,
+      "feather": 0.055,
+      "anchor": 0,
+      "strokes": []
+    },
+    "seed": 2026,
+    "quality": "final",
+    "trimStart": 0,
+    "pipeline": "motion-transfer",
+    "cinema": {
+      "movement": "locked",
+      "lens": "natural",
+      "lighting": "source",
+      "palette": "source"
+    },
+    "transfer": {
+      "reference": {
+        "id": "729c2e07-8881-4a36-8125-3f86ddd26efe",
+        "name": "Edited frame · Replace the blue cartoon robot with a friendly mint-green knitted tedd",
+        "sha256": "556bd07f92441cbf8ee2bb45e77e39ccfce01502bc7382c6945b234ecdbe2c53",
+        "width": 576,
+        "height": 768,
+        "duration": 1,
+        "url": "/media/729c2e07-8881-4a36-8125-3f86ddd26efe.png",
+        "kind": "image",
+        "hasAudio": false
+      },
+      "motionCaption": "A blue cartoon robot stands upright in a full-body view. It raises one arm, bends the elbow, waves the hand, then lowers the arm again. The camera is stationary.",
+      "scope": "frame"
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-17T21:08:08.351Z",
+  "updatedAt": "2026-10-17T21:12:39.954Z",
+  "workflow": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "wan_animate_2_distill_int8_convrot.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        "type": "wan",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "Wan2_1_VAE_bf16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "CLIPVisionLoader",
+      "inputs": {
+        "clip_name": "clip_vision_h.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "A friendly mint-green knitted teddy bear mascot standing upright against a plain light-gray studio background. The bear performs the gesture from the driving video. Soft yarn texture and cream-colored belly remain consistent. One full-body shot, fixed camera."
+      }
+    },
+    "6": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "frozen motion, blurred hands, malformed limbs, extra arms, text, logos"
+      }
+    },
+    "7": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "A blue cartoon robot stands upright in a full-body view. It raises one arm, bends the elbow, waves the hand, then lowers the arm again. The camera is stationary."
+      }
+    },
+    "8": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "092e8306-3c2a-4d72-9810-7c69bea0172d.mp4",
+        "width": 576,
+        "height": 768,
+        "frames": 97,
+        "fps": 24,
+        "trim_start": 0
+      },
+      "is_changed": [
+        "f857a4da415aa7e860e2ae742f51ac40b1d62e5e854056f74c69960c92623647"
+      ]
+    },
+    "10": {
+      "class_type": "ImageFromBatch",
+      "inputs": {
+        "image": [
+          "8",
+          0
+        ],
+        "batch_index": 0,
+        "length": 1
+      }
+    },
+    "11": {
+      "class_type": "CLIPVisionEncode",
+      "inputs": {
+        "clip_vision": [
+          "4",
+          0
+        ],
+        "image": [
+          "46",
+          0
+        ],
+        "crop": "none"
+      }
+    },
+    "12": {
+      "class_type": "CLIPVisionEncode",
+      "inputs": {
+        "clip_vision": [
+          "4",
+          0
+        ],
+        "image": [
+          "10",
+          0
+        ],
+        "crop": "none"
+      }
+    },
+    "13": {
+      "class_type": "WanAnimate2ToVideo",
+      "inputs": {
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "width": 576,
+        "height": 768,
+        "length": 97,
+        "batch_size": 1,
+        "reference_image": [
+          "46",
+          0
+        ],
+        "pose_video": [
+          "8",
+          0
+        ],
+        "clip_vision_output": [
+          "11",
+          0
+        ],
+        "positive_pose": [
+          "7",
+          0
+        ],
+        "clip_vision_output_pose": [
+          "12",
+          0
+        ],
+        "video_frame_offset": 0,
+        "pose_strength": 1,
+        "pose_start_percent": 0,
+        "pose_end_percent": 1,
+        "reference_image_strength": 1
+      }
+    },
+    "14": {
+      "class_type": "WanAnimate2Cache",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "device": "gpu",
+        "dtype": "int4"
+      }
+    },
+    "15": {
+      "class_type": "ModelSamplingSD3",
+      "inputs": {
+        "model": [
+          "14",
+          0
+        ],
+        "shift": 5
+      }
+    },
+    "16": {
+      "class_type": "BasicScheduler",
+      "inputs": {
+        "model": [
+          "14",
+          0
+        ],
+        "scheduler": "simple",
+        "steps": 10,
+        "denoise": 1
+      }
+    },
+    "17": {
+      "class_type": "SamplerCustom",
+      "inputs": {
+        "model": [
+          "15",
+          0
+        ],
+        "add_noise": true,
+        "noise_seed": 2026,
+        "cfg": 1,
+        "positive": [
+          "13",
+          0
+        ],
+        "negative": [
+          "13",
+          1
+        ],
+        "sampler": [
+          "23",
+          0
+        ],
+        "sigmas": [
+          "16",
+          0
+        ],
+        "latent_image": [
+          "13",
+          2
+        ]
+      }
+    },
+    "18": {
+      "class_type": "TrimVideoLatent",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "trim_amount": [
+          "13",
+          3
+        ]
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "18",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "21": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/motion-transfer",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Signal — created inside the studio\",\"clip\":{\"id\":\"092e8306-3c2a-4d72-9810-7c69bea0172d\",\"name\":\"robot-wave.mp4\",\"sha256\":\"f857a4da415aa7e860e2ae742f51ac40b1d62e5e854056f74c69960c92623647\",\"width\":576,\"height\":768,\"duration\":4.041666666666667,\"url\":\"/media/092e8306-3c2a-4d72-9810-7c69bea0172d.mp4\",\"hasAudio\":false},\"prompt\":\"A friendly mint-green knitted teddy bear mascot standing upright against a plain light-gray studio background. The bear performs the gesture from the driving video. Soft yarn texture and cream-colored belly remain consistent. One full-body shot, fixed camera.\",\"cue\":{\"start\":0.4,\"end\":2.9,\"fade\":0.4,\"feather\":0.055,\"anchor\":0,\"strokes\":[]},\"seed\":2026,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"motion-transfer\",\"cinema\":{\"movement\":\"locked\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\"},\"transfer\":{\"reference\":{\"id\":\"729c2e07-8881-4a36-8125-3f86ddd26efe\",\"name\":\"Edited frame · Replace the blue cartoon robot with a friendly mint-green knitted tedd\",\"sha256\":\"556bd07f92441cbf8ee2bb45e77e39ccfce01502bc7382c6945b234ecdbe2c53\",\"width\":576,\"height\":768,\"duration\":1,\"url\":\"/media/729c2e07-8881-4a36-8125-3f86ddd26efe.png\",\"kind\":\"image\",\"hasAudio\":false},\"motionCaption\":\"A blue cartoon robot stands upright in a full-body view. It raises one arm, bends the elbow, waves the hand, then lowers the arm again. The camera is stationary.\",\"scope\":\"frame\"}}",
+        "source_audio": [
+          "8",
+          1
+        ],
+        "audio_start": 0
+      }
+    },
+    "22": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/generation",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Signal — created inside the studio\",\"clip\":{\"id\":\"092e8306-3c2a-4d72-9810-7c69bea0172d\",\"name\":\"robot-wave.mp4\",\"sha256\":\"f857a4da415aa7e860e2ae742f51ac40b1d62e5e854056f74c69960c92623647\",\"width\":576,\"height\":768,\"duration\":4.041666666666667,\"url\":\"/media/092e8306-3c2a-4d72-9810-7c69bea0172d.mp4\",\"hasAudio\":false},\"prompt\":\"A friendly mint-green knitted teddy bear mascot standing upright against a plain light-gray studio background. The bear performs the gesture from the driving video. Soft yarn texture and cream-colored belly remain consistent. One full-body shot, fixed camera.\",\"cue\":{\"start\":0.4,\"end\":2.9,\"fade\":0.4,\"feather\":0.055,\"anchor\":0,\"strokes\":[]},\"seed\":2026,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"motion-transfer\",\"cinema\":{\"movement\":\"locked\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\"},\"transfer\":{\"reference\":{\"id\":\"729c2e07-8881-4a36-8125-3f86ddd26efe\",\"name\":\"Edited frame · Replace the blue cartoon robot with a friendly mint-green knitted tedd\",\"sha256\":\"556bd07f92441cbf8ee2bb45e77e39ccfce01502bc7382c6945b234ecdbe2c53\",\"width\":576,\"height\":768,\"duration\":1,\"url\":\"/media/729c2e07-8881-4a36-8125-3f86ddd26efe.png\",\"kind\":\"image\",\"hasAudio\":false},\"motionCaption\":\"A blue cartoon robot stands upright in a full-body view. It raises one arm, bends the elbow, waves the hand, then lowers the arm again. The camera is stationary.\",\"scope\":\"frame\"}}"
+      }
+    },
+    "23": {
+      "class_type": "KSamplerSelect",
+      "inputs": {
+        "sampler_name": "lcm"
+      }
+    },
+    "45": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "729c2e07-8881-4a36-8125-3f86ddd26efe.png",
+        "width": 576,
+        "height": 768,
+        "frames": 1,
+        "fps": 24,
+        "trim_start": 0
+      },
+      "is_changed": [
+        "556bd07f92441cbf8ee2bb45e77e39ccfce01502bc7382c6945b234ecdbe2c53"
+      ]
+    },
+    "46": {
+      "class_type": "ImageScale",
+      "inputs": {
+        "image": [
+          "45",
+          0
+        ],
+        "upscale_method": "lanczos",
+        "width": 576,
+        "height": 768,
+        "crop": "center"
+      }
+    }
+  },
+  "jobId": "7ec51815-4c35-47d6-8268-9bb6743e9d78",
+  "stage": "Complete",
+  "output": "/outputs/d18450f0-a9ca-4a2b-9d24-fd75d00664c6.mp4",
+  "rawOutput": "/outputs/d18450f0-a9ca-4a2b-9d24-fd75d00664c6-raw.mp4"
+}

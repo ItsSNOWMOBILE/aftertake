@@ -7,7 +7,7 @@ The code is MIT licensed. No stock footage, AI image API or external texture
 is used to make that source. Model-generated derivatives remain subject to
 the model license as well as the source code's license.
 
-## Research footage (not bundled with the app)
+## Open film footage
 
 Tears of Steel (2012), Blender Foundation / mango.blender.org.
 Downloaded from https://download.blender.org/demo/movies/ToS/tears_of_steel_720p.mov
@@ -21,8 +21,21 @@ changes made (crop, trim, generated VFX). Do not imply an actor endorses the app
 Primary source for the technical-demo use of original footage:
 https://mango.blender.org/production/4-tb-original-4k-footage-available-as-cc-by/
 
-This research footage is ignored under `.runtime/sources/`; it is not a
-required installation asset or part of the source repository.
+The full research download stays ignored under `.runtime/sources/`. The silent
+3.125-second bridge excerpt now supplies the character-replacement demo under
+`examples/character-replacement/`. That folder retains the source, generated
+appearance, separate android reference, frame recipe, video recipe and executed
+graphs. `ATTRIBUTION.txt` identifies the film, license, edits and reference
+origin. The narrated film credits Blender Foundation and CC BY 3.0 both beside
+the scene and in its closing card. The film's original soundtrack is excluded.
+
+`examples/head-performance/` reuses the silent excerpt and brown-jacket base
+plate. Its aligned fictional portrait was cropped from frame zero of an actual
+Wan Animate focus study. The SDK job, recipe and executed graph are retained in
+`portrait-provenance.json`. LivePortrait adds relative head motion and lip
+expression, followed by SAM head contours and local fill where the old head is
+exposed. The source CC BY 3.0 attribution remains with the example. No original
+actor identity or creator endorsement is claimed.
 
 ## Licensed demo candidates
 
@@ -45,8 +58,8 @@ the demo and alongside any distributed excerpt.
 Generated derivatives add localized model-generated VFX and temporal blending.
 Reviewed source excerpts and generated results are now included under
 `examples/portal` and `examples/golden-falls`, with license/credit notes in
-`examples/README.md` and a SHA-256 manifest. Research footage with actors is
-excluded from that bundle.
+`examples/README.md` and a SHA-256 manifest. The bridge character study is
+separate from the thirteen-example interactive library and has its own credits.
 
 ## Edited-first-frame example
 
@@ -67,7 +80,7 @@ Apache-2.0 license metadata are recorded in `models-frame-editor.json`.
 No new third-party image or closed image API supplied the crystal. The image
 recipe, generated PNG, video recipe and actual workflows are included under
 `examples/crystal-forest/`. The local ruby-red two-reference test is evidence
-only and is not part of the packaged seven-example library.
+only and is not part of the packaged example library.
 
 ## Motion-transfer studies
 
@@ -80,5 +93,111 @@ pack supplies these tests.
 Mint knitted-bear appearance frames were generated locally with the pinned
 Qwen-Image-Edit-2511 profile. Motion was generated locally with the pinned
 Wan Animate 2 distilled profile. Their model licenses remain applicable.
-These motion studies are retained as local build evidence; they are not part
-of the published seven-example bundle or the current 97-second public demo.
+The complete Signal workflow is included under `examples/signal/`, and the
+first/last-frame forest transition is included under `examples/crystal-transition/`.
+Both carry their input images, actual graphs and Qwen frame recipes. The
+mirrored-driver comparison and audio-bearing timed variant remain local build
+evidence; the refreshed 106-second demo includes those diagnostic outputs too.
+
+The 24-second portrait teaser uses the same reviewed Signal, portal, golden
+falls and Reclaimed assets. It scales their displayed frames into captioned
+1080 × 1920 layouts; that canvas size does not represent native generation
+resolution. It introduces no outside footage, image model or soundtrack.
+Pexels and original-robot credits are retained in its closing card and metadata.
+
+## Narrated submission film
+
+The refreshed cinematic candidates also use:
+
+- Dean Diemert, [A lighthouse is seen from above on the coast](https://www.pexels.com/video/a-lighthouse-is-seen-from-above-on-the-coast-20730898/).
+  A 4.208-second excerpt starting at three seconds, resized to 768 × 432,
+  supplies `coastal-kingdom`. Local Qwen editing creates its castle reference;
+  `castle-pullback` animates that edited reference with LTX-2.5 framing tracks.
+- Florian Delée, [Drone captures misty mountains in France at sunrise](https://www.pexels.com/video/drone-captures-misty-mountains-in-france-at-sunrise-32651075/).
+  A 4.208-second excerpt resized to 768 × 432 supplies `winter-valley`.
+  Qwen creates the winter reference; a native LTX masked edit and Aftertake's
+  tracked temporal composite produce the green-to-snow-to-green result.
+
+Both sources use the [Pexels License](https://www.pexels.com/license/).
+The app excerpts, appearance frames, source hashes, recipes and actual executed
+graphs are retained with their examples. Model terms apply separately. These
+are demonstrations using credited excerpts and generated derivatives; no
+creator endorsement is implied.
+
+The current 44-second narrated film uses actual Aftertake UI captures, the
+credited Pexels coffee and coastal excerpts and the silent Tears of Steel bridge excerpt
+with generated VFX. Its titles, cuts and audio mix are exported by Aftertake's
+Film editor. The editable project and
+original voice clips are included under `examples/submission-film/`.
+
+Narration is a generic synthetic preset (`af_heart`) generated locally with
+[hexgrad/Kokoro-82M v1.0](https://huggingface.co/hexgrad/Kokoro-82M), whose weights
+are Apache-2.0, via the MIT-licensed
+[kokoro-onnx](https://github.com/thewh1teagle/kokoro-onnx) CPU runtime. The
+conversion release, checksums and runtime version are pinned in
+`models-narration.json`. No outside voice recording, identity clone, closed
+inference API or music track is used. The transcript and per-clip receipts
+remain with the project. Existing model/source terms still apply to the images
+and videos. App typography uses the bundled OFL fonts with their license files.
+
+`observatory/source.png` is an original scene generated locally from text with
+the public Apache-2.0 [Z-Image Turbo](https://huggingface.co/Comfy-Org/z_image_turbo)
+profile. Its prompt, seed 5090, image recipe, PNG metadata and actual SDK job
+record are included. LTX-2.5 then generates the guided camera video from that
+image; LTX's model terms remain applicable. No outside photograph supplies it.
+
+The vertical **Slow Mornings** concept ads use three matching Michael Burrows
+clips under the [Pexels License](https://www.pexels.com/license/):
+[coffee pour](https://www.pexels.com/video/pouring-black-coffee-into-a-cup-7118100/),
+[coffee grounds](https://www.pexels.com/video/putting-coffee-powder-into-a-paper-filter-7118095/)
+and [brewing](https://www.pexels.com/video/pouring-hot-water-into-a-coffee-dripper-7118104/).
+Silent ten-second sources are scaled to 720 × 1280 and 24 fps. Source URLs,
+original and prepared checksums, editable projects and local narration remain
+in `examples/social-ad/`. Slow Mornings is a fictional concept with no real
+commercial offer or creator endorsement. Its two hooks are manually prepared
+creative variants, not measured ad-performance results.
+
+The current left-character replacement uses an original fictional human
+reference generated locally with Z-Image Turbo, a detailed Qwen frame edit,
+and Wan Animate 2 motion transfer. It replaces the earlier silver-character
+demonstration. The reference generation and normalized import are included in
+`examples/character-replacement/character-reference-origin.json` and
+`character-reference-import.json`. The original film's CC BY 3.0 attribution
+still applies to the resulting scene.
+
+The reviewed character composite uses local segmentation from the public
+Apache-2.0 `facebook/sam2.1-hiera-tiny` model, pinned in `models-matting.json`.
+The matte combines the replacement silhouettes and protects the original
+woman's foreground hand. Annotations, original raw generation and the matte
+receipt are included with the example; model weights are downloaded separately.
+
+The separate performer-focus study in `examples/performer-focus/` reuses that
+same silent Tears of Steel excerpt and fictional generated identity. Its
+appearance PNG is a normalized import with unchanged decoded pixels. Wan sees
+matching cropped driver/reference frames; the generated crop is restored to the
+original scene before a newly tracked SAM matte protects the other performer.
+The original CC BY 3.0 credit and model licenses still apply. Executed and
+portable annotation requests differ only in their relative input paths; source
+hashes and annotations match. Research media remains in the full source ZIPs.
+
+The `examples/agent-generation/` headphone concept uses a locally generated
+Z-Image Turbo reference and LTX camera take, plus generic local Kokoro narration.
+It contains no third-party product photo, stock footage, music or real identity.
+Original request seeds, executed graphs, source hashes and model receipts are
+included. The image, LTX/IC-LoRA and voice model terms remain separately
+applicable; the MIT app license does not replace them.
+
+`examples/script-draft/` reuses the Michael Burrows / Pexels coffee sources
+already attributed in `examples/social-ad/ATTRIBUTION.txt`. Its local Qwen3-4B
+proposal and two authored wording edits are retained with the result. The
+separately downloaded OpenVINO conversion and original Qwen model use Apache-2.0;
+exact files are pinned in `models-script.json`. Local Kokoro voices retain their
+own receipts. No music, real offer, endorsement or identity cloning is included.
+
+`examples/face-performance/` further refines the lower face of the same silent
+Tears of Steel replacement scene using a local video-driven LivePortrait pass.
+The source acting, original CC BY 3.0 credit, generated fictional identity,
+SAM matte and protected foreground remain applicable. The optional profile pins
+official MIT LivePortrait code and six public model files; it excludes InsightFace
+detection weights. Model and code revisions are in `models-face-performance.json`.
+No narration is used to animate the actor's mouth, and no endorsement is implied.

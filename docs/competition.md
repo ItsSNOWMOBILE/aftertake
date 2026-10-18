@@ -4,7 +4,7 @@ Primary objective: win an RTX 5090 in the Open Source Higgsfield challenge.
 The result is not achieved until an award is verified. A running prototype is a milestone.
 
 Primary target: Open Weights Only. Secondary: Most Innovative. Best Overall is upside.
-Source: https://comfy.org/open-source-higgsfield/ (verified October 17, 2026).
+Source: https://comfy.org/open-source-higgsfield/ (page and expanded requirements rechecked October 18, 2026).
 Deadline: October 30, 2026, 09:00 Pacific / 12:00 America/Toronto.
 
 ## Submission details verified in the official page's expanded sections
@@ -22,9 +22,10 @@ Deadline: October 30, 2026, 09:00 Pacific / 12:00 America/Toronto.
 - Sign-up: https://form.typeform.com/to/Ayn9Cwfj
 - Submission: https://form.typeform.com/to/V1dSQrkS
 
-Read the form's final terms before submitting. Local research footage with
-actors is excluded from public demo assets; use original or clearly licensed
-sources without recognizable people for the entry.
+Jay reviews the final terms and submits personally. Unlicensed research media
+is excluded from the public entry. Public examples retain their source licenses,
+including the credited silent CC BY 3.0 Tears of Steel scene with a fictional
+generated appearance. No actor or creator endorsement is claimed.
 
 ## Product thesis
 
@@ -38,11 +39,12 @@ remain the source, rather than relying on a text model to preserve them.
 
 - [x] Official Comfy SDK integration exercised against real ComfyUI, not a mock.
 - [x] Full generation graph uses only open-weight models, no partner nodes or closed inference APIs.
-- [x] Seven reviewed outputs with sources/recipes/graphs are bundled under `examples/`.
+- [x] Thirteen reviewed VFX/reference recipes plus native H3 and text-to-video cases, with applicable sources/recipes/graphs, are bundled under `examples/`.
 - [x] Spatial and temporal controls visibly affect the actual generation/composite.
 - [x] Fresh Windows runtime install, actual import/render, UI import/export and source-hash matching exercised. Other hardware/OS combinations remain unverified.
-- [x] [Public repository](https://github.com/ItsSNOWMOBILE/aftertake) with MIT license, setup, model inventory, third-party attribution.
-- [x] [97-second captioned demo](https://itssnowmobile.github.io/aftertake/) explains the innovation and shows actual input, interaction, and output. Public playback verified October 17.
+- [ ] Final source review by Jay. The [public GitHub repository](https://github.com/ItsSNOWMOBILE/aftertake) carries the MIT app, workflows and example media; complete source downloads are also on the showcase. GitHub app access has been restored. Final review remains a separate gate.
+- [ ] Demo approved by Jay. The [44-second review cut](https://aftertake-studio.right-bard-9761.chatgpt.site/?review=h3-11#demo) contains the native H3 replacement, broader creation workflow and authentic editor reveal. The latest text-to-video addition has separate native examples and agent evidence; it is not yet part of this cut.
+- [x] A separate [72-second narrated judges’ review](https://aftertake-studio.right-bard-9761.chatgpt.site/judges/) explains the model roles, combined techniques and contribution. Exported through the actual Film editor with a fresh editor reveal; see `judges-film-evidence.json`. Jay's approval remains a separate gate.
 - [ ] Required social post linking the demo with #OpenSourceHiggsfield published.
 - [ ] Registration and submission completed with the correct category and links.
 - [ ] Award decision checked when published (official page currently says November 6).

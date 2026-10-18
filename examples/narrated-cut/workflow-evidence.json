@@ -1,0 +1,248 @@
+{
+  "format": "aftertake-narrated-workflow/1",
+  "status": "Awaiting Jay review; not submitted",
+  "filmId": "96776e61-5a23-43ce-86c6-efb9f2420f99",
+  "planId": "973e0b8b141357449ef288146b065a37efe7b596d95726b1d25a5d15840ad3f1",
+  "sha256": "112df75a5e0df28eb5871c3400c1b974ca87b1dab6af64cd69b2170b1b6b00ae",
+  "bytes": 2459091,
+  "frames": 482,
+  "fps": 24,
+  "width": 1280,
+  "height": 720,
+  "duration": 20.083333333333332,
+  "shots": 5,
+  "outerTitleLayers": 5,
+  "outerVoiceTracks": 3,
+  "embeddedAdVoiceInstances": 6,
+  "wholeVoiceAlignment": [
+    {
+      "name": "A1",
+      "start": 0.125,
+      "duration": 1.2532916666666667,
+      "text": "Your morning called.",
+      "path": "examples/narrated-cut/voices/line-01.wav",
+      "sha256": "aa3391aafe9d27f462899db5bbfa497e2f51aa11447caaa74658cc6b1a8e29bf",
+      "wholeVoiceCorrelation": 0.999152421951294,
+      "offsetMs": 9.979166666666666,
+      "wholeVoiceSamplesCompared": 60158
+    },
+    {
+      "name": "A2",
+      "start": 1.6666666666666667,
+      "duration": 1.4953333333333334,
+      "text": "Start with fresh grounds.",
+      "path": "examples/narrated-cut/voices/line-02.wav",
+      "sha256": "716698b77c99048010637dc0cad16d9bfcbf0741a589bdfce8f806d076ca92bf",
+      "wholeVoiceCorrelation": 0.9987284541130066,
+      "offsetMs": 9.979166666666666,
+      "wholeVoiceSamplesCompared": 71776
+    },
+    {
+      "name": "A3",
+      "start": 3.4166666666666665,
+      "duration": 2.255333333333333,
+      "text": "Pour slowly. Savor the moment.",
+      "path": "examples/narrated-cut/voices/line-03.wav",
+      "sha256": "9fcfd8de68485755dab58cb3684625619e80a938c446415f1db90252a383b753",
+      "wholeVoiceCorrelation": 0.9983354806900024,
+      "offsetMs": 9.979166666666666,
+      "wholeVoiceSamplesCompared": 108256
+    },
+    {
+      "name": "hook",
+      "start": 5.958333333333333,
+      "duration": 2.028,
+      "text": "Change the hook. Keep the edit.",
+      "path": "examples/narrated-cut/workflow-media/voice-hook.wav",
+      "sha256": "d3f44c83d57df966f5ec497f3b1b47d40e857d62ab983f8e5c72b9e56b17ed2f",
+      "wholeVoiceCorrelation": 0.9999182820320129,
+      "offsetMs": 4.979166666666667,
+      "wholeVoiceSamplesCompared": 97344
+    },
+    {
+      "name": "pair",
+      "start": 8.25,
+      "duration": 2.6719583333333334,
+      "text": "Voice first. Match the cuts and captions.",
+      "path": "examples/narrated-cut/workflow-media/voice-pair.wav",
+      "sha256": "b6dad2dc7a48a5c56b059a64fa9554694d7871ad204b2172c943806d63ca8bf8",
+      "wholeVoiceCorrelation": 0.9999686479568481,
+      "offsetMs": 4.979166666666667,
+      "wholeVoiceSamplesCompared": 128254
+    },
+    {
+      "name": "B1",
+      "start": 11.208333333333334,
+      "duration": 1.2019583333333332,
+      "text": "A slower start.",
+      "path": "examples/narrated-cut/voices/hook-b.wav",
+      "sha256": "84668bce2df830c891e2762cd7b0bd68eec3bfa3088569c724adbb75dd6aa75f",
+      "wholeVoiceCorrelation": 0.9984161257743835,
+      "offsetMs": 9.979166666666666,
+      "wholeVoiceSamplesCompared": 57694
+    },
+    {
+      "name": "B2",
+      "start": 12.666666666666668,
+      "duration": 1.4953333333333334,
+      "text": "Start with fresh grounds.",
+      "path": "examples/narrated-cut/voices/line-02.wav",
+      "sha256": "716698b77c99048010637dc0cad16d9bfcbf0741a589bdfce8f806d076ca92bf",
+      "wholeVoiceCorrelation": 0.9984552264213562,
+      "offsetMs": 9.979166666666666,
+      "wholeVoiceSamplesCompared": 71776
+    },
+    {
+      "name": "B3",
+      "start": 14.416666666666668,
+      "duration": 2.255333333333333,
+      "text": "Pour slowly. Savor the moment.",
+      "path": "examples/narrated-cut/voices/line-03.wav",
+      "sha256": "9fcfd8de68485755dab58cb3684625619e80a938c446415f1db90252a383b753",
+      "wholeVoiceCorrelation": 0.9982846975326538,
+      "offsetMs": 9.979166666666666,
+      "wholeVoiceSamplesCompared": 108256
+    },
+    {
+      "name": "reveal",
+      "start": 16.958333333333332,
+      "duration": 2.1486666666666667,
+      "text": "This walkthrough? Edited right here.",
+      "path": "examples/narrated-cut/workflow-media/voice-reveal.wav",
+      "sha256": "be5fa582c709e7d7bc360fa50bcd87b16acdf0c40d38e09faff5720ecf7d1bf3",
+      "wholeVoiceCorrelation": 0.9999808669090271,
+      "offsetMs": 4.979166666666667,
+      "wholeVoiceSamplesCompared": 103136
+    }
+  ],
+  "ledger": [
+    {
+      "name": "Ad A",
+      "start": 0,
+      "end": 5.958333333333333,
+      "caption": "HOOK A · NATIVE PORTRAIT EXPORT",
+      "shotNumbers": [
+        1
+      ]
+    },
+    {
+      "name": "Change the hook",
+      "start": 5.833333333333333,
+      "end": 8.25,
+      "voiceStart": 5.958333333333333,
+      "voiceEnd": 7.986333333333333,
+      "spokenText": "Change the hook. Keep the edit.",
+      "caption": "Change the hook. Keep the edit.",
+      "shotNumbers": [
+        2
+      ]
+    },
+    {
+      "name": "Measured pairing",
+      "start": 8.125,
+      "end": 11.208333333333334,
+      "voiceStart": 8.25,
+      "voiceEnd": 10.921958333333333,
+      "spokenText": "Voice first. Match the cuts and captions.",
+      "caption": "Voice first. Match the cuts and captions.",
+      "shotNumbers": [
+        3
+      ]
+    },
+    {
+      "name": "Ad B",
+      "start": 11.083333333333334,
+      "end": 16.958333333333332,
+      "caption": "HOOK B · SAME FOOTAGE",
+      "shotNumbers": [
+        4
+      ]
+    },
+    {
+      "name": "Reveal",
+      "start": 16.833333333333332,
+      "end": 20.083333333333332,
+      "voiceStart": 16.958333333333332,
+      "voiceEnd": 19.107,
+      "spokenText": "This walkthrough? Edited right here.",
+      "caption": "This walkthrough? Edited right here.",
+      "shotNumbers": [
+        5
+      ]
+    }
+  ],
+  "embeddedProjectMatches": true,
+  "mcpReview": {
+    "filmId": "96776e61-5a23-43ce-86c6-efb9f2420f99",
+    "sha256": "112df75a5e0df28eb5871c3400c1b974ca87b1dab6af64cd69b2170b1b6b00ae",
+    "embeddedProjectMatches": true,
+    "width": 1280,
+    "height": 720,
+    "fps": 24,
+    "frameCount": 482,
+    "duration": 20.083333333333332,
+    "maxVideoTimestampDeviationSeconds": 2.366162821232365e-15,
+    "frames": [
+      {
+        "requestedTime": 1.25,
+        "decodedTime": 1.25,
+        "file": "frame-01.jpg"
+      },
+      {
+        "requestedTime": 7.041666666666666,
+        "decodedTime": 7.041666666666667,
+        "file": "frame-02.jpg"
+      },
+      {
+        "requestedTime": 9.375,
+        "decodedTime": 9.375,
+        "file": "frame-03.jpg"
+      },
+      {
+        "requestedTime": 12.333333333333334,
+        "decodedTime": 12.333333333333334,
+        "file": "frame-04.jpg"
+      },
+      {
+        "requestedTime": 18.083333333333332,
+        "decodedTime": 18.083333333333332,
+        "file": "frame-05.jpg"
+      }
+    ],
+    "audio": {
+      "decodedValues": 1927968,
+      "rms": 0.0989400969784788,
+      "samplePeak": 0.8414058089256287,
+      "samplesAtOrAboveFullScale": 0,
+      "maxTimestampGapSeconds": 3.552713678800501e-15
+    },
+    "notice": "Decoded sample diagnostics and selected frames; not a perceptual or editorial quality score.",
+    "review": "Inspect all returned frames and listen to the full film before declaring the edit acceptable."
+  },
+  "source": "Actual UI typing/preparation captures, two native narrated-cut exports and a native-project reveal. Local MCP saved and exported the final plan through the Film renderer.",
+  "editorReveal": "Actual capture of this five-beat native project before substituting that recording into its final shot. The final project uses the recorded MP4 and contains no staging still.",
+  "repeatedMCPExportReturnedSameJob": true,
+  "review": {
+    "selectedFrames": [
+      24,
+      156,
+      180,
+      225,
+      293,
+      350,
+      418,
+      438,
+      473
+    ],
+    "findings": "Selected chapter frames show actual typing, prepared portrait preview, both native ads and the five-beat native project at the reveal. Captions follow their spoken line. Framing remains fixed within the recorded UI cuts. The independent ASR report retains its per-line trailing hallucination and split walk-through transcription.",
+    "limits": [
+      "Line-level captions and editable entrance motion; no forced word alignment.",
+      "Both hooks are prepared creative variants; no ad-performance result is claimed.",
+      "UI voicing waits are shortened by selecting the recorded source range.",
+      "No competition submission, approval or general quality certification."
+    ]
+  },
+  "submissionSent": false,
+  "mastering": "Original ad sound at 70%, technical narration at unity; complete mix measured, then constant gain with peak headroom. No dynamic gain ramp.",
+  "rendererRevision": 2
+}

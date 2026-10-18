@@ -1,0 +1,26 @@
+{
+  "renderId": "78f8cf9f-20d3-4569-a8e3-3ee812d3a9be",
+  "jobId": "5edb2f81-d426-4a77-9e7c-acd92834418e",
+  "generationRenderId": "09216280-cc32-4ce8-8d4f-594afc702fcb",
+  "generationJobId": "ebc2352b-1f2a-4c9a-a183-e34453cb06b8",
+  "state": "succeeded",
+  "width": 768,
+  "height": 432,
+  "frames": 73,
+  "fps": 24,
+  "duration": 3.0416666666666665,
+  "embeddedRecipeMatches": true,
+  "driverAndAppearanceBoundSeparately": true,
+  "savedGenerationBoundByActualMP4Receipt": true,
+  "finishUsesExactSavedGeneration": true,
+  "matteSHA256": "078e7c5f801a26a62ba5107dc33767e6fa03cf89a9bc4313e78e2e6c16e4439d",
+  "result": "5ab72a5d19a4d0221c2bb7b682d58a2c9ad5cea7277ba052729aaf6b761bd065",
+  "editorialReview": {
+    "arm": "Expanded cue contains the complete gesture; subject matte bounds the replacement silhouette.",
+    "foreground": "Original woman and her raised metal forearm are protected by a separate tracked subject.",
+    "limitation": "The generated head turn still follows the driver less closely."
+  },
+  "hasAudio": false,
+  "poseStrength": 1.4,
+  "scope": "Local fictional human replacement; source woman and surrounding scene retained."
+}

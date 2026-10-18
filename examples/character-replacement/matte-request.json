@@ -1,0 +1,132 @@
+{
+  "format": "aftertake-motion-matte/1",
+  "width": 768,
+  "height": 432,
+  "frames": 73,
+  "fps": 24,
+  "source": {
+    "path": "source.mp4",
+    "sha256": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19",
+    "objects": [
+      {
+        "id": 1,
+        "role": "replace",
+        "annotations": [
+          {
+            "frame": 0,
+            "points": [
+              [
+                270,
+                95
+              ],
+              [
+                270,
+                205
+              ],
+              [
+                480,
+                205
+              ]
+            ],
+            "labels": [
+              1,
+              1,
+              0
+            ],
+            "box": [
+              170,
+              25,
+              365,
+              431
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "role": "protect",
+        "annotations": [
+          {
+            "frame": 0,
+            "points": [
+              [
+                475,
+                95
+              ],
+              [
+                480,
+                210
+              ],
+              [
+                270,
+                205
+              ]
+            ],
+            "labels": [
+              1,
+              1,
+              0
+            ],
+            "box": [
+              397,
+              43,
+              560,
+              431
+            ]
+          },
+          {
+            "frame": 72,
+            "points": [
+              [
+                368,
+                165
+              ],
+              [
+                480,
+                210
+              ]
+            ],
+            "labels": [
+              1,
+              1
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "generation": {
+    "path": "generation-source.mp4",
+    "sha256": "a672061730237c24376a67dd5b1fe9df7d1e5123c46c47a17692b5a2f0fb8083",
+    "objects": [
+      {
+        "id": 1,
+        "role": "replace",
+        "annotations": [
+          {
+            "frame": 0,
+            "points": [
+              [
+                275,
+                95
+              ],
+              [
+                280,
+                200
+              ],
+              [
+                477,
+                205
+              ]
+            ],
+            "labels": [
+              1,
+              1,
+              0
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

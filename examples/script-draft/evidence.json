@@ -1,0 +1,120 @@
+{
+  "format": "aftertake-script-draft-proof/1",
+  "recordedAt": "2026-10-18",
+  "scriptId": "230db78c-545f-4590-844a-a932e7af5e0e",
+  "scriptModel": {
+    "model": "Qwen3-4B / OpenVINO INT4",
+    "revision": "b467368d16b75df14055562fe927ae8e1f15f7ef",
+    "weightsSha256": "074214fa29ab1b479536fc7184ef3036e7b355a5835e8590b61b70a8de1df2f9",
+    "runtime": "OpenVINO 2026.4.1-22982-e213a147257-releases/2026/4",
+    "device": "CPU",
+    "deviceName": "Intel(R) Core(TM) Ultra 9 285K",
+    "loadSeconds": 1.9277442999882624,
+    "generationSeconds": 5.91569769999478,
+    "structuredOutput": true
+  },
+  "modelProposal": [
+    "Pouring coffee beans into a filter.",
+    "Water flows over the grounds.",
+    "Make mornings yours."
+  ],
+  "reviewedCopy": [
+    "Start with the grounds.",
+    "Water meets the grounds.",
+    "Make mornings yours."
+  ],
+  "review": "Two suggested lines were edited for precise wording. Source frames were inspected and the final order corrected to grounds, water over grounds, then brewed coffee into a cup. This is reviewed AI-assisted copy, not automatic factual verification or campaign optimization.",
+  "nativeUi": {
+    "draftDidNotOverwriteExistingLines": true,
+    "draftRestoredAfterPageReload": true,
+    "explicitUseDraftLinesClicked": true,
+    "writtenCopyEditedBeforePreparation": true,
+    "preparedPreviewUsedBeforeExport": true,
+    "phoneViewport": 390,
+    "phoneDocumentWidth": 375,
+    "phoneFieldWidths": [
+      253,
+      253,
+      253,
+      253,
+      253
+    ]
+  },
+  "mcp": {
+    "tools": 19,
+    "scriptRequestRejoined": true,
+    "scriptStatusMatched": true,
+    "completedReconcileSameId": true,
+    "scriptOutputFileUnchanged": true
+  },
+  "film": {
+    "id": "b0b72a4e-728b-4465-9c5c-2df16eed80b2",
+    "duration": 5.333333333333333,
+    "width": 720,
+    "height": 1280,
+    "frames": 128,
+    "fps": 24.0,
+    "maxVideoTimestampDeviationSeconds": 5.898059818321144e-16,
+    "embeddedProjectMatches": true,
+    "cuts": 3,
+    "titles": 3,
+    "completeVoices": 3,
+    "wordTimings": 11
+  },
+  "voices": [
+    {
+      "text": "Start with the grounds.",
+      "start": 0.125,
+      "sourceDuration": 1.3899583333333334,
+      "wholeClipCorrelation": 0.9999863974605807,
+      "mixerDelaySamplesAt48kHz": 239
+    },
+    {
+      "text": "Water meets the grounds.",
+      "start": 1.7916666666666667,
+      "sourceDuration": 1.4953333333333334,
+      "wholeClipCorrelation": 0.9999215803865765,
+      "mixerDelaySamplesAt48kHz": 239
+    },
+    {
+      "text": "Make mornings yours.",
+      "start": 3.5416666666666665,
+      "sourceDuration": 1.504,
+      "wholeClipCorrelation": 0.9999837339612563,
+      "mixerDelaySamplesAt48kHz": 239
+    }
+  ],
+  "file": {
+    "path": "examples/script-draft/result.mp4",
+    "sha256": "f11bf73f2afb89e32d791ada62208f4668e7ba5582c5b154350d45910dcf18fe",
+    "bytes": 1956157
+  },
+  "sourceFiles": {
+    "972b7d03-3eb4-4cda-8db5-14a5eb3d39a7": {
+      "path": "examples/social-ad/media/grounds.mp4",
+      "sha256": "dab9e9c00d04452151729afb659df56baf2651c94b28cfd53279192deaa13e32"
+    },
+    "8e0609e4-0d96-470f-8bd3-c198b2d6f95a": {
+      "path": "examples/social-ad/media/brew.mp4",
+      "sha256": "5977671f7d993691838c1e84e81c231f7fddb308990ccf2b10be966a2c858466"
+    },
+    "3621a523-131c-45b9-ad91-dd6ede2b2404": {
+      "path": "examples/social-ad/media/pour.mp4",
+      "sha256": "b3c109ce61d1232263d6cc8dfaa9c5319104ead2de21b951cdeb5d53068ef0a7"
+    },
+    "4815bfa0-1be9-437b-b4c2-2af6146f7d1a": {
+      "path": "examples/script-draft/media/voice-1.wav",
+      "sha256": "0bb2edc24b8d83a77b6f23ed2a14164350b1b9d7ad55b24e20c35493bfc6e4d5"
+    },
+    "76576032-8006-4120-85ae-18611af8a709": {
+      "path": "examples/script-draft/media/voice-2.wav",
+      "sha256": "e13dc3a641c5309d1347b7f11ced40656d22948d50d138775e08e897d7bf7b89"
+    },
+    "e7602255-06a4-44fc-85d5-4030cd7c2e43": {
+      "path": "examples/script-draft/media/voice-3.wav",
+      "sha256": "63eb910fd80724b558d736e45374b62047b7be245a91b2e7dc763dda3e0b89b9"
+    }
+  },
+  "generation": "Existing licensed Pexels footage; local CPU Qwen3 script suggestions and Kokoro narration. No new generated video in this proof.",
+  "limits": "The text model uses supplied descriptions, not video vision. Suggestions can invent details and require review. Timing estimates still need listening and creative review. No submission or social publication occurred."
+}

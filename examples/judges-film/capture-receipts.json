@@ -1,0 +1,382 @@
+{
+  "builder-lines": {
+    "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+    "file": "examples/judges-film/media/entry-ui-builder-lines.mp4",
+    "sha256": "509a00e7440fb8f726b6c395a00ae4a656d2dacdf4f996d26123c1d67a1a0aa6",
+    "screenshots": 232,
+    "lastScreenshotMilliseconds": 4491,
+    "uiValuesInjected": false,
+    "visibleFilmPicturesSampled": 29,
+    "unreadyVisibleFilmPictures": 0
+  },
+  "builder": {
+    "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+    "file": "examples/judges-film/media/entry-ui-builder.mp4",
+    "sha256": "75eb0846ca30d2128ba64337dd64c345e6062483a60fb6aceb3593f5cd41b794",
+    "screenshots": 249,
+    "lastScreenshotMilliseconds": 6488,
+    "uiValuesInjected": false,
+    "visibleFilmPicturesSampled": 33,
+    "unreadyVisibleFilmPictures": 0
+  },
+  "words": {
+    "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+    "file": "examples/judges-film/media/entry-ui-words.mp4",
+    "sha256": "0b85989a6357e5ee89a1791a6d5c67e3863c5922d046ce699399117ecd83182e",
+    "screenshots": 222,
+    "lastScreenshotMilliseconds": 4498,
+    "uiValuesInjected": false,
+    "visibleFilmPicturesSampled": 27,
+    "unreadyVisibleFilmPictures": 0
+  },
+  "hook": {
+    "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+    "file": "examples/judges-film/media/entry-ui-hook.mp4",
+    "sha256": "746be361f83ef5e0cfd3e1125d39faae09e6bf7284f074c825e714c42ed75e27",
+    "screenshots": 373,
+    "lastScreenshotMilliseconds": 8991,
+    "uiValuesInjected": false,
+    "visibleFilmPicturesSampled": 47,
+    "unreadyVisibleFilmPictures": 0
+  },
+  "agent": {
+    "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+    "file": "examples/judges-film/media/entry-ui-agent.mp4",
+    "sha256": "a76176a81206d5286569547da57951301e5565d44d4ec7d36ba8be425691003f",
+    "screenshots": 256,
+    "lastScreenshotMilliseconds": 6480,
+    "uiValuesInjected": false,
+    "visibleFilmPicturesSampled": 32,
+    "unreadyVisibleFilmPictures": 0
+  },
+  "camera-controls": {
+    "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+    "file": "examples/judges-film/media/entry-ui-camera.mp4",
+    "sha256": "acf81564a94ed42ee3f0f5e84c9d2d91b204a012131e3bb45c2ddf5984b2d19d",
+    "screenshots": 117,
+    "lastScreenshotMilliseconds": 2490,
+    "uiValuesInjected": false,
+    "visibleFilmPicturesSampled": 14,
+    "unreadyVisibleFilmPictures": 0
+  },
+  "ending-controls": {
+    "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+    "file": "examples/judges-film/media/entry-ui-ending.mp4",
+    "sha256": "af17dc2ab5dce172658bd506ee2d6fe362572b7c66fe075fefc516bd50707858",
+    "screenshots": 136,
+    "lastScreenshotMilliseconds": 2988,
+    "uiValuesInjected": false,
+    "visibleFilmPicturesSampled": 17,
+    "unreadyVisibleFilmPictures": 0
+  },
+  "reference": {
+    "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+    "file": "examples/judges-film/media/entry-ui-reference.mp4",
+    "sha256": "b65819302ec2ad740def73adc999bdd72821ba43f578a177a58ba33be0eae42f",
+    "screenshots": 164,
+    "lastScreenshotMilliseconds": 3488,
+    "uiValuesInjected": false,
+    "visibleFilmPicturesSampled": 20,
+    "unreadyVisibleFilmPictures": 0
+  },
+  "cue": {
+    "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+    "file": "examples/judges-film/media/entry-ui-cue.mp4",
+    "sha256": "d053e8498738017b7cfda7f7b9b54a9145284d22bcac3bef24be59027fb1d0e5",
+    "screenshots": 122,
+    "lastScreenshotMilliseconds": 4497,
+    "uiValuesInjected": false,
+    "visibleFilmPicturesSampled": 15,
+    "unreadyVisibleFilmPictures": 0
+  },
+  "library": {
+    "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+    "file": "examples/judges-film/media/entry-ui-library.mp4",
+    "sha256": "16c73b24bdbd8da49ae7912c018dea81388b5995bf1305e240db2dc1930d3cb7",
+    "screenshots": 117,
+    "lastScreenshotMilliseconds": 2473,
+    "uiValuesInjected": false,
+    "visibleFilmPicturesSampled": 14,
+    "unreadyVisibleFilmPictures": 0
+  },
+  "reveal": {
+    "format": "aftertake-ui-capture/1",
+    "file": "examples/judges-film/media/entry-ui-reveal.mp4",
+    "sha256": "fe0fe2d916459e806890b970cc53826dcc0bcbd7b46cb2345e5d26aaf6b84e97",
+    "duration": 4.25,
+    "frames": 102,
+    "fps": 24,
+    "source": "Two actual paused views of the live Film editor, joined with edited holds. Native timeline buttons select the H3 shot and the brand shot; the native playhead advances. No injected UI state, added camera motion or moving-footage resampling.",
+    "projectAtCaptureSHA256": "738dd4e258d1147e0ab60450ffea5351870a53a2126581fc609080e6421713b6",
+    "projectSummary": "29 cuts44 titles21 sound clips71.7s duration",
+    "capturePass": "H3 footage, titles, voices and timing already updated; this self-referential reveal recording is replaced afterward without changing the visible project counts/timing.",
+    "viewport": [
+      1280,
+      720
+    ],
+    "picturesPaused": true,
+    "holdSeconds": [
+      1.75,
+      2.5
+    ],
+    "sourceScreenshots": 2,
+    "projectDuration": 71.66666666666667
+  },
+  "executedAgentEdit": {
+    "planId": "67a65ef869321fa97edf99b43c1f21afe17f45e54170652f31296d41162b36c6",
+    "filmId": "9fb63236-6622-4973-a532-a675e653257d",
+    "sha256": "9bcdd917ccce7fb7c18f6ffbfde50a78ee8ff07e8552076529dd7a6f3fe6ca3a",
+    "embeddedProjectMatches": true,
+    "repeatExportReturnedSameFilm": true,
+    "inspectionSourceSHA256": [
+      "b3c109ce61d1232263d6cc8dfaa9c5319104ead2de21b951cdeb5d53068ef0a7",
+      "dab9e9c00d04452151729afb659df56baf2651c94b28cfd53279192deaa13e32"
+    ]
+  },
+  "character-h3-prompt": {
+    "format": "aftertake-ui-capture/1",
+    "file": "examples\\submission-film\\media\\ui-character-prompt.mp4",
+    "sha256": "bf1124b7a4fe87f239fcbc55ea526b8f1c07528ab382ae622e59a70760c8bf74",
+    "frames": 102,
+    "fps": 24,
+    "duration": 4.25,
+    "source": "Actual CUA screenshots of the live character workspace. Prompt construction replays the exact successful request through native UI fields; no DOM or backend state injection.",
+    "sourceCaptures": 45,
+    "lastCaptureMilliseconds": 1595,
+    "typingDeliverySeconds": 2.5,
+    "finalHoldSeconds": 1.75,
+    "pausedPreview": true,
+    "recordedPromptMatchesNativeRequest": true,
+    "viewport": [
+      1280,
+      720
+    ],
+    "deliveryTimeline": [
+      {
+        "file": "0000.png",
+        "start": 0.0,
+        "end": 0.05642633228840125
+      },
+      {
+        "file": "0001.png",
+        "start": 0.05642633228840125,
+        "end": 0.11128526645768025
+      },
+      {
+        "file": "0002.png",
+        "start": 0.11128526645768025,
+        "end": 0.1755485893416928
+      },
+      {
+        "file": "0003.png",
+        "start": 0.1755485893416928,
+        "end": 0.2304075235109718
+      },
+      {
+        "file": "0004.png",
+        "start": 0.2304075235109718,
+        "end": 0.28996865203761757
+      },
+      {
+        "file": "0005.png",
+        "start": 0.28996865203761757,
+        "end": 0.3448275862068966
+      },
+      {
+        "file": "0006.png",
+        "start": 0.3448275862068966,
+        "end": 0.4263322884012539
+      },
+      {
+        "file": "0007.png",
+        "start": 0.4263322884012539,
+        "end": 0.48589341692789967
+      },
+      {
+        "file": "0008.png",
+        "start": 0.48589341692789967,
+        "end": 0.5391849529780565
+      },
+      {
+        "file": "0009.png",
+        "start": 0.5391849529780565,
+        "end": 0.5971786833855799
+      },
+      {
+        "file": "0010.png",
+        "start": 0.5971786833855799,
+        "end": 0.652037617554859
+      },
+      {
+        "file": "0011.png",
+        "start": 0.652037617554859,
+        "end": 0.7037617554858934
+      },
+      {
+        "file": "0012.png",
+        "start": 0.7037617554858934,
+        "end": 0.7586206896551724
+      },
+      {
+        "file": "0013.png",
+        "start": 0.7586206896551724,
+        "end": 0.8134796238244514
+      },
+      {
+        "file": "0014.png",
+        "start": 0.8134796238244514,
+        "end": 0.871473354231975
+      },
+      {
+        "file": "0015.png",
+        "start": 0.871473354231975,
+        "end": 0.9184952978056427
+      },
+      {
+        "file": "0016.png",
+        "start": 0.9184952978056427,
+        "end": 0.9733542319749217
+      },
+      {
+        "file": "0017.png",
+        "start": 0.9733542319749217,
+        "end": 1.0266457680250782
+      },
+      {
+        "file": "0018.png",
+        "start": 1.0266457680250782,
+        "end": 1.084639498432602
+      },
+      {
+        "file": "0019.png",
+        "start": 1.084639498432602,
+        "end": 1.1379310344827587
+      },
+      {
+        "file": "0020.png",
+        "start": 1.1379310344827587,
+        "end": 1.1990595611285266
+      },
+      {
+        "file": "0021.png",
+        "start": 1.1990595611285266,
+        "end": 1.255485893416928
+      },
+      {
+        "file": "0022.png",
+        "start": 1.255485893416928,
+        "end": 1.3134796238244515
+      },
+      {
+        "file": "0023.png",
+        "start": 1.3134796238244515,
+        "end": 1.3714733542319748
+      },
+      {
+        "file": "0024.png",
+        "start": 1.3714733542319748,
+        "end": 1.4216300940438873
+      },
+      {
+        "file": "0025.png",
+        "start": 1.4216300940438873,
+        "end": 1.4764890282131662
+      },
+      {
+        "file": "0026.png",
+        "start": 1.4764890282131662,
+        "end": 1.5313479623824453
+      },
+      {
+        "file": "0027.png",
+        "start": 1.5313479623824453,
+        "end": 1.5877742946708464
+      },
+      {
+        "file": "0028.png",
+        "start": 1.5877742946708464,
+        "end": 1.6504702194357368
+      },
+      {
+        "file": "0029.png",
+        "start": 1.6504702194357368,
+        "end": 1.7053291536050157
+      },
+      {
+        "file": "0030.png",
+        "start": 1.7053291536050157,
+        "end": 1.7523510971786835
+      },
+      {
+        "file": "0031.png",
+        "start": 1.7523510971786835,
+        "end": 1.8009404388714734
+      },
+      {
+        "file": "0032.png",
+        "start": 1.8009404388714734,
+        "end": 1.8573667711598745
+      },
+      {
+        "file": "0033.png",
+        "start": 1.8573667711598745,
+        "end": 1.9137931034482758
+      },
+      {
+        "file": "0034.png",
+        "start": 1.9137931034482758,
+        "end": 1.9655172413793105
+      },
+      {
+        "file": "0035.png",
+        "start": 1.9655172413793105,
+        "end": 2.0188087774294674
+      },
+      {
+        "file": "0036.png",
+        "start": 2.0188087774294674,
+        "end": 2.0783699059561127
+      },
+      {
+        "file": "0037.png",
+        "start": 2.0783699059561127,
+        "end": 2.128526645768025
+      },
+      {
+        "file": "0038.png",
+        "start": 2.128526645768025,
+        "end": 2.189655172413793
+      },
+      {
+        "file": "0039.png",
+        "start": 2.189655172413793,
+        "end": 2.2476489028213167
+      },
+      {
+        "file": "0040.png",
+        "start": 2.2476489028213167,
+        "end": 2.302507836990596
+      },
+      {
+        "file": "0041.png",
+        "start": 2.302507836990596,
+        "end": 2.358934169278997
+      },
+      {
+        "file": "0042.png",
+        "start": 2.358934169278997,
+        "end": 2.415360501567398
+      },
+      {
+        "file": "0043.png",
+        "start": 2.415360501567398,
+        "end": 2.5
+      },
+      {
+        "file": "0044.png",
+        "start": 2.5,
+        "end": 4.25
+      }
+    ]
+  }
+}

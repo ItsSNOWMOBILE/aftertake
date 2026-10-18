@@ -1,0 +1,140 @@
+{
+  "id": "60ed4915-fa00-4333-a67a-4bc87479632e",
+  "requestKey": "agent-image-722f3e2ff355eef09708b99cb76e3e485d533646feb36e1b239ecbf700dbe834",
+  "requestDigest": "f249c2ff54f9af421ea39d95be290a4fc06a521391be0542388dfe1b3b67e820",
+  "request": {
+    "format": "aftertake-image/1",
+    "name": "Field / headphone concept",
+    "prompt": "A single pair of premium matte graphite wireless over-ear headphones standing upright on a low circular warm ivory plinth, balanced arching headband and two symmetrical ear cups, subtle lime accent at the earcup rim, dark forest-green seamless studio background, warm soft key light from camera left and a thin rim light from behind. Realistic product photography, simple clean silhouette, no text, no logos, no people.",
+    "seed": 90305090,
+    "aspect": "square",
+    "style": "product"
+  },
+  "workflow": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "z_image_turbo_bf16.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen_3_4b.safetensors",
+        "type": "lumina2",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ae.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "ModelSamplingAuraFlow",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "shift": 3
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "A single pair of premium matte graphite wireless over-ear headphones standing upright on a low circular warm ivory plinth, balanced arching headband and two symmetrical ear cups, subtle lime accent at the earcup rim, dark forest-green seamless studio background, warm soft key light from camera left and a thin rim light from behind. Realistic product photography, simple clean silhouette, no text, no logos, no people.\n\nPremium product photograph with controlled studio lighting, crisp material detail and a clean composition."
+      }
+    },
+    "6": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "EmptySD3LatentImage",
+      "inputs": {
+        "width": 1024,
+        "height": 1024,
+        "batch_size": 1
+      }
+    },
+    "17": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "4",
+          0
+        ],
+        "seed": 90305090,
+        "steps": 8,
+        "cfg": 1,
+        "sampler_name": "res_multistep",
+        "scheduler": "simple",
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "latent_image": [
+          "7",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "21": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "filename_prefix": "aftertake/imagine"
+      }
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-18T12:42:50.366Z",
+  "updatedAt": "2026-10-18T12:43:00.569Z",
+  "jobId": "df6bcc8f-00da-4450-b8a6-59c29fc2e9e7",
+  "stage": "Ready to edit or animate",
+  "clip": {
+    "id": "60ed4915-fa00-4333-a67a-4bc87479632e",
+    "name": "Field / headphone concept",
+    "kind": "image",
+    "width": 1024,
+    "height": 1024,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "2f69acaeaf9c85ed5f975bf67ec9cd4713ae3ccf2b834bbc0e75172dc6303b66",
+    "url": "/media/60ed4915-fa00-4333-a67a-4bc87479632e.png"
+  }
+}

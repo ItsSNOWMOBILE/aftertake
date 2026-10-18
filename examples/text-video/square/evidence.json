@@ -1,0 +1,26 @@
+{
+  "id": "c045fee5-9891-4484-9e20-ffba476c9c05",
+  "jobId": "71e6ff7a-f2a1-4152-afde-64e8b0729df0",
+  "sha256": "839bc3d4273dd2f2078e41d67e435bf8422fef5e275498ec8cef661bd1529e30",
+  "engineSeconds": 61.13,
+  "decoded": {
+    "width": 512,
+    "height": 512,
+    "fps": 24,
+    "frames": 49,
+    "hasAudio": false,
+    "regularTimestamps": true,
+    "firstTimestamp": 0,
+    "duration": 2.0416666666666665
+  },
+  "reviewedFrames": [
+    0,
+    16,
+    32,
+    48
+  ],
+  "metadataAndDecodedClockVerified": true,
+  "sourceImageOrVideoInputs": 0,
+  "source": "native LTX-2.5 empty AV latents and text conditioning",
+  "modelManifest": "docs/models-text-video.json"
+}

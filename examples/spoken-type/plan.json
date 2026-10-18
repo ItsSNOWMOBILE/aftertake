@@ -1,0 +1,456 @@
+{
+  "identity": "1904e68396df0901ed87a0560c82ef97ab03d7e15afbb28d745fe92f9ee51aeb",
+  "plan": {
+    "name": "Slow Mornings / follow the voice",
+    "aspect": "portrait",
+    "sourceVolume": 0,
+    "normalizeAudio": true,
+    "beats": [
+      {
+        "name": "Line 1",
+        "visuals": [
+          {
+            "assetId": "cf321755-57ed-4c4b-9348-fc201c173fbf",
+            "dissolve": 0,
+            "start": 0.5,
+            "end": 2.1666666666666665,
+            "sha256": "b3c109ce61d1232263d6cc8dfaa9c5319104ead2de21b951cdeb5d53068ef0a7"
+          }
+        ],
+        "voice": {
+          "assetId": "c38d630a-749c-4014-9962-09045dca0358",
+          "sha256": "93f608a517de08a43558edda2a979d60d98e6de0ce93b744eca76cb7bfe901ae"
+        },
+        "voiceLead": 0.125,
+        "tail": 0.25,
+        "caption": "Your morning called.",
+        "animation": "spoken",
+        "style": "headline",
+        "position": "center",
+        "captionTail": 0.08,
+        "fontSize": 132,
+        "color": "#d5e991"
+      },
+      {
+        "name": "Line 2",
+        "visuals": [
+          {
+            "assetId": "9736d25f-9f79-48a5-8d7d-157518606acc",
+            "dissolve": 0.125,
+            "start": 0.75,
+            "end": 2.625,
+            "sha256": "dab9e9c00d04452151729afb659df56baf2651c94b28cfd53279192deaa13e32"
+          }
+        ],
+        "voice": {
+          "assetId": "e73bcee5-17de-4d2d-8173-2a50d17e0b8a",
+          "sha256": "e1bb268b3caf9ea95b1a6285ade1017c880945b1630b59089e61e1d743d1e415"
+        },
+        "voiceLead": 0.125,
+        "tail": 0.25,
+        "caption": "Start with fresh grounds.",
+        "animation": "spoken",
+        "style": "headline",
+        "position": "center",
+        "captionTail": 0.08,
+        "fontSize": 132,
+        "color": "#d5e991"
+      },
+      {
+        "name": "Line 3",
+        "visuals": [
+          {
+            "assetId": "5f947a79-d19b-43aa-8f88-e5a03d9b3eba",
+            "dissolve": 0.125,
+            "start": 0.5,
+            "end": 3.1666666666666665,
+            "sha256": "5977671f7d993691838c1e84e81c231f7fddb308990ccf2b10be966a2c858466"
+          }
+        ],
+        "voice": {
+          "assetId": "81dca322-f17f-46d6-b5c7-74335b9c8a59",
+          "sha256": "992569def73399286316087c5701af7918689df9ce60516d92061ab78d7500bb"
+        },
+        "voiceLead": 0.125,
+        "tail": 0.25,
+        "caption": "Pour slowly. Savor the moment.",
+        "animation": "spoken",
+        "style": "headline",
+        "position": "center",
+        "captionTail": 0.08,
+        "fontSize": 132,
+        "color": "#d5e991"
+      }
+    ]
+  },
+  "draft": {
+    "name": "Slow Mornings / follow the voice",
+    "aspect": "portrait",
+    "shots": [
+      {
+        "assetId": "cf321755-57ed-4c4b-9348-fc201c173fbf",
+        "dissolve": 0,
+        "start": 0.5,
+        "end": 2.1666666666666665
+      },
+      {
+        "assetId": "9736d25f-9f79-48a5-8d7d-157518606acc",
+        "dissolve": 0.125,
+        "start": 0.75,
+        "end": 2.625
+      },
+      {
+        "assetId": "5f947a79-d19b-43aa-8f88-e5a03d9b3eba",
+        "dissolve": 0.125,
+        "start": 0.5,
+        "end": 3.1666666666666665
+      }
+    ],
+    "titles": [
+      {
+        "id": "112c3505-8791-46ac-90be-cfc9bae2427b",
+        "text": "Your morning called.",
+        "start": 0.125,
+        "end": 1.4582916666666668,
+        "style": "headline",
+        "position": "center",
+        "animation": "spoken",
+        "words": [
+          {
+            "text": "Your",
+            "start": 0.119,
+            "end": 0.244,
+            "phrase": 0
+          },
+          {
+            "text": "morning",
+            "start": 0.294,
+            "end": 0.594,
+            "phrase": 0
+          },
+          {
+            "text": "called.",
+            "start": 0.644,
+            "end": 1.1733333333333333,
+            "phrase": 0
+          }
+        ],
+        "fontSize": 132,
+        "color": "#d5e991"
+      },
+      {
+        "id": "61b9755a-a2fa-4669-9c96-ad7b8166053b",
+        "text": "Start with fresh grounds.",
+        "start": 1.6666666666666667,
+        "end": 3.242,
+        "style": "headline",
+        "position": "center",
+        "animation": "spoken",
+        "words": [
+          {
+            "text": "Start",
+            "start": 0.11533333333333333,
+            "end": 0.3403333333333333,
+            "phrase": 0
+          },
+          {
+            "text": "with",
+            "start": 0.36533333333333334,
+            "end": 0.49033333333333334,
+            "phrase": 0
+          },
+          {
+            "text": "fresh",
+            "start": 0.5403333333333333,
+            "end": 0.7403333333333333,
+            "phrase": 0
+          },
+          {
+            "text": "grounds.",
+            "start": 0.7903333333333333,
+            "end": 1.3653333333333333,
+            "phrase": 0
+          }
+        ],
+        "fontSize": 132,
+        "color": "#d5e991"
+      },
+      {
+        "id": "8f2fd14e-c9bc-4ba3-b804-4108ecff1a8b",
+        "text": "Pour slowly. Savor the moment.",
+        "start": 3.4166666666666665,
+        "end": 5.752,
+        "style": "headline",
+        "position": "center",
+        "animation": "spoken",
+        "words": [
+          {
+            "text": "Pour",
+            "start": 0.069,
+            "end": 0.294,
+            "phrase": 0
+          },
+          {
+            "text": "slowly.",
+            "start": 0.369,
+            "end": 0.919,
+            "phrase": 0
+          },
+          {
+            "text": "Savor",
+            "start": 1.1840000000000002,
+            "end": 1.484,
+            "phrase": 1
+          },
+          {
+            "text": "the",
+            "start": 1.5090000000000001,
+            "end": 1.5590000000000002,
+            "phrase": 1
+          },
+          {
+            "text": "moment.",
+            "start": 1.609,
+            "end": 2.095333333333333,
+            "phrase": 1
+          }
+        ],
+        "fontSize": 132,
+        "color": "#d5e991"
+      }
+    ],
+    "audio": [
+      {
+        "assetId": "c38d630a-749c-4014-9962-09045dca0358",
+        "start": 0.125,
+        "sourceStart": 0,
+        "sourceEnd": 1.2532916666666667,
+        "volume": 1
+      },
+      {
+        "assetId": "e73bcee5-17de-4d2d-8173-2a50d17e0b8a",
+        "start": 1.6666666666666667,
+        "sourceStart": 0,
+        "sourceEnd": 1.4953333333333334,
+        "volume": 1
+      },
+      {
+        "assetId": "81dca322-f17f-46d6-b5c7-74335b9c8a59",
+        "start": 3.4166666666666665,
+        "sourceStart": 0,
+        "sourceEnd": 2.255333333333333,
+        "volume": 1
+      }
+    ],
+    "sourceVolume": 0,
+    "normalizeAudio": true
+  },
+  "manifest": {
+    "format": "aftertake-film/2",
+    "name": "Slow Mornings / follow the voice",
+    "aspect": "portrait",
+    "shots": [
+      {
+        "assetId": "cf321755-57ed-4c4b-9348-fc201c173fbf",
+        "dissolve": 0,
+        "start": 0.5,
+        "end": 2.1666666666666665,
+        "sha256": "b3c109ce61d1232263d6cc8dfaa9c5319104ead2de21b951cdeb5d53068ef0a7"
+      },
+      {
+        "assetId": "9736d25f-9f79-48a5-8d7d-157518606acc",
+        "dissolve": 0.125,
+        "start": 0.75,
+        "end": 2.625,
+        "sha256": "dab9e9c00d04452151729afb659df56baf2651c94b28cfd53279192deaa13e32"
+      },
+      {
+        "assetId": "5f947a79-d19b-43aa-8f88-e5a03d9b3eba",
+        "dissolve": 0.125,
+        "start": 0.5,
+        "end": 3.1666666666666665,
+        "sha256": "5977671f7d993691838c1e84e81c231f7fddb308990ccf2b10be966a2c858466"
+      }
+    ],
+    "titles": [
+      {
+        "id": "112c3505-8791-46ac-90be-cfc9bae2427b",
+        "text": "Your morning called.",
+        "start": 0.125,
+        "end": 1.4582916666666668,
+        "style": "headline",
+        "position": "center",
+        "animation": "spoken",
+        "words": [
+          {
+            "text": "Your",
+            "start": 0.119,
+            "end": 0.244,
+            "phrase": 0
+          },
+          {
+            "text": "morning",
+            "start": 0.294,
+            "end": 0.594,
+            "phrase": 0
+          },
+          {
+            "text": "called.",
+            "start": 0.644,
+            "end": 1.1733333333333333,
+            "phrase": 0
+          }
+        ],
+        "fontSize": 132,
+        "color": "#d5e991"
+      },
+      {
+        "id": "61b9755a-a2fa-4669-9c96-ad7b8166053b",
+        "text": "Start with fresh grounds.",
+        "start": 1.6666666666666667,
+        "end": 3.242,
+        "style": "headline",
+        "position": "center",
+        "animation": "spoken",
+        "words": [
+          {
+            "text": "Start",
+            "start": 0.11533333333333333,
+            "end": 0.3403333333333333,
+            "phrase": 0
+          },
+          {
+            "text": "with",
+            "start": 0.36533333333333334,
+            "end": 0.49033333333333334,
+            "phrase": 0
+          },
+          {
+            "text": "fresh",
+            "start": 0.5403333333333333,
+            "end": 0.7403333333333333,
+            "phrase": 0
+          },
+          {
+            "text": "grounds.",
+            "start": 0.7903333333333333,
+            "end": 1.3653333333333333,
+            "phrase": 0
+          }
+        ],
+        "fontSize": 132,
+        "color": "#d5e991"
+      },
+      {
+        "id": "8f2fd14e-c9bc-4ba3-b804-4108ecff1a8b",
+        "text": "Pour slowly. Savor the moment.",
+        "start": 3.4166666666666665,
+        "end": 5.752,
+        "style": "headline",
+        "position": "center",
+        "animation": "spoken",
+        "words": [
+          {
+            "text": "Pour",
+            "start": 0.069,
+            "end": 0.294,
+            "phrase": 0
+          },
+          {
+            "text": "slowly.",
+            "start": 0.369,
+            "end": 0.919,
+            "phrase": 0
+          },
+          {
+            "text": "Savor",
+            "start": 1.1840000000000002,
+            "end": 1.484,
+            "phrase": 1
+          },
+          {
+            "text": "the",
+            "start": 1.5090000000000001,
+            "end": 1.5590000000000002,
+            "phrase": 1
+          },
+          {
+            "text": "moment.",
+            "start": 1.609,
+            "end": 2.095333333333333,
+            "phrase": 1
+          }
+        ],
+        "fontSize": 132,
+        "color": "#d5e991"
+      }
+    ],
+    "audio": [
+      {
+        "assetId": "c38d630a-749c-4014-9962-09045dca0358",
+        "start": 0.125,
+        "sourceStart": 0,
+        "sourceEnd": 1.2532916666666667,
+        "volume": 1,
+        "sha256": "93f608a517de08a43558edda2a979d60d98e6de0ce93b744eca76cb7bfe901ae"
+      },
+      {
+        "assetId": "e73bcee5-17de-4d2d-8173-2a50d17e0b8a",
+        "start": 1.6666666666666667,
+        "sourceStart": 0,
+        "sourceEnd": 1.4953333333333334,
+        "volume": 1,
+        "sha256": "e1bb268b3caf9ea95b1a6285ade1017c880945b1630b59089e61e1d743d1e415"
+      },
+      {
+        "assetId": "81dca322-f17f-46d6-b5c7-74335b9c8a59",
+        "start": 3.4166666666666665,
+        "sourceStart": 0,
+        "sourceEnd": 2.255333333333333,
+        "volume": 1,
+        "sha256": "992569def73399286316087c5701af7918689df9ce60516d92061ab78d7500bb"
+      }
+    ],
+    "sourceVolume": 0,
+    "normalizeAudio": true
+  },
+  "ledger": [
+    {
+      "name": "Line 1",
+      "start": 0,
+      "end": 1.6666666666666667,
+      "voiceStart": 0.125,
+      "voiceEnd": 1.3782916666666667,
+      "spokenText": "Your morning called.",
+      "caption": "Your morning called.",
+      "shotNumbers": [
+        1
+      ]
+    },
+    {
+      "name": "Line 2",
+      "start": 1.5416666666666667,
+      "end": 3.4166666666666665,
+      "voiceStart": 1.6666666666666667,
+      "voiceEnd": 3.162,
+      "spokenText": "Start with fresh grounds.",
+      "caption": "Start with fresh grounds.",
+      "shotNumbers": [
+        2
+      ]
+    },
+    {
+      "name": "Line 3",
+      "start": 3.2916666666666665,
+      "end": 5.958333333333333,
+      "voiceStart": 3.4166666666666665,
+      "voiceEnd": 5.672,
+      "spokenText": "Pour slowly. Savor the moment.",
+      "caption": "Pour slowly. Savor the moment.",
+      "shotNumbers": [
+        3
+      ]
+    }
+  ],
+  "duration": 5.958333333333333
+}

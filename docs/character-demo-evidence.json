@@ -1,0 +1,52 @@
+{
+  "format": "aftertake-character-demo/2",
+  "pipeline": "Native SAM3 whole-person tracking → H3 Character Swap V1.5 → native Film editor",
+  "example": "examples/character-h3/",
+  "native": {
+    "frames": 73,
+    "fps": 24,
+    "width": 928,
+    "height": 512,
+    "duration": 3.0416666666666665,
+    "nativeJobId": "88a900ae-3c6a-468d-bb20-1fefb4eefdd6",
+    "outputSHA256": "127518cc682b27c15f36438b9866a7b399c20ea913733add8a1ad89ebe9df03e",
+    "exactAdjacentDuplicates": 0,
+    "sourceSHA256": "be7b92b9fa173d498ee372dda5f7e0a2082c5349d242fb276dfc356b8237d42e",
+    "maskSHA256": "23e995b1dbe46c5b274b56b3df284286e0fb6ad77e4754efe5f2116588ea592a",
+    "joinFrame": 56,
+    "format": "aftertake-character-h3-evidence/1",
+    "files": {
+      "source.mp4": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19",
+      "reference.png": "2246e339a602bd225113795eefa3a5603ea840f138eb4dcf0e8ff01122832052",
+      "result.mp4": "127518cc682b27c15f36438b9866a7b399c20ea913733add8a1ad89ebe9df03e",
+      "prepared-source.mp4": "be7b92b9fa173d498ee372dda5f7e0a2082c5349d242fb276dfc356b8237d42e",
+      "tracked-mask.mkv": "23e995b1dbe46c5b274b56b3df284286e0fb6ad77e4754efe5f2116588ea592a",
+      "selection-preview.mp4": "7e8c2490b8e826cd82987c7a99049623bc36e995580fabbb2b28965c59d161ae"
+    },
+    "selectionNativeJobId": "48e810db-6dbe-456b-bb20-10fb53f251f7",
+    "workflow": "workflow-api.json",
+    "selectionWorkflow": "selection-workflow-api.json",
+    "modelManifest": "../../docs/models-character-swap.json",
+    "reference": "Original fictional Z-Image reference and a crop of its real head; no preliminary frame redraw or portrait overlay.",
+    "review": "All 73 face frames, whole-body comparison frames and continuation frames 55/56 reviewed. General articulation, identity and occlusion quality still require review.",
+    "runtime": {
+      "gpu": "RTX 5080 16 GB",
+      "systemRAM": "32 GB",
+      "engineFlags": [
+        "--safe-weight-copies",
+        "--no-node-cache"
+      ],
+      "nativeWindows": 2
+    },
+    "submission": "Review candidate; Jay submits personally."
+  },
+  "excerpt": {
+    "sourceFilmId": "3e058803-8b3e-48fa-bbd3-39c0fc28c706",
+    "start": 23.624999999999993,
+    "end": 30.91666666666666,
+    "duration": 7.291666666666668,
+    "frames": 175,
+    "sha256": "47095ab650a8c57a3047550625c4b2976d4d52e4b4857773cfa39e11060ec6ba"
+  },
+  "review": "Awaiting Jay; no competition submission."
+}

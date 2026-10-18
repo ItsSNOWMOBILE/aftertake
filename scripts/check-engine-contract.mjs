@@ -3,6 +3,11 @@ import { readFile } from 'node:fs/promises';
 import { buildWorkflow } from '../server/workflow.ts';
 import { defaultCinema } from '../src/cinema.ts';
 import { buildFrameEditWorkflow } from '../server/frame-workflow.ts';
+import { buildCharacterWorkflow } from '../server/character-workflow.ts';
+import { characterRequirements } from '../server/character-profile.ts';
+import {buildVideoWorkflow,videoRequirements} from '../server/video-workflow.ts';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const origin = process.env.COMFY_UI_URL || 'http://127.0.0.1:8188';
 const response = await fetch(`${origin}/object_info`, { signal: AbortSignal.timeout(10000) });
@@ -36,5 +41,29 @@ for (const profile of ['structure', 'inpaint', 'cinema', 'motion', 'inpaint-refe
 for (const mode of ['fast', 'detail']) for (const subject of [undefined, { ...reference, kind: 'image' }])
   check(`frame-edit/${mode}/${subject ? 'subject' : 'source-only'}`, buildFrameEditWorkflow({ format: 'aftertake-frame-edit/1', clip: sample.clip,
     trimStart: 0, prompt: 'Replace the selected object, preserving the surrounding scene.', seed: 731, mode, subject }));
+let characterVariants=0;
+let textVideoVariants=0;
+for(const aspect of ['landscape','portrait','square'])for(const quality of ['draft','final'])for(const sound of [false,true]){
+  const graph=buildVideoWorkflow({format:'aftertake-text-video/1',name:'Contract only',prompt:'Steam rises from a coffee cup.',seed:5090,aspect,quality,seconds:3,sound});
+  check(`text-video/${aspect}/${quality}/${sound}`,graph);
+  const required=new Set(videoRequirements().nodes);
+  for(const node of Object.values(graph))if(!required.has(node.class_type))failures.push(`Text video preflight omits ${node.class_type}`);
+  textVideoVariants++;
+}
+if(process.argv.includes('--character')){
+  const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
+  const python=process.env.AFTERTAKE_PYTHON||path.join(root,'.runtime/venv',process.platform==='win32'?'Scripts/python.exe':'bin/python');
+  const selection={format:'aftertake-character-selection/1',clip:sample.clip,trimStart:0,duration:2,positive:[{x:.5,y:.5}],negative:[]};
+  const graphs=[['character/selection',await buildCharacterWorkflow(root,python,{id:'contract-only',kind:'selection',request:selection})]];
+  for(const faceBox of [undefined,{x:.3,y:.1,width:.4,height:.3}])for(const wardrobe of ['source','reference']){
+    const request={format:'aftertake-character/1',name:'Read-only contract',selectionId:'00000000-0000-4000-8000-000000000000',reference:{...reference,kind:'image'},faceBox,wardrobe,seed:509101,prompt:'Keep the cup.'};
+    graphs.push([`character/${faceBox?'face':'photo'}/${wardrobe}`,await buildCharacterWorkflow(root,python,{id:'contract-only',kind:'replacement',request,selectionRequest:selection})]);
+  }
+  for(const[label,graph]of graphs){
+    check(label,graph);const required=new Set(characterRequirements(label==='character/selection').nodes);
+    for(const node of Object.values(graph))if(!required.has(node.class_type))failures.push(`${label}: preflight omits ${node.class_type}`);
+    characterVariants++;
+  }
+}
 if (failures.length) throw new Error(failures.join('\n'));
-console.log('All twenty-two workflow variants satisfy the live required-input and output-link contracts. No jobs submitted.');
+console.log(`All ${22+characterVariants+textVideoVariants} workflow variants satisfy the live required-input and output-link contracts. No jobs submitted.`);

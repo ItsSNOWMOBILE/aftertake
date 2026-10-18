@@ -1,0 +1,22 @@
+{
+  "format": "aftertake-spoken-cpu-reproduction/1",
+  "filmId": "34d2db2a-ab33-4102-94bf-d92837e621e3",
+  "frames": 143,
+  "fps": 24,
+  "dimensions": [
+    720,
+    1280
+  ],
+  "inputProjectTitlesPreserved": true,
+  "maximumDecodedFrameRGBMAEAgainstNativeExport": 0,
+  "allSixSourceHashesPreserved": true,
+  "idempotentExportRejoined": true,
+  "runtime": {
+    "kind": "separate CPU film venv",
+    "torchInstalled": false,
+    "kokoroInstalled": false
+  },
+  "engine": "Both configured Comfy endpoints unavailable; narration runtime intentionally absent. Only imported footage/WAVs and the CPU film renderer were used.",
+  "sha256": "1b5ea40e8bbac41ed43d49acb66a844d11ec3dbde1b2e13f85ba68f122ba8e7d",
+  "scope": "Reopen and export this supplied project; new narration and image/video generation require their documented runtimes."
+}

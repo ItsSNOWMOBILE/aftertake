@@ -1,0 +1,51 @@
+Follow voice / actual native typography example
+
+Install the CPU film runtime and start the local example workspace:
+  pnpm install
+  python scripts/setup-film.py
+  pnpm demo
+
+Import the supplied media and voices, then select the project in Film:
+  python scripts/import-film-project.py examples/spoken-type/project.json --url http://127.0.0.1:4312
+
+No new speech or video generation is needed to reopen and export this example.
+cpu-reexport.json records an actual export in the separate CPU film runtime
+without Torch or Kokoro. All 143 decoded frames matched the original export.
+To write new lines, also run python scripts/setup-narration.py.
+
+Import also restores the supplied voice scripts, model receipts and word times.
+Open Make a narrated cut, select Use this film's narration, then prepare/review
+to try its existing lines again. Follow voice and bold typography reuse these
+timed WAVs without a narration model. voice-roundtrip.json records the actual
+UI recovery, preparation and export, followed by voice reuse after restart.
+All 143 frames and the complete decoded audio match the original.
+
+Arrange pictures, set their In/Out ranges, open Make a narrated cut and choose
+Follow voice. Write one line per picture, prepare, review and use the cut.
+Typography > Speech timing exposes each word's start/end relative to its title.
+Changing the title wording clears its speech timing and switches to Fade.
+
+result.mp4: 143 frames, 5.96 seconds, 720x1280, 24 fps; three pictures, three
+complete local voices and twelve timed words. It was exported by the native UI.
+model timings are estimates; review them against the voice and adjust as needed.
+
+The original coffee clips remain in examples/social-ad/media/. The supplied
+WAVs are in this folder's media/ directory inside the complete source ZIPs.
+Source URLs and checksums: examples/social-ad/sources.json.
+Footage: Michael Burrows / Pexels, Pexels License. Fictional concept, no offer,
+affiliation or endorsement. Generic Kokoro af_heart voice. Fonts: Manrope and
+DM Sans (OFL). App code: MIT; model licenses apply separately.
+
+voice-review.json retains unprompted Whisper transcripts and estimated times,
+including the whole-line Your/You're ambiguity. alignment-review.json retains
+an independent open-weight CTC check and its imperfect greedy transcript.
+Its twelve start-time estimates differ from Kokoro by at most 49 ms here.
+End estimates differ more; neither method establishes exact acoustic boundaries.
+That review model is not a runtime requirement for this feature.
+
+Optional reproduction of the independent CTC review:
+  .runtime/venv/Scripts/python.exe examples/spoken-type/review-alignment.py
+Use the installed Comfy runtime (torch and transformers). On POSIX, use
+.runtime/venv/bin/python. This downloads a separate roughly 360 MiB Apache-2.0
+review model, verifies its pinned safetensors hash and writes alignment-rerun.json.
+It is not needed for the app, the supplied project or word highlighting.

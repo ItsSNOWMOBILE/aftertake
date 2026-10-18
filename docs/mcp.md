@@ -1,0 +1,236 @@
+# Local agent creation and editing
+
+Aftertake exposes its real local film workflow through a stdio MCP server.
+An MCP client chooses the edit using the user's brief and selected assets.
+The server supplies media inspection, measured local narration, a persistent
+beat plan, native export and decoded review frames. It contains no LLM and
+requires no hosted inference service. Twenty-seven typed tools cover native image
+creation, reference editing, video generation and narration-first Film editing.
+New generation requires the configured local Comfy engine and its model profile.
+
+## Start the studio
+
+Install the repository's Node dependencies, then the small CPU film runtime and
+optional local voice runtime:
+
+```sh
+pnpm install
+python scripts/setup-film.py
+python scripts/setup-narration.py
+pnpm demo
+```
+
+The film runtime includes pinned PyAV, Pillow, NumPy and bundled FFmpeg. It
+does not download video models. Narration uses the separately pinned Kokoro
+weights and CPU runtime. ComfyUI is needed to generate new images or video,
+while editing existing media and voicing this workflow run on the CPU.
+
+Start the MCP process separately. It communicates over stdin/stdout and does
+not open a public server:
+
+```sh
+pnpm mcp --url http://127.0.0.1:4310 --media-root /absolute/path/to/your/footage
+```
+
+For a client configuration, invoke Node directly so package-manager banners
+cannot enter the protocol stream. Replace the paths and keep forward slashes
+on Windows too:
+
+```json
+{
+  "mcpServers": {
+    "aftertake": {
+      "command": "node",
+      "args": [
+        "/absolute/path/to/aftertake/node_modules/tsx/dist/cli.mjs",
+        "/absolute/path/to/aftertake/server/mcp.ts",
+        "--url", "http://127.0.0.1:4310",
+        "--media-root", "/absolute/path/to/your/footage"
+      ]
+    }
+  }
+}
+```
+
+An existing engine Python is preferred; the CPU film environment is the
+fallback. Override it with `--python /absolute/path/to/python` when needed.
+`--state-dir` changes where persistent plans and derived review frames live.
+Plans are separated by studio URL. Imports stay inside the configured media
+root, including resolved symbolic links; remote media URLs are not accepted.
+
+## Tools
+
+| Tool | Actual behavior |
+| --- | --- |
+| `aftertake_editing_guide` | Describes the workflow, constraints and current plan schema. |
+| `aftertake_workspace` | Lists imported film pictures/voices, completed takes and exports with IDs and hashes. |
+| `aftertake_import_media` | Imports a selected local video, still or audio file; identical verified bytes are reused. |
+| `aftertake_inspect_picture` | Returns decoded source or take frames at requested times before choosing trims. |
+| `aftertake_voice` | Generates local Kokoro narration or rejoins an exact cached script, voice and speed. |
+| `aftertake_save_plan` | Checks source hashes, measured speech and picture coverage; saves a portable editable project and timing ledger. |
+| `aftertake_export_plan` | Exports through the native Film renderer using a persistent idempotency key. |
+| `aftertake_plan_status` | Rejoins the recorded plan and reads actual native export states after client reconnection. |
+| `aftertake_review_film` | Returns decoded export frames, timestamps, sample audio diagnostics and embedded-project verification. |
+| `aftertake_generation_workspace` | Lists canonical studio sources and actual generation records; optionally checks a model profile without starting work. |
+| `aftertake_generate_image` | Starts or rejoins the native Z-Image Turbo workflow with a stable operation `requestId`. |
+| `aftertake_generate_video` | Starts or rejoins native LTX-2.5 text-to-video with optional generated sound; returns a completed source clip for Film. |
+| `aftertake_edit_frame` | Starts or rejoins native Qwen reference editing with its original source bytes. |
+| `aftertake_render_take` | Starts or rejoins the same video recipe and Comfy SDK workflow used by the UI. |
+| `aftertake_generation_status` | Finds an operation by kind and original request ID after reconnect; optionally returns its saved graph and actual output state. |
+| `aftertake_generation_action` | Cancels or reconciles that same native operation; no automatic new revision is created. |
+| `aftertake_use_source` | Hash-verifies and brings a canonical source, generated still or text-video clip into Film; reuses an existing verified copy. |
+| `aftertake_draft_script` | Requests optional local Qwen3 copy suggestions for described pictures; identical requests rejoin their persisted draft. |
+| `aftertake_script_status` | Reads that same draft's actual proposal and model receipt without applying or voicing anything. |
+| `aftertake_rejoin_script` | Rejoins an interrupted native script job using its original request and result cache. |
+| `aftertake_character_workspace` | Lists actual character profiles, source clips/photos, tracked selections and character takes. |
+| `aftertake_track_character` | Starts or rejoins native whole-person SAM3 tracking with a stable `requestId`. |
+| `aftertake_replace_character` | Uses the inspected mask hash, original photo and optional real face crop in native H3 Character Swap V1.5. |
+| `aftertake_character_status` | Rejoins a persisted character selection or take by record ID or original request ID. |
+| `aftertake_character_action` | Cancels or reconciles that same character operation. |
+| `aftertake_inspect_character` | Decodes actual overlay/result frames for identity, limb, occlusion and continuation review. |
+| `aftertake_character_recipe` | Returns source-bound settings, mask provenance, executed graph, native job ID and completed output. |
+
+`aftertake_import_media` defaults to Film. Set `destination: "studio"` to import
+a generation source through the native source normalizer. Inspect a canonical
+source or generated still with `aftertake_inspect_picture` using `clipId`;
+text-to-video results also use `clipId`, while finished reference/editing takes
+use `renderId`. Exactly one media role must be selected. Text-to-video status
+and actions use `kind: "video"`; check `profile: "text-video"` in the generation
+workspace first. New text videos need no source file. See `text-video.md`.
+
+## Character replacement
+
+Install the optional character profile using the setup commands in the README.
+Check `aftertake_character_workspace`, then track one continuous source shot
+(1–15 seconds). Positive points select a whole-person detection; exclusions
+disambiguate other people and are not a mask-erasing brush. Inspect multiple
+actual overlay frames with `aftertake_inspect_character`. Missing limbs, a
+second selected person or any lost frame require a corrected selection before
+generation. Technical success does not establish mask quality.
+
+Pass that selection's `maskSha256` to `aftertake_replace_character`, with a new
+stable `requestId` and the original imported reference photo. An optional
+normalized `faceBox` crops that same photo; `wardrobe: "reference"` uses its
+outfit, while `"source"` retains source clothing. The default is the reference
+outfit. H3 receives identity, source video, source audio, latent mask and
+continuation history. No preliminary Qwen appearance redraw is used.
+
+Poll the same record, inspect the resulting frames and continuation joins,
+then promote its completed `clipId` and inspected output hash into Film with
+`aftertake_use_source`. The Film asset can enter the normal measured voice,
+editable typography and export plan. Downloading or reconnecting never creates
+a new take. An uncertain submission retains its stored graph and SDK key.
+This remains generative editing; reliable articulation and perfect likeness
+are not guaranteed by the tool schema.
+
+## Generate, inspect, then edit
+
+Check `aftertake_generation_workspace` with the desired profile, then assign
+each deliberate operation a stable `requestId`, such as `product-reference-v1`.
+The generation tools accept the native image request, frame-edit request or
+video recipe schemas. Retain the complete input and use exactly the same ID
+and input to rejoin. Changed inputs under the same key are rejected.
+
+Generate and inspect the reference before animating it. Poll actual generation
+status, inspect the completed take, then use its `renderId` and inspected hash
+in `aftertake_save_plan`. Voice the intended line before choosing picture
+coverage. This keeps generation, measured narration, editable type and export
+within the real studio. An agent supplies creative decisions; the MCP contains
+no built-in agent or campaign optimizer. The optional native script model can
+suggest copy through `aftertake_draft_script`; it uses text descriptions and
+requires review. Setup and its actual edited proof are in `script-draft.md`.
+
+The native studio persists caller keys and input digests before SDK submission.
+An older running backend is rejected until restarted with the current code.
+Observation does not cause another admission. If submission is uncertain, use
+`aftertake_generation_action` with `action: "reconcile"`, the original kind and
+request ID. Recovery retains the saved graph, original source bytes and SDK
+idempotency key, and waits for other generation work before resubmission. A
+known job resumes observation. A timeout is not evidence that a job failed.
+Create a new operation ID only for a deliberate new revision.
+
+Saved projects carry the voice script, model receipts and any word timings
+alongside the audio hash. On import, verified audio regains its supplied receipt;
+an imported receipt is identified in the UI. Exact requests reuse those WAVs
+without a narration runtime. Timed voices can also supply plain typography.
+Saving an older MCP plan enriches its portable voice receipts while preserving
+the existing edit, layer IDs and export key. It does not start a new render.
+
+Suggested brief: “Use these coffee clips to make a short vertical concept ad.
+Inspect the useful action first. Voice three short lines locally, match each
+caption to its line, and leave every cut editable. Show me the export for review.”
+
+The agent should inspect media first, generate speech before finalizing trims,
+save the paired beats, then export. Each picture and voice is bound by its
+actual SHA-256. A beat cannot silently stretch or loop its picture, truncate
+speech, or overlap narration across a dissolve. Captions default to the actual
+synthetic voice script. Long lines need additional footage or shorter wording.
+
+The consumer **Make a narrated cut** panel uses this same beat compiler. It
+measures one voice per selected picture, prepares matched trims and titles,
+and stages the result in the main viewer before applying it. Agent plans can
+also set optional title `style`, `position` and `captionTail`; the latter bounds
+the caption after the full voice ends. Existing plans retain their defaults.
+The actual 20-second marketing walkthrough is in
+`examples/narrated-cut/workflow-project.json`, with its UI recordings and voices.
+
+For speech-following typography, request `aftertake_voice` with
+`timedWords: true`, then use `animation: "spoken"` in that voice's plan beat.
+The compiler derives short phrases from its validated model word timings and
+requires the caption to match the voice text. These are duration estimates from
+Kokoro, with manual word adjustment available in the native Film editor. No
+extra alignment model is needed. Missing or mismatched timings reject the plan
+with a clean-caption alternative.
+
+The returned `.project.json` imports into **Film assembly → Import film
+project** in the matching workspace. It retains editable cuts, dissolves,
+typography and whole voice clips. Repeating the same reviewed plan finds the
+same plan identity. A changed beat creates a different plan; existing picture
+and voice assets remain reusable.
+
+## Recovery and review
+
+An export's `planId` and `attempt` determine its native idempotency key. Repeat
+that request to rejoin the job. A different edit cannot reuse the same key.
+Increment `attempt` only after the previous native export is observed as
+failed. A client timeout does not prove failure. Client reconnection was
+tested during actual export; this is not a claim that an interrupted server
+resumes an external FFmpeg process.
+
+Review source/result timing, framing, subject boundaries and all captions;
+listen to the full film. Decoded timestamps, sample peaks and selected frames
+do not certify creative quality. The MCP exposes no social-publishing or
+competition-submission action.
+
+## Recorded proof
+
+`examples/agent-edit/` contains a real 6.5-second, 720 × 1280 / 24 fps native
+export, three original local voice clips, source-bound plan, editable project,
+timing ledger and decoded review frames. Licensed Michael Burrows / Pexels
+footage is reused from `examples/social-ad/media/`; this is a fictional coffee
+concept, not generated footage or an actual commercial offer.
+
+Actual official MCP SDK 2.3.1 clients discovered the tools, rejected an
+insufficient picture interval, reused exact imported media and narration,
+saved a stable plan, rejoined one export rather than duplicating it, and
+reconnected to the persisted plan. The project also imported into the actual
+Film editor with all three picture, title and sound tracks. Per-line ASR and
+whole-recording correlations were checked separately. A second complete run
+used a freshly installed CPU film runtime with unavailable Comfy endpoints.
+See `docs/agent-edit-evidence.json` for the measured scope.
+
+`examples/agent-generation/` adds a real local creative chain: a 1024-square
+Z-Image product reference, its 97-frame LTX camera take and a 2.5-second square
+narrated Film export. The official MCP client inspected the image and take,
+retained all five Kokoro word timings, and rejoined the same native operations
+after both client reconnect and studio restart. The complete voice correlation
+exceeds .9999; the embedded native project matches. The companion portable
+project uses the exact take bytes as imported footage for a fresh CPU workspace.
+Image, video, voice, both project forms and actual workflow receipts are included.
+This one short product shot is the live generation proof; mocked router tests
+for other branches are protocol tests, not additional generation evidence.
+
+The server uses the official [MCP TypeScript SDK](https://github.com/modelcontextprotocol/typescript-sdk)
+v2 packages, pinned in `pnpm-lock.yaml`; their Apache-2.0 and retained MIT
+license terms remain applicable. No Higgsfield code or skill was installed
+or executed. Its public editing-contract patterns were reference material.

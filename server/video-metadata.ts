@@ -2,7 +2,7 @@ import { isDeepStrictEqual } from 'node:util';
 import { recipeSchema, type Recipe } from '../src/domain.js';
 
 /** Read the MP4 comment written by AftertakeSaveVideo, without a Python runtime. */
-export function inspectVideoMetadata(bytes: Buffer, expected?: Recipe) {
+export function readVideoMetadata(bytes: Buffer) {
   if (bytes.length < 16 || bytes.toString('ascii', 4, 8) !== 'ftyp') throw Error('The video workflow did not return an MP4.');
   let comment: string | undefined, media = false, movie = false;
   function boxes(start: number, limit: number, parents: string[] = []) {
@@ -34,7 +34,10 @@ export function inspectVideoMetadata(bytes: Buffer, expected?: Recipe) {
   }
   boxes(0, bytes.length);
   if (!movie || !media || !comment) throw Error('The video is missing its executed workflow. Update the Aftertake nodes.');
-  const metadata = JSON.parse(comment), recipe = recipeSchema.parse(metadata.recipe), workflow = metadata.workflow;
+  return JSON.parse(comment) as {recipe:any;workflow:Record<string,any>};
+}
+export function inspectVideoMetadata(bytes: Buffer, expected?: Recipe) {
+  const metadata=readVideoMetadata(bytes),recipe=recipeSchema.parse(metadata.recipe),workflow=metadata.workflow;
   if (!workflow || typeof workflow !== 'object' || Array.isArray(workflow) || !Object.keys(workflow).length)
     throw Error('The video is missing its executed workflow.');
   for (const node of Object.values(workflow) as any[]) {

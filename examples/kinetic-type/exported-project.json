@@ -1,0 +1,141 @@
+{
+  "format": "aftertake-film/2",
+  "id": "f5222e71-c90f-476a-b11f-979f949d2a35",
+  "name": "Type in motion — four editable presets",
+  "aspect": "landscape",
+  "shots": [
+    {
+      "assetId": "c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f",
+      "start": 0,
+      "end": 3,
+      "title": "type-canvas.png",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "asset": {
+        "kind": "image",
+        "width": 1280,
+        "height": 720,
+        "duration": 30,
+        "id": "c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f",
+        "name": "type-canvas.png",
+        "extension": ".png",
+        "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+        "url": "/api/films/assets/c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f/media",
+        "createdAt": "2026-10-18T02:19:31.951Z"
+      }
+    },
+    {
+      "assetId": "c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f",
+      "start": 0,
+      "end": 3,
+      "title": "type-canvas.png",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "asset": {
+        "kind": "image",
+        "width": 1280,
+        "height": 720,
+        "duration": 30,
+        "id": "c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f",
+        "name": "type-canvas.png",
+        "extension": ".png",
+        "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+        "url": "/api/films/assets/c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f/media",
+        "createdAt": "2026-10-18T02:19:31.951Z"
+      }
+    },
+    {
+      "assetId": "c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f",
+      "start": 0,
+      "end": 3,
+      "title": "type-canvas.png",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "asset": {
+        "kind": "image",
+        "width": 1280,
+        "height": 720,
+        "duration": 30,
+        "id": "c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f",
+        "name": "type-canvas.png",
+        "extension": ".png",
+        "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+        "url": "/api/films/assets/c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f/media",
+        "createdAt": "2026-10-18T02:19:31.951Z"
+      }
+    },
+    {
+      "assetId": "c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f",
+      "start": 0,
+      "end": 3,
+      "title": "type-canvas.png",
+      "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+      "asset": {
+        "kind": "image",
+        "width": 1280,
+        "height": 720,
+        "duration": 30,
+        "id": "c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f",
+        "name": "type-canvas.png",
+        "extension": ".png",
+        "sha256": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+        "url": "/api/films/assets/c0d171d7-aa74-49d3-a02d-9d40bf3bbb3f/media",
+        "createdAt": "2026-10-18T02:19:31.951Z"
+      }
+    }
+  ],
+  "titles": [
+    {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "text": "Your words.\nIn motion.",
+      "start": 0.1,
+      "end": 2.8,
+      "style": "headline",
+      "position": "center",
+      "animation": "build",
+      "motionDuration": 0.85,
+      "fontSize": 112,
+      "color": "#d5e991"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000002",
+      "text": "Your next take.\nWritten here.",
+      "start": 3.1,
+      "end": 5.8,
+      "style": "headline",
+      "position": "center",
+      "animation": "typewriter",
+      "motionDuration": 1.7,
+      "fontSize": 112,
+      "color": "#d5e991"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000003",
+      "text": "MAKE IT\nYOUR OWN.",
+      "start": 6.1,
+      "end": 8.8,
+      "style": "headline",
+      "position": "center",
+      "animation": "impact",
+      "motionDuration": 0.85,
+      "fontSize": 112,
+      "color": "#d5e991"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000004",
+      "text": "OPEN CODE.\nOPEN POSSIBILITIES.",
+      "start": 9.1,
+      "end": 11.8,
+      "style": "headline",
+      "position": "center",
+      "animation": "wipe",
+      "motionDuration": 0.85,
+      "fontSize": 112,
+      "color": "#d5e991"
+    }
+  ],
+  "audio": [],
+  "sourceVolume": 0,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 12,
+  "createdAt": "2026-10-18T03:24:55.688Z",
+  "output": "/api/films/f5222e71-c90f-476a-b11f-979f949d2a35/video"
+}

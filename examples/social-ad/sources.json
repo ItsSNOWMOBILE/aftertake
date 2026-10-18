@@ -1,0 +1,36 @@
+{
+  "downloadedAt": "2026-10-18",
+  "clips": [
+    {
+      "file": "examples/social-ad/media/pour.mp4",
+      "sha256": "b3c109ce61d1232263d6cc8dfaa9c5319104ead2de21b951cdeb5d53068ef0a7",
+      "originalSHA256": "1b64bb92dbeda5669e83fe5f661e4832e777c704115b139d15a4510fbb5cf817",
+      "author": "Michael Burrows",
+      "sourceUrl": "https://www.pexels.com/video/pouring-black-coffee-into-a-cup-7118100/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "preparation": "Silent first ten seconds, scaled to 720x1280 at 24 fps. No generated motion or stabilization."
+    },
+    {
+      "file": "examples/social-ad/media/grounds.mp4",
+      "sha256": "dab9e9c00d04452151729afb659df56baf2651c94b28cfd53279192deaa13e32",
+      "originalSHA256": "d3f8ee4a65578fc0dc1744a4319c87e2d6f166b873190ab358c660358093decb",
+      "author": "Michael Burrows",
+      "sourceUrl": "https://www.pexels.com/video/putting-coffee-powder-into-a-paper-filter-7118095/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "preparation": "Silent first ten seconds, scaled to 720x1280 at 24 fps. No generated motion or stabilization."
+    },
+    {
+      "file": "examples/social-ad/media/brew.mp4",
+      "sha256": "5977671f7d993691838c1e84e81c231f7fddb308990ccf2b10be966a2c858466",
+      "originalSHA256": "f016a7872a19662203e3bf57087b51b641d7c28a8d9b20c1c23b0cca7ed7c9f9",
+      "author": "Michael Burrows",
+      "sourceUrl": "https://www.pexels.com/video/pouring-hot-water-into-a-coffee-dripper-7118104/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "preparation": "Silent first ten seconds, scaled to 720x1280 at 24 fps. No generated motion or stabilization."
+    }
+  ],
+  "concept": "Slow Mornings is a fictional concept for this editing demonstration; no endorsement or real offer."
+}

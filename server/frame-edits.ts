@@ -8,6 +8,7 @@ import type { Clip, Engine } from '../src/domain.js';
 import { buildFrameEditWorkflow } from './frame-workflow.js';
 import { resolveClipAsset } from './assets.js';
 import { submissionRejected } from './submission.js';
+import {generationAdmission,generationKeyConflict} from './generation-admission.js';
 
 export function inspectFramePng(bytes: Buffer) {
   if (bytes.length < 33 || !bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) throw Error('The frame workflow did not return a PNG image.');
@@ -96,7 +97,8 @@ export async function frameEditorRouter(context: {
     } finally { controller.abort(); active.delete(edit.id); handles.delete(edit.id); }
   }
   async function submit(edit: FrameEdit) {
-    const workflow = client.workflows.fromJson(buildFrameEditWorkflow(edit.request));
+    if (!edit.workflow) throw Error('The original frame-edit workflow is missing. Keep this record for review and create a deliberate new edit.');
+    const workflow = client.workflows.fromJson(structuredClone(edit.workflow));
     workflow.setInput('8', 'filename', client.assets.fromFile(path.join(clips, path.basename(edit.request.clip.url))));
     if (edit.request.subject) workflow.setInput('23', 'filename', client.assets.fromFile(path.join(clips, path.basename(edit.request.subject.url))));
     const job = await client.submit(workflow, { idempotencyKey: edit.id });
@@ -117,12 +119,15 @@ export async function frameEditorRouter(context: {
     res.json([...edits.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt)));
   });
   router.post('/', async (req, res) => {
+    const input=frameEditRequestSchema.parse(req.body),admission=generationAdmission(req.get('Idempotency-Key'),input,edits.values());
+    if(admission.conflict)return void res.status(409).json({error:generationKeyConflict});
+    if(admission.existing)return void res.status(frameEditBusy(admission.existing)?202:200).json(admission.existing);
     if (context.takeBusy() || [...edits.values()].some(frameEditBusy)) return void res.status(409).json({ error: 'A generation is already active. Finish or cancel it before editing a frame.' });
     context.setAdmitting(true);
     try {
       if (!(await context.engine()).ready) return void res.status(409).json({ error: 'Install the optional frame-editor weights and start the local engine.' });
-      const request = await resolve(frameEditRequestSchema.parse(req.body));
-      const edit: FrameEdit = { id: randomUUID(), request, workflow: buildFrameEditWorkflow(request), state: 'submitting',
+      const request = await resolve(input);
+      const edit: FrameEdit = { id: randomUUID(), ...admission.identity, request, workflow: buildFrameEditWorkflow(request), state: 'submitting',
         progress: null, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
       edits.set(edit.id, edit); await persist(edit);
       try { await submit(edit); res.status(201).json(edit); }
@@ -142,13 +147,16 @@ export async function frameEditorRouter(context: {
   router.post('/:id/reconcile', async (req, res) => {
     const edit = edits.get(req.params.id);
     if (!edit || !['submission_unknown', 'connection_lost', 'output_error'].includes(edit.state)) return void res.status(409).json({ error: 'This frame edit does not need recovery.' });
-    if (edit.jobId) void track(edit);
-    else {
-      // A stable idempotency key recovers a possibly accepted submission.
-      // Resolve the same source bytes again; never silently submit changed input.
-      edit.request = await resolve(edit.request); await submit(edit);
-    }
-    res.json(edit);
+    if (edit.jobId) { void track(edit); return void res.json(edit); }
+    if (context.takeBusy() || [...edits.values()].some(other => other.id !== edit.id && frameEditBusy(other)))
+      return void res.status(409).json({ error: 'Another generation is active. Rejoin this same frame edit after it finishes.' });
+    context.setAdmitting(true);
+    try {
+      // Retain the original graph/key and verify its original source bytes.
+      edit.request = await resolve(edit.request);
+      try { await submit(edit); res.json(edit); }
+      catch (error) { edit.state = submissionRejected(error) ? 'failed' : 'submission_unknown'; edit.error = error instanceof Error ? error.message : String(error); await persist(edit); res.status(502).json({ error: edit.error, edit }); }
+    } finally { context.setAdmitting(false); }
   });
   router.get('/:id/recipe', (req, res) => {
     const edit = edits.get(req.params.id); if (!edit) return void res.sendStatus(404);

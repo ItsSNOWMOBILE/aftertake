@@ -108,6 +108,20 @@ test('finish workflows have complete acyclic links and refine to the requested s
   }
 });
 
+test('bounded LTX shots retain their temporal context through every video codec', () => {
+  // Short external tiles blend different versions of moving edges. Keep the
+  // whole shot available to the native codec (or any future explicit tiler).
+  for (const pipeline of ['structure', 'inpaint', 'cinema'] as const)
+    for (const quality of ['draft', 'final'] as const)
+      for (const [width,height] of [[1920,1080],[1080,1920]]) {
+        const r = { ...recipe, pipeline, quality, clip:{...recipe.clip,width,height} };
+        const frames = renderDimensions(r).frames;
+        const graph = buildWorkflow(r) as Record<string,{class_type:string;inputs:Record<string,unknown>}>;
+        for (const node of Object.values(graph)) if (/^VAE(?:Encode|Decode)Tiled$/.test(node.class_type))
+          assert.ok(Number(node.inputs.temporal_size) >= frames, `${pipeline}/${quality} resets temporal context`);
+      }
+});
+
 test('frame animation conditions only the opening frame and generates without the masked-edit adapter', () => {
   const r: Recipe = { ...recipe, pipeline: 'cinema', cinema: defaultCinema, trimStart: 4.9, cue: { ...recipe.cue, strokes: [] } };
   assert.equal(recipeSchema.safeParse(r).success, true);

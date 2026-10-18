@@ -1,0 +1,138 @@
+{
+  "id": "73bec5bb-bcf1-4ca1-91a5-1cd0ec6501ce",
+  "request": {
+    "format": "aftertake-image/1",
+    "name": "Natural character — brown field jacket",
+    "prompt": "A natural unretouched photograph of a fictional adult man in his early thirties. Short wavy dark brown hair, warm medium skin, light beard stubble, ordinary lean build. He wears an unbuttoned matte brown cotton field jacket over a plain oatmeal crew-neck sweater and dark charcoal trousers. Relaxed upright standing pose, both hands visible, framed from head to mid-thigh. Soft overcast daylight from the front and left, subtle warm green reflected light, realistic skin pores and fabric folds. An ordinary person in a real photograph. Simple softly blurred gray-green park background. Eye-level camera, natural 50mm perspective, restrained contrast, realistic proportions, no glossy fashion retouching.",
+    "seed": 5091,
+    "aspect": "portrait",
+    "style": "photo"
+  },
+  "workflow": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "z_image_turbo_bf16.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen_3_4b.safetensors",
+        "type": "lumina2",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ae.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "ModelSamplingAuraFlow",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "shift": 3
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "A natural unretouched photograph of a fictional adult man in his early thirties. Short wavy dark brown hair, warm medium skin, light beard stubble, ordinary lean build. He wears an unbuttoned matte brown cotton field jacket over a plain oatmeal crew-neck sweater and dark charcoal trousers. Relaxed upright standing pose, both hands visible, framed from head to mid-thigh. Soft overcast daylight from the front and left, subtle warm green reflected light, realistic skin pores and fabric folds. An ordinary person in a real photograph. Simple softly blurred gray-green park background. Eye-level camera, natural 50mm perspective, restrained contrast, realistic proportions, no glossy fashion retouching.\n\nPhotographic image, natural material detail, believable lighting and coherent perspective."
+      }
+    },
+    "6": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "EmptySD3LatentImage",
+      "inputs": {
+        "width": 768,
+        "height": 1152,
+        "batch_size": 1
+      }
+    },
+    "17": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "4",
+          0
+        ],
+        "seed": 5091,
+        "steps": 8,
+        "cfg": 1,
+        "sampler_name": "res_multistep",
+        "scheduler": "simple",
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "latent_image": [
+          "7",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "21": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "filename_prefix": "aftertake/imagine"
+      }
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-18T04:39:02.497Z",
+  "updatedAt": "2026-10-18T04:39:12.674Z",
+  "jobId": "aaee6b63-7a02-4e11-9c8f-99896ed6dad9",
+  "stage": "Ready to edit or animate",
+  "clip": {
+    "id": "73bec5bb-bcf1-4ca1-91a5-1cd0ec6501ce",
+    "name": "Natural character — brown field jacket",
+    "kind": "image",
+    "width": 768,
+    "height": 1152,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "226a4418213dc0a5c8ff810a5e9482f9d9af1db6ffa2fb2ea354bac3bcff27f9",
+    "url": "/media/73bec5bb-bcf1-4ca1-91a5-1cd0ec6501ce.png"
+  }
+}

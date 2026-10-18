@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
+import {readFile} from 'node:fs/promises';
 import { buildDemoSnapshot } from '../scripts/browser-demo-data.mjs';
 import { createDemoRuntime } from '../src/demo-runtime.js';
 
@@ -36,12 +37,37 @@ test('browser recipe edits export runnable portable graphs while generation neve
   assert.equal(graph['8'].inputs.filename, 'INPUT.mp4');
   assert.equal(JSON.parse(graph['9'].inputs.cue_json).start, .8);
   const count = (await demo.request('/api/renders').then(r => r.json())).length;
-  for (const endpoint of ['/api/renders', '/api/frame-edits', '/api/clips', '/api/films', '/api/cue-preview']) {
+  for (const endpoint of ['/api/renders', '/api/frame-edits', '/api/images','/api/videos', '/api/clips', '/api/films', '/api/cue-preview']) {
     const blocked = await demo.request(endpoint, { method: 'POST', body: JSON.stringify(recipe) });
     assert.equal(blocked.status, 409);
     assert.match((await blocked.json()).error, /local/i);
   }
   assert.equal((await demo.request('/api/renders').then(r => r.json())).length, count);
   assert.equal((await demo.request('/api/engine?pipeline=inpaint').then(r => r.json())).ready, false);
+  assert.deepEqual(await demo.request('/api/images').then(r => r.json()), []);
+  assert.deepEqual(await demo.request('/api/videos').then(r=>r.json()),[]);
   assert.equal((await demo.request('/api/workflow', { method: 'POST', body: '{}' })).status, 422);
+});
+
+test('a self-contained static host can serve verified media without changing recorded settings or execution graphs', () => {
+  const local = buildDemoSnapshot(fileURLToPath(new URL('../', import.meta.url)), revision, { mediaBase: '../examples/' });
+  const demo = createDemoRuntime(local);
+  assert.deepEqual(local.renders, snapshot.renders);
+  assert.equal(demo.mediaUrl('/api/templates/portal/result'), '../examples/portal/result.mp4');
+  assert.equal(demo.mediaUrl('/api/templates/crystal-forest/reference'), '../examples/crystal-forest/edited-first-frame.png');
+  assert.ok(Object.values(local.thumbnails).every(choices => Object.values(choices).every(url => url.startsWith('../examples/previews/'))));
+  for (const mediaBase of ['javascript:alert(1)', 'file:///private/', 'https://user:password@example.com/', 'https://example.com/?token=secret'])
+    assert.throws(() => buildDemoSnapshot(fileURLToPath(new URL('../', import.meta.url)), revision, { mediaBase }), /plain HTTP/);
+});
+
+test('recorded text-video history exposes real output settings while new generation stays disabled',async()=>{
+  const video=JSON.parse(await readFile(new URL('../examples/text-video/portrait/generation.json',import.meta.url),'utf8'));
+  const demo=createDemoRuntime({...snapshot,videos:[video],clips:[...snapshot.clips,video.clip],
+    media:{...snapshot.media,[video.clip.url]:'../examples/text-video/portrait/result.mp4'}});
+  const list=await demo.request('/api/videos').then(r=>r.json());assert.equal(list.length,1);assert.equal(list[0].state,'succeeded');
+  assert.equal(list[0].clip.sha256,video.clip.sha256);assert.equal(list[0].request.aspect,'portrait');assert.equal(list[0].request.sound,true);
+  assert.equal(demo.mediaUrl(list[0].clip.url),'../examples/text-video/portrait/result.mp4');
+  list[0].request.seed=99;assert.equal((await demo.request('/api/videos').then(r=>r.json()))[0].request.seed,video.request.seed);
+  const blocked=await demo.request('/api/videos',{method:'POST',body:JSON.stringify({...video.request,seed:99})});assert.equal(blocked.status,409);
+  assert.equal((await demo.request('/api/videos').then(r=>r.json())).length,1);
 });

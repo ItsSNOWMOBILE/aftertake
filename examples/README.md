@@ -24,6 +24,14 @@ require the Python runtime. Rendering requires the model files and local engine.
 | The golden falls | Localized molten-gold waterfall with the surrounding forest retained from the source. |
 | A quiet approach | A still image conditions the opening frame of a genuinely generated forward camera move. Camera/look settings appear in the actual encoder prompt. |
 | Beyond the frame | Screen-space tracks drive a generated pullback. Compare the saved guide, raw generation and consistently graded monochrome result. |
+| An image to follow | An edited first frame guides both inpainting stages; the painted cue controls where it appears. |
+| The forest keeps a secret | Create the crystal appearance locally with Qwen, then carry it into the LTX masked video. |
+| Signal — a new character | Original procedural robot footage drives a locally created knitted character through Wan Animate 2. The appearance, Qwen recipe and actual graph are included. |
+| Between falling water and crystal | Starting and ending images condition a generated forest transition. Inspect both image guides and the Qwen ending-frame recipe. |
+| The coast becomes a kingdom | Real coastal drone footage gains a locally edited castle through a painted, timed, flow-tracked region; inspect the Qwen reference and actual native graph. |
+| The tide keeps a secret | The edited castle still becomes a new LTX shot guided by pullback framing tracks. |
+| A season in a moment | Green alpine slopes become snowy winter terrain and return to the original footage through a timed, tracked cue. |
+| Above the clouds | Words create an original 1152 × 768 observatory with Z-Image Turbo. Its native PNG graph and image recipe are included; framing tracks guide the subsequent LTX camera shot. |
 
 Each folder contains the source clip, editable recipe, API graph, original
 render record, final output and available raw/coarse outputs. MP4 metadata
@@ -37,6 +45,11 @@ to load `recipe.json`. Source matching uses the content hash, so the newly
 assigned local clip ID does not have to match the example. To use a graph
 directly in ComfyUI, upload the source and set `AftertakeLoadClip.filename` to
 its actual input filename. Install the custom nodes and referenced model files.
+Import the matching reference PNG before importing recipes that use one:
+`edited-first-frame.png`, `appearance.png` or `ending-frame.png`. The app can
+recognize a generated PNG after metadata normalization and binds the recipe to
+the actual normalized local file. In ComfyUI, also replace the reference loader's
+filename with the uploaded image filename.
 
 ## Media licenses and credits
 
@@ -59,6 +72,14 @@ remain subject to the model terms linked in the main README.
 Cached JPEGs are source-frame thumbnails from these same clips. This is a
 small technical demonstration, not a stock-footage collection. Blender-derived
 actor footage used during local research is excluded.
+
+`signal/source.mp4` is an original articulated robot gesture, rendered by
+`scripts/create-motion-study.py` under MIT. Its appearance PNG and frame recipe
+come from local Qwen-Image-Edit-2511; Wan Animate 2 creates the motion output.
+No outside image, actor footage or closed inference API supplies that case.
+`crystal-transition/` reuses the credited Mikhail Nilov forest source and the
+same locally generated Qwen crystal image as `crystal-forest/`. Qwen, Wan and
+LTX retain their respective model terms.
 
 `quiet-approach/source.png` is an RGB still extracted from the first frame of
 the credited Curtis Adams room excerpt. It retains the Pexels License. The

@@ -1,0 +1,41 @@
+[
+  {
+    "name": "Beans",
+    "start": 0,
+    "end": 2.25,
+    "voiceStart": 0.12,
+    "voiceEnd": 1.436,
+    "spokenText": "Start with the beans.",
+    "caption": "Start with the beans.",
+    "purpose": "Introduce the grounds",
+    "shotNumbers": [
+      1
+    ]
+  },
+  {
+    "name": "Pour",
+    "start": 2.125,
+    "end": 4.375,
+    "voiceStart": 2.245,
+    "voiceEnd": 3.3516666666666666,
+    "spokenText": "Take your time.",
+    "caption": "Take your time.",
+    "purpose": "Let the pouring action breathe",
+    "shotNumbers": [
+      2
+    ]
+  },
+  {
+    "name": "Brew",
+    "start": 4.25,
+    "end": 6.5,
+    "voiceStart": 4.37,
+    "voiceEnd": 5.8740000000000006,
+    "spokenText": "Make mornings yours.",
+    "caption": "Make mornings yours.",
+    "purpose": "Close on the brewing ritual",
+    "shotNumbers": [
+      3
+    ]
+  }
+]

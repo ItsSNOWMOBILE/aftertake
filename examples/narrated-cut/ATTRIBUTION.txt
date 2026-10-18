@@ -1,0 +1,7 @@
+Footage: Michael Burrows / Pexels. Pexels License: https://www.pexels.com/license/
+Original source URLs and hashes: examples/social-ad/sources.json
+Clips: pouring black coffee (7118100), coffee powder in a paper filter (7118095),
+and hot water in a coffee dripper (7118104).
+Narration: local Kokoro, generic af_heart preset. Fonts: Manrope and DM Sans (OFL).
+UI captures: actual Aftertake native workspace. App code: MIT.
+Fictional coffee concept; no real offer, affiliation or creator endorsement.
