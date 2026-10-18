@@ -5,8 +5,11 @@ import { createServer } from 'node:http';
 import { once } from 'node:events';
 import { randomUUID, createHash } from 'node:crypto';
 import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import fs from 'node:fs/promises';
+import { syncBuiltinESMExports } from 'node:module';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { setTimeout as delay } from 'node:timers/promises';
 import type { Comfy } from '@comfyorg/sdk';
 import {
   videoRequestSchema,
@@ -113,7 +116,7 @@ test('text video has a native source-free AV graph, shared frame grid and effect
     assert.equal(videoRequestSchema.safeParse({ ...request, ...bad }).success, false);
 });
 
-test('native video admission rejoins its key and rejects mismatched workflow or decoded media before source publication', async () => {
+test('native video admission rejoins its key and rejects mismatched workflow or decoded media before source publication', async (t) => {
   const data = await mkdtemp(path.join(tmpdir(), 'aftertake-video-')),
     keys: string[] = [];
   let first = true,
@@ -155,6 +158,29 @@ test('native video admission rejoins its key and rejects mismatched workflow or 
       return job;
     },
   } as unknown as Comfy;
+  let videoFile = '',
+    heldFailure = false,
+    releaseFailure!: () => void,
+    failureReady!: () => void;
+  const failurePersisting = new Promise<void>((resolve) => {
+      failureReady = resolve;
+    }),
+    failureReleased = new Promise<void>((resolve) => {
+      releaseFailure = resolve;
+    }),
+    rename = fs.rename;
+  t.mock.method(fs, 'rename', async (...args: Parameters<typeof fs.rename>) => {
+    if (!heldFailure && args[1] === videoFile) {
+      const pending = JSON.parse(await readFile(args[0], 'utf8')) as VideoGeneration;
+      if (pending.state === 'output_error') {
+        heldFailure = true;
+        failureReady();
+        await failureReleased;
+      }
+    }
+    await rename(...args);
+  });
+  syncBuiltinESMExports();
   const context = {
     root: process.cwd(),
     python: 'unused',
@@ -184,19 +210,57 @@ test('native video admission rejoins its key and rejects mismatched workflow or 
       headers: { 'Content-Type': 'application/json', ...(key ? { 'Idempotency-Key': key } : {}) },
       body: JSON.stringify(value),
     });
-  const read = () =>
-    fetch(context.uiUrl + '/api/videos').then((r) => r.json()) as Promise<VideoGeneration[]>;
-  async function until(state: string) {
-    for (let i = 0; i < 150; i++) {
-      const value = (await read())[0];
-      if (value.state === state) return value;
-      await new Promise((r) => setTimeout(r, 25));
+  const read = (signal?: AbortSignal) =>
+    fetch(context.uiUrl + '/api/videos', { signal }).then((r) => {
+      assert.equal(r.status, 200);
+      return r.json();
+    }) as Promise<VideoGeneration[]>;
+  async function until(id: string, state: string, error?: RegExp) {
+    const timeout = AbortSignal.timeout(15000),
+      started = performance.now();
+    let value: VideoGeneration | undefined;
+    const describe = () =>
+      JSON.stringify({
+        state: value?.state,
+        stage: value?.stage,
+        error: value?.error,
+      });
+    try {
+      for (;;) {
+        value = (await read(timeout)).find((video) => video.id === id);
+        if (value) {
+          if (value.state === state) {
+            if (error) assert.match(value.error || '', error);
+            return value;
+          }
+          if (
+            [
+              'succeeded',
+              'failed',
+              'canceled',
+              'expired',
+              'output_error',
+              'connection_lost',
+              'submission_unknown',
+            ].includes(value.state)
+          )
+            assert.fail(
+              `Video ${id} reached an unexpected state while waiting for ${state}: ${describe()}`,
+            );
+        }
+        await delay(25, undefined, { signal: timeout });
+      }
+    } catch (failure) {
+      if (!timeout.aborted) throw failure;
     }
-    throw Error('Video did not reach ' + state);
+    assert.fail(
+      `Video ${id} did not reach ${state} within ${Math.round(performance.now() - started)}ms: ${describe()}`,
+    );
   }
   try {
     assert.equal((await post('/api/videos', request, 'video-original')).status, 502);
     const record = (await read())[0];
+    videoFile = path.join(data, 'videos', record.id + '.json');
     assert.equal(record.state, 'submission_unknown');
     assert.ok(videos.busy());
     const joined = await post('/api/videos', request, 'video-original');
@@ -209,24 +273,39 @@ test('native video admission rejoins its key and rejects mismatched workflow or 
     );
     assert.equal(keys.length, 1);
     assert.equal((await post('/api/videos', request, 'another-video')).status, 409);
-    assert.equal((await post(`/api/videos/${record.id}/reconcile`)).status, 200);
-    assert.deepEqual(keys, [record.id, record.id]);
     const wrong = buildVideoWorkflow(request);
     wrong['13'].inputs.noise_seed = 123;
     output = movie(wrong);
     job.status = 'succeeded';
-    assert.match((await until('output_error')).error!, /workflow differs/);
+    assert.equal((await post(`/api/videos/${record.id}/reconcile`)).status, 200);
+    assert.deepEqual(keys, [record.id, record.id]);
+    await Promise.race([
+      failurePersisting,
+      delay(15000, undefined, { ref: false }).then(() => {
+        assert.fail('Video did not begin persisting its workflow rejection within 15s.');
+      }),
+    ]);
+    // A public terminal error must mean an immediate recovery can start. Hold the
+    // disk write so a premature state update cannot race past this assertion.
+    const pending = (await read()).find((video) => video.id === record.id)!;
+    assert.equal(pending.state, 'finalizing');
+    assert.equal(pending.error, undefined);
+    assert.equal(videos.busy(), true);
+    assert.equal(JSON.parse(await readFile(videoFile, 'utf8')).state, 'finalizing');
+    assert.equal((await post(`/api/videos/${record.id}/reconcile`)).status, 409);
+    releaseFailure();
+    await until(record.id, 'output_error', /workflow differs/);
     await assert.rejects(readFile(path.join(data, 'clips', record.id + '.json')), {
       code: 'ENOENT',
     });
     output = movie();
     decoded = { ...decoded, hasAudio: false };
     assert.equal((await post(`/api/videos/${record.id}/reconcile`)).status, 200);
-    assert.match((await until('output_error')).error!, /decoded video/);
+    await until(record.id, 'output_error', /decoded video/);
     assert.equal(keys.length, 2);
     decoded = { ...decoded, hasAudio: true, frames: 48 };
-    await post(`/api/videos/${record.id}/reconcile`);
-    assert.match((await until('output_error')).error!, /frame clock/);
+    assert.equal((await post(`/api/videos/${record.id}/reconcile`)).status, 200);
+    await until(record.id, 'output_error', /frame clock/);
     decoded = {
       ...videoDimensions(request),
       hasAudio: true,
@@ -241,8 +320,8 @@ test('native video admission rejoins its key and rejects mismatched workflow or 
         regularTimestamps: true,
       },
     };
-    await post(`/api/videos/${record.id}/reconcile`);
-    const completed = await until('succeeded');
+    assert.equal((await post(`/api/videos/${record.id}/reconcile`)).status, 200);
+    const completed = await until(record.id, 'succeeded');
     assert.equal(completed.clip!.sha256, createHash('sha256').update(output).digest('hex'));
     assert.equal(completed.clip!.kind, 'video');
     assert.equal(videos.busy(), false);
@@ -257,6 +336,9 @@ test('native video admission rejoins its key and rejects mismatched workflow or 
     assert.equal(reopened.busy(), false);
     assert.equal(keys.length, 2);
   } finally {
+    releaseFailure();
+    t.mock.restoreAll();
+    syncBuiltinESMExports();
     server.close();
     server.closeAllConnections();
   }

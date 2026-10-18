@@ -132,9 +132,14 @@ export async function videoRouter(context: {
       }
     } catch (error) {
       const job = handles.get(video.id);
-      video.state = job && videoTerminal.has(job.status) ? 'output_error' : 'connection_lost';
-      video.error = error instanceof Error ? error.message : String(error);
-      await persist(video);
+      const failed = {
+        ...video,
+        state: job && videoTerminal.has(job.status) ? 'output_error' : 'connection_lost',
+        error: error instanceof Error ? error.message : String(error),
+      };
+      await persist(failed);
+      // Publish recovery only when persistence is complete; cleanup below is synchronous.
+      Object.assign(video, failed);
     } finally {
       controller.abort();
       active.delete(video.id);

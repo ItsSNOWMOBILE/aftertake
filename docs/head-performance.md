@@ -46,10 +46,9 @@ the new face can be sharper than the body. Correct timestamps or protected-pixel
 checks do not prove convincing quality. Pixels outside the incoming head and
 old-contour fill stay exact before encoding; compression changes decoded pixels.
 The included bridge result is one reviewed candidate, not general head-turn or
-identity consistency evidence. Its reviewed MP4 is imported into the current
-72-second judge project; the final film remains a candidate for Jay's review.
+identity consistency evidence. The bridge MP4 remains available as an experimental comparison. See the
+[native H3 example](../examples/character-h3-high/) for the current character workflow.
 
 LivePortrait's official code/model terms and the SAM manifest are retained in
 `models-face-performance.json` and `models-matting.json`. App code is MIT; source
-media and models retain their licenses. Jay reviews and submits the competition
-entry personally.
+media and models retain their licenses.
