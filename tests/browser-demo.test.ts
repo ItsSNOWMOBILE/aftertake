@@ -2,18 +2,22 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
 import { readFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 import { buildDemoSnapshot } from '../scripts/browser-demo-data.mjs';
 import { createDemoRuntime } from '../src/demo-runtime.js';
 
-const revision = '38b0b339b1d5e8fe7b9360cf2af833e348ecea52';
-const snapshot = buildDemoSnapshot(fileURLToPath(new URL('../', import.meta.url)), revision);
+const root = fileURLToPath(new URL('../', import.meta.url));
+// Test the checked-out fixture, including in shallow CI/source checkouts.
+// Published builds separately pin the media revision used in their URLs.
+const revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
+const snapshot = buildDemoSnapshot(root, revision);
 
-test('browser examples retain real recorded media and workflows from a verified published revision', async () => {
+test('browser examples retain real recorded media and workflows from the checked-out revision', async () => {
   const demo = createDemoRuntime(snapshot);
   assert.equal(snapshot.mediaRevision, revision);
-  assert.equal(snapshot.renders.length, 7);
+  assert.equal(snapshot.renders.length, 13);
   const catalog = await demo.request('/api/templates').then((r) => r.json());
-  assert.equal(catalog.length, 7);
+  assert.equal(catalog.length, 13);
   const opened = await demo
     .request('/api/templates/portal/open', { method: 'POST' })
     .then((r) => r.json());
@@ -21,7 +25,10 @@ test('browser examples retain real recorded media and workflows from a verified 
     opened.render.recipe.clip.sha256,
     'f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2',
   );
-  assert.match(demo.mediaUrl(opened.render.output), /38b0b339.*\/examples\/portal\/result\.mp4$/);
+  assert.equal(
+    demo.mediaUrl(opened.render.output),
+    `https://raw.githubusercontent.com/ItsSNOWMOBILE/aftertake/${revision}/examples/portal/result.mp4`,
+  );
   assert.match(
     demo.mediaUrl('/api/thumbnails/' + opened.clip.id + '?time=999'),
     /\/examples\/previews\/[a-f0-9]+\.jpg$/,
@@ -74,8 +81,11 @@ test('browser recipe edits export runnable portable graphs while generation neve
     (await demo.request('/api/engine?pipeline=inpaint').then((r) => r.json())).ready,
     false,
   );
-  assert.deepEqual(await demo.request('/api/images').then((r) => r.json()), []);
-  assert.deepEqual(await demo.request('/api/videos').then((r) => r.json()), []);
+  const recordedImages = await demo.request('/api/images').then((r) => r.json());
+  const recordedVideos = await demo.request('/api/videos').then((r) => r.json());
+  assert.ok(recordedImages.every((image: { state: string }) => image.state === 'succeeded'));
+  assert.equal(recordedVideos.length, 2);
+  assert.ok(recordedVideos.every((video: { state: string }) => video.state === 'succeeded'));
   assert.equal((await demo.request('/api/workflow', { method: 'POST', body: '{}' })).status, 422);
 });
 
@@ -92,7 +102,9 @@ test('a self-contained static host can serve verified media without changing rec
   );
   assert.ok(
     Object.values(local.thumbnails).every((choices) =>
-      Object.values(choices).every((url) => url.startsWith('../examples/previews/')),
+      Object.values(choices).every(
+        (url) => url.startsWith('../examples/') && !url.slice(12).includes('..'),
+      ),
     ),
   );
   for (const mediaBase of [

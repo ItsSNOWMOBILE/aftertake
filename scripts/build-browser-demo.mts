@@ -20,7 +20,7 @@ if (
   throw Error('The generated browser-demo directory must stay inside this checkout.');
 const revision =
   process.argv.find((value) => value.startsWith('--media-ref='))?.slice(12) ||
-  '38b0b339b1d5e8fe7b9360cf2af833e348ecea52';
+  '78253f894e5e90a76561701551f6fa343f9ddb87';
 const mediaBase = process.argv.find((value) => value.startsWith('--media-base='))?.slice(13);
 const snapshot = buildDemoSnapshot(root, revision, { mediaBase });
 const fontBase = process.argv.find((value) => value.startsWith('--font-base='))?.slice(12);

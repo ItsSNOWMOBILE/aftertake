@@ -462,6 +462,8 @@ published commit. The builder verifies every manifest asset and extracts each
 recorded take's executed graph from its MP4. Pass `--media-ref=<published SHA>`
 to use another published media revision. Publish that media first: the browser
 fetches its source clips and results directly from immutable GitHub URLs.
+For a shallow clone that lacks the pinned revision, fetch that exact commit
+with `git fetch origin <published SHA>` before building.
 Keep `licenses.txt` and the bundled notices with the generated files. Normal
 `pnpm build` and the local server retain the full studio.
 
