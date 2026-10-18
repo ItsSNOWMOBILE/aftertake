@@ -1,11 +1,11 @@
 Tears of Steel (2012), Blender Foundation / mango.blender.org.
 Source: https://mango.blender.org/about/
 Source download: https://download.blender.org/demo/movies/ToS/tears_of_steel_720p.mov
-License: CC BY 3.0 — https://creativecommons.org/licenses/by/3.0/
+License: CC BY 3.0 â€” https://creativecommons.org/licenses/by/3.0/
 Changes: silent short excerpt, source-aligned 24 fps crop/resize, native SAM3 tracking and H3 Character Swap V1.5 replacement of the man on the left. Source and output share the prepared frame clock and canvas. No actor or creator endorsement is implied.
 The fictional reference was generated locally with Z-Image Turbo; its actual request and graph are in reference-origin.json. No real-person identity reference is used in this published example.
 H3 model terms: https://huggingface.co/Comfy-Org/MiniMax-H3
 Character Swap terms: https://huggingface.co/akatz-ai/MiniMax-H3-Character-Swap-LoRA
 Turbo adapter: https://huggingface.co/lightx2v/Minimax-h3-Turbo
 SAM3: https://huggingface.co/Comfy-Org/sam3.1
-Canonical H3 Relay external node pack, revision 64341d5c1259f32ab2a780285e1a19accb4dfe07: https://github.com/akatz-ai/h3-relay — retains its GPL-3.0/Apache notices. Aftertake adapters are MIT. Model weights are not bundled.
+Canonical H3 Relay external node pack, revision 64341d5c1259f32ab2a780285e1a19accb4dfe07: https://github.com/akatz-ai/h3-relay â€” retains its GPL-3.0/Apache notices. Aftertake adapters are MIT. Model weights are not bundled.

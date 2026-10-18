@@ -21,13 +21,24 @@ changes made (crop, trim, generated VFX). Do not imply an actor endorses the app
 Primary source for the technical-demo use of original footage:
 https://mango.blender.org/production/4-tb-original-4k-footage-available-as-cc-by/
 
-The full research download stays ignored under `.runtime/sources/`. The silent
-3.125-second bridge excerpt now supplies the character-replacement demo under
-`examples/character-replacement/`. That folder retains the source, generated
-appearance, separate android reference, frame recipe, video recipe and executed
-graphs. `ATTRIBUTION.txt` identifies the film, license, edits and reference
-origin. The narrated film credits Blender Foundation and CC BY 3.0 both beside
-the scene and in its closing card. The film's original soundtrack is excluded.
+The full research download stays ignored under `.runtime/sources/`. Short silent
+bridge excerpts supply the character examples. The current public character
+workflow uses native SAM3 tracking and H3 Character Swap V1.5 with an original
+fictional reference generated locally by Z-Image Turbo and an optional crop of
+its actual head. The recorded example under `examples/character-h3/` retains
+the source, prepared comparison canvas, reference and its generation receipt,
+tracked mask, recipe and executed graphs. Its
+[`ATTRIBUTION.txt`](../examples/character-h3/ATTRIBUTION.txt) records the film's
+CC BY 3.0 credit, modifications and separate H3, adapter and SAM3 model terms.
+H3 Relay is installed separately and retains its GPL-3.0/Apache notices; model
+weights are downloaded separately. The narrated film credits Blender Foundation
+and CC BY 3.0 beside the scene and in its closing card. The film's original
+soundtrack is excluded. No actor or creator endorsement is implied.
+
+The earlier Wan-based study remains under `examples/character-replacement/`
+with its source, generated human reference and appearance, frame/video recipes
+and executed graphs. Its `ATTRIBUTION.txt` identifies the film, license, edits
+and reference origin.
 
 `examples/head-performance/` reuses the silent excerpt and brown-jacket base
 plate. Its aligned fictional portrait was cropped from frame zero of an actual
@@ -97,7 +108,7 @@ The complete Signal workflow is included under `examples/signal/`, and the
 first/last-frame forest transition is included under `examples/crystal-transition/`.
 Both carry their input images, actual graphs and Qwen frame recipes. The
 mirrored-driver comparison and audio-bearing timed variant remain local build
-evidence; the refreshed 106-second demo includes those diagnostic outputs too.
+evidence and appeared in an earlier diagnostic demo cut.
 
 The 24-second portrait teaser uses the same reviewed Signal, portal, golden
 falls and Reclaimed assets. It scales their displayed frames into captioned
@@ -124,7 +135,7 @@ graphs are retained with their examples. Model terms apply separately. These
 are demonstrations using credited excerpts and generated derivatives; no
 creator endorsement is implied.
 
-The current 44-second narrated film uses actual Aftertake UI captures, the
+The narrated film uses actual Aftertake UI captures, the
 credited Pexels coffee and coastal excerpts and the silent Tears of Steel bridge excerpt
 with generated VFX. Its titles, cuts and audio mix are exported by Aftertake's
 Film editor. The editable project and
@@ -157,15 +168,16 @@ in `examples/social-ad/`. Slow Mornings is a fictional concept with no real
 commercial offer or creator endorsement. Its two hooks are manually prepared
 creative variants, not measured ad-performance results.
 
-The current left-character replacement uses an original fictional human
+The earlier Wan-based left-character study uses an original fictional human
 reference generated locally with Z-Image Turbo, a detailed Qwen frame edit,
-and Wan Animate 2 motion transfer. It replaces the earlier silver-character
-demonstration. The reference generation and normalized import are included in
+and Wan Animate 2 motion transfer. It replaced the earlier silver-character
+demonstration before the native H3 workflow. The reference generation and
+normalized import are included in
 `examples/character-replacement/character-reference-origin.json` and
 `character-reference-import.json`. The original film's CC BY 3.0 attribution
 still applies to the resulting scene.
 
-The reviewed character composite uses local segmentation from the public
+That Wan-based character composite uses local segmentation from the public
 Apache-2.0 `facebook/sam2.1-hiera-tiny` model, pinned in `models-matting.json`.
 The matte combines the replacement silhouettes and protects the original
 woman's foreground hand. Annotations, original raw generation and the matte

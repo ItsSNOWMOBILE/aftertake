@@ -1,0 +1,67 @@
+{
+  "format": "aftertake-character-bundle-check/1",
+  "files": {
+    "source.mp4": {
+      "frames": 75,
+      "width": 1280,
+      "height": 534,
+      "fps": 24,
+      "maxTimestampDeviation": 0,
+      "timestampTick": 0.00008138020833333333,
+      "sha256": "6068c364f18e226766a3ccff9ea0586f82f403d95b38dd4597130713912dbe5a"
+    },
+    "prepared-source.mp4": {
+      "frames": 73,
+      "width": 1536,
+      "height": 640,
+      "fps": 24,
+      "maxTimestampDeviation": 0,
+      "timestampTick": 0.00008138020833333333,
+      "sha256": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92"
+    },
+    "tracked-mask.mkv": {
+      "frames": 73,
+      "width": 1536,
+      "height": 640,
+      "fps": 24,
+      "maxTimestampDeviation": 0.00033333333333340764,
+      "timestampTick": 0.001,
+      "sha256": "066a75dfc7a94dd2d56fd7c65bc20f921ab7949b5a91260f9bac28edef7f9400"
+    },
+    "result.mp4": {
+      "frames": 73,
+      "width": 1536,
+      "height": 640,
+      "fps": 24,
+      "maxTimestampDeviation": 0,
+      "timestampTick": 0.00008138020833333333,
+      "sha256": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe"
+    },
+    "selection-preview.mp4": {
+      "frames": 73,
+      "width": 1536,
+      "height": 640,
+      "fps": 24,
+      "maxTimestampDeviation": 0,
+      "timestampTick": 0.00008138020833333333,
+      "sha256": "4a5859ddf5e3c4f72fd48d6ceb1be98041fd43166f7c354ade61883d704f07d6"
+    }
+  },
+  "nativeJob": "17193ac8-5660-4dbc-bb2e-0537bffe754a",
+  "maskJob": "23174133-7ba4-448d-a870-b1bad7bcd7b4",
+  "referenceSha256": "2246e339a602bd225113795eefa3a5603ea840f138eb4dcf0e8ff01122832052",
+  "seed": 509103,
+  "frames": 73,
+  "fps": 24,
+  "width": 1536,
+  "height": 640,
+  "duration": 3.0416666666666665,
+  "outputSHA256": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe",
+  "sourceSHA256": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92",
+  "maskSHA256": "066a75dfc7a94dd2d56fd7c65bc20f921ab7949b5a91260f9bac28edef7f9400",
+  "workflow": "workflow-api.json",
+  "selectionWorkflow": "selection-workflow-api.json",
+  "modelManifest": "../../docs/models-character-swap.json",
+  "reference": "../character-h3/reference.png",
+  "review": "All 73 face crops and eight whole frames inspected. Wardrobe consistent from the first frame; no obvious topology collapse or join55/56 identity pop in these views. Facial articulation differs from source at0.667s and1.167s. Full-speed motion review remains separate. Silent generative character edit; exact source visemes are not guaranteed."
+}

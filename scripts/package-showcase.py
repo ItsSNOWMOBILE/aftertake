@@ -4,21 +4,45 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import re
 import subprocess
 import tarfile
+import urllib.request
 import zipfile
+
+
+def verify_github_source(revision, source_tree):
+    repository = 'ItsSNOWMOBILE/aftertake'
+    request = urllib.request.Request(
+        f'https://api.github.com/repos/{repository}/git/commits/{revision}',
+        headers={'Accept': 'application/vnd.github+json', 'User-Agent': 'Aftertake-showcase-packager/1'})
+    with urllib.request.urlopen(request, timeout=30) as response:
+        published = json.load(response)
+    if published.get('sha') != revision or published.get('tree', {}).get('sha') != source_tree:
+        raise ValueError('The public GitHub commit must match the complete local source tree.')
+    return {'provider': 'github', 'url': f'https://github.com/{repository}/archive/{revision}.zip',
+            'sourceCommit': revision, 'sourceTree': source_tree,
+            'publishedCommitVerified': True, 'archiveDownloaded': False}
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', required=True)
     parser.add_argument('--source-ref', default='HEAD')
+    parser.add_argument('--github-source', action='store_true',
+                        help='Link the complete source ZIP from GitHub instead of hosting split ZIPs; requires --source-ref=<published full commit SHA>.')
     args = parser.parse_args()
+    if args.github_source and not re.fullmatch(r'[0-9a-f]{40}', args.source_ref):
+        parser.error('--github-source requires --source-ref=<published full GitHub commit SHA>.')
     root = Path(__file__).resolve().parents[1]
     output = Path(args.output).resolve()
     if root not in output.parents or output == root:
         raise ValueError('The showcase output must stay inside this checkout.')
     revision = subprocess.check_output(['git', 'rev-parse', '--verify', '--end-of-options', args.source_ref + '^{commit}'], cwd=root, text=True).strip()
+    github_source = None
+    if args.github_source:
+        source_tree = subprocess.check_output(['git', 'rev-parse', '--verify', '--end-of-options', revision + '^{tree}'], cwd=root, text=True).strip()
+        github_source = verify_github_source(revision, source_tree)
     snapshot = json.loads((output / 'studio/snapshot.json').read_text(encoding='utf-8'))
     if snapshot['mediaRevision'] != revision or not all(url.startswith('../examples/') for url in snapshot['media'].values()):
         raise ValueError('Build the editor for this source revision with --media-base=../examples/ first.')
@@ -46,14 +70,16 @@ def main():
         data = blobs['examples/' + item['source']]
         if len(data) != item['size'] or hashlib.sha256(data).hexdigest() != item['sha256']:
             raise ValueError('Example checksum mismatch: ' + item['source'])
-    # These preparation assets are complete in the source ZIPs; the raw ad
-    # sources are also in the dedicated ad pack. Public players use the final
-    # exports, so another loose copy is unnecessary.
+    # These preparation assets remain in the complete source download. Public
+    # players use the final exports, so another loose copy is unnecessary.
     archive_media_prefixes = ('examples/submission-film/media/', 'examples/judges-film/media/', 'examples/social-ad/media/', 'examples/performer-focus/research/',
                               'examples/narrated-cut/workflow-media/', 'examples/narrated-cut/variants/', 'examples/spoken-type/media/')
-    # Internal review sheets and raw subject arrays remain in the complete source
-    # downloads. Public players do not need duplicate loose copies of these files.
-    archive_only_files=('docs/assets/video-codec-comparison.jpg','docs/assets/film-review-contact.jpg','examples/head-performance/result-subjects.npz')
+    # Unlinked older promotional assets, internal review sheets and raw subject
+    # arrays remain in the complete source downloads. Public players do not need
+    # duplicate loose copies of these files.
+    archive_only_files=('docs/assets/video-codec-comparison.jpg','docs/assets/film-review-contact.jpg','examples/head-performance/result-subjects.npz',
+                        'docs/assets/character-replacement-demo.mp4','docs/assets/character-replacement-poster.jpg',
+                        'examples/character-h3/source-result-contact.jpg','examples/narrated-cut/workflow-contact.jpg','examples/narrated-cut/workflow-reveal.jpg')
     for name in archive_only_files:
         loose=(output/name.removeprefix('docs/')).resolve()
         if output not in loose.parents:raise ValueError('Archive-only cleanup escaped the showcase.')
@@ -135,17 +161,18 @@ def main():
     prior_index = downloads / 'source-packages.json'
     prior_parts = json.loads(prior_index.read_text(encoding='utf-8'))['parts'] if prior_index.exists() else []
     parts = []
-    for index, names in enumerate(groups, 1):
-        filename = f'aftertake-{revision[:12]}-source-{index}-of-{len(groups)}.zip'
-        target = downloads / filename
-        with zipfile.ZipFile(target, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
-            for name in names:
-                archive.writestr(name, blobs[name])
-        with zipfile.ZipFile(target) as archive:
-            for name in names:
-                if archive.read(name) != blobs[name]:
-                    raise ValueError('Source package verification failed: ' + name)
-        parts.append({'file': filename, 'bytes': target.stat().st_size, 'sha256': hashlib.sha256(target.read_bytes()).hexdigest(), 'files': len(names)})
+    if not args.github_source:
+        for index, names in enumerate(groups, 1):
+            filename = f'aftertake-{revision[:12]}-source-{index}-of-{len(groups)}.zip'
+            target = downloads / filename
+            with zipfile.ZipFile(target, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
+                for name in names:
+                    archive.writestr(name, blobs[name])
+            with zipfile.ZipFile(target) as archive:
+                for name in names:
+                    if archive.read(name) != blobs[name]:
+                        raise ValueError('Source package verification failed: ' + name)
+            parts.append({'file': filename, 'bytes': target.stat().st_size, 'sha256': hashlib.sha256(target.read_bytes()).hexdigest(), 'files': len(names)})
     current_parts = {part['file'] for part in parts}
     for old in prior_parts:
         name = old['file']
@@ -156,10 +183,30 @@ def main():
             target.unlink(missing_ok=True)
     source_index = {'format': 'aftertake-source-parts/1', 'sourceCommit': revision, 'files': len(blobs), 'parts': parts,
                     'instructions': 'Download every ZIP and extract them into the same empty folder. These are independent ZIPs with different files. Model weights are separate. Use a Git checkout for history-dependent development checks.'}
+    source_files = downloads / 'source-files.json'
+    if args.github_source:
+        file_manifest = {'format': 'aftertake-source-files/1', 'sourceCommit': revision,
+                         'sourceTree': source_tree, 'files': len(blobs), 'allSourceBlobsVerified': True,
+                         'entries': [{'path': name, 'bytes': len(blobs[name]), 'gitBlob': expected[name],
+                                      'sha256': hashlib.sha256(blobs[name]).hexdigest()} for name in sorted(blobs)]}
+        file_manifest_bytes = (json.dumps(file_manifest, indent=2) + '\n').encode('utf-8')
+        source_files.write_bytes(file_manifest_bytes)
+        source_index = {'format': 'aftertake-source-github/1', 'sourceCommit': revision,
+                        'sourceTree': source_tree, 'files': len(blobs), 'parts': [], 'githubArchive': github_source,
+                        'fileManifest': {'file': source_files.name, 'bytes': len(file_manifest_bytes),
+                                         'sha256': hashlib.sha256(file_manifest_bytes).hexdigest()},
+                        'instructions': 'Download the complete GitHub ZIP and extract its top-level folder. It contains the app, workflows and media from this exact commit. Model weights are separate. File checksums describe the verified source tree; the GitHub archive was not downloaded or checksummed by this packager. Use a Git checkout for history-dependent development checks.'}
+    else:
+        source_files.unlink(missing_ok=True)
     (downloads / 'source-packages.json').write_text(json.dumps(source_index, indent=2) + '\n', encoding='utf-8')
     links = ' · '.join(f'<a href="downloads/{part["file"]}" download>Part {i}</a>' for i, part in enumerate(parts, 1))
     section = '<section class="details" id="source-downloads" aria-label="Complete source downloads"><p><strong>Complete source snapshot, workflows and media.</strong><br/>' + links + '<br/>Download every part and extract them into the same empty folder. Model weights are separate.</p><p>App code is MIT; media and models retain their own licenses. <a href="downloads/source-packages.json">Package checksums and instructions</a></p></section>\n'
+    if args.github_source:
+        section = '<section class="details" id="source-downloads" aria-label="Complete source downloads"><p><strong>Complete source snapshot, workflows and media.</strong><br/>' + f'<a href="{github_source["url"]}">Download complete source ZIP from GitHub</a>' + '<br/>Extract the ZIP and open its top-level folder. Model weights are separate.</p><p>App code is MIT; media and models retain their own licenses. <a href="downloads/source-packages.json">Source revision and download instructions</a> · <a href="downloads/source-files.json">Per-file source checksums</a></p></section>\n'
     page = blobs['docs/index.html'].decode('utf-8')
+    if args.github_source:
+        page = page.replace('# Extract every source ZIP below into an aftertake folder',
+                            '# Extract the GitHub source ZIP; rename its folder to aftertake')
     if page.count('</main>') != 1:
         raise ValueError('Unexpected landing-page structure.')
     page = page.replace('Explore recorded sources, results, cues and frame-editing recipes without Python, model downloads or a GPU. New generation uses your connected local Comfy engine.',
@@ -192,6 +239,10 @@ def main():
              'portraitSHA256': hashlib.sha256(blobs['docs/assets/aftertake-portrait-teaser.mp4']).hexdigest(),
              'socialAdPackage': {'files': len(ad_files), 'includedIn': 'sourceParts', 'allSourceFilesVerified': True},
              'castleHostedAliases':castle_aliases,'exampleHostedAliases':example_aliases}
+    if args.github_source:
+        proof.update({'sourceTree': source_tree, 'sourceFiles': len(blobs), 'sourceDownload': github_source,
+                      'sourceFileManifest': source_index['fileManifest']})
+        proof['socialAdPackage']['includedIn'] = 'githubArchive'
     (output / 'showcase.json').write_text(json.dumps(proof, indent=2) + '\n', encoding='utf-8')
     for path in output.rglob('*'):
         if path.is_file() and path.stat().st_size >= 25 * 1024 * 1024:

@@ -8,8 +8,8 @@
   "fps": 24,
   "duration": 3.0416666666666665,
   "maxTimestampDeviation": 0,
-  "review": "All 73 mask-following face crops and eight complete frames inspected. The alternate seed keeps the reference wardrobe from the first frame. Full-speed motion review remains separate; the published main demos still use the earlier take. This is a review candidate, with generative articulation and occlusion limits.",
-  "video": "assets/character-high-resolution-review.mp4",
+  "review": "All 73 mask-following face crops and eight complete frames inspected. Wardrobe is consistent from frame 0. Facial articulation differs from the source at 0.667s and 1.167s; this is a generative edit, not an exact viseme system. The clip has no audio. Full-speed perceptual review remains separate. Earlier demos retain their original example files.",
+  "video": "../examples/character-h3-high/result.mp4",
   "nativeJobId": "17193ac8-5660-4dbc-bb2e-0537bffe754a",
   "selectionNativeJobId": "23174133-7ba4-448d-a870-b1bad7bcd7b4",
   "selection": {
@@ -776,5 +776,6 @@
       534
     ],
     "changes": "Silent excerpt at original aspect; native SAM3 tracking and H3 replacement with a fictional original reference. No actor or creator endorsement implied."
-  }
+  },
+  "bundle": "../examples/character-h3-high/"
 }

@@ -43,7 +43,7 @@ local narration can run on the CPU.
 
 | Film & short-form | Character replacement |
 | :--- | :--- |
-| [![Film assembly with footage, narration and editable type](docs/assets/social-ad-editor.jpg)](https://aftertake-studio.right-bard-9761.chatgpt.site/ads/) | [![Native H3 character replacement in the licensed bridge scene](examples/character-h3/poster.jpg)](https://aftertake-studio.right-bard-9761.chatgpt.site/cast/h3.html) |
+| [![Film assembly with footage, narration and editable type](docs/assets/social-ad-editor.jpg)](https://aftertake-studio.right-bard-9761.chatgpt.site/ads/) | [![Native H3 character replacement in the licensed bridge scene](examples/character-h3-high/poster.jpg)](https://aftertake-studio.right-bard-9761.chatgpt.site/cast/h3.html) |
 | **[Short-form ads →](https://aftertake-studio.right-bard-9761.chatgpt.site/ads/)**<br>Two narrated vertical cuts from licensed coffee footage. | **[Change the cast →](https://aftertake-studio.right-bard-9761.chatgpt.site/cast/h3.html)**<br>Tracked whole-person replacement with native H3. |
 
 Also explore **[speech-following typography](https://aftertake-studio.right-bard-9761.chatgpt.site/type/spoken.html)**,

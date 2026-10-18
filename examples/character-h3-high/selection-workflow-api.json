@@ -1,0 +1,181 @@
+{
+  "source": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "172f299c-f368-4b8d-8052-cd61088ffffa.mp4"
+    }
+  },
+  "slice": {
+    "class_type": "Video Slice",
+    "inputs": {
+      "video": [
+        "source",
+        0
+      ],
+      "start_time": 0,
+      "duration": 3.0416666666666665,
+      "strict_duration": true
+    }
+  },
+  "prepare": {
+    "class_type": "H3RelayPrepareSource",
+    "inputs": {
+      "video": [
+        "slice",
+        0
+      ],
+      "resolution": "768",
+      "duration_seconds": 0,
+      "missing_audio": "silence"
+    }
+  },
+  "frames": {
+    "class_type": "ImageFromBatch",
+    "inputs": {
+      "image": [
+        "prepare",
+        0
+      ],
+      "batch_index": 0,
+      "length": [
+        "prepare",
+        5
+      ]
+    }
+  },
+  "first": {
+    "class_type": "ImageFromBatch",
+    "inputs": {
+      "image": [
+        "frames",
+        0
+      ],
+      "batch_index": 0,
+      "length": 1
+    }
+  },
+  "points": {
+    "class_type": "AftertakeSubjectPoints",
+    "inputs": {
+      "images": [
+        "first",
+        0
+      ],
+      "source_width": 1280,
+      "source_height": 534,
+      "points_json": "{\"positive\": [{\"x\": 0.3515625, \"y\": 0.2199074074074074}, {\"x\": 0.3515625, \"y\": 0.47453703703703703}], \"negative\": [{\"x\": 0.625, \"y\": 0.47453703703703703}]}"
+    }
+  },
+  "sam": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "sam3.1_multiplex_fp16.safetensors"
+    }
+  },
+  "people": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "sam",
+        1
+      ],
+      "text": "person:12"
+    }
+  },
+  "detect": {
+    "class_type": "SAM3_Detect",
+    "inputs": {
+      "model": [
+        "sam",
+        0
+      ],
+      "image": [
+        "first",
+        0
+      ],
+      "conditioning": [
+        "people",
+        0
+      ],
+      "threshold": 0.35,
+      "refine_iterations": 2,
+      "individual_masks": true
+    }
+  },
+  "choose": {
+    "class_type": "AftertakeSelectCharacterMask",
+    "inputs": {
+      "masks": [
+        "detect",
+        0
+      ],
+      "positive_coords": [
+        "points",
+        0
+      ],
+      "negative_coords": [
+        "points",
+        1
+      ]
+    }
+  },
+  "track": {
+    "class_type": "SAM3_VideoTrack",
+    "inputs": {
+      "images": [
+        "frames",
+        0
+      ],
+      "model": [
+        "sam",
+        0
+      ],
+      "initial_mask": [
+        "choose",
+        0
+      ],
+      "detection_threshold": 0.5,
+      "max_objects": 1,
+      "detect_interval": 1
+    }
+  },
+  "mask": {
+    "class_type": "SAM3_TrackToMask",
+    "inputs": {
+      "track_data": [
+        "track",
+        0
+      ],
+      "object_indices": "0"
+    }
+  },
+  "selection": {
+    "class_type": "AftertakeSaveCharacterSelection",
+    "inputs": {
+      "images": [
+        "frames",
+        0
+      ],
+      "masks": [
+        "mask",
+        0
+      ],
+      "filename_prefix": "aftertake/characters/0bd5c390-e419-4610-8cf7-cd2e2ea6475b/selection",
+      "request_json": "{\"format\": \"aftertake-character-selection/1\", \"clip\": {\"id\": \"172f299c-f368-4b8d-8052-cd61088ffffa\", \"name\": \"bridge-original-aspect.mp4\", \"sha256\": \"6068c364f18e226766a3ccff9ea0586f82f403d95b38dd4597130713912dbe5a\", \"width\": 1280, \"height\": 534, \"duration\": 3.125, \"url\": \"/media/172f299c-f368-4b8d-8052-cd61088ffffa.mp4\", \"hasAudio\": false}, \"trimStart\": 0, \"duration\": 3.0416666666666665, \"positive\": [{\"x\": 0.3515625, \"y\": 0.2199074074074074}, {\"x\": 0.3515625, \"y\": 0.47453703703703703}], \"negative\": [{\"x\": 0.625, \"y\": 0.47453703703703703}], \"resolution\": \"768\"}"
+    }
+  },
+  "source_save": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "prepare",
+        8
+      ],
+      "filename_prefix": "aftertake/characters/0bd5c390-e419-4610-8cf7-cd2e2ea6475b/source",
+      "format": "mp4",
+      "format.codec": "h264",
+      "format.codec.encoding": "re-encode",
+      "format.codec.encoding.crf": 14
+    }
+  }
+}
