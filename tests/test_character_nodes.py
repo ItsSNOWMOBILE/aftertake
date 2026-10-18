@@ -72,4 +72,34 @@ class CharacterNodeTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             json.dumps(nodes.export_prompt({'n':{'class_type':'BadInput','inputs':{'strength':math.nan}}}),allow_nan=False)
 
+    def test_high_resolution_mask_export_is_bound_to_the_requested_canvas_budget(self):
+        images=torch.tensor(.4).expand(24,736,1344,3)
+        plane=torch.zeros(736,1344);plane[100:500,200:600]=1
+        masks=plane.expand(24,-1,-1)
+        save=character.AftertakeSaveCharacterSelection()
+        with patch.dict(sys.modules,{'folder_paths':types.SimpleNamespace()}):
+            with self.assertRaisesRegex(ValueError,'prepared source'):
+                save.execute(images,masks,'selection','{}')
+            with self.assertRaisesRegex(ValueError,'working resolution'):
+                save.execute(images,masks,'selection','{"resolution":"1080"}')
+        with tempfile.TemporaryDirectory(prefix='aftertake-large-mask-')as directory:
+            fake=types.SimpleNamespace(get_output_directory=lambda:directory,
+                get_save_image_path=lambda prefix,output:(directory,'selection',1,'',prefix))
+            with patch.dict(sys.modules,{'folder_paths':fake}):
+                result=save.execute(images,masks,'selection','{"resolution":"768"}')
+            mask=Path(directory)/result['ui']['gifs'][0]['filename']
+            with av.open(str(mask))as container:
+                frames=0
+                for frame in container.decode(video=0):
+                    self.assertEqual((frame.width,frame.height),(1344,736))
+                    np.testing.assert_array_equal(frame.to_ndarray(format='gray'),plane.numpy()*255)
+                    self.assertAlmostEqual(float(frame.time),frames/24,places=3);frames+=1
+                self.assertEqual(frames,24)
+            preview=Path(directory)/result['ui']['gifs'][1]['filename']
+            with av.open(str(preview))as container:
+                receipt=json.loads(container.metadata['comment'])['recipe']
+                self.assertEqual(receipt['request']['resolution'],'768')
+                self.assertEqual(receipt['selection']['emptyFrames'],[])
+                self.assertEqual((container.streams.video[0].width,container.streams.video[0].height),(1344,736))
+
 if __name__=='__main__':unittest.main()

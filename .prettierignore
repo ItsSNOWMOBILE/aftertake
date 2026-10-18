@@ -1,0 +1,18 @@
+# Generated, third-party and runtime content
+node_modules/
+dist/
+.runtime/
+.data*/
+examples/
+docs/studio/
+docs/assets/
+docs/**/*.json
+pnpm-lock.yaml
+# Prose and Python retain their existing formatting.
+**/*.md
+**/*.py
+**/*.svg
+**/*.html
+**/*.txt
+LICENSE*
+NOTICE*

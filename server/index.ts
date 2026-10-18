@@ -1,3 +1,4 @@
+import { GenerationCoordinator } from './generation-coordinator.js';
 import express from 'express';
 import { createServer } from 'node:http';
 import { mkdir, readFile, writeFile, rename, readdir, stat, unlink } from 'node:fs/promises';
@@ -7,8 +8,16 @@ import { fileURLToPath } from 'node:url';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { Comfy, type Job } from '@comfyorg/sdk';
-import { ZodError } from 'zod';
-import { recipeSchema, renderDimensions, type Clip, type Engine, type Render } from '../src/domain.js';
+import { handleRequestError, RequestError } from './http-errors.js';
+import { loadWorkspaceEnvironment } from './environment.js';
+import { cancelAndRefresh } from './job-cancel.js';
+import {
+  recipeSchema,
+  renderDimensions,
+  type Clip,
+  type Engine,
+  type Render,
+} from '../src/domain.js';
 import { buildWorkflow, requirements } from './workflow.js';
 import { submissionRejected } from './submission.js';
 import { filmRouter } from './films.js';
@@ -17,13 +26,13 @@ import { resolveRecipeAssets, RecipeAssetError } from './assets.js';
 import { frameEditorRouter } from './frame-edits.js';
 import { imageRouter } from './images.js';
 import { inspectVideoMetadata } from './video-metadata.js';
-import {generationAdmission,generationKeyConflict} from './generation-admission.js';
-import {scriptDraftRouter} from './script-drafts.js';
-import {characterRouter} from './characters.js';
-import {videoRouter} from './videos.js';
+import { generationAdmission, generationKeyConflict } from './generation-admission.js';
+import { scriptDraftRouter } from './script-drafts.js';
+import { characterRouter } from './characters.js';
+import { videoRouter } from './videos.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-process.loadEnvFile && await stat(path.join(root, '.env')).then(() => process.loadEnvFile('.env')).catch(() => {});
+await loadWorkspaceEnvironment(root);
 process.env.COMFY_BASE_URL ||= 'http://127.0.0.1:8189';
 const uiUrl = process.env.COMFY_UI_URL || 'http://127.0.0.1:8188';
 const data = path.resolve(root, process.env.AFTERTAKE_DATA_DIR || '.data');
@@ -31,25 +40,38 @@ const clipDir = path.join(data, 'clips');
 const renderDir = path.join(data, 'renders');
 const outputDir = path.join(data, 'outputs');
 const previewDir = path.join(data, 'previews');
-await Promise.all([clipDir, renderDir, outputDir, previewDir].map(dir => mkdir(dir, { recursive: true })));
+await Promise.all(
+  [clipDir, renderDir, outputDir, previewDir].map((dir) => mkdir(dir, { recursive: true })),
+);
 const pythonSuffix = process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python';
 const enginePython = path.join(root, '.runtime/venv', pythonSuffix);
-const python = process.env.AFTERTAKE_PYTHON || (await stat(enginePython).catch(() => null) ? enginePython : path.join(root, '.runtime/film-venv', pythonSuffix));
+const python =
+  process.env.AFTERTAKE_PYTHON ||
+  ((await stat(enginePython).catch(() => null))
+    ? enginePython
+    : path.join(root, '.runtime/film-venv', pythonSuffix));
 const exec = promisify(execFile);
 const renders = new Map<string, Render>();
 const handles = new Map<string, Job>();
 const active = new Set<string>();
-let admittingRender = false;
-let imagesBusy = () => false;
-let charactersBusy = () => false;
-let videosBusy = () => false;
+const generation = new GenerationCoordinator();
 let previewBusy = false;
 let thumbnailQueue = Promise.resolve();
 const client = new Comfy();
 const terminal = new Set(['succeeded', 'failed', 'canceled', 'expired', 'output_error']);
+generation.register('take', () =>
+  [...renders.values()].some((render) => !terminal.has(render.state)),
+);
+
 const idPattern = /^[0-9a-f-]{36}$/;
-const bundledTitles = Object.fromEntries((JSON.parse(await readFile(path.join(root, 'examples/manifest.json'), 'utf8')).cases as { renderId: string; title: string }[])
-  .map(item => [item.renderId, item.title]));
+const bundledTitles = Object.fromEntries(
+  (
+    JSON.parse(await readFile(path.join(root, 'examples/manifest.json'), 'utf8')).cases as {
+      renderId: string;
+      title: string;
+    }[]
+  ).map((item) => [item.renderId, item.title]),
+);
 
 async function persist(render: Render) {
   render.updatedAt = new Date().toISOString();
@@ -63,10 +85,24 @@ for (const filename of await readdir(renderDir)) {
   try {
     const render = JSON.parse(await readFile(path.join(renderDir, filename), 'utf8')) as Render;
     renders.set(render.id, render);
-  } catch (error) { console.error(`Could not read saved render ${filename}:`, error); }
+  } catch (error) {
+    console.error(`Could not read saved render ${filename}:`, error);
+  }
 }
 const healthCache = new Map<string, { until: number; value: Engine }>();
-async function engine(pipeline: 'structure' | 'inpaint' | 'cinema' | 'motion-transfer' | 'motion' | 'frame-edit' | 'image-gen' | 'text-video' | 'character-selection' | 'character-swap' = 'structure'): Promise<Engine> {
+async function engine(
+  pipeline:
+    | 'structure'
+    | 'inpaint'
+    | 'cinema'
+    | 'motion-transfer'
+    | 'motion'
+    | 'frame-edit'
+    | 'image-gen'
+    | 'text-video'
+    | 'character-selection'
+    | 'character-swap' = 'structure',
+): Promise<Engine> {
   const cached = healthCache.get(pipeline);
   if (cached && cached.until > Date.now()) return cached.value;
   let result: Engine;
@@ -76,28 +112,53 @@ async function engine(pipeline: 'structure' | 'inpaint' | 'cinema' | 'motion-tra
       fetch(`${uiUrl}/system_stats`, { signal: AbortSignal.timeout(5000) }),
       fetch(`${process.env.COMFY_BASE_URL}/api/v2/health`, { signal: AbortSignal.timeout(5000) }),
     ]);
-    if (responses.some(r => !r.ok)) throw new Error('ComfyUI or the v2 proxy is unavailable');
-    const nodes = await responses[0].json() as Record<string, any>;
-    const stats = await responses[1].json() as { devices?: { name: string }[];system?:{os?:string} };
+    if (responses.some((r) => !r.ok)) throw new Error('ComfyUI or the v2 proxy is unavailable');
+    const nodes = (await responses[0].json()) as Record<string, any>;
+    const stats = (await responses[1].json()) as {
+      devices?: { name: string }[];
+      system?: { os?: string };
+    };
     const needed = requirements(pipeline);
-    const missing = needed.nodes.filter(name => !nodes[name]).map(name => `Node: ${name}`);
-    if (nodes.AftertakeLoadClip && nodes.AftertakeLoadClip.output?.length !== 2) missing.push('Update Aftertake nodes and restart the engine for source audio');
-    if (pipeline === 'inpaint' && nodes.AftertakeCueMask?.output?.length < 3) missing.push('Update Aftertake nodes and restart the engine');
+    const missing = needed.nodes.filter((name) => !nodes[name]).map((name) => `Node: ${name}`);
+    if (nodes.AftertakeLoadClip && nodes.AftertakeLoadClip.output?.length !== 2)
+      missing.push('Update Aftertake nodes and restart the engine for source audio');
+    if (pipeline === 'inpaint' && nodes.AftertakeCueMask?.output?.length < 3)
+      missing.push('Update Aftertake nodes and restart the engine');
     const menus = needed.menus;
     for (const [node, input, filename] of menus) {
       const options = nodes[node]?.input?.required?.[input]?.[0];
       if (Array.isArray(options) && !options.includes(filename)) missing.push(`Model: ${filename}`);
     }
-    if(pipeline==='text-video'&&!nodes.AftertakeSaveVideo?.input?.optional?.generated_audio)missing.push('Update Aftertake nodes and restart the engine for generated sound.');
-    if(pipeline==='character-selection'||pipeline==='character-swap'){
-      if(!nodes.AftertakeRuntimeInfo?.input?.required?.ffmpeg_tools?.[0]?.includes('ready'))missing.push('FFmpeg and FFprobe must be on the engine PATH; use python scripts/engine.py --ffmpeg-bin PATH_TO_BIN');
-      if(['nt','win32'].includes(stats.system?.os||'')&&!nodes.AftertakeRuntimeInfo?.input?.required?.weight_copy_backend?.[0]?.includes('pytorch'))
+    if (pipeline === 'text-video' && !nodes.AftertakeSaveVideo?.input?.optional?.generated_audio)
+      missing.push('Update Aftertake nodes and restart the engine for generated sound.');
+    if (pipeline === 'character-selection' || pipeline === 'character-swap') {
+      if (!nodes.AftertakeRuntimeInfo?.input?.required?.ffmpeg_tools?.[0]?.includes('ready'))
+        missing.push(
+          'FFmpeg and FFprobe must be on the engine PATH; use python scripts/engine.py --ffmpeg-bin PATH_TO_BIN',
+        );
+      if (
+        ['nt', 'win32'].includes(stats.system?.os || '') &&
+        !nodes.AftertakeRuntimeInfo?.input?.required?.weight_copy_backend?.[0]?.includes('pytorch')
+      )
         missing.push('Restart the tested Windows character engine with --safe-weight-copies');
     }
-    result = { connected: true, ready: missing.length === 0, gpu: stats.devices?.[0]?.name, missing,
-      message: missing.length ? 'Engine connected. Required components are still being installed.' : 'Local ComfyUI · open-weight workflow' };
+    result = {
+      connected: true,
+      ready: missing.length === 0,
+      gpu: stats.devices?.[0]?.name,
+      missing,
+      message: missing.length
+        ? 'Engine connected. Required components are still being installed.'
+        : 'Local ComfyUI · open-weight workflow',
+    };
   } catch {
-    result = { connected: false, ready: false, missing: [], message: 'Start ComfyUI and the Comfy v2 proxy to render. You can edit and export recipes now.' };
+    result = {
+      connected: false,
+      ready: false,
+      missing: [],
+      message:
+        'Start ComfyUI and the Comfy v2 proxy to render. You can edit and export recipes now.',
+    };
   }
   healthCache.set(pipeline, { until: Date.now() + 3000, value: result });
   return result;
@@ -109,7 +170,7 @@ async function track(render: Render, initial?: Job) {
   const eventsController = new AbortController();
   let streamedProgress: number | null = null;
   try {
-    const job = initial || await client.jobs.get(render.jobId!);
+    const job = initial || (await client.jobs.get(render.jobId!));
     handles.set(render.id, job);
     // Stream real sampler progress; polling remains authoritative for completion.
     void (async () => {
@@ -118,8 +179,31 @@ async function track(render: Render, initial?: Job) {
           // Some local proxy events omit the current node and report 100% for
           // intermediate operations. An indeterminate indicator is honest here.
           streamedProgress = event.currentNode && event.value < 1 ? event.value : null;
-          const stages: Record<string, string> = { '5': 'Reading direction', '6': 'Reading direction', '8': 'Reading source', '9': 'Tracking cue', '12': 'Encoding guides', '17': 'Sampling video', '19': 'Decoding frames', '20': 'Compositing', '21': 'Saving video', '22': 'Saving video', '30': 'Encoding refinement', '33': 'Refining video', '34': 'Decoding refined frames', '35': 'Blending boundaries', '45': 'Reading edited frame', '46': 'Conditioning appearance', '47': 'Reading edited frame', '48': 'Refining appearance' };
-          render.stage = stages[event.currentNode || ''] || event.currentNodeClass || event.message || 'Processing workflow';
+          const stages: Record<string, string> = {
+            '5': 'Reading direction',
+            '6': 'Reading direction',
+            '8': 'Reading source',
+            '9': 'Tracking cue',
+            '12': 'Encoding guides',
+            '17': 'Sampling video',
+            '19': 'Decoding frames',
+            '20': 'Compositing',
+            '21': 'Saving video',
+            '22': 'Saving video',
+            '30': 'Encoding refinement',
+            '33': 'Refining video',
+            '34': 'Decoding refined frames',
+            '35': 'Blending boundaries',
+            '45': 'Reading edited frame',
+            '46': 'Conditioning appearance',
+            '47': 'Reading edited frame',
+            '48': 'Refining appearance',
+          };
+          render.stage =
+            stages[event.currentNode || ''] ||
+            event.currentNodeClass ||
+            event.message ||
+            'Processing workflow';
         }
       }
     })().catch(() => {});
@@ -139,7 +223,10 @@ async function track(render: Render, initial?: Job) {
         await output.toFile(path.join(outputDir, `${render.id}.mp4`));
         // Export the graph embedded by the executing native nodes, including
         // resolved asset names, rather than the pre-upload placeholder graph.
-        render.workflow = inspectVideoMetadata(await readFile(path.join(outputDir, `${render.id}.mp4`)), render.recipe).workflow;
+        render.workflow = inspectVideoMetadata(
+          await readFile(path.join(outputDir, `${render.id}.mp4`)),
+          render.recipe,
+        ).workflow;
         if (raw) await raw.toFile(path.join(outputDir, `${render.id}-raw.mp4`));
         if (coarse) await coarse.toFile(path.join(outputDir, `${render.id}-coarse.mp4`));
         if (guide) await guide.toFile(path.join(outputDir, `${render.id}-guide.mp4`));
@@ -159,15 +246,24 @@ async function track(render: Render, initial?: Job) {
         // Release idle caches after cancellation/failure as well as success,
         // so browser video decoders can recover their VRAM on 16 GB cards.
         try {
-          const queue = await fetch(`${uiUrl}/queue`, { signal: AbortSignal.timeout(3000) }).then(r => r.json()) as { queue_running?: unknown[]; queue_pending?: unknown[] };
+          const queue = (await fetch(`${uiUrl}/queue`, { signal: AbortSignal.timeout(3000) }).then(
+            (r) => r.json(),
+          )) as { queue_running?: unknown[]; queue_pending?: unknown[] };
           if (queue.queue_running?.length === 0 && queue.queue_pending?.length === 0) {
-            await fetch(`${uiUrl}/free`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ unload_models: true, free_memory: true }), signal: AbortSignal.timeout(3000) });
+            await fetch(`${uiUrl}/free`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ unload_models: true, free_memory: true }),
+              signal: AbortSignal.timeout(3000),
+            });
           }
-        } catch (error) { console.warn('Could not release idle GPU cache:', error); }
+        } catch (error) {
+          console.warn('Could not release idle GPU cache:', error);
+        }
       }
       await persist(render);
       if (terminal.has(job.status)) break;
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
     }
   } catch (error) {
     // A poll failure says nothing about whether GPU work stopped. Retain the id.
@@ -175,17 +271,23 @@ async function track(render: Render, initial?: Job) {
     render.state = job && terminal.has(job.status) ? 'output_error' : 'connection_lost';
     render.error = error instanceof Error ? error.message : String(error);
     await persist(render);
-  } finally { eventsController.abort(); handles.delete(render.id); active.delete(render.id); }
+  } finally {
+    eventsController.abort();
+    handles.delete(render.id);
+    active.delete(render.id);
+  }
 }
 
 const app = express();
 app.disable('x-powered-by');
 app.use((req, res, next) => {
   const hostname = req.headers.host?.split(':')[0];
-  if (!hostname || !['127.0.0.1', 'localhost'].includes(hostname)) return void res.status(403).json({ error: 'Use the local studio address.' });
+  if (!hostname || !['127.0.0.1', 'localhost'].includes(hostname))
+    return void res.status(403).json({ error: 'Use the local studio address.' });
   if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
     const origin = req.headers.origin;
-    if (origin && origin !== `http://${req.headers.host}`) return void res.status(403).json({ error: 'Cross-origin writes are disabled.' });
+    if (origin && origin !== `http://${req.headers.host}`)
+      return void res.status(403).json({ error: 'Cross-origin writes are disabled.' });
   }
   next();
 });
@@ -195,22 +297,60 @@ app.get('/previews/:name', (req, res) => {
   if (!/^[a-f0-9]{64}\.png$/.test(req.params.name)) return void res.sendStatus(404);
   res.sendFile(req.params.name, { root: previewDir, dotfiles: 'deny' });
 });
-app.get('/api/engine', async (req, res) => { res.json(await engine(req.query.pipeline==='text-video'?'text-video':req.query.pipeline==='character-selection'?'character-selection':req.query.pipeline==='character-swap'?'character-swap':req.query.pipeline === 'image-gen' ? 'image-gen' : req.query.pipeline === 'frame-edit' ? 'frame-edit' : req.query.pipeline === 'motion-transfer' ? 'motion-transfer' : req.query.pipeline === 'motion' ? 'motion' : req.query.pipeline === 'cinema' ? 'cinema' : req.query.pipeline === 'inpaint' ? 'inpaint' : 'structure')); });
+app.get('/api/engine', async (req, res) => {
+  const pipelines = [
+    'structure',
+    'inpaint',
+    'cinema',
+    'motion-transfer',
+    'motion',
+    'frame-edit',
+    'image-gen',
+    'text-video',
+    'character-selection',
+    'character-swap',
+  ] as const;
+  const pipeline = pipelines.find((value) => value === req.query.pipeline) || 'structure';
+  res.json(await engine(pipeline));
+});
 app.get('/api/workspace', (_req, res) => {
-  res.json({ generationProtocol:1,textVideoProtocol:1,examples: process.env.AFTERTAKE_EXAMPLES === '1', exampleCount: Number(process.env.AFTERTAKE_EXAMPLE_COUNT || 3),
-    exampleNames: { ...bundledTitles, ...JSON.parse(process.env.AFTERTAKE_EXAMPLE_TITLES || '{}') }, featuredRenderId: process.env.AFTERTAKE_FEATURED_RENDER || null });
+  res.json({
+    generationProtocol: 1,
+    textVideoProtocol: 1,
+    examples: process.env.AFTERTAKE_EXAMPLES === '1',
+    exampleCount: Number(process.env.AFTERTAKE_EXAMPLE_COUNT || 3),
+    exampleNames: { ...bundledTitles, ...JSON.parse(process.env.AFTERTAKE_EXAMPLE_TITLES || '{}') },
+    featuredRenderId: process.env.AFTERTAKE_FEATURED_RENDER || null,
+  });
 });
 app.get('/api/thumbnails/:id', async (req, res) => {
   if (!idPattern.test(req.params.id)) return void res.sendStatus(404);
-  const clip = JSON.parse(await readFile(path.join(clipDir, `${req.params.id}.json`), 'utf8')) as Clip;
+  const clip = JSON.parse(
+    await readFile(path.join(clipDir, `${req.params.id}.json`), 'utf8'),
+  ) as Clip;
   const requested = Number(req.query.time || 0);
   if (!Number.isFinite(requested)) return void res.sendStatus(400);
-  const time = clip.kind === 'image' ? 0 : Math.round(Math.max(0, Math.min(clip.duration - .05, requested)) * 24) / 24;
+  const time =
+    clip.kind === 'image'
+      ? 0
+      : Math.round(Math.max(0, Math.min(clip.duration - 0.05, requested)) * 24) / 24;
   const key = createHash('sha256').update(`thumbnail/1:${clip.sha256}:${time}`).digest('hex');
   const filename = `${key}.jpg`;
   const task = thumbnailQueue.then(async () => {
     if (await stat(path.join(previewDir, filename)).catch(() => null)) return;
-    await exec(python, [path.join(root, 'scripts/thumbnail.py'), path.join(clipDir, path.basename(clip.url)), path.join(previewDir, filename), String(time)], { timeout: 30000 });
+    if (!(await stat(python).catch(() => null))) {
+      throw new RequestError('Install the Python runtime to generate thumbnails.', 409);
+    }
+    await exec(
+      python,
+      [
+        path.join(root, 'scripts/thumbnail.py'),
+        path.join(clipDir, path.basename(clip.url)),
+        path.join(previewDir, filename),
+        String(time),
+      ],
+      { timeout: 30000 },
+    );
   });
   thumbnailQueue = task.catch(() => {});
   await task;
@@ -220,197 +360,377 @@ app.get('/api/thumbnails/:id', async (req, res) => {
 app.get('/api/clips', async (_req, res) => {
   const clips: Clip[] = [];
   for (const file of await readdir(clipDir)) {
-    if (file.endsWith('.json')) clips.push(JSON.parse(await readFile(path.join(clipDir, file), 'utf8')));
+    if (file.endsWith('.json'))
+      clips.push(JSON.parse(await readFile(path.join(clipDir, file), 'utf8')));
   }
   res.json(clips);
 });
 app.get('/api/clips/:id/frame', async (req, res) => {
   if (!idPattern.test(req.params.id)) return void res.sendStatus(404);
-  if (!(await stat(python).catch(() => null))) return void res.status(409).json({ error: 'Install the Python runtime to export a source frame.' });
-  const clip = JSON.parse(await readFile(path.join(clipDir, `${req.params.id}.json`), 'utf8')) as Clip;
+  if (!(await stat(python).catch(() => null)))
+    return void res
+      .status(409)
+      .json({ error: 'Install the Python runtime to export a source frame.' });
+  const clip = JSON.parse(
+    await readFile(path.join(clipDir, `${req.params.id}.json`), 'utf8'),
+  ) as Clip;
   const requested = Number(req.query.time || 0);
-  if (!Number.isFinite(requested)) return void res.status(400).json({ error: 'Choose a valid source time.' });
-  const time = clip.kind === 'image' ? 0 : Math.max(0, Math.min(clip.duration - .05, requested));
+  if (!Number.isFinite(requested))
+    return void res.status(400).json({ error: 'Choose a valid source time.' });
+  const time = clip.kind === 'image' ? 0 : Math.max(0, Math.min(clip.duration - 0.05, requested));
   const key = createHash('sha256').update(`source-frame/1:${clip.sha256}:${time}`).digest('hex');
-  const filename = `frame-${key}.png`, target = path.join(previewDir, filename);
+  const filename = `frame-${key}.png`,
+    target = path.join(previewDir, filename);
   const task = thumbnailQueue.then(async () => {
     if (await stat(target).catch(() => null)) return;
-    await exec(python, [path.join(root, 'scripts/extract-frame.py'), path.join(clipDir, path.basename(clip.url)), target, String(time)], { timeout: 30000 });
+    await exec(
+      python,
+      [
+        path.join(root, 'scripts/extract-frame.py'),
+        path.join(clipDir, path.basename(clip.url)),
+        target,
+        String(time),
+      ],
+      { timeout: 30000 },
+    );
   });
-  thumbnailQueue = task.catch(() => {}); await task;
+  thumbnailQueue = task.catch(() => {});
+  await task;
   res.attachment('aftertake-starting-frame.png').sendFile(filename, { root: previewDir });
 });
-app.post('/api/clips', express.raw({ type: 'application/octet-stream', limit: '100mb' }), async (req, res) => {
-  if (!Buffer.isBuffer(req.body) || !req.body.length) return void res.status(400).json({ error: 'Choose a video file.' });
-  if (!(await stat(python).catch(() => null))) return void res.status(409).json({ error: 'Install the Python runtime before importing new clips. You can explore the included examples now.' });
-  const name = path.basename(String(req.query.name || 'source.mp4')).slice(0, 200);
-  const extension = path.extname(name).toLowerCase();
-  const image = ['.png', '.jpg', '.jpeg', '.webp'].includes(extension);
-  if (!image && !['.mp4', '.mov', '.webm', '.mkv', '.m4v'].includes(extension)) return void res.status(400).json({ error: 'Use an MP4, MOV, WebM or MKV video, or a PNG, JPEG or WebP image.' });
-  const id = randomUUID();
-  const filename = `${id}${extension}`;
-  const dest = path.join(clipDir, filename);
-  await writeFile(dest, req.body);
-  try {
-    const normalized = path.join(clipDir, `${id}.normalized.png`);
-    const { stdout } = await exec(python, image ? [path.join(root, 'scripts/import-image.py'), dest, normalized] : [path.join(root, 'scripts/probe.py'), dest], { timeout: 30000 });
-    const meta = JSON.parse(stdout);
-    if (meta.duration < 1) throw new Error('Use a clip at least one second long.');
-    if (image) { await unlink(dest); await rename(normalized, path.join(clipDir, `${id}.png`)); }
-    const bytes = image ? await readFile(path.join(clipDir, `${id}.png`)) : req.body;
-    const clip: Clip = { id, name, sha256: createHash('sha256').update(bytes).digest('hex'),
-      ...(image ? { originalSha256: createHash('sha256').update(req.body).digest('hex') } : {}),
-      ...meta, url: `/media/${image ? `${id}.png` : filename}` };
-    await writeFile(path.join(clipDir, `${id}.json`), JSON.stringify(clip, null, 2));
-    res.status(201).json(clip);
-  } catch {
-    await Promise.all([dest, path.join(clipDir, `${id}.png`), path.join(clipDir, `${id}.normalized.png`)].map(file => unlink(file).catch(() => {})));
-    res.status(422).json({ error: 'Could not read this source. Use a valid video from 1 second to 10 minutes, or a still image, up to 4K.' });
-  }
-});
+app.post(
+  '/api/clips',
+  express.raw({ type: 'application/octet-stream', limit: '100mb' }),
+  async (req, res) => {
+    if (!Buffer.isBuffer(req.body) || !req.body.length)
+      return void res.status(400).json({ error: 'Choose a video file.' });
+    if (!(await stat(python).catch(() => null)))
+      return void res.status(409).json({
+        error:
+          'Install the Python runtime before importing new clips. You can explore the included examples now.',
+      });
+    const name = path.basename(String(req.query.name || 'source.mp4')).slice(0, 200);
+    const extension = path.extname(name).toLowerCase();
+    const image = ['.png', '.jpg', '.jpeg', '.webp'].includes(extension);
+    if (!image && !['.mp4', '.mov', '.webm', '.mkv', '.m4v'].includes(extension))
+      return void res
+        .status(400)
+        .json({ error: 'Use an MP4, MOV, WebM or MKV video, or a PNG, JPEG or WebP image.' });
+    const id = randomUUID();
+    const filename = `${id}${extension}`;
+    const dest = path.join(clipDir, filename);
+    await writeFile(dest, req.body);
+    try {
+      const normalized = path.join(clipDir, `${id}.normalized.png`);
+      const { stdout } = await exec(
+        python,
+        image
+          ? [path.join(root, 'scripts/import-image.py'), dest, normalized]
+          : [path.join(root, 'scripts/probe.py'), dest],
+        { timeout: 30000 },
+      );
+      const meta = JSON.parse(stdout);
+      if (meta.duration < 1) throw new Error('Use a clip at least one second long.');
+      if (image) {
+        await unlink(dest);
+        await rename(normalized, path.join(clipDir, `${id}.png`));
+      }
+      const bytes = image ? await readFile(path.join(clipDir, `${id}.png`)) : req.body;
+      const clip: Clip = {
+        id,
+        name,
+        sha256: createHash('sha256').update(bytes).digest('hex'),
+        ...(image ? { originalSha256: createHash('sha256').update(req.body).digest('hex') } : {}),
+        ...meta,
+        url: `/media/${image ? `${id}.png` : filename}`,
+      };
+      await writeFile(path.join(clipDir, `${id}.json`), JSON.stringify(clip, null, 2));
+      res.status(201).json(clip);
+    } catch {
+      await Promise.all(
+        [dest, path.join(clipDir, `${id}.png`), path.join(clipDir, `${id}.normalized.png`)].map(
+          (file) => unlink(file).catch(() => {}),
+        ),
+      );
+      res.status(422).json({
+        error:
+          'Could not read this source. Use a valid video from 1 second to 10 minutes, or a still image, up to 4K.',
+      });
+    }
+  },
+);
 app.use(express.json({ limit: '2mb' }));
-app.use('/api/script-drafts',await scriptDraftRouter({root,data}));
-const frameEdits = await frameEditorRouter({ data, client, uiUrl, engine: () => engine('frame-edit'),
-  takeBusy: () => admittingRender || imagesBusy() || charactersBusy() || videosBusy() || [...renders.values()].some(r => !terminal.has(r.state)),
-  setAdmitting: value => { admittingRender = value; } });
+app.use('/api/script-drafts', await scriptDraftRouter({ root, data }));
+const frameEdits = await frameEditorRouter({
+  data,
+  client,
+  uiUrl,
+  engine: () => engine('frame-edit'),
+  ...generation.forWorker('frameEdits'),
+});
+generation.register('frameEdits', frameEdits.busy);
 app.use('/api/frame-edits', frameEdits.router);
-const images = await imageRouter({ data, client, uiUrl, engine: () => engine('image-gen'),
-  takeBusy: () => admittingRender || frameEdits.busy() || charactersBusy() || videosBusy() || [...renders.values()].some(r => !terminal.has(r.state)),
-  setAdmitting: value => { admittingRender = value; } });
-imagesBusy = images.busy;
+const images = await imageRouter({
+  data,
+  client,
+  uiUrl,
+  engine: () => engine('image-gen'),
+  ...generation.forWorker('images'),
+});
+generation.register('images', images.busy);
 app.use('/api/images', images.router);
-const characters=await characterRouter({root,data,python,client,uiUrl,engine:selection=>engine(selection?'character-selection':'character-swap'),
-  takeBusy:()=>admittingRender||frameEdits.busy()||images.busy()||videosBusy()||[...renders.values()].some(r=>!terminal.has(r.state)),
-  setAdmitting:value=>{admittingRender=value;}});
-charactersBusy=characters.busy;
-app.use('/api/characters',characters.router);
-const videos=await videoRouter({root,data,python,client,uiUrl,engine:()=>engine('text-video'),
-  takeBusy:()=>admittingRender||frameEdits.busy()||images.busy()||charactersBusy()||[...renders.values()].some(r=>!terminal.has(r.state)),
-  setAdmitting:value=>{admittingRender=value;}});
-videosBusy=videos.busy;
-app.use('/api/videos',videos.router);
+const characters = await characterRouter({
+  root,
+  data,
+  python,
+  client,
+  uiUrl,
+  engine: (selection) => engine(selection ? 'character-selection' : 'character-swap'),
+  ...generation.forWorker('characters'),
+});
+generation.register('characters', characters.busy);
+app.use('/api/characters', characters.router);
+const videos = await videoRouter({
+  root,
+  data,
+  python,
+  client,
+  uiUrl,
+  engine: () => engine('text-video'),
+  ...generation.forWorker('videos'),
+});
+generation.register('videos', videos.busy);
+app.use('/api/videos', videos.router);
 app.use('/api/templates', await templateRouter(root, data, renders));
 app.use('/api/films', await filmRouter(root, data, python, renders));
 app.post('/api/cue-preview', async (req, res) => {
-  if(charactersBusy()||videosBusy())return void res.status(409).json({error:'Wait for the character job to finish before computing another motion preview.'});
-  if (!(await stat(python).catch(() => null))) return void res.status(409).json({ error: 'Install the local runtime to compute motion previews. See the engine panel.' });
-  if (previewBusy) return void res.status(409).json({ error: 'A motion preview is already being computed. Try again in a moment.' });
+  if (characters.busy() || videos.busy())
+    return void res.status(409).json({
+      error: 'Wait for the character job to finish before computing another motion preview.',
+    });
+  if (!(await stat(python).catch(() => null)))
+    return void res.status(409).json({
+      error: 'Install the local runtime to compute motion previews. See the engine panel.',
+    });
+  if (previewBusy)
+    return void res
+      .status(409)
+      .json({ error: 'A motion preview is already being computed. Try again in a moment.' });
   previewBusy = true;
   try {
     const recipe = recipeSchema.parse(req.body);
-    const clip = JSON.parse(await readFile(path.join(clipDir, `${recipe.clip.id}.json`), 'utf8')) as Clip;
-    if (clip.sha256 !== recipe.clip.sha256) throw new Error('The source clip does not match this recipe.');
+    const clip = JSON.parse(
+      await readFile(path.join(clipDir, `${recipe.clip.id}.json`), 'utf8'),
+    ) as Clip;
+    if (clip.sha256 !== recipe.clip.sha256)
+      throw new RequestError('The source clip does not match this recipe.');
     const dims = renderDimensions({ ...recipe, clip });
     const settings = { ...dims, clip, cue: recipe.cue, trimStart: recipe.trimStart };
     // Version the cached pixels when tracking changes, keeping CPU previews
     // aligned with the masks computed by the current generation nodes.
-    const key = createHash('sha256').update('cue-preview/2:').update(JSON.stringify(settings)).digest('hex');
+    const key = createHash('sha256')
+      .update('cue-preview/2:')
+      .update(JSON.stringify(settings))
+      .digest('hex');
     const existing = await stat(path.join(previewDir, `${key}.png`)).catch(() => null);
     if (!existing) {
       await writeFile(path.join(previewDir, `${key}.json`), JSON.stringify(settings));
       await exec(python, [path.join(root, 'scripts/preview-cue.py'), key], { timeout: 60000 });
     }
     res.json({ url: `/previews/${key}.png`, ...dims });
-  } finally { previewBusy = false; }
+  } finally {
+    previewBusy = false;
+  }
 });
-app.get('/api/renders', (_req, res) => { res.json([...renders.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt))); });
+app.get('/api/renders', (_req, res) => {
+  res.json([...renders.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt)));
+});
 app.get('/api/renders/:id', (req, res) => {
   const render = renders.get(req.params.id);
   if (!render) return void res.status(404).json({ error: 'Render not found.' });
   if (render.jobId && !terminal.has(render.state) && !active.has(render.id)) void track(render);
   res.json(render);
 });
-app.post('/api/workflow', (req, res) => { res.json(buildWorkflow(recipeSchema.parse(req.body))); });
-async function submitTake(render:Render){
-  if(!render.workflow)throw Error('The original generation workflow is missing. Keep this record for review and create a deliberate new take.');
-  const recipe=render.recipe,storedClip=recipe.clip;
+app.post('/api/workflow', (req, res) => {
+  res.json(buildWorkflow(recipeSchema.parse(req.body)));
+});
+async function submitTake(render: Render) {
+  if (!render.workflow)
+    throw Error(
+      'The original generation workflow is missing. Keep this record for review and create a deliberate new take.',
+    );
+  const recipe = render.recipe,
+    storedClip = recipe.clip;
   const wf = client.workflows.fromJson(structuredClone(render.workflow));
-  wf.setInput('8', 'filename', client.assets.fromFile(path.join(clipDir, path.basename(storedClip.url))));
+  wf.setInput(
+    '8',
+    'filename',
+    client.assets.fromFile(path.join(clipDir, path.basename(storedClip.url))),
+  );
   if (recipe.pipeline === 'inpaint' && recipe.editReference) {
-    const image = client.assets.fromFile(path.join(clipDir, path.basename(recipe.editReference.url)));
+    const image = client.assets.fromFile(
+      path.join(clipDir, path.basename(recipe.editReference.url)),
+    );
     wf.setInput('45', 'filename', image);
     if (recipe.quality === 'final') wf.setInput('47', 'filename', image);
   }
   if (recipe.pipeline === 'cinema' && recipe.endFrame)
-    wf.setInput('45', 'filename', client.assets.fromFile(path.join(clipDir, path.basename(recipe.endFrame.url))));
+    wf.setInput(
+      '45',
+      'filename',
+      client.assets.fromFile(path.join(clipDir, path.basename(recipe.endFrame.url))),
+    );
   if (recipe.pipeline === 'motion-transfer' && recipe.transfer?.reference)
-    wf.setInput('45', 'filename', client.assets.fromFile(path.join(clipDir, path.basename(recipe.transfer.reference.url))));
-  if(recipe.pipeline==='motion-transfer' && recipe.transfer?.finish){
-    wf.setInput('19','filename',client.assets.fromFile(path.join(clipDir,path.basename(recipe.transfer.finish.generation.url))));
-    wf.setInput('49','filename',client.assets.fromFile(path.join(clipDir,path.basename(recipe.transfer.finish.matte.url))));
+    wf.setInput(
+      '45',
+      'filename',
+      client.assets.fromFile(path.join(clipDir, path.basename(recipe.transfer.reference.url))),
+    );
+  if (recipe.pipeline === 'motion-transfer' && recipe.transfer?.finish) {
+    wf.setInput(
+      '19',
+      'filename',
+      client.assets.fromFile(
+        path.join(clipDir, path.basename(recipe.transfer.finish.generation.url)),
+      ),
+    );
+    wf.setInput(
+      '49',
+      'filename',
+      client.assets.fromFile(path.join(clipDir, path.basename(recipe.transfer.finish.matte.url))),
+    );
   }
   const job = await client.submit(wf, { idempotencyKey: render.id });
-  render.jobId = job.id; render.state = job.status === 'succeeded' ? 'finalizing' : job.status;
-  await persist(render); void track(render, job);
+  render.jobId = job.id;
+  render.state = job.status === 'succeeded' ? 'finalizing' : job.status;
+  await persist(render);
+  void track(render, job);
 }
 app.post('/api/renders', async (req, res) => {
-  const input=recipeSchema.parse(req.body),admission=generationAdmission(req.get('Idempotency-Key'),input,renders.values());
-  if(admission.conflict)return void res.status(409).json({error:generationKeyConflict});
-  if(admission.existing)return void res.status(terminal.has(admission.existing.state)?200:202).json(admission.existing);
-  if (admittingRender) return void res.status(409).json({ error: 'A take is already being submitted.' });
-  admittingRender = true;
+  const input = recipeSchema.parse(req.body),
+    admission = generationAdmission(req.get('Idempotency-Key'), input, renders.values());
+  if (admission.conflict) return void res.status(409).json({ error: generationKeyConflict });
+  if (admission.existing)
+    return void res
+      .status(terminal.has(admission.existing.state) ? 200 : 202)
+      .json(admission.existing);
+  if (generation.admitting)
+    return void res.status(409).json({ error: 'A take is already being submitted.' });
+  generation.admitting = true;
   try {
-  let recipe = input;
-  if (!(await engine(recipe.pipeline === 'cinema' && recipe.cinema?.guidance === 'tracks' ? 'motion' : recipe.pipeline)).ready) return void res.status(409).json({ error: 'The selected local workflow is not ready. Check the engine panel.' });
-  if ([...renders.values()].some(r => !terminal.has(r.state)) || frameEdits.busy() || images.busy() || charactersBusy() || videosBusy()) return void res.status(409).json({ error: 'A generation is already active. Let it finish, cancel it, or reconcile its submission before starting another.' });
-  try { recipe = await resolveRecipeAssets(recipe, clipDir); }
-  catch (error) { if (error instanceof RecipeAssetError) return void res.status(409).json({ error: error.message }); throw error; }
-  const render: Render = { id: randomUUID(), ...admission.identity, recipe, state: 'submitting', progress: null,
-    createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-  render.workflow = buildWorkflow(recipe);
-  renders.set(render.id, render);
-  await persist(render);
-  try {
-    await submitTake(render);
-    res.status(201).json(render);
-  } catch (error) {
-    // A submit may reach the server before a network failure. Never retry it blindly.
-    render.state = submissionRejected(error) ? 'failed' : 'submission_unknown';
-    render.error = error instanceof Error ? error.message : String(error);
+    let recipe = input;
+    if (
+      !(
+        await engine(
+          recipe.pipeline === 'cinema' && recipe.cinema?.guidance === 'tracks'
+            ? 'motion'
+            : recipe.pipeline,
+        )
+      ).ready
+    )
+      return void res
+        .status(409)
+        .json({ error: 'The selected local workflow is not ready. Check the engine panel.' });
+    if (generation.busy('take') || [...renders.values()].some((r) => !terminal.has(r.state)))
+      return void res.status(409).json({
+        error:
+          'A generation is already active. Let it finish, cancel it, or reconcile its submission before starting another.',
+      });
+    try {
+      recipe = await resolveRecipeAssets(recipe, clipDir);
+    } catch (error) {
+      if (error instanceof RecipeAssetError)
+        return void res.status(409).json({ error: error.message });
+      throw error;
+    }
+    const render: Render = {
+      id: randomUUID(),
+      ...admission.identity,
+      recipe,
+      state: 'submitting',
+      progress: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    render.workflow = buildWorkflow(recipe);
+    renders.set(render.id, render);
     await persist(render);
-    res.status(502).json({ error: render.error, render });
+    try {
+      await submitTake(render);
+      res.status(201).json(render);
+    } catch (error) {
+      // A submit may reach the server before a network failure. Never retry it blindly.
+      render.state = submissionRejected(error) ? 'failed' : 'submission_unknown';
+      render.error = error instanceof Error ? error.message : String(error);
+      await persist(render);
+      res.status(502).json({ error: render.error, render });
+    }
+  } finally {
+    generation.admitting = false;
   }
-  } finally { admittingRender = false; }
 });
 app.post('/api/renders/:id/cancel', async (req, res) => {
   const render = renders.get(req.params.id);
-  if (!render?.jobId||terminal.has(render.state)||render.state==='finalizing') return void res.status(409).json({ error: 'No active take can be canceled.' });
-  const job = handles.get(render.id) || await client.jobs.get(render.jobId);
-  await job.cancel();
-  render.state = job.status;
+  if (!render?.jobId || terminal.has(render.state) || render.state === 'finalizing')
+    return void res.status(409).json({ error: 'No active take can be canceled.' });
+  const job = handles.get(render.id) || (await client.jobs.get(render.jobId));
+  await cancelAndRefresh(job);
+  if (job.status !== 'succeeded') render.state = job.status;
   await persist(render);
   res.json(render);
 });
-app.post('/api/renders/:id/reconcile',async(req,res)=>{
-  const render=renders.get(req.params.id);
-  if(!render||!['submission_unknown','connection_lost','output_error'].includes(render.state))return void res.status(409).json({error:'This take does not need recovery.'});
-  if(render.jobId){void track(render);return void res.json(render);}
-  if(admittingRender||frameEdits.busy()||images.busy()||charactersBusy()||videosBusy()||[...renders.values()].some(other=>other.id!==render.id&&!terminal.has(other.state)))
-    return void res.status(409).json({error:'Another generation is active. Rejoin this same take after it finishes.'});
-  admittingRender=true;
-  try{
+app.post('/api/renders/:id/reconcile', async (req, res) => {
+  const render = renders.get(req.params.id);
+  if (!render || !['submission_unknown', 'connection_lost', 'output_error'].includes(render.state))
+    return void res.status(409).json({ error: 'This take does not need recovery.' });
+  if (render.jobId) {
+    void track(render);
+    return void res.json(render);
+  }
+  if (
+    generation.busy('take') ||
+    [...renders.values()].some((other) => other.id !== render.id && !terminal.has(other.state))
+  )
+    return void res
+      .status(409)
+      .json({ error: 'Another generation is active. Rejoin this same take after it finishes.' });
+  generation.admitting = true;
+  try {
     // Preserve the original graph and SDK key after an unobserved admission.
-    render.recipe=await resolveRecipeAssets(render.recipe,clipDir);
-    try{await submitTake(render);res.json(render);}
-    catch(error){render.state=submissionRejected(error)?'failed':'submission_unknown';render.error=error instanceof Error?error.message:String(error);await persist(render);res.status(502).json({error:render.error,render});}
-  }finally{admittingRender=false;}
+    render.recipe = await resolveRecipeAssets(render.recipe, clipDir);
+    try {
+      await submitTake(render);
+      res.json(render);
+    } catch (error) {
+      render.state = submissionRejected(error) ? 'failed' : 'submission_unknown';
+      render.error = error instanceof Error ? error.message : String(error);
+      await persist(render);
+      res.status(502).json({ error: render.error, render });
+    }
+  } finally {
+    generation.admitting = false;
+  }
 });
 
 const httpServer = createServer(app);
 if (process.argv.includes('--production')) app.use(express.static(path.join(root, 'dist')));
 else {
   const { createServer: createVite } = await import('vite');
-  const vite = await createVite({ server: { middlewareMode: true, ws: { server: httpServer } }, appType: 'spa' });
+  const vite = await createVite({
+    server: { middlewareMode: true, ws: { server: httpServer } },
+    appType: 'spa',
+  });
   app.use(vite.middlewares);
 }
-app.use((error: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  const message = error instanceof ZodError ? error.issues[0]?.message || 'Check the project settings.' : error instanceof Error ? error.message : 'Request failed.';
-  console.error(message);
-  res.status(400).json({ error: message });
-});
+app.use(handleRequestError);
 const port = Number(process.env.PORT || 4310);
-httpServer.listen(port, '127.0.0.1', () => console.log(`Aftertake studio: http://127.0.0.1:${port}`));
+httpServer.listen(port, '127.0.0.1', () =>
+  console.log(`Aftertake studio: http://127.0.0.1:${port}`),
+);
 for (const render of renders.values()) {
   if (render.jobId && !terminal.has(render.state)) void track(render);
-  else if (render.state === 'submitting') { render.state = 'submission_unknown'; await persist(render); }
+  else if (render.state === 'submitting') {
+    render.state = 'submission_unknown';
+    await persist(render);
+  }
 }

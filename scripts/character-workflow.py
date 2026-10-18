@@ -13,7 +13,7 @@ def build(value):
         return {
             'source':node('LoadVideo',file='SOURCE.mp4'),
             'slice':node('Video Slice',video=['source',0],start_time=request['trimStart'],duration=request['duration'],strict_duration=True),
-            'prepare':node('H3RelayPrepareSource',video=['slice',0],resolution='480',duration_seconds=0.,missing_audio='silence'),
+            'prepare':node('H3RelayPrepareSource',video=['slice',0],resolution=request.get('resolution','480'),duration_seconds=0.,missing_audio='silence'),
             'frames':node('ImageFromBatch',image=['prepare',0],batch_index=0,length=['prepare',5]),
             'first':node('ImageFromBatch',image=['frames',0],batch_index=0,length=1),
             'points':node('AftertakeSubjectPoints',images=['first',0],source_width=source['width'],source_height=source['height'],
@@ -37,7 +37,7 @@ def build(value):
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
     graph=module.character_swap_graph(use_anchor=False,use_mask=True,audio_guide=True,saved_mask=True)
     graph['source']['inputs']['file']='PREPARED.mp4'
-    graph['prepare']['inputs']['resolution']='480'
+    graph['prepare']['inputs']['resolution']=value['selectionRequest'].get('resolution','480')
     graph['video_vae']['inputs']['vae_name']='minimax_h3_video_vae_int8_convrot.safetensors'
     graph['adapter']['inputs']['lora_name']='h3_character_swap_v1.5.safetensors'
     graph['reference']['inputs']['image']='REFERENCE.png'

@@ -8,16 +8,21 @@ export async function initializeTransport() {
   if (!browserDemo) return;
   const response = await fetch(new URL('snapshot.json', document.baseURI));
   if (!response.ok) throw Error('Browser examples could not be loaded.');
-  const snapshot = await response.json() as DemoSnapshot;
+  const snapshot = (await response.json()) as DemoSnapshot;
   demo = createDemoRuntime(snapshot);
   if (import.meta.env?.VITE_BLOB_PREVIEWS === '1') {
-    videoCache = await cacheRecordedVideos(snapshot, demo.mediaUrl, { progress(completed, total) {
-      const root = document.getElementById('root');
-      if (root) {
-        const status = document.createElement('p'); status.className = 'browser-demo-loading'; status.setAttribute('role', 'status');
-        status.textContent = `Preparing your recorded examples… ${completed} / ${total}`; root.replaceChildren(status);
-      }
-    } });
+    videoCache = await cacheRecordedVideos(snapshot, demo.mediaUrl, {
+      progress(completed, total) {
+        const root = document.getElementById('root');
+        if (root) {
+          const status = document.createElement('p');
+          status.className = 'browser-demo-loading';
+          status.setAttribute('role', 'status');
+          status.textContent = `Preparing your recorded examples… ${completed} / ${total}`;
+          root.replaceChildren(status);
+        }
+      },
+    });
   }
 }
 export function apiFetch(url: string, init?: RequestInit): Promise<Response> {
@@ -36,6 +41,9 @@ export async function saveMedia(url: string, filename: string) {
   const response = await fetch(source);
   if (!response.ok) throw Error('Could not download this recorded asset.');
   const objectUrl = URL.createObjectURL(await response.blob());
-  const anchor = document.createElement('a'); anchor.href = objectUrl; anchor.download = filename; anchor.click();
+  const anchor = document.createElement('a');
+  anchor.href = objectUrl;
+  anchor.download = filename;
+  anchor.click();
   setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
 }

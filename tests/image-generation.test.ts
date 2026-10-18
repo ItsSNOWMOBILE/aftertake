@@ -11,33 +11,62 @@ import express from 'express';
 import type { Comfy } from '@comfyorg/sdk';
 import { imageRouter } from '../server/images.js';
 import { buildImageWorkflow, imageRequirements } from '../server/image-workflow.js';
-import { imageBusy, imageDimensions, imagePrompt, imageRequestSchema, type ImageGeneration, type ImageRequest } from '../src/image-generation.js';
-import {contentDigest}from'../server/edit-plan.js';
+import {
+  imageBusy,
+  imageDimensions,
+  imagePrompt,
+  imageRequestSchema,
+  type ImageGeneration,
+  type ImageRequest,
+} from '../src/image-generation.js';
+import { contentDigest } from '../server/edit-plan.js';
 
-const request: ImageRequest = { format: 'aftertake-image/1', name: 'A new scene', prompt: 'An observatory above a sea of clouds.', seed: 5090, aspect: 'landscape', style: 'cinematic' };
+const request: ImageRequest = {
+  format: 'aftertake-image/1',
+  name: 'A new scene',
+  prompt: 'An observatory above a sea of clouds.',
+  seed: 5090,
+  aspect: 'landscape',
+  style: 'cinematic',
+};
 
 // A complete, decodable RGB PNG with a controlled native prompt chunk. Wrong
 // dimensions, missing metadata and altered graphs must never become source clips.
 function imagePng(graph?: Record<string, unknown>, aspect: ImageRequest['aspect'] = 'landscape') {
   const [width, height] = imageDimensions(aspect);
   function chunk(name: string, data: Buffer) {
-    const type = Buffer.from(name); let crc = 0xffffffff;
+    const type = Buffer.from(name);
+    let crc = 0xffffffff;
     for (const byte of Buffer.concat([type, data])) {
-      crc ^= byte; for (let bit = 0; bit < 8; bit++) crc = (crc >>> 1) ^ ((crc & 1) ? 0xedb88320 : 0);
+      crc ^= byte;
+      for (let bit = 0; bit < 8; bit++) crc = (crc >>> 1) ^ (crc & 1 ? 0xedb88320 : 0);
     }
-    const result = Buffer.alloc(data.length + 12); result.writeUInt32BE(data.length); type.copy(result, 4); data.copy(result, 8);
-    result.writeUInt32BE((crc ^ 0xffffffff) >>> 0, result.length - 4); return result;
+    const result = Buffer.alloc(data.length + 12);
+    result.writeUInt32BE(data.length);
+    type.copy(result, 4);
+    data.copy(result, 8);
+    result.writeUInt32BE((crc ^ 0xffffffff) >>> 0, result.length - 4);
+    return result;
   }
-  const header = Buffer.alloc(13); header.writeUInt32BE(width); header.writeUInt32BE(height, 4); header[8] = 8; header[9] = 2;
-  return Buffer.concat([Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]), chunk('IHDR', header),
+  const header = Buffer.alloc(13);
+  header.writeUInt32BE(width);
+  header.writeUInt32BE(height, 4);
+  header[8] = 8;
+  header[9] = 2;
+  return Buffer.concat([
+    Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]),
+    chunk('IHDR', header),
     ...(graph ? [chunk('tEXt', Buffer.from('prompt\0' + JSON.stringify(graph)))] : []),
-    chunk('IDAT', deflateSync(Buffer.alloc((width * 3 + 1) * height))), chunk('IEND', Buffer.alloc(0))]);
+    chunk('IDAT', deflateSync(Buffer.alloc((width * 3 + 1) * height))),
+    chunk('IEND', Buffer.alloc(0)),
+  ]);
 }
 
 async function until(read: () => Promise<ImageGeneration[]>, state: string) {
   for (let attempt = 0; attempt < 80; attempt++) {
-    const value = (await read())[0]; if (value?.state === state) return value;
-    await new Promise(resolve => setTimeout(resolve, 50));
+    const value = (await read())[0];
+    if (value?.state === state) return value;
+    await new Promise((resolve) => setTimeout(resolve, 50));
   }
   assert.fail(`Image did not reach ${state}`);
 }
@@ -45,127 +74,321 @@ async function until(read: () => Promise<ImageGeneration[]>, state: string) {
 test('text-only generation uses an empty latent, the chosen format/style and the official eight-step sampler', () => {
   for (const aspect of ['landscape', 'portrait', 'square'] as const) {
     const graph = buildImageWorkflow({ ...request, aspect });
-    assert.equal(Object.values(graph).some(node => /LoadImage|LoadVideo/.test(node.class_type)), false);
+    assert.equal(
+      Object.values(graph).some((node) => /LoadImage|LoadVideo/.test(node.class_type)),
+      false,
+    );
     assert.deepEqual([graph['7'].inputs.width, graph['7'].inputs.height], imageDimensions(aspect));
     assert.equal(graph['7'].class_type, 'EmptySD3LatentImage');
     assert.deepEqual(graph['17'].inputs.latent_image, ['7', 0]);
     assert.deepEqual(graph['17'].inputs.positive, ['5', 0]);
     assert.equal(graph['17'].inputs.sampler_name, 'res_multistep');
     assert.equal(graph['17'].inputs.scheduler, 'simple');
-    assert.equal(graph['17'].inputs.steps, 8); assert.equal(graph['17'].inputs.cfg, 1);
-    assert.equal(graph['17'].inputs.seed, 5090); assert.equal(graph['2'].inputs.type, 'lumina2');
+    assert.equal(graph['17'].inputs.steps, 8);
+    assert.equal(graph['17'].inputs.cfg, 1);
+    assert.equal(graph['17'].inputs.seed, 5090);
+    assert.equal(graph['2'].inputs.type, 'lumina2');
     assert.match(String(graph['5'].inputs.text), /observatory.*clouds/);
     assert.match(String(graph['5'].inputs.text), /Cinematic composition/);
   }
   assert.equal(imagePrompt({ ...request, style: 'none' }), request.prompt);
-  assert.notEqual(imagePrompt({ ...request, style: 'photo' }), imagePrompt({ ...request, style: 'product' }));
+  assert.notEqual(
+    imagePrompt({ ...request, style: 'photo' }),
+    imagePrompt({ ...request, style: 'product' }),
+  );
   assert.equal(imageRequirements().menus.length, 3);
-  for (const change of [{ name: ' ' }, { prompt: 'hi' }, { seed: -1 }, { seed: .5 }, { seed: 2 ** 32 }, { aspect: 'wide' }, { style: 'secret' }])
+  for (const change of [
+    { name: ' ' },
+    { prompt: 'hi' },
+    { seed: -1 },
+    { seed: 0.5 },
+    { seed: 2 ** 32 },
+    { aspect: 'wide' },
+    { style: 'secret' },
+  ])
     assert.equal(imageRequestSchema.safeParse({ ...request, ...change }).success, false);
 });
 
 test('image shot direction survives sharing and reaches the executed prompt without changing older recipes', () => {
-  const directed = imageRequestSchema.parse({ ...request, direction: { shot: 'close', lens: 'portrait', lighting: 'soft' } });
+  const directed = imageRequestSchema.parse({
+    ...request,
+    direction: { shot: 'close', lens: 'portrait', lighting: 'soft' },
+  });
   assert.deepEqual(imageRequestSchema.parse(JSON.parse(JSON.stringify(directed))), directed);
-  const prompt = imagePrompt(directed), graph = buildImageWorkflow(directed);
-  assert.match(prompt, /Close-up composition/); assert.match(prompt, /85 mm/); assert.match(prompt, /Soft, directional window light/);
+  const prompt = imagePrompt(directed),
+    graph = buildImageWorkflow(directed);
+  assert.match(prompt, /Close-up composition/);
+  assert.match(prompt, /85 mm/);
+  assert.match(prompt, /Soft, directional window light/);
   assert.equal(graph['5'].inputs.text, prompt);
-  assert.notEqual(imagePrompt({ ...directed, direction: { ...directed.direction!, lighting: 'hard' } }), prompt);
-  assert.equal(imagePrompt({ ...request, direction: { shot: 'none', lens: 'none', lighting: 'none' } }), imagePrompt(request));
+  assert.notEqual(
+    imagePrompt({ ...directed, direction: { ...directed.direction!, lighting: 'hard' } }),
+    prompt,
+  );
+  assert.equal(
+    imagePrompt({ ...request, direction: { shot: 'none', lens: 'none', lighting: 'none' } }),
+    imagePrompt(request),
+  );
   assert.equal(imageRequestSchema.parse(request).direction, undefined);
-  assert.equal(imageRequestSchema.safeParse({ ...request, direction: { shot: 'fake', lens: 'portrait', lighting: 'soft' } }).success, false);
+  assert.equal(
+    imageRequestSchema.safeParse({
+      ...request,
+      direction: { shot: 'fake', lens: 'portrait', lighting: 'soft' },
+    }).success,
+    false,
+  );
 });
 
 test('ambiguous image admission keeps its key and rejects a mismatched output before publishing any canonical clip', async () => {
   const data = await mkdtemp(path.join(tmpdir(), 'aftertake-image-test-'));
-  const wrong = buildImageWorkflow(request); wrong['17'].inputs.seed = 123;
-  let output = imagePng(wrong), first = true, admitting = false, freeCalls = 0;
+  const wrong = buildImageWorkflow(request);
+  wrong['17'].inputs.seed = 123;
+  let output = imagePng(wrong),
+    first = true,
+    admitting = false,
+    freeCalls = 0;
   const keys: string[] = [];
-  const job = { id: randomUUID(), status: 'running', refresh: async () => {}, events: async function* () {},
-    cancel: async () => { job.status = 'canceled'; }, getOutputs: () => [{ toFile: async (file: string) => { await writeFile(file, output); } }] };
-  const client = { workflows: { fromJson: (graph: unknown) => graph }, jobs: { get: async () => job },
+  const job = {
+    id: randomUUID(),
+    status: 'running',
+    refresh: async () => {},
+    events: async function* () {},
+    cancel: async () => {
+      job.status = 'canceled';
+    },
+    getOutputs: () => [
+      {
+        toFile: async (file: string) => {
+          await writeFile(file, output);
+        },
+      },
+    ],
+  };
+  const client = {
+    workflows: { fromJson: (graph: unknown) => graph },
+    jobs: { get: async () => job },
     submit: async (_graph: unknown, options: { idempotencyKey: string }) => {
-      assert.equal(admitting || keys.length > 0, true); keys.push(options.idempotencyKey);
-      if (first) { first = false; throw Error('response lost after admission'); } return job;
-    } } as unknown as Comfy;
-  const context = { data, client, uiUrl: '', engine: async () => ({ connected: true, ready: true, missing: [], message: '' }),
-    takeBusy: () => admitting, setAdmitting: (value: boolean) => { admitting = value; } };
-  const images = await imageRouter(context), app = express(); app.use(express.json()); app.use('/api/images', images.router);
-  app.get('/queue', (_req, res) => { res.json({ queue_running: [1], queue_pending: [] }); });
-  app.post('/free', (_req, res) => { freeCalls++; res.json({}); });
-  const server = createServer(app).listen(0, '127.0.0.1'); await once(server, 'listening');
-  const address = server.address(); assert.ok(address && typeof address !== 'string'); context.uiUrl = `http://127.0.0.1:${address.port}`;
-  const post = (url: string, body: unknown = {},key?:string) => fetch(context.uiUrl + url, { method: 'POST', headers: { 'Content-Type': 'application/json',...(key?{'Idempotency-Key':key}:{}) }, body: JSON.stringify(body) });
-  const read = () => fetch(context.uiUrl + '/api/images').then(r => r.json());
+      assert.equal(admitting || keys.length > 0, true);
+      keys.push(options.idempotencyKey);
+      if (first) {
+        first = false;
+        throw Error('response lost after admission');
+      }
+      return job;
+    },
+  } as unknown as Comfy;
+  const context = {
+    data,
+    client,
+    uiUrl: '',
+    engine: async () => ({ connected: true, ready: true, missing: [], message: '' }),
+    takeBusy: () => admitting,
+    setAdmitting: (value: boolean) => {
+      admitting = value;
+    },
+  };
+  const images = await imageRouter(context),
+    app = express();
+  app.use(express.json());
+  app.use('/api/images', images.router);
+  app.get('/queue', (_req, res) => {
+    res.json({ queue_running: [1], queue_pending: [] });
+  });
+  app.post('/free', (_req, res) => {
+    freeCalls++;
+    res.json({});
+  });
+  const server = createServer(app).listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  const address = server.address();
+  assert.ok(address && typeof address !== 'string');
+  context.uiUrl = `http://127.0.0.1:${address.port}`;
+  const post = (url: string, body: unknown = {}, key?: string) =>
+    fetch(context.uiUrl + url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...(key ? { 'Idempotency-Key': key } : {}) },
+      body: JSON.stringify(body),
+    });
+  const read = () => fetch(context.uiUrl + '/api/images').then((r) => r.json());
   try {
-    const initial = await post('/api/images', request,'image-original'); assert.equal(initial.status, 502);
-    const { image } = await initial.json(); assert.equal(image.state, 'submission_unknown'); assert.equal(images.busy(), true);
-    assert.equal(admitting, false); assert.equal((await post('/api/images', request)).status, 409);
-    const rejoined=await post('/api/images',request,'image-original');assert.equal(rejoined.status,202);assert.equal((await rejoined.json()).id,image.id);assert.equal(keys.length,1);
-    assert.equal((await post('/api/images',{...request,seed:123},'image-original')).status,409);assert.equal(keys.length,1);
-    assert.equal((await post('/api/images',{...request,direction:{shot:'close',lens:'portrait',lighting:'soft'}},'image-original')).status,409);assert.equal(keys.length,1);
-    admitting=true;assert.equal((await post(`/api/images/${image.id}/reconcile`)).status,409);assert.equal(keys.length,1);admitting=false;
+    const initial = await post('/api/images', request, 'image-original');
+    assert.equal(initial.status, 502);
+    const { image } = await initial.json();
+    assert.equal(image.state, 'submission_unknown');
+    assert.equal(images.busy(), true);
+    assert.equal(admitting, false);
+    assert.equal((await post('/api/images', request)).status, 409);
+    const rejoined = await post('/api/images', request, 'image-original');
+    assert.equal(rejoined.status, 202);
+    assert.equal((await rejoined.json()).id, image.id);
+    assert.equal(keys.length, 1);
+    assert.equal(
+      (await post('/api/images', { ...request, seed: 123 }, 'image-original')).status,
+      409,
+    );
+    assert.equal(keys.length, 1);
+    assert.equal(
+      (
+        await post(
+          '/api/images',
+          { ...request, direction: { shot: 'close', lens: 'portrait', lighting: 'soft' } },
+          'image-original',
+        )
+      ).status,
+      409,
+    );
+    assert.equal(keys.length, 1);
+    admitting = true;
+    assert.equal((await post(`/api/images/${image.id}/reconcile`)).status, 409);
+    assert.equal(keys.length, 1);
+    admitting = false;
     assert.equal((await post(`/api/images/${image.id}/reconcile`)).status, 200);
-    assert.deepEqual(keys, [image.id, image.id]); assert.equal((await post('/api/images', request)).status, 409);
-    job.status = 'succeeded'; const rejected = await until(read, 'output_error');
-    assert.match(rejected.error!, /metadata does not match/); assert.equal(rejected.clip, undefined);
-    await assert.rejects(readFile(path.join(data, 'clips', `${image.id}.json`)), { code: 'ENOENT' });
+    assert.deepEqual(keys, [image.id, image.id]);
+    assert.equal((await post('/api/images', request)).status, 409);
+    job.status = 'succeeded';
+    const rejected = await until(read, 'output_error');
+    assert.match(rejected.error!, /metadata does not match/);
+    assert.equal(rejected.clip, undefined);
+    await assert.rejects(readFile(path.join(data, 'clips', `${image.id}.json`)), {
+      code: 'ENOENT',
+    });
     // A retry of the same finished job still rejects a portrait file for a landscape request.
     output = imagePng(buildImageWorkflow(request), 'portrait');
     assert.equal((await post(`/api/images/${image.id}/reconcile`)).status, 200);
     assert.match((await until(read, 'output_error')).error!, /unexpected dimensions/);
-    await assert.rejects(readFile(path.join(data, 'clips', `${image.id}.json`)), { code: 'ENOENT' });
+    await assert.rejects(readFile(path.join(data, 'clips', `${image.id}.json`)), {
+      code: 'ENOENT',
+    });
     // Property order is irrelevant. Exact graph inputs, dimensions and downloaded bytes matter.
     const actual = buildImageWorkflow(request);
     actual['17'].inputs = Object.fromEntries(Object.entries(actual['17'].inputs).reverse());
     output = imagePng(actual);
     assert.equal((await post(`/api/images/${image.id}/reconcile`)).status, 200);
-    const completed = await until(read, 'succeeded'); assert.equal(images.busy(), false); assert.equal(imageBusy(completed), false);
-    assert.equal(keys.length, 2); assert.equal(freeCalls, 0);
+    const completed = await until(read, 'succeeded');
+    assert.equal(images.busy(), false);
+    assert.equal(imageBusy(completed), false);
+    assert.equal(keys.length, 2);
+    assert.equal(freeCalls, 0);
     assert.equal(completed.clip!.sha256, createHash('sha256').update(output).digest('hex'));
     const stored = JSON.parse(await readFile(path.join(data, 'clips', `${image.id}.json`), 'utf8'));
     assert.deepEqual(stored, completed.clip);
-    const recipe = await fetch(context.uiUrl + `/api/images/${image.id}/recipe`).then(r => r.json());
-    assert.deepEqual(recipe.workflow, actual); assert.equal(recipe.request.prompt, request.prompt);
+    const recipe = await fetch(context.uiUrl + `/api/images/${image.id}/recipe`).then((r) =>
+      r.json(),
+    );
+    assert.deepEqual(recipe.workflow, actual);
+    assert.equal(recipe.request.prompt, request.prompt);
     assert.equal(recipe.jobId, job.id);
-    const finished=await post('/api/images',request,'image-original');assert.equal(finished.status,200);assert.equal((await finished.json()).id,image.id);assert.equal(keys.length,2);
+    const finished = await post('/api/images', request, 'image-original');
+    assert.equal(finished.status, 200);
+    assert.equal((await finished.json()).id, image.id);
+    assert.equal(keys.length, 2);
   } finally {
-    job.status = 'canceled'; server.close(); server.closeAllConnections();
-    assert.equal(path.dirname(path.resolve(data)), path.resolve(tmpdir())); assert.ok(path.basename(data).startsWith('aftertake-image-test-'));
+    job.status = 'canceled';
+    server.close();
+    server.closeAllConnections();
+    assert.equal(path.dirname(path.resolve(data)), path.resolve(tmpdir()));
+    assert.ok(path.basename(data).startsWith('aftertake-image-test-'));
     await rm(data, { recursive: true, force: true });
   }
 });
 
 test('restarting observes known image jobs and holds uncertain submissions for explicit recovery with their original key', async () => {
-  const data = await mkdtemp(path.join(tmpdir(), 'aftertake-image-test-')); await mkdir(path.join(data, 'images'));
-  const base = { request, workflow: buildImageWorkflow(request), progress: null, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
-  const originalGraph=structuredClone(base.workflow);originalGraph['5'].inputs.text='Original saved prompt from a previous workflow revision';
-  const unknown = { ...base, workflow:originalGraph,id: randomUUID(), state: 'submitting',requestKey:'persisted-image',requestDigest:contentDigest(request) }, known = { ...base, id: randomUUID(), state: 'running', jobId: randomUUID() };
-  for (const record of [unknown, known]) await writeFile(path.join(data, 'images', record.id + '.json'), JSON.stringify(record));
-  let submits = 0, observations = 0, ready = true;
-  const job = { id: known.jobId, status: 'canceled', refresh: async () => {}, events: async function* () {} };
-  const client = { workflows: { fromJson: (graph: unknown) => graph }, jobs: { get: async () => { observations++; return job; } },
-    submit: async (graph: unknown, options: { idempotencyKey: string }) => { submits++; assert.deepEqual(graph,originalGraph);assert.equal(options.idempotencyKey, unknown.id); return job; } } as unknown as Comfy;
-  const images = await imageRouter({ data, client, uiUrl: '', engine: async () => ({ connected: true, ready, missing: [], message: '' }), takeBusy: () => false, setAdmitting: () => {} });
-  const app = express(); app.use(express.json()); app.use('/api/images', images.router);
-  const server = createServer(app).listen(0, '127.0.0.1'); await once(server, 'listening');
-  const address = server.address(); assert.ok(address && typeof address !== 'string'); const url = `http://127.0.0.1:${address.port}`;
-  const post = (endpoint: string, body: unknown = {},key?:string) => fetch(url + endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json',...(key?{'Idempotency-Key':key}:{}) }, body: JSON.stringify(body) });
+  const data = await mkdtemp(path.join(tmpdir(), 'aftertake-image-test-'));
+  await mkdir(path.join(data, 'images'));
+  const base = {
+    request,
+    workflow: buildImageWorkflow(request),
+    progress: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  const originalGraph = structuredClone(base.workflow);
+  originalGraph['5'].inputs.text = 'Original saved prompt from a previous workflow revision';
+  const unknown = {
+      ...base,
+      workflow: originalGraph,
+      id: randomUUID(),
+      state: 'submitting',
+      requestKey: 'persisted-image',
+      requestDigest: contentDigest(request),
+    },
+    known = { ...base, id: randomUUID(), state: 'running', jobId: randomUUID() };
+  for (const record of [unknown, known])
+    await writeFile(path.join(data, 'images', record.id + '.json'), JSON.stringify(record));
+  let submits = 0,
+    observations = 0,
+    ready = true;
+  const job = {
+    id: known.jobId,
+    status: 'canceled',
+    refresh: async () => {},
+    events: async function* () {},
+  };
+  const client = {
+    workflows: { fromJson: (graph: unknown) => graph },
+    jobs: {
+      get: async () => {
+        observations++;
+        return job;
+      },
+    },
+    submit: async (graph: unknown, options: { idempotencyKey: string }) => {
+      submits++;
+      assert.deepEqual(graph, originalGraph);
+      assert.equal(options.idempotencyKey, unknown.id);
+      return job;
+    },
+  } as unknown as Comfy;
+  const images = await imageRouter({
+    data,
+    client,
+    uiUrl: '',
+    engine: async () => ({ connected: true, ready, missing: [], message: '' }),
+    takeBusy: () => false,
+    setAdmitting: () => {},
+  });
+  const app = express();
+  app.use(express.json());
+  app.use('/api/images', images.router);
+  const server = createServer(app).listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  const address = server.address();
+  assert.ok(address && typeof address !== 'string');
+  const url = `http://127.0.0.1:${address.port}`;
+  const post = (endpoint: string, body: unknown = {}, key?: string) =>
+    fetch(url + endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', ...(key ? { 'Idempotency-Key': key } : {}) },
+      body: JSON.stringify(body),
+    });
   try {
-    const records: ImageGeneration[] = await fetch(url + '/api/images').then(r => r.json());
-    assert.equal(records.find(image => image.id === unknown.id)?.state, 'submission_unknown');
-    assert.equal(observations, 1); assert.equal(submits, 0); assert.equal(images.busy(), true);
-    const rejoined=await post('/api/images',request,'persisted-image');assert.equal(rejoined.status,202);assert.equal((await rejoined.json()).id,unknown.id);assert.equal(submits,0);
+    const records: ImageGeneration[] = await fetch(url + '/api/images').then((r) => r.json());
+    assert.equal(records.find((image) => image.id === unknown.id)?.state, 'submission_unknown');
+    assert.equal(observations, 1);
+    assert.equal(submits, 0);
+    assert.equal(images.busy(), true);
+    const rejoined = await post('/api/images', request, 'persisted-image');
+    assert.equal(rejoined.status, 202);
+    assert.equal((await rejoined.json()).id, unknown.id);
+    assert.equal(submits, 0);
     assert.equal((await post('/api/images', request)).status, 409);
     assert.equal((await post(`/api/images/${unknown.id}/cancel`)).status, 409);
     assert.equal((await post(`/api/images/${unknown.id}/reconcile`)).status, 200);
-    for (let attempt = 0; images.busy() && attempt < 50; attempt++) await new Promise(resolve => setTimeout(resolve, 20));
-    assert.equal(images.busy(), false); assert.equal(submits, 1);
-    ready = false; assert.equal((await post('/api/images', request)).status, 409); assert.equal(submits, 1);
-    await assert.rejects(readFile(path.join(data, 'clips', unknown.id + '.json')), { code: 'ENOENT' });
+    for (let attempt = 0; images.busy() && attempt < 50; attempt++)
+      await new Promise((resolve) => setTimeout(resolve, 20));
+    assert.equal(images.busy(), false);
+    assert.equal(submits, 1);
+    ready = false;
+    assert.equal((await post('/api/images', request)).status, 409);
+    assert.equal(submits, 1);
+    await assert.rejects(readFile(path.join(data, 'clips', unknown.id + '.json')), {
+      code: 'ENOENT',
+    });
   } finally {
-    server.close(); server.closeAllConnections();
-    assert.equal(path.dirname(path.resolve(data)), path.resolve(tmpdir())); assert.ok(path.basename(data).startsWith('aftertake-image-test-'));
+    server.close();
+    server.closeAllConnections();
+    assert.equal(path.dirname(path.resolve(data)), path.resolve(tmpdir()));
+    assert.ok(path.basename(data).startsWith('aftertake-image-test-'));
     await rm(data, { recursive: true, force: true });
   }
 });

@@ -1,65 +1,62 @@
-# Competition target and evidence
+# Challenge build: architecture and reproducibility
 
-Primary objective: win an RTX 5090 in the Open Source Higgsfield challenge.
-The result is not achieved until an award is verified. A running prototype is a milestone.
+Aftertake is an open creative studio built on the Comfy Developer Platform.
+Its core interaction is a painted, timed cue: the same spatial mask guides a
+generated transformation and composites it over the source. Outside the active
+mask and time envelope, the source supplies the pixels.
 
-Primary target: Open Weights Only. Secondary: Most Innovative. Best Overall is upside.
-Source: https://comfy.org/open-source-higgsfield/ (page and expanded requirements rechecked October 18, 2026).
-Deadline: October 30, 2026, 09:00 Pacific / 12:00 America/Toronto.
+## Open-weight implementation
 
-## Submission details verified in the official page's expanded sections
+The application uses the official Comfy SDK and a local Comfy v2 proxy. Its
+generation workflows run locally with open-weight models; they do not call
+partner inference nodes or closed model APIs. App code is MIT licensed. Models,
+third-party nodes and example media retain their individual licenses.
 
-- Use Comfy Router and/or the Comfy SDK.
-- Public GitHub app code, workflow files, open-source license and local setup.
-- Demo video: **two minutes maximum**. Explain all combined tools and techniques;
-  explain the novelty explicitly for Most Innovative.
-- A social post linking the demo on Reddit, X, Instagram, LinkedIn, YouTube or
-  TikTok, tagged **#OpenSourceHiggsfield**.
-- Deployed app or endpoint is optional but strongly encouraged.
-- One submission per person. Work must be lawful and SFW, without unlicensed
-  IP or likenesses. Submission permits the listed organizers and partners to
-  feature the work with credit.
-- Sign-up: https://form.typeform.com/to/Ayn9Cwfj
-- Submission: https://form.typeform.com/to/V1dSQrkS
+- Z-Image Turbo creates stills; Qwen Image Edit edits reference images.
+- LTX-2.5 powers video transformation, frame animation and text-to-video.
+- Wan Animate 2 transfers a driving performance.
+- SAM3 tracks a selected person; MiniMax H3 replaces that person using an
+  original reference photo and an optional crop of its actual head.
+- Optional SAM 2.1 mattes finish saved generations and protect foreground subjects.
+- Kokoro supplies local generic narration; PyAV, Pillow and FFmpeg assemble films.
 
-Jay reviews the final terms and submits personally. Unlicensed research media
-is excluded from the public entry. Public examples retain their source licenses,
-including the credited silent CC BY 3.0 Tears of Steel scene with a fictional
-generated appearance. No actor or creator endorsement is claimed.
+The local MCP interface exposes the same native workflows and editable Film
+projects. Stable operation keys let an agent rejoin recorded generation and
+export work. Review tools return decoded frames and measured audio evidence.
 
-## Product thesis
+## Reproducible evidence
 
-Aftertake is a VFX instrument for short clips: draw the region that can change,
-set a temporal cue, describe the transformation, render, and share the editable
-recipe. The distinguishing experiment is a spatial/temporal score that guides
-generation AND composites the result onto the source. Untouched pixels must
-remain the source, rather than relying on a text model to preserve them.
+The public examples include their source attribution, recipes and executed
+workflow graphs. The [studio guide](studio-guide.md) documents setup, model
+profiles and commands. The [capability inventory](higgsfield-benchmark.md)
+distinguishes implemented behavior from unimplemented features.
 
-## Required evidence before submission
+Public demonstrations use licensed source footage and fictional generated
+appearances. Private user-uploaded photos and video tests are excluded. No actor,
+source creator or model publisher endorsement is implied.
 
-- [x] Official Comfy SDK integration exercised against real ComfyUI, not a mock.
-- [x] Full generation graph uses only open-weight models, no partner nodes or closed inference APIs.
-- [x] Thirteen reviewed VFX/reference recipes plus native H3 and text-to-video cases, with applicable sources/recipes/graphs, are bundled under `examples/`.
-- [x] Spatial and temporal controls visibly affect the actual generation/composite.
-- [x] Fresh Windows runtime install, actual import/render, UI import/export and source-hash matching exercised. Other hardware/OS combinations remain unverified.
-- [ ] Final source review by Jay. The [public GitHub repository](https://github.com/ItsSNOWMOBILE/aftertake) carries the MIT app, workflows and example media; complete source downloads are also on the showcase. GitHub app access has been restored. Final review remains a separate gate.
-- [ ] Demo approved by Jay. The [44-second review cut](https://aftertake-studio.right-bard-9761.chatgpt.site/?review=h3-11#demo) contains the native H3 replacement, broader creation workflow and authentic editor reveal. The latest text-to-video addition has separate native examples and agent evidence; it is not yet part of this cut.
-- [x] A separate [72-second narrated judges’ review](https://aftertake-studio.right-bard-9761.chatgpt.site/judges/) explains the model roles, combined techniques and contribution. Exported through the actual Film editor with a fresh editor reveal; see `judges-film-evidence.json`. Jay's approval remains a separate gate.
-- [ ] Required social post linking the demo with #OpenSourceHiggsfield published.
-- [ ] Registration and submission completed with the correct category and links.
-- [ ] Award decision checked when published (official page currently says November 6).
+The tested generation machine uses an RTX 5080 with 16 GB VRAM and 32 GB RAM.
+CPU media tests and browser editing do not require the generation models.
+Generation on other hardware still requires independent verification.
 
-## Current hardware
+## Challenge context
 
-RTX 5080, 16 GB VRAM; 32 GB system RAM. Model quality and memory are early risks.
-Model and runtime files are ignored, not shipped in the source repository.
+The official [Open Source Higgsfield challenge](https://comfy.org/open-source-higgsfield/)
+includes an Open Weights Only category and an LTX VFX bonus. The LTX bonus
+requires LTX to be the workflow's core video model. Category selection and
+eligibility are determined by the organizers.
 
-## Engineering priorities
+The published deadline is October 30, 2026 at 9 am Pacific. The official page
+says the demo should show the application working and explain how it was built.
+The repository and showcase document the implementation; publication of these
+materials is not evidence of a submitted entry or an award.
 
-1. Real local inference, memory and timing measurement.
-2. Cue masks and motion-preserving guidance; compare against whole-frame generation.
-3. Usable editing surface and accurate job progress.
-4. Reproducible recipes, runnable workflows, licensing and demo assets.
+## Quality boundaries
 
-Do not claim category eligibility or visual quality from dependency installation
-or passing unit tests. Preserve actual output evidence and known failures.
+Passing tests, valid output clocks and embedded graphs establish specific
+engineering properties. They do not establish visual quality, identity fidelity
+or general creative competence. Faces, articulation, hands, occlusions, seams,
+motion and complete audio/video edits require review of actual outputs.
+
+The app makes no claim of full Higgsfield feature parity or a verified industry
+first. See the capability inventory and individual example notes for limitations.

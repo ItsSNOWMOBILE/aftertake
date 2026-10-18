@@ -1,0 +1,6 @@
+# CPU-only unit tests; no models or inference services are downloaded.
+av==19.0.1
+numpy==2.5.2
+pillow==12.3.0
+imageio-ffmpeg==0.6.0
+opencv-python-headless==5.0.0.93

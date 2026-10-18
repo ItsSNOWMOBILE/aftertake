@@ -4,13 +4,30 @@ import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
-import { editReferenceIssue, findImportedClip, projectSchema, recipeSchema, renderSettingsKey, type Recipe } from '../src/domain.js';
+import {
+  editReferenceIssue,
+  findImportedClip,
+  projectSchema,
+  recipeSchema,
+  renderSettingsKey,
+  type Recipe,
+} from '../src/domain.js';
 import { buildWorkflow } from '../server/workflow.js';
 import { RecipeAssetError, resolveRecipeAssets } from '../server/assets.js';
 import { applyTemplate, type Template } from '../src/templates.js';
 
-const base = JSON.parse(await readFile(new URL('../examples/portal/recipe.json', import.meta.url), 'utf8')) as Recipe;
-const reference = { ...base.clip, id: '00000000-0000-4000-8000-000000000001', name: 'edited.png', kind: 'image' as const, url: '/media/edited.png', duration: 1, sha256: 'a'.repeat(64) };
+const base = JSON.parse(
+  await readFile(new URL('../examples/portal/recipe.json', import.meta.url), 'utf8'),
+) as Recipe;
+const reference = {
+  ...base.clip,
+  id: '00000000-0000-4000-8000-000000000001',
+  name: 'edited.png',
+  kind: 'image' as const,
+  url: '/media/edited.png',
+  duration: 1,
+  sha256: 'a'.repeat(64),
+};
 
 test('recipe import recognizes the verified original image after normalization and prefers an exact stored file', () => {
   const normalized = { ...reference, sha256: 'b'.repeat(64), originalSha256: reference.sha256 };
@@ -19,19 +36,45 @@ test('recipe import recognizes the verified original image after normalization a
   assert.equal(findImportedClip([normalized], { ...reference, sha256: 'c'.repeat(64) }), undefined);
   assert.equal(findImportedClip([{ ...normalized, kind: 'video' }], reference), undefined);
   assert.equal(findImportedClip([normalized], { ...reference, kind: 'video' }), undefined);
-  const rebound = recipeSchema.parse({ ...base, editReference: findImportedClip([normalized], reference) });
+  const rebound = recipeSchema.parse({
+    ...base,
+    editReference: findImportedClip([normalized], reference),
+  });
   assert.equal(rebound.editReference?.sha256, normalized.sha256);
 });
 
 test('edited first frames are hash-bound images with source-compatible geometry', () => {
   const recipe = { ...base, editReference: reference };
   assert.equal(recipeSchema.safeParse(recipe).success, true);
-  assert.equal(projectSchema.parse(JSON.parse(JSON.stringify(recipe))).editReference?.sha256, reference.sha256);
-  assert.equal(recipeSchema.safeParse({ ...recipe, editReference: { ...reference, kind: 'video' } }).success, false);
-  assert.equal(recipeSchema.safeParse({ ...recipe, editReference: { ...reference, width: 432, height: 768 } }).success, false);
+  assert.equal(
+    projectSchema.parse(JSON.parse(JSON.stringify(recipe))).editReference?.sha256,
+    reference.sha256,
+  );
+  assert.equal(
+    recipeSchema.safeParse({ ...recipe, editReference: { ...reference, kind: 'video' } }).success,
+    false,
+  );
+  assert.equal(
+    recipeSchema.safeParse({ ...recipe, editReference: { ...reference, width: 432, height: 768 } })
+      .success,
+    false,
+  );
   assert.notEqual(renderSettingsKey(recipe), renderSettingsKey(base));
-  assert.equal(renderSettingsKey(recipe), renderSettingsKey({ ...recipe, editReference: { ...reference, id: '00000000-0000-4000-8000-000000000002', url: '/media/remapped.png' } }));
-  assert.notEqual(renderSettingsKey(recipe), renderSettingsKey({ ...recipe, editReference: { ...reference, sha256: 'b'.repeat(64) } }));
+  assert.equal(
+    renderSettingsKey(recipe),
+    renderSettingsKey({
+      ...recipe,
+      editReference: {
+        ...reference,
+        id: '00000000-0000-4000-8000-000000000002',
+        url: '/media/remapped.png',
+      },
+    }),
+  );
+  assert.notEqual(
+    renderSettingsKey(recipe),
+    renderSettingsKey({ ...recipe, editReference: { ...reference, sha256: 'b'.repeat(64) } }),
+  );
   assert.equal(editReferenceIssue(base.clip, { ...reference, height: 448 }), null);
   const next = applyTemplate(recipe, { recipe: base } as Template);
   assert.equal(next.editReference, undefined);
@@ -40,7 +83,10 @@ test('edited first frames are hash-bound images with source-compatible geometry'
 
 test('reference conditioning reaches both native stages without changing the source composite or audio', () => {
   for (const quality of ['draft', 'final'] as const) {
-    const graph = buildWorkflow({ ...base, quality, editReference: reference }) as Record<string, { class_type: string; inputs: Record<string, unknown> }>;
+    const graph = buildWorkflow({ ...base, quality, editReference: reference }) as Record<
+      string,
+      { class_type: string; inputs: Record<string, unknown> }
+    >;
     assert.equal(graph['45'].inputs.width, graph['11'].inputs.width);
     assert.equal(graph['45'].inputs.height, graph['11'].inputs.height);
     assert.equal(graph['45'].inputs.frames, 1);
@@ -60,63 +106,145 @@ test('reference conditioning reaches both native stages without changing the sou
 });
 
 test('ending references survive sharing and change cinema identity only when their content changes', () => {
-  const recipe = { ...base, pipeline: 'cinema' as const, endFrame: reference, cue: { ...base.cue, strokes: [] } };
+  const recipe = {
+    ...base,
+    pipeline: 'cinema' as const,
+    endFrame: reference,
+    cue: { ...base.cue, strokes: [] },
+  };
   assert.equal(recipeSchema.safeParse(recipe).success, true);
-  assert.equal(projectSchema.parse(JSON.parse(JSON.stringify(recipe))).endFrame?.sha256, reference.sha256);
+  assert.equal(
+    projectSchema.parse(JSON.parse(JSON.stringify(recipe))).endFrame?.sha256,
+    reference.sha256,
+  );
   assert.equal(projectSchema.safeParse({ ...recipe, pipeline: 'inpaint' }).success, false);
-  assert.equal(projectSchema.safeParse({ ...recipe, endFrame: { ...reference, width: 432, height: 768 } }).success, false);
+  assert.equal(
+    projectSchema.safeParse({ ...recipe, endFrame: { ...reference, width: 432, height: 768 } })
+      .success,
+    false,
+  );
   assert.equal(recipeSchema.safeParse({ ...recipe, pipeline: 'inpaint' }).success, false);
-  assert.equal(recipeSchema.safeParse({ ...recipe, endFrame: { ...reference, kind: 'video' } }).success, false);
-  assert.equal(recipeSchema.safeParse({ ...recipe, endFrame: { ...reference, width: 432, height: 768 } }).success, false);
+  assert.equal(
+    recipeSchema.safeParse({ ...recipe, endFrame: { ...reference, kind: 'video' } }).success,
+    false,
+  );
+  assert.equal(
+    recipeSchema.safeParse({ ...recipe, endFrame: { ...reference, width: 432, height: 768 } })
+      .success,
+    false,
+  );
   assert.notEqual(renderSettingsKey(recipe), renderSettingsKey({ ...recipe, endFrame: undefined }));
-  assert.notEqual(renderSettingsKey(recipe), renderSettingsKey({ ...recipe, endFrame: { ...reference, sha256: 'b'.repeat(64) } }));
-  assert.equal(renderSettingsKey(recipe), renderSettingsKey({ ...recipe, endFrame: { ...reference, id: '00000000-0000-4000-8000-000000000002', url: '/media/rebound.png' } }));
+  assert.notEqual(
+    renderSettingsKey(recipe),
+    renderSettingsKey({ ...recipe, endFrame: { ...reference, sha256: 'b'.repeat(64) } }),
+  );
+  assert.equal(
+    renderSettingsKey(recipe),
+    renderSettingsKey({
+      ...recipe,
+      endFrame: {
+        ...reference,
+        id: '00000000-0000-4000-8000-000000000002',
+        url: '/media/rebound.png',
+      },
+    }),
+  );
   assert.equal(applyTemplate(recipe, { recipe: base } as Template).endFrame, undefined);
 });
 
 test('both cinema endpoints condition sampling and appended guides are removed with or without motion tracks', () => {
-  for (const quality of ['draft', 'final'] as const) for (const guidance of ['prompt', 'tracks'] as const) {
-    const graph = buildWorkflow({ ...base, pipeline: 'cinema', quality, endFrame: reference,
-      cinema: { movement: 'locked', lens: 'natural', lighting: 'source', palette: 'source', guidance } }) as Record<string, { class_type: string; inputs: Record<string, unknown> }>;
-    assert.equal(graph['12'].class_type, 'LTXVAddGuide'); assert.equal(graph['12'].inputs.frame_idx, 0);
-    assert.equal(graph['46'].class_type, 'LTXVAddGuide'); assert.equal(graph['46'].inputs.frame_idx, -1);
-    assert.deepEqual(graph['46'].inputs.latent, ['12', 2]);
-    assert.deepEqual(graph['46'].inputs.image, ['45', 0]);
-    assert.equal(graph['45'].inputs.frames, 1); assert.equal(graph['45'].inputs.trim_start, 0);
-    const guide = guidance === 'tracks' ? '42' : '46';
-    if (guidance === 'tracks') {
-      assert.deepEqual(graph['42'].inputs.positive, ['46', 0]); assert.deepEqual(graph['42'].inputs.latent, ['46', 2]);
+  for (const quality of ['draft', 'final'] as const)
+    for (const guidance of ['prompt', 'tracks'] as const) {
+      const graph = buildWorkflow({
+        ...base,
+        pipeline: 'cinema',
+        quality,
+        endFrame: reference,
+        cinema: {
+          movement: 'locked',
+          lens: 'natural',
+          lighting: 'source',
+          palette: 'source',
+          guidance,
+        },
+      }) as Record<string, { class_type: string; inputs: Record<string, unknown> }>;
+      assert.equal(graph['12'].class_type, 'LTXVAddGuide');
+      assert.equal(graph['12'].inputs.frame_idx, 0);
+      assert.equal(graph['46'].class_type, 'LTXVAddGuide');
+      assert.equal(graph['46'].inputs.frame_idx, -1);
+      assert.deepEqual(graph['46'].inputs.latent, ['12', 2]);
+      assert.deepEqual(graph['46'].inputs.image, ['45', 0]);
+      assert.equal(graph['45'].inputs.frames, 1);
+      assert.equal(graph['45'].inputs.trim_start, 0);
+      const guide = guidance === 'tracks' ? '42' : '46';
+      if (guidance === 'tracks') {
+        assert.deepEqual(graph['42'].inputs.positive, ['46', 0]);
+        assert.deepEqual(graph['42'].inputs.latent, ['46', 2]);
+      }
+      assert.deepEqual(graph['16'].inputs.conditioning, [guide, 0]);
+      assert.deepEqual(graph['17'].inputs.latent_image, [guide, 2]);
+      assert.deepEqual(graph['18'].inputs.positive, [guide, 0]);
+      assert.deepEqual(graph['18'].inputs.latent, ['17', 0]);
+      assert.deepEqual(graph['19'].inputs.samples, ['18', 2]);
+      assert.equal(
+        JSON.parse(graph['21'].inputs.recipe_json as string).endFrame.sha256,
+        reference.sha256,
+      );
+      assert.equal('source_audio' in graph['21'].inputs, false);
     }
-    assert.deepEqual(graph['16'].inputs.conditioning, [guide, 0]);
-    assert.deepEqual(graph['17'].inputs.latent_image, [guide, 2]);
-    assert.deepEqual(graph['18'].inputs.positive, [guide, 0]);
-    assert.deepEqual(graph['18'].inputs.latent, ['17', 0]); assert.deepEqual(graph['19'].inputs.samples, ['18', 2]);
-    assert.equal(JSON.parse(graph['21'].inputs.recipe_json as string).endFrame.sha256, reference.sha256);
-    assert.equal('source_audio' in graph['21'].inputs, false);
-  }
 });
 
 test('render assets are resolved from canonical metadata and verified against their actual bytes', async () => {
   const directory = await mkdtemp(path.join(tmpdir(), 'aftertake-assets-test-'));
   const hash = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
-  const sourceBytes = Buffer.from('canonical source fixture'), referenceBytes = Buffer.from('canonical reference fixture');
+  const sourceBytes = Buffer.from('canonical source fixture'),
+    referenceBytes = Buffer.from('canonical reference fixture');
   const clip = { ...base.clip, sha256: hash(sourceBytes), url: '/media/source.mp4' };
   const image = { ...reference, sha256: hash(referenceBytes) };
   const recipe = { ...base, clip, editReference: image };
   try {
-    for (const asset of [clip, image]) await writeFile(path.join(directory, `${asset.id}.json`), JSON.stringify(asset));
-    await writeFile(path.join(directory, 'source.mp4'), sourceBytes); await writeFile(path.join(directory, 'edited.png'), referenceBytes);
-    const canonical = await resolveRecipeAssets({ ...recipe, clip: { ...clip, url: '/media/forged.mp4', name: 'spoofed source' }, editReference: { ...image, url: '/media/forged.png' } }, directory);
-    assert.equal(canonical.clip.url, clip.url); assert.equal(canonical.clip.name, clip.name); assert.equal(canonical.editReference?.url, image.url);
-    const cinema = { ...recipe, pipeline: 'cinema' as const, editReference: undefined, endFrame: image };
-    const ending = await resolveRecipeAssets({ ...cinema, endFrame: { ...image, url: '/media/forged.png' } }, directory);
+    for (const asset of [clip, image])
+      await writeFile(path.join(directory, `${asset.id}.json`), JSON.stringify(asset));
+    await writeFile(path.join(directory, 'source.mp4'), sourceBytes);
+    await writeFile(path.join(directory, 'edited.png'), referenceBytes);
+    const canonical = await resolveRecipeAssets(
+      {
+        ...recipe,
+        clip: { ...clip, url: '/media/forged.mp4', name: 'spoofed source' },
+        editReference: { ...image, url: '/media/forged.png' },
+      },
+      directory,
+    );
+    assert.equal(canonical.clip.url, clip.url);
+    assert.equal(canonical.clip.name, clip.name);
+    assert.equal(canonical.editReference?.url, image.url);
+    const cinema = {
+      ...recipe,
+      pipeline: 'cinema' as const,
+      editReference: undefined,
+      endFrame: image,
+    };
+    const ending = await resolveRecipeAssets(
+      { ...cinema, endFrame: { ...image, url: '/media/forged.png' } },
+      directory,
+    );
     assert.equal(ending.endFrame?.url, image.url);
-    await assert.rejects(resolveRecipeAssets({ ...cinema, endFrame: { ...image, sha256: 'b'.repeat(64) } }, directory), RecipeAssetError);
-    await assert.rejects(resolveRecipeAssets({ ...recipe, editReference: { ...image, sha256: 'b'.repeat(64) } }, directory), RecipeAssetError);
+    await assert.rejects(
+      resolveRecipeAssets({ ...cinema, endFrame: { ...image, sha256: 'b'.repeat(64) } }, directory),
+      RecipeAssetError,
+    );
+    await assert.rejects(
+      resolveRecipeAssets(
+        { ...recipe, editReference: { ...image, sha256: 'b'.repeat(64) } },
+        directory,
+      ),
+      RecipeAssetError,
+    );
     await writeFile(path.join(directory, 'edited.png'), 'changed pixels');
     await assert.rejects(resolveRecipeAssets(recipe, directory), /edited first frame changed/);
     await assert.rejects(resolveRecipeAssets(cinema, directory), /ending frame changed/);
-    await writeFile(path.join(directory, 'edited.png'), referenceBytes); await writeFile(path.join(directory, 'source.mp4'), 'changed footage');
+    await writeFile(path.join(directory, 'edited.png'), referenceBytes);
+    await writeFile(path.join(directory, 'source.mp4'), 'changed footage');
     await assert.rejects(resolveRecipeAssets(recipe, directory), /source changed/);
   } finally {
     assert.equal(path.dirname(path.resolve(directory)), path.resolve(tmpdir()));

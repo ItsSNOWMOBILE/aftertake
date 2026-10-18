@@ -84,6 +84,16 @@ Likeness, fingers, overlapping people and articulation still require visual
 review. This feature runs in the local studio; public recorded examples retain
 the workflow identified in their receipts.
 
+**Working resolution** is chosen before person tracking. Standard uses H3's
+480 preset (up to 0.5 megapixels); High uses its 768 preset (up to 1 megapixel).
+Both retain the source aspect ratio with a small crop to the native 32-pixel
+grid. Already aligned sources within the selected budget can retain their
+original dimensions. The selection preview reports the actual canvas size.
+High uses more memory and takes longer; it is a higher generation resolution,
+not a guarantee of sharper identity or correct articulation. Changing this
+setting requires new tracking, and generation uses that reviewed selection's
+resolution. Recipe import, reuse and the MCP selection request retain it.
+
 Install the optional 43.9 GB profile with Python 3.12:
 
 ```sh
@@ -578,10 +588,18 @@ model distribution.
 ## Development
 
 ```sh
+pnpm lint
 pnpm build
 pnpm test
 .runtime/venv/Scripts/python.exe -m unittest discover -s tests -p "test_*.py"
 ```
+
+`pnpm format` applies the shared Prettier style. `pnpm lint` checks that style.
+The build also runs the TypeScript compiler. GitHub Actions runs these checks
+and Node tests on Windows and Linux, with Python media tests in a separate CPU
+job. Its small test environment installs `scripts/requirements-test.txt` and a
+CPU build of PyTorch; it does not download generation models. Live engine
+contract checks remain a separate local verification against installed nodes.
 
 The Node server binds to loopback, the official SDK targets the local v2 proxy,
 and the workflow contains no partner inference nodes. Runtime and model files
@@ -617,4 +635,4 @@ own licenses; the app license does not relicense them.
   SIL Open Font License; license texts are in `public/fonts/`. The editor does
   not need a font-service connection. Font receipts retain source URLs and hashes.
 
-See [competition evidence](competition.md) for submission gates.
+See [architecture and reproducibility](competition.md) for the challenge build and evidence boundaries.

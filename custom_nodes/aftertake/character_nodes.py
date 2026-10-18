@@ -70,7 +70,10 @@ class AftertakeSaveCharacterSelection:
         import folder_paths
         from . import export_prompt
         n,h,w=images.shape[:3]
-        if not 24<=n<=360 or h%32 or w%32 or w*h>500000 or tuple(masks.shape)!=(n,h,w):
+        request=json.loads(request_json);resolution=request.get('resolution','480')
+        if resolution not in ('480','768'):raise ValueError('Choose a supported character working resolution')
+        pixel_limit=1000000 if resolution=='768' else 500000
+        if not 24<=n<=360 or h%32 or w%32 or w*h>pixel_limit or tuple(masks.shape)!=(n,h,w):
             raise ValueError('Character selection must match a 1–15s, 24 fps prepared source')
         if not torch.isfinite(masks).all():raise ValueError('Selection contains non-finite values')
         folder,name,counter,subfolder,_=folder_paths.get_save_image_path(filename_prefix,folder_paths.get_output_directory())
