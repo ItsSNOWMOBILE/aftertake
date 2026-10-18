@@ -63,6 +63,8 @@ examples. Adjust cues, compare footage, restore settings, and download recipes
 or executed Comfy workflows. New generation, media imports and Film export run
 in the local studio.
 
+<a id="run-locally"></a>
+
 ### Run the examples locally
 
 Requires **Node.js 22.12+**, **pnpm** and **Git**. No Python, GPU or model download
