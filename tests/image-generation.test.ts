@@ -5,8 +5,11 @@ import { once } from 'node:events';
 import { createHash, randomUUID } from 'node:crypto';
 import { deflateSync } from 'node:zlib';
 import { mkdir, mkdtemp, readFile, writeFile, rm } from 'node:fs/promises';
+import fs from 'node:fs/promises';
+import { syncBuiltinESMExports } from 'node:module';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { setTimeout as delay } from 'node:timers/promises';
 import express from 'express';
 import type { Comfy } from '@comfyorg/sdk';
 import { imageRouter } from '../server/images.js';
@@ -62,13 +65,47 @@ function imagePng(graph?: Record<string, unknown>, aspect: ImageRequest['aspect'
   ]);
 }
 
-async function until(read: () => Promise<ImageGeneration[]>, state: string) {
-  for (let attempt = 0; attempt < 80; attempt++) {
-    const value = (await read())[0];
-    if (value?.state === state) return value;
-    await new Promise((resolve) => setTimeout(resolve, 50));
+async function until(
+  read: (signal?: AbortSignal) => Promise<ImageGeneration[]>,
+  state: string,
+  error?: RegExp,
+) {
+  const timeout = AbortSignal.timeout(15000),
+    started = performance.now();
+  let value: ImageGeneration | undefined;
+  const describe = () =>
+    JSON.stringify({ state: value?.state, stage: value?.stage, error: value?.error });
+  try {
+    for (;;) {
+      value = (await read(timeout))[0];
+      if (value) {
+        if (value.state === state) {
+          if (error) assert.match(value.error || '', error);
+          return value;
+        }
+        if (
+          [
+            'succeeded',
+            'failed',
+            'canceled',
+            'expired',
+            'output_error',
+            'connection_lost',
+            'submission_unknown',
+          ].includes(value.state)
+        )
+          assert.fail(
+            `Image reached an unexpected state while waiting for ${state}: ${describe()}`,
+          );
+      }
+      await delay(25, undefined, { signal: timeout });
+    }
+  } catch (failure) {
+    if (!timeout.aborted) throw failure;
   }
-  assert.fail(`Image did not reach ${state}`);
+  assert.fail(
+    `Image did not reach ${state} within ${Math.round(performance.now() - started)}ms: ${describe()}`,
+  );
 }
 
 test('text-only generation uses an empty latent, the chosen format/style and the official eight-step sampler', () => {
@@ -139,7 +176,7 @@ test('image shot direction survives sharing and reaches the executed prompt with
   );
 });
 
-test('ambiguous image admission keeps its key and rejects a mismatched output before publishing any canonical clip', async () => {
+test('ambiguous image admission keeps its key and rejects a mismatched output before publishing any canonical clip', async (t) => {
   const data = await mkdtemp(path.join(tmpdir(), 'aftertake-image-test-'));
   const wrong = buildImageWorkflow(request);
   wrong['17'].inputs.seed = 123;
@@ -177,6 +214,29 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
       return job;
     },
   } as unknown as Comfy;
+  let imageFile = '',
+    heldFailure = false,
+    releaseFailure!: () => void,
+    failureReady!: () => void;
+  const failurePersisting = new Promise<void>((resolve) => {
+      failureReady = resolve;
+    }),
+    failureReleased = new Promise<void>((resolve) => {
+      releaseFailure = resolve;
+    }),
+    rename = fs.rename;
+  t.mock.method(fs, 'rename', async (...args: Parameters<typeof fs.rename>) => {
+    if (!heldFailure && args[1] === imageFile) {
+      const pending = JSON.parse(await readFile(args[0], 'utf8')) as ImageGeneration;
+      if (pending.state === 'output_error') {
+        heldFailure = true;
+        failureReady();
+        await failureReleased;
+      }
+    }
+    await rename(...args);
+  });
+  syncBuiltinESMExports();
   const context = {
     data,
     client,
@@ -209,11 +269,16 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
       headers: { 'Content-Type': 'application/json', ...(key ? { 'Idempotency-Key': key } : {}) },
       body: JSON.stringify(body),
     });
-  const read = () => fetch(context.uiUrl + '/api/images').then((r) => r.json());
+  const read = (signal?: AbortSignal) =>
+    fetch(context.uiUrl + '/api/images', { signal }).then((r) => {
+      assert.equal(r.status, 200);
+      return r.json();
+    }) as Promise<ImageGeneration[]>;
   try {
     const initial = await post('/api/images', request, 'image-original');
     assert.equal(initial.status, 502);
     const { image } = await initial.json();
+    imageFile = path.join(data, 'images', image.id + '.json');
     assert.equal(image.state, 'submission_unknown');
     assert.equal(images.busy(), true);
     assert.equal(admitting, false);
@@ -246,8 +311,22 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
     assert.deepEqual(keys, [image.id, image.id]);
     assert.equal((await post('/api/images', request)).status, 409);
     job.status = 'succeeded';
-    const rejected = await until(read, 'output_error');
-    assert.match(rejected.error!, /metadata does not match/);
+    await Promise.race([
+      failurePersisting,
+      delay(15000, undefined, { ref: false }).then(() => {
+        assert.fail('Image did not begin persisting its workflow rejection within 15s.');
+      }),
+    ]);
+    // Recoverable errors become public only after persistence and tracker cleanup.
+    // Hold the disk write to expose a prematurely published terminal state.
+    const pending = (await read())[0];
+    assert.equal(pending.state, 'finalizing');
+    assert.equal(pending.error, undefined);
+    assert.equal(images.busy(), true);
+    assert.equal(JSON.parse(await readFile(imageFile, 'utf8')).state, 'finalizing');
+    assert.equal((await post(`/api/images/${image.id}/reconcile`)).status, 409);
+    releaseFailure();
+    const rejected = await until(read, 'output_error', /metadata does not match/);
     assert.equal(rejected.clip, undefined);
     await assert.rejects(readFile(path.join(data, 'clips', `${image.id}.json`)), {
       code: 'ENOENT',
@@ -255,7 +334,7 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
     // A retry of the same finished job still rejects a portrait file for a landscape request.
     output = imagePng(buildImageWorkflow(request), 'portrait');
     assert.equal((await post(`/api/images/${image.id}/reconcile`)).status, 200);
-    assert.match((await until(read, 'output_error')).error!, /unexpected dimensions/);
+    await until(read, 'output_error', /unexpected dimensions/);
     await assert.rejects(readFile(path.join(data, 'clips', `${image.id}.json`)), {
       code: 'ENOENT',
     });
@@ -283,6 +362,9 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
     assert.equal((await finished.json()).id, image.id);
     assert.equal(keys.length, 2);
   } finally {
+    releaseFailure();
+    t.mock.restoreAll();
+    syncBuiltinESMExports();
     job.status = 'canceled';
     server.close();
     server.closeAllConnections();

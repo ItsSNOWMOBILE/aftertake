@@ -290,14 +290,19 @@ export async function characterRouter(context: {
       }
     } catch (error) {
       const job = handles.get(record.id);
-      record.state = job && characterTerminal.has(job.status) ? 'output_error' : 'connection_lost';
-      record.error =
-        error instanceof SyntaxError
-          ? 'The video finished, but its embedded workflow metadata could not be verified. Keep this record and create a new take.'
-          : error instanceof Error
-            ? error.message
-            : String(error);
-      await persist(record);
+      const failed = {
+        ...record,
+        state: job && characterTerminal.has(job.status) ? 'output_error' : 'connection_lost',
+        error:
+          error instanceof SyntaxError
+            ? 'The video finished, but its embedded workflow metadata could not be verified. Keep this record and create a new take.'
+            : error instanceof Error
+              ? error.message
+              : String(error),
+      };
+      await persist(failed);
+      // Publish recovery only when persistence is complete; tracker cleanup starts synchronously.
+      Object.assign(record, failed);
     } finally {
       controller.abort();
       active.delete(record.id);

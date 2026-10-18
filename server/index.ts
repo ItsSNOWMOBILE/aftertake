@@ -268,9 +268,14 @@ async function track(render: Render, initial?: Job) {
   } catch (error) {
     // A poll failure says nothing about whether GPU work stopped. Retain the id.
     const job = handles.get(render.id);
-    render.state = job && terminal.has(job.status) ? 'output_error' : 'connection_lost';
-    render.error = error instanceof Error ? error.message : String(error);
-    await persist(render);
+    const failed = {
+      ...render,
+      state: job && terminal.has(job.status) ? 'output_error' : 'connection_lost',
+      error: error instanceof Error ? error.message : String(error),
+    };
+    await persist(failed);
+    // Publish recovery only when persistence is complete; cleanup below is synchronous.
+    Object.assign(render, failed);
   } finally {
     eventsController.abort();
     handles.delete(render.id);

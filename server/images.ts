@@ -137,10 +137,14 @@ export async function imageRouter(context: {
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     } catch (error) {
-      const job = handles.get(image.id);
-      image.state = job && imageTerminal.has(job.status) ? 'output_error' : 'connection_lost';
-      image.error = error instanceof Error ? error.message : String(error);
-      await persist(image);
+      const job = handles.get(image.id),
+        failed = {
+          ...image,
+          state: job && imageTerminal.has(job.status) ? 'output_error' : 'connection_lost',
+          error: error instanceof Error ? error.message : String(error),
+        };
+      await persist(failed);
+      Object.assign(image, failed);
     } finally {
       controller.abort();
       active.delete(image.id);

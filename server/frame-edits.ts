@@ -167,9 +167,14 @@ export async function frameEditorRouter(context: {
       }
     } catch (error) {
       const job = handles.get(edit.id);
-      edit.state = job && frameEditTerminal.has(job.status) ? 'output_error' : 'connection_lost';
-      edit.error = error instanceof Error ? error.message : String(error);
-      await persist(edit);
+      const failed = {
+        ...edit,
+        state: job && frameEditTerminal.has(job.status) ? 'output_error' : 'connection_lost',
+        error: error instanceof Error ? error.message : String(error),
+      };
+      await persist(failed);
+      // Publish recovery only when persistence is complete; cleanup below is synchronous.
+      Object.assign(edit, failed);
     } finally {
       controller.abort();
       active.delete(edit.id);
