@@ -1,0 +1,67 @@
+{
+  "format": "aftertake-agent-session/1",
+  "description": "Recorded local MCP calls that assembled and reviewed the focused 53-second draft. The graphic is a session receipt, not a screenshot of a tool interface. The final edit adds labels and new UI captures to this draft through the native Film API.",
+  "plan": {
+    "id": "7ec4faf585d64117a330212b87a444c8da10b453f2380a159669036c32a88274",
+    "beats": 13,
+    "seconds": 53.041666666666664
+  },
+  "export": {
+    "filmId": "cf4654ae-0527-4fbe-90f8-b048e4b6649c",
+    "sha256": "893e69f00ba7f322c14be422eb09d4cf27b3175abcec639a9a4461b50d39ff65",
+    "width": 1280,
+    "height": 720,
+    "fps": 24,
+    "frameCount": 1273,
+    "embeddedProjectMatches": true
+  },
+  "calls": [
+    {
+      "at": "2026-10-18T22:50:38.558Z",
+      "tool": "aftertake_inspect_picture",
+      "times": [
+        0,
+        0.75,
+        3.25
+      ]
+    },
+    {
+      "at": "2026-10-18T22:50:39.762Z",
+      "tool": "aftertake_inspect_picture",
+      "times": [
+        1.25,
+        2,
+        2.95
+      ]
+    },
+    {
+      "at": "2026-10-18T22:50:40.057Z",
+      "tool": "aftertake_save_plan"
+    },
+    {
+      "at": "2026-10-18T22:50:40.141Z",
+      "tool": "aftertake_export_plan",
+      "planId": "7ec4faf585d64117a330212b87a444c8da10b453f2380a159669036c32a88274"
+    },
+    {
+      "at": "2026-10-18T23:01:51.667Z",
+      "tool": "aftertake_plan_status",
+      "planId": "7ec4faf585d64117a330212b87a444c8da10b453f2380a159669036c32a88274"
+    },
+    {
+      "at": "2026-10-18T23:01:53.005Z",
+      "tool": "aftertake_review_film",
+      "filmId": "cf4654ae-0527-4fbe-90f8-b048e4b6649c",
+      "times": [
+        0.75,
+        4.5,
+        8,
+        11.25,
+        17.5,
+        22,
+        27.75,
+        32
+      ]
+    }
+  ]
+}

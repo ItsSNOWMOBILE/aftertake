@@ -139,7 +139,7 @@ The narrated film uses actual Aftertake UI captures, the
 credited Pexels coffee and coastal excerpts and the silent Tears of Steel bridge excerpt
 with generated VFX. Its titles, cuts and audio mix are exported by Aftertake's
 Film editor. The editable project and
-original voice clips are included under `examples/submission-film/`.
+original voice clips and their actual model receipts are bound by content hash in `examples/judges-film/project.json`; `examples/submission-film/` provides the same final project for compatibility.
 
 Narration is a generic synthetic preset (`af_heart`) generated locally with
 [hexgrad/Kokoro-82M v1.0](https://huggingface.co/hexgrad/Kokoro-82M), whose weights

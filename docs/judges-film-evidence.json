@@ -1,495 +1,700 @@
 {
-  "format": "aftertake-h3-film-review/1",
-  "status": "Awaiting Jay review; not submitted",
-  "filmId": "53050dc2-a8e7-4944-bb6d-e827ce6c7ccd",
-  "source": "Actual Film editor Export film button",
-  "sha256": "f2b4cbd46bcbada52e36d1d5c80f0bf47ca24e3eded3393c9ce8313b18ee3a93",
-  "bytes": 9780806,
-  "duration": 71.66666666666667,
-  "frames": 1720,
+  "format": "aftertake-focused-film-review/1",
+  "status": "Prepared for review; not submitted",
+  "filmId": "6ae97ad5-8a56-4b11-aa40-6d57bf01893f",
+  "source": "Native Aftertake Film API export; authoritative ready manifest and encoded project verified",
+  "sha256": "c21a93c69483222d7a16eb264617a623a00d229395af6ea0d803a0aa78c3e78e",
+  "bytes": 7049020,
+  "duration": 53.041666666666664,
+  "frames": 1273,
   "fps": 24,
   "width": 1280,
   "height": 720,
-  "shots": 29,
-  "titleLayers": 44,
-  "voiceClips": 21,
+  "shots": 19,
+  "titleLayers": 24,
+  "voiceClips": 13,
+  "embeddedAdVoiceClips": 1,
   "embeddedProjectMatches": true,
-  "frameTimestampMaxDeviationSeconds": 0,
-  "audioTimestampMaxGapSeconds": 1.4210854715202004e-14,
+  "embeddedProjectMatchesAppExport": true,
+  "sourceMediaHashesVerified": true,
+  "frameTimestampMaxDeviationSeconds": 0.0,
+  "audioTimestampMaxGapSeconds": 4.756611771128405e-15,
+  "audio": {
+    "sampleRate": 48000,
+    "channels": 2,
+    "samples": 2545968,
+    "duration": 53.041,
+    "firstTimestamp": 0.0,
+    "maxTimestampGapSeconds": 4.756611771128405e-15,
+    "rms": 0.06888733059167862,
+    "samplePeak": 0.8357823491096497,
+    "samplesAtOrAboveFullScale": 0
+  },
   "wholeVoiceAlignment": [
     {
-      "file": "examples\\judges-film\\media\\entry-voice-brand.wav",
-      "completeVoiceCorrelation": 0.99998939037323,
+      "file": "examples/judges-film/media/entry-voice-brand.wav",
+      "completeVoiceCorrelation": 0.9999913573265076,
+      "offsetSamples48k": 239,
       "offsetMs": 4.979166666666667
     },
     {
-      "file": "examples\\judges-film\\media\\entry-voice-builder.wav",
-      "completeVoiceCorrelation": 0.9999645948410034,
+      "file": "examples/judges-film/media/entry-voice-paint.wav",
+      "completeVoiceCorrelation": 0.9999688863754272,
+      "offsetSamples48k": 239,
       "offsetMs": 4.979166666666667
     },
     {
-      "file": "examples\\judges-film\\media\\entry-voice-words.wav",
-      "completeVoiceCorrelation": 0.9999604225158691,
+      "file": "examples/judges-film/media/entry-voice-reference.wav",
+      "completeVoiceCorrelation": 0.9999808073043823,
+      "offsetSamples48k": 239,
       "offsetMs": 4.979166666666667
     },
     {
-      "file": "examples\\judges-film\\media\\entry-voice-hook.wav",
-      "completeVoiceCorrelation": 0.9999667406082153,
+      "file": "examples/judges-film/media/entry-voice-vfx.wav",
+      "completeVoiceCorrelation": 0.9999530911445618,
+      "offsetSamples48k": 239,
       "offsetMs": 4.979166666666667
     },
     {
-      "file": "examples\\judges-film\\media\\entry-voice-agent-editing.wav",
-      "completeVoiceCorrelation": 0.9999352097511292,
+      "file": "examples/judges-film/media/entry-voice-character-prompt.wav",
+      "completeVoiceCorrelation": 0.9999291300773621,
+      "offsetSamples48k": 239,
       "offsetMs": 4.979166666666667
     },
     {
-      "file": "examples\\judges-film\\media\\entry-voice-image.wav",
-      "completeVoiceCorrelation": 0.9999678730964661,
+      "file": "examples/judges-film/media/focused-voice-h3.wav",
+      "completeVoiceCorrelation": 0.999940037727356,
+      "offsetSamples48k": 239,
       "offsetMs": 4.979166666666667
     },
     {
-      "file": "examples\\judges-film\\media\\entry-voice-animation.wav",
-      "completeVoiceCorrelation": 0.9999755024909973,
+      "file": "examples/judges-film/media/focused-voice-text-video.wav",
+      "completeVoiceCorrelation": 0.9999778866767883,
+      "offsetSamples48k": 239,
       "offsetMs": 4.979166666666667
     },
     {
-      "file": "examples\\judges-film\\media\\entry-voice-camera.wav",
-      "completeVoiceCorrelation": 0.9999755620956421,
+      "file": "examples/judges-film/media/entry-voice-builder.wav",
+      "completeVoiceCorrelation": 0.999938428401947,
+      "offsetSamples48k": 239,
       "offsetMs": 4.979166666666667
     },
     {
-      "file": "examples\\judges-film\\media\\entry-voice-ending.wav",
-      "completeVoiceCorrelation": 0.999953031539917,
+      "file": "examples/judges-film/media/entry-voice-hook.wav",
+      "completeVoiceCorrelation": 0.9999681711196899,
+      "offsetSamples48k": 239,
       "offsetMs": 4.979166666666667
     },
     {
-      "file": "examples\\judges-film\\media\\entry-voice-reference.wav",
-      "completeVoiceCorrelation": 0.9999261498451233,
+      "file": "examples/judges-film/media/focused-voice-mcp.wav",
+      "completeVoiceCorrelation": 0.999900221824646,
+      "offsetSamples48k": 239,
       "offsetMs": 4.979166666666667
     },
     {
-      "file": "examples\\judges-film\\media\\entry-voice-paint.wav",
-      "completeVoiceCorrelation": 0.9999731183052063,
+      "file": "examples/judges-film/media/focused-voice-sdk.wav",
+      "completeVoiceCorrelation": 0.9999017715454102,
+      "offsetSamples48k": 239,
       "offsetMs": 4.979166666666667
     },
     {
-      "file": "examples\\judges-film\\media\\entry-voice-vfx.wav",
-      "completeVoiceCorrelation": 0.9999029636383057,
+      "file": "examples/judges-film/media/entry-voice-reveal.wav",
+      "completeVoiceCorrelation": 0.999932587146759,
+      "offsetSamples48k": 239,
       "offsetMs": 4.979166666666667
     },
     {
-      "file": "examples\\judges-film\\media\\entry-voice-character-prompt.wav",
-      "completeVoiceCorrelation": 0.9999696612358093,
-      "offsetMs": 4.979166666666667
-    },
-    {
-      "file": "examples\\judges-film\\media\\entry-voice-character-result.wav",
-      "completeVoiceCorrelation": 0.99994957447052,
-      "offsetMs": 4.979166666666667
-    },
-    {
-      "file": "examples\\judges-film\\media\\entry-voice-recipes.wav",
-      "completeVoiceCorrelation": 0.9999900460243225,
-      "offsetMs": 4.979166666666667
-    },
-    {
-      "file": "examples\\judges-film\\media\\entry-voice-subject-matte.wav",
-      "completeVoiceCorrelation": 0.9999796748161316,
-      "offsetMs": 4.979166666666667
-    },
-    {
-      "file": "examples\\judges-film\\media\\entry-voice-build-stack.wav",
-      "completeVoiceCorrelation": 0.9999252557754517,
-      "offsetMs": 4.979166666666667
-    },
-    {
-      "file": "examples\\judges-film\\media\\entry-voice-contribution.wav",
-      "completeVoiceCorrelation": 0.9998986124992371,
-      "offsetMs": 4.979166666666667
-    },
-    {
-      "file": "examples\\judges-film\\media\\entry-voice-twist.wav",
-      "completeVoiceCorrelation": 0.9999883770942688,
-      "offsetMs": 4.979166666666667
-    },
-    {
-      "file": "examples\\judges-film\\media\\entry-voice-reveal.wav",
-      "completeVoiceCorrelation": 0.9999675750732422,
-      "offsetMs": 4.979166666666667
-    },
-    {
-      "file": "examples\\judges-film\\media\\entry-voice-yours.wav",
-      "completeVoiceCorrelation": 0.9999561309814453,
+      "file": "examples/judges-film/media/entry-voice-yours.wav",
+      "completeVoiceCorrelation": 0.999966025352478,
+      "offsetSamples48k": 239,
       "offsetMs": 4.979166666666667
     }
   ],
   "sourceHashes": {
-    "examples/spoken-type/result.mp4": "fdac1b08cd4fa4d49d32f0019ecfb1c1f87c5a3b47e454f5f1da5c22a1da74e1",
-    "examples/submission-film/media/type-canvas.png": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
-    "examples/judges-film/media/entry-ui-builder-lines.mp4": "509a00e7440fb8f726b6c395a00ae4a656d2dacdf4f996d26123c1d67a1a0aa6",
-    "examples/judges-film/media/entry-ui-builder.mp4": "75eb0846ca30d2128ba64337dd64c345e6062483a60fb6aceb3593f5cd41b794",
-    "examples/judges-film/media/entry-ui-words.mp4": "0b85989a6357e5ee89a1791a6d5c67e3863c5922d046ce699399117ecd83182e",
-    "examples/judges-film/media/entry-ui-hook.mp4": "746be361f83ef5e0cfd3e1125d39faae09e6bf7284f074c825e714c42ed75e27",
-    "examples/judges-film/media/entry-ui-agent.mp4": "a76176a81206d5286569547da57951301e5565d44d4ec7d36ba8be425691003f",
-    "examples/submission-film/media/ui-image.png": "30e5cb13228dd5d30fa9cf533b70462be26f4f9db1a3058645d8ce8bffc5525b",
-    "examples/observatory/result.mp4": "087e24783cc8ab0dc37bb2ce40858e3e6e66d005a2e8b24cacb54ec5f91baec7",
-    "examples/judges-film/media/entry-ui-camera.mp4": "acf81564a94ed42ee3f0f5e84c9d2d91b204a012131e3bb45c2ddf5984b2d19d",
-    "examples/judges-film/media/entry-ui-ending.mp4": "af17dc2ab5dce172658bd506ee2d6fe362572b7c66fe075fefc516bd50707858",
-    "examples/judges-film/media/entry-ui-reference.mp4": "b65819302ec2ad740def73adc999bdd72821ba43f578a177a58ba33be0eae42f",
-    "examples/judges-film/media/entry-ui-cue.mp4": "d053e8498738017b7cfda7f7b9b54a9145284d22bcac3bef24be59027fb1d0e5",
-    "examples/coastal-kingdom/source.mp4": "5029ea3c92f7fd79fe154116804bb12c76b7b88669d40980443813ac62f2b88b",
     "examples/coastal-kingdom/result.mp4": "e3373be04dce7bb375284939bd12a06d07e8033732c41f5c80c73d154425fb99",
-    "examples/submission-film/media/ui-character-prompt.mp4": "bf1124b7a4fe87f239fcbc55ea526b8f1c07528ab382ae622e59a70760c8bf74",
-    "examples/character-h3/prepared-source.mp4": "be7b92b9fa173d498ee372dda5f7e0a2082c5349d242fb276dfc356b8237d42e",
-    "examples/character-h3/result.mp4": "127518cc682b27c15f36438b9866a7b399c20ea913733add8a1ad89ebe9df03e",
-    "examples/judges-film/media/entry-ui-library.mp4": "16c73b24bdbd8da49ae7912c018dea81388b5995bf1305e240db2dc1930d3cb7",
-    "examples/performer-focus/subject-matte.mp4": "016d27683ef0a81af7772c9325436c0038466c2a025e6dd2c373f2fb421c3382",
-    "examples/judges-film/media/entry-ui-reveal.mp4": "fe0fe2d916459e806890b970cc53826dcc0bcbd7b46cb2345e5d26aaf6b84e97",
     "examples/judges-film/media/entry-voice-brand.wav": "ba5c1c92d671601a9f2871beba8a14461fa9312acb85974f9fe9ad0033da2763",
-    "examples/judges-film/media/entry-voice-builder.wav": "fa561ca2bc93fc80b4d389328f15b5968a470e1b09efe93601bcc87410262b9f",
-    "examples/judges-film/media/entry-voice-words.wav": "23ae23e1a0ff7740fda6e6e59a945cfd35076259c007f78599bcd2216422bf94",
-    "examples/judges-film/media/entry-voice-hook.wav": "41998c94055dbaef70ea9442ac784e626cd0298a526400f2d58b1e31fbc2a197",
-    "examples/judges-film/media/entry-voice-agent-editing.wav": "f68c8d0f75d908cab7e5947eae6bc429de27ec53b27117e6fa643ae5896f9171",
-    "examples/judges-film/media/entry-voice-image.wav": "65ca04c484e3353b705d9523a5e1188074aa6e94b008dd5adacadca94e82ec23",
-    "examples/judges-film/media/entry-voice-animation.wav": "1dd6329d96a3384387b6db39f89c84de79f3d88f64ac03872d5877cf2e124baf",
-    "examples/judges-film/media/entry-voice-camera.wav": "6100e2ac141314b7793b225730ed68602e9610103b78df6555d9707c567ab032",
-    "examples/judges-film/media/entry-voice-ending.wav": "6572cfcbb8f8c2bce7059c0a8b5c13097fb4f5f83c2459e9425ef47a384eddec",
-    "examples/judges-film/media/entry-voice-reference.wav": "73e388311eaa8d10df3200ef9cfddd8a65810c98e1a7d0680d6b6f77cc5ec438",
+    "examples/judges-film/media/entry-ui-cue.mp4": "d053e8498738017b7cfda7f7b9b54a9145284d22bcac3bef24be59027fb1d0e5",
     "examples/judges-film/media/entry-voice-paint.wav": "00efc214e20accf974c4486ccdd4a73def897110969defccb69320625e0e8ec2",
+    "examples/judges-film/media/entry-ui-reference.mp4": "b65819302ec2ad740def73adc999bdd72821ba43f578a177a58ba33be0eae42f",
+    "examples/judges-film/media/entry-voice-reference.wav": "73e388311eaa8d10df3200ef9cfddd8a65810c98e1a7d0680d6b6f77cc5ec438",
     "examples/judges-film/media/entry-voice-vfx.wav": "8c377c03ec250b40ac26d58431945c1cce3a605b54457f264d22f1a6c17283f0",
     "examples/judges-film/media/entry-voice-character-prompt.wav": "8eb20c946893a1520ff2ffbbd3b9da33ee39a246c79a304f7796739c3ab8c50b",
-    "examples/judges-film/media/entry-voice-character-result.wav": "5117fb1096cc7911c0352be8e126bcfe0bb997126af2e5ef051dbfe9ce99d797",
-    "examples/judges-film/media/entry-voice-recipes.wav": "e296547db20b0839136d79b26978ae1bf147dbb9317d7d1d33a58134ad85aa18",
-    "examples/judges-film/media/entry-voice-subject-matte.wav": "26a6e617c36deb96a0fa327ed6b3a5e8745496a81a7764c10ee86b92cdb74af9",
-    "examples/judges-film/media/entry-voice-build-stack.wav": "e867cccb7bbb204d3d428ac5dd41ba8403b261a3c1600c501124792080fe6d30",
-    "examples/judges-film/media/entry-voice-contribution.wav": "61bbcd3a1ca2fc9dac374f0f1f26e9b95ffaba0a1287b83ead660b82e38469af",
-    "examples/judges-film/media/entry-voice-twist.wav": "06e7d3b9a6d2f93ca37eedce546113046b136e31ece24ad6c93a4c959417adeb",
+    "examples/character-h3-high/prepared-source.mp4": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92",
+    "examples/character-h3-high/result.mp4": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe",
+    "examples/judges-film/media/focused-voice-h3.wav": "e9c62a359bc36fe990d143cd6cfeca0279277060d8cc4f8809c187ea0658e2ec",
+    "examples/text-video/studio.jpg": "9e88363cf36492a05f40078e6476af3f35999ac198cd86070e7b9ed5f45f3834",
+    "examples/text-video/portrait/result.mp4": "4e2b3059ad5b22ff84fbe01335526fcf87d78d1d52c6b50f557b0c30aae4111a",
+    "examples/judges-film/media/focused-voice-text-video.wav": "2371a83d4d786f0945c0764dacec7fbc34b0e87aa29d55640633908c4d2ec31e",
+    "examples/spoken-type/result.mp4": "fdac1b08cd4fa4d49d32f0019ecfb1c1f87c5a3b47e454f5f1da5c22a1da74e1",
+    "examples/judges-film/media/entry-ui-builder-lines.mp4": "509a00e7440fb8f726b6c395a00ae4a656d2dacdf4f996d26123c1d67a1a0aa6",
+    "examples/judges-film/media/entry-ui-builder.mp4": "75eb0846ca30d2128ba64337dd64c345e6062483a60fb6aceb3593f5cd41b794",
+    "examples/judges-film/media/entry-voice-builder.wav": "fa561ca2bc93fc80b4d389328f15b5968a470e1b09efe93601bcc87410262b9f",
+    "examples/judges-film/media/entry-ui-hook.mp4": "746be361f83ef5e0cfd3e1125d39faae09e6bf7284f074c825e714c42ed75e27",
+    "examples/judges-film/media/entry-voice-hook.wav": "41998c94055dbaef70ea9442ac784e626cd0298a526400f2d58b1e31fbc2a197",
+    "examples/submission-film/media/type-canvas.png": "7eefc1c4d3324c090b2084f924e91e5b72ebcc6e1fe35dae0d74d13a76544e77",
+    "examples/judges-film/media/entry-ui-agent.mp4": "a76176a81206d5286569547da57951301e5565d44d4ec7d36ba8be425691003f",
+    "examples/judges-film/media/focused-voice-mcp.wav": "593b55146771b1732237b8df7b6b710782124589d0c7c110e1b16da24db7294a",
+    "examples/judges-film/media/focused-voice-sdk.wav": "ea7273118da81dd80cf8097ea0b32abb8a7cd5ed3f15baec98fd70f742db49d5",
     "examples/judges-film/media/entry-voice-reveal.wav": "5eed58d106d2dead15c0a78b635802def0e62f9aef2e64dbd2fbb69a7292eebc",
-    "examples/judges-film/media/entry-voice-yours.wav": "604d31295f8c88de72c6924b70670c6a54123d45e25289481ebc8536ca08f241"
+    "examples/judges-film/media/entry-voice-yours.wav": "604d31295f8c88de72c6924b70670c6a54123d45e25289481ebc8536ca08f241",
+    "examples/judges-film/media/focused-mcp-receipt.mp4": "03659a163606d962b19d42856cacca848099ea1912bc21261c22d3e632d6245b",
+    "examples/judges-film/media/focused-ui-character.mp4": "9536ec2eebd1d43d2a212843df72e6595b80de6930e8b8bc5eb3e9c153113c04",
+    "examples/judges-film/media/focused-ui-reveal.mp4": "b760ac36462998eba62f392325d2f0882aa3af30e92d38a8c7c07c14a0ddd289"
   },
-  "characterExample": "examples/character-h3/",
-  "characterSHA256": "127518cc682b27c15f36438b9866a7b399c20ea913733add8a1ad89ebe9df03e",
-  "frames44To46": 49,
-  "exactAdjacentDuplicates44To46": 0,
-  "H3CharacterNarration": true,
-  "limits": [
-    "Generative likeness, articulation and occlusions require review.",
-    "No claim of complete Higgsfield feature parity.",
-    "UI input replay and paused editor views use edited timing; inference waits are omitted."
-  ],
   "captureReceipts": {
-    "prompt": {
-      "format": "aftertake-ui-capture/1",
-      "file": "examples\\submission-film\\media\\ui-character-prompt.mp4",
-      "sha256": "bf1124b7a4fe87f239fcbc55ea526b8f1c07528ab382ae622e59a70760c8bf74",
-      "frames": 102,
-      "fps": 24,
-      "duration": 4.25,
-      "source": "Actual CUA screenshots of the live character workspace. Prompt construction replays the exact successful request through native UI fields; no DOM or backend state injection.",
-      "sourceCaptures": 45,
-      "lastCaptureMilliseconds": 1595,
-      "typingDeliverySeconds": 2.5,
-      "finalHoldSeconds": 1.75,
-      "pausedPreview": true,
-      "recordedPromptMatchesNativeRequest": true,
-      "viewport": [
-        1280,
-        720
-      ],
-      "deliveryTimeline": [
-        {
-          "file": "0000.png",
-          "start": 0.0,
-          "end": 0.05642633228840125
-        },
-        {
-          "file": "0001.png",
-          "start": 0.05642633228840125,
-          "end": 0.11128526645768025
-        },
-        {
-          "file": "0002.png",
-          "start": 0.11128526645768025,
-          "end": 0.1755485893416928
-        },
-        {
-          "file": "0003.png",
-          "start": 0.1755485893416928,
-          "end": 0.2304075235109718
-        },
-        {
-          "file": "0004.png",
-          "start": 0.2304075235109718,
-          "end": 0.28996865203761757
-        },
-        {
-          "file": "0005.png",
-          "start": 0.28996865203761757,
-          "end": 0.3448275862068966
-        },
-        {
-          "file": "0006.png",
-          "start": 0.3448275862068966,
-          "end": 0.4263322884012539
-        },
-        {
-          "file": "0007.png",
-          "start": 0.4263322884012539,
-          "end": 0.48589341692789967
-        },
-        {
-          "file": "0008.png",
-          "start": 0.48589341692789967,
-          "end": 0.5391849529780565
-        },
-        {
-          "file": "0009.png",
-          "start": 0.5391849529780565,
-          "end": 0.5971786833855799
-        },
-        {
-          "file": "0010.png",
-          "start": 0.5971786833855799,
-          "end": 0.652037617554859
-        },
-        {
-          "file": "0011.png",
-          "start": 0.652037617554859,
-          "end": 0.7037617554858934
-        },
-        {
-          "file": "0012.png",
-          "start": 0.7037617554858934,
-          "end": 0.7586206896551724
-        },
-        {
-          "file": "0013.png",
-          "start": 0.7586206896551724,
-          "end": 0.8134796238244514
-        },
-        {
-          "file": "0014.png",
-          "start": 0.8134796238244514,
-          "end": 0.871473354231975
-        },
-        {
-          "file": "0015.png",
-          "start": 0.871473354231975,
-          "end": 0.9184952978056427
-        },
-        {
-          "file": "0016.png",
-          "start": 0.9184952978056427,
-          "end": 0.9733542319749217
-        },
-        {
-          "file": "0017.png",
-          "start": 0.9733542319749217,
-          "end": 1.0266457680250782
-        },
-        {
-          "file": "0018.png",
-          "start": 1.0266457680250782,
-          "end": 1.084639498432602
-        },
-        {
-          "file": "0019.png",
-          "start": 1.084639498432602,
-          "end": 1.1379310344827587
-        },
-        {
-          "file": "0020.png",
-          "start": 1.1379310344827587,
-          "end": 1.1990595611285266
-        },
-        {
-          "file": "0021.png",
-          "start": 1.1990595611285266,
-          "end": 1.255485893416928
-        },
-        {
-          "file": "0022.png",
-          "start": 1.255485893416928,
-          "end": 1.3134796238244515
-        },
-        {
-          "file": "0023.png",
-          "start": 1.3134796238244515,
-          "end": 1.3714733542319748
-        },
-        {
-          "file": "0024.png",
-          "start": 1.3714733542319748,
-          "end": 1.4216300940438873
-        },
-        {
-          "file": "0025.png",
-          "start": 1.4216300940438873,
-          "end": 1.4764890282131662
-        },
-        {
-          "file": "0026.png",
-          "start": 1.4764890282131662,
-          "end": 1.5313479623824453
-        },
-        {
-          "file": "0027.png",
-          "start": 1.5313479623824453,
-          "end": 1.5877742946708464
-        },
-        {
-          "file": "0028.png",
-          "start": 1.5877742946708464,
-          "end": 1.6504702194357368
-        },
-        {
-          "file": "0029.png",
-          "start": 1.6504702194357368,
-          "end": 1.7053291536050157
-        },
-        {
-          "file": "0030.png",
-          "start": 1.7053291536050157,
-          "end": 1.7523510971786835
-        },
-        {
-          "file": "0031.png",
-          "start": 1.7523510971786835,
-          "end": 1.8009404388714734
-        },
-        {
-          "file": "0032.png",
-          "start": 1.8009404388714734,
-          "end": 1.8573667711598745
-        },
-        {
-          "file": "0033.png",
-          "start": 1.8573667711598745,
-          "end": 1.9137931034482758
-        },
-        {
-          "file": "0034.png",
-          "start": 1.9137931034482758,
-          "end": 1.9655172413793105
-        },
-        {
-          "file": "0035.png",
-          "start": 1.9655172413793105,
-          "end": 2.0188087774294674
-        },
-        {
-          "file": "0036.png",
-          "start": 2.0188087774294674,
-          "end": 2.0783699059561127
-        },
-        {
-          "file": "0037.png",
-          "start": 2.0783699059561127,
-          "end": 2.128526645768025
-        },
-        {
-          "file": "0038.png",
-          "start": 2.128526645768025,
-          "end": 2.189655172413793
-        },
-        {
-          "file": "0039.png",
-          "start": 2.189655172413793,
-          "end": 2.2476489028213167
-        },
-        {
-          "file": "0040.png",
-          "start": 2.2476489028213167,
-          "end": 2.302507836990596
-        },
-        {
-          "file": "0041.png",
-          "start": 2.302507836990596,
-          "end": 2.358934169278997
-        },
-        {
-          "file": "0042.png",
-          "start": 2.358934169278997,
-          "end": 2.415360501567398
-        },
-        {
-          "file": "0043.png",
-          "start": 2.415360501567398,
-          "end": 2.5
-        },
-        {
-          "file": "0044.png",
-          "start": 2.5,
-          "end": 4.25
-        }
-      ]
+    "format": "aftertake-focused-captures/1",
+    "fresh": {
+      "character": {
+        "format": "aftertake-ui-capture/1",
+        "sourceUrl": "http://127.0.0.1:4344/",
+        "capturedAt": "2026-10-18T23:27:17.806Z",
+        "method": "Actual browser screenshots during native prompt typing; original completed-take direction restored exactly. No render was started.",
+        "uiValuesInjected": false,
+        "originalScreenshotCount": 17,
+        "outputFrames": 60,
+        "outputFPS": 24,
+        "silent": true,
+        "projectSHA256": null,
+        "editing": "Actual screenshot timestamps normalized onto24fps; character view includes a0.75s reference hold and final readable hold. No interface was drawn or fabricated.",
+        "sourceScreenshots": [
+          {
+            "file": "h3-reference-view.jpg",
+            "sha256": "adeb70fb86bb3f96c79fa73bcc73e6048502baf3a28e33a798aef6e6b45a3f6d",
+            "at": 0.0
+          },
+          {
+            "file": "h3-type-000.jpg",
+            "sha256": "be84d4a40a6f269b392799d9833ec690ec8ad98dc3015830162224854da76cdd",
+            "at": 0.771
+          },
+          {
+            "file": "h3-type-001.jpg",
+            "sha256": "15a88fbd17ae4a84a6af4f2c6b691ac4f11b832df8c6714135b6a45b218920ad",
+            "at": 0.813
+          },
+          {
+            "file": "h3-type-002.jpg",
+            "sha256": "677376c8ce1f624dbd324fb4599ee905c31b175cef0cc24e0265ad14efdd8300",
+            "at": 0.861
+          },
+          {
+            "file": "h3-type-003.jpg",
+            "sha256": "d5bf7f5fc35d45071fedfce43328684b32a44d51cec9aa0e4267ea31161ff928",
+            "at": 0.904
+          },
+          {
+            "file": "h3-type-004.jpg",
+            "sha256": "9f90bbf301361512b42f863b5a3dee7b2e37d064548e1da2b6497d8bc04dfda8",
+            "at": 0.9510000000000001
+          },
+          {
+            "file": "h3-type-005.jpg",
+            "sha256": "6c919594d6491d5656cad07118df02590df0fd571600dd7ae977d474c9f2813b",
+            "at": 0.992
+          },
+          {
+            "file": "h3-type-006.jpg",
+            "sha256": "4a3716e43c65db0d29a36d8e1544ef71f7b1256aeb7018d397dbc25503fe4c37",
+            "at": 1.034
+          },
+          {
+            "file": "h3-type-007.jpg",
+            "sha256": "f5a92cb1aa200f84a0fbbfabae61dd2ff335c462f43f9010c1dbc622fd6d2586",
+            "at": 1.075
+          },
+          {
+            "file": "h3-type-008.jpg",
+            "sha256": "9503d360d721d3f7a479d0e54cf63775605ec352a3d453f170b1ae58953f1150",
+            "at": 1.119
+          },
+          {
+            "file": "h3-type-009.jpg",
+            "sha256": "6a7168a89570abf74cd387cdd6fcb57567846beda100bce7ee4355bba5582235",
+            "at": 1.157
+          },
+          {
+            "file": "h3-type-010.jpg",
+            "sha256": "a37506fe9dce468ae9b76b42113ffa05a6904bc09bc352d68b074ad3d2bdf856",
+            "at": 1.258
+          },
+          {
+            "file": "h3-type-011.jpg",
+            "sha256": "46ee5e914d2a2b33fc0e7b475e9d03abcca4f6f23356bac820b08025226c0a6e",
+            "at": 1.3050000000000002
+          },
+          {
+            "file": "h3-type-012.jpg",
+            "sha256": "99da189beb5e31c71b0bc9b4e61ae1701f0875fbdd8b772c98782c7f7db5d690",
+            "at": 1.3479999999999999
+          },
+          {
+            "file": "h3-type-013.jpg",
+            "sha256": "197a63c0ebb45b03da8185a8242b7632ef75e2eebf5bf018cd22721fe5fe7f7d",
+            "at": 1.395
+          },
+          {
+            "file": "h3-type-014.jpg",
+            "sha256": "570706e7db5f57bcb17a5bc0d14d1eea35744a67527e50e2e82a25640e40e76e",
+            "at": 1.436
+          },
+          {
+            "file": "h3-prompt-final.jpg",
+            "sha256": "ec8363ed89dee2d89d44a74ddc9c62966f9f269cb051f02732214a0f1d87dd2e",
+            "at": 1.963
+          }
+        ],
+        "path": "examples/judges-film/media/focused-ui-character.mp4",
+        "sha256": "9536ec2eebd1d43d2a212843df72e6595b80de6930e8b8bc5eb3e9c153113c04",
+        "seconds": 2.5,
+        "nativeCharacterId": "2c72d172-c42f-486f-895c-5d2653988264",
+        "note": "Source-bound settings restored from actual completed seed509103; original full extra direction typed and restored exactly. No new generation was started."
+      },
+      "reveal": {
+        "format": "aftertake-ui-capture/1",
+        "sourceUrl": "http://127.0.0.1:4344/",
+        "capturedAt": "2026-10-18T23:29:04.497Z",
+        "method": "Consecutive actual browser screenshots while the imported 19-cut,24-title,13-voice,53.04-second Film draft plays. No UI text or state was injected.",
+        "uiValuesInjected": false,
+        "originalScreenshotCount": 70,
+        "outputFrames": 96,
+        "outputFPS": 24,
+        "silent": true,
+        "projectSHA256": "652ba7eaa7c0ad762a5d5a65d1e2426a055a32e588608dbcb7ad558a2a61ecd7",
+        "editing": "Actual screenshot timestamps normalized onto24fps; the last0.18s recorded after the4s output slot is excluded.",
+        "sourceScreenshots": [
+          {
+            "file": "film-imported.jpg",
+            "sha256": "2644e7c7c661c2608c5b66aff72c64f781b25da1703240ac5ab4cc59d35597cc",
+            "at": 0.0
+          },
+          {
+            "file": "film-reveal-001.jpg",
+            "sha256": "31e2d287addba0cc57e078290dcb2c440e25582aacabcf69e69990b18edfe91e",
+            "at": 0.672
+          },
+          {
+            "file": "film-reveal-002.jpg",
+            "sha256": "1bf90fae8ca7060dbe83b1a69ef7146cc74084bbd67a63ad51efa7c5f4e9652b",
+            "at": 0.724
+          },
+          {
+            "file": "film-reveal-003.jpg",
+            "sha256": "0051978b27b0db15c501fb670fd80460de20603b43446c0b23b91a88d67ff99f",
+            "at": 0.772
+          },
+          {
+            "file": "film-reveal-004.jpg",
+            "sha256": "b3b2e4991cecf3bf27700fe5f5a1791e8b5b48c3f40d0e0af7e911f8a1368a8a",
+            "at": 0.813
+          },
+          {
+            "file": "film-reveal-005.jpg",
+            "sha256": "2313cfb88189c4d9f24dfbe36c645dfe412402fac7a9e973563d2696df3267bf",
+            "at": 0.856
+          },
+          {
+            "file": "film-reveal-006.jpg",
+            "sha256": "3595130c5ce11664c7f7c086c20e7be5c5bd8b845351b4edda39a72052fbf8b3",
+            "at": 0.901
+          },
+          {
+            "file": "film-reveal-007.jpg",
+            "sha256": "c6ff03e7765bd6a0c14154e0ede2cab1a092c85bde3c2a15cf6212d218ddaf99",
+            "at": 0.945
+          },
+          {
+            "file": "film-reveal-008.jpg",
+            "sha256": "e632e6fb52df2e38d59f0a001ef33c7c491ada8dfaf4845b2b8aa6f5390d6aad",
+            "at": 0.988
+          },
+          {
+            "file": "film-reveal-009.jpg",
+            "sha256": "dd85a191362b01cd0467bc14ca4fb625ff90eebdc4105e1d581fbe7880330e3f",
+            "at": 1.03
+          },
+          {
+            "file": "film-reveal-010.jpg",
+            "sha256": "f6395827ce9ef703824e6848b2fb8de4bf11a83b0fb9f321687eeda93c704cdd",
+            "at": 1.108
+          },
+          {
+            "file": "film-reveal-011.jpg",
+            "sha256": "293a8f3c2df01d915154f108afca4e906fe3adb58ae5239a0db0c6479364b1c6",
+            "at": 1.217
+          },
+          {
+            "file": "film-reveal-012.jpg",
+            "sha256": "293a8f3c2df01d915154f108afca4e906fe3adb58ae5239a0db0c6479364b1c6",
+            "at": 1.264
+          },
+          {
+            "file": "film-reveal-013.jpg",
+            "sha256": "4f67ff9a9da8c6f7ec89121b733678fe838a63f2b759a02f1516a341dd62ba91",
+            "at": 1.309
+          },
+          {
+            "file": "film-reveal-014.jpg",
+            "sha256": "eebebe1aa25f6abb1408ca218d8c6115706752567445d0481667b647f2d67f43",
+            "at": 1.353
+          },
+          {
+            "file": "film-reveal-015.jpg",
+            "sha256": "78c04128c33f4e9c6002c3e8e28a3f85a514ace009023ae7b26fd447f059dda4",
+            "at": 1.4
+          },
+          {
+            "file": "film-reveal-016.jpg",
+            "sha256": "59ac8d12c6091caa7b4c79222b1c5417d0e293bcc0f888889c0108587882b30a",
+            "at": 1.447
+          },
+          {
+            "file": "film-reveal-017.jpg",
+            "sha256": "59ac8d12c6091caa7b4c79222b1c5417d0e293bcc0f888889c0108587882b30a",
+            "at": 1.496
+          },
+          {
+            "file": "film-reveal-018.jpg",
+            "sha256": "ac7861df09f2489d35a1f07d9be270217e53c3b27b3302ac3bd7e27ab6169438",
+            "at": 1.535
+          },
+          {
+            "file": "film-reveal-019.jpg",
+            "sha256": "5e5bb99abb8fb1d743e1a6b098015b91b3bb3773210dccf1d0fc26626bd82771",
+            "at": 1.584
+          },
+          {
+            "file": "film-reveal-020.jpg",
+            "sha256": "7df0aab022a25da57836ff46b4cb342e6d6978171f1af6c615b06661bb39ccd8",
+            "at": 1.634
+          },
+          {
+            "file": "film-reveal-021.jpg",
+            "sha256": "071f4013b89ebc9e62c0cdc8a8b62b5a0232f86ccc54614412052fd86dbe743b",
+            "at": 1.687
+          },
+          {
+            "file": "film-reveal-022.jpg",
+            "sha256": "611ae0415df8836af33cc8f74ecb91acbcf0dc1d90024c2a05f27f70a01917f9",
+            "at": 1.729
+          },
+          {
+            "file": "film-reveal-023.jpg",
+            "sha256": "67585565e68d6cdd0de34fd89fa5cab2e0c4b6175ecd730bf6a98b064a9ffeb4",
+            "at": 1.777
+          },
+          {
+            "file": "film-reveal-024.jpg",
+            "sha256": "c0a53b598a7afb38d30cb11345a04f2d8452f55ce42c79be0de6391441d350dc",
+            "at": 1.823
+          },
+          {
+            "file": "film-reveal-025.jpg",
+            "sha256": "a0f86cd277fdf67e30e0c0267398bdcdd1fea7e8153bbb95df35b1f05299a554",
+            "at": 1.871
+          },
+          {
+            "file": "film-reveal-026.jpg",
+            "sha256": "c5c0b12ce64f4f0a1bb2e821805afbce333565d2f37da15847e44b5060618cb3",
+            "at": 1.916
+          },
+          {
+            "file": "film-reveal-027.jpg",
+            "sha256": "fab432672e15e7f0849c8088297965627db4eca3b90a15dcfd201e2fb9a540cf",
+            "at": 1.966
+          },
+          {
+            "file": "film-reveal-028.jpg",
+            "sha256": "e7e5bab84b24ed7e339ee1ec6ee2546dc12b015018b4b7a7819e69846b9e6433",
+            "at": 2.016
+          },
+          {
+            "file": "film-reveal-029.jpg",
+            "sha256": "498862df75f39808b33d8330523c1ef3a8c96ac2d91df564feb5f4281ae02840",
+            "at": 2.059
+          },
+          {
+            "file": "film-reveal-030.jpg",
+            "sha256": "3a13cd1f450cb22447c8906d42a5161bef14d1f41060de633e46ef8725eb087d",
+            "at": 2.163
+          },
+          {
+            "file": "film-reveal-031.jpg",
+            "sha256": "3a13cd1f450cb22447c8906d42a5161bef14d1f41060de633e46ef8725eb087d",
+            "at": 2.238
+          },
+          {
+            "file": "film-reveal-032.jpg",
+            "sha256": "9d6e67a671b521cf9ce1e678d02e8d190a7b1a89cd7849924b80b34741c433b0",
+            "at": 2.281
+          },
+          {
+            "file": "film-reveal-033.jpg",
+            "sha256": "361933d43be3bc81495e4148650a602b6d39a897f998c90ce362f1103b9d97c5",
+            "at": 2.325
+          },
+          {
+            "file": "film-reveal-034.jpg",
+            "sha256": "d8e8c81508ec9198c0d1a2e82149812c3ed43d232f0a6b659fa9295499146c0c",
+            "at": 2.376
+          },
+          {
+            "file": "film-reveal-035.jpg",
+            "sha256": "dc2d9d4210da2efac197f0774543d91012e085efc91cd36fd4acfd96a9227c8f",
+            "at": 2.423
+          },
+          {
+            "file": "film-reveal-036.jpg",
+            "sha256": "9e3c9c5e2657a38e81f10487f468a901623af4da6cf75c94fb83507eb3a754e4",
+            "at": 2.468
+          },
+          {
+            "file": "film-reveal-037.jpg",
+            "sha256": "91e62b2a8d4417c999160c2a9236f465d1970c79517bb79ef1e642265f89a343",
+            "at": 2.515
+          },
+          {
+            "file": "film-reveal-038.jpg",
+            "sha256": "c20fc2e7a3ed1df562640f44c37fe0a4788d9659bbfe1c58f6b0355231df4aaf",
+            "at": 2.562
+          },
+          {
+            "file": "film-reveal-039.jpg",
+            "sha256": "831559221348f6401836ed70779ff1839bdcbfbb181ce07c7cc85037fbaba792",
+            "at": 2.605
+          },
+          {
+            "file": "film-reveal-040.jpg",
+            "sha256": "1d2e0633fb8ac141dea1f07efd9878c00f5f1daaa275e2b5d88c8a2a228a479f",
+            "at": 2.653
+          },
+          {
+            "file": "film-reveal-041.jpg",
+            "sha256": "9aa67fbda6356fc4cef3f03b9ed870589d1257b05896a9d43d9b206ca608fa1a",
+            "at": 2.699
+          },
+          {
+            "file": "film-reveal-042.jpg",
+            "sha256": "8bdd06b37eefd0a9f87c5da721dc52d2662438d8886c67ced0f864af9f03cd14",
+            "at": 2.743
+          },
+          {
+            "file": "film-reveal-043.jpg",
+            "sha256": "8b91c4c91b0581403746be04df8ed4989398258310d69aba543b338dec074f3e",
+            "at": 2.787
+          },
+          {
+            "file": "film-reveal-044.jpg",
+            "sha256": "f26c3c1153aaf62449ab835295265a91a994aa5ecb0eca99631422dd89298459",
+            "at": 2.833
+          },
+          {
+            "file": "film-reveal-045.jpg",
+            "sha256": "18ccac53d9973159b0b541fa6408f8b015cd9c93c9cd3c74065e42f7b86ce28f",
+            "at": 2.877
+          },
+          {
+            "file": "film-reveal-046.jpg",
+            "sha256": "dd0db42422fa3d09e12e34dc7f2b139c0d28d93af9da9959f61b2e42acfb1d41",
+            "at": 2.925
+          },
+          {
+            "file": "film-reveal-047.jpg",
+            "sha256": "06054f52f3688a40ff6ca0c4ca37958df4d42b6dafb65c8029a8793b3bc3df73",
+            "at": 2.966
+          },
+          {
+            "file": "film-reveal-048.jpg",
+            "sha256": "2b9ccd10d6c722aaeafef1b55eb88864e4c6b429a04c5a427cdaf004fa0743bb",
+            "at": 3.011
+          },
+          {
+            "file": "film-reveal-049.jpg",
+            "sha256": "8694f738be98dee072a2b51d11f91512759d2fe062422b0722ffa158b4b4d842",
+            "at": 3.063
+          },
+          {
+            "file": "film-reveal-050.jpg",
+            "sha256": "fc03ea77b82247a769caf87a379d6ee28d35f3cb49cc9e61e9534063eb0f6158",
+            "at": 3.16
+          },
+          {
+            "file": "film-reveal-051.jpg",
+            "sha256": "9b2398c3d3914b4e1a5696953c92d05dbd808390579f036c7c3c297b9024555e",
+            "at": 3.24
+          },
+          {
+            "file": "film-reveal-052.jpg",
+            "sha256": "892f791a25a3120c386caef0a9e724ebe0755e122ad926b76e18256b703a438d",
+            "at": 3.288
+          },
+          {
+            "file": "film-reveal-053.jpg",
+            "sha256": "abbe3d632c7402b0b3bfd68fe682363baa5ca4c6f402d2c968fd4d0a9d12781c",
+            "at": 3.338
+          },
+          {
+            "file": "film-reveal-054.jpg",
+            "sha256": "07b6c6a6ae9728a9e6f8bbed2c25461cf7b25c47873630aa1da1a00b77331919",
+            "at": 3.384
+          },
+          {
+            "file": "film-reveal-055.jpg",
+            "sha256": "7f43e8be0f90eac490496637dac0c84fd61cbff356dfc8b554389631e327c657",
+            "at": 3.436
+          },
+          {
+            "file": "film-reveal-056.jpg",
+            "sha256": "1f3a93a6f53fbeacfac3e9ab60796d1099347ffead850a81b151dc7cc1b8f473",
+            "at": 3.479
+          },
+          {
+            "file": "film-reveal-057.jpg",
+            "sha256": "485cab69938650209c94f6e50414ba241cfb7498b466cf7b34672d1ec166778e",
+            "at": 3.521
+          },
+          {
+            "file": "film-reveal-058.jpg",
+            "sha256": "9a15ccfd790693b2e6ba8807e5c4e318135dad0057ad26292f8150fe27a8c3e9",
+            "at": 3.563
+          },
+          {
+            "file": "film-reveal-059.jpg",
+            "sha256": "78d1339be2503f0f68e1d4b42d69fe8d107c809fe177218dab88f845c27aeba8",
+            "at": 3.616
+          },
+          {
+            "file": "film-reveal-060.jpg",
+            "sha256": "35402d2b83a472c8420faee582b474992c1800bf921a93d53cfffe0ab66069f0",
+            "at": 3.669
+          },
+          {
+            "file": "film-reveal-061.jpg",
+            "sha256": "22edc8b163d482611e742c108d252d6a42cffe6971502d60d3ee3172dc510302",
+            "at": 3.722
+          },
+          {
+            "file": "film-reveal-062.jpg",
+            "sha256": "7f6178715f6b41510bbf0a54ac9ec83589de957424e68db70b474f1743d85456",
+            "at": 3.773
+          },
+          {
+            "file": "film-reveal-063.jpg",
+            "sha256": "0ef311105f3d7cf8d027bb0d7aec7ca477fcd78ed1e670ed8a8bc5d0bf5b347d",
+            "at": 3.819
+          },
+          {
+            "file": "film-reveal-064.jpg",
+            "sha256": "2ced2bdbc3a8cb9bced0e55d87eeca1b93c81bbb06150c0030ddb8874fadfd4a",
+            "at": 3.863
+          },
+          {
+            "file": "film-reveal-065.jpg",
+            "sha256": "9554b2425b32f84a846cc54cd1e575b49e5974374ae9b856a070655dbd3fa078",
+            "at": 3.904
+          },
+          {
+            "file": "film-reveal-066.jpg",
+            "sha256": "780fa7f0ce21069df5c5a865598e614d2a3cb2e658ffdf177e2d34d5d46eb12e",
+            "at": 3.953
+          },
+          {
+            "file": "film-reveal-067.jpg",
+            "sha256": "123030b0c750066922644aae6fd13350be181942c3fe7bbe38a770df089d7458",
+            "at": 3.995
+          },
+          {
+            "file": "film-reveal-068.jpg",
+            "sha256": "5c267b761ad376038848624193f72d47f4962f0300d62253900ac3954c67e01c",
+            "at": 4.041
+          },
+          {
+            "file": "film-reveal-069.jpg",
+            "sha256": "7fdc5a6478d8308389748d87f9063e9451fe345d78b737d10c6605d2dac83fa8",
+            "at": 4.084
+          }
+        ],
+        "path": "examples/judges-film/media/focused-ui-reveal.mp4",
+        "sha256": "b760ac36462998eba62f392325d2f0882aa3af30e92d38a8c7c07c14a0ddd289",
+        "seconds": 4.0,
+        "nativeCharacterId": null,
+        "note": "Capture shows the working edit before inserting its own reveal footage; final source-file identifiers change, while cuts/titles/voices/duration remain19/24/13/53.04."
+      }
     },
-    "reveal": {
-      "format": "aftertake-ui-capture/1",
-      "file": "examples/judges-film/media/entry-ui-reveal.mp4",
-      "sha256": "fe0fe2d916459e806890b970cc53826dcc0bcbd7b46cb2345e5d26aaf6b84e97",
-      "duration": 4.25,
-      "frames": 102,
-      "fps": 24,
-      "source": "Two actual paused views of the live Film editor, joined with edited holds. Native timeline buttons select the H3 shot and the brand shot; the native playhead advances. No injected UI state, added camera motion or moving-footage resampling.",
-      "projectAtCaptureSHA256": "738dd4e258d1147e0ab60450ffea5351870a53a2126581fc609080e6421713b6",
-      "projectSummary": "29 cuts44 titles21 sound clips71.7s duration",
-      "capturePass": "H3 footage, titles, voices and timing already updated; this self-referential reveal recording is replaced afterward without changing the visible project counts/timing.",
-      "viewport": [
-        1280,
-        720
-      ],
-      "picturesPaused": true,
-      "holdSeconds": [
-        1.75,
-        2.5
-      ],
-      "sourceScreenshots": 2
+    "reused": {
+      "builder-lines": {
+        "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+        "file": "examples/judges-film/media/entry-ui-builder-lines.mp4",
+        "sha256": "509a00e7440fb8f726b6c395a00ae4a656d2dacdf4f996d26123c1d67a1a0aa6",
+        "screenshots": 232,
+        "lastScreenshotMilliseconds": 4491,
+        "uiValuesInjected": false,
+        "visibleFilmPicturesSampled": 29,
+        "unreadyVisibleFilmPictures": 0
+      },
+      "builder": {
+        "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+        "file": "examples/judges-film/media/entry-ui-builder.mp4",
+        "sha256": "75eb0846ca30d2128ba64337dd64c345e6062483a60fb6aceb3593f5cd41b794",
+        "screenshots": 249,
+        "lastScreenshotMilliseconds": 6488,
+        "uiValuesInjected": false,
+        "visibleFilmPicturesSampled": 33,
+        "unreadyVisibleFilmPictures": 0
+      },
+      "hook": {
+        "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+        "file": "examples/judges-film/media/entry-ui-hook.mp4",
+        "sha256": "746be361f83ef5e0cfd3e1125d39faae09e6bf7284f074c825e714c42ed75e27",
+        "screenshots": 373,
+        "lastScreenshotMilliseconds": 8991,
+        "uiValuesInjected": false,
+        "visibleFilmPicturesSampled": 47,
+        "unreadyVisibleFilmPictures": 0
+      },
+      "agent": {
+        "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+        "file": "examples/judges-film/media/entry-ui-agent.mp4",
+        "sha256": "a76176a81206d5286569547da57951301e5565d44d4ec7d36ba8be425691003f",
+        "screenshots": 256,
+        "lastScreenshotMilliseconds": 6480,
+        "uiValuesInjected": false,
+        "visibleFilmPicturesSampled": 32,
+        "unreadyVisibleFilmPictures": 0
+      },
+      "reference": {
+        "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+        "file": "examples/judges-film/media/entry-ui-reference.mp4",
+        "sha256": "b65819302ec2ad740def73adc999bdd72821ba43f578a177a58ba33be0eae42f",
+        "screenshots": 164,
+        "lastScreenshotMilliseconds": 3488,
+        "uiValuesInjected": false,
+        "visibleFilmPicturesSampled": 20,
+        "unreadyVisibleFilmPictures": 0
+      },
+      "cue": {
+        "source": "Actual native UI actions and screenshots; recorded wall-clock sampling; fixed 1280 Ã— 720 viewport; no injected UI state or added camera motion.",
+        "file": "examples/judges-film/media/entry-ui-cue.mp4",
+        "sha256": "d053e8498738017b7cfda7f7b9b54a9145284d22bcac3bef24be59027fb1d0e5",
+        "screenshots": 122,
+        "lastScreenshotMilliseconds": 4497,
+        "uiValuesInjected": false,
+        "visibleFilmPicturesSampled": 15,
+        "unreadyVisibleFilmPictures": 0
+      }
     }
   },
-  "embeddedProjectMatchesAppExport": true,
-  "sourceMediaHashesVerified": true,
-  "H3Example": {
-    "frames": 73,
-    "fps": 24,
-    "width": 928,
-    "height": 512,
-    "duration": 3.0416666666666665,
-    "nativeJobId": "88a900ae-3c6a-468d-bb20-1fefb4eefdd6",
-    "outputSHA256": "127518cc682b27c15f36438b9866a7b399c20ea913733add8a1ad89ebe9df03e",
-    "exactAdjacentDuplicates": 0,
-    "sourceSHA256": "be7b92b9fa173d498ee372dda5f7e0a2082c5349d242fb276dfc356b8237d42e",
-    "maskSHA256": "23e995b1dbe46c5b274b56b3df284286e0fb6ad77e4754efe5f2116588ea592a",
-    "joinFrame": 56,
-    "format": "aftertake-character-h3-evidence/1",
-    "files": {
-      "source.mp4": "2a02b01cd506c0431addfa0fea2487e6451274c280423d07863d1a8b2cd5fe19",
-      "reference.png": "2246e339a602bd225113795eefa3a5603ea840f138eb4dcf0e8ff01122832052",
-      "result.mp4": "127518cc682b27c15f36438b9866a7b399c20ea913733add8a1ad89ebe9df03e",
-      "prepared-source.mp4": "be7b92b9fa173d498ee372dda5f7e0a2082c5349d242fb276dfc356b8237d42e",
-      "tracked-mask.mkv": "23e995b1dbe46c5b274b56b3df284286e0fb6ad77e4754efe5f2116588ea592a",
-      "selection-preview.mp4": "7e8c2490b8e826cd82987c7a99049623bc36e995580fabbb2b28965c59d161ae"
-    },
-    "selectionNativeJobId": "48e810db-6dbe-456b-bb20-10fb53f251f7",
-    "workflow": "workflow-api.json",
-    "selectionWorkflow": "selection-workflow-api.json",
-    "modelManifest": "../../docs/models-character-swap.json",
-    "reference": "Original fictional Z-Image reference and a crop of its real head; no preliminary frame redraw or portrait overlay.",
-    "review": "All 73 face frames, whole-body comparison frames and continuation frames 55/56 reviewed. General articulation, identity and occlusion quality still require review.",
-    "runtime": {
-      "gpu": "RTX 5080 16 GB",
-      "systemRAM": "32 GB",
-      "engineFlags": [
-        "--safe-weight-copies",
-        "--no-node-cache"
-      ],
-      "nativeWindows": 2
-    },
-    "submission": "Review candidate; Jay submits personally."
-  },
-  "voiceTranscription": {
-    "expected": "H3 keeps the performance.",
-    "transcript": "H3 keeps the performance.",
-    "scope": "Changed source narration; every exported voice waveform independently aligned."
-  }
+  "agentSession": "examples/judges-film/agent-session.json",
+  "sourceVolume": 0.3,
+  "sourceFilesArePortable": true,
+  "compatibilityMoviesShareIdenticalBytes": [
+    "docs/assets/aftertake-demo.mp4",
+    "docs/assets/aftertake-judges.mp4"
+  ],
+  "limits": [
+    "Decoded frames, timestamps, waveform correlations and source hashes are factual checks, not a perceptual quality score.",
+    "The installer performs no listening or continuous-motion viewing pass.",
+    "Character replacement does not promise exact mouth pose or facial performance preservation.",
+    "MCP graphic is an explicitly labeled receipt based on actual local tool calls, not a tool-interface screenshot.",
+    "Generation and preparation waits omitted. Final review and submission remain separate decisions."
+  ]
 }

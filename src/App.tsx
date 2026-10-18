@@ -1311,7 +1311,7 @@ export default function App() {
             <ScanFace size={17} />
             <span>
               <strong>Replace character</strong>
-              <small>Keep the performance</small>
+              <small>Track and replace</small>
             </span>
           </button>
           <button

@@ -1,334 +1,184 @@
 {
-  "status": "review cut",
-  "duration": 71.66666666666667,
+  "format": "aftertake-focused-storyboard/1",
+  "status": "Prepared for review; not submitted",
+  "duration": 53.041666666666664,
+  "filmId": "6ae97ad5-8a56-4b11-aa40-6d57bf01893f",
+  "sha256": "c21a93c69483222d7a16eb264617a623a00d229395af6ea0d803a0aa78c3e78e",
   "beats": [
     {
-      "name": "ad",
-      "start": 0.0,
-      "end": 5.958333333333333,
-      "spokenText": "",
-      "voiceStart": null,
-      "voiceEnd": null,
-      "caption": "",
+      "name": "Change the scene; keep the shot",
+      "start": 0,
+      "end": 3.5,
+      "voiceStart": 0.125,
+      "voiceEnd": 1.4436666666666667,
+      "spokenText": "This is Aftertake.",
+      "caption": "This is Aftertake.",
+      "purpose": "Name the product while the strongest existing cue/composite transformation delivers a visible result inside the first second.",
       "shotNumbers": [
         1
-      ],
-      "visual": "spoken-ad",
-      "placeholder": false
+      ]
     },
     {
-      "name": "brand",
-      "start": 5.833333333333333,
-      "end": 7.541666666666667,
-      "spokenText": "This is Aftertake.",
-      "voiceStart": 5.958333333333333,
-      "voiceEnd": 7.276999999999999,
-      "caption": "This is Aftertake.",
+      "name": "Paint where and when",
+      "start": 3.5,
+      "end": 7,
+      "voiceStart": 3.625,
+      "voiceEnd": 5.845666666666666,
+      "spokenText": "Paint where and when the scene changes.",
+      "caption": "Paint where and when the scene changes.",
+      "purpose": "Show the novel spatial and temporal cue directly, while its painted area and start/end range are readable.",
       "shotNumbers": [
         2
-      ],
-      "visual": "brand",
-      "placeholder": false
+      ]
     },
     {
-      "name": "builder",
-      "start": 7.416666666666667,
-      "end": 11.333333333333334,
-      "spokenText": "Write a line for each picture. Kokoro voices it locally.",
-      "voiceStart": 7.541666666666667,
-      "voiceEnd": 11.073666666666668,
-      "caption": "Write a line for each picture. Kokoro voices it locally.",
+      "name": "Qwen sets the appearance",
+      "start": 7,
+      "end": 10,
+      "voiceStart": 7.125,
+      "voiceEnd": 8.896333333333333,
+      "spokenText": "Qwen prepares your reference.",
+      "caption": "Qwen prepares your reference.",
+      "purpose": "Separate appearance preparation from motion generation; a reference frame is an input to the edit.",
       "shotNumbers": [
-        3,
-        4
-      ],
-      "visual": "ui-builder",
-      "placeholder": false
+        3
+      ]
     },
     {
-      "name": "words",
-      "start": 11.208333333333334,
-      "end": 14.375,
-      "spokenText": "Highlight the spoken words. Adjust any word.",
-      "voiceStart": 11.333333333333334,
-      "voiceEnd": 14.086,
-      "caption": "Highlight the spoken words. Adjust any word.",
+      "name": "One cue for generation and composite",
+      "start": 10,
+      "end": 13.5,
+      "voiceStart": 10.125,
+      "voiceEnd": 12.899000000000001,
+      "spokenText": "The same cue guides generation and the blend.",
+      "caption": "The same cue guides generation and the blend.",
+      "purpose": "Return to the same coastal example as proof: LTX guidance and compositing share the reviewed cue, retaining the source around the edit.",
+      "shotNumbers": [
+        4
+      ]
+    },
+    {
+      "name": "Choose a fictional character",
+      "start": 13.5,
+      "end": 16,
+      "voiceStart": 13.625,
+      "voiceEnd": 15.078958333333333,
+      "spokenText": "Cast your own character.",
+      "caption": "Cast your own character.",
+      "purpose": "Establish selected person plus appearance reference before showing the corrected natural H3 replacement.",
       "shotNumbers": [
         5
-      ],
-      "visual": "ui-words",
-      "placeholder": false
+      ]
     },
     {
-      "name": "hook",
-      "start": 14.25,
-      "end": 16.666666666666668,
-      "spokenText": "Change the hook. Keep the edit.",
-      "voiceStart": 14.375,
-      "voiceEnd": 16.403,
-      "caption": "Change the hook. Keep the edit.",
+      "name": "Replace a tracked character",
+      "start": 16,
+      "end": 19.041666666666668,
+      "voiceStart": 16.125,
+      "voiceEnd": 18.441,
+      "spokenText": "Replace a tracked character with H three.",
+      "caption": "Replace a tracked character with H3.",
+      "purpose": "Show a natural fictional H3 character replacement while retaining the surrounding scene. Do not imply exact mouth pose or facial performance preservation.",
       "shotNumbers": [
         6,
         7
-      ],
-      "visual": "ui-hook",
-      "placeholder": false
+      ]
     },
     {
-      "name": "agent-editing",
-      "start": 16.541666666666668,
-      "end": 21.041666666666668,
-      "spokenText": "Agents inspect footage, pair whole lines, and rejoin exports.",
-      "voiceStart": 16.666666666666668,
-      "voiceEnd": 20.726625000000002,
-      "caption": "Agents inspect footage, pair whole lines, and rejoin exports.",
+      "name": "Create a portrait product shot",
+      "start": 19.041666666666668,
+      "end": 24.541666666666668,
+      "voiceStart": 19.166666666666668,
+      "voiceEnd": 21.108666666666668,
+      "spokenText": "Create video with L T X.",
+      "caption": "Create video with LTX.",
+      "purpose": "Show one native LTX text-to-video creation with its real generated sound and marketing use case.",
       "shotNumbers": [
-        8
-      ],
-      "visual": "ui-agent",
-      "placeholder": false
-    },
-    {
-      "name": "image",
-      "start": 20.916666666666668,
-      "end": 23.416666666666668,
-      "spokenText": "Create an image with Z Image.",
-      "voiceStart": 21.041666666666668,
-      "voiceEnd": 22.96366666666667,
-      "caption": "Create an image with Z-Image.",
-      "shotNumbers": [
+        8,
         9
-      ],
-      "visual": "ui-image",
-      "placeholder": false
+      ]
     },
     {
-      "name": "animation",
-      "start": 23.291666666666668,
-      "end": 25.791666666666668,
-      "spokenText": "Animate it with L T X.",
-      "voiceStart": 23.416666666666668,
-      "voiceEnd": 25.220666666666666,
-      "caption": "Animate it with LTX.",
+      "name": "Ads and editable spoken typography",
+      "start": 24.541666666666668,
+      "end": 30.541666666666668,
+      "voiceStart": 26.166666666666668,
+      "voiceEnd": 29.698666666666668,
+      "spokenText": "Write a line for each picture. Kokoro voices it locally.",
+      "caption": "Write a line for each picture. Kokoro voices it locally.",
+      "purpose": "Retain portrait ads/reels relevance and demonstrate Kokoro narration plus word-following typography in one compact section.",
       "shotNumbers": [
-        10
-      ],
-      "visual": "observatory",
-      "placeholder": false
-    },
-    {
-      "name": "camera",
-      "start": 25.666666666666668,
-      "end": 27.666666666666668,
-      "spokenText": "Direct the camera.",
-      "voiceStart": 25.791666666666668,
-      "voiceEnd": 27.003666666666668,
-      "caption": "Direct the camera.",
-      "shotNumbers": [
-        11
-      ],
-      "visual": "ui-camera",
-      "placeholder": false
-    },
-    {
-      "name": "ending",
-      "start": 27.541666666666668,
-      "end": 30.041666666666668,
-      "spokenText": "Or set the ending frame.",
-      "voiceStart": 27.666666666666668,
-      "voiceEnd": 29.248625,
-      "caption": "Or set the ending frame.",
-      "shotNumbers": [
+        10,
+        11,
         12
-      ],
-      "visual": "ui-ending",
-      "placeholder": false
+      ]
     },
     {
-      "name": "reference",
-      "start": 29.916666666666668,
-      "end": 32.416666666666664,
-      "spokenText": "Qwen prepares your reference.",
-      "voiceStart": 30.041666666666668,
-      "voiceEnd": 31.813000000000002,
-      "caption": "Qwen Image Edit prepares your reference.",
+      "name": "One revised hook; same footage",
+      "start": 30.541666666666668,
+      "end": 33.541666666666664,
+      "voiceStart": 30.666666666666668,
+      "voiceEnd": 32.69466666666667,
+      "spokenText": "Change the hook. Keep the edit.",
+      "caption": "Change the hook. Keep the edit.",
+      "purpose": "Demonstrate a concrete marketing revision without adding another tutorial sequence.",
       "shotNumbers": [
-        13
-      ],
-      "visual": "ui-reference",
-      "placeholder": false
-    },
-    {
-      "name": "paint",
-      "start": 32.291666666666664,
-      "end": 35.791666666666664,
-      "spokenText": "Paint where and when the scene changes.",
-      "voiceStart": 32.416666666666664,
-      "voiceEnd": 34.63733333333333,
-      "caption": "Paint where and when the scene changes.",
-      "shotNumbers": [
+        13,
         14
-      ],
-      "visual": "ui-cue",
-      "placeholder": false
+      ]
     },
     {
-      "name": "vfx",
-      "start": 35.666666666666664,
-      "end": 39.708333333333336,
-      "spokenText": "The same cue guides generation and the blend.",
-      "voiceStart": 35.791666666666664,
-      "voiceEnd": 38.565666666666665,
-      "caption": "The same cue guides generation and the blend.",
+      "name": "Actual agent edit evidence",
+      "start": 33.541666666666664,
+      "end": 39.541666666666664,
+      "voiceStart": 33.666666666666664,
+      "voiceEnd": 37.97995833333333,
+      "spokenText": "Agents inspect footage, edit, export, and reopen this project.",
+      "caption": "Agents inspect footage, edit, export, and reopen this project.",
+      "purpose": "Prove an agent can work through real local MCP and leave the same project editable.",
       "shotNumbers": [
         15,
         16
-      ],
-      "visual": "castle",
-      "placeholder": false
+      ]
     },
     {
-      "name": "character-prompt",
-      "start": 39.583333333333336,
-      "end": 43.833333333333336,
-      "spokenText": "Cast your own character.",
-      "voiceStart": 39.708333333333336,
-      "voiceEnd": 41.16229166666667,
-      "caption": "Cast your own character.",
+      "name": "Local open-weight workflows through Comfy SDK",
+      "start": 39.541666666666664,
+      "end": 43.541666666666664,
+      "voiceStart": 39.666666666666664,
+      "voiceEnd": 43.291333333333334,
+      "spokenText": "Comfy S D K connects local, open-weight workflows.",
+      "caption": "Comfy SDK connects local, open-weight workflows.",
+      "purpose": "Explain the technical connection in a single sentence without reciting the entire implementation stack.",
       "shotNumbers": [
         17
-      ],
-      "visual": "ui-character-prompt",
-      "placeholder": false
+      ]
     },
     {
-      "name": "character-result",
-      "start": 43.708333333333336,
-      "end": 46.75,
-      "spokenText": "H3 keeps the performance.",
-      "voiceStart": 43.833333333333336,
-      "voiceEnd": 45.76533333333334,
-      "caption": "H3 keeps the performance.",
-      "shotNumbers": [
-        18,
-        19
-      ],
-      "visual": "focused-character",
-      "placeholder": false
-    },
-    {
-      "name": "recipes",
-      "start": 46.625,
-      "end": 48.5,
-      "spokenText": "Reuse the recipe.",
-      "voiceStart": 46.75,
-      "voiceEnd": 48.246625,
-      "caption": "Reuse the recipe.",
-      "shotNumbers": [
-        20
-      ],
-      "visual": "ui-library",
-      "placeholder": false
-    },
-    {
-      "name": "subject-matte",
-      "start": 48.375,
-      "end": 51.416666666666664,
-      "spokenText": "Sam two tracks the reviewed mask.",
-      "voiceStart": 48.5,
-      "voiceEnd": 50.634,
-      "caption": "SAM 2.1 tracks the reviewed mask.",
-      "shotNumbers": [
-        21
-      ],
-      "visual": "focused-matte",
-      "placeholder": false
-    },
-    {
-      "name": "build-stack",
-      "start": 51.291666666666664,
-      "end": 56.791666666666664,
-      "spokenText": "React and TypeScript, Comfy's S D K, and Py A V with F F mpeg.",
-      "voiceStart": 51.416666666666664,
-      "voiceEnd": 56.227333333333334,
-      "caption": "React + TypeScript Ã‚Â· Comfy SDK Ã‚Â· PyAV + FFmpeg",
-      "shotNumbers": [
-        22
-      ],
-      "visual": "build-stack",
-      "placeholder": false
-    },
-    {
-      "name": "contribution",
-      "start": 56.666666666666664,
-      "end": 63.083333333333336,
-      "spokenText": "One open chain: protected scenes, inspectable workflows, and agent edits you can reopen.",
-      "voiceStart": 56.791666666666664,
-      "voiceEnd": 62.82433333333333,
-      "caption": "One open chain: protected scenes, inspectable workflows, and agent edits you can reopen.",
-      "shotNumbers": [
-        23,
-        24,
-        25
-      ],
-      "visual": "contribution",
-      "placeholder": false
-    },
-    {
-      "name": "twist",
-      "start": 62.958333333333336,
-      "end": 64.29166666666667,
-      "spokenText": "The twist?",
-      "voiceStart": 63.083333333333336,
-      "voiceEnd": 64.018,
-      "caption": "The twist?",
-      "shotNumbers": [
-        26
-      ],
-      "visual": "twist",
-      "placeholder": false
-    },
-    {
-      "name": "reveal",
-      "start": 64.16666666666667,
-      "end": 67.41666666666667,
+      "name": "The real final Film project",
+      "start": 43.541666666666664,
+      "end": 47.541666666666664,
+      "voiceStart": 43.666666666666664,
+      "voiceEnd": 46.02533333333333,
       "spokenText": "Even this demo was made in Aftertake.",
-      "voiceStart": 64.29166666666667,
-      "voiceEnd": 66.65033333333334,
       "caption": "Even this demo was made in Aftertake.",
+      "purpose": "Reveal that this actual focused demo was cut, titled, voiced and exported in Aftertake.",
       "shotNumbers": [
-        27
-      ],
-      "visual": "ui-reveal",
-      "placeholder": false
+        18
+      ]
     },
     {
-      "name": "yours",
-      "start": 67.29166666666667,
-      "end": 69.29166666666667,
+      "name": "Invitation and readable credits",
+      "start": 47.541666666666664,
+      "end": 53.041666666666664,
+      "voiceStart": 47.666666666666664,
+      "voiceEnd": 49.26866666666666,
       "spokenText": "Make the next take yours.",
-      "voiceStart": 67.41666666666667,
-      "voiceEnd": 69.01866666666668,
       "caption": "Make the next take yours.",
+      "purpose": "End on the product invitation and satisfy compact attribution without another feature claim.",
       "shotNumbers": [
-        28
-      ],
-      "visual": "yours",
-      "placeholder": false
-    },
-    {
-      "name": "credits",
-      "start": 69.16666666666667,
-      "end": 71.66666666666667,
-      "spokenText": "",
-      "voiceStart": null,
-      "voiceEnd": null,
-      "caption": "",
-      "shotNumbers": [
-        29
-      ],
-      "visual": "credits",
-      "placeholder": false
+        19
+      ]
     }
   ]
 }

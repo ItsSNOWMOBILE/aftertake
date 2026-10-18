@@ -442,7 +442,7 @@ export default function CharacterStudio({
           <X size={19} />
         </button>
         <div className="eyebrow">CHARACTER REPLACEMENT</div>
-        <h2>Same performance. New character.</h2>
+        <h2>New character. Same scene.</h2>
         <p className="character-intro">
           Choose the person in your shot, then replace them with someone from a reference photo.
           Review the tracked selection before generating.

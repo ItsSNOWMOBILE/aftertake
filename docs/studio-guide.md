@@ -3,8 +3,8 @@
 [← Back to Aftertake](../README.md)
 
 [Try the browser editor](https://aftertake-studio.right-bard-9761.chatgpt.site/studio/) ·
-[Review the 44-second ads + VFX demo](https://aftertake-studio.right-bard-9761.chatgpt.site/) ·
-[Watch the 72-second tools + workflow review](https://aftertake-studio.right-bard-9761.chatgpt.site/judges/) ·
+[Review the focused 53-second demo](https://aftertake-studio.right-bard-9761.chatgpt.site/) ·
+[Open the demo chapter guide](https://aftertake-studio.right-bard-9761.chatgpt.site/judges/) ·
 [Review the native H3 character replacement](https://aftertake-studio.right-bard-9761.chatgpt.site/cast/h3.html) ·
 [Watch the narrated-cut workflow](https://aftertake-studio.right-bard-9761.chatgpt.site/ads/workflow.html) ·
 [Build evidence](progress.md)
@@ -418,11 +418,7 @@ python scripts/import-film-project.py examples/judges-film/project.json --url ht
 
 In Film assembly choose **Import film project** and select that `project.json`.
 The helper verifies and imports its original media and voices by content hash;
-the editor resolves completed takes from the bundled examples. The project
-retains all 29 cuts, 44 titles and 21 whole outer narration clips, plus the
-three voices in its opening ad. Exporting it uses the local
-CPU film runtime; revoicing is optional. The 44-second creative review has a
-separate project under `examples/submission-film/`.
+the editor resolves completed takes from the bundled examples. The project retains 19 cuts, 24 editable titles and 13 complete outer narration clips, plus one embedded ad utterance. Exporting uses the local CPU Film runtime; revoicing is optional. The same 53.04-second project is also provided under `examples/submission-film/` for compatibility.
 
 Film import also restores the supplied voice scripts, model receipts and word
 timings after checking their audio hashes and durations. In a short narrated

@@ -1,0 +1,52 @@
+{
+  "at": "2026-10-18T23:30:35.153Z",
+  "imports": [
+    {
+      "tool": "aftertake_import_media",
+      "path": "examples/judges-film/media/focused-ui-character.mp4",
+      "result": {
+        "asset": {
+          "kind": "video",
+          "duration": 2.5,
+          "width": 1280,
+          "height": 720,
+          "id": "af9b3b89-8d97-4e44-a18e-a3b7574d01f5",
+          "name": "focused-ui-character.mp4",
+          "extension": ".mp4",
+          "sha256": "9536ec2eebd1d43d2a212843df72e6595b80de6930e8b8bc5eb3e9c153113c04",
+          "url": "/api/films/assets/af9b3b89-8d97-4e44-a18e-a3b7574d01f5/media",
+          "createdAt": "2026-10-18T23:30:34.903Z"
+        },
+        "reused": false
+      }
+    },
+    {
+      "tool": "aftertake_import_media",
+      "path": "examples/judges-film/media/focused-ui-reveal.mp4",
+      "result": {
+        "asset": {
+          "kind": "video",
+          "duration": 4,
+          "width": 1280,
+          "height": 720,
+          "id": "3f8e7c0a-ad43-448d-8638-aa6128c3031f",
+          "name": "focused-ui-reveal.mp4",
+          "extension": ".mp4",
+          "sha256": "b760ac36462998eba62f392325d2f0882aa3af30e92d38a8c7c07c14a0ddd289",
+          "url": "/api/films/assets/3f8e7c0a-ad43-448d-8638-aa6128c3031f/media",
+          "createdAt": "2026-10-18T23:30:35.060Z"
+        },
+        "reused": false
+      }
+    }
+  ],
+  "resolve": {
+    "projectFile": ".runtime/final-demo/focused-project-final.json",
+    "draftSha256": "a76127b1913d069dc608d5ea6767344674155b361fef25d3f303dd5f37a2352b"
+  },
+  "export": {
+    "key": "focused-final-a76127b1913d069dc608d5ea6767344674155b361fef25d3f303dd5f37a2352b",
+    "filmId": "6ae97ad5-8a56-4b11-aa40-6d57bf01893f",
+    "stateAtAdmission": "assembling"
+  }
+}

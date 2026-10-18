@@ -48,9 +48,9 @@ local narration can run on the CPU.
 
 Also explore **[speech-following typography](https://aftertake-studio.right-bard-9761.chatgpt.site/type/spoken.html)**,
 the **[agent editing workflow](https://aftertake-studio.right-bard-9761.chatgpt.site/agent/)**,
-and the **[72-second narrated walkthrough](https://aftertake-studio.right-bard-9761.chatgpt.site/judges/)**.
-The demo films were assembled in Aftertake itself; their editable
-[Film projects](examples/README.md) are included.
+and the **[53-second narrated walkthrough](https://aftertake-studio.right-bard-9761.chatgpt.site/judges/)**.
+The focused film was assembled in Aftertake itself; its editable
+[Film project](examples/judges-film/README.md) is included.
 
 ## Start here
 

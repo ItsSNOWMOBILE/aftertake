@@ -47,12 +47,7 @@ behavior has been inspected.
 | Agent generation and editing via MCP | Implemented locally: twenty-seven typed tools cover native image/frame/video generation, direct text-to-video with sound, native SAM3/H3 character selection/replacement, optional local script drafts, inspection, measured narration, persistent beat plans and native exports; the product-shot chain is verified live, while broad automated creative direction remains unproven |
 | Managed cloud rendering, accounts, billing, shared projects and public generation API | Missing; current hosted site reviews recorded examples |
 
-The latest narrated review draft was cut, titled, voiced and exported through
-Aftertake itself. The rejected 116-second draft mixed unrelated visuals and
-narration. The current replacement is a 44.42-second review cut with 24 cuts, 20 title
-layers and 20 complete voice clips. A separate 6.5-second MCP proof leaves its
-three paired beats editable in the actual Film UI. This remains a review draft, not accepted
-submission evidence or full suite parity.
+The focused 53.04-second film was cut, titled, voiced and exported through Aftertake. It has 19 cuts, 24 editable title layers and 13 complete outer narration clips. The actual local MCP session receipt and editable project are included. The film is prepared for review and is not a submitted entry or evidence of full suite parity.
 
 Higgsfield's official [explainer skill](https://github.com/higgsfield-ai/skills/blob/main/higgsfield-video-explainer/SKILL.md)
 pairs narration and visuals, generates voice before assembly, and validates

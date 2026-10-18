@@ -1,62 +1,38 @@
-5.958s — 7.277s
+0.125s â€“ 1.444s
 This is Aftertake.
 
-7.542s — 11.074s
-Write a line for each picture. Kokoro voices it locally.
-
-11.333s — 14.086s
-Highlight the spoken words. Adjust any word.
-
-14.375s — 16.403s
-Change the hook. Keep the edit.
-
-16.667s — 20.727s
-Agents inspect footage, pair whole lines, and rejoin exports.
-
-21.042s — 22.964s
-Create an image with Z Image.
-
-23.417s — 25.221s
-Animate it with L T X.
-
-25.792s — 27.004s
-Direct the camera.
-
-27.667s — 29.249s
-Or set the ending frame.
-
-30.042s — 31.813s
-Qwen prepares your reference.
-
-32.417s — 34.637s
+3.625s â€“ 5.846s
 Paint where and when the scene changes.
 
-35.792s — 38.566s
+7.125s â€“ 8.896s
+Qwen prepares your reference.
+
+10.125s â€“ 12.899s
 The same cue guides generation and the blend.
 
-39.708s — 41.162s
+13.625s â€“ 15.079s
 Cast your own character.
 
-43.833s — 45.765s
-H3 keeps the performance.
+16.125s â€“ 18.441s
+Replace a tracked character with H three.
 
-46.750s — 48.247s
-Reuse the recipe.
+19.167s â€“ 21.109s
+Create video with L T X.
 
-48.500s — 50.634s
-Sam two tracks the reviewed mask.
+26.167s â€“ 29.699s
+Write a line for each picture. Kokoro voices it locally.
 
-51.417s — 56.227s
-React and TypeScript, Comfy's S D K, and Py A V with F F mpeg.
+30.667s â€“ 32.695s
+Change the hook. Keep the edit.
 
-56.792s — 62.824s
-One open chain: protected scenes, inspectable workflows, and agent edits you can reopen.
+33.667s â€“ 37.980s
+Agents inspect footage, edit, export, and reopen this project.
 
-63.083s — 64.018s
-The twist?
+39.667s â€“ 43.291s
+Comfy S D K connects local, open-weight workflows.
 
-64.292s — 66.650s
+43.667s â€“ 46.025s
 Even this demo was made in Aftertake.
 
-67.417s — 69.019s
+47.667s â€“ 49.269s
 Make the next take yours.

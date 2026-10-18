@@ -1,5 +1,8 @@
 # Remixable examples
 
+## The focused editable Film
+One 53.04-second [editable Film](judges-film/README.md) develops a shared cue, tracked character replacement, product video and an ad revision. Its 19 cuts, 24 titles, 13 complete outer voices and genuine editor captures remain inspectable. `submission-film/` is a compatibility copy of this same final project.
+
 These are actual local Comfy SDK renders, captured on an RTX 5080 with 16 GB
 VRAM. The videos are pre-rendered examples; editing a recipe does not alter a
 past render. A connected local engine is needed to generate a new take.
