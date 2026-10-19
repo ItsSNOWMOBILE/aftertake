@@ -212,7 +212,8 @@ def main():
     page = page.replace('Explore recorded sources, results, cues and frame-editing recipes without Python, model downloads or a GPU. New generation uses your connected local Comfy engine.',
                         f'Try {len(manifest["cases"])} examples here, or download the complete source below for the matching local workspace. New generation uses your connected local Comfy engine.')
     page = page.replace('href="assets/aftertake-portrait-teaser.mp4"', 'href="portrait/"')
-    page = page.replace('</body>', '<script type="module" src="assets/recorded-video-preview.js"></script>\n</body>')
+    if 'recorded-video-preview.js' not in page:
+        page = page.replace('</body>', '<script type="module" src="assets/recorded-video-preview.js"></script>\n</body>')
     (output / 'assets/recorded-video-preview.js').write_bytes(blobs['public/recorded-video-preview.js'])
     (output / 'agent/guide.txt').write_bytes(blobs['docs/mcp.md'])
     (output / 'ads/narrated-cut-guide.txt').write_bytes(blobs['docs/narrated-cut.md'])
