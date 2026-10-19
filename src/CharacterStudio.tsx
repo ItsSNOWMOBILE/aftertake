@@ -426,6 +426,7 @@ export default function CharacterStudio({
     setIdentityReferences(supporting);
     setWardrobe(r.wardrobe || 'reference');
     setView('selection');
+    setError('');
     setNotice('Settings restored. Review the selection before creating a new take.');
   }
   async function importRecipe(file?: File) {
