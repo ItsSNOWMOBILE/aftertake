@@ -78,6 +78,9 @@ const client = await createIsolatedClient({
   writeRoots: [data],
 });
 const terminal = new Set(['succeeded', 'failed', 'canceled', 'expired', 'output_error']);
+// A browser's unresolved request must not be silently replayed into another
+// studio process when its original durable record cannot be found.
+const admissionScope = randomUUID();
 generation.register('take', () =>
   [...renders.values()].some((render) => !terminal.has(render.state)),
 );
@@ -355,6 +358,7 @@ app.get('/api/engine', async (req, res) => {
 app.get('/api/workspace', (_req, res) => {
   res.json({
     generationProtocol: 1,
+    admissionScope,
     textVideoProtocol: 1,
     examples: process.env.AFTERTAKE_EXAMPLES === '1',
     exampleCount: Number(process.env.AFTERTAKE_EXAMPLE_COUNT || 3),
@@ -659,6 +663,12 @@ app.post('/api/renders', async (req, res) => {
     return void res
       .status(terminal.has(admission.existing.state) ? 200 : 202)
       .json(admission.existing);
+  const requestedScope = req.get('X-Aftertake-Admission-Scope');
+  if (requestedScope !== undefined && requestedScope !== admissionScope)
+    return void res.status(409).json({
+      code: 'admission_scope_changed',
+      error: 'The studio restarted. Check the original request before starting another take.',
+    });
   if (generation.admitting)
     return void res.status(409).json({ error: 'A take is already being submitted.' });
   if (generation.busy('take') || [...renders.values()].some((r) => !terminal.has(r.state)))

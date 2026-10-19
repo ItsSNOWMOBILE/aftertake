@@ -1,17 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Clapperboard, Search, Star, X } from 'lucide-react';
 import type { Render } from './domain';
+import { takeBusy } from './take-client';
 import './take-library.css';
 
-const activeStates = new Set([
-  'submitting',
-  'queued',
-  'running',
-  'finalizing',
-  'canceling',
-  'connection_lost',
-  'submission_unknown',
-]);
 const pipelineLabel = (take: Render) =>
   take.recipe.pipeline === 'cinema'
     ? 'Camera · LTX-2.5'
@@ -77,7 +69,7 @@ export default function TakeLibrary({
         words.every((word) => text.includes(word)) &&
         (status === 'all' ||
           (status === 'ready' && take.state === 'succeeded') ||
-          (status === 'active' && activeStates.has(take.state)) ||
+          (status === 'active' && takeBusy(take)) ||
           (status === 'failed' && ['failed', 'expired', 'output_error'].includes(take.state)))
       );
     });

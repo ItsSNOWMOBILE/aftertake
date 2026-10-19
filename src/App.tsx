@@ -52,6 +52,8 @@ import {
 import './style.css';
 import FilmDesk from './FilmComposer';
 import TakeLibrary from './TakeLibrary';
+import TakeStatus from './take-status';
+import { TakeClient, takeBusy, takeRecoverable } from './take-client';
 import RecipeLibrary from './RecipeLibrary';
 import { applyTemplate, type Template } from './templates';
 import EditReference from './EditReference';
@@ -125,8 +127,13 @@ const timecode = (seconds: number, fps = 24) =>
   `${Math.floor(seconds).toString().padStart(2, '0')}:${Math.floor((seconds % 1) * fps)
     .toString()
     .padStart(2, '0')}`;
-const isBusy = (state: string) =>
-  ['submitting', 'queued', 'running', 'finalizing', 'canceling', 'connection_lost'].includes(state);
+function takeStorage() {
+  try {
+    return localStorage;
+  } catch {
+    return undefined;
+  }
+}
 
 export default function App() {
   const [clips, setClips] = useState<Clip[]>([]);
@@ -138,6 +145,17 @@ export default function App() {
     message: 'Checking local engine…',
   });
   const [renders, setRenders] = useState<Render[]>([]);
+  const [takeClient] = useState(
+    () =>
+      new TakeClient(apiFetch, {
+        storage: browserDemo ? undefined : takeStorage(),
+        readonly: browserDemo,
+      }),
+  );
+  const [takeAdmission, setTakeAdmission] = useState(() => takeClient.pending);
+  const [takeIssue, setTakeIssue] = useState('');
+  const [takeAction, setTakeAction] = useState(false);
+  const takeRequestActive = useRef(false);
   const [frameEdits, setFrameEdits] = useState<FrameEdit[]>([]);
   const [images, setImages] = useState<ImageGeneration[]>([]);
   const [imageStudioOpen, setImageStudioOpen] = useState(false);
@@ -201,6 +219,7 @@ export default function App() {
         exampleCount: number;
         exampleNames: Record<string, string>;
         featuredRenderId?: string;
+        admissionScope?: string;
       }>('/api/workspace'),
     ])
       .then(([found, history, workspace]) => {
@@ -209,6 +228,18 @@ export default function App() {
         setExampleWorkspace(workspace.examples);
         setExampleCount(workspace.exampleCount);
         setExampleNames(workspace.exampleNames || {});
+        const original = takeClient.observe(history);
+        setTakeAdmission(takeClient.pending);
+        if (original) {
+          selectTake(original);
+          return;
+        }
+        if (takeClient.pending) {
+          const originalRecipe = takeClient.pending.recipe;
+          setRecipe(originalRecipe);
+          setMode(initialView(originalRecipe));
+          return;
+        }
         let saved: Recipe | null = null;
         try {
           saved = projectSchema.parse(
@@ -271,7 +302,11 @@ export default function App() {
     };
   }, [recipe?.pipeline, recipe?.cinema?.guidance]);
   useEffect(() => {
-    if (recipe) localStorage.setItem('aftertake-project', JSON.stringify(recipe));
+    try {
+      if (recipe) localStorage.setItem('aftertake-project', JSON.stringify(recipe));
+    } catch {
+      // A disabled draft store must not interrupt the current workspace.
+    }
   }, [recipe]);
   useEffect(() => {
     let live = true;
@@ -373,7 +408,7 @@ export default function App() {
         ?.scrollIntoView({ block: 'start' });
   }, [take?.id]);
   useEffect(() => {
-    const pending = renders.filter((r) => isBusy(r.state));
+    const pending = renders.filter(takeBusy);
     if (!pending.length) return;
     const interval = setInterval(() => {
       for (const render of pending) {
@@ -392,11 +427,33 @@ export default function App() {
     return () => clearInterval(interval);
   }, [
     renders
-      .filter((r) => isBusy(r.state))
+      .filter(takeBusy)
       .map((r) => r.id)
       .join(','),
     take?.id,
   ]);
+  useEffect(() => {
+    if (!takeAdmission || browserDemo) return;
+    let live = true;
+    const timer = setInterval(() => {
+      api<Render[]>('/api/renders')
+        .then((history) => {
+          if (!live) return;
+          setRenders(history);
+          const found = takeClient.observe(history);
+          if (found) {
+            setTakeAdmission(undefined);
+            setTakeIssue('');
+            selectTake(found);
+          }
+        })
+        .catch(() => {});
+    }, 2000);
+    return () => {
+      live = false;
+      clearInterval(timer);
+    };
+  }, [takeAdmission?.key, takeClient]);
   useEffect(() => {
     if (!playing) return;
     let raf: number;
@@ -804,7 +861,11 @@ export default function App() {
     }
   }
   async function render() {
-    if (!recipe) return;
+    if (!recipe || browserDemo || takeRequestActive.current) return;
+    if (takeClient.pending) {
+      await rejoinTake();
+      return;
+    }
     if (usesCue(recipe) && !recipe.cue.strokes.some((stroke) => stroke.mode !== 'erase')) {
       setToast('Paint a region on the shot before rendering.');
       return;
@@ -813,21 +874,54 @@ export default function App() {
       setToast('Choose an appearance image before transferring motion.');
       return;
     }
+    takeRequestActive.current = true;
     setRendering(true);
+    setTakeIssue('');
     try {
-      const result = await api<Render>('/api/renders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(recipe),
-      });
-      setTake(result);
-      setMode(initialView(recipe));
-      seek(0);
-      setRenders((all) => [result, ...all]);
+      acceptTakeResult(await takeClient.submit(recipe));
     } catch (error) {
       setToast((error as Error).message);
     } finally {
+      setTakeAdmission(takeClient.pending);
+      takeRequestActive.current = false;
       setRendering(false);
+    }
+  }
+  function acceptTakeResult(result: Awaited<ReturnType<TakeClient['submit']>>) {
+    if (result.kind === 'record') {
+      setRenders((all) => [result.render, ...all.filter((item) => item.id !== result.render.id)]);
+      selectTake(result.render);
+    }
+    setTakeIssue(result.error || '');
+    if (result.error) setToast(result.error);
+  }
+  async function rejoinTake() {
+    if (browserDemo || takeRequestActive.current || !takeClient.pending) return;
+    takeRequestActive.current = true;
+    setTakeAction(true);
+    setTakeIssue('');
+    try {
+      acceptTakeResult(await takeClient.submit());
+    } catch (error) {
+      setTakeIssue((error as Error).message);
+    } finally {
+      setTakeAdmission(takeClient.pending);
+      takeRequestActive.current = false;
+      setTakeAction(false);
+    }
+  }
+  async function actOnTake(current: Render, action: 'cancel' | 'reconcile') {
+    if (browserDemo || takeRequestActive.current) return;
+    takeRequestActive.current = true;
+    setTakeAction(true);
+    setTakeIssue('');
+    try {
+      acceptTakeResult(await takeClient.act(current, action));
+    } catch (error) {
+      setTakeIssue((error as Error).message);
+    } finally {
+      takeRequestActive.current = false;
+      setTakeAction(false);
     }
   }
   async function exportWorkflow() {
@@ -957,12 +1051,15 @@ export default function App() {
   );
   const hearingOutput = mode === 'result' || mode === 'compare';
   const canHear = hearingOutput ? outputAudio : Boolean(recipe?.clip.hasAudio && !isCinema);
-  const activeTake = take && isBusy(take.state) ? take : renders.find((r) => isBusy(r.state));
+  const activeTake = take && takeBusy(take) ? take : renders.find(takeBusy);
+  const statusTake = activeTake || (take && takeRecoverable(take) ? take : undefined);
   const frameBusy = frameEdits.some(frameEditBusy);
   const imageGenBusy = images.some(imageBusy);
   const videoGenBusy = videos.some(videoBusy);
   const busy =
     rendering ||
+    takeAction ||
+    Boolean(takeAdmission) ||
     Boolean(activeTake) ||
     frameBusy ||
     imageGenBusy ||
@@ -1857,7 +1954,7 @@ export default function App() {
               clips={clips}
               disabled={busy}
               creating={frameBusy}
-              canCreate={!rendering && !activeTake}
+              canCreate={!busy}
               onCreate={() => {
                 video.current?.pause();
                 outputVideo.current?.pause();
@@ -2228,41 +2325,27 @@ export default function App() {
             </div>
             <p>Runs on your ComfyUI. Every take includes its editable recipe.</p>
           </div>
-          {take?.error && take.state !== 'succeeded' && (
+          {take?.error && take.state !== 'succeeded' && !statusTake && (
             <div className="error-note">{take.error}</div>
           )}
-          {(rendering || activeTake) && (
-            <div className="render-progress">
-              <div>
-                <LoaderCircle size={14} className="spin" />
-                <span>
-                  {activeTake?.stage || activeTake?.state.replaceAll('_', ' ') || 'Submitting'}
-                </span>
-                <b>
-                  {activeTake?.progress != null
-                    ? `${Math.round(activeTake.progress * 100)}% of step`
-                    : 'GPU working'}
-                </b>
-              </div>
-              {activeTake?.progress != null && <progress max="1" value={activeTake.progress} />}{' '}
-              <button
-                onClick={async () => {
-                  if (!activeTake) return;
-                  try {
-                    const updated = await api<Render>(`/api/renders/${activeTake.id}/cancel`, {
-                      method: 'POST',
-                    });
-                    setRenders((all) => all.map((r) => (r.id === updated.id ? updated : r)));
-                    setTake((current) => (current?.id === updated.id ? updated : current));
-                  } catch (error) {
-                    setToast((error as Error).message);
-                  }
-                }}
-              >
-                Cancel take
-              </button>
-            </div>
-          )}
+          <TakeStatus
+            take={statusTake}
+            pending={takeAdmission}
+            sending={rendering || takeAction}
+            submitting={rendering}
+            error={takeIssue}
+            readOnly={browserDemo}
+            sessionOnly={takeClient.sessionOnly}
+            onAction={(current, action) => void actOnTake(current, action)}
+            onRejoin={() => void rejoinTake()}
+            onExport={() => download('aftertake-original-take-request.json', takeClient.pending)}
+            onDismiss={() => {
+              takeClient.dismiss();
+              setTakeAdmission(undefined);
+              setTakeIssue('');
+              setToast('Browser request dismissed. The original take has not been canceled.');
+            }}
+          />
         </div>
         <div className="render-footer">
           <button
@@ -2270,16 +2353,26 @@ export default function App() {
             disabled={!recipe || busy || !engine.ready || browserDemo}
             onClick={() => void render()}
           >
-            {busy ? <LoaderCircle size={17} className="spin" /> : <Sparkles size={17} />}{' '}
+            {takeAdmission || (activeTake && takeRecoverable(activeTake)) ? (
+              <RotateCcw size={17} />
+            ) : busy ? (
+              <LoaderCircle size={17} className="spin" />
+            ) : (
+              <Sparkles size={17} />
+            )}{' '}
             {imageGenBusy
               ? 'Creating an image…'
               : frameBusy
                 ? 'Editing a frame…'
-                : busy
-                  ? 'Making your take…'
-                  : recipe?.transfer?.finish
-                    ? 'Composite saved take'
-                    : 'Render take'}
+                : takeAdmission
+                  ? 'Check your original request'
+                  : activeTake && takeRecoverable(activeTake)
+                    ? 'Check take status'
+                    : busy
+                      ? 'Making your take…'
+                      : recipe?.transfer?.finish
+                        ? 'Composite saved take'
+                        : 'Render take'}
             <ArrowUpRight size={18} />
           </button>
           {!engine.ready && (
@@ -2391,7 +2484,15 @@ export default function App() {
           clips={clips}
           jobs={characterJobs}
           initialSource={recipe?.clip}
-          otherBusy={rendering || Boolean(activeTake) || frameBusy || imageGenBusy || videoGenBusy}
+          otherBusy={
+            rendering ||
+            takeAction ||
+            Boolean(takeAdmission) ||
+            Boolean(activeTake) ||
+            frameBusy ||
+            imageGenBusy ||
+            videoGenBusy
+          }
           onUpdate={(job) =>
             setCharacterJobs((all) => [job, ...all.filter((item) => item.id !== job.id)])
           }
@@ -2420,6 +2521,8 @@ export default function App() {
           videos={videos}
           otherBusy={
             rendering ||
+            takeAction ||
+            Boolean(takeAdmission) ||
             Boolean(activeTake) ||
             frameBusy ||
             imageGenBusy ||
@@ -2447,6 +2550,8 @@ export default function App() {
           images={images}
           otherBusy={
             rendering ||
+            takeAction ||
+            Boolean(takeAdmission) ||
             Boolean(activeTake) ||
             frameBusy ||
             videoGenBusy ||

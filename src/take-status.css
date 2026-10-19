@@ -1,0 +1,69 @@
+.take-status-stack {
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+}
+.take-status {
+  padding: 13px;
+  border: 1px solid var(--line, #323632);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.025);
+  font-size: 12px;
+  line-height: 1.55;
+}
+.take-status.needs-review {
+  border-color: rgba(218, 170, 90, 0.4);
+}
+.take-status-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.take-status-heading svg {
+  flex-shrink: 0;
+}
+.take-status p {
+  margin: 8px 0;
+  color: var(--muted, #a6aaa5);
+  overflow-wrap: anywhere;
+}
+.take-status small {
+  display: block;
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+}
+.take-status .take-status-error {
+  color: #e5bba2;
+}
+.take-status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 10px;
+}
+.take-status-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 7px 9px;
+  border: 1px solid var(--line, #323632);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.035);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.take-status-actions button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+.take-step-progress {
+  display: grid;
+  gap: 5px;
+}
+.take-step-progress progress {
+  width: 100%;
+  height: 4px;
+  accent-color: var(--accent, #d6e5a6);
+}

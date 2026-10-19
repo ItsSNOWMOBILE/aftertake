@@ -103,20 +103,34 @@ test('native take admission rejoins persisted records after restart and refuses 
   }
   let child = await start();
   const base = `http://127.0.0.1:${port}`,
-    post = (body: unknown, key: string) =>
+    post = (body: unknown, key: string, scope?: string) =>
       fetch(base + '/api/renders', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Idempotency-Key': key },
+        headers: {
+          'Content-Type': 'application/json',
+          'Idempotency-Key': key,
+          ...(scope === undefined ? {} : { 'X-Aftertake-Admission-Scope': scope }),
+        },
         body: JSON.stringify(body),
       });
   try {
+    const workspace = await fetch(base + '/api/workspace').then((r) => r.json());
+    assert.equal(workspace.generationProtocol, 1);
+    assert.match(workspace.admissionScope, /^[a-f0-9-]{36}$/);
     assert.equal(
-      (await fetch(base + '/api/workspace').then((r) => r.json())).generationProtocol,
-      1,
+      (await fetch(base + '/api/workspace').then((r) => r.json())).admissionScope,
+      workspace.admissionScope,
+      'The admission scope must stay fixed for a running studio',
     );
     const first = await post(recipe, 'persisted-take');
     assert.equal(first.status, 202);
     assert.equal((await first.json()).id, id);
+    const guarded = await post(recipe, 'unknown-scope-request', 'different-studio');
+    assert.equal(guarded.status, 409);
+    assert.equal((await guarded.json()).code, 'admission_scope_changed');
+    const knownAcrossScopes = await post(recipe, 'persisted-take', 'different-studio');
+    assert.equal(knownAcrossScopes.status, 202);
+    assert.equal((await knownAcrossScopes.json()).id, id);
     assert.equal((await post({ ...recipe, seed: recipe.seed + 1 }, 'persisted-take')).status, 409);
     assert.equal((await post(recipe, 'deliberate-new-take')).status, 409);
     const recovery = await fetch(base + '/api/renders/' + id + '/reconcile', {
@@ -135,6 +149,14 @@ test('native take admission rejoins persisted records after restart and refuses 
     child.kill();
     await stopped;
     child = await start();
+    assert.notEqual(
+      (await fetch(base + '/api/workspace').then((r) => r.json())).admissionScope,
+      workspace.admissionScope,
+      'A new studio process must not inherit an unresolved browser request scope',
+    );
+    const oldScope = await post(recipe, 'unrecorded-original-request', workspace.admissionScope);
+    assert.equal(oldScope.status, 409);
+    assert.equal((await oldScope.json()).code, 'admission_scope_changed');
     const resumed = await post(recipe, 'persisted-take');
     assert.equal(resumed.status, 202);
     assert.equal((await resumed.json()).id, id);
