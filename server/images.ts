@@ -40,8 +40,12 @@ export async function imageRouter(context: {
     image.updatedAt = new Date().toISOString();
     const target = path.join(folder, image.id + '.json'),
       temporary = `${target}.${randomUUID()}.tmp`;
-    await writeFile(temporary, JSON.stringify(image, null, 2));
-    await rename(temporary, target);
+    try {
+      await writeFile(temporary, JSON.stringify(image, null, 2));
+      await rename(temporary, target);
+    } finally {
+      await unlink(temporary).catch(() => {});
+    }
   }
   async function targetMatches(image: ImageGeneration) {
     const issue = jobTargetIssue(image, target);
@@ -235,8 +239,8 @@ export async function imageRouter(context: {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      images.set(image.id, image);
       await persist(image);
+      images.set(image.id, image);
       try {
         await submit(image);
         res.status(201).json(image);

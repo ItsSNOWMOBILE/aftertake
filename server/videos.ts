@@ -41,8 +41,12 @@ export async function videoRouter(context: {
     video.updatedAt = new Date().toISOString();
     const target = path.join(folder, video.id + '.json'),
       temporary = `${target}.${randomUUID()}.tmp`;
-    await writeFile(temporary, JSON.stringify(video, null, 2));
-    await rename(temporary, target);
+    try {
+      await writeFile(temporary, JSON.stringify(video, null, 2));
+      await rename(temporary, target);
+    } finally {
+      await unlink(temporary).catch(() => {});
+    }
   }
   async function targetMatches(video: VideoGeneration) {
     const issue = jobTargetIssue(video, target);
@@ -230,8 +234,8 @@ export async function videoRouter(context: {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      videos.set(video.id, video);
       await persist(video);
+      videos.set(video.id, video);
       try {
         await submit(video);
         res.status(201).json(video);

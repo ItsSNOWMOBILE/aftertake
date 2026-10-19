@@ -1,7 +1,7 @@
 import { cancelAndRefresh } from './job-cancel.js';
 import { RequestError } from './http-errors.js';
 import { Router } from 'express';
-import { mkdir, readFile, readdir, rename, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, rename, writeFile, unlink } from 'node:fs/promises';
 import { createHash, randomUUID } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { promisify, isDeepStrictEqual } from 'node:util';
@@ -52,8 +52,12 @@ export async function characterRouter(context: {
     record.updatedAt = new Date().toISOString();
     const dest = path.join(folder, record.id + '.json'),
       tmp = dest + '.' + randomUUID() + '.tmp';
-    await writeFile(tmp, JSON.stringify(record, null, 2));
-    await rename(tmp, dest);
+    try {
+      await writeFile(tmp, JSON.stringify(record, null, 2));
+      await rename(tmp, dest);
+    } finally {
+      await unlink(tmp).catch(() => {});
+    }
   }
   async function inspect(
     filename: string,
@@ -499,8 +503,8 @@ export async function characterRouter(context: {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      jobs.set(id, record);
       await persist(record);
+      jobs.set(id, record);
       try {
         await submit(record);
         res.status(201).json(record);

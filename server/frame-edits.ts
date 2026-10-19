@@ -71,8 +71,12 @@ export async function frameEditorRouter(context: {
     edit.updatedAt = new Date().toISOString();
     const target = path.join(folder, `${edit.id}.json`),
       temporary = `${target}.${randomUUID()}.tmp`;
-    await writeFile(temporary, JSON.stringify(edit, null, 2));
-    await rename(temporary, target);
+    try {
+      await writeFile(temporary, JSON.stringify(edit, null, 2));
+      await rename(temporary, target);
+    } finally {
+      await unlink(temporary).catch(() => {});
+    }
   }
   async function resolve(request: FrameEditRequest) {
     const clip = await resolveClipAsset(request.clip, clips, 'frame-edit source');
@@ -278,8 +282,8 @@ export async function frameEditorRouter(context: {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      edits.set(edit.id, edit);
       await persist(edit);
+      edits.set(edit.id, edit);
       try {
         await submit(edit);
         res.status(201).json(edit);

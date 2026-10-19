@@ -96,8 +96,12 @@ async function persist(render: Render) {
   render.updatedAt = new Date().toISOString();
   const dest = path.join(renderDir, `${render.id}.json`);
   const temp = `${dest}.${randomUUID()}.tmp`;
-  await writeFile(temp, JSON.stringify(render, null, 2));
-  await rename(temp, dest);
+  try {
+    await writeFile(temp, JSON.stringify(render, null, 2));
+    await rename(temp, dest);
+  } finally {
+    await unlink(temp).catch(() => {});
+  }
 }
 for (const filename of await readdir(renderDir)) {
   if (!filename.endsWith('.json')) continue;
@@ -657,6 +661,11 @@ app.post('/api/renders', async (req, res) => {
       .json(admission.existing);
   if (generation.admitting)
     return void res.status(409).json({ error: 'A take is already being submitted.' });
+  if (generation.busy('take') || [...renders.values()].some((r) => !terminal.has(r.state)))
+    return void res.status(409).json({
+      error:
+        'A generation is already active. Let it finish, cancel it, or reconcile its submission before starting another.',
+    });
   generation.admitting = true;
   try {
     let recipe = input;
@@ -672,11 +681,6 @@ app.post('/api/renders', async (req, res) => {
       return void res
         .status(409)
         .json({ error: 'The selected local workflow is not ready. Check the engine panel.' });
-    if (generation.busy('take') || [...renders.values()].some((r) => !terminal.has(r.state)))
-      return void res.status(409).json({
-        error:
-          'A generation is already active. Let it finish, cancel it, or reconcile its submission before starting another.',
-      });
     try {
       recipe = await resolveRecipeAssets(recipe, clipDir);
     } catch (error) {
@@ -695,8 +699,8 @@ app.post('/api/renders', async (req, res) => {
       updatedAt: new Date().toISOString(),
     };
     render.workflow = buildWorkflow(recipe);
-    renders.set(render.id, render);
     await persist(render);
+    renders.set(render.id, render);
     try {
       await submitTake(render);
       res.status(201).json(render);
