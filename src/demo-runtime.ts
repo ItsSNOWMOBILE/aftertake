@@ -2,6 +2,7 @@ import { recipeSchema, type Clip, type Render } from './domain';
 import type { FrameEdit } from './frame-edit';
 import type { ImageGeneration } from './image-generation';
 import type { VideoGeneration } from './video-generation';
+import type { CharacterJob } from './character';
 import type { Template } from './templates';
 import { buildWorkflow } from '../server/workflow';
 
@@ -13,6 +14,7 @@ export type DemoSnapshot = {
   frameEdits: FrameEdit[];
   images?: ImageGeneration[];
   videos?: VideoGeneration[];
+  characters?: CharacterJob[];
   templates: Template[];
   media: Record<string, string>;
   thumbnails: Record<string, Record<string, string>>;
@@ -72,7 +74,12 @@ export function createDemoRuntime(snapshot: DemoSnapshot) {
       if (path === '/api/films') return json([]);
       if (path === '/api/images') return json(data.images || []);
       if (path === '/api/videos') return json(data.videos || []);
-      if (path === '/api/characters') return json([]);
+      if (path === '/api/characters') return json(data.characters || []);
+      const character = path.match(/^\/api\/characters\/([a-f0-9-]+)$/);
+      if (character) {
+        const job = data.characters?.find((item) => item.id === character[1]);
+        return job ? json(job) : json({ error: 'Recorded character take not found.' }, 404);
+      }
       const render = path.match(/^\/api\/renders\/([a-f0-9-]+)$/);
       if (render)
         return data.renders.some((item) => item.id === render[1])

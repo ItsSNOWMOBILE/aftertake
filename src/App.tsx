@@ -1,4 +1,5 @@
 import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
+import PreviewVideo from './PreviewVideo';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowDownToLine,
@@ -660,6 +661,14 @@ export default function App() {
       outputVideo.current?.pause();
       setPlaying(false);
     } else {
+      const required =
+        recipe?.pipeline === 'cinema'
+          ? [outputVideo.current]
+          : [video.current, outputVideo.current].filter(Boolean);
+      if (required.some((element) => element && (!element.currentSrc || element.readyState < 2))) {
+        setToast('The selected video is still loading. Press Play when the preview is ready.');
+        return;
+      }
       if (time >= duration - 0.1) seek(0);
       try {
         if (recipe?.pipeline === 'cinema') {
@@ -678,7 +687,11 @@ export default function App() {
       } catch (error) {
         console.error('Playback could not start:', error);
         setMediaError(true);
-        setToast('Video preview unavailable. Retry after the render finishes.');
+        setToast(
+          browserDemo
+            ? 'The recorded video could not play. Retry the preview or download the MP4.'
+            : 'Video preview unavailable. Retry after the render finishes.',
+        );
       }
     }
   }
@@ -1515,9 +1528,9 @@ export default function App() {
                   alt="Reference frame for the new shot"
                 />
               ) : (
-                <video
+                <PreviewVideo
                   ref={video}
-                  src={mediaUrl(recipe.clip.url)}
+                  mediaSrc={recipe.clip.url}
                   muted={!audioEnabled || hearingOutput || isCinema}
                   playsInline
                   preload="auto"
@@ -1529,9 +1542,9 @@ export default function App() {
                 />
               )}
               {hasOutput && (mode === 'result' || mode === 'compare') && (
-                <video
+                <PreviewVideo
                   ref={outputVideo}
-                  src={mediaUrl(take!.output!)}
+                  mediaSrc={take!.output!}
                   onLoadedMetadata={() => {
                     if (outputVideo.current) outputVideo.current.currentTime = time;
                   }}
@@ -1556,9 +1569,11 @@ export default function App() {
                   <RotateCcw size={16} />
                   <strong>Retry video preview</strong>
                   <span>
-                    {busy
-                      ? 'The GPU is rendering. Try again when the take is ready.'
-                      : 'Reload the preview after GPU memory is released.'}
+                    {browserDemo
+                      ? 'The recorded video could not play. Retry it or download the MP4.'
+                      : busy
+                        ? 'The GPU is rendering. Try again when the take is ready.'
+                        : 'Reload the preview after GPU memory is released.'}
                   </span>
                 </button>
               )}

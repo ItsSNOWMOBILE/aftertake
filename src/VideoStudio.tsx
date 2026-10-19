@@ -20,7 +20,8 @@ import {
   type VideoGeneration,
   type VideoRequest,
 } from './video-generation';
-import { apiFetch, browserDemo, mediaUrl } from './transport';
+import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
+import PreviewVideo from './PreviewVideo';
 import './image-studio.css';
 import './video-studio.css';
 
@@ -309,12 +310,12 @@ export default function VideoStudio({
           <div className="image-picture-column">
             <div className="video-picture">
               {viewed?.clip && viewed.state === 'succeeded' ? (
-                <video
+                <PreviewVideo
                   key={viewed.clip.sha256}
                   controls
                   playsInline
                   preload="metadata"
-                  src={mediaUrl(viewed.clip.url)}
+                  mediaSrc={viewed.clip.url}
                   aria-label={viewed.request.name}
                 />
               ) : (
@@ -356,6 +357,16 @@ export default function VideoStudio({
                     className="button"
                     href={mediaUrl(viewed.clip.url)}
                     download="aftertake-text-video.mp4"
+                    onClick={
+                      browserDemo
+                        ? (event) => {
+                            event.preventDefault();
+                            void saveMedia(viewed.clip!.url, 'aftertake-text-video.mp4').catch(
+                              (failure) => setError(failure.message),
+                            );
+                          }
+                        : undefined
+                    }
                   >
                     <Download size={14} />
                     MP4

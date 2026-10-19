@@ -1,0 +1,37 @@
+.recipe-preview,
+.video-picture,
+.film-preview {
+  position: relative;
+}
+.recorded-media-status.recorded-media-status {
+  position: absolute;
+  z-index: 5;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  padding: 10px 12px;
+  border: 1px solid #526246;
+  border-radius: 6px;
+  background: #111a13ed;
+  color: #d5e7c1;
+  font:
+    11px/1.5 'DM Sans',
+    sans-serif;
+  pointer-events: none;
+}
+.recorded-media-status.recorded-media-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  pointer-events: auto;
+}
+.recorded-media-error button {
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 1px solid #8ca96c;
+  border-radius: 4px;
+  background: #2b3a22;
+  color: #e2f3cd;
+}

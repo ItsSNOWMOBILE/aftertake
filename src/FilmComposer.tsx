@@ -19,6 +19,7 @@ import { renderDimensions, type Render } from './domain';
 import { filmDraftSchema, filmTimeline, type Film, type FilmDraft, type FilmAsset } from './film';
 import { titleMotion, wordMotion, spokenTitleState, retimeSpokenWord } from './title-motion';
 import { apiFetch, browserDemo, mediaUrl } from './transport';
+import PreviewVideo from './PreviewVideo';
 import './film.css';
 import NarratedCut from './NarratedCut';
 import { filmExportKey, exportAttemptKey } from './narrated-cut';
@@ -119,10 +120,10 @@ function ShotPicture({
       onError={() => onReadiness(false, true)}
     />
   ) : (
-    <video
+    <PreviewVideo
       style={style}
       ref={video}
-      src={mediaUrl(source)}
+      mediaSrc={source}
       playsInline
       preload="auto"
       onLoadedMetadata={() => {
@@ -1487,9 +1488,9 @@ export default function FilmComposer({
           <p className="changed-note">
             Last exported film · Export again to apply your latest edits.
           </p>
-          <video
+          <PreviewVideo
             key={preview.id}
-            src={mediaUrl(preview.output!)}
+            mediaSrc={preview.output!}
             controls
             playsInline
             preload="metadata"

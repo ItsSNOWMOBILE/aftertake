@@ -68,6 +68,12 @@ The public trial has no inference endpoint and uploads no user media.
 
 ## Replace character
 
+In the browser editor, **Replace character** opens the recorded high-resolution
+H3 example with its original source, identity photo, tracked selection and result.
+Use **Watch source**, **Tracked selection** and **Result** to inspect each stage.
+Download its recipe, mask and executed graph to reproduce the workflow locally.
+Changing settings in this recorded view does not regenerate the result.
+
 Replace character uses a separate native H3 workflow. Pick a person in a
 continuous source shot, track their whole body with SAM3, and inspect the moving
 selection before generating. Supply the primary original identity photo, optionally

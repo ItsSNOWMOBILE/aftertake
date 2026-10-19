@@ -1,4 +1,5 @@
 import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
+import PreviewVideo from './PreviewVideo';
 import { useEffect, useRef, useState } from 'react';
 import {
   ArrowLeft,
@@ -212,10 +213,10 @@ export default function RecipeLibrary({
                     }
                   />
                 ) : (
-                  <video
+                  <PreviewVideo
                     key={`${selected.slug}-${source}`}
                     ref={preview}
-                    src={mediaUrl(source ? selected.source : selected.result)}
+                    mediaSrc={source ? selected.source : selected.result}
                     poster={source ? undefined : mediaUrl(selected.poster)}
                     controls
                     muted

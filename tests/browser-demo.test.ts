@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { buildDemoSnapshot } from '../scripts/browser-demo-data.mjs';
 import { createDemoRuntime } from '../src/demo-runtime.js';
+import type { CharacterRequest, CharacterSelectionRequest } from '../src/character.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 // Test the checked-out fixture, including in shallow CI/source checkouts.
@@ -151,4 +152,124 @@ test('recorded text-video history exposes real output settings while new generat
   });
   assert.equal(blocked.status, 409);
   assert.equal((await demo.request('/api/videos').then((r) => r.json())).length, 1);
+});
+
+test('the character studio replays the actual H3 selection, reference and replacement with their native receipts', async () => {
+  const demo = createDemoRuntime(snapshot);
+  const list = await demo.request('/api/characters').then((r) => r.json());
+  assert.deepEqual(
+    list.map((job: { kind: string }) => job.kind),
+    ['selection', 'replacement'],
+  );
+  const [selection, replacement] = snapshot.characters!;
+  assert.equal(selection.id, '0bd5c390-e419-4610-8cf7-cd2e2ea6475b');
+  assert.equal(selection.jobId, '23174133-7ba4-448d-a870-b1bad7bcd7b4');
+  assert.equal(replacement.id, '2c72d172-c42f-486f-895c-5d2653988264');
+  assert.equal(replacement.jobId, '17193ac8-5660-4dbc-bb2e-0537bffe754a');
+  assert.ok(list.every((job: { state: string }) => job.state === 'succeeded'));
+  const selected = selection.request as CharacterSelectionRequest,
+    request = replacement.request as CharacterRequest,
+    recorded = JSON.parse(
+      await readFile(new URL('../examples/character-h3-high/recipe.json', import.meta.url), 'utf8'),
+    );
+  assert.deepEqual(selected, recorded.selection);
+  assert.deepEqual(request, recorded.replacement);
+  assert.deepEqual(replacement.workflow, recorded.workflow);
+  assert.deepEqual(selection.selection, recorded.selectionInfo);
+  assert.deepEqual(replacement.clip, recorded.output);
+  assert.equal(replacement.clip!.hasAudio, false, 'This published source is silent.');
+  assert.equal(request.seed, 509103);
+  assert.equal(selected.resolution, '768');
+  for (const clip of [selected.clip, request.reference, replacement.clip!])
+    assert.deepEqual(
+      snapshot.clips.find((item) => item.id === clip.id),
+      clip,
+    );
+  const media = `https://raw.githubusercontent.com/ItsSNOWMOBILE/aftertake/${revision}/examples/`;
+  assert.equal(demo.mediaUrl(selected.clip.url), media + 'character-h3-high/source.mp4');
+  assert.equal(demo.mediaUrl(request.reference.url), media + 'character-h3/reference.png');
+  assert.equal(demo.mediaUrl(replacement.clip!.url), media + 'character-h3-high/result.mp4');
+  assert.equal(
+    demo.mediaUrl(`/api/characters/${selection.id}/source`),
+    media + 'character-h3-high/prepared-source.mp4',
+  );
+  assert.equal(
+    demo.mediaUrl(`/api/characters/${selection.id}/preview`),
+    media + 'character-h3-high/selection-preview.mp4',
+  );
+  assert.equal(
+    demo.mediaUrl(`/api/characters/${selection.id}/mask`),
+    media + 'character-h3-high/tracked-mask.mkv',
+  );
+  assert.equal(
+    demo.mediaUrl(`/api/characters/${replacement.id}/recipe`),
+    media + 'character-h3-high/recipe.json',
+  );
+  assert.equal(
+    demo.mediaUrl(`/api/thumbnails/${selected.clip.id}?time=0`),
+    media + 'character-h3-high/source-frame.jpg',
+  );
+  assert.equal(
+    demo.mediaUrl(`/api/thumbnails/${selected.clip.id}?time=1.5`),
+    media + 'character-h3-high/source-frame-036.jpg',
+  );
+  assert.equal(
+    demo.mediaUrl(`/api/thumbnails/${selected.clip.id}?time=1.6`),
+    media + 'character-h3-high/source-frame-036.jpg',
+  );
+  assert.equal(
+    demo.mediaUrl(`/api/thumbnails/${selected.clip.id}?time=999`),
+    media + 'character-h3-high/source-frame-072.jpg',
+  );
+  assert.equal(
+    demo.mediaUrl(`/api/thumbnails/${request.reference.id}?time=0`),
+    media + 'character-h3/reference.png',
+  );
+  assert.equal(
+    demo.mediaUrl(`/api/thumbnails/${replacement.clip!.id}?time=0`),
+    media + 'character-h3-high/poster.jpg',
+  );
+});
+
+test('recorded character requests are isolated copies and cannot create, recover or cancel native jobs', async () => {
+  const original = structuredClone(snapshot),
+    demo = createDemoRuntime(original),
+    [selection, replacement] = snapshot.characters!;
+  original.characters![1].state = 'running';
+  const read = await demo.request(`/api/characters/${replacement.id}`);
+  assert.equal(read.status, 200);
+  const job = await read.json();
+  assert.deepEqual(job, replacement);
+  if (job.request.format !== 'aftertake-character/1')
+    throw Error('Expected the recorded replacement request.');
+  job.request.seed = 9;
+  job.workflow = {};
+  const again = await demo.request(`/api/characters/${replacement.id}`).then((r) => r.json());
+  assert.deepEqual(again, replacement);
+  for (const route of [
+    '/api/characters/selections',
+    '/api/characters/replacements',
+    `/api/characters/${selection.id}/reconcile`,
+    `/api/characters/${replacement.id}/reconcile`,
+    `/api/characters/${replacement.id}/cancel`,
+  ]) {
+    const response = await demo.request(route, {
+      method: 'POST',
+      body: JSON.stringify(replacement.request),
+    });
+    assert.equal(response.status, 409);
+    assert.match((await response.json()).error, /local/i);
+  }
+  assert.deepEqual(
+    await demo.request('/api/characters').then((r) => r.json()),
+    snapshot.characters,
+  );
+  assert.equal(
+    (await demo.request('/api/characters/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa')).status,
+    404,
+  );
+  assert.equal(demo.mediaUrl('/api/characters/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/source'), '');
+  const old = createDemoRuntime({ ...snapshot, characters: undefined });
+  assert.deepEqual(await old.request('/api/characters').then((r) => r.json()), []);
+  assert.equal((await old.request(`/api/characters/${replacement.id}`)).status, 404);
 });

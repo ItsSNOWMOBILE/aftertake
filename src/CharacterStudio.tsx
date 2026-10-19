@@ -4,13 +4,14 @@ import {
   Check,
   Download,
   LoaderCircle,
+  Play,
   Plus,
   RotateCcw,
   ScanFace,
   Upload,
   X,
 } from 'lucide-react';
-import { apiFetch, browserDemo, mediaUrl } from './transport';
+import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
 import { findImportedClip, type Clip, type Engine } from './domain';
 import {
   characterBusy,
@@ -24,6 +25,7 @@ import {
   type CharacterSelectionRequest,
 } from './character';
 import CharacterReferenceEditor, { CharacterReferencePreview } from './CharacterReferenceEditor';
+import PreviewVideo from './PreviewVideo';
 import './character-studio.css';
 
 async function api<T>(url: string, init?: RequestInit) {
@@ -74,6 +76,22 @@ export default function CharacterStudio({
 }) {
   const videos = clips.filter((c) => c.kind !== 'image'),
     photos = clips.filter((c) => c.kind === 'image');
+  const recordedExample = browserDemo
+    ? jobs.find((job) => {
+        if (job.kind !== 'replacement' || job.state !== 'succeeded' || !job.clip) return false;
+        const request = job.request as CharacterRequest;
+        const selected = jobs.find((item) => item.id === request.selectionId);
+        if (selected?.kind !== 'selection') return false;
+        return Boolean(
+          findImportedClip(clips, (selected.request as CharacterSelectionRequest).clip) &&
+          findImportedClip(clips, request.reference) &&
+          (request.identityReferences || []).every((entry) =>
+            findImportedClip(clips, entry.reference),
+          ),
+        );
+      })
+    : undefined;
+  const openedRecordedExample = useRef(false);
   const [sourceId, setSourceId] = useState(
     initialSource?.kind !== 'image'
       ? initialSource?.id || videos[0]?.id || ''
@@ -401,22 +419,26 @@ export default function CharacterStudio({
       setSending(false);
     }
   }
-  function reuse(job: CharacterJob) {
+  function reuse(job: CharacterJob, nextView: 'selection' | 'result' = 'selection') {
     const r = job.request as CharacterRequest,
       s = jobs.find((j) => j.id === r.selectionId);
-    if (!s) return setError('This result is missing its original person selection.');
+    if (!s) {
+      setError('This result is missing its original person selection.');
+      return false;
+    }
     const selected = s.request as CharacterSelectionRequest,
       clip = findImportedClip(clips, selected.clip),
       photo = findImportedClip(clips, r.reference);
-    if (!clip || !photo)
-      return setError(
-        'Import the matching source video and character photo before reusing this recipe.',
-      );
+    if (!clip || !photo) {
+      setError('Import the matching source video and character photo before reusing this recipe.');
+      return false;
+    }
     let supporting: CharacterIdentityReference[];
     try {
       supporting = resolveIdentityPhotos(r.identityReferences);
     } catch (failure) {
-      return setError((failure as Error).message);
+      setError((failure as Error).message);
+      return false;
     }
     setSourceId(clip.id);
     setReferenceId(photo.id);
@@ -426,16 +448,27 @@ export default function CharacterStudio({
     setNegative(selected.negative);
     setResolution(selected.resolution || '480');
     setSelectionId(s.id);
+    setResultId(job.id);
+    setSourceReviewId(s.id);
     setName(r.name);
     setPrompt(r.prompt);
     setSeed(r.seed);
     setFaceBox(r.faceBox);
     setIdentityReferences(supporting);
     setWardrobe(r.wardrobe || 'reference');
-    setView('selection');
+    setView(nextView);
     setError('');
-    setNotice('Settings restored. Review the selection before creating a new take.');
+    setNotice(
+      browserDemo
+        ? 'Recorded take loaded. Compare the source, tracked person and result; download its original recipe or workflow.'
+        : 'Settings restored. Review the selection before creating a new take.',
+    );
+    return true;
   }
+  useEffect(() => {
+    if (!recordedExample || openedRecordedExample.current) return;
+    if (reuse(recordedExample, 'result')) openedRecordedExample.current = true;
+  }, [recordedExample?.id]);
   async function importRecipe(file?: File) {
     if (!file) return;
     try {
@@ -507,6 +540,13 @@ export default function CharacterStudio({
       setError((e as Error).message);
     } finally {
       setSending(false);
+    }
+  }
+  async function downloadRecordedMedia(url: string, filename: string) {
+    try {
+      await saveMedia(url, filename);
+    } catch {
+      setError('This recorded file could not be downloaded. Check your connection and try again.');
     }
   }
   const status = view === 'result' ? viewed : view === 'selection' ? selection : pending;
@@ -663,6 +703,26 @@ export default function CharacterStudio({
           Track one person in a continuous shot. Add their replacement’s photos, then generate a new
           take with the source scene and audio.
         </p>
+        {browserDemo && (
+          <aside className="character-recorded-intro" aria-label="Recorded character example">
+            <div>
+              <strong>Explore a real character swap.</strong>
+              <p>
+                Watch the source, inspect the tracked person and review the H3 result. These are
+                recorded outputs; creating your own take runs in the local studio.
+              </p>
+            </div>
+            {recordedExample ? (
+              <button className="button" onClick={() => reuse(recordedExample, 'result')}>
+                <Play size={14} /> Open recorded take
+              </button>
+            ) : (
+              <a className="button" href="../cast/h3.html" target="_blank" rel="noreferrer">
+                Watch the H3 example <ArrowUpRight size={14} />
+              </a>
+            )}
+          </aside>
+        )}
         <ol className="character-workflow" aria-label="Character workflow steps">
           {workflowSteps.map((step, index) => (
             <li
@@ -823,7 +883,11 @@ export default function CharacterStudio({
                   <img
                     draggable={false}
                     src={mediaUrl(`/api/thumbnails/${source.id}?time=${trimStart}`)}
-                    alt="First frame of your selected source range"
+                    alt={
+                      browserDemo
+                        ? 'Recorded source preview near the selected start'
+                        : 'First frame of your selected source range'
+                    }
                   />
                   {[
                     ...positive.map((p, i) => ({ ...p, kind: 'positive', label: `+${i + 1}` })),
@@ -845,13 +909,13 @@ export default function CharacterStudio({
                   </span>
                 </>
               ) : view === 'source' && source ? (
-                <video
+                <PreviewVideo
                   key={(sourceReview?.selection ? sourceReview.id : source.id) + trimStart}
-                  src={mediaUrl(
+                  mediaSrc={
                     sourceReview?.selection
                       ? `/api/characters/${sourceReview.id}/source`
-                      : source.url,
-                  )}
+                      : source.url
+                  }
                   controls
                   playsInline
                   onLoadedMetadata={(e) => {
@@ -864,15 +928,21 @@ export default function CharacterStudio({
                   }}
                 />
               ) : view === 'selection' && selection?.selection ? (
-                <video
+                <PreviewVideo
                   key={selection.id}
-                  src={mediaUrl(`/api/characters/${selection.id}/preview`)}
+                  mediaSrc={`/api/characters/${selection.id}/preview`}
                   controls
                   playsInline
                   loop
                 />
               ) : view === 'result' && viewed?.clip ? (
-                <video key={viewed.id} src={mediaUrl(viewed.clip.url)} controls playsInline />
+                <PreviewVideo
+                  key={viewed.id}
+                  mediaSrc={viewed.clip.url}
+                  poster={mediaUrl(`/api/thumbnails/${viewed.clip.id}?time=0`)}
+                  controls
+                  playsInline
+                />
               ) : (
                 <div className="character-empty">
                   {status && characterBusy(status) ? (
@@ -1023,6 +1093,11 @@ export default function CharacterStudio({
                     className="button"
                     href={mediaUrl(viewed.clip.url)}
                     download="aftertake-character.mp4"
+                    onClick={(event) => {
+                      if (!browserDemo) return;
+                      event.preventDefault();
+                      void downloadRecordedMedia(viewed.clip!.url, 'aftertake-character.mp4');
+                    }}
                   >
                     <Download size={13} />
                     MP4
@@ -1036,6 +1111,7 @@ export default function CharacterStudio({
                       download({
                         format: 'aftertake-character-recipe/1',
                         selection: s?.request,
+                        selectionInfo: s?.selection,
                         replacement: viewed.request,
                         workflow: viewed.workflow,
                         jobId: viewed.jobId,
@@ -1079,6 +1155,14 @@ export default function CharacterStudio({
                     className="button"
                     href={mediaUrl(`/api/characters/${resultSelection.id}/mask`)}
                     download="aftertake-person-mask.mkv"
+                    onClick={(event) => {
+                      if (!browserDemo) return;
+                      event.preventDefault();
+                      void downloadRecordedMedia(
+                        `/api/characters/${resultSelection.id}/mask`,
+                        'aftertake-person-mask.mkv',
+                      );
+                    }}
                   >
                     Tracked mask
                   </a>
@@ -1086,6 +1170,14 @@ export default function CharacterStudio({
                     className="button"
                     href={mediaUrl(`/api/characters/${resultSelection.id}/source`)}
                     download="aftertake-prepared-source.mp4"
+                    onClick={(event) => {
+                      if (!browserDemo) return;
+                      event.preventDefault();
+                      void downloadRecordedMedia(
+                        `/api/characters/${resultSelection.id}/source`,
+                        'aftertake-prepared-source.mp4',
+                      );
+                    }}
                   >
                     Prepared source
                   </a>

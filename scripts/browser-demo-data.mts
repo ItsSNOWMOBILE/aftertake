@@ -15,6 +15,12 @@ import { inspectFramePng } from '../server/frame-edits.js';
 import { isDeepStrictEqual } from 'node:util';
 import type { DemoSnapshot } from '../src/demo-runtime.js';
 import { inspectVideoMetadata, readVideoMetadata } from '../server/video-metadata.js';
+import {
+  characterRequestSchema,
+  characterSelectionSchema,
+  parseCharacterSelectionInfo,
+  type CharacterJob,
+} from '../src/character.js';
 
 export function buildDemoSnapshot(
   root: string,
@@ -170,6 +176,142 @@ export function buildDemoSnapshot(
     if (!Object.keys(choices).length) throw Error(`Missing source thumbnails: ${clip.id}`);
     thumbnails[clip.id] = choices;
   }
+  const characters: CharacterJob[] = [];
+  // Older published revisions can include H3 video receipts without the browser
+  // preview bundle. Never fill their missing files from the mutable checkout.
+  const hasCharacterExample = execFileSync(
+    'git',
+    ['ls-tree', revision, 'examples/character-h3-high/source-thumbnails.json'],
+    { cwd: root, encoding: 'utf8' },
+  ).trim();
+  if (hasCharacterExample) {
+    const folder = 'character-h3-high/',
+      selection = json(folder + 'selection.json') as CharacterJob,
+      replacement = json(folder + 'render.json') as CharacterJob,
+      evidence = json(folder + 'evidence.json'),
+      recipe = json(folder + 'recipe.json');
+    const selected = characterSelectionSchema.parse(selection.request),
+      request = characterRequestSchema.parse(replacement.request);
+    if (
+      selection.kind !== 'selection' ||
+      replacement.kind !== 'replacement' ||
+      selection.state !== 'succeeded' ||
+      replacement.state !== 'succeeded' ||
+      !selection.selection ||
+      !replacement.clip ||
+      request.selectionId !== selection.id ||
+      evidence.format !== 'aftertake-character-bundle-check/1' ||
+      evidence.maskJob !== selection.jobId ||
+      evidence.nativeJob !== replacement.jobId ||
+      evidence.seed !== request.seed ||
+      recipe.format !== 'aftertake-character-recipe/1' ||
+      recipe.jobId !== replacement.jobId ||
+      !isDeepStrictEqual(recipe.selection, selected) ||
+      !isDeepStrictEqual(recipe.replacement, request) ||
+      !isDeepStrictEqual(recipe.output, replacement.clip)
+    )
+      throw Error('The recorded character example has inconsistent native receipts.');
+    const info = parseCharacterSelectionInfo(selection.selection, selected),
+      source = clipSchema.parse(selected.clip),
+      reference = clipSchema.parse(request.reference),
+      output = clipSchema.parse(replacement.clip);
+    if (
+      info.emptyFrames.length ||
+      output.id !== replacement.id ||
+      output.width !== info.width ||
+      output.height !== info.height ||
+      Math.abs(output.duration - info.frames / info.fps) > 1e-6 ||
+      !isDeepStrictEqual(recipe.selectionInfo, info) ||
+      evidence.outputSHA256 !== output.sha256 ||
+      evidence.sourceSHA256 !== info.sourceSha256 ||
+      evidence.maskSHA256 !== info.maskSha256 ||
+      evidence.referenceSha256 !== reference.sha256
+    )
+      throw Error('The recorded character example differs from its source, mask or output.');
+    for (const name of [
+      'source.mp4',
+      'prepared-source.mp4',
+      'tracked-mask.mkv',
+      'result.mp4',
+      'selection-preview.mp4',
+    ]) {
+      const receipt = evidence.files[name];
+      if (!receipt || digest(file(folder + name)) !== receipt.sha256)
+        throw Error(`Recorded character checksum mismatch: ${name}`);
+    }
+    if (
+      evidence.files['source.mp4'].sha256 !== source.sha256 ||
+      evidence.files['prepared-source.mp4'].sha256 !== info.sourceSha256 ||
+      evidence.files['tracked-mask.mkv'].sha256 !== info.maskSha256 ||
+      evidence.files['result.mp4'].sha256 !== output.sha256 ||
+      digest(file('character-h3/reference.png')) !== reference.sha256
+    )
+      throw Error('The character media does not match the recorded clip identities.');
+    for (const [job, video, graph, format] of [
+      [
+        selection,
+        'selection-preview.mp4',
+        'selection-workflow-api.json',
+        'aftertake-character-selection-output/1',
+      ],
+      [replacement, 'result.mp4', 'workflow-api.json', 'aftertake-character-output/1'],
+    ] as const) {
+      const metadata = readVideoMetadata(file(folder + video));
+      if (
+        metadata.recipe?.format !== format ||
+        !isDeepStrictEqual(metadata.recipe.request, job.request) ||
+        !isDeepStrictEqual(metadata.workflow, job.workflow) ||
+        !isDeepStrictEqual(json(folder + graph), job.workflow)
+      )
+        throw Error('The recorded character video differs from its executed request or graph.');
+    }
+    for (const clip of [source, reference, output]) {
+      const existing = clips.find((item) => item.id === clip.id);
+      if (existing && !isDeepStrictEqual(existing, clip))
+        throw Error('A recorded character clip conflicts with the existing example catalog.');
+      if (!existing) clips.push(clip);
+    }
+    media[source.url] = remote(folder + 'source.mp4');
+    media[reference.url] = remote('character-h3/reference.png');
+    media[output.url] = remote(folder + 'result.mp4');
+    media[`/api/characters/${selection.id}/source`] = remote(folder + 'prepared-source.mp4');
+    media[`/api/characters/${selection.id}/preview`] = remote(folder + 'selection-preview.mp4');
+    media[`/api/characters/${selection.id}/mask`] = remote(folder + 'tracked-mask.mkv');
+    media[`/api/characters/${replacement.id}/recipe`] = remote(folder + 'recipe.json');
+    // These sampled previews are decoded from the unchanged source, never from
+    // the result poster. The existing runtime chooses the nearest recorded tick.
+    const sourceThumbnails = json(folder + 'source-thumbnails.json'),
+      sourceChoices: Record<string, string> = {};
+    if (
+      sourceThumbnails.format !== 'aftertake-recorded-source-thumbnails/1' ||
+      sourceThumbnails.source !== 'source.mp4' ||
+      sourceThumbnails.sourceSha256 !== source.sha256 ||
+      sourceThumbnails.fps !== 24 ||
+      Object.keys(sourceThumbnails.files).length !== 7
+    )
+      throw Error('The recorded character source preview receipt changed.');
+    for (const tick of [0, 12, 24, 36, 48, 60, 72]) {
+      const name =
+          tick === 0 ? 'source-frame.jpg' : `source-frame-${String(tick).padStart(3, '0')}.jpg`,
+        receipt = sourceThumbnails.files[name],
+        bytes = file(folder + name);
+      if (
+        !receipt ||
+        receipt.frame !== tick ||
+        receipt.time !== tick / 24 ||
+        receipt.width !== 960 ||
+        receipt.height !== 401 ||
+        receipt.size !== bytes.length ||
+        receipt.sha256 !== digest(bytes)
+      )
+        throw Error(`The recorded character source thumbnail changed: ${name}`);
+      sourceChoices[tick] = remote(folder + name);
+    }
+    thumbnails[source.id] = sourceChoices;
+    thumbnails[reference.id] = { 0: remote('character-h3/reference.png') };
+    thumbnails[output.id] = { 0: remote(folder + 'poster.jpg') };
+    characters.push(selection, replacement);
+  }
   renders.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   return {
     format: 'aftertake-browser-demo/1',
@@ -179,6 +321,7 @@ export function buildDemoSnapshot(
     frameEdits,
     images,
     videos,
+    characters,
     templates,
     media,
     thumbnails,

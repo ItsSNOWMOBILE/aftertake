@@ -1,4 +1,5 @@
 import { apiFetch, browserDemo, mediaUrl } from './transport';
+import PreviewVideo from './PreviewVideo';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowDown, ArrowUp, Clapperboard, Download, LoaderCircle, Plus, X } from 'lucide-react';
 import { renderDimensions, type Render } from './domain';
@@ -328,9 +329,9 @@ export default function FilmDesk({
               Preview shows the last exported film. Export again to apply these cuts.
             </p>
           )}
-          <video
+          <PreviewVideo
             key={preview.id}
-            src={mediaUrl(preview.output!)}
+            mediaSrc={preview.output!}
             controls
             playsInline
             preload="metadata"

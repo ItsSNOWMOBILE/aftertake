@@ -1,0 +1,65 @@
+{
+  "format": "aftertake-recorded-source-thumbnails/1",
+  "source": "source.mp4",
+  "sourceSha256": "6068c364f18e226766a3ccff9ea0586f82f403d95b38dd4597130713912dbe5a",
+  "fps": 24,
+  "method": "First decoded frame and every12frames through72; PIL thumbnail((960,960)); JPEG quality90. No source/output alteration.",
+  "files": {
+    "source-frame.jpg": {
+      "frame": 0,
+      "time": 0.0,
+      "sha256": "9532b2839973df95d7319700410ddc54e22d1dbdbb72af1eb82177141401b942",
+      "size": 94480,
+      "width": 960,
+      "height": 401
+    },
+    "source-frame-012.jpg": {
+      "frame": 12,
+      "time": 0.5,
+      "sha256": "4dc369e838e69f40b924ea4bfff93957e2abf3b206e4ee6401e84268873a8cb5",
+      "size": 94280,
+      "width": 960,
+      "height": 401
+    },
+    "source-frame-024.jpg": {
+      "frame": 24,
+      "time": 1.0,
+      "sha256": "945b0cfef879e8c07e0dd5a0f60410d3475f2321e16d7eebf414bd71855a209e",
+      "size": 94502,
+      "width": 960,
+      "height": 401
+    },
+    "source-frame-036.jpg": {
+      "frame": 36,
+      "time": 1.5,
+      "sha256": "b40eb512c1ab3e7e591d7219b5e91605938b15f32bf0ef48d4d817d6f73cb591",
+      "size": 94278,
+      "width": 960,
+      "height": 401
+    },
+    "source-frame-048.jpg": {
+      "frame": 48,
+      "time": 2.0,
+      "sha256": "1255aa44e6a2d90bc4ef98e6683742a3c3275f0ffd8aa28377cbd78be2dfd3d8",
+      "size": 93959,
+      "width": 960,
+      "height": 401
+    },
+    "source-frame-060.jpg": {
+      "frame": 60,
+      "time": 2.5,
+      "sha256": "aee9c46b4122fbaad65f9f9ccca0b76624723aa09f7b793d0e74c56a28b8ca0d",
+      "size": 93935,
+      "width": 960,
+      "height": 401
+    },
+    "source-frame-072.jpg": {
+      "frame": 72,
+      "time": 3.0,
+      "sha256": "ee2deea7b7f3786e04e72f1881f6672d497915dfedb894531b05554c44e831fd",
+      "size": 93870,
+      "width": 960,
+      "height": 401
+    }
+  }
+}

@@ -18,6 +18,34 @@
   font-size: 13px;
   line-height: 1.65;
 }
+.character-recorded-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 16px;
+  margin-top: 18px;
+  border: 1px solid #536448;
+  border-radius: 8px;
+  background: #222d1d;
+}
+.character-recorded-intro > div {
+  flex: 1 1 300px;
+}
+.character-recorded-intro strong {
+  font-size: 13px;
+  font-weight: 500;
+}
+.character-recorded-intro p {
+  margin: 6px 0 0;
+  color: #c0cdb6;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.character-recorded-intro .button {
+  min-height: 44px;
+}
 .character-workflow {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
