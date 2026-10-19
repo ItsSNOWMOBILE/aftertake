@@ -1,3 +1,4 @@
+import { createJobTarget } from '../server/job-target.js';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
@@ -305,6 +306,11 @@ test('selection media remains readable when the studio data lives in a hidden wo
       data,
       python: 'unused',
       client: {} as any,
+      target: createJobTarget({
+        sdkBaseUrl: 'http://127.0.0.1:8189',
+        uiBaseUrl: 'http://127.0.0.1:8188',
+        allowLegacyLoopback: true,
+      }),
       uiUrl: 'http://127.0.0.1:1',
       engine: async () => ({ ready: true }) as any,
       takeBusy: () => false,

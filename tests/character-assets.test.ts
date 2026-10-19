@@ -1,7 +1,8 @@
+import { createJobTarget } from '../server/job-target.js';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash, randomUUID } from 'node:crypto';
-import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import express from 'express';
@@ -99,7 +100,17 @@ test('replacement resolves every identity asset, binds original files and restor
   const client = {
     workflows: { fromJson: () => ({ setInput: (...args: unknown[]) => bindings.push(args) }) },
     assets: { fromFile: (file: string) => ({ asset: file }) },
-    submit: async () => {
+    submit: async (_workflow: unknown, options: { idempotencyKey: string }) => {
+      const persisted = JSON.parse(
+        await readFile(path.join(folder, options.idempotencyKey + '.json'), 'utf8'),
+      );
+      assert.deepEqual(
+        persisted.jobTarget,
+        createJobTarget({
+          sdkBaseUrl: 'http://127.0.0.1:8189',
+          uiBaseUrl: 'http://127.0.0.1:8188',
+        }).binding,
+      );
       submissions++;
       throw new InvalidWorkflow('Test stops before GPU execution', { httpStatus: 400 });
     },
@@ -111,6 +122,11 @@ test('replacement resolves every identity asset, binds original files and restor
         data,
         python: process.execPath,
         client: client as any,
+        target: createJobTarget({
+          sdkBaseUrl: 'http://127.0.0.1:8189',
+          uiBaseUrl: 'http://127.0.0.1:8188',
+          allowLegacyLoopback: true,
+        }),
         uiUrl: 'http://127.0.0.1:1',
         engine: async () => ({ ready: true }) as any,
         takeBusy: () => false,

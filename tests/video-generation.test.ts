@@ -1,3 +1,4 @@
+import { createJobTarget } from '../server/job-target.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import express from 'express';
@@ -150,6 +151,10 @@ test('native video admission rejoins its key and rejects mismatched workflow or 
     workflows: { fromJson: (graph: unknown) => graph },
     jobs: { get: async () => job },
     submit: async (_graph: unknown, options: { idempotencyKey: string }) => {
+      const persisted = JSON.parse(
+        await readFile(path.join(data, 'videos', options.idempotencyKey + '.json'), 'utf8'),
+      );
+      assert.deepEqual(persisted.jobTarget, context.target.binding);
       keys.push(options.idempotencyKey);
       if (first) {
         first = false;
@@ -186,6 +191,11 @@ test('native video admission rejoins its key and rejects mismatched workflow or 
     python: 'unused',
     data,
     client,
+    target: createJobTarget({
+      sdkBaseUrl: 'http://127.0.0.1:8189',
+      uiBaseUrl: 'http://127.0.0.1:8188',
+      allowLegacyLoopback: true,
+    }),
     uiUrl: '',
     inspect: async () => decoded,
     engine: async () => ({ connected: true, ready: true, missing: [], message: '' }),

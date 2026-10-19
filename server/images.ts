@@ -17,16 +17,18 @@ import { buildImageWorkflow } from './image-workflow.js';
 import { inspectFramePng } from './frame-edits.js';
 import { submissionRejected } from './submission.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
+import { assertJobTarget, jobTargetIssue, type JobTarget } from './job-target.js';
 
 export async function imageRouter(context: {
   data: string;
   client: Comfy;
+  target: JobTarget;
   uiUrl: string;
   engine: () => Promise<Engine>;
   takeBusy: () => boolean;
   setAdmitting: (value: boolean) => void;
 }) {
-  const { data, client } = context,
+  const { data, client, target } = context,
     router = Router(),
     folder = path.join(data, 'images'),
     clips = path.join(data, 'clips');
@@ -41,8 +43,27 @@ export async function imageRouter(context: {
     await writeFile(temporary, JSON.stringify(image, null, 2));
     await rename(temporary, target);
   }
+  async function targetMatches(image: ImageGeneration) {
+    const issue = jobTargetIssue(image, target);
+    if (!issue) return true;
+    const state = image.jobId ? 'connection_lost' : 'submission_unknown';
+    if (image.state !== state || image.error !== issue) {
+      const blocked = { ...image, state, error: issue };
+      try {
+        await persist(blocked);
+        Object.assign(image, blocked);
+      } catch {
+        console.warn('Could not persist the blocked job target state. No engine request was made.');
+      }
+    }
+    return false;
+  }
   async function track(image: ImageGeneration, initial?: Job) {
     if (active.has(image.id)) return;
+    if (jobTargetIssue(image, target)) {
+      await targetMatches(image);
+      return;
+    }
     active.add(image.id);
     const controller = new AbortController();
     let progress: number | null = null;
@@ -153,6 +174,7 @@ export async function imageRouter(context: {
     }
   }
   async function submit(image: ImageGeneration) {
+    assertJobTarget(image, target);
     if (!image.workflow)
       throw Error(
         'The original image workflow is missing. Keep this record for review and create a deliberate new image.',
@@ -171,6 +193,7 @@ export async function imageRouter(context: {
       const image = JSON.parse(await readFile(path.join(folder, name), 'utf8')) as ImageGeneration;
       image.request = imageRequestSchema.parse(image.request);
       images.set(image.id, image);
+      if (imageBusy(image) && !(await targetMatches(image))) continue;
       if (image.jobId && imageBusy(image)) void track(image);
       else if (image.state === 'submitting') {
         image.state = 'submission_unknown';
@@ -202,6 +225,7 @@ export async function imageRouter(context: {
           error: 'Install the optional Z-Image Turbo weights and start the local engine.',
         });
       const image: ImageGeneration = {
+        jobTarget: target.binding,
         id: randomUUID(),
         ...admission.identity,
         request,
@@ -230,6 +254,7 @@ export async function imageRouter(context: {
     const image = images.get(req.params.id);
     if (!image?.jobId || !imageBusy(image) || image.state === 'finalizing')
       return void res.status(409).json({ error: 'No active image job can be canceled.' });
+    assertJobTarget(image, target);
     const job = handles.get(image.id) || (await client.jobs.get(image.jobId));
     await cancelAndRefresh(job);
     if (job.status !== 'succeeded') image.state = job.status;
@@ -240,6 +265,7 @@ export async function imageRouter(context: {
     const image = images.get(req.params.id);
     if (!image || !['submission_unknown', 'connection_lost', 'output_error'].includes(image.state))
       return void res.status(409).json({ error: 'This image does not need recovery.' });
+    assertJobTarget(image, target);
     if (image.jobId) {
       void track(image);
       return void res.json(image);

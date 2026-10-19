@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import type { Clip } from './domain';
+import type { JobTargetBinding } from './job-target.js';
 
 export const imageDirectionOptions = {
   shot: [
@@ -45,6 +46,7 @@ export const imageRequestSchema = z.object({
 });
 export type ImageRequest = z.infer<typeof imageRequestSchema>;
 export type ImageGeneration = {
+  jobTarget?: JobTargetBinding;
   id: string;
   request: ImageRequest;
   state: string;

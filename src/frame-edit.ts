@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { clipSchema, type Clip } from './domain.js';
+import type { JobTargetBinding } from './job-target.js';
 
 export const frameEditRequestSchema = z
   .object({
@@ -22,6 +23,7 @@ export const frameEditRequestSchema = z
   );
 export type FrameEditRequest = z.infer<typeof frameEditRequestSchema>;
 export type FrameEdit = {
+  jobTarget?: JobTargetBinding;
   requestKey?: string;
   requestDigest?: string;
   id: string;

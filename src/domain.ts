@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { cinemaSchema, defaultCinema } from './cinema.js';
+import type { JobTargetBinding } from './job-target.js';
 
 export const pointSchema = z.object({ x: z.number().min(0).max(1), y: z.number().min(0).max(1) });
 export const strokeSchema = z.object({
@@ -173,6 +174,7 @@ export function findImportedClip(clips: Clip[], requested: Clip): Clip | undefin
   );
 }
 export type Render = {
+  jobTarget?: JobTargetBinding;
   requestKey?: string;
   requestDigest?: string;
   id: string;

@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { clipSchema, pointSchema, type Clip } from './domain';
+import type { JobTargetBinding } from './job-target.js';
 
 export const characterSelectionSchema = z
   .object({
@@ -100,6 +101,7 @@ export const characterSelectionInfoSchema = z
   );
 export type CharacterSelectionInfo = z.infer<typeof characterSelectionInfoSchema>;
 export type CharacterJob = {
+  jobTarget?: JobTargetBinding;
   id: string;
   kind: 'selection' | 'replacement';
   request: CharacterSelectionRequest | CharacterRequest;

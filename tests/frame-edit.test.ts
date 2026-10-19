@@ -1,3 +1,4 @@
+import { createJobTarget } from '../server/job-target.js';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
@@ -110,6 +111,10 @@ test('accepted-but-unobserved frame submissions recover by the same key and publ
     assets: { fromFile: (file: string) => file },
     jobs: { get: async () => job },
     submit: async (_workflow: unknown, options: { idempotencyKey: string }) => {
+      const persisted = JSON.parse(
+        await readFile(path.join(data, 'frame-edits', options.idempotencyKey + '.json'), 'utf8'),
+      );
+      assert.deepEqual(persisted.jobTarget, context.target.binding);
       keys.push(options.idempotencyKey);
       if (first) {
         first = false;
@@ -121,6 +126,11 @@ test('accepted-but-unobserved frame submissions recover by the same key and publ
   const context = {
     data,
     client,
+    target: createJobTarget({
+      sdkBaseUrl: 'http://127.0.0.1:8189',
+      uiBaseUrl: 'http://127.0.0.1:8188',
+      allowLegacyLoopback: true,
+    }),
     uiUrl: '',
     engine: async () => ({ connected: true, ready: true, missing: [], message: '' }),
     takeBusy: () => admitting,

@@ -15,10 +15,12 @@ import { buildVideoWorkflow } from './video-workflow.js';
 import { verifyGeneratedVideo } from './video-output.js';
 import { submissionRejected } from './submission.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
+import { assertJobTarget, jobTargetIssue, type JobTarget } from './job-target.js';
 
 export async function videoRouter(context: {
   data: string;
   client: Comfy;
+  target: JobTarget;
   uiUrl: string;
   root: string;
   python: string;
@@ -27,7 +29,7 @@ export async function videoRouter(context: {
   takeBusy: () => boolean;
   setAdmitting: (value: boolean) => void;
 }) {
-  const { data, client } = context,
+  const { data, client, target } = context,
     router = Router(),
     folder = path.join(data, 'videos'),
     clips = path.join(data, 'clips');
@@ -42,8 +44,27 @@ export async function videoRouter(context: {
     await writeFile(temporary, JSON.stringify(video, null, 2));
     await rename(temporary, target);
   }
+  async function targetMatches(video: VideoGeneration) {
+    const issue = jobTargetIssue(video, target);
+    if (!issue) return true;
+    const state = video.jobId ? 'connection_lost' : 'submission_unknown';
+    if (video.state !== state || video.error !== issue) {
+      const blocked = { ...video, state, error: issue };
+      try {
+        await persist(blocked);
+        Object.assign(video, blocked);
+      } catch {
+        console.warn('Could not persist the blocked job target state. No engine request was made.');
+      }
+    }
+    return false;
+  }
   async function track(video: VideoGeneration, initial?: Job) {
     if (active.has(video.id)) return;
+    if (jobTargetIssue(video, target)) {
+      await targetMatches(video);
+      return;
+    }
     active.add(video.id);
     const controller = new AbortController();
     let progress: number | null = null;
@@ -148,6 +169,7 @@ export async function videoRouter(context: {
     }
   }
   async function submit(video: VideoGeneration) {
+    assertJobTarget(video, target);
     if (!video.workflow)
       throw Error(
         'The original video workflow is missing. Keep this record for review and create a deliberate new video.',
@@ -166,6 +188,7 @@ export async function videoRouter(context: {
       const video = JSON.parse(await readFile(path.join(folder, name), 'utf8')) as VideoGeneration;
       video.request = videoRequestSchema.parse(video.request);
       videos.set(video.id, video);
+      if (videoBusy(video) && !(await targetMatches(video))) continue;
       if (video.jobId && videoBusy(video)) void track(video);
       else if (video.state === 'submitting') {
         video.state = 'submission_unknown';
@@ -197,6 +220,7 @@ export async function videoRouter(context: {
           .status(409)
           .json({ error: 'Install the text-to-video model profile and start the local engine.' });
       const video: VideoGeneration = {
+        jobTarget: target.binding,
         id: randomUUID(),
         ...admission.identity,
         request,
@@ -225,6 +249,7 @@ export async function videoRouter(context: {
     const video = videos.get(req.params.id);
     if (!video?.jobId || !videoBusy(video) || video.state === 'finalizing')
       return void res.status(409).json({ error: 'No active video job can be canceled.' });
+    assertJobTarget(video, target);
     const job = handles.get(video.id) || (await client.jobs.get(video.jobId));
     await cancelAndRefresh(job);
     if (job.status !== 'succeeded') video.state = job.status;
@@ -235,6 +260,7 @@ export async function videoRouter(context: {
     const video = videos.get(req.params.id);
     if (!video || !['submission_unknown', 'connection_lost', 'output_error'].includes(video.state))
       return void res.status(409).json({ error: 'This video does not need recovery.' });
+    assertJobTarget(video, target);
     if (video.jobId) {
       void track(video);
       return void res.json(video);

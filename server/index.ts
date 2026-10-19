@@ -32,11 +32,17 @@ import { scriptDraftRouter } from './script-drafts.js';
 import { characterRouter } from './characters.js';
 import { videoRouter } from './videos.js';
 import { computeRouter } from './compute.js';
+import {
+  assertJobTarget,
+  canonicalNativeBaseUrl,
+  createJobTarget,
+  jobTargetIssue,
+} from './job-target.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 await loadWorkspaceEnvironment(root);
 process.env.COMFY_BASE_URL ||= 'http://127.0.0.1:8189';
-const uiUrl = process.env.COMFY_UI_URL || 'http://127.0.0.1:8188';
+const uiUrl = canonicalNativeBaseUrl(process.env.COMFY_UI_URL || 'http://127.0.0.1:8188');
 const data = path.resolve(root, process.env.AFTERTAKE_DATA_DIR || '.data');
 const clipDir = path.join(data, 'clips');
 const renderDir = path.join(data, 'renders');
@@ -59,6 +65,11 @@ const active = new Set<string>();
 const generation = new GenerationCoordinator();
 let previewBusy = false;
 let thumbnailQueue = Promise.resolve();
+const jobTarget = createJobTarget({
+  sdkBaseUrl: process.env.COMFY_BASE_URL!,
+  uiBaseUrl: uiUrl,
+  allowLegacyLoopback: true,
+});
 const client = new Comfy();
 const terminal = new Set(['succeeded', 'failed', 'canceled', 'expired', 'output_error']);
 generation.register('take', () =>
@@ -148,8 +159,27 @@ async function engine(
   return result;
 }
 
+async function targetMatches(render: Render) {
+  const issue = jobTargetIssue(render, jobTarget);
+  if (!issue) return true;
+  const state = render.jobId ? 'connection_lost' : 'submission_unknown';
+  if (render.state !== state || render.error !== issue) {
+    const blocked = { ...render, state, error: issue };
+    try {
+      await persist(blocked);
+      Object.assign(render, blocked);
+    } catch {
+      console.warn('Could not persist the blocked job target state. No engine request was made.');
+    }
+  }
+  return false;
+}
 async function track(render: Render, initial?: Job) {
   if (active.has(render.id)) return;
+  if (jobTargetIssue(render, jobTarget)) {
+    await targetMatches(render);
+    return;
+  }
   active.add(render.id);
   const eventsController = new AbortController();
   let streamedProgress: number | null = null;
@@ -453,6 +483,7 @@ app.use(express.json({ limit: '2mb' }));
 app.use('/api/compute', computeRouter({ localEngine: engine }));
 app.use('/api/script-drafts', await scriptDraftRouter({ root, data }));
 const frameEdits = await frameEditorRouter({
+  target: jobTarget,
   data,
   client,
   uiUrl,
@@ -462,6 +493,7 @@ const frameEdits = await frameEditorRouter({
 generation.register('frameEdits', frameEdits.busy);
 app.use('/api/frame-edits', frameEdits.router);
 const images = await imageRouter({
+  target: jobTarget,
   data,
   client,
   uiUrl,
@@ -471,6 +503,7 @@ const images = await imageRouter({
 generation.register('images', images.busy);
 app.use('/api/images', images.router);
 const characters = await characterRouter({
+  target: jobTarget,
   root,
   data,
   python,
@@ -482,6 +515,7 @@ const characters = await characterRouter({
 generation.register('characters', characters.busy);
 app.use('/api/characters', characters.router);
 const videos = await videoRouter({
+  target: jobTarget,
   root,
   data,
   python,
@@ -546,6 +580,7 @@ app.post('/api/workflow', (req, res) => {
   res.json(buildWorkflow(recipeSchema.parse(req.body)));
 });
 async function submitTake(render: Render) {
+  assertJobTarget(render, jobTarget);
   if (!render.workflow)
     throw Error(
       'The original generation workflow is missing. Keep this record for review and create a deliberate new take.',
@@ -635,6 +670,7 @@ app.post('/api/renders', async (req, res) => {
       throw error;
     }
     const render: Render = {
+      jobTarget: jobTarget.binding,
       id: randomUUID(),
       ...admission.identity,
       recipe,
@@ -664,6 +700,7 @@ app.post('/api/renders/:id/cancel', async (req, res) => {
   const render = renders.get(req.params.id);
   if (!render?.jobId || terminal.has(render.state) || render.state === 'finalizing')
     return void res.status(409).json({ error: 'No active take can be canceled.' });
+  assertJobTarget(render, jobTarget);
   const job = handles.get(render.id) || (await client.jobs.get(render.jobId));
   await cancelAndRefresh(job);
   if (job.status !== 'succeeded') render.state = job.status;
@@ -674,6 +711,7 @@ app.post('/api/renders/:id/reconcile', async (req, res) => {
   const render = renders.get(req.params.id);
   if (!render || !['submission_unknown', 'connection_lost', 'output_error'].includes(render.state))
     return void res.status(409).json({ error: 'This take does not need recovery.' });
+  assertJobTarget(render, jobTarget);
   if (render.jobId) {
     void track(render);
     return void res.json(render);
@@ -719,6 +757,7 @@ httpServer.listen(port, '127.0.0.1', () =>
   console.log(`Aftertake studio: http://127.0.0.1:${port}`),
 );
 for (const render of renders.values()) {
+  if (!terminal.has(render.state) && !(await targetMatches(render))) continue;
   if (render.jobId && !terminal.has(render.state)) void track(render);
   else if (render.state === 'submitting') {
     render.state = 'submission_unknown';

@@ -20,6 +20,10 @@ Local checks report readiness separately for each workflow using the existing en
 
 Saved connection settings are candidates. Local submissions, running jobs, saved-job recovery and cancellation continue using the same startup SDK client. Selecting or disconnecting a candidate does not reroute work or change the startup environment.
 
+New native jobs save a versioned fingerprint of the startup API and native-engine endpoints before asset upload or submission. Takes, images, text-to-video, frame edits and character jobs check that fingerprint before submission, polling, cancellation or recovery. A different startup endpoint blocks those operations and preserves the original job ID, operation key and workflow. Restore the original engine configuration to recover the job. The binding contains no endpoint addresses or credentials; it identifies endpoint configuration, not an engine instance, account, model set or verified cloud worker.
+
+Historical records without a binding are never silently assigned to a new target. Legacy recovery is permitted only when both startup endpoints use loopback addresses. A missing binding on a non-loopback target, or any malformed existing binding, blocks recovery. Completed local outputs remain available. Per-account client isolation and provider-specific recovery still require separate validation before cloud execution can be enabled.
+
 ## Before cloud generation can become available
 
 A supported execution profile must provide Aftertake's exact custom nodes, models, media upload/download behavior and output metadata contract. Character replacement also needs the pinned H3 Relay recipe, SAM3 and its required model files. A generic Comfy endpoint is not sufficient evidence of compatibility.

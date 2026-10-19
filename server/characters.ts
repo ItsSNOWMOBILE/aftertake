@@ -23,6 +23,7 @@ import { resolveClipAsset } from './assets.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
 import { submissionRejected } from './submission.js';
 import { readVideoMetadata } from './video-metadata.js';
+import { assertJobTarget, jobTargetIssue, type JobTarget } from './job-target.js';
 
 const exec = promisify(execFile),
   sha = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
@@ -31,12 +32,13 @@ export async function characterRouter(context: {
   data: string;
   python: string;
   client: Comfy;
+  target: JobTarget;
   uiUrl: string;
   engine: (selectionOnly: boolean) => Promise<Engine>;
   takeBusy: () => boolean;
   setAdmitting: (value: boolean) => void;
 }) {
-  const { root, data, python, client } = context,
+  const { root, data, python, client, target } = context,
     router = Router(),
     folder = path.join(data, 'characters'),
     clips = path.join(data, 'clips');
@@ -138,6 +140,7 @@ export async function characterRouter(context: {
     });
   }
   async function bind(record: CharacterJob) {
+    assertJobTarget(record, target);
     const workflow = client.workflows.fromJson(structuredClone(record.workflow));
     if (record.kind === 'selection') {
       const request = record.request as CharacterSelectionRequest;
@@ -266,8 +269,27 @@ export async function characterRouter(context: {
     record.state = 'succeeded';
     record.progress = 1;
   }
+  async function targetMatches(record: CharacterJob) {
+    const issue = jobTargetIssue(record, target);
+    if (!issue) return true;
+    const state = record.jobId ? 'connection_lost' : 'submission_unknown';
+    if (record.state !== state || record.error !== issue) {
+      const blocked = { ...record, state, error: issue };
+      try {
+        await persist(blocked);
+        Object.assign(record, blocked);
+      } catch {
+        console.warn('Could not persist the blocked job target state. No engine request was made.');
+      }
+    }
+    return false;
+  }
   async function track(record: CharacterJob, initial?: Job) {
     if (active.has(record.id)) return;
+    if (jobTargetIssue(record, target)) {
+      await targetMatches(record);
+      return;
+    }
     active.add(record.id);
     const controller = new AbortController();
     let progress: number | null = null;
@@ -351,6 +373,7 @@ export async function characterRouter(context: {
     }
   }
   async function submit(record: CharacterJob) {
+    assertJobTarget(record, target);
     const job = await client.submit(await bind(record), { idempotencyKey: record.id });
     record.jobId = job.id;
     record.state = job.status === 'succeeded' ? 'finalizing' : job.status;
@@ -367,6 +390,7 @@ export async function characterRouter(context: {
         record.request = characterRequestSchema.parse(record.request);
       else continue;
       jobs.set(record.id, record);
+      if (characterBusy(record) && !(await targetMatches(record))) continue;
       if (record.jobId && characterBusy(record)) void track(record);
       else if (record.state === 'submitting') {
         record.state = 'submission_unknown';
@@ -461,6 +485,7 @@ export async function characterRouter(context: {
               },
         );
       const record: CharacterJob = {
+        jobTarget: target.binding,
         id,
         kind,
         request,
@@ -492,6 +517,7 @@ export async function characterRouter(context: {
     const record = jobs.get(req.params.id);
     if (!record?.jobId || !characterBusy(record) || record.state === 'finalizing')
       return void res.status(409).json({ error: 'No active character job can be canceled.' });
+    assertJobTarget(record, target);
     const job = handles.get(record.id) || (await client.jobs.get(record.jobId));
     await cancelAndRefresh(job);
     if (job.status !== 'succeeded') record.state = job.status;
@@ -505,6 +531,7 @@ export async function characterRouter(context: {
       !['submission_unknown', 'connection_lost', 'output_error'].includes(record.state)
     )
       return void res.status(409).json({ error: 'This character job does not need recovery.' });
+    assertJobTarget(record, target);
     if (record.jobId) {
       void track(record);
       return void res.json(record);

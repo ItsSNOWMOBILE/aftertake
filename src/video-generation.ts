@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import type { Clip } from './domain';
 import { cinemaPrompt, cinemaSchema, defaultCinema } from './cinema';
+import type { JobTargetBinding } from './job-target.js';
 
 export const videoRequestSchema = z.object({
   format: z.literal('aftertake-text-video/1'),
@@ -21,6 +22,7 @@ export const videoRequestSchema = z.object({
 });
 export type VideoRequest = z.infer<typeof videoRequestSchema>;
 export type VideoGeneration = {
+  jobTarget?: JobTargetBinding;
   id: string;
   request: VideoRequest;
   state: string;

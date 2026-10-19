@@ -1,3 +1,4 @@
+import { createJobTarget } from '../server/job-target.js';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
@@ -207,6 +208,10 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
     workflows: { fromJson: (graph: unknown) => graph },
     jobs: { get: async () => job },
     submit: async (_graph: unknown, options: { idempotencyKey: string }) => {
+      const persisted = JSON.parse(
+        await readFile(path.join(data, 'images', options.idempotencyKey + '.json'), 'utf8'),
+      );
+      assert.deepEqual(persisted.jobTarget, context.target.binding);
       assert.equal(admitting || keys.length > 0, true);
       keys.push(options.idempotencyKey);
       if (first) {
@@ -255,6 +260,11 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
   const context = {
     data,
     client,
+    target: createJobTarget({
+      sdkBaseUrl: 'http://127.0.0.1:8189',
+      uiBaseUrl: 'http://127.0.0.1:8188',
+      allowLegacyLoopback: true,
+    }),
     uiUrl: '',
     engine: async () => ({ connected: true, ready: true, missing: [], message: '' }),
     takeBusy: () => admitting,
@@ -458,6 +468,11 @@ test('restarting observes known image jobs and holds uncertain submissions for e
   const images = await imageRouter({
     data,
     client,
+    target: createJobTarget({
+      sdkBaseUrl: 'http://127.0.0.1:8189',
+      uiBaseUrl: 'http://127.0.0.1:8188',
+      allowLegacyLoopback: true,
+    }),
     uiUrl: '',
     engine: async () => ({ connected: true, ready, missing: [], message: '' }),
     takeBusy: () => false,

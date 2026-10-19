@@ -16,6 +16,7 @@ import { buildFrameEditWorkflow } from './frame-workflow.js';
 import { resolveClipAsset } from './assets.js';
 import { submissionRejected } from './submission.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
+import { assertJobTarget, jobTargetIssue, type JobTarget } from './job-target.js';
 
 export function inspectFramePng(bytes: Buffer) {
   if (
@@ -52,12 +53,13 @@ export function inspectFramePng(bytes: Buffer) {
 export async function frameEditorRouter(context: {
   data: string;
   client: Comfy;
+  target: JobTarget;
   engine: () => Promise<Engine>;
   uiUrl: string;
   takeBusy: () => boolean;
   setAdmitting: (value: boolean) => void;
 }) {
-  const { data, client } = context,
+  const { data, client, target } = context,
     router = Router();
   const folder = path.join(data, 'frame-edits'),
     clips = path.join(data, 'clips');
@@ -79,8 +81,27 @@ export async function frameEditorRouter(context: {
       : undefined;
     return frameEditRequestSchema.parse({ ...request, clip, subject });
   }
+  async function targetMatches(edit: FrameEdit) {
+    const issue = jobTargetIssue(edit, target);
+    if (!issue) return true;
+    const state = edit.jobId ? 'connection_lost' : 'submission_unknown';
+    if (edit.state !== state || edit.error !== issue) {
+      const blocked = { ...edit, state, error: issue };
+      try {
+        await persist(blocked);
+        Object.assign(edit, blocked);
+      } catch {
+        console.warn('Could not persist the blocked job target state. No engine request was made.');
+      }
+    }
+    return false;
+  }
   async function track(edit: FrameEdit, initial?: Job) {
     if (active.has(edit.id)) return;
+    if (jobTargetIssue(edit, target)) {
+      await targetMatches(edit);
+      return;
+    }
     active.add(edit.id);
     const controller = new AbortController();
     let progress: number | null = null;
@@ -183,6 +204,7 @@ export async function frameEditorRouter(context: {
     }
   }
   async function submit(edit: FrameEdit) {
+    assertJobTarget(edit, target);
     if (!edit.workflow)
       throw Error(
         'The original frame-edit workflow is missing. Keep this record for review and create a deliberate new edit.',
@@ -211,6 +233,7 @@ export async function frameEditorRouter(context: {
       const edit = JSON.parse(await readFile(path.join(folder, filename), 'utf8')) as FrameEdit;
       edit.request = frameEditRequestSchema.parse(edit.request);
       edits.set(edit.id, edit);
+      if (frameEditBusy(edit) && !(await targetMatches(edit))) continue;
       if (edit.jobId && frameEditBusy(edit)) void track(edit);
       else if (edit.state === 'submitting') {
         edit.state = 'submission_unknown';
@@ -245,6 +268,7 @@ export async function frameEditorRouter(context: {
           .json({ error: 'Install the optional frame-editor weights and start the local engine.' });
       const request = await resolve(input);
       const edit: FrameEdit = {
+        jobTarget: target.binding,
         id: randomUUID(),
         ...admission.identity,
         request,
@@ -273,6 +297,7 @@ export async function frameEditorRouter(context: {
     const edit = edits.get(req.params.id);
     if (!edit?.jobId || !frameEditBusy(edit) || edit.state === 'finalizing')
       return void res.status(409).json({ error: 'No active frame-edit job can be canceled.' });
+    assertJobTarget(edit, target);
     const job = handles.get(edit.id) || (await client.jobs.get(edit.jobId));
     await cancelAndRefresh(job);
     if (job.status !== 'succeeded') edit.state = job.status;
@@ -283,6 +308,7 @@ export async function frameEditorRouter(context: {
     const edit = edits.get(req.params.id);
     if (!edit || !['submission_unknown', 'connection_lost', 'output_error'].includes(edit.state))
       return void res.status(409).json({ error: 'This frame edit does not need recovery.' });
+    assertJobTarget(edit, target);
     if (edit.jobId) {
       void track(edit);
       return void res.json(edit);
