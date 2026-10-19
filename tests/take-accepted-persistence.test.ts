@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { cudaSystemStats, hardwareFixture } from './hardware-fixture';
 import { spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { once } from 'node:events';
@@ -121,7 +122,16 @@ for (const operation of ['write', 'rename'] as const) {
             response.setHeader('Content-Type', 'application/json');
             if (pathname === '/object_info') return void response.end(JSON.stringify(nodes));
             if (pathname === '/system_stats')
-              return void response.end(JSON.stringify({ devices: [], system: { os: 'posix' } }));
+              return void response.end(
+                JSON.stringify({ ...cudaSystemStats, system: { os: 'posix' } }),
+              );
+            if (pathname === '/aftertake/runtime') {
+              const profile = new URL(request.url || '/', 'http://localhost').searchParams.get(
+                'profile',
+              );
+              assert.equal(profile, 'structure');
+              return void response.end(JSON.stringify(hardwareFixture('structure')));
+            }
             if (pathname === '/api/v2/health' || pathname === '/free')
               return void response.end('{}');
             if (pathname === '/queue')

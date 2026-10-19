@@ -14,11 +14,12 @@ SHA256 = re.compile(r'^[0-9a-f]{64}$')
 REVISION = re.compile(r'^[0-9a-f]{40}$')
 PACKAGE = 'custom_nodes/aftertake'
 REQUIRED_SOURCES = (
-    'scripts/setup.py', 'scripts/download-models.py', 'scripts/engine.py',
+    'scripts/setup.py', 'scripts/download-models.py', 'scripts/engine.py', 'scripts/hardware-check.py',
     'scripts/character-workflow.py', 'server/character-profile.ts',
     'docs/models-character-swap.json', 'requirements-runtime.txt',
     *(f'{PACKAGE}/{name}' for name in (
-        '__init__.py', 'character_nodes.py', 'media_utils.py', 'memory_compat.py', 'requirements.txt',
+        '__init__.py', 'character_nodes.py', 'media_utils.py', 'memory_compat.py',
+        'hardware.py', 'vram.py', 'requirements.txt',
     )),
 )
 

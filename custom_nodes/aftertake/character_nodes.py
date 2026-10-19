@@ -3,10 +3,179 @@ import hashlib
 import json
 import math
 import os
+import threading
 from fractions import Fraction
 import av
 import numpy as np
 import torch
+from .vram import host_tensor
+
+
+GENERATION_PROFILES = frozenset(('structure', 'inpaint', 'cinema', 'motion-transfer',
+    'motion', 'frame-edit', 'image-gen', 'text-video', 'character-selection', 'character-swap'))
+_KITCHEN_PROBES = set()
+_KITCHEN_PROBE_LOCK = threading.RLock()
+
+
+def _runtime_device_policy(config, profile='structure'):
+    """Check execution devices only; CPU storage, offload and media outputs are valid."""
+    from .hardware import HardwareConfigurationError
+    import comfy.model_management as management
+    from comfy.cli_args import args
+    device = management.get_torch_device()
+    def selected_cuda(stage, execution_device):
+        if (getattr(execution_device, 'type', None) != 'cuda' or
+                getattr(execution_device, 'index', None) != config.device_index):
+            raise HardwareConfigurationError('execution_device_mismatch',
+                f'The {stage} stage must execute on the selected NVIDIA CUDA device. '
+                'Remove CPU execution overrides or restart on the matching GPU; CPU storage and offload remain allowed.')
+    selected_cuda('SAM3' if profile == 'character-selection' else 'diffusion', device)
+    uses_vae = profile != 'character-selection'
+    if uses_vae:
+        selected_cuda('VAE', management.vae_device())
+    if profile == 'character-swap':
+        # The pinned H3 graph explicitly retargets CLIP with SelectCLIPDevice.
+        # Its GPU selection overrides a CPU default caused by --novram; use
+        # the same native resolver without changing the graph or its patcher.
+        selected_cuda('H3 reference encoder', management.resolve_gpu_device_option('gpu:0'))
+    else:
+        selected_cuda('text encoder', management.text_encoder_device())
+    if any(getattr(args, name, False) for name in
+            ('force_fp32', 'fp32_unet', 'fp32_text_enc')) or (uses_vae and getattr(args, 'fp32_vae', False)):
+        raise HardwareConfigurationError('float32_execution_disabled',
+            'Remove forced FP32 execution flags before starting this generation profile. No FP32 fallback is enabled.')
+    return management, device
+
+
+def _engine_idle():
+    try:
+        from server import PromptServer
+        running, pending = PromptServer.instance.prompt_queue.get_current_queue()
+        return isinstance(running, list) and isinstance(pending, list) and not running and not pending
+    except (ImportError, AttributeError, TypeError, ValueError):
+        return False
+
+
+def _kitchen_attention_probe(facts):
+    """Check the compiled INT8 attention actually selected by the pinned H3 graph."""
+    from .hardware import HardwareConfigurationError
+    try:
+        import comfy_kitchen as kitchen
+        device = torch.device(f'cuda:{facts.device_index}')
+        if not kitchen.int8_attention_is_available(device):
+            raise RuntimeError('Compiled INT8 attention is unavailable')
+        key = (id(kitchen), facts.device_index, facts.device_uuid or facts.name,
+            facts.torch_version, facts.cuda_version)
+        with _KITCHEN_PROBE_LOCK:
+            if key not in _KITCHEN_PROBES:
+                with torch.cuda.device(facts.device_index), torch.inference_mode():
+                    query = torch.ones((1, 1, 16, 128), device=device, dtype=torch.bfloat16)
+                    result = kitchen.int8_attention(query, query, query)
+                    if (result.device != device or result.dtype != torch.bfloat16 or
+                            not bool(torch.isfinite(result).all().item()) or
+                            not torch.allclose(result, torch.ones_like(result), rtol=.03, atol=.03)):
+                        raise RuntimeError('INT8 attention did not preserve the CUDA BF16 result')
+                    torch.cuda.synchronize(facts.device_index)
+                _KITCHEN_PROBES.add(key)
+        return 'comfy-kitchen-int8-attention'
+    except (ImportError, AttributeError, RuntimeError, TypeError, OSError) as error:
+        raise HardwareConfigurationError('h3_attention_unavailable',
+            'H3 requires the pinned Comfy Kitchen compiled INT8 attention on the selected CUDA GPU. '
+            'Update the runtime packages and check the NVIDIA driver; no alternate attention or precision fallback was attempted.') from error
+
+
+def runtime_hardware_report(profile):
+    """Refresh capacity and validate cached tiny kernels without loading a model."""
+    from dataclasses import asdict
+    from .hardware import HardwareConfig, HardwareConfigurationError, NvidiaExecutionBackend
+    if profile not in GENERATION_PROFILES:
+        raise ValueError('Choose a supported Aftertake generation profile.')
+    report = {'format': 'aftertake-hardware-status/1', 'profile': profile,
+        'ready': False, 'backend': 'cuda', 'facts': None, 'config': None, 'checks': [],
+        'policy': {'cpuInference': False, 'float32Fallback': False}}
+    try:
+        config = HardwareConfig.from_environment()
+        report['config'] = asdict(config)
+        from .vram import managed_reclaimable_vram_bytes
+        management, device = _runtime_device_policy(config, profile)
+        backend = NvidiaExecutionBackend(config)
+        measured = backend.inspect()
+        reclaimable = managed_reclaimable_vram_bytes(management, device=device, idle=_engine_idle(),
+            max_bytes=max(0, measured.total_vram_bytes - measured.free_vram_bytes))
+        report['facts'] = {**measured.as_dict(), 'reclaimable_vram_bytes': reclaimable}
+        facts = backend.preflight(reclaimable_vram_bytes=reclaimable)
+        report['facts'] = facts.as_dict()
+        probes = list(facts.kernel_probes)
+        if profile == 'character-swap':
+            probes.append(_kitchen_attention_probe(facts))
+            report['checks'].append({'id': 'h3-attention', 'state': 'pass',
+                'message': 'The selected CUDA GPU executes Comfy Kitchen INT8 attention.'})
+        report['facts']['kernel_probes'] = probes
+        report['checks'].extend([
+            {'id': 'cuda', 'state': 'pass', 'message': 'The selected execution device is NVIDIA CUDA.'},
+            {'id': 'native-bf16', 'state': 'pass', 'message': 'Native BF16 execution is available.'},
+            {'id': 'memory', 'state': 'pass', 'message': 'Current free VRAM and verified idle model residency cover the configured reserve and workspace budget.'},
+            {'id': 'kernel-probe', 'state': 'pass', 'message': 'Tiny CUDA BF16 and optimized attention probes passed.'},
+        ])
+        report['ready'] = True
+    except HardwareConfigurationError as error:
+        report['checks'].append({'id': error.code, 'state': 'blocked', 'message': str(error)})
+    except Exception:
+        report['checks'].append({'id': 'runtime-hardware-unavailable', 'state': 'blocked',
+            'message': 'Aftertake could not validate this engine hardware. Update the Aftertake node pack and restart ComfyUI.'})
+    return report
+
+
+def validate_generation_recipe(recipe_json, *, selection=False):
+    """Run during native prompt validation, before any linked model executes."""
+    try:
+        value = json.loads(recipe_json)
+        if not isinstance(value, dict):
+            return 'Use a JSON object for the output recipe.'
+        kind = value.get('format')
+        if selection and kind == 'aftertake-character-selection/1':
+            profile = 'character-selection'
+        elif not selection and kind == 'aftertake-character-output/1':
+            profile = 'character-swap'
+        elif not selection and kind == 'aftertake-text-video/1':
+            profile = 'text-video'
+        elif not selection and kind == 'aftertake/1':
+            profile = value.get('pipeline', 'structure')
+            if profile == 'motion-transfer' and isinstance(value.get('transfer'), dict) and value['transfer'].get('finish'):
+                return True  # Existing frames and matte only; no diffusion or SAM3.
+            if profile == 'cinema' and isinstance(value.get('cinema'), dict) and value['cinema'].get('guidance') == 'tracks':
+                profile = 'motion'
+            if profile not in GENERATION_PROFILES:
+                return 'Choose a supported Aftertake generation profile.'
+        else:
+            return True  # CPU media encoding and film/compositor exports remain available.
+        report = runtime_hardware_report(profile)
+        if report['ready']:
+            return True
+        return next((check['message'] for check in report['checks'] if check['state'] == 'blocked'),
+            'The selected generation hardware is not ready.')
+    except (TypeError, ValueError, json.JSONDecodeError):
+        return 'Use valid JSON for the output recipe.'
+
+
+def install_runtime_hardware_route():
+    try:
+        from aiohttp import web
+        from server import PromptServer
+    except ImportError:
+        return  # Standalone CPU media tests do not start a Comfy server.
+    server = getattr(PromptServer, 'instance', None)
+    if server is None or getattr(server, '_aftertake_hardware_route', False):
+        return
+    @server.routes.get('/aftertake/runtime')
+    async def runtime_status(request):
+        import asyncio
+        profile = request.query.get('profile', 'structure')
+        if profile not in GENERATION_PROFILES:
+            return web.json_response({'error': 'Choose a supported Aftertake generation profile.'}, status=400)
+        report = await asyncio.to_thread(runtime_hardware_report, profile)
+        return web.json_response(report, headers={'Cache-Control': 'no-store'})
+    server._aftertake_hardware_route = True
 
 
 class AftertakeSubjectPoints:
@@ -58,6 +227,10 @@ class AftertakeSelectCharacterMask:
 
 class AftertakeSaveCharacterSelection:
     @classmethod
+    def VALIDATE_INPUTS(cls, request_json):
+        return validate_generation_recipe(request_json, selection=True)
+
+    @classmethod
     def INPUT_TYPES(cls):
         return {'required':{'images':('IMAGE',),'masks':('MASK',),
             'filename_prefix':('STRING',{'default':'aftertake/character-selection'}),
@@ -83,7 +256,8 @@ class AftertakeSaveCharacterSelection:
             stream=container.add_stream('ffv1',rate=24);stream.width=w;stream.height=h;stream.pix_fmt='gray'
             stream.options={'level':'3','threads':'2'}
             for i,mask in enumerate(masks):
-                pixels=(mask.detach().cpu().numpy()>.5).astype(np.uint8)*255
+                with host_tensor(mask.detach()) as host_mask:
+                    pixels=(host_mask.numpy()>.5).astype(np.uint8)*255
                 if not pixels.any():empty.append(i)
                 frame=av.VideoFrame.from_ndarray(pixels,format='gray');frame.pts=i;frame.time_base=Fraction(1,24)
                 for packet in stream.encode(frame):container.mux(packet)
@@ -97,8 +271,10 @@ class AftertakeSaveCharacterSelection:
             stream=container.add_stream('libx264',rate=24);stream.width=w;stream.height=h;stream.pix_fmt='yuv420p'
             stream.options={'crf':'17','preset':'fast','threads':'2'}
             for i,(image,mask) in enumerate(zip(images,masks)):
-                pixels=(image[...,:3].detach().cpu().clamp(0,1).numpy()*255).round().astype(np.uint8)
-                inside=mask.detach().cpu().numpy()>.5
+                with host_tensor(image[...,:3].detach()) as host_image:
+                    pixels=(host_image.clamp(0,1).numpy()*255).round().astype(np.uint8)
+                with host_tensor(mask.detach()) as host_mask:
+                    inside=host_mask.numpy()>.5
                 pixels[inside]=(pixels[inside]*.58+np.array([70,235,150])*.42).round().astype(np.uint8)
                 frame=av.VideoFrame.from_ndarray(pixels,format='rgb24');frame.pts=i;frame.time_base=Fraction(1,24)
                 for packet in stream.encode(frame):container.mux(packet)

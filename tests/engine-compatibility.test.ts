@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { computeFeatures, type ComputeFeature } from '../src/compute.js';
 import { evaluateEngineCompatibility } from '../server/engine-compatibility.js';
 import { requirements } from '../server/workflow.js';
+import { cudaSystemStats, hardwareFixture } from './hardware-fixture.js';
 
 type Node = {
   input: { required: Record<string, unknown>; optional: Record<string, unknown> };
@@ -26,9 +27,14 @@ function fixture(feature: ComputeFeature) {
   }
   return nodes;
 }
-const systemStats = { system: { os: 'win32' } };
+const systemStats = cudaSystemStats;
 const evaluate = (feature: ComputeFeature, objectInfo: unknown, stats: unknown = systemStats) =>
-  evaluateEngineCompatibility({ feature, objectInfo, systemStats: stats });
+  evaluateEngineCompatibility({
+    feature,
+    objectInfo,
+    systemStats: stats,
+    hardwareInfo: hardwareFixture(feature),
+  });
 
 test('declared metadata contracts cover all ten workflows without mutating or returning engine documents', () => {
   for (const feature of computeFeatures) {
@@ -194,9 +200,187 @@ test('generated audio needs its actual AUDIO port and characters need known OS a
     }
     const nodes = fixture(feature);
     nodes.AftertakeRuntimeInfo.input.required.weight_copy_backend = [['native']];
-    assert.equal(evaluate(feature, nodes).compatible, false);
-    assert.equal(evaluate(feature, nodes, { system: { os: 'posix' } }).compatible, true);
+    assert.equal(
+      evaluate(feature, nodes).compatible,
+      true,
+      'Windows keeps native weight transfer unless safe copies were explicitly selected.',
+    );
+    nodes.AftertakeRuntimeInfo.input.required.weight_copy_backend = [['pytorch']];
+    assert.equal(evaluate(feature, nodes).compatible, true);
+    for (const invalid of [
+      undefined,
+      null,
+      [],
+      [['unknown']],
+      [['native', 'pytorch']],
+      ['native'],
+    ]) {
+      nodes.AftertakeRuntimeInfo.input.required.weight_copy_backend = invalid;
+      assert.equal(evaluate(feature, nodes).compatible, false);
+    }
+    nodes.AftertakeRuntimeInfo.input.required.weight_copy_backend = [['native']];
+    assert.equal(
+      evaluate(feature, nodes, { ...systemStats, system: { os: 'posix' } }).compatible,
+      true,
+    );
     nodes.AftertakeRuntimeInfo.input.required.ffmpeg_tools = [['missing']];
-    assert.equal(evaluate(feature, nodes, { system: { os: 'posix' } }).compatible, false);
+    assert.equal(
+      evaluate(feature, nodes, { ...systemStats, system: { os: 'posix' } }).compatible,
+      false,
+    );
   }
+});
+
+test('CUDA hardware reports fail closed for missing, malformed, wrong-profile and CPU metadata', () => {
+  const feature = 'image-gen';
+  const nodes = fixture(feature);
+  for (const hardwareInfo of [
+    undefined,
+    null,
+    {},
+    true,
+    'ready',
+    hardwareFixture('text-video'),
+    { ...hardwareFixture(feature), ready: 'true' },
+    { ...hardwareFixture(feature), policy: { cpuInference: true, float32Fallback: false } },
+  ]) {
+    assert.equal(
+      evaluateEngineCompatibility({ feature, objectInfo: nodes, systemStats, hardwareInfo })
+        .compatible,
+      false,
+    );
+  }
+  for (const devices of [undefined, [], [{ type: 'cpu', index: 0 }], [{ type: 'cuda', index: 1 }]])
+    assert.equal(
+      evaluateEngineCompatibility({
+        feature,
+        objectInfo: nodes,
+        systemStats: { system: { os: 'linux' }, devices },
+        hardwareInfo: hardwareFixture(feature),
+      }).compatible,
+      false,
+    );
+  const valid = hardwareFixture(feature);
+  assert.equal(
+    evaluateEngineCompatibility({ feature, objectInfo: nodes, systemStats, hardwareInfo: valid })
+      .compatible,
+    true,
+    'Ampere BF16 can pass without native FP8.',
+  );
+  for (const field of [
+    'native_bf16',
+    'kernel_probes',
+    'free_vram_bytes',
+    'reclaimable_vram_bytes',
+  ]) {
+    const invalid = structuredClone(valid) as any;
+    invalid.facts[field] = field === 'kernel_probes' ? [] : field === 'native_bf16' ? false : -1;
+    assert.equal(
+      evaluateEngineCompatibility({
+        feature,
+        objectInfo: nodes,
+        systemStats,
+        hardwareInfo: invalid,
+      }).compatible,
+      false,
+      field,
+    );
+  }
+});
+
+test('malformed hardware capability and memory fields cannot throw or certify generation', () => {
+  const feature = 'image-gen';
+  for (const capability of [
+    [8],
+    [8, undefined],
+    [8, -1],
+    [8, NaN],
+    Object.assign(Array(2), { 0: 8 }),
+  ]) {
+    const invalid = hardwareFixture(feature) as any;
+    invalid.facts.compute_capability = capability;
+    assert.equal(
+      evaluateEngineCompatibility({
+        feature,
+        objectInfo: fixture(feature),
+        systemStats,
+        hardwareInfo: invalid,
+      }).compatible,
+      false,
+    );
+  }
+  for (const memoryMode of [{}, Object.create(null), true]) {
+    const invalid = hardwareFixture(feature) as any;
+    invalid.config.memory_mode = memoryMode;
+    assert.equal(
+      evaluateEngineCompatibility({
+        feature,
+        objectInfo: fixture(feature),
+        systemStats,
+        hardwareInfo: invalid,
+      }).compatible,
+      false,
+    );
+  }
+});
+
+test('configured workspace uses bounded idle residency and does not imply that every model fits', () => {
+  const feature = 'image-gen';
+  const hardwareInfo = hardwareFixture(feature);
+  hardwareInfo.facts.free_vram_bytes = 2 * 1024 ** 3;
+  const evaluateReport = () =>
+    evaluateEngineCompatibility({
+      feature,
+      objectInfo: fixture(feature),
+      systemStats,
+      hardwareInfo,
+    });
+  assert.equal(evaluateReport().compatible, false);
+  hardwareInfo.facts.reclaimable_vram_bytes = 7 * 1024 ** 3;
+  assert.equal(
+    evaluateReport().compatible,
+    false,
+    'The exact configured budget leaves no additional capacity.',
+  );
+  hardwareInfo.facts.reclaimable_vram_bytes = 8 * 1024 ** 3;
+  assert.equal(evaluateReport().compatible, true);
+  hardwareInfo.facts.reclaimable_vram_bytes = 15 * 1024 ** 3;
+  assert.equal(
+    evaluateReport().compatible,
+    false,
+    'Never claim more reclaimable bytes than occupied VRAM.',
+  );
+});
+
+test('H3 needs both the exact attention menu and actual compiled-kernel proof, independently of FP8 storage', () => {
+  const feature = 'character-swap';
+  const nodes = fixture(feature);
+  const hardwareInfo = hardwareFixture(feature);
+  const evaluateReport = () =>
+    evaluateEngineCompatibility({ feature, objectInfo: nodes, systemStats, hardwareInfo });
+  assert.equal(evaluateReport().compatible, true);
+  nodes.ModelAttentionBackend.input.required.attention = [['pytorch attention']];
+  assert.equal(evaluateReport().compatible, false);
+  nodes.ModelAttentionBackend.input.required.attention = [['comfy kitchen attention']];
+  hardwareInfo.facts.kernel_probes = ['bf16-matmul-and-optimized-sdpa'];
+  assert.equal(evaluateReport().compatible, false);
+});
+
+test('an explicitly requested native FP8 path needs its own device capability and kernel probe', () => {
+  const feature = 'image-gen';
+  const hardwareInfo = hardwareFixture(feature);
+  hardwareInfo.config.require_native_fp8 = true;
+  const evaluateReport = () =>
+    evaluateEngineCompatibility({
+      feature,
+      objectInfo: fixture(feature),
+      systemStats,
+      hardwareInfo,
+    });
+  assert.equal(evaluateReport().compatible, false);
+  hardwareInfo.facts.compute_capability = [8, 9];
+  hardwareInfo.facts.native_fp8 = true;
+  assert.equal(evaluateReport().compatible, false);
+  hardwareInfo.facts.kernel_probes.push('native-fp8-scaled-matmul');
+  assert.equal(evaluateReport().compatible, true);
 });

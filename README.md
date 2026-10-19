@@ -121,6 +121,9 @@ current framework and an offline character-workflow deployment inventory.
 Requires **Python 3.12**, an **NVIDIA CUDA GPU**, and space for the selected
 model profile. The tested development host is Windows with an RTX 5080
 (16 GB VRAM) and 32 GB RAM; minimum supported hardware is not yet established.
+Setup and engine launch now validate native CUDA precision, kernels and available
+memory before model allocation. See [hardware setup and GPU selection](docs/hardware.md)
+for other NVIDIA devices, sequential offloading and explicit preflight checks.
 
 For native text-to-video with optional generated sound:
 

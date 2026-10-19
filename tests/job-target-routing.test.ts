@@ -192,6 +192,7 @@ test('restart binding blocks cross-engine actions for all five job families and 
     const inspected = await fetch(base + '/api/engine');
     assert.equal(inspected.status, 200);
     assert.deepEqual(enginePaths.sort(), [
+      '/native/aftertake/runtime?profile=structure',
       '/native/object_info',
       '/native/system_stats',
       '/proxy/api/v2/health',

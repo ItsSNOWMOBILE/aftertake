@@ -74,6 +74,7 @@ export function characterRequirements(selectionOnly = false): {
       'MiniMaxH3AddGuide',
     );
     menus.push(
+      ['ModelAttentionBackend', 'attention', 'comfy kitchen attention'],
       ['UNETLoader', 'unet_name', characterModels.diffusion],
       ['CLIPLoader', 'clip_name', characterModels.encoder],
       ['VAELoader', 'vae_name', characterModels.vae],

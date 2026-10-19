@@ -144,8 +144,12 @@ async function engine(
       fetch(`${uiUrl}/object_info`, { signal: AbortSignal.timeout(5000) }),
       fetch(`${uiUrl}/system_stats`, { signal: AbortSignal.timeout(5000) }),
       fetch(`${sdkBaseUrl}/api/v2/health`, { signal: AbortSignal.timeout(5000) }),
+      fetch(`${uiUrl}/aftertake/runtime?profile=${encodeURIComponent(pipeline)}`, {
+        signal: AbortSignal.timeout(15000),
+      }).catch(() => null),
     ]);
-    if (responses.some((r) => !r.ok)) throw new Error('ComfyUI or the v2 proxy is unavailable');
+    if (responses.slice(0, 3).some((r) => !r?.ok))
+      throw new Error('ComfyUI or the v2 proxy is unavailable');
     const nodes: unknown = await responses[0].json();
     const stats = (await responses[1].json()) as {
       devices?: { name: string }[];
@@ -155,6 +159,7 @@ async function engine(
       feature: pipeline,
       objectInfo: nodes,
       systemStats: stats,
+      hardwareInfo: responses[3]?.ok ? await responses[3].json().catch(() => null) : null,
     });
     const missing = compatibility.missing;
     result = {
@@ -163,7 +168,7 @@ async function engine(
       gpu: stats.devices?.[0]?.name,
       missing,
       message: missing.length
-        ? 'Engine connected. Required components are still being installed.'
+        ? 'Engine connected. Check the workflow hardware and required components.'
         : 'Local ComfyUI · open-weight workflow',
     };
   } catch {

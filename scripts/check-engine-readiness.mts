@@ -15,11 +15,13 @@ const usage = `Check saved Comfy metadata without connecting to an engine or gen
 pnpm exec tsx scripts/check-engine-readiness.mts \\
   --feature character-swap --object-info .runtime/cloud/object-info.json \\
   --system-stats .runtime/cloud/system-stats.json \\
+  --hardware-info .runtime/cloud/hardware-status.json \\
   --output .runtime/cloud/character-swap-check.json
 
 --feature       ${computeFeatures.join(', ')} or all (default: all)
 --object-info   Saved object_info JSON, at most 16 MiB (required)
 --system-stats  Saved system_stats JSON, at most 1 MiB (optional)
+--hardware-info Saved Aftertake hardware report or profile bundle, at most 1 MiB
 --output        Write a new UTF-8 report; existing files are never overwritten
 
 Without --output, the report is printed to stdout.
@@ -90,6 +92,7 @@ async function main() {
         feature: { type: 'string', default: 'all' },
         'object-info': { type: 'string' },
         'system-stats': { type: 'string' },
+        'hardware-info': { type: 'string' },
         output: { type: 'string' },
         help: { type: 'boolean' },
       },
@@ -108,12 +111,18 @@ async function main() {
     !options['object-info'] ||
     (selected !== 'all' && !computeFeatures.includes(selected as ComputeFeature)) ||
     options.output === '' ||
-    options['system-stats'] === ''
+    options['system-stats'] === '' ||
+    options['hardware-info'] === ''
   )
     throw new ReadinessInputError('Choose a supported feature and a saved --object-info file.');
 
   // Validate every supplied path first, including output, before reading inputs.
-  for (const filename of [options['object-info'], options['system-stats'], options.output])
+  for (const filename of [
+    options['object-info'],
+    options['system-stats'],
+    options['hardware-info'],
+    options.output,
+  ])
     if (filename) validateReadinessDiskPath(filename);
 
   const objectInfo = await snapshot(options['object-info'], metadataLimit, 'Object metadata');
@@ -121,11 +130,33 @@ async function main() {
     ? await snapshot(options['system-stats'], statsLimit, 'System metadata')
     : undefined;
   const features = selected === 'all' ? computeFeatures : [selected as ComputeFeature];
+  const hardwareInfo = options['hardware-info']
+    ? await snapshot(options['hardware-info'], statsLimit, 'Hardware metadata')
+    : undefined;
   const results = features.map((feature) => {
+    const hardwareValue = hardwareInfo?.value;
+    const profileReports =
+      hardwareValue !== null &&
+      typeof hardwareValue === 'object' &&
+      !Array.isArray(hardwareValue) &&
+      Object.hasOwn(hardwareValue, 'format') &&
+      (hardwareValue as Record<string, unknown>).format === 'aftertake-hardware-status-bundle/1'
+        ? (hardwareValue as Record<string, unknown>).profiles
+        : undefined;
+    const hardwareReport = Array.isArray(profileReports)
+      ? profileReports.find(
+          (report) =>
+            report !== null &&
+            typeof report === 'object' &&
+            Object.hasOwn(report, 'profile') &&
+            report.profile === feature,
+        )
+      : hardwareValue;
     const evaluation = evaluateEngineCompatibility({
       feature,
       objectInfo: objectInfo.value,
       systemStats: systemStats?.value,
+      hardwareInfo: hardwareReport,
     });
     return {
       feature,
@@ -142,14 +173,18 @@ async function main() {
     format: 'aftertake-engine-readiness/1',
     checkedAt: new Date().toISOString(),
     scope: 'Saved metadata and current profile requirements only.',
-    inputs: { objectInfo: objectInfo.evidence, systemStats: systemStats?.evidence ?? null },
+    inputs: {
+      objectInfo: objectInfo.evidence,
+      systemStats: systemStats?.evidence ?? null,
+      hardwareInfo: hardwareInfo?.evidence ?? null,
+    },
     summary: { checked: results.length, passed: results.length - blocked, blocked },
     results,
     generationReady: false,
     actions: { engineRequests: 0, submittedJobs: 0, changedConnections: 0 },
     unverified: [
       'Metadata origin and freshness, including whether it came from the intended worker.',
-      'Model content hashes, GPU capacity, Linux dependencies and codec execution.',
+      'Model content hashes, current GPU availability, Linux dependencies and codec execution.',
       'Full graph validation, media transport, successful output and remote job recovery.',
       'Provider authentication, subscription, available credits and billing ownership.',
     ],

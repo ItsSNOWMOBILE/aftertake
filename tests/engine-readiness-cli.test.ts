@@ -8,6 +8,7 @@ import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 import { computeFeatures } from '../src/compute.js';
 import { requirements } from '../server/workflow.js';
+import { cudaSystemStats, hardwareFixture } from './hardware-fixture.js';
 
 const root = path.resolve(import.meta.dirname, '..');
 const cli = path.join(root, 'scripts/check-engine-readiness.mts');
@@ -20,7 +21,7 @@ type Definition = {
 };
 
 async function fixture(
-  run: (directory: string, objectInfo: string, stats: string) => Promise<void>,
+  run: (directory: string, objectInfo: string, stats: string, hardware: string) => Promise<void>,
 ) {
   const tempRoot = await realpath(tmpdir());
   const directory = await mkdtemp(path.join(tempRoot, 'aftertake-metadata-cli-'));
@@ -49,13 +50,24 @@ async function fixture(
     await writeFile(objectInfo, JSON.stringify(nodes));
     await writeFile(
       stats,
-      JSON.stringify({ system: { os: 'win32', argv: ['private-api-key', '/private/user/path'] } }),
+      JSON.stringify({
+        ...cudaSystemStats,
+        system: { os: 'win32', argv: ['private-api-key', '/private/user/path'] },
+      }),
+    );
+    const hardware = path.join(directory, 'hardware-status.json');
+    await writeFile(
+      hardware,
+      JSON.stringify({
+        format: 'aftertake-hardware-status-bundle/1',
+        profiles: computeFeatures.map(hardwareFixture),
+      }),
     );
     await writeFile(
       path.join(directory, 'no-network.mjs'),
       'globalThis.fetch = () => { throw Error("The offline check must not fetch"); };',
     );
-    await run(directory, objectInfo, stats);
+    await run(directory, objectInfo, stats, hardware);
   } finally {
     assert.equal(path.dirname(await realpath(directory)), tempRoot);
     assert.ok(path.basename(directory).startsWith('aftertake-metadata-cli-'));
@@ -81,8 +93,15 @@ function invoke(directory: string, args: string[]) {
 }
 
 test('offline report checks all profiles, binds exact input bytes, and exposes no private metadata', async () => {
-  await fixture(async (directory, objectInfo, stats) => {
-    const result = invoke(directory, ['--object-info', objectInfo, '--system-stats', stats]);
+  await fixture(async (directory, objectInfo, stats, hardware) => {
+    const result = invoke(directory, [
+      '--object-info',
+      objectInfo,
+      '--system-stats',
+      stats,
+      '--hardware-info',
+      hardware,
+    ]);
     assert.equal(result.status, 0, result.stderr);
     const report = JSON.parse(result.stdout);
     assert.equal(report.format, 'aftertake-engine-readiness/1');
@@ -100,6 +119,7 @@ test('offline report checks all profiles, binds exact input bytes, and exposes n
     for (const [key, file] of [
       ['objectInfo', objectInfo],
       ['systemStats', stats],
+      ['hardwareInfo', hardware],
     ]) {
       const bytes = await readFile(file);
       assert.equal(report.inputs[key].sha256, createHash('sha256').update(bytes).digest('hex'));
@@ -152,10 +172,21 @@ test('network and device path rejection is pure and covers input and output name
 });
 
 test('CLI writes UTF-8 reports once and preserves existing files and input snapshots', async () => {
-  await fixture(async (directory, objectInfo, stats) => {
+  await fixture(async (directory, objectInfo, stats, hardware) => {
     const before = await readFile(objectInfo);
     const output = path.join(directory, 'new-reports', 'readiness.json');
-    const args = ['--feature', 'image-gen', '--object-info', objectInfo, '--output', output];
+    const args = [
+      '--feature',
+      'image-gen',
+      '--object-info',
+      objectInfo,
+      '--system-stats',
+      stats,
+      '--hardware-info',
+      hardware,
+      '--output',
+      output,
+    ];
     const result = invoke(directory, args);
     assert.equal(result.status, 0, result.stderr);
     assert.deepEqual(JSON.parse(result.stdout), {
@@ -204,6 +235,26 @@ test('blocked metadata produces an actionable report and a distinct failure exit
           check.id === 'character-operating-system' && check.state === 'blocked',
       ),
     );
+  });
+});
+
+test('offline hardware evidence is explicit, profile-bound and cannot be replaced by a ready boolean', async () => {
+  await fixture(async (directory, objectInfo, stats, hardware) => {
+    const base = ['--feature', 'image-gen', '--object-info', objectInfo, '--system-stats', stats];
+    const absent = invoke(directory, base);
+    assert.equal(absent.status, 1);
+    assert.ok(
+      JSON.parse(absent.stdout).results[0].checks.some(
+        (check: { id: string; state: string }) =>
+          check.id === 'hardware-report' && check.state === 'blocked',
+      ),
+    );
+    await writeFile(hardware, JSON.stringify(hardwareFixture('image-gen')));
+    assert.equal(invoke(directory, [...base, '--hardware-info', hardware]).status, 0);
+    await writeFile(hardware, JSON.stringify(hardwareFixture('text-video')));
+    assert.equal(invoke(directory, [...base, '--hardware-info', hardware]).status, 1);
+    await writeFile(hardware, JSON.stringify({ ready: true }));
+    assert.equal(invoke(directory, [...base, '--hardware-info', hardware]).status, 1);
   });
 });
 

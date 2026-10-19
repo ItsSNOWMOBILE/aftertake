@@ -352,6 +352,11 @@ class AftertakeFilmGrade:
 
 class AftertakeSaveVideo:
     @classmethod
+    def VALIDATE_INPUTS(cls, recipe_json):
+        from .character_nodes import validate_generation_recipe
+        return validate_generation_recipe(recipe_json)
+
+    @classmethod
     def INPUT_TYPES(cls):
         return {'required': {
             'images': ('IMAGE',), 'fps': ('FLOAT', {'default': 16, 'min': 1, 'max': 60}),
@@ -404,8 +409,9 @@ class AftertakeSaveVideo:
 
 
 NODE_CLASS_MAPPINGS = {cls.__name__: cls for cls in [AftertakeCueMask, AftertakeLoadClip, AftertakeCropRegion, AftertakeRestoreRegion, AftertakeComposite, AftertakeFilmGrade, AftertakeSaveVideo]}
-from .character_nodes import CHARACTER_NODES
+from .character_nodes import CHARACTER_NODES, install_runtime_hardware_route
 from .memory_compat import install as install_safe_weight_copies
 install_safe_weight_copies()
+install_runtime_hardware_route()
 NODE_CLASS_MAPPINGS.update(CHARACTER_NODES)
 NODE_DISPLAY_NAME_MAPPINGS = {key: key.replace('Aftertake', 'Aftertake · ') for key in NODE_CLASS_MAPPINGS}

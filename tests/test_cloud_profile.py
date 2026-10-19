@@ -43,7 +43,13 @@ class CloudProfileTests(unittest.TestCase):
             self.assertIn('AftertakeSaveVideo', result['workflowContract']['requiredNodes'])
             for item in result['sourceFiles']:
                 self.assertEqual(item['sha256'], hashlib.sha256((root / item['path']).read_bytes()).hexdigest())
-            self.assertEqual(len(result['customNodeFiles']), 5)
+            self.assertIn('scripts/hardware-check.py', {item['path'] for item in result['sourceFiles']})
+            self.assertEqual(len(result['customNodeFiles']), 7)
+            custom_files = {item['path']: item for item in result['customNodeFiles']}
+            for name in ('hardware.py', 'vram.py'):
+                filename = 'custom_nodes/aftertake/' + name
+                self.assertIn(filename, custom_files)
+                self.assertEqual(custom_files[filename]['sha256'], hashlib.sha256((root / filename).read_bytes()).hexdigest())
             self.assertTrue(result['validation']['sourceFilesComplete'])
             self.assertFalse(result['validation']['modelContentHashesVerified'])
             self.assertFalse(result['deployment']['ready'])

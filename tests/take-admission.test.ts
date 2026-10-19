@@ -10,6 +10,7 @@ import path from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { requirements } from '../server/workflow.js';
 import { recipeSchema } from '../src/domain.js';
+import { cudaSystemStats, hardwareFixture } from './hardware-fixture.js';
 
 test(
   'ready takes reach the engine, failed initial storage leaves no ghost, and durable keys survive concurrent requests and restart',
@@ -48,6 +49,7 @@ test(
     let held = false;
     let release: (() => void) | undefined;
     let engineFailure: unknown;
+    let hardwareMode: 'missing' | 'cpu' | 'ready' = 'missing';
     const engine = createServer(async (req, res) => {
       try {
         const pathname = new URL(req.url || '/', 'http://localhost').pathname;
@@ -58,7 +60,29 @@ test(
         res.setHeader('Content-Type', 'application/json');
         if (pathname === '/object_info') return void res.end(JSON.stringify(nodes));
         if (pathname === '/system_stats')
-          return void res.end(JSON.stringify({ devices: [], system: { os: 'posix' } }));
+          return void res.end(
+            JSON.stringify({
+              ...cudaSystemStats,
+              system: { os: 'posix' },
+              ...(hardwareMode === 'cpu'
+                ? { devices: [{ name: 'Synthetic CPU engine', type: 'cpu', index: 0 }] }
+                : {}),
+            }),
+          );
+        if (pathname === '/aftertake/runtime') {
+          if (hardwareMode === 'missing') {
+            res.statusCode = 404;
+            return void res.end('{}');
+          }
+          const hardware = hardwareFixture('structure');
+          return void res.end(
+            JSON.stringify(
+              hardwareMode === 'cpu'
+                ? { ...hardware, ready: false, facts: { ...hardware.facts, backend: 'cpu' } }
+                : hardware,
+            ),
+          );
+        }
         if (pathname === '/api/v2/health') return void res.end('{}');
         if (req.method === 'HEAD' && pathname.startsWith('/api/v2/assets/by-hash/')) {
           res.statusCode = 404;
@@ -164,6 +188,30 @@ test(
     const list = () => fetch(base + '/api/renders').then((response) => response.json());
     let replacedFolder = false;
     try {
+      await start();
+      const missingHardware = await fetch(base + '/api/engine').then((response) => response.json());
+      assert.equal(missingHardware.connected, true);
+      assert.equal(missingHardware.ready, false);
+      assert.ok(missingHardware.missing.some((message: string) => /node pack/i.test(message)));
+      assert.equal((await post('hardware-not-installed')).status, 409);
+      assert.deepEqual(await list(), []);
+      assert.equal(submissions.length, 0);
+      await stop();
+      hardwareMode = 'cpu';
+      await start();
+      const cpuHardware = await fetch(base + '/api/engine').then((response) => response.json());
+      assert.equal(cpuHardware.connected, true);
+      assert.equal(cpuHardware.ready, false);
+      assert.ok(cpuHardware.missing.some((message: string) => /NVIDIA CUDA/i.test(message)));
+      assert.equal((await post('cpu-generation-is-disabled')).status, 409);
+      assert.deepEqual(await list(), []);
+      assert.equal(submissions.length, 0);
+      assert.equal(
+        requests.filter((request) => request.pathname.startsWith('/api/v2/assets')).length,
+        0,
+      );
+      await stop();
+      hardwareMode = 'ready';
       await start();
       const health = await fetch(base + '/api/engine').then((response) => response.json());
       assert.equal(health.ready, true);
