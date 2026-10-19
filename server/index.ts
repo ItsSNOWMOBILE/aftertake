@@ -42,6 +42,7 @@ import {
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 await loadWorkspaceEnvironment(root);
 process.env.COMFY_BASE_URL ||= 'http://127.0.0.1:8189';
+const sdkBaseUrl = canonicalNativeBaseUrl(process.env.COMFY_BASE_URL);
 const uiUrl = canonicalNativeBaseUrl(process.env.COMFY_UI_URL || 'http://127.0.0.1:8188');
 const data = path.resolve(root, process.env.AFTERTAKE_DATA_DIR || '.data');
 const clipDir = path.join(data, 'clips');
@@ -66,7 +67,7 @@ const generation = new GenerationCoordinator();
 let previewBusy = false;
 let thumbnailQueue = Promise.resolve();
 const jobTarget = createJobTarget({
-  sdkBaseUrl: process.env.COMFY_BASE_URL!,
+  sdkBaseUrl,
   uiBaseUrl: uiUrl,
   allowLegacyLoopback: true,
 });
@@ -123,7 +124,7 @@ async function engine(
     const responses = await Promise.all([
       fetch(`${uiUrl}/object_info`, { signal: AbortSignal.timeout(5000) }),
       fetch(`${uiUrl}/system_stats`, { signal: AbortSignal.timeout(5000) }),
-      fetch(`${process.env.COMFY_BASE_URL}/api/v2/health`, { signal: AbortSignal.timeout(5000) }),
+      fetch(`${sdkBaseUrl}/api/v2/health`, { signal: AbortSignal.timeout(5000) }),
     ]);
     if (responses.some((r) => !r.ok)) throw new Error('ComfyUI or the v2 proxy is unavailable');
     const nodes: unknown = await responses[0].json();

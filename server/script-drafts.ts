@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { mkdir, readFile, writeFile, rename, readdir, stat } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, rename, readdir, stat, unlink } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { execFile } from 'node:child_process';
@@ -42,11 +42,28 @@ export async function scriptDraftRouter(context: {
       !!(await stat(python).catch(() => null)) &&
       !!(await stat(path.join(models, 'openvino_model.bin')).catch(() => null)));
   async function persist(job: ScriptDraft) {
-    job.updatedAt = new Date().toISOString();
+    const updatedAt = new Date().toISOString();
     const target = path.join(folder, job.id + '.json'),
       tmp = target + '.' + randomUUID() + '.tmp';
-    await writeFile(tmp, JSON.stringify(job, null, 2));
-    await rename(tmp, target);
+    try {
+      await writeFile(tmp, JSON.stringify({ ...job, updatedAt }, null, 2));
+      for (let attempt = 0; ; attempt++) {
+        try {
+          await rename(tmp, target);
+          job.updatedAt = updatedAt;
+          return;
+        } catch (error) {
+          if (
+            !['EPERM', 'EACCES', 'EBUSY'].includes((error as NodeJS.ErrnoException).code || '') ||
+            attempt === 4
+          )
+            throw error;
+          await new Promise((resolve) => setTimeout(resolve, 20 * 2 ** attempt));
+        }
+      }
+    } finally {
+      await unlink(tmp).catch(() => {});
+    }
   }
   const collecting = new Map<string, Promise<void>>();
   async function collectOutput(job: ScriptDraft) {
@@ -60,15 +77,18 @@ export async function scriptDraftRouter(context: {
     }
     if (output.requestDigest !== job.requestDigest)
       throw Error('The saved script result belongs to a different request.');
+    const completed = { ...job };
     if (output.error) {
-      job.state = 'failed';
-      job.error = String(output.error).slice(0, 1000);
+      completed.state = 'failed';
+      completed.error = String(output.error).slice(0, 1000);
     } else {
-      job.result = checkedScriptResult(output.result, job.request);
-      job.state = 'ready';
-      delete job.error;
+      completed.result = checkedScriptResult(output.result, job.request);
+      completed.state = 'ready';
+      delete completed.error;
     }
-    await persist(job);
+    await persist(completed);
+    Object.assign(job, completed);
+    if (!completed.error) delete job.error;
   }
   async function collect(job: ScriptDraft) {
     const pending = collecting.get(job.id);
@@ -96,9 +116,11 @@ export async function scriptDraftRouter(context: {
     try {
       const requestFile = path.join(folder, job.id + '.request.json'),
         outputFile = path.join(folder, job.id + '.output.json');
-      job.state = 'drafting';
+      const drafting = { ...job, state: 'drafting' as const };
+      delete drafting.error;
+      await persist(drafting);
+      Object.assign(job, drafting);
       delete job.error;
-      await persist(job);
       await writeFile(
         requestFile,
         JSON.stringify({ requestDigest: job.requestDigest, request: job.request }),
@@ -107,9 +129,24 @@ export async function scriptDraftRouter(context: {
       await collect(job);
       if (job.state === 'drafting') throw Error('The local script process ended without a result.');
     } catch (error) {
-      job.state = 'failed';
-      job.error = error instanceof Error ? error.message : String(error);
-      await persist(job);
+      const recoverable = typeof (error as NodeJS.ErrnoException)?.code === 'string';
+      const failed = {
+        ...job,
+        state: recoverable ? ('interrupted' as const) : ('failed' as const),
+        error: recoverable
+          ? 'The local script was interrupted. Rejoin its original request after storage and runtime access recover.'
+          : error instanceof Error
+            ? error.message
+            : String(error),
+      };
+      try {
+        await persist(failed);
+        Object.assign(job, failed);
+      } catch {
+        console.warn(
+          'Could not save the script draft state. Keep the original request to collect or resume it.',
+        );
+      }
     } finally {
       active.delete(job.id);
     }
@@ -162,7 +199,7 @@ export async function scriptDraftRouter(context: {
         return void res.status(409).json({
           error: 'Install the optional local script model with python scripts/setup-script.py.',
         });
-      // Publish the content-bound record synchronously, before any process work.
+      // The admission lock reserves this request until its first record is durable.
       const job: ScriptDraft = {
         id: randomUUID(),
         requestDigest: digest,
@@ -171,8 +208,8 @@ export async function scriptDraftRouter(context: {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
-      jobs.set(job.id, job);
       await persist(job);
+      jobs.set(job.id, job);
       void start(job);
       res.status(202).json(job);
     } finally {

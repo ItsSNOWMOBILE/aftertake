@@ -11,7 +11,7 @@ import { setTimeout as delay } from 'node:timers/promises';
 import { createJobTarget } from '../server/job-target.js';
 import { contentDigest } from '../server/edit-plan.js';
 
-test('restart binding blocks cross-engine actions for all five job families and explicit metadata checks use the canonical native URL', async () => {
+test('restart binding blocks cross-engine actions for all five job families and explicit metadata checks use canonical startup URLs', async () => {
   const directory = await mkdtemp(path.join(tmpdir(), 'aftertake-job-target-'));
   const recipe = JSON.parse(
     await readFile(new URL('../examples/observatory/recipe.json', import.meta.url), 'utf8'),
@@ -133,7 +133,7 @@ test('restart binding blocks cross-engine actions for all five job families and 
       ...process.env,
       PORT: String(address.port),
       AFTERTAKE_DATA_DIR: directory,
-      COMFY_BASE_URL: engineUrl,
+      COMFY_BASE_URL: engineUrl + '/proxy///',
       COMFY_UI_URL: engineUrl + '/native///',
       COMFY_API_KEY: '',
     },
@@ -192,9 +192,9 @@ test('restart binding blocks cross-engine actions for all five job families and 
     const inspected = await fetch(base + '/api/engine');
     assert.equal(inspected.status, 200);
     assert.deepEqual(enginePaths.sort(), [
-      '/api/v2/health',
       '/native/object_info',
       '/native/system_stats',
+      '/proxy/api/v2/health',
     ]);
   } finally {
     if (child.exitCode === null && child.signalCode === null) {
