@@ -937,7 +937,11 @@ export default function CharacterStudio({
                 <>
                   <img
                     draggable={false}
-                    src={mediaUrl(`/api/thumbnails/${source.id}?time=${trimStart}`)}
+                    src={mediaUrl(
+                      browserDemo
+                        ? `/api/thumbnails/${source.id}?time=${trimStart}`
+                        : `/api/clips/${source.id}/frame?time=${trimStart}`,
+                    )}
                     alt={
                       browserDemo
                         ? 'Recorded source preview near the selected start'
