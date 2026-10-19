@@ -19,6 +19,14 @@ export const cueSchema = z
     strokes: z.array(strokeSchema).max(100),
   })
   .refine((cue) => cue.end > cue.start, 'Cue must end after it starts');
+export const compositeRegionSchema = z
+  .object({
+    feather: cueSchema.shape.feather,
+    tracking: cueSchema.shape.tracking,
+    anchor: cueSchema.shape.anchor,
+    strokes: cueSchema.shape.strokes,
+  })
+  .strict();
 export const clipSchema = z.object({
   id: z.string().uuid(),
   name: z.string().max(200),
@@ -41,6 +49,7 @@ export const projectSchema = z
     clip: clipSchema,
     prompt: z.string().trim().min(5).max(2000),
     cue: cueSchema,
+    compositeRegion: compositeRegionSchema.optional(),
     seed: z
       .number()
       .int()
@@ -86,6 +95,10 @@ export const projectSchema = z
       )
       .optional(),
   })
+  .refine((recipe) => !recipe.compositeRegion || supportsCompositeRegion(recipe), {
+    message: 'A separate final region is available for region VFX and masked edits.',
+    path: ['compositeRegion'],
+  })
   .refine((recipe) => !recipe.endFrame || recipe.pipeline === 'cinema', {
     message: 'An ending frame is available in Animate a frame.',
     path: ['endFrame'],
@@ -102,6 +115,15 @@ export const recipeSchema = projectSchema
   .refine(
     (recipe) => !usesCue(recipe) || recipe.cue.strokes.some((stroke) => stroke.mode !== 'erase'),
     { message: 'Paint at least one region before rendering.', path: ['cue', 'strokes'] },
+  )
+  .refine(
+    (recipe) =>
+      !recipe.compositeRegion ||
+      recipe.compositeRegion.strokes.some((stroke) => stroke.mode !== 'erase'),
+    {
+      message: 'Paint at least one final region before rendering.',
+      path: ['compositeRegion', 'strokes'],
+    },
   )
   .refine(
     (recipe) =>
@@ -160,6 +182,7 @@ export const recipeSchema = projectSchema
   );
 export type Recipe = z.infer<typeof projectSchema>;
 export type Cue = z.infer<typeof cueSchema>;
+export type CompositeRegion = z.infer<typeof compositeRegionSchema>;
 export type Stroke = z.infer<typeof strokeSchema>;
 export type Clip = z.infer<typeof clipSchema>;
 export function findImportedClip(clips: Clip[], requested: Clip): Clip | undefined {
@@ -201,6 +224,27 @@ export type Engine = {
   missing: string[];
   message: string;
 };
+
+export function supportsCompositeRegion(recipe: {
+  pipeline?: 'structure' | 'inpaint' | 'cinema' | 'motion-transfer';
+}): boolean {
+  return !recipe.pipeline || recipe.pipeline === 'structure' || recipe.pipeline === 'inpaint';
+}
+
+/** The final spatial region has its own paint/tracking but always uses the generation cue's clock. */
+export function finalCompositeCue(recipe: Pick<Recipe, 'cue' | 'compositeRegion'>): Cue {
+  const region = recipe.compositeRegion;
+  if (!region) return recipe.cue;
+  return {
+    start: recipe.cue.start,
+    end: recipe.cue.end,
+    fade: recipe.cue.fade,
+    feather: region.feather,
+    tracking: region.tracking,
+    anchor: region.anchor,
+    strokes: region.strokes,
+  };
+}
 
 export function usesCue(recipe: Pick<Recipe, 'pipeline' | 'transfer'>) {
   return (
@@ -306,6 +350,7 @@ export function renderSettingsKey(r: Recipe) {
     r.directionStrength || 1,
     r.pipeline === 'inpaint' ? r.editReference?.sha256 || null : null,
     r.matchSourceColor || false,
+    ...(r.compositeRegion ? [['composite-region', cueSettingsKey(finalCompositeCue(r))]] : []),
   ]);
 }
 

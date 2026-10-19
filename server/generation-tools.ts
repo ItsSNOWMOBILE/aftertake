@@ -103,7 +103,18 @@ export function registerGenerationTools(context: {
     return records.find((record) => record.requestKey === key(type, id));
   }
   async function generate(type: Kind, id: string, input: unknown) {
-    await currentStudio(type);
+    const workspace = await currentStudio(type);
+    if (
+      type === 'take' &&
+      input !== null &&
+      typeof input === 'object' &&
+      'compositeRegion' in input &&
+      input.compositeRegion &&
+      workspace.compositeRegionProtocol !== 1
+    )
+      throw Error(
+        'Restart the local studio with separate final blend area support before rendering this recipe.',
+      );
     const result = await api<Generation>(routes[type], input, key(type, id));
     if (result.requestKey !== key(type, id))
       throw Error(

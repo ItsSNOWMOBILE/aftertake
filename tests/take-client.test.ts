@@ -22,6 +22,13 @@ const baseRecipe = recipeSchema.parse(
     await readFile(new URL('../examples/observatory/recipe.json', import.meta.url), 'utf8'),
   ),
 );
+const regionalRecipe = recipeSchema.parse({
+  ...JSON.parse(await readFile(new URL('../examples/portal/recipe.json', import.meta.url), 'utf8')),
+  compositeRegion: {
+    feather: 0.02,
+    strokes: [{ radius: 0.1, points: [{ x: 0.5, y: 0.5 }] }],
+  },
+});
 const recipe = () => structuredClone(baseRecipe);
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } });
@@ -121,6 +128,57 @@ test('a first click captures parsed inputs before awaiting scope and saves ident
   assert.equal(h.storage.getItem(storageKey), null);
   assert.equal(h.posts().length, 1);
   assert.equal(h.keys(), 1);
+});
+
+test('separate final regions require explicit backend support before saving or posting a new operation', async () => {
+  for (const compositeRegionProtocol of [undefined, 0, true, '1']) {
+    const h = harness((request) => {
+      assert.equal(request.url, '/api/workspace');
+      return json({ admissionScope: scope, compositeRegionProtocol });
+    });
+    const result = await h.client.submit(regionalRecipe);
+    assert.equal(result.kind, 'rejected');
+    assert.match(result.error || '', /separate final blend area support/);
+    assert.equal(h.posts().length, 0);
+    assert.equal(h.keys(), 0);
+    assert.equal(h.client.pending, undefined);
+    assert.equal(h.storage.getItem(storageKey), null);
+  }
+  const h = harness((request) => {
+    if (request.url === '/api/workspace')
+      return json({ admissionScope: scope, compositeRegionProtocol: 1 });
+    assert.deepEqual(posted(request).recipe.compositeRegion, regionalRecipe.compositeRegion);
+    return json({ ...record('original-click', 'queued'), recipe: regionalRecipe }, 202);
+  });
+  assert.equal((await h.client.submit(regionalRecipe)).kind, 'record');
+  assert.equal(h.posts().length, 1);
+});
+
+test('an older backend cannot resubmit or replace a retained final-region operation', async () => {
+  const saved = { ...operation(), recipe: regionalRecipe };
+  const h = harness(
+    (request) => (request.url === '/api/renders' ? json([]) : json({ admissionScope: scope })),
+    saved,
+  );
+  const result = await h.client.submit(recipe());
+  assert.equal(result.kind, 'pending');
+  assert.match(result.error || '', /separate final blend area support/);
+  assert.deepEqual(h.client.pending, saved);
+  assert.deepEqual(parseTakeOperation(JSON.parse(h.storage.getItem(storageKey)!)), saved);
+  assert.equal(h.posts().length, 0);
+  assert.equal(h.keys(), 0);
+});
+
+test('observing an already accepted final-region record needs no new backend capability or admission', async () => {
+  const saved = { ...operation(), recipe: regionalRecipe };
+  const accepted = { ...record(), recipe: regionalRecipe, jobId: nativeId };
+  const h = harness((request) => {
+    assert.equal(request.url, '/api/renders');
+    return json([accepted]);
+  }, saved);
+  assert.deepEqual(await h.client.submit(), { kind: 'record', render: accepted });
+  assert.equal(h.posts().length, 0);
+  assert.equal(h.client.pending, undefined);
 });
 
 test('a 502 response retains and exposes its matching accepted render', async () => {

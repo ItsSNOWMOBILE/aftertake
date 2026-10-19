@@ -14,12 +14,15 @@ import { loadWorkspaceEnvironment } from './environment.js';
 import { cancelAndRefresh } from './job-cancel.js';
 import {
   recipeSchema,
+  projectSchema,
   renderDimensions,
   type Clip,
   type Engine,
   type Render,
 } from '../src/domain.js';
 import { buildWorkflow } from './workflow.js';
+import { cuePreviewSettings } from '../src/cue-target.js';
+import { createCueRuntime } from './cue-runtime.js';
 import { evaluateEngineCompatibility } from './engine-compatibility.js';
 import { submissionRejected } from './submission.js';
 import { filmRouter } from './films.js';
@@ -65,6 +68,7 @@ const python =
   ((await stat(enginePython).catch(() => null))
     ? enginePython
     : path.join(root, '.runtime/film-venv', pythonSuffix));
+const cueRuntime = createCueRuntime({ root, enginePython, mediaPython: python });
 const exec = promisify(execFile);
 const renders = new Map<string, Render>();
 const handles = new Map<string, EngineJob>();
@@ -345,6 +349,7 @@ app.get('/api/engine', async (req, res) => {
 app.get('/api/workspace', (_req, res) => {
   res.json({
     generationProtocol: 1,
+    compositeRegionProtocol: 1,
     admissionScope,
     textVideoProtocol: 1,
     examples: process.env.AFTERTAKE_EXAMPLES === '1',
@@ -572,24 +577,27 @@ app.post('/api/cue-preview', async (req, res) => {
     return void res.status(409).json({
       error: 'Wait for the character job to finish before computing another motion preview.',
     });
-  if (!(await stat(python).catch(() => null)))
-    return void res.status(409).json({
-      error: 'Install the local runtime to compute motion previews. See the engine panel.',
-    });
   if (previewBusy)
     return void res
       .status(409)
       .json({ error: 'A motion preview is already being computed. Try again in a moment.' });
   previewBusy = true;
   try {
-    const recipe = recipeSchema.parse(req.body);
+    const recipe = projectSchema.parse(req.body);
     const clip = JSON.parse(
       await readFile(path.join(clipDir, `${recipe.clip.id}.json`), 'utf8'),
     ) as Clip;
     if (clip.sha256 !== recipe.clip.sha256)
       throw new RequestError('The source clip does not match this recipe.');
-    const dims = renderDimensions({ ...recipe, clip });
-    const settings = { ...dims, clip, cue: recipe.cue, trimStart: recipe.trimStart };
+    const target = req.body.previewTarget ?? 'generation';
+    if (target !== 'generation' && target !== 'composite')
+      throw new RequestError('Choose the generation context or final blend area for this preview.');
+    if (target === 'composite' && !recipe.compositeRegion)
+      throw new RequestError('Enable a separate final blend area before previewing it.');
+    const settings = cuePreviewSettings({ ...recipe, clip }, target);
+    if (!settings.cue.strokes.some((stroke) => stroke.mode !== 'erase'))
+      throw new RequestError('Paint the selected area before previewing its motion.');
+    const { clip: _source, cue: _cue, trimStart: _trim, ...dims } = settings;
     // Version the cached pixels when tracking changes, keeping CPU previews
     // aligned with the masks computed by the current generation nodes.
     const key = createHash('sha256')
@@ -599,7 +607,8 @@ app.post('/api/cue-preview', async (req, res) => {
     const existing = await stat(path.join(previewDir, `${key}.png`)).catch(() => null);
     if (!existing) {
       await writeFile(path.join(previewDir, `${key}.json`), JSON.stringify(settings));
-      await exec(python, [path.join(root, 'scripts/preview-cue.py'), key], { timeout: 60000 });
+      const cuePython = await cueRuntime.ready();
+      await exec(cuePython, [path.join(root, 'scripts/preview-cue.py'), key], { timeout: 60000 });
     }
     res.json({ url: `/previews/${key}.png`, ...dims });
   } finally {

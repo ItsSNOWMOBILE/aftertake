@@ -32,10 +32,13 @@ test('real MCP generation transport preserves operation IDs across reconnect, ch
     routes = { image: '/api/images', frame: '/api/frame-edits', take: '/api/renders' },
     assets: any[] = [];
   let protocol = 0,
+    compositeRegionProtocol: unknown,
     admissions = 0,
     actions = 0,
     uploads = 0;
-  app.get('/api/workspace', (_req, res) => res.json({ generationProtocol: protocol }));
+  app.get('/api/workspace', (_req, res) =>
+    res.json({ generationProtocol: protocol, compositeRegionProtocol }),
+  );
   app.get('/api/clips', (_req, res) => res.json([clip]));
   app.get(clip.url, (_req, res) => res.type('png').send(data));
   app.get('/api/films', (_req, res) => res.json([]));
@@ -238,6 +241,34 @@ test('real MCP generation transport preserves operation IDs across reconnect, ch
     });
     assert.equal((missing.structuredContent as any).state, 'not_found');
     assert.equal(admissions, 3);
+    const regional = {
+      ...JSON.parse(
+        await readFile(new URL('../examples/portal/recipe.json', import.meta.url), 'utf8'),
+      ),
+      compositeRegion: {
+        feather: 0.02,
+        strokes: [{ radius: 0.1, points: [{ x: 0.5, y: 0.5 }] }],
+      },
+    };
+    for (const capability of [undefined, 0, true, '1']) {
+      compositeRegionProtocol = capability;
+      const blocked = await call('aftertake_render_take', {
+        requestId: 'separate-final-region-v1',
+        recipe: regional,
+      });
+      assert(blocked.isError);
+      assert.match((blocked.content as any)[0].text, /separate final blend area support/);
+      assert.equal(admissions, 3, 'An unsupported studio must receive no new generation request.');
+      assert.equal(records.take.length, 1);
+    }
+    compositeRegionProtocol = 1;
+    const regionalTake = await call('aftertake_render_take', {
+      requestId: 'separate-final-region-v1',
+      recipe: regional,
+    });
+    assert(!regionalTake.isError);
+    assert.equal(admissions, 4);
+    assert.deepEqual(records.take.at(-1).recipe.compositeRegion, regional.compositeRegion);
   } finally {
     await client.close();
     await new Promise<void>((resolve, reject) =>

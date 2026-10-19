@@ -45,6 +45,7 @@ import {
   renderSettingsKey,
   usesCue,
   type Clip,
+  type Cue,
   type Engine,
   type Recipe,
   type Render,
@@ -75,6 +76,13 @@ import AftertakeBrand from './AftertakeBrand';
 import { characterBusy, type CharacterJob } from './character';
 import { ImagePlus, ScanFace } from 'lucide-react';
 import { spatialMask } from './mask';
+import {
+  canSeparateComposite,
+  paintedCue,
+  replacePaintedCue,
+  separateComposite,
+  type PaintTarget,
+} from './cue-target';
 import {
   cameraTracks,
   cinemaLooks,
@@ -184,6 +192,7 @@ export default function App() {
   const [mediaError, setMediaError] = useState(false);
   const [radius, setRadius] = useState(0.13);
   const [brushMode, setBrushMode] = useState<'paint' | 'erase'>('paint');
+  const [paintTarget, setPaintTarget] = useState<PaintTarget>('generation');
   const [brushPosition, setBrushPosition] = useState<{ x: number; y: number } | null>(null);
   const [redo, setRedo] = useState<Stroke[]>([]);
   const [uploading, setUploading] = useState(false);
@@ -512,6 +521,11 @@ export default function App() {
       start: Math.max(0, Math.min(next.cue.start, end - 0.1)),
       anchor: Math.min(next.cue.anchor || 0, d.duration - 1 / d.fps),
     };
+    if (next.compositeRegion)
+      next.compositeRegion = {
+        ...next.compositeRegion,
+        anchor: Math.min(next.compositeRegion.anchor || 0, d.duration - 1 / d.fps),
+      };
     setRecipe(next);
     if (time > d.duration) seek(0);
   }
@@ -525,6 +539,7 @@ export default function App() {
     if (pipeline === 'motion-transfer') {
       change({
         pipeline,
+        compositeRegion: undefined,
         prompt: motionPrompt,
         editReference: undefined,
         endFrame: undefined,
@@ -536,6 +551,7 @@ export default function App() {
     if (pipeline === 'cinema') {
       change({
         pipeline,
+        compositeRegion: undefined,
         cinema: recipe.cinema || { ...defaultCinema },
         prompt: framePrompt,
         editReference: undefined,
@@ -598,7 +614,7 @@ export default function App() {
       0,
       Math.min(recipe.clip.duration - (recipe.pipeline === 'cinema' ? 0.05 : 0.6), value),
     );
-    const next = { ...recipe, trimStart, editReference: undefined },
+    const next = { ...recipe, trimStart, editReference: undefined, compositeRegion: undefined },
       d = renderDimensions(next);
     if (next.transfer?.finish) next.transfer = { ...next.transfer, finish: undefined };
     const end = Math.min(recipe.cue.end, d.duration);
@@ -634,13 +650,32 @@ export default function App() {
   const presentation = recipe ? displayDimensions(recipe) : dimensions;
   const duration = dimensions.duration;
   const envelope = recipe ? cueEnvelope(time, recipe.cue) : 0;
+  const paintCue = recipe ? paintedCue(recipe, paintTarget) : null;
+  const editingComposite = Boolean(recipe?.compositeRegion && paintTarget === 'composite');
+  const paintWidth = editingComposite ? presentation.width : dimensions.width;
+  const paintHeight = editingComposite ? presentation.height : dimensions.height;
+  useEffect(() => {
+    setPaintTarget('generation');
+    setRedo([]);
+  }, [recipe?.clip.id, recipe?.pipeline]);
+  function changePaintCue(partial: Partial<Cue>) {
+    setRecipe((current) =>
+      current
+        ? replacePaintedCue(current, paintTarget, {
+            ...paintedCue(current, paintTarget),
+            ...partial,
+          })
+        : current,
+    );
+  }
   const spatialPreview = useMemo(
-    () => (recipe ? spatialMask(dimensions.width, dimensions.height, recipe.cue) : null),
-    [recipe?.cue.strokes, recipe?.cue.feather, dimensions.width, dimensions.height],
+    () => (paintCue ? spatialMask(paintWidth, paintHeight, paintCue) : null),
+    [paintCue?.strokes, paintCue?.feather, paintWidth, paintHeight],
   );
   const previewKey = JSON.stringify([
     recipe?.clip.id,
-    recipe?.cue,
+    paintCue,
+    paintTarget,
     recipe?.trimStart,
     recipe?.quality,
   ]);
@@ -652,13 +687,13 @@ export default function App() {
   useEffect(() => {
     const el = canvas.current;
     if (!el || !recipe || mode !== 'cue') return;
-    const width = dimensions.width,
-      height = dimensions.height;
+    const width = paintWidth,
+      height = paintHeight;
     el.width = width;
     el.height = height;
     const ctx = el.getContext('2d')!;
     ctx.clearRect(0, 0, width, height);
-    if (trackedPreview && recipe.cue.tracking === 'flow') {
+    if (trackedPreview && paintCue?.tracking === 'flow') {
       const index = Math.min(dimensions.frames - 1, Math.floor(time * dimensions.fps));
       ctx.globalAlpha = 0.5;
       ctx.drawImage(
@@ -681,7 +716,16 @@ export default function App() {
       for (let i = 3; i < pixels.length; i += 4) pixels[i] *= 0.16 + 0.35 * envelope;
       ctx.putImageData(new ImageData(pixels, width, height), 0, 0);
     }
-  }, [spatialPreview, trackedPreview, time, envelope, mode, dimensions.width, dimensions.height]);
+  }, [
+    spatialPreview,
+    trackedPreview,
+    paintCue?.tracking,
+    time,
+    envelope,
+    mode,
+    paintWidth,
+    paintHeight,
+  ]);
 
   function seek(value: number) {
     setTime(value);
@@ -757,9 +801,14 @@ export default function App() {
   });
   function undo() {
     setRecipe((r) => {
-      if (!r || !r.cue.strokes.length) return r;
-      setRedo((all) => [...all, r.cue.strokes.at(-1)!]);
-      return { ...r, cue: { ...r.cue, strokes: r.cue.strokes.slice(0, -1) } };
+      if (!r) return r;
+      const current = paintedCue(r, paintTarget);
+      if (!current.strokes.length) return r;
+      setRedo((all) => [...all, current.strokes.at(-1)!]);
+      return replacePaintedCue(r, paintTarget, {
+        ...current,
+        strokes: current.strokes.slice(0, -1),
+      });
     });
   }
   function selectClip(clip: Clip) {
@@ -812,16 +861,16 @@ export default function App() {
   }
   function beginStroke(event: React.PointerEvent<HTMLCanvasElement>) {
     if (!recipe || !usesCue(recipe) || mode !== 'cue') return;
-    if (recipe.cue.strokes.length >= 100) {
+    if (paintCue!.strokes.length >= 100) {
       setToast('This cue has 100 strokes. Undo or clear a stroke before adding another.');
       return;
     }
     if (
-      recipe.cue.tracking === 'flow' &&
-      recipe.cue.strokes.length &&
-      Math.abs(time - (recipe.cue.anchor || 0)) > 1 / dimensions.fps
+      paintCue!.tracking === 'flow' &&
+      paintCue!.strokes.length &&
+      Math.abs(time - (paintCue!.anchor || 0)) > 1 / dimensions.fps
     ) {
-      seek(recipe.cue.anchor || 0);
+      seek(paintCue!.anchor || 0);
       setToast('Returned to the anchor frame. Paint here to edit the tracked region.');
       return;
     }
@@ -832,20 +881,17 @@ export default function App() {
     drawing.current = true;
     setRedo([]);
     const point = pointer(event);
-    setRecipe((r) =>
-      r
-        ? {
-            ...r,
-            cue: {
-              ...r.cue,
-              anchor: r.cue.strokes.length
-                ? r.cue.anchor
-                : Math.min(time, duration - 1 / dimensions.fps),
-              strokes: [...r.cue.strokes, { points: [point], radius, mode: brushMode }],
-            },
-          }
-        : r,
-    );
+    setRecipe((r) => {
+      if (!r) return r;
+      const current = paintedCue(r, paintTarget);
+      return replacePaintedCue(r, paintTarget, {
+        ...current,
+        anchor: current.strokes.length
+          ? current.anchor
+          : Math.min(time, duration - 1 / dimensions.fps),
+        strokes: [...current.strokes, { points: [point], radius, mode: brushMode }],
+      });
+    });
   }
   function extendStroke(event: React.PointerEvent<HTMLCanvasElement>) {
     setBrushPosition(pointer(event));
@@ -853,11 +899,13 @@ export default function App() {
     const point = pointer(event);
     setRecipe((r) => {
       if (!r) return r;
-      const strokes = [...r.cue.strokes],
-        last = strokes.at(-1)!;
+      const current = paintedCue(r, paintTarget);
+      const strokes = [...current.strokes],
+        last = strokes.at(-1);
+      if (!last) return r;
       if (last.points.length >= 300) return r;
       strokes[strokes.length - 1] = { ...last, points: [...last.points, point] };
-      return { ...r, cue: { ...r.cue, strokes } };
+      return replacePaintedCue(r, paintTarget, { ...current, strokes });
     });
   }
   async function upload(file?: File) {
@@ -894,7 +942,10 @@ export default function App() {
       const result = await api<{ url: string }>('/api/cue-preview', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(recipe),
+        body: JSON.stringify({
+          ...recipe,
+          previewTarget: editingComposite ? 'composite' : 'generation',
+        }),
       });
       const img = new Image();
       img.src = mediaUrl(result.url);
@@ -917,6 +968,13 @@ export default function App() {
     }
     if (usesCue(recipe) && !recipe.cue.strokes.some((stroke) => stroke.mode !== 'erase')) {
       setToast('Paint a region on the shot before rendering.');
+      return;
+    }
+    if (
+      recipe.compositeRegion &&
+      !recipe.compositeRegion.strokes.some((stroke) => stroke.mode !== 'erase')
+    ) {
+      setToast('Paint a final blend area or turn off the separate final area before rendering.');
       return;
     }
     if (recipe.pipeline === 'motion-transfer' && !recipe.transfer?.reference) {
@@ -1051,6 +1109,8 @@ export default function App() {
       outputVideo.current?.pause();
       setPlaying(false);
       setRecipe(checked);
+      setPaintTarget('generation');
+      setRedo([]);
       setTake(null);
       setTime(0);
       setMode(initialView(checked));
@@ -1739,7 +1799,7 @@ export default function App() {
                   }}
                 />
               )}
-              {mode === 'cue' && hasCue && !recipe.cue.strokes.length && (
+              {mode === 'cue' && hasCue && !paintCue?.strokes.length && (
                 <div className="paint-hint">
                   <div>
                     <Brush size={21} />
@@ -1754,13 +1814,15 @@ export default function App() {
                     ? 'REFERENCE / FIRST FRAME'
                     : 'SOURCE / ORIGINAL'
                   : mode === 'cue'
-                    ? 'SPATIAL CUE / EDITABLE'
+                    ? editingComposite
+                      ? 'FINAL BLEND AREA / EDITABLE'
+                      : 'GENERATION CONTEXT / EDITABLE'
                     : mode === 'compare'
                       ? 'AFTERTAKE / SOURCE'
                       : 'AFTERTAKE / RENDERED'}
               </div>
               <div className="shot-time">{timecode(time, dimensions.fps)}</div>
-              {mode === 'cue' && hasCue && recipe.cue.strokes.length > 0 && (
+              {mode === 'cue' && hasCue && Boolean(paintCue?.strokes.length) && (
                 <span className="cue-strength">
                   {envelope > 0
                     ? `EFFECT ${Math.round(envelope * 100)}%`
@@ -1800,7 +1862,9 @@ export default function App() {
               {mode === 'cue'
                 ? brushMode === 'erase'
                   ? 'Erase to protect - source stays here'
-                  : 'Paint to transform - everything else stays'
+                  : editingComposite
+                    ? 'Final blend area - generation context stays unchanged'
+                    : 'Paint the area the model can transform'
                 : 'Your source. Your direction.'}
             </span>
             <button title="Fullscreen viewer" onClick={() => frame.current?.requestFullscreen()}>
@@ -1849,7 +1913,7 @@ export default function App() {
             </button>
           </div>
           <div className={!hasCue ? 'brush-tools cinema-hidden' : 'brush-tools'}>
-            <button title="Undo stroke" disabled={!recipe?.cue.strokes.length} onClick={undo}>
+            <button title="Undo stroke" disabled={!paintCue?.strokes.length} onClick={undo}>
               <Undo2 size={16} />
             </button>
             <button
@@ -1857,7 +1921,7 @@ export default function App() {
               disabled={!redo.length}
               onClick={() => {
                 if (!recipe || !redo.length) return;
-                change({ cue: { ...recipe.cue, strokes: [...recipe.cue.strokes, redo.at(-1)!] } });
+                changePaintCue({ strokes: [...paintCue!.strokes, redo.at(-1)!] });
                 setRedo((all) => all.slice(0, -1));
               }}
             >
@@ -1894,9 +1958,10 @@ export default function App() {
             </label>
             <button
               title="Clear painted region"
-              disabled={!recipe?.cue.strokes.length}
+              disabled={!paintCue?.strokes.length}
               onClick={() => {
-                if (recipe) change({ cue: { ...recipe.cue, strokes: [] } });
+                if (recipe) changePaintCue({ strokes: [] });
+                setRedo([]);
               }}
             >
               <X size={15} />
@@ -2274,17 +2339,60 @@ export default function App() {
                   }}
                 />
               </label>
+              {recipe && canSeparateComposite(recipe) && (
+                <div className="tracking-control">
+                  <label>
+                    <input
+                      type="checkbox"
+                      aria-label="Use a separate final blend area"
+                      checked={Boolean(recipe.compositeRegion)}
+                      disabled={busy}
+                      onChange={(event) => {
+                        const enabled = event.target.checked;
+                        setRecipe((current) =>
+                          current ? separateComposite(current, enabled) : current,
+                        );
+                        setPaintTarget(enabled ? 'composite' : 'generation');
+                        setRedo([]);
+                        setMode('cue');
+                      }}
+                    />
+                    <span>Separate final blend area</span>
+                  </label>
+                  <p>
+                    Give the model room to work, then paint a tighter area for the finished edit.
+                    Both areas share the same timing.
+                  </p>
+                  {recipe.compositeRegion && (
+                    <label className="paint-target-control">
+                      Editing area
+                      <select
+                        aria-label="Paint target"
+                        value={paintTarget}
+                        onChange={(event) => {
+                          setPaintTarget(event.target.value as PaintTarget);
+                          setRedo([]);
+                          setMode('cue');
+                        }}
+                      >
+                        <option value="generation">Generation context</option>
+                        <option value="composite">Final blend area</option>
+                      </select>
+                    </label>
+                  )}
+                </div>
+              )}
               <label className="slider-label">
-                Blend the edges<span>{Math.round((recipe?.cue.feather || 0) * 100)}%</span>
+                Blend the edges<span>{Math.round((paintCue?.feather || 0) * 100)}%</span>
                 <input
                   type="range"
                   min=".005"
                   max=".15"
                   step=".005"
-                  value={recipe?.cue.feather || 0.055}
+                  value={paintCue?.feather || 0.055}
                   disabled={!recipe}
                   onChange={(e) => {
-                    if (recipe) change({ cue: { ...recipe.cue, feather: Number(e.target.value) } });
+                    if (recipe) changePaintCue({ feather: Number(e.target.value) });
                   }}
                 />
               </label>
@@ -2308,26 +2416,24 @@ export default function App() {
                 <label>
                   <input
                     type="checkbox"
-                    checked={recipe?.cue.tracking === 'flow'}
+                    checked={paintCue?.tracking === 'flow'}
                     disabled={!recipe}
                     onChange={(e) => {
                       if (recipe)
-                        change({
-                          cue: { ...recipe.cue, tracking: e.target.checked ? 'flow' : 'static' },
-                        });
+                        changePaintCue({ tracking: e.target.checked ? 'flow' : 'static' });
                     }}
                   />
                   <span>Follow source motion</span>
                   <span className="beta-tag">BETA</span>
                 </label>
                 <p>
-                  {recipe?.cue.tracking === 'flow'
-                    ? `Anchored at ${timecode(recipe.cue.anchor || 0, dimensions.fps)}. Preview the tracked cue before rendering.`
+                  {paintCue?.tracking === 'flow'
+                    ? `Anchored at ${timecode(paintCue.anchor || 0, dimensions.fps)}. Preview the tracked cue before rendering.`
                     : 'The painted region stays fixed in the frame.'}
                 </p>
-                {recipe?.cue.tracking === 'flow' && (
+                {paintCue?.tracking === 'flow' && (
                   <button
-                    disabled={browserDemo || previewing || !recipe.cue.strokes.length}
+                    disabled={browserDemo || previewing || !paintCue.strokes.length}
                     onClick={() => void previewMotion()}
                   >
                     {previewing ? (
@@ -2545,6 +2651,8 @@ export default function App() {
             disabled={
               !recipe ||
               (hasCue && !recipe.cue.strokes.some((s) => s.mode !== 'erase')) ||
+              (recipe.compositeRegion &&
+                !recipe.compositeRegion.strokes.some((s) => s.mode !== 'erase')) ||
               (isTransfer && !recipe.transfer?.reference)
             }
             onClick={() => void exportWorkflow()}

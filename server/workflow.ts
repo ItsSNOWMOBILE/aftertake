@@ -1,4 +1,9 @@
-import { displayDimensions, renderDimensions, type Recipe } from '../src/domain.js';
+import {
+  displayDimensions,
+  finalCompositeCue,
+  renderDimensions,
+  type Recipe,
+} from '../src/domain.js';
 import { cameraTracks, cinemaPrompt } from '../src/cinema.js';
 import { frameEditRequirements } from './frame-workflow.js';
 import { buildMotionTransferWorkflow, motionTransferRequirements } from './motion-workflow.js';
@@ -362,6 +367,31 @@ export function buildWorkflow(recipe: Recipe): Record<string, unknown> {
       recipe_json: JSON.stringify(recipe),
     }),
   };
+  if (recipe.compositeRegion) {
+    const display = displayDimensions(recipe);
+    graph['50'] = n('AftertakeLoadClip', {
+      filename: ['8', 1],
+      width: display.width,
+      height: display.height,
+      frames: d.frames,
+      fps: d.fps,
+      trim_start: recipe.trimStart,
+    });
+    graph['49'] = n('AftertakeCueMask', {
+      width: display.width,
+      height: display.height,
+      frames: d.frames,
+      fps: d.fps,
+      cue_json: JSON.stringify(finalCompositeCue(recipe)),
+      images: ['50', 0],
+    });
+    // Preserve node9 throughout generation and refinement. Only the final
+    // composite uses the display-grid source and separately authored matte,
+    // avoiding a source resize through the model's padded working grid.
+    graph['20'].inputs.original = ['50', 0];
+    graph['20'].inputs.mask = ['49', 0];
+    graph['20'].inputs.spatial_mask = ['49', 2];
+  }
   if (recipe.pipeline === 'inpaint') {
     graph['1'].inputs.unet_name = inpaintModelFiles.diffusion;
     graph['2'] = n('CLIPLoader', {

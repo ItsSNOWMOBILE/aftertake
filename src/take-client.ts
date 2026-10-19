@@ -158,12 +158,16 @@ export class TakeClient {
     return value as Render[];
   }
 
-  private async scope() {
+  private async scope(requiresCompositeRegion = false) {
     const response = await this.fetch('/api/workspace');
     if (!response.ok) throw Error('The studio could not confirm where this take would run.');
     const value = await response.json();
     if (typeof value.admissionScope !== 'string' || !uuid.test(value.admissionScope))
       throw Error('The studio could not confirm where this take would run.');
+    if (requiresCompositeRegion && value.compositeRegionProtocol !== 1)
+      throw Error(
+        'Restart the local studio with separate final blend area support before rendering this recipe.',
+      );
     return value.admissionScope as string;
   }
 
@@ -179,7 +183,9 @@ export class TakeClient {
         const found = this.observe(await this.history());
         if (found) return { kind: 'record', render: found };
       }
-      const scope = await this.scope();
+      const scope = await this.scope(
+        Boolean(this.operation?.recipe.compositeRegion || originalRecipe?.compositeRegion),
+      );
       if (this.operation && this.operation.admissionScope !== scope)
         return {
           kind: 'pending',

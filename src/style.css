@@ -1883,6 +1883,21 @@ textarea:focus {
   accent-color: var(--accent);
   margin: 0;
 }
+.tracking-control > .paint-target-control {
+  display: grid;
+  gap: 8px;
+}
+.paint-target-control select {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px;
+  border: 1px solid var(--control-border);
+  border-radius: 4px;
+  background: var(--control-bg);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 14px;
+}
 .beta-tag {
   font-size: 12px;
   letter-spacing: 0.04em;

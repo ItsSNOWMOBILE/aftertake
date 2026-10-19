@@ -478,12 +478,25 @@ python scripts/download-models.py --motion
 Optional motion tracking advects the painted region from an anchor frame using
 dense optical flow. A CPU-only preview shows the actual per-frame render mask
 before spending GPU time. This is experimental: occlusions, large motion and
-untextured surfaces can cause drift. Clear and repaint to choose a new anchor.
+untextured surfaces can cause drift. Clear and repaint to choose a new anchor. The preview uses the installed generation runtime for its CPU mask dependencies, even when Film uses the smaller media runtime. An external runtime can be selected with `AFTERTAKE_CUE_PYTHON`; a missing dependency produces a setup message before tracking starts.
 
 The cue releases structural guidance inside the effect region, or supplies a
 consistent masked plate to native inpainting. Its temporal envelope controls
-the final composite. Outside the cue, source pixels are preserved exactly
-**before lossy video encoding**. Paint adds to the region; erase protects detail.
+the final composite. Paint adds to the region; erase protects detail.
+
+For a region edit that needs generous model context but a tighter visible boundary,
+enable **Separate final blend area**. It begins as a copy of your existing paint.
+Choose **Generation context** or **Final blend area** in **Editing area**, then
+paint, erase, undo or adjust feathering for that area. Each area can track source
+motion independently; **Preview motion** previews the selected area. Both share
+the same start, end and easing. The recipe and exported Comfy workflow retain both
+areas, and agents can set the same optional `compositeRegion` in a take recipe.
+
+The separate final area composites directly onto the source at the output display
+resolution. Pixels with zero final alpha remain exact **before lossy video encoding**.
+Legacy recipes composite on the model grid and may resize the whole image to the
+display aspect afterward. Neither boundary-color matching nor a tighter matte can
+correct generated shapes or motion inside the edit; inspect those separately.
 
 This is an early competition build. Native inpainting and structural guidance
 have completed real local renders, including 768-pixel takes. Thirteen examples

@@ -8,7 +8,13 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { templateRouter } from '../server/templates.js';
 import { applyTemplate, filterTemplates, type Template } from '../src/templates.js';
-import type { Render } from '../src/domain.js';
+import {
+  projectSchema,
+  recipeSchema,
+  renderDimensions,
+  type Recipe,
+  type Render,
+} from '../src/domain.js';
 
 test('templates keep the user source and cue while camera presets retain scene direction', async () => {
   const base = JSON.parse(
@@ -50,6 +56,62 @@ test('templates keep the user source and cue while camera presets retain scene d
     () => applyTemplate({ ...scene, clip: { ...scene.clip, kind: 'image' as const } }, effect),
     /video source/,
   );
+});
+
+test('regional templates preserve final paint and clamp its own tracking anchor without changing old projects', async () => {
+  const base = JSON.parse(
+    await readFile(new URL('../examples/portal/recipe.json', import.meta.url), 'utf8'),
+  ) as Recipe;
+  const effect = { recipe: base } as Template;
+  const region = {
+    feather: 0.015,
+    tracking: 'flow' as const,
+    anchor: 4,
+    strokes: [{ radius: 0.09, points: [{ x: 0.3, y: 0.4 }] }],
+  };
+  const current: Recipe = {
+    ...base,
+    quality: 'draft',
+    trimStart: 0,
+    clip: { ...base.clip, duration: 1.2 },
+    cue: { ...base.cue, anchor: 4 },
+    compositeRegion: region,
+  };
+  const applied = applyTemplate(current, effect);
+  const d = renderDimensions(applied);
+  assert.equal(applied.compositeRegion?.strokes, region.strokes);
+  assert.equal(applied.compositeRegion?.feather, region.feather);
+  assert.equal(applied.compositeRegion?.tracking, 'flow');
+  assert.equal(applied.compositeRegion?.anchor, d.duration - 1 / d.fps);
+  assert.equal(region.anchor, 4, 'Applying a template must not mutate saved paint.');
+  assert(recipeSchema.safeParse(applied).success);
+  const untracked = applyTemplate(
+    { ...current, compositeRegion: { ...region, anchor: undefined } },
+    effect,
+  );
+  assert.equal(untracked.compositeRegion?.anchor, undefined);
+  assert.equal(Object.hasOwn(applyTemplate(base, effect), 'compositeRegion'), false);
+});
+
+test('camera and motion templates discard a final region before validating the new project', async () => {
+  const base = JSON.parse(
+    await readFile(new URL('../examples/portal/recipe.json', import.meta.url), 'utf8'),
+  ) as Recipe;
+  const current = {
+    ...base,
+    compositeRegion: { feather: 0.01, strokes: base.cue.strokes },
+  };
+  for (const name of ['guided-pullback', 'signal']) {
+    const template = {
+      recipe: JSON.parse(
+        await readFile(new URL(`../examples/${name}/recipe.json`, import.meta.url), 'utf8'),
+      ),
+    } as Template;
+    const applied = applyTemplate(current, template);
+    assert.equal(Object.hasOwn(applied, 'compositeRegion'), false);
+    assert(projectSchema.safeParse(applied).success);
+    assert(current.compositeRegion, 'The source project retains its final region.');
+  }
 });
 
 test('recipe search combines tags and words without losing category filtering', () => {

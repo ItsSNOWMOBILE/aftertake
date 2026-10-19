@@ -1,4 +1,4 @@
-import { renderDimensions, type Recipe } from './domain';
+import { renderDimensions, supportsCompositeRegion, type Recipe } from './domain';
 
 export type Template = {
   slug: string;
@@ -118,6 +118,7 @@ export function applyTemplate(current: Recipe, template: Template): Recipe {
         }
       : { prompt: template.recipe.prompt }),
   };
+  if (!supportsCompositeRegion(result)) delete result.compositeRegion;
   if (template.recipe.pipeline === 'motion-transfer') {
     result.prompt =
       current.pipeline === 'motion-transfer'
@@ -142,6 +143,11 @@ export function applyTemplate(current: Recipe, template: Template): Recipe {
     start: Math.min(current.cue.start, Math.max(0, Math.min(current.cue.end, d.duration) - 0.1)),
     anchor: Math.min(current.cue.anchor || 0, Math.max(0, d.duration - 1 / d.fps)),
   };
+  if (result.compositeRegion?.anchor !== undefined)
+    result.compositeRegion = {
+      ...result.compositeRegion,
+      anchor: Math.min(result.compositeRegion.anchor, Math.max(0, d.duration - 1 / d.fps)),
+    };
   return result;
 }
 
