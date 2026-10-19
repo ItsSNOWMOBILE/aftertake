@@ -25,7 +25,7 @@ python scripts/setup-film.py
 pnpm demo
 ```
 
-Download the [40.7 MB input bundle](https://aftertake-studio.right-bard-9761.chatgpt.site/make-it-yours/film-inputs-aa6e20876a7f044d.zip).
+Download the [40.7 MB input bundle](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/demo-make-it-yours-2026-10-19/film-inputs-aa6e20876a7f044d.zip).
 It contains the additional footage, UI stills, narration, music and saved
 portrait-ad output. Four existing dance and H3 inputs remain in this checkout.
 The manifest records every checksum; the importer checks the complete archive
@@ -63,6 +63,10 @@ Source hashes, the native Film record and the project decoded from the MP4
 were checked, alongside selected frames and every cut boundary. Container
 bytes can differ between FFmpeg builds. Watch the film to assess its motion,
 sound and creative quality.
+
+A [fresh-workspace replay](replay-receipt.json) imported both packaged projects
+through the normal importer and exported the main film through MCP with Comfy
+offline. All 972 decoded frames, audio samples and timestamps matched this film.
 
 The [earlier 39-second edit](https://aftertake-studio.right-bard-9761.chatgpt.site/edit-preview/)
 remains available with its original project and input bundle.
