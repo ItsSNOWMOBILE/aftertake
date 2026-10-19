@@ -1,9 +1,10 @@
 import { z } from 'zod';
 import { filmFramingSchema } from './film-camera';
 import { audioFadeFields, audioFadesFitTrack } from './film-audio';
+import { filmGraphicSchema, motionTrackSchema } from './film-motion';
 
 // Include this revision in new export identities when renderer behavior changes.
-export const filmRenderRevision = 9;
+export const filmRenderRevision = 10;
 import type { Recipe } from './domain';
 
 export const spokenWordSchema = z
@@ -52,6 +53,7 @@ export const filmTitleSchema = z
     animation: z.enum(['fade', 'rise', 'none', 'build', 'typewriter', 'impact', 'wipe', 'spoken']),
     words: z.array(titleWordSchema).min(1).max(120).optional(),
     motionDuration: z.number().min(0.15).max(4).optional(),
+    motion: motionTrackSchema.optional(),
     fontSize: z.number().min(16).max(180).optional(),
     fontWeight: z
       .union([z.literal(400), z.literal(500), z.literal(600), z.literal(700)])
@@ -99,11 +101,19 @@ export const filmAudioSchema = z
     'An audio clip needs a valid trim.',
   )
   .refine(audioFadesFitTrack, 'Audio fades must each fit within the trimmed clip.');
+const uniqueGraphicIds = (graphics: { id: string }[]) =>
+  new Set(graphics.map((graphic) => graphic.id)).size === graphics.length;
 export const filmDraftSchema = z.object({
   name: z.string().trim().min(1).max(100),
   aspect: z.enum(['landscape', 'portrait', 'square']),
+  resolution: z.enum(['720p', '1080p', '2160p']).optional(),
   shots: z.array(filmShotSchema).max(48),
   titles: z.array(filmTitleSchema).max(80).optional(),
+  graphics: z
+    .array(filmGraphicSchema)
+    .max(24)
+    .refine(uniqueGraphicIds, 'Every graphic needs a unique ID.')
+    .optional(),
   audio: z.array(filmAudioSchema).max(32).optional(),
   sourceVolume: z.number().min(0).max(1).optional(),
   normalizeAudio: z.boolean().optional(),
@@ -159,21 +169,36 @@ export const filmVoiceSourceSchema = z
       source.narration.wordTiming.words.at(-1)!.end <= source.duration + 0.001,
     'Voice word timings exceed their saved audio.',
   );
-export const filmManifestSchema = filmDraftSchema.safeExtend({
-  format: z.enum(['aftertake-film/1', 'aftertake-film/2']),
-  shots: z.array(filmShotSchema.safeExtend({ sha256 })).min(1).max(48),
-  audio: z
-    .array(
-      filmAudioSchema
-        .safeExtend({ sha256, asset: filmVoiceSourceSchema.optional() })
-        .refine(
-          (track) => !track.asset || track.asset.sha256 === track.sha256,
-          'Voice receipt and audio track hashes differ.',
+export const filmManifestSchema = filmDraftSchema
+  .safeExtend({
+    format: z.enum(['aftertake-film/1', 'aftertake-film/2', 'aftertake-film/3']),
+    shots: z.array(filmShotSchema.safeExtend({ sha256 })).min(1).max(48),
+    graphics: z
+      .array(
+        filmGraphicSchema.refine(
+          (graphic) => graphic.kind !== 'image' || !!graphic.sha256,
+          'An image graphic needs its original content hash.',
         ),
-    )
-    .max(32)
-    .optional(),
-});
+      )
+      .max(24)
+      .refine(uniqueGraphicIds, 'Every graphic needs a unique ID.')
+      .optional(),
+    audio: z
+      .array(
+        filmAudioSchema
+          .safeExtend({ sha256, asset: filmVoiceSourceSchema.optional() })
+          .refine(
+            (track) => !track.asset || track.asset.sha256 === track.sha256,
+            'Voice receipt and audio track hashes differ.',
+          ),
+      )
+      .max(32)
+      .optional(),
+  })
+  .refine(
+    (film) => film.format === 'aftertake-film/3' || !hasMotionFeatures(film),
+    'Motion graphics and explicit export sizes require an aftertake-film/3 project.',
+  );
 export type FilmAsset = {
   id: string;
   name: string;
@@ -229,6 +254,7 @@ export type Film = {
   requestKey?: string;
   requestDigest?: string;
   aspect: FilmDraft['aspect'];
+  resolution?: FilmDraft['resolution'];
   duration: number;
   error?: string;
   output?: string;
@@ -240,6 +266,7 @@ export type Film = {
     workflow?: Record<string, unknown>;
   })[];
   titles?: FilmDraft['titles'];
+  graphics?: FilmDraft['graphics'];
   sourceVolume?: number;
   normalizeAudio?: boolean;
   audio?: (NonNullable<FilmDraft['audio']>[number] & { sha256: string; asset: FilmAsset })[];
@@ -249,3 +276,20 @@ export const filmGeometry = {
   portrait: [720, 1280],
   square: [720, 720],
 } as const;
+
+/** Resolution changes the export canvas; legacy projects retain their original geometry. */
+export function filmDimensions(film: Pick<FilmDraft, 'aspect' | 'resolution'>): [number, number] {
+  const scale = film.resolution === '2160p' ? 3 : film.resolution === '1080p' ? 1.5 : 1;
+  const [width, height] = filmGeometry[film.aspect];
+  return [width * scale, height * scale];
+}
+
+export function hasMotionFeatures(film: Pick<FilmDraft, 'graphics' | 'titles' | 'resolution'>) {
+  return (
+    !!film.graphics?.length || !!film.resolution || !!film.titles?.some((title) => title.motion)
+  );
+}
+
+export function filmFormat(film: Pick<FilmDraft, 'graphics' | 'titles' | 'resolution'>) {
+  return hasMotionFeatures(film) ? ('aftertake-film/3' as const) : ('aftertake-film/2' as const);
+}

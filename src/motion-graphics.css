@@ -1,0 +1,414 @@
+.motion-graphics-editor,
+.motion-track-editor {
+  --motion-line: var(--film-line, #506145);
+  --motion-muted: var(--film-muted, #b8c5aa);
+  color: #eaf0e2;
+  min-width: 0;
+}
+.motion-graphics-heading,
+.motion-graphic-heading,
+.motion-key-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.motion-graphics-heading {
+  margin: 15px 0 10px;
+}
+.motion-graphics-heading h4 {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  font:
+    600 15px/1.5 Manrope,
+    sans-serif;
+}
+.motion-layer-count,
+.motion-graphics-editor .motion-hint,
+.motion-track-editor .motion-hint {
+  color: var(--motion-muted);
+  font-size: 12px;
+  line-height: 1.65;
+}
+.motion-graphics-editor .motion-hint,
+.motion-track-editor .motion-hint {
+  margin: 8px 0;
+}
+.motion-add-tools {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+.motion-add-tools .button,
+.motion-graphics-editor .motion-image-add .button,
+.motion-track-editor > .button {
+  min-height: 39px;
+  padding: 8px 11px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.motion-image-add {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  min-width: 0;
+  flex: 1 1 250px;
+}
+.motion-image-add > label {
+  flex: 1;
+  min-width: 0;
+}
+.motion-image-add select {
+  width: 100%;
+  min-width: 0;
+}
+.motion-layer-list,
+.motion-key-list {
+  display: grid;
+  gap: 13px;
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+}
+.motion-layer-list > li {
+  list-style: none;
+  min-width: 0;
+  margin: 0;
+}
+.motion-graphic-card {
+  min-width: 0;
+  border: 1px solid var(--motion-line);
+  background: #171f13b0;
+  border-radius: 7px;
+  overflow: hidden;
+}
+.motion-graphic-card.active {
+  border-color: #b8cf82;
+}
+.motion-graphic-card > summary {
+  padding: 12px;
+  cursor: pointer;
+  list-style: none;
+  min-height: 48px;
+  box-sizing: border-box;
+}
+.motion-graphic-card > summary::-webkit-details-marker {
+  display: none;
+}
+.motion-graphic-title {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+}
+.motion-graphic-title > svg {
+  color: #c2d798;
+  flex-shrink: 0;
+}
+.motion-graphic-title > span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.motion-graphic-title strong {
+  font-weight: 550;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.motion-graphic-title small {
+  color: var(--motion-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.motion-graphic-state {
+  color: #d5e991;
+  background: #2d391f;
+  border: 1px solid #53683b;
+  border-radius: 4px;
+  font-size: 11px;
+  padding: 3px 6px;
+  white-space: nowrap;
+}
+.motion-graphic-body {
+  padding: 0 12px 13px;
+  border-top: 1px solid #3e4d34;
+}
+.motion-layer-actions,
+.motion-key-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 10px 0 13px;
+}
+.motion-layer-actions button,
+.motion-key-actions button,
+.motion-key-heading button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 35px;
+  padding: 6px 8px;
+  border: 1px solid #465936;
+  border-radius: 4px;
+  color: #c9d8b8;
+  font-size: 12px;
+}
+.motion-layer-actions .motion-delete,
+.motion-key-heading .motion-delete {
+  margin-left: auto;
+  color: #dfb69d;
+  border-color: #69503d;
+}
+.motion-graphics-editor label,
+.motion-track-editor label {
+  display: grid;
+  gap: 6px;
+  color: var(--motion-muted);
+  font-size: 12px;
+  line-height: 1.55;
+  min-width: 0;
+}
+.motion-graphics-editor input,
+.motion-graphics-editor select,
+.motion-track-editor input,
+.motion-track-editor select {
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  min-height: 38px;
+  padding: 8px;
+  background: #10180d;
+  border: 1px solid #52673e;
+  color: #edf3e5;
+  font-size: 13px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.motion-graphics-editor input[type='color'] {
+  padding: 3px;
+}
+.motion-graphics-editor input:focus-visible,
+.motion-graphics-editor select:focus-visible,
+.motion-graphics-editor summary:focus-visible,
+.motion-track-editor input:focus-visible,
+.motion-track-editor select:focus-visible,
+.motion-track-editor summary:focus-visible {
+  outline: 2px solid #d5e991;
+  outline-offset: 3px;
+}
+.motion-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 13px 0;
+}
+.motion-field-grid.wide {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.motion-field-grid .motion-full-width {
+  grid-column: 1 / -1;
+}
+.motion-graphic-body fieldset,
+.motion-track-editor fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.motion-graphic-body legend {
+  padding: 0;
+  margin-top: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #d1dfc1;
+}
+.motion-track-editor {
+  margin-top: 15px;
+  border-top: 1px solid #435538;
+  padding-top: 8px;
+}
+.motion-track-editor > summary {
+  cursor: pointer;
+  min-height: 36px;
+  align-content: center;
+  color: #d5e991;
+  font-size: 13px;
+}
+.motion-preset-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  margin: 11px 0 8px;
+}
+.motion-preset-row > label {
+  flex: 1;
+}
+.motion-preset-row > button {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #52673e;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #ccdbba;
+}
+.motion-key-list > li {
+  display: block;
+  min-width: 0;
+  list-style: none;
+  padding: 11px;
+  border: 1px solid #425637;
+  border-radius: 6px;
+  background: #10180d99;
+  margin: 0;
+}
+.motion-key-heading {
+  color: #d7e5c5;
+  font-size: 12px;
+}
+.motion-key-heading strong {
+  font-weight: 550;
+}
+.motion-key-card > summary {
+  cursor: pointer;
+  min-height: 32px;
+}
+.motion-key-card > summary::after {
+  content: '+';
+  margin-left: auto;
+  color: #c9dd9d;
+}
+.motion-key-card[open] > summary::after {
+  content: '−';
+}
+.motion-json-editor {
+  margin: 18px 0 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--motion-line);
+}
+.motion-json-editor > summary {
+  cursor: pointer;
+  min-height: 37px;
+  align-content: center;
+  color: #c9d9b3;
+  font-size: 13px;
+}
+.motion-graphics-editor .motion-json-editor textarea {
+  display: block;
+  resize: vertical;
+  min-height: 180px;
+  max-height: 520px;
+  width: 100%;
+  box-sizing: border-box;
+  background: #10180d;
+  border: 1px solid #52673e;
+  border-radius: 5px;
+  padding: 11px;
+  color: #d7e5c9;
+  font:
+    12px/1.65 ui-monospace,
+    monospace;
+  tab-size: 2;
+}
+.motion-json-editor textarea:focus-visible {
+  outline: 2px solid #d5e991;
+  outline-offset: 3px;
+}
+.motion-json-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 11px 0;
+}
+.motion-json-actions .button {
+  min-height: 39px;
+  padding: 8px 11px;
+  font-size: 12px;
+}
+.motion-graphics-editor .motion-json-notice {
+  color: #d5e991;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.motion-key-heading > span {
+  color: #a6b994;
+  font-variant-numeric: tabular-nums;
+}
+.motion-key-heading .motion-delete {
+  min-height: 30px;
+}
+.motion-graphics-editor .motion-warning {
+  padding: 8px 10px;
+  margin: 10px 0;
+  border-left: 2px solid #b7ad7d;
+  color: #dbd3ae;
+  background: #282b1c;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.motion-graphics-editor .motion-empty {
+  border: 1px dashed #52633f;
+  border-radius: 6px;
+  padding: 15px;
+  color: #b3c5a0;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.motion-graphics-editor button:disabled,
+.motion-track-editor button:disabled,
+.motion-graphics-editor select:disabled,
+.motion-track-editor select:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.motion-graphic-preview {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+@media (max-width: 600px) {
+  .motion-field-grid.wide {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .motion-image-add {
+    flex-basis: 100%;
+  }
+  .motion-graphics-editor input,
+  .motion-graphics-editor select,
+  .motion-track-editor input,
+  .motion-track-editor select {
+    min-height: 44px;
+    font-size: 16px;
+  }
+  .motion-layer-actions button,
+  .motion-key-heading button,
+  .motion-preset-row > button,
+  .motion-add-tools .button,
+  .motion-track-editor > .button {
+    min-height: 44px;
+  }
+  .motion-json-actions .button {
+    min-height: 44px;
+  }
+  .motion-layer-actions {
+    gap: 6px;
+  }
+  .motion-graphic-body {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}

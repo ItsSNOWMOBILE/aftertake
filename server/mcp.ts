@@ -104,6 +104,23 @@ async function planFile(id: string) {
     throw Error('This plan belongs to a different workspace.');
   return value;
 }
+function retainedFilmDraft(project: unknown, resolved: unknown) {
+  const draft = filmRequestSchema.parse(resolved);
+  const editContent = (value: z.infer<typeof filmRequestSchema>) => ({
+    ...value,
+    shots: value.shots.map(({ assetId: _asset, renderId: _render, ...edit }) => edit),
+    audio: value.audio?.map(({ assetId: _asset, ...edit }) => edit),
+    graphics: value.graphics?.map(({ assetId: _asset, ...edit }) => edit),
+  });
+  if (
+    contentDigest(editContent(draft)) !==
+    contentDigest(editContent(filmRequestSchema.parse(project)))
+  )
+    throw Error(
+      'The studio did not retain every edit setting. Restart it with the matching app version before saving or exporting this project.',
+    );
+  return draft;
+}
 async function inventory() {
   const [assets, takes, films] = await Promise.all([
     api<FilmAsset[]>('/api/films/assets'),
@@ -526,26 +543,16 @@ tool(
 type EditPlanBeat = { visuals: { assetId?: string; renderId?: string }[] };
 tool(
   'aftertake_save_film_edit',
-  'Save a complete editable native Film project with cuts, camera keyframes, independent titles and audio. Verifies source hashes and timing without rendering. Revise the project to create a new plan ID; export and review through the same plan tools.',
+  'Save a complete editable native Film project with cuts, camera keyframes, animated text, shape/image graphic layers and audio. Graphics and titles support editable transform keyframes and easing. Verifies source hashes and timing without rendering. Revise the project to create a new plan ID; export and review through the same plan tools.',
   z.object({ project: filmManifestSchema }),
   async ({ project }) => {
-    const draft = filmRequestSchema.parse(await api('/api/films/resolve', project));
-    const editContent = (value: z.infer<typeof filmRequestSchema>) => ({
-      ...value,
-      shots: value.shots.map(({ assetId: _asset, renderId: _render, ...edit }) => edit),
-      audio: value.audio?.map(({ assetId: _asset, ...edit }) => edit),
-    });
-    if (
-      contentDigest(editContent(draft)) !==
-      contentDigest(editContent(filmRequestSchema.parse(project)))
-    )
-      throw Error(
-        'The studio did not retain every edit setting. Restart it with the matching app version before saving this project.',
-      );
+    const draft = retainedFilmDraft(project, await api('/api/films/resolve', project));
     const timeline = filmTimeline(draft.shots);
     const duration = timeline.at(-1)!.end;
     if (draft.titles?.some((title) => title.end > duration + 0.001))
       throw Error('A title ends after the film.');
+    if (draft.graphics?.some((graphic) => graphic.end > duration + 0.001))
+      throw Error('A graphic ends after the film.');
     if (
       draft.audio?.some(
         (track) => track.start + track.sourceEnd - track.sourceStart > duration + 1 / 24,
@@ -615,7 +622,10 @@ tool(
           'Observe the previous attempt as failed before starting another. Use status to rejoin live or uncertain work.',
         );
     }
-    const draft = await api('/api/films/resolve', record.manifest);
+    const draft = retainedFilmDraft(
+      record.manifest,
+      await api('/api/films/resolve', record.manifest),
+    );
     const film = await api<Film>('/api/films', draft, key);
     return {
       data: {
@@ -687,12 +697,17 @@ tool(
     const differences = [
       'name',
       'aspect',
+      'resolution',
       'shots',
       'titles',
+      'graphics',
       'audio',
       'sourceVolume',
       'normalizeAudio',
-    ].filter((key) => contentDigest(embedded[key]) !== contentDigest((film as any)[key]));
+    ].filter(
+      (key) =>
+        contentDigest({ value: embedded[key] }) !== contentDigest({ value: (film as any)[key] }),
+    );
     const embeddedProjectMatches = differences.length === 0;
     if (!embeddedProjectMatches)
       throw Error(

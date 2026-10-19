@@ -6,10 +6,15 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import importlib.util
 from fractions import Fraction
 import av
 import imageio_ffmpeg
 from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
+
+_motion_spec = importlib.util.spec_from_file_location('aftertake_film_motion', Path(__file__).with_name('film_motion.py'))
+film_motion = importlib.util.module_from_spec(_motion_spec)
+_motion_spec.loader.exec_module(film_motion)
 
 KINETIC = {'build', 'typewriter', 'impact', 'wipe', 'spoken'}
 
@@ -182,7 +187,42 @@ def animate_title(title, width, height, fonts, output, binary):
     try:
         layer_first, _, active_end = title_frames(title)
         for frame in range(layer_first,active_end):
-            process.stdin.write(title_motion_frame(title,layout,frame/24-title['start']).tobytes())
+            elapsed = frame/24-title['start']
+            if 'motion' not in title:
+                picture = title_motion_frame(title,layout,elapsed)
+            else:
+                if title['animation'] in KINETIC:
+                    picture = title_motion_frame(title,layout,elapsed)
+                else:
+                    picture = layout['image']
+                    if title['animation'] != 'none':
+                        length = title['end']-title['start']
+                        fade = min(.25,length/3)
+                        amount = max(0,min(1,elapsed/fade))*max(0,min(1,(length-elapsed)/fade))
+                        picture = film_motion.opacity(picture,amount)
+                    if title['animation'] == 'rise':
+                        pose = {**film_motion.IDENTITY,'y':-18/height*(1-max(0,min(1,elapsed/.35)))}
+                        picture = film_motion.transform_title(picture,pose)
+                pose = film_motion.motion_at(title['motion'],film_motion.motion_progress(title['start'],title['end'],frame))
+                picture = film_motion.transform_title(picture,pose)
+            process.stdin.write(picture.tobytes())
+        process.stdin.close();process.stdin=None
+        _,error=process.communicate(timeout=120)
+        if process.returncode:
+            raise RuntimeError(error.decode('utf-8',errors='replace')[-3000:])
+    except BaseException:
+        process.kill();process.wait();raise
+
+
+def animate_graphic(graphic, width, height, output, binary):
+    layout = film_motion.graphic_layout(graphic,width,height)
+    process = subprocess.Popen([binary,'-v','error','-y','-f','rawvideo','-pix_fmt','rgba','-s',f'{width}x{height}','-r','24','-i','pipe:0',
+        '-an','-c:v','qtrle','-pix_fmt','argb','-threads','2',str(output)],stdin=subprocess.PIPE,stderr=subprocess.PIPE,
+        creationflags=subprocess.CREATE_NO_WINDOW if os.name=='nt' else 0)
+    try:
+        layer_first, _, active_end = title_frames(graphic)
+        for frame in range(layer_first,active_end):
+            process.stdin.write(film_motion.graphic_frame(layout,frame).tobytes())
         process.stdin.close();process.stdin=None
         _,error=process.communicate(timeout=120)
         if process.returncode:
@@ -343,6 +383,16 @@ def assemble(settings):
     output = Path(settings['output'])
     width, height = settings['width'], settings['height']
     keyed_cameras = [camera_keyframes(shot.get('framing')) for shot in settings['shots']]
+    graphics = settings.get('graphics', [])
+    if not isinstance(graphics, list) or len(graphics) > 24:
+        raise ValueError('A film supports at most twenty-four graphics.')
+    graphics = [film_motion.validate_graphic(graphic) for graphic in graphics]
+    if len({graphic['id'] for graphic in graphics}) != len(graphics):
+        raise ValueError('Every graphic needs a unique ID.')
+    titles = [{**title,'motion':film_motion.validate_motion(title['motion'])} if 'motion' in title else title
+              for title in settings.get('titles', [])]
+    if graphics or any('motion' in title for title in titles):
+        film_motion.canvas_size(width,height)
     # Reject malformed standalone fade settings before encoding any footage.
     for audio in settings.get('audio', []):
         audio_fade_filters(audio)
@@ -356,14 +406,23 @@ def assemble(settings):
     with tempfile.TemporaryDirectory(prefix='aftertake-film-', dir=output.parent) as temporary:
         folder = Path(temporary)
         title_files = []
-        for title_index, title in enumerate(settings.get('titles', [])):
-            animated=title['animation'] in KINETIC
+        for graphic_index, graphic in enumerate(graphics):
+            animated = 'motion' in graphic
+            image = folder / f'graphic-{graphic_index}{".mov" if animated else ".png"}'
+            if animated:
+                animate_graphic(graphic,width,height,image,binary)
+            else:
+                layout = film_motion.graphic_layout(graphic,width,height)
+                film_motion.graphic_frame(layout,math.ceil(graphic['start']*24-1e-7)).save(image)
+            title_files.append(({**graphic,'animation':'none'}, image, animated))
+        for title_index, title in enumerate(titles):
+            animated=title['animation'] in KINETIC or 'motion' in title
             image = folder / f'title-{title_index}{".mov" if animated else ".png"}'
             if animated:
                 animate_title(title,width,height,settings['fonts'],image,binary)
             else:
                 title_image(title, width, height, settings['fonts']).save(image)
-            title_files.append((title, image))
+            title_files.append((title, image, animated))
         total_frames = 0
         previous_count = 0
         segments = []
@@ -435,7 +494,7 @@ def assemble(settings):
             # bound memory and retain fades for titles that cross a cut.
             previous = '[picture]'
             local_index = 0
-            for title, image in title_files:
+            for title, image, animated in title_files:
                 window = title_window(title,total_frames-count,count)
                 if window is None:
                     continue
@@ -444,14 +503,14 @@ def assemble(settings):
                 first, last, source_first, source_last = window
                 layer_first, _, active_end = title_frames(title)
                 phase=max(0,title['start']-layer_first/24)
-                args += ['-threads','1','-i',str(image)] if title['animation'] in KINETIC else ['-loop','1','-framerate','24','-t',f'{(active_end-layer_first)/24:.9f}','-threads','1','-i',str(image)]
+                args += ['-threads','1','-i',str(image)] if animated else ['-loop','1','-framerate','24','-t',f'{(active_end-layer_first)/24:.9f}','-threads','1','-i',str(image)]
                 fade = min(.25, length/3)
                 chain = f'[{local_index}:v:0]format=rgba'
-                if title.get('animation') != 'none' and title['animation'] not in KINETIC:
+                if title.get('animation') != 'none' and title['animation'] not in KINETIC and 'motion' not in title:
                     chain += f',fade=t=in:st={phase:.9f}:d={fade:.9f}:alpha=1,fade=t=out:st={phase+length-fade:.9f}:d={fade:.9f}:alpha=1'
                 chain += f',trim=start_frame={source_first}:end_frame={source_last},setpts=N/(24*TB)+{first}/(24*TB)[layer{local_index}]'
                 filters.append(chain)
-                y = f"'-18*(1-min(1,max(0,(t-({title['start']-cut_start:.9f}))/.35)))'" if title.get('animation') == 'rise' else '0'
+                y = f"'-18*(1-min(1,max(0,(t-({title['start']-cut_start:.9f}))/.35)))'" if title.get('animation') == 'rise' and 'motion' not in title else '0'
                 filters.append(f"{previous}[layer{local_index}]overlay=x=0:y={y}:eof_action=pass:repeatlast=0:enable='gte(n,{first})*lt(n,{last})'[picture{local_index}]")
                 previous = f'[picture{local_index}]'
             filters.append(f'{previous}null[v]')
@@ -463,7 +522,7 @@ def assemble(settings):
             # keeps each cut sample-exact; encode AAC only in the final movie.
             segment = folder / f'shot-{index:03d}.mov'
             graph_arguments = ['-filter_complex', ';'.join(filters)]
-            if keyed_cameras[index] is not None:
+            if keyed_cameras[index] is not None or graphics or any('motion' in title for title in titles):
                 # Eight independently eased points can exceed Windows' command
                 # length after perspective expands all four corner expressions.
                 graph_file = folder / f'camera-filters-{index:03d}.txt'
