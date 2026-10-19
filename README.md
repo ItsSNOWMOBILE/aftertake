@@ -142,6 +142,11 @@ To import your own footage and export films, install the small CPU runtime:
 python scripts/setup-film.py
 ```
 
+The studio prefers a healthy Film runtime for media processing, independently of
+the generation engine. To choose another installation, set `AFTERTAKE_PYTHON`
+in `.env` to its Python executable (`bin/python` on Linux or `Scripts/python.exe`
+on Windows). An explicit selection is never replaced by another runtime.
+
 Optional local narration is installed separately with
 `python scripts/setup-narration.py`. These Python setup paths use **Python 3.12**.
 
@@ -202,6 +207,9 @@ revisions, file sizes and SHA-256 hashes. Restart the engine after installation.
 
 Some profiles share model files. Sizes, dependencies and model terms are
 documented in the [studio guide](docs/studio-guide.md) and pinned manifests.
+Character replacement needs **FFmpeg and FFprobe during both setup and engine
+launch**. Put both on PATH, or pass the same `--ffmpeg-bin /path/to/ffmpeg/bin`
+to `setup.py --character-swap` and `engine.py`.
 
 </details>
 

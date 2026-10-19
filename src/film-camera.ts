@@ -16,6 +16,8 @@ export const filmFramingSchema = z.object({
   endZoom: z.number().min(1).max(3),
   x: z.number().min(0).max(1),
   y: z.number().min(0).max(1),
+  // Fill crops centrally before the camera moves; older projects stay fitted.
+  fit: z.enum(['contain', 'cover']).optional(),
   keyframes: z
     .array(cameraKeyframeSchema)
     .min(2)

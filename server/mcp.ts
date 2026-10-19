@@ -24,6 +24,7 @@ import { registerCharacterTools } from './character-tools.js';
 import { registerEffectsTools } from './effects-tools.js';
 import { scriptRequestSchema } from '../src/script-draft.js';
 import { toolAnnotations } from './tool-annotations.js';
+import { resolveMediaRuntime } from './media-runtime.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -52,10 +53,12 @@ const state = path.resolve(
 );
 const pythonSuffix = process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python';
 const enginePython = path.join(root, '.runtime/venv', pythonSuffix);
-const defaultPython = (await stat(enginePython).catch(() => null))
-  ? enginePython
-  : path.join(root, '.runtime/film-venv', pythonSuffix);
-const python = option('--python', process.env.AFTERTAKE_PYTHON || defaultPython);
+const python = await resolveMediaRuntime({
+  root,
+  filmPython: path.join(root, '.runtime/film-venv', pythonSuffix),
+  enginePython,
+  override: option('--python', process.env.AFTERTAKE_PYTHON || ''),
+});
 await mkdir(state, { recursive: true });
 const exec = promisify(execFile),
   uuid = z.string().uuid(),

@@ -3,7 +3,7 @@ import { filmFramingSchema } from './film-camera';
 import { audioFadeFields, audioFadesFitTrack } from './film-audio';
 
 // Include this revision in new export identities when renderer behavior changes.
-export const filmRenderRevision = 8;
+export const filmRenderRevision = 9;
 import type { Recipe } from './domain';
 
 export const spokenWordSchema = z

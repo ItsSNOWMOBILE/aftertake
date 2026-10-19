@@ -100,12 +100,20 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
     app.get(route, (_req, res) => res.json([]));
   let resolveCalls = 0;
   let retainCamera = true;
+  let retainFit = true;
+  let receivedFit: unknown;
   app.post('/api/films/resolve', (req, res) => {
     resolveCalls++;
     const { format: _format, ...draft } = req.body;
+    receivedFit = draft.shots[0]?.framing?.fit;
     if (!retainCamera)
       draft.shots = draft.shots.map((shot: any) => {
         const { keyframes: _keys, ...framing } = shot.framing;
+        return { ...shot, framing };
+      });
+    if (!retainFit)
+      draft.shots = draft.shots.map((shot: any) => {
+        const { fit: _fit, ...framing } = shot.framing;
         return { ...shot, framing };
       });
     res.json(draft);
@@ -207,6 +215,7 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
           start: 0,
           end: 2,
           framing: {
+            fit: 'cover',
             zoom: 1,
             endZoom: 2,
             x: 0.5,
@@ -227,6 +236,7 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
     assert.equal((saved.structuredContent as any).duration, 2);
     assert.equal((saved.structuredContent as any).planId, (replay.structuredContent as any).planId);
     assert.equal(resolveCalls, 2);
+    assert.equal(receivedFit, 'cover');
     const changed = await saveEdit({ ...project, name: 'A revised camera edit' });
     assert.notEqual(
       (saved.structuredContent as any).planId,
@@ -253,6 +263,11 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
     const incompatible = await saveEdit(project);
     assert.equal(incompatible.isError, true);
     assert.match((incompatible.content as any)[0].text, /did not retain every edit setting/);
+    retainCamera = true;
+    retainFit = false;
+    const lostFit = await saveEdit(project);
+    assert.equal(lostFit.isError, true);
+    assert.match((lostFit.content as any)[0].text, /did not retain every edit setting/);
     const script = await client.callTool({
       name: 'aftertake_draft_script',
       arguments: {

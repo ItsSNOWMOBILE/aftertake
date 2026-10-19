@@ -292,6 +292,8 @@ class FilmRenderTest(unittest.TestCase):
             framing['keyframes'][index][field] = value
             invalid.append(framing)
         invalid.append({**base, 'zoom': float('nan')})
+        for fit in [None, True, 1, {}, 'stretch', 'cover;movie=anything']:
+            invalid.extend([{**base, 'fit': fit}, {'zoom': 1, 'endZoom': 1, 'x': .5, 'y': .5, 'fit': fit}])
         self.assertEqual(renderer.camera_keyframes(base)[-1]['easing'], 'ease-in-out')
         with tempfile.TemporaryDirectory(prefix='aftertake-camera-invalid-') as temporary:
             for framing in invalid:
@@ -300,6 +302,84 @@ class FilmRenderTest(unittest.TestCase):
                         renderer.assemble({'output': str(Path(temporary) / 'invalid.mp4'), 'width': 160, 'height': 90,
                             'shots': [{'source': 'unused.png', 'kind': 'image', 'start': 0, 'end': 1, 'framing': framing}]})
                     process.assert_not_called()
+
+    def test_fill_center_crops_portrait_without_pillars_or_stretch_before_camera_keys(self):
+        with tempfile.TemporaryDirectory(prefix='aftertake-film-fill-') as temporary:
+            folder = Path(temporary)
+            portrait = np.full((320, 180, 3), [32, 112, 176], dtype=np.uint8)
+            portrait[:40] = portrait[-40:] = [248, 168, 16]
+            portrait[150:170, 80:100] = [240, 24, 24]
+            Image.fromarray(portrait).save(folder / 'portrait.png')
+            landscape = np.full((180, 320, 3), [32, 112, 176], dtype=np.uint8)
+            landscape[80:100, 150:170] = [240, 24, 24]
+            Image.fromarray(landscape).save(folder / 'landscape.png')
+            framing = {'zoom': 1, 'endZoom': 1, 'x': .5, 'y': .5, 'fit': 'cover'}
+            shots = [{'source': str(folder / 'portrait.png'), 'kind': 'image', 'start': 0, 'end': .25, 'framing': framing},
+                {'source': str(folder / 'portrait.png'), 'kind': 'image', 'start': 0, 'end': 25/24,
+                    'framing': {**framing, 'keyframes': [
+                        {'at': 0, 'zoom': 2, 'x': .2, 'y': .5},
+                        {'at': 1, 'zoom': 2, 'x': .8, 'y': .5, 'easing': 'linear'}]}},
+                *[{'source': str(folder / 'landscape.png'), 'kind': 'image', 'start': 0, 'end': .25,
+                    'framing': {**framing, 'fit': fit}} for fit in ('contain', 'cover')]]
+            target = folder / 'fill.mp4'
+            renderer.assemble({'output': str(target), 'width': 320, 'height': 180, 'shots': shots,
+                'titles': [], 'audio': [], 'sourceVolume': 0, 'fonts': str(ROOT / 'public/fonts'), 'manifest': {'shots': shots}})
+            with av.open(str(target)) as movie:
+                self.assertEqual(json.loads(movie.metadata['comment'])['shots'], shots)
+                decoded = list(movie.decode(video=0))
+            self.assertEqual(len(decoded), 43)
+            for index, frame in enumerate(decoded):
+                self.assertAlmostEqual(frame.time, index/24, places=6)
+            frames = [frame.to_ndarray(format='rgb24') for frame in decoded]
+
+            def marker(frame):
+                ys, xs = np.where((frame[:, :, 0] > 150) & (frame[:, :, 1] < 70))
+                self.assertGreater(len(xs), 100)
+                return np.array([xs.mean(), ys.mean()]), np.array([xs.max()-xs.min()+1, ys.max()-ys.min()+1]), len(xs)
+
+            center, dimensions, area = marker(frames[0])
+            np.testing.assert_allclose(center, [159.5, 89.5], atol=1)
+            np.testing.assert_allclose(dimensions, [36, 36], atol=1)
+            self.assertAlmostEqual(dimensions[0] / dimensions[1], 1, delta=.04)
+            # Fill removes the top/bottom edge bands but does not invent dark
+            # side bars, even on the 2x animated-camera work canvas.
+            for frame in frames[:31]:
+                self.assertTrue(np.all(frame[:, :8, 1] > 85))
+                self.assertTrue(np.all(frame[:, -8:, 1] > 85))
+                self.assertLess(int(((frame[:, :, 0] > 180) & (frame[:, :, 1] > 100) & (frame[:, :, 2] < 60)).sum()), 5)
+            for tick, x in [(6, 255.5), (18, 159.5), (30, 63.5)]:
+                keyed_center, keyed_dimensions, keyed_area = marker(frames[tick])
+                np.testing.assert_allclose(keyed_center, [x, 89.5], atol=2)
+                self.assertAlmostEqual(keyed_dimensions[0] / keyed_dimensions[1], 1, delta=.04)
+                self.assertAlmostEqual(keyed_area / area, 4, delta=.25)
+            # Same-shape material retains its centered square in both modes.
+            for tick in (31, 37):
+                normal_center, normal_dimensions, _ = marker(frames[tick])
+                np.testing.assert_allclose(normal_center, [159.5, 89.5], atol=1)
+                np.testing.assert_allclose(normal_dimensions, [20, 20], atol=1)
+
+    def test_explicit_fit_keeps_the_legacy_portrait_letterbox_pixels(self):
+        with tempfile.TemporaryDirectory(prefix='aftertake-film-fit-legacy-') as temporary:
+            folder = Path(temporary)
+            picture = np.full((320, 180, 3), [32, 112, 176], dtype=np.uint8)
+            picture[150:170, 80:100] = [240, 24, 24]
+            Image.fromarray(picture).save(folder / 'portrait.png')
+            decoded = {}
+            framing = {'zoom': 1, 'endZoom': 1, 'x': .5, 'y': .5}
+            for name, camera in [('unframed', None), ('legacy', framing), ('explicit', {**framing, 'fit': 'contain'})]:
+                target = folder / f'{name}.mp4'
+                renderer.assemble({'output': str(target), 'width': 320, 'height': 180,
+                    'shots': [{'source': str(folder / 'portrait.png'), 'kind': 'image', 'start': 0, 'end': .25,
+                        **({'framing': camera} if camera else {})}],
+                    'titles': [], 'audio': [], 'sourceVolume': 0, 'fonts': str(ROOT / 'public/fonts'), 'manifest': {}})
+                with av.open(str(target)) as movie:
+                    decoded[name] = [frame.to_ndarray(format='rgb24') for frame in movie.decode(video=0)]
+            for first, second, third in zip(decoded['unframed'], decoded['legacy'], decoded['explicit']):
+                # Existing camera framing already adds its perspective/chroma
+                # path. An absent fit field and explicit contain must be exact.
+                np.testing.assert_array_equal(second, third)
+                for frame in (first, third):
+                    np.testing.assert_allclose(frame[:, :20].mean(axis=(0, 1)), [20, 24, 21], atol=2)
 
     def test_zoom_preserves_source_detail_before_reducing_to_the_final_canvas(self):
         self.assertEqual(renderer.framing_canvas(1280,720,3),(3840,2160))

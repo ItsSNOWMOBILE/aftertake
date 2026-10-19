@@ -23,6 +23,7 @@ import {
 import { buildWorkflow } from './workflow.js';
 import { cuePreviewSettings } from '../src/cue-target.js';
 import { createCueRuntime } from './cue-runtime.js';
+import { resolveMediaRuntime } from './media-runtime.js';
 import { evaluateEngineCompatibility } from './engine-compatibility.js';
 import { submissionRejected } from './submission.js';
 import { filmRouter } from './films.js';
@@ -63,11 +64,11 @@ await Promise.all(
 );
 const pythonSuffix = process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python';
 const enginePython = path.join(root, '.runtime/venv', pythonSuffix);
-const python =
-  process.env.AFTERTAKE_PYTHON ||
-  ((await stat(enginePython).catch(() => null))
-    ? enginePython
-    : path.join(root, '.runtime/film-venv', pythonSuffix));
+const python = await resolveMediaRuntime({
+  root,
+  filmPython: path.join(root, '.runtime/film-venv', pythonSuffix),
+  enginePython,
+});
 const cueRuntime = createCueRuntime({ root, enginePython, mediaPython: python });
 const exec = promisify(execFile);
 const renders = new Map<string, Render>();

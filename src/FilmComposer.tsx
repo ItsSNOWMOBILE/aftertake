@@ -82,6 +82,7 @@ function ShotCameraEditor({
     const first = next[0],
       last = next[next.length - 1];
     onChange({
+      ...current,
       zoom: first.zoom,
       endZoom: last.zoom,
       x: first.x,
@@ -98,7 +99,8 @@ function ShotCameraEditor({
     } else if (keys) {
       const first = keys[0],
         last = keys[keys.length - 1];
-      onChange({ zoom: first.zoom, endZoom: last.zoom, x: first.x, y: first.y });
+      const { keyframes: _keys, ...simple } = current;
+      onChange({ ...simple, zoom: first.zoom, endZoom: last.zoom, x: first.x, y: first.y });
     }
   }
   let widestGap = 0;
@@ -138,6 +140,19 @@ function ShotCameraEditor({
   return (
     <details className="film-framing">
       <summary>Camera & framing{keys ? ` · ${keys.length} keyframes` : ''}</summary>
+      <label className="film-camera-mode">
+        Fit to canvas
+        <select
+          aria-label={`Shot ${shotNumber} fit`}
+          value={current.fit || 'contain'}
+          onChange={(event) =>
+            onChange({ ...current, fit: event.target.value as 'contain' | 'cover' })
+          }
+        >
+          <option value="contain">Fit · show the whole image</option>
+          <option value="cover">Fill · crop centrally to the canvas</option>
+        </select>
+      </label>
       <label className="film-camera-mode">
         Camera motion
         <select
@@ -339,6 +354,7 @@ function ShotPicture({
   const camera = framing ? cameraAt(framing, progress) : undefined;
   const style = {
     opacity,
+    ...(framing?.fit === 'cover' ? { objectFit: 'cover' as const, objectPosition: 'center' } : {}),
     ...(camera
       ? {
           transform: `scale(${camera.zoom})`,

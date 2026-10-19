@@ -129,7 +129,7 @@ resolution. Recipe import, reuse and the MCP selection request retain it.
 Install the optional 43.9 GB profile with Python 3.12:
 
 ```sh
-python scripts/setup.py --character-swap --models-dir /path/to/model-disk
+python scripts/setup.py --character-swap --models-dir /path/to/model-disk --ffmpeg-bin /path/to/ffmpeg/bin
 python scripts/engine.py --safe-weight-copies --no-node-cache --ffmpeg-bin /path/to/ffmpeg/bin
 ```
 
@@ -518,6 +518,11 @@ manifests remain readable. Restore a project after importing its original media;
 identity follows content hashes, so local asset IDs can differ.
 
 Open a shot's **Camera & framing** to choose a simple zoom or a **Keyframe path**.
+**Fit to canvas** defaults to **Fit**, which shows the whole image with padding
+when its shape differs from the film. **Fill** crops the image centrally to fill
+the canvas before applying camera movement; this also fills a landscape film
+with portrait footage without stretching it. The choice stays with each shot
+when switching camera modes and is saved in portable projects.
 Paths support two to eight camera positions with editable time, zoom and horizontal
 or vertical focus. Each arriving keyframe chooses constant speed, a smooth start
 and stop, a fast start with a soft stop, or a hold followed by a jump. Previewing

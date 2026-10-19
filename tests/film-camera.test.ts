@@ -54,18 +54,33 @@ test('camera tracks reject gaps, reversed times and nonfinite or out-of-canvas v
 
 test('native requests and portable projects retain the complete camera track', () => {
   const id = 'ca56f918-ba61-4935-86ca-13814f22d56c';
+  const framing = { ...move, fit: 'cover' as const };
   const draft = {
     name: 'A purposeful camera move',
     aspect: 'landscape',
-    shots: [{ assetId: id, start: 0, end: 2, framing: move }],
+    shots: [{ assetId: id, start: 0, end: 2, framing }],
   };
-  assert.deepEqual(filmRequestSchema.parse(draft).shots[0].framing, move);
+  assert.deepEqual(filmRequestSchema.parse(draft).shots[0].framing, framing);
   assert.deepEqual(
     filmManifestSchema.parse({
       ...draft,
       format: 'aftertake-film/2',
       shots: [{ ...draft.shots[0], sha256: 'a'.repeat(64) }],
     }).shots[0].framing,
-    move,
+    framing,
   );
+});
+
+test('fit is optional, preserves the camera curve, and rejects unsupported crop modes', () => {
+  assert.deepEqual(filmFramingSchema.parse(move), move, 'Legacy cameras acquire no fit field.');
+  for (const fit of ['contain', 'cover'] as const) {
+    const framing = filmFramingSchema.parse({ ...move, fit });
+    assert.equal(framing.fit, fit);
+    for (const at of [0, 0.25, 0.5, 0.9, 1]) {
+      assert.deepEqual(cameraAt(framing, at), cameraAt(move, at));
+    }
+  }
+  for (const fit of ['fill', 'stretch', 'cover;crop=1:1', 1, true, null, {}]) {
+    assert.equal(filmFramingSchema.safeParse({ ...move, fit }).success, false);
+  }
 });

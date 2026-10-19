@@ -61,8 +61,9 @@ on Windows too:
 }
 ```
 
-An existing engine Python is preferred; the CPU film environment is the
-fallback. Override it with `--python /absolute/path/to/python` when needed.
+A healthy CPU Film environment is preferred for media processing, with the
+engine Python as a fallback. Override it with `--python /absolute/path/to/python`
+or `AFTERTAKE_PYTHON` when needed; an explicit selection is authoritative.
 `--state-dir` changes where persistent plans and derived review frames live.
 Plans are separated by studio URL. Imports stay inside the configured media
 root, including resolved symbolic links; remote media URLs are not accepted.

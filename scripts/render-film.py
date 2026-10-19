@@ -246,6 +246,8 @@ def camera_keyframes(framing):
         return None
     if not isinstance(framing, dict):
         raise ValueError('Camera framing must be an object.')
+    if 'fit' in framing and framing['fit'] not in ('contain', 'cover'):
+        raise ValueError('Camera fit must be contain or cover.')
     if 'keyframes' not in framing:
         return None
 
@@ -418,8 +420,14 @@ def assemble(settings):
                 zoom_filter = f",format=yuv444p,perspective=x0='{left}':y0='{top}':x1='{right}':y1='{top}':x2='{left}':y2='{bottom}':x3='{right}':y3='{bottom}':sense=source:eval=frame:interpolation=cubic"
                 if (work_width, work_height) != (width, height):
                     zoom_filter += f',scale={width}:{height}:flags=lanczos'
-            filters = [f'[0:v:0]scale={work_width}:{work_height}:force_original_aspect_ratio=decrease:force_divisible_by=2,'
-                f'pad={work_width}:{work_height}:(ow-iw)/2:(oh-ih)/2:color=0x141815,setsar=1,tpad=stop_mode=clone:stop_duration=1,fps=24,'
+            if framing and framing.get('fit') == 'cover':
+                source_fit = (f'scale={work_width}:{work_height}:force_original_aspect_ratio=increase:force_divisible_by=2,'
+                    f'crop={work_width}:{work_height}:(iw-ow)/2:(ih-oh)/2')
+            else:
+                # Keep the legacy fit/pad path identical for absent or contain.
+                source_fit = (f'scale={work_width}:{work_height}:force_original_aspect_ratio=decrease:force_divisible_by=2,'
+                    f'pad={work_width}:{work_height}:(ow-iw)/2:(oh-ih)/2:color=0x141815')
+            filters = [f'[0:v:0]{source_fit},setsar=1,tpad=stop_mode=clone:stop_duration=1,fps=24,'
                 f'trim=end_frame={count},setpts=N/(24*TB){zoom_filter}[picture]']
             # Render only the layers intersecting this cut. Delaying every
             # full-film PNG input inside one global framesync graph can stall
