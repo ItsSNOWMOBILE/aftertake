@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { filmFramingSchema } from './film-camera';
+import { audioFadeFields, audioFadesFitTrack } from './film-audio';
 
 // Include this revision in new export identities when renderer behavior changes.
-export const filmRenderRevision = 7;
+export const filmRenderRevision = 8;
 import type { Recipe } from './domain';
 
 export const spokenWordSchema = z
@@ -91,11 +92,13 @@ export const filmAudioSchema = z
     sourceStart: z.number().min(0).max(600),
     sourceEnd: z.number().positive().max(600),
     volume: z.number().min(0).max(2),
+    ...audioFadeFields,
   })
   .refine(
     (audio) => audio.sourceEnd - audio.sourceStart >= 0.1,
     'An audio clip needs a valid trim.',
-  );
+  )
+  .refine(audioFadesFitTrack, 'Audio fades must each fit within the trimmed clip.');
 export const filmDraftSchema = z.object({
   name: z.string().trim().min(1).max(100),
   aspect: z.enum(['landscape', 'portrait', 'square']),

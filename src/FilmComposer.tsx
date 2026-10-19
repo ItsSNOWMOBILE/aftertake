@@ -30,6 +30,7 @@ import './film.css';
 import NarratedCut from './NarratedCut';
 import { filmExportKey, exportAttemptKey } from './narrated-cut';
 import { cameraAt, type CameraKeyframe, type FilmFraming } from './film-camera';
+import { audioGain } from './film-audio';
 import { FilmRecorder } from './FilmRecorder';
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
@@ -430,6 +431,8 @@ function DraftPlayer({
   const audio = useRef<(HTMLAudioElement | null)[]>([]);
   const timeline = filmTimeline(draft.shots),
     duration = timeline.at(-1)?.end || 0;
+  // At the end marker, retain the last displayed frame instead of removing its titles.
+  const visualTime = Math.min(time, Math.max(0, duration - 1 / 24));
   let current = 0;
   timeline.forEach((cut, index) => {
     if (time >= cut.start) current = index;
@@ -473,7 +476,7 @@ function DraftPlayer({
       if (!element) return;
       const local = time - track.start,
         active = local >= 0 && local < track.sourceEnd - track.sourceStart;
-      element.volume = Math.min(1, track.volume);
+      element.volume = Math.max(0, Math.min(1, audioGain(track, local)));
       if (active && Math.abs(element.currentTime - (track.sourceStart + local)) > 0.15)
         element.currentTime = track.sourceStart + local;
       if (playing && ready && active) void element.play().catch(() => {});
@@ -510,14 +513,14 @@ function DraftPlayer({
         ))}
         {!visible.length && <span>Your film starts here.</span>}
         {(draft.titles || [])
-          .filter((title) => time >= title.start && time < title.end)
+          .filter((title) => visualTime >= title.start && visualTime < title.end)
           .map((title) => {
-            const motion = titleMotion(title, time),
+            const motion = titleMotion(title, visualTime),
               typography = titleTypography(title),
               words = title.text.trim().split(/\s+/);
             let wordIndex = 0,
               characterIndex = 0;
-            const spoken = spokenTitleState(title, time);
+            const spoken = spokenTitleState(title, visualTime);
             const content =
               title.animation === 'spoken' ? (
                 <span className="spoken-words">
@@ -548,7 +551,7 @@ function DraftPlayer({
                   const part = wordMotion(
                     wordIndex++,
                     words.length,
-                    time - title.start,
+                    visualTime - title.start,
                     motion.duration,
                   );
                   return (
@@ -606,7 +609,7 @@ function DraftPlayer({
                   paintOrder: 'stroke fill',
                   translate:
                     title.animation === 'rise'
-                      ? `0 ${-18 * (1 - Math.min(1, (time - title.start) / 0.35))}px`
+                      ? `0 ${-18 * (1 - Math.min(1, (visualTime - title.start) / 0.35))}px`
                       : undefined,
                 }}
               >
@@ -1663,9 +1666,13 @@ export default function FilmComposer({
         {(draft.audio || []).map((track, index) => {
           const asset = assets.find((asset) => asset.id === track.assetId);
           function change(change: Partial<typeof track>) {
+            const next = { ...track, ...change };
+            const fadeLimit = Math.min(10, Math.max(0, next.sourceEnd - next.sourceStart));
+            if (next.fadeIn !== undefined) next.fadeIn = Math.min(fadeLimit, next.fadeIn);
+            if (next.fadeOut !== undefined) next.fadeOut = Math.min(fadeLimit, next.fadeOut);
             setDraft({
               ...draft,
-              audio: draft.audio?.map((item, i) => (i === index ? { ...item, ...change } : item)),
+              audio: draft.audio?.map((item, i) => (i === index ? next : item)),
             });
           }
           return (
@@ -1738,6 +1745,23 @@ export default function FilmComposer({
                     onChange={(event) => change({ volume: Number(event.target.value) })}
                   />
                 </label>
+                {(['fadeIn', 'fadeOut'] as const).map((key) => (
+                  <label key={key}>
+                    {key === 'fadeIn' ? 'Fade in (s)' : 'Fade out (s)'}
+                    <input
+                      aria-label={`Audio ${index + 1} ${key === 'fadeIn' ? 'fade in' : 'fade out'}`}
+                      type="number"
+                      min={0}
+                      max={Math.min(10, Math.max(0, track.sourceEnd - track.sourceStart))}
+                      step={0.05}
+                      value={display(track[key] ?? 0)}
+                      onChange={(event) => {
+                        const value = event.target.valueAsNumber;
+                        if (Number.isFinite(value)) change({ [key]: Math.max(0, value) });
+                      }}
+                    />
+                  </label>
+                ))}
               </div>
               {asset?.narration && (
                 <details className="narration-receipt">

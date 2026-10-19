@@ -566,6 +566,13 @@ keeps a direct cut. Dissolves overlap the trims, so the film becomes shorter;
 titles and audio keep their absolute timeline positions. The preview and export
 use the same 24 fps clock and limit overlap to half of either neighboring shot.
 
+Each audio clip has **Fade in (s)** and **Fade out (s)** controls. Use them to
+bring in music under the opening or let a sound tail settle before the next cut.
+Both fades follow the trimmed clip and stay in its editable project. Shortening
+the trim also shortens any fade that would exceed it. Overlapping fades multiply;
+zero keeps the original clip level. The draft previews the ramps, and native
+exports apply them on the 48 kHz audio clock before mixing and normalization.
+
 Import your own recording or install optional local Kokoro narration:
 
 ```sh

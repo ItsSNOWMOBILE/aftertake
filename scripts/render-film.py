@@ -303,10 +303,47 @@ def camera_expressions(keys, count):
     return tuple(coordinate(name) for name in ('zoom', 'x', 'y'))
 
 
+def audio_fade_filters(audio):
+    """Optional linear envelopes on the trimmed, normalized 48 kHz clock."""
+    if 'fadeIn' not in audio and 'fadeOut' not in audio:
+        return ''
+    values = [audio.get(name, 0) for name in ('fadeIn', 'fadeOut')]
+    if any(type(value) not in (int, float) or not math.isfinite(value) or not 0 <= value <= 10 for value in values):
+        raise ValueError('Audio fades must be finite seconds between zero and ten.')
+    start, end = audio['sourceStart'], audio['sourceEnd']
+    if any(type(value) not in (int, float) or not math.isfinite(value) for value in (start, end)):
+        raise ValueError('Audio fades need a finite source trim.')
+    duration = end - start
+    if duration <= 0 or any(value > duration + 1e-9 for value in values):
+        raise ValueError('Audio fades must each fit within the trimmed clip.')
+    if not any(values):
+        return ''
+    # Keep the legacy chain byte-for-byte when fades are absent or zero. Active
+    # envelopes use integer samples after resampling, independent of source PTS.
+    filters = ['asetpts=N/SR/TB']
+    count = round(duration * 48000)
+    for kind, seconds in zip(('in', 'out'), values):
+        if seconds:
+            samples = max(1, round(seconds * 48000))
+            first = 0 if kind == 'in' else max(0, count - samples)
+            filters.append(f'afade=t={kind}:ss={first}:ns={samples}:curve=tri')
+    return ','.join(filters) + ','
+
+
+def audio_track_filter(audio, index):
+    delay = round(audio['start'] * 48000)
+    return (f"[{index+1}:a:0]atrim=start={audio['sourceStart']}:end={audio['sourceEnd']},"
+        f"asetpts=PTS-STARTPTS,aresample=48000,aformat=channel_layouts=stereo,{audio_fade_filters(audio)}"
+        f"volume={audio['volume']},adelay={delay}S:all=1[voice{index}]")
+
+
 def assemble(settings):
     output = Path(settings['output'])
     width, height = settings['width'], settings['height']
     keyed_cameras = [camera_keyframes(shot.get('framing')) for shot in settings['shots']]
+    # Reject malformed standalone fade settings before encoding any footage.
+    for audio in settings.get('audio', []):
+        audio_fade_filters(audio)
     binary = imageio_ffmpeg.get_ffmpeg_exe()
     def run(arguments):
         try:
@@ -464,9 +501,7 @@ def assemble(settings):
         input_index = 1
         for index, audio in enumerate(settings.get('audio', [])):
             audio_arguments += ['-i', audio['source']]
-            delay = round(audio['start'] * 48000)
-            audio_filters.append(f"[{index+1}:a:0]atrim=start={audio['sourceStart']}:end={audio['sourceEnd']},"
-                f"asetpts=PTS-STARTPTS,aresample=48000,aformat=channel_layouts=stereo,volume={audio['volume']},adelay={delay}S:all=1[voice{index}]")
+            audio_filters.append(audio_track_filter(audio, index))
             audio_links.append(f'[voice{index}]')
         audio_filters.append(''.join(audio_links) + f'amix=inputs={len(audio_links)}:duration=first:normalize=0,alimiter=limit=0.95:level=0:latency=1,atrim=duration={duration},asetpts=N/SR/TB[audio]')
         master = folder / 'mix.wav'
