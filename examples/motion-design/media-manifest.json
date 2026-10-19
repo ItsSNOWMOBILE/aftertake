@@ -1,0 +1,171 @@
+{
+  "format": "aftertake-motion-inputs/1",
+  "project": "examples/motion-design/project.json",
+  "projectSha256": "8918a1ea0dbae94fac20083984b015639b90c2028c5c9de36994efb2be801a08",
+  "sourceCount": 27,
+  "sourceBytes": 35407066,
+  "files": [
+    {
+      "assetId": "69216fb0-049d-4f70-a3cf-582001ebae8e",
+      "path": "examples/motion-design/media/12801120013f-09-close.wav",
+      "sha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c",
+      "bytes": 86060
+    },
+    {
+      "assetId": "1fbe9a6e-bb6f-4d47-83f2-df72c8b97d66",
+      "path": "examples/motion-design/media/213a657b5fc6-result.mp4",
+      "sha256": "213a657b5fc69de4fe54deb1962de42e64d93ac03bb751a0e8c614a85fac01b2",
+      "bytes": 982608
+    },
+    {
+      "assetId": "39195c51-db36-4670-96ba-002cd9987635",
+      "path": "examples/motion-design/media/23899604b6a9-create-ui.jpg",
+      "sha256": "23899604b6a9412db83695a5b198dd1b2c798b74abf5d7d81337e338a6af1506",
+      "bytes": 127925
+    },
+    {
+      "assetId": "9a10aabb-4a2a-4d1f-8e00-ed3498c9328d",
+      "path": "examples/motion-design/media/305774c38686-05-ad.wav",
+      "sha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac",
+      "bytes": 156396
+    },
+    {
+      "assetId": "c4ef0ca0-0121-43dc-a2ac-985040a945d3",
+      "path": "examples/motion-design/media/35ee7966a127-how-built-voice.wav",
+      "sha256": "35ee7966a127a1fb3b90a7bad4fb8f674f5ec4b2b69b4873c0c244e448f95cc9",
+      "bytes": 174184
+    },
+    {
+      "assetId": "c11168bd-97ee-4f5b-84b6-0d5e45a44295",
+      "path": "examples/motion-design/media/3a0dd291c52d-result.mp4",
+      "sha256": "3a0dd291c52d3b56090bea1e05f01c1ae6cb67bbdafed0ceb37f081038b21558",
+      "bytes": 889320
+    },
+    {
+      "assetId": "c5a17b84-4dd5-48c0-bc20-ea5336e5f5f4",
+      "path": "examples/motion-design/media/3d6de50c0706-reveal-native-hero-project.png",
+      "sha256": "3d6de50c0706598fcd187c48999474031808551fd33b18df099dd1e7480b4d2c",
+      "bytes": 72493
+    },
+    {
+      "assetId": "270d322a-45c0-4066-b690-d57f5fc76ac9",
+      "path": "examples/motion-design/media/405d60314b65-result.mp4",
+      "sha256": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe",
+      "bytes": 1208054
+    },
+    {
+      "assetId": "f5b9bb29-4cc7-4c1d-9664-cc7ca336d138",
+      "path": "examples/motion-design/media/41e8d69f2188-04-create.wav",
+      "sha256": "41e8d69f2188e0f34b4543307e7737c267ae36adf0ce8b982dc1eb27231118df",
+      "bytes": 84012
+    },
+    {
+      "assetId": "4e5bbf2a-b933-4751-9606-0972e0efcf22",
+      "path": "examples/motion-design/media/4de45a135132-03-finish.wav",
+      "sha256": "4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92",
+      "bytes": 87084
+    },
+    {
+      "assetId": "cebfdc9b-cc79-4dcd-a045-61ffe63b357d",
+      "path": "examples/motion-design/media/51f802a81dca-ui-hook-before.png",
+      "sha256": "51f802a81dca9c3e5133f2881429f197328aa9969c2a1e60112cd058fec33293",
+      "bytes": 61812
+    },
+    {
+      "assetId": "f4355a00-78de-46a1-ae86-a90eb532f91f",
+      "path": "examples/motion-design/media/5576f8612cb2-finish-result.mp4",
+      "sha256": "5576f8612cb2af82b9415866e24ee94258b375973ec29f7c21e971125869a466",
+      "bytes": 930767
+    },
+    {
+      "assetId": "557212f1-dafb-4bdd-b58f-fcc2173baef8",
+      "path": "examples/motion-design/media/5d6f841d36d5-poster.jpg",
+      "sha256": "5d6f841d36d5f61351e010bd3ff2dd8a6bddf62f4fb8a691be04096f27ec1853",
+      "bytes": 210468
+    },
+    {
+      "assetId": "9e901b04-1ffd-4ba4-a7fb-2da10cfa89f4",
+      "path": "examples/motion-design/media/8198d77f034d-character-reference.jpg",
+      "sha256": "8198d77f034db4b1761ad72c90db5adeccc113c26150c860615bf5c901974cbd",
+      "bytes": 108174
+    },
+    {
+      "assetId": "c1cf57f9-4510-4a9c-8a0d-586dac818487",
+      "path": "examples/motion-design/media/853415d850d4-01-one.wav",
+      "sha256": "853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373",
+      "bytes": 38156
+    },
+    {
+      "assetId": "d3ac41b3-6b8f-490a-af35-d27026247abd",
+      "path": "examples/motion-design/media/927d60e6bd88-duplicates-ui.jpg",
+      "sha256": "927d60e6bd88eac702b7816ddd67c06cb2341486d4f1b4f95d8320c6e49a1112",
+      "bytes": 84272
+    },
+    {
+      "assetId": "2256b725-b6ac-4e00-9b6f-6145f5932cd6",
+      "path": "examples/motion-design/media/97b8e81bed7f-02-character.wav",
+      "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+      "bytes": 130858
+    },
+    {
+      "assetId": "35a6e867-68ae-488e-a1fe-9c9e44cfe40b",
+      "path": "examples/motion-design/media/aece5ce0048f-music-bed.wav",
+      "sha256": "aece5ce0048f626367951e0710a025f4a1e09e5ab0a2d51c243e25d793c40ff9",
+      "bytes": 11232044
+    },
+    {
+      "assetId": "0ce4319b-ab73-4cb8-8e09-29ddbdde1681",
+      "path": "examples/motion-design/media/b7a9feb69880-01-three.wav",
+      "sha256": "b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5",
+      "bytes": 40330
+    },
+    {
+      "assetId": "44c6ad07-50f1-4981-8a16-2387719c1aff",
+      "path": "examples/motion-design/media/c29b4e28631f-prepared-source.mp4",
+      "sha256": "c29b4e28631fe52c3cdbb2d4401672ee5837077e941588a33eb49a4e42e3c1d3",
+      "bytes": 725856
+    },
+    {
+      "assetId": "45c2e4c8-c859-4fc6-b1d1-079f1a5f75f2",
+      "path": "examples/motion-design/media/cf8f06acf85a-finishing-full-comparison.jpg",
+      "sha256": "cf8f06acf85ae36b61e0ed29a0bf6d42fec65d9f4c071caac76c564ea9788816",
+      "bytes": 67030
+    },
+    {
+      "assetId": "93b5352c-2bc0-4285-a944-fab207d5ca18",
+      "path": "examples/motion-design/media/d3f8ee4a6557-grounds-full-source.mp4",
+      "sha256": "d3f8ee4a65578fc0dc1744a4319c87e2d6f166b873190ab358c660358093decb",
+      "bytes": 14377325
+    },
+    {
+      "assetId": "aeae18b4-3ecc-4f68-a702-87472a716b03",
+      "path": "examples/motion-design/media/d407fdcfe42d-prepared-source.mp4",
+      "sha256": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92",
+      "bytes": 2227459
+    },
+    {
+      "assetId": "7b38c04a-cf08-4e70-8461-c5607f5bdd10",
+      "path": "examples/motion-design/media/d84ec8cc2db8-source.png",
+      "sha256": "d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5",
+      "bytes": 1124478
+    },
+    {
+      "assetId": "24101f44-dafd-4836-852c-36760c69bb3c",
+      "path": "examples/motion-design/media/de91fb08df61-08-reveal.wav",
+      "sha256": "de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf",
+      "bytes": 113100
+    },
+    {
+      "assetId": "4ffd80f5-8794-4b34-ba6e-97481ceb6fa9",
+      "path": "examples/motion-design/media/e282241567cc-ui-hook-after.png",
+      "sha256": "e282241567cc9cb5806e289e2420f2ac1180f31e1934d5a4d62ca522f73cf993",
+      "bytes": 62480
+    },
+    {
+      "assetId": "34bf3efa-c9f3-4a0a-ad19-1e8be1cec67a",
+      "path": "examples/motion-design/media/e92b1b4e6ccf-brand-white.png",
+      "sha256": "e92b1b4e6ccf27cb6f1047ccc23db9ba2b68266f03711fc9a6e14536ebaec692",
+      "bytes": 4321
+    }
+  ]
+}

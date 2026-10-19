@@ -1,0 +1,5 @@
+# Keep replay documents byte-identical to the published input bundle checksums.
+*.md -text whitespace=cr-at-eol
+*.json -text whitespace=cr-at-eol
+verify.py -text whitespace=cr-at-eol
+SHA256SUMS -text whitespace=cr-at-eol

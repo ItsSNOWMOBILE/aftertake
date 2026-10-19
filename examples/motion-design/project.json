@@ -1,0 +1,2992 @@
+{
+  "format": "aftertake-film/3",
+  "name": "Aftertake / one take, your next take",
+  "aspect": "landscape",
+  "resolution": "1080p",
+  "shots": [
+    {
+      "assetId": "44c6ad07-50f1-4981-8a16-2387719c1aff",
+      "sha256": "c29b4e28631fe52c3cdbb2d4401672ee5837077e941588a33eb49a4e42e3c1d3",
+      "start": 0,
+      "end": 0.8333333333333334,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    },
+    {
+      "assetId": "c11168bd-97ee-4f5b-84b6-0d5e45a44295",
+      "sha256": "3a0dd291c52d3b56090bea1e05f01c1ae6cb67bbdafed0ceb37f081038b21558",
+      "start": 0.8333333333333334,
+      "end": 1.6666666666666667,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    },
+    {
+      "assetId": "f4355a00-78de-46a1-ae86-a90eb532f91f",
+      "sha256": "5576f8612cb2af82b9415866e24ee94258b375973ec29f7c21e971125869a466",
+      "start": 1.6666666666666667,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    },
+    {
+      "assetId": "d3ac41b3-6b8f-490a-af35-d27026247abd",
+      "sha256": "927d60e6bd88eac702b7816ddd67c06cb2341486d4f1b4f95d8320c6e49a1112",
+      "start": 0,
+      "end": 1.75,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.02,
+        "endZoom": 1.13,
+        "x": 0.61,
+        "y": 0.47,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "45c2e4c8-c859-4fc6-b1d1-079f1a5f75f2",
+      "sha256": "cf8f06acf85ae36b61e0ed29a0bf6d42fec65d9f4c071caac76c564ea9788816",
+      "start": 0,
+      "end": 1,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.03,
+        "endZoom": 1.03,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "9e901b04-1ffd-4ba4-a7fb-2da10cfa89f4",
+      "sha256": "8198d77f034db4b1761ad72c90db5adeccc113c26150c860615bf5c901974cbd",
+      "start": 0,
+      "end": 1.5,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.04,
+        "endZoom": 1.1,
+        "x": 0.65,
+        "y": 0.43,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "aeae18b4-3ecc-4f68-a702-87472a716b03",
+      "sha256": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92",
+      "start": 0,
+      "end": 1.3333333333333333,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    },
+    {
+      "assetId": "270d322a-45c0-4066-b690-d57f5fc76ac9",
+      "sha256": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe",
+      "start": 1.3333333333333333,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    },
+    {
+      "assetId": "cebfdc9b-cc79-4dcd-a045-61ffe63b357d",
+      "sha256": "51f802a81dca9c3e5133f2881429f197328aa9969c2a1e60112cd058fec33293",
+      "start": 0,
+      "end": 1,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.12,
+        "endZoom": 1.3,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain",
+        "keyframes": [
+          {
+            "at": 0,
+            "zoom": 1.12,
+            "x": 0.5,
+            "y": 0.5
+          },
+          {
+            "at": 0.7,
+            "zoom": 1.3,
+            "x": 0.5,
+            "y": 0.5,
+            "easing": "ease-out"
+          },
+          {
+            "at": 1,
+            "zoom": 1.3,
+            "x": 0.5,
+            "y": 0.5,
+            "easing": "hold"
+          }
+        ]
+      }
+    },
+    {
+      "assetId": "4ffd80f5-8794-4b34-ba6e-97481ceb6fa9",
+      "sha256": "e282241567cc9cb5806e289e2420f2ac1180f31e1934d5a4d62ca522f73cf993",
+      "start": 0,
+      "end": 1,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.3,
+        "endZoom": 1.12,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain",
+        "keyframes": [
+          {
+            "at": 0,
+            "zoom": 1.3,
+            "x": 0.5,
+            "y": 0.5
+          },
+          {
+            "at": 0.3,
+            "zoom": 1.3,
+            "x": 0.5,
+            "y": 0.5,
+            "easing": "hold"
+          },
+          {
+            "at": 1,
+            "zoom": 1.12,
+            "x": 0.5,
+            "y": 0.5,
+            "easing": "ease-in-out"
+          }
+        ]
+      }
+    },
+    {
+      "assetId": "93b5352c-2bc0-4285-a944-fab207d5ca18",
+      "sha256": "d3f8ee4a65578fc0dc1744a4319c87e2d6f166b873190ab358c660358093decb",
+      "start": 3.4583333333333335,
+      "end": 6.708333333333333,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.1,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "39195c51-db36-4670-96ba-002cd9987635",
+      "sha256": "23899604b6a9412db83695a5b198dd1b2c798b74abf5d7d81337e338a6af1506",
+      "start": 0,
+      "end": 1.5,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.02,
+        "endZoom": 1.1,
+        "x": 0.61,
+        "y": 0.49,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "1fbe9a6e-bb6f-4d47-83f2-df72c8b97d66",
+      "sha256": "213a657b5fc69de4fe54deb1962de42e64d93ac03bb751a0e8c614a85fac01b2",
+      "start": 0,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    },
+    {
+      "assetId": "34bf3efa-c9f3-4a0a-ad19-1e8be1cec67a",
+      "sha256": "e92b1b4e6ccf27cb6f1047ccc23db9ba2b68266f03711fc9a6e14536ebaec692",
+      "start": 0,
+      "end": 4,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "c5a17b84-4dd5-48c0-bc20-ea5336e5f5f4",
+      "sha256": "3d6de50c0706598fcd187c48999474031808551fd33b18df099dd1e7480b4d2c",
+      "start": 0,
+      "end": 3.5,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.06,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "34bf3efa-c9f3-4a0a-ad19-1e8be1cec67a",
+      "sha256": "e92b1b4e6ccf27cb6f1047ccc23db9ba2b68266f03711fc9a6e14536ebaec692",
+      "start": 0,
+      "end": 3,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    }
+  ],
+  "titles": [
+    {
+      "id": "75679c23-2d7c-543b-8593-3e1f66bed970",
+      "text": "ONE.",
+      "start": 0,
+      "end": 0.8333333333333334,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 30,
+      "fontWeight": 600,
+      "stroke": false,
+      "align": "left",
+      "color": "#17221a",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": -0.045,
+            "y": -0.08,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.2,
+            "x": -0.06,
+            "y": -0.08,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.88,
+            "x": -0.06,
+            "y": -0.08,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": -0.065,
+            "y": -0.08,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "30148d28-5511-5dc8-8b1a-106ecf8dec3c",
+      "text": "THREE.",
+      "start": 0.8333333333333334,
+      "end": 1.6666666666666667,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 30,
+      "fontWeight": 600,
+      "stroke": false,
+      "align": "left",
+      "color": "#17221a",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": -0.045,
+            "y": -0.08,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.2,
+            "x": -0.06,
+            "y": -0.08,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.88,
+            "x": -0.06,
+            "y": -0.08,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": -0.065,
+            "y": -0.08,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "76395f34-693f-5bc5-8eaa-771fdd7cc584",
+      "text": "YOUR LOOK.",
+      "start": 1.6666666666666667,
+      "end": 3.0416666666666665,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 30,
+      "fontWeight": 600,
+      "stroke": false,
+      "align": "left",
+      "color": "#17221a",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": -0.045,
+            "y": -0.08,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.2,
+            "x": -0.06,
+            "y": -0.08,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.88,
+            "x": -0.06,
+            "y": -0.08,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": -0.065,
+            "y": -0.08,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "942c212e-3f90-54ae-88c7-9f4304c88328",
+      "text": "ORIGINAL",
+      "start": 7.291666666666667,
+      "end": 8.625,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 24,
+      "fontWeight": 600,
+      "stroke": false,
+      "align": "left",
+      "color": "#17221a",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": -0.06,
+            "y": -0.081,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": -0.06,
+            "y": -0.081,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "46757209-f992-50a3-843c-0b8a385acbb4",
+      "text": "REPLACED",
+      "start": 8.625,
+      "end": 10.333333333333334,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 24,
+      "fontWeight": 600,
+      "stroke": false,
+      "align": "left",
+      "color": "#17221a",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": -0.06,
+            "y": -0.081,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": -0.06,
+            "y": -0.081,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8c096c9a-cbdf-5945-8f4d-304fbbf29dff",
+      "text": "Make it yours.",
+      "start": 12.333333333333334,
+      "end": 15.583333333333334,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 46,
+      "fontWeight": 600,
+      "stroke": false,
+      "align": "center",
+      "color": "#ffffff",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.045,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.18,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.82,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.025,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "caa02738-4e31-54a1-86a9-8f2900bb75fd",
+      "text": "NATIVE LTX-2.5",
+      "start": 17.083333333333332,
+      "end": 20.125,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 24,
+      "fontWeight": 600,
+      "stroke": false,
+      "align": "left",
+      "color": "#f5f4ec",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": -0.05,
+            "y": -0.075,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": -0.05,
+            "y": -0.075,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "f0396a57-4d79-5b94-805e-77325bb19553",
+      "text": "COMFY WORKFLOW",
+      "start": 20.5,
+      "end": 24.125,
+      "style": "kicker",
+      "position": "center",
+      "animation": "none",
+      "fontSize": 18,
+      "fontWeight": 600,
+      "stroke": false,
+      "align": "center",
+      "color": "#17221a",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": -0.3,
+            "y": 0.36,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.16,
+            "x": -0.3,
+            "y": 0.34,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.88,
+            "x": -0.3,
+            "y": 0.34,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": -0.3,
+            "y": 0.32,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "1708f269-1801-58ff-87ba-38fe1513e161",
+      "text": "H3 IDENTITY",
+      "start": 20.625,
+      "end": 24.125,
+      "style": "kicker",
+      "position": "center",
+      "animation": "none",
+      "fontSize": 18,
+      "fontWeight": 600,
+      "stroke": false,
+      "align": "center",
+      "color": "#17221a",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.36,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.16,
+            "x": 0,
+            "y": 0.34,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.88,
+            "x": 0,
+            "y": 0.34,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0.32,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ce1890fd-07de-55d3-873f-eb93cb3cfd00",
+      "text": "NATIVE FILM",
+      "start": 20.75,
+      "end": 24.125,
+      "style": "kicker",
+      "position": "center",
+      "animation": "none",
+      "fontSize": 18,
+      "fontWeight": 600,
+      "stroke": false,
+      "align": "center",
+      "color": "#17221a",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0.30000000000000004,
+            "y": 0.36,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.16,
+            "x": 0.30000000000000004,
+            "y": 0.34,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.88,
+            "x": 0.30000000000000004,
+            "y": 0.34,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0.30000000000000004,
+            "y": 0.32,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "1fd7e27b-2fd1-5305-85d2-b3283ca0f740",
+      "text": "Comfy SDK.",
+      "start": 20.166666666666668,
+      "end": 21.541666666666668,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 104,
+      "fontWeight": 700,
+      "stroke": false,
+      "align": "center",
+      "color": "#17221a",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0.14,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.18,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.82,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": -0.1,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "41123ef2-220d-5c8f-8163-02415acf2a5a",
+      "text": "Open weights.",
+      "start": 21.541666666666668,
+      "end": 22.583333333333332,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 104,
+      "fontWeight": 700,
+      "stroke": false,
+      "align": "center",
+      "color": "#17221a",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0.14,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.18,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.82,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": -0.1,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "55670025-d212-5a00-806f-c568e52375b5",
+      "text": "Editable layers.",
+      "start": 22.583333333333332,
+      "end": 24.125,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 104,
+      "fontWeight": 700,
+      "stroke": false,
+      "align": "center",
+      "color": "#17221a",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0.14,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.18,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.82,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": -0.1,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "e3ab6c85-d160-5194-8d32-17d9657741e2",
+      "text": "Aftertake.",
+      "start": 27.625,
+      "end": 30.625,
+      "style": "headline",
+      "position": "center",
+      "animation": "none",
+      "fontSize": 142,
+      "fontWeight": 700,
+      "stroke": false,
+      "align": "center",
+      "color": "#17221a",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.025,
+            "scale": 0.94,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.2,
+            "x": 0,
+            "y": -0.04,
+            "scale": 1.015,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.35,
+            "x": 0,
+            "y": -0.04,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-in-out"
+          },
+          {
+            "at": 0.9,
+            "x": 0,
+            "y": -0.04,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.04,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "36c49dd9-07e3-5061-8c7d-00aa081b9918",
+      "text": "Your next take starts here.",
+      "start": 27.875,
+      "end": 30.625,
+      "style": "headline",
+      "position": "center",
+      "animation": "none",
+      "fontSize": 26,
+      "fontWeight": 500,
+      "stroke": false,
+      "align": "center",
+      "color": "#17221a",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.23,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.18,
+            "x": 0,
+            "y": 0.2,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.9,
+            "x": 0,
+            "y": 0.2,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0.18,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b6fab610-b4e5-5934-86f1-557f7679cd72",
+      "text": "Michael Burrows + Antoni Shkraba / Pexels\nTears of Steel / Blender Foundation / CC BY 3.0",
+      "start": 27.625,
+      "end": 30.625,
+      "style": "kicker",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 16,
+      "fontWeight": 400,
+      "stroke": false,
+      "align": "center",
+      "color": "#4e574e"
+    }
+  ],
+  "graphics": [
+    {
+      "id": "36f9cec5-a531-588a-83f6-716450442526",
+      "name": "H3 label plate",
+      "kind": "rect",
+      "start": 7.291666666666667,
+      "end": 10.333333333333334,
+      "x": 0.14,
+      "y": 0.065,
+      "width": 0.22,
+      "height": 0.06,
+      "color": "#f5f4ec",
+      "opacity": 0.92,
+      "radius": 0.18
+    },
+    {
+      "id": "bcf78b6d-239d-5f53-85d5-1719c42b9b07",
+      "name": "White chapter sweep",
+      "kind": "rect",
+      "start": 19.875,
+      "end": 20.5,
+      "x": 0.5,
+      "y": 0.5,
+      "width": 1.1,
+      "height": 1.1,
+      "color": "#f5f4ec",
+      "opacity": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": -1.15,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 0.4,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.65,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "hold"
+          },
+          {
+            "at": 1,
+            "x": 1.15,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "734b7fee-e296-5806-803f-eaba4e82a4b2",
+      "name": "Card 1 / frame",
+      "kind": "rect",
+      "start": 20.25,
+      "end": 24.125,
+      "x": 0.2,
+      "y": 0.64,
+      "width": 0.26,
+      "height": 0.35,
+      "color": "#eef0e7",
+      "opacity": 1,
+      "radius": 0.04,
+      "strokeColor": "#c6cebd",
+      "strokeWidth": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.18,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -7,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.14193548387096774,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -2,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.87,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -2,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.04,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -2,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "bc5386ab-c721-547b-8160-1879995ff0d7",
+      "name": "Card 1 / actual comfy workflow still",
+      "kind": "image",
+      "start": 20.25,
+      "end": 24.125,
+      "x": 0.2,
+      "y": 0.64,
+      "width": 0.235,
+      "height": 0.285,
+      "color": "#ffffff",
+      "opacity": 1,
+      "radius": 0.045,
+      "fit": "cover",
+      "assetId": "7b38c04a-cf08-4e70-8461-c5607f5bdd10",
+      "sha256": "d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.18,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -7,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.14193548387096774,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -2,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.87,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -2,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.04,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -2,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "a0cca3b2-491f-57ff-809b-f08190c36841",
+      "name": "Card 2 / frame",
+      "kind": "rect",
+      "start": 20.375,
+      "end": 24.125,
+      "x": 0.5,
+      "y": 0.64,
+      "width": 0.26,
+      "height": 0.35,
+      "color": "#eef0e7",
+      "opacity": 1,
+      "radius": 0.04,
+      "strokeColor": "#c6cebd",
+      "strokeWidth": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.18,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 5,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.14666666666666667,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.87,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.04,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "443f98d9-3616-592b-80e8-7d6afdd473f4",
+      "name": "Card 2 / actual h3 identity still",
+      "kind": "image",
+      "start": 20.375,
+      "end": 24.125,
+      "x": 0.5,
+      "y": 0.64,
+      "width": 0.235,
+      "height": 0.285,
+      "color": "#ffffff",
+      "opacity": 1,
+      "radius": 0.045,
+      "fit": "cover",
+      "assetId": "557212f1-dafb-4bdd-b58f-fcc2173baef8",
+      "sha256": "5d6f841d36d5f61351e010bd3ff2dd8a6bddf62f4fb8a691be04096f27ec1853",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.18,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 5,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.14666666666666667,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.87,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.04,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "14886218-d016-557a-86f9-a6f2edf23955",
+      "name": "Card 3 / frame",
+      "kind": "rect",
+      "start": 20.5,
+      "end": 24.125,
+      "x": 0.8,
+      "y": 0.64,
+      "width": 0.26,
+      "height": 0.35,
+      "color": "#eef0e7",
+      "opacity": 1,
+      "radius": 0.04,
+      "strokeColor": "#c6cebd",
+      "strokeWidth": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.18,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 7,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.1517241379310345,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 2,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.87,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 2,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.04,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 2,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "745959c2-cc6e-5ad0-8588-4c54bf04aeef",
+      "name": "Card 3 / actual native film still",
+      "kind": "image",
+      "start": 20.5,
+      "end": 24.125,
+      "x": 0.8,
+      "y": 0.64,
+      "width": 0.235,
+      "height": 0.285,
+      "color": "#ffffff",
+      "opacity": 1,
+      "radius": 0.045,
+      "fit": "contain",
+      "assetId": "4ffd80f5-8794-4b34-ba6e-97481ceb6fa9",
+      "sha256": "e282241567cc9cb5806e289e2420f2ac1180f31e1934d5a4d62ca522f73cf993",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.18,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 7,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.1517241379310345,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 2,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.87,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 2,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.04,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 2,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "06830237-4e64-5f3e-82aa-c5a35dd55c86",
+      "name": "Workflow arrow 1 / shaft",
+      "kind": "rect",
+      "start": 20.875,
+      "end": 24.125,
+      "x": 0.35,
+      "y": 0.64,
+      "width": 0.028,
+      "height": 0.005,
+      "color": "#799347",
+      "opacity": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.15,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.88,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "55a1ac5c-91b3-5894-8876-34a2b7e15b84",
+      "name": "Workflow arrow 1 / upper",
+      "kind": "rect",
+      "start": 20.875,
+      "end": 24.125,
+      "x": 0.3595,
+      "y": 0.6345,
+      "width": 0.012,
+      "height": 0.005,
+      "color": "#799347",
+      "opacity": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 40,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.15,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 40,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.88,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 40,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 40,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "d11a3002-8b6a-58a3-89f4-0fb6558132a3",
+      "name": "Workflow arrow 1 / lower",
+      "kind": "rect",
+      "start": 20.875,
+      "end": 24.125,
+      "x": 0.3595,
+      "y": 0.6455,
+      "width": 0.012,
+      "height": 0.005,
+      "color": "#799347",
+      "opacity": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -40,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.15,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -40,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.88,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -40,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -40,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "50245f53-f68c-5f3f-8fea-820cf84b8ef9",
+      "name": "Workflow arrow 2 / shaft",
+      "kind": "rect",
+      "start": 21,
+      "end": 24.125,
+      "x": 0.6499999999999999,
+      "y": 0.64,
+      "width": 0.028,
+      "height": 0.005,
+      "color": "#799347",
+      "opacity": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.15,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.88,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "c418d716-171d-557a-88b0-d98e5bc6d789",
+      "name": "Workflow arrow 2 / upper",
+      "kind": "rect",
+      "start": 21,
+      "end": 24.125,
+      "x": 0.6594999999999999,
+      "y": 0.6345,
+      "width": 0.012,
+      "height": 0.005,
+      "color": "#799347",
+      "opacity": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 40,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.15,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 40,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.88,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 40,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 40,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "7a4f9573-c01a-54f3-8e0a-dd1d604515ec",
+      "name": "Workflow arrow 2 / lower",
+      "kind": "rect",
+      "start": 21,
+      "end": 24.125,
+      "x": 0.6594999999999999,
+      "y": 0.6455,
+      "width": 0.012,
+      "height": 0.005,
+      "color": "#799347",
+      "opacity": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -40,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.15,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -40,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.88,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -40,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": -40,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "6a5e23bc-f93c-57bf-8446-2b6b50f21c76",
+      "name": "How-built / rule grows from its left edge",
+      "kind": "rect",
+      "start": 20.125,
+      "end": 24.125,
+      "x": 0.5,
+      "y": 0.34,
+      "width": 0.82,
+      "height": 0.008,
+      "color": "#b9ce7c",
+      "opacity": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": -0.4018,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 0.02,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.26,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.9,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "42ff831a-18d0-5f62-8165-a0fdfdbec5ff",
+      "name": "Workflow step 1 / active dot",
+      "kind": "ellipse",
+      "start": 20.166666666666668,
+      "end": 21.541666666666668,
+      "x": 0.2,
+      "y": 0.9,
+      "width": 0.01,
+      "height": 0.0177777778,
+      "color": "#7f9c3b",
+      "opacity": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0,
+            "scale": 0.5,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.2,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.85,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "3237aa8e-e5ae-55cc-8a79-f1add2ef0d74",
+      "name": "Workflow step 2 / active dot",
+      "kind": "ellipse",
+      "start": 21.541666666666668,
+      "end": 22.583333333333332,
+      "x": 0.5,
+      "y": 0.9,
+      "width": 0.01,
+      "height": 0.0177777778,
+      "color": "#7f9c3b",
+      "opacity": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0,
+            "scale": 0.5,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.2,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.85,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "c3682ae9-febd-54d0-809a-2b460a4df0eb",
+      "name": "Workflow step 3 / active dot",
+      "kind": "ellipse",
+      "start": 22.583333333333332,
+      "end": 24.125,
+      "x": 0.8,
+      "y": 0.9,
+      "width": 0.01,
+      "height": 0.0177777778,
+      "color": "#7f9c3b",
+      "opacity": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0,
+            "scale": 0.5,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.2,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.85,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8dee278c-47d8-56a6-8e96-8c0aea9dfaea",
+      "name": "Aftertake / closing accent",
+      "kind": "rect",
+      "start": 27.75,
+      "end": 30.625,
+      "x": 0.5,
+      "y": 0.63,
+      "width": 0.42,
+      "height": 0.007,
+      "color": "#a9c469",
+      "opacity": 1,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": -0.2058,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 0.02,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.35,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 0.85,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "scaleX": 1,
+            "scaleY": 1,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "ease-in"
+          }
+        ]
+      }
+    }
+  ],
+  "audio": [
+    {
+      "assetId": "c1cf57f9-4510-4a9c-8a0d-586dac818487",
+      "sha256": "853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373",
+      "start": 0,
+      "sourceStart": 0,
+      "sourceEnd": 0.794,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373",
+        "duration": 0.794,
+        "narration": {
+          "text": "One.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "One.",
+                "start": 0.17266666666666666,
+                "end": 0.6976666666666667
+              }
+            ]
+          },
+          "wordTimingMapper": "phoneme-boundaries/2"
+        }
+      }
+    },
+    {
+      "assetId": "0ce4319b-ab73-4cb8-8e09-29ddbdde1681",
+      "sha256": "b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5",
+      "start": 0.8333333333333334,
+      "sourceStart": 0,
+      "sourceEnd": 0.8392916666666667,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5",
+        "duration": 0.8392916666666667,
+        "narration": {
+          "text": "Three.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Three.",
+                "start": 0.14766666666666667,
+                "end": 0.7893333333333333
+              }
+            ]
+          },
+          "wordTimingMapper": "phoneme-boundaries/2"
+        }
+      }
+    },
+    {
+      "assetId": "4e5bbf2a-b933-4751-9606-0972e0efcf22",
+      "sha256": "4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92",
+      "start": 1.6666666666666667,
+      "sourceStart": 0,
+      "sourceEnd": 1.8133333333333332,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92",
+        "duration": 1.8133333333333332,
+        "narration": {
+          "text": "Give every frame your look.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Give",
+                "start": 0.10133333333333333,
+                "end": 0.2763333333333333
+              },
+              {
+                "text": "every",
+                "start": 0.35133333333333333,
+                "end": 0.6263333333333333
+              },
+              {
+                "text": "frame",
+                "start": 0.7263333333333334,
+                "end": 1.0513333333333332
+              },
+              {
+                "text": "your",
+                "start": 1.1013333333333333,
+                "end": 1.2013333333333334
+              },
+              {
+                "text": "look.",
+                "start": 1.2513333333333334,
+                "end": 1.8013333333333332
+              }
+            ]
+          },
+          "wordTimingMapper": "phoneme-boundaries/2"
+        }
+      }
+    },
+    {
+      "assetId": "2256b725-b6ac-4e00-9b6f-6145f5932cd6",
+      "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+      "start": 7.291666666666667,
+      "sourceStart": 0,
+      "sourceEnd": 1.28,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+        "duration": 2.7252916666666667,
+        "narration": {
+          "text": "Keep the performance. Change the character.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Keep",
+                "start": 0.09766666666666667,
+                "end": 0.2976666666666667
+              },
+              {
+                "text": "the",
+                "start": 0.32266666666666666,
+                "end": 0.37266666666666665
+              },
+              {
+                "text": "performance.",
+                "start": 0.4226666666666667,
+                "end": 1.1976666666666667
+              },
+              {
+                "text": "Change",
+                "start": 1.4276666666666666,
+                "end": 1.7776666666666667
+              },
+              {
+                "text": "the",
+                "start": 1.8026666666666666,
+                "end": 1.8526666666666667
+              },
+              {
+                "text": "character.",
+                "start": 1.9026666666666667,
+                "end": 2.7252916666666667
+              }
+            ]
+          },
+          "wordTimingMapper": "phoneme-boundaries/2"
+        }
+      }
+    },
+    {
+      "assetId": "2256b725-b6ac-4e00-9b6f-6145f5932cd6",
+      "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+      "start": 8.625,
+      "sourceStart": 1.34,
+      "sourceEnd": 2.7252916666666667,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+        "duration": 2.7252916666666667,
+        "narration": {
+          "text": "Keep the performance. Change the character.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Keep",
+                "start": 0.09766666666666667,
+                "end": 0.2976666666666667
+              },
+              {
+                "text": "the",
+                "start": 0.32266666666666666,
+                "end": 0.37266666666666665
+              },
+              {
+                "text": "performance.",
+                "start": 0.4226666666666667,
+                "end": 1.1976666666666667
+              },
+              {
+                "text": "Change",
+                "start": 1.4276666666666666,
+                "end": 1.7776666666666667
+              },
+              {
+                "text": "the",
+                "start": 1.8026666666666666,
+                "end": 1.8526666666666667
+              },
+              {
+                "text": "character.",
+                "start": 1.9026666666666667,
+                "end": 2.7252916666666667
+              }
+            ]
+          },
+          "wordTimingMapper": "phoneme-boundaries/2"
+        }
+      }
+    },
+    {
+      "assetId": "9a10aabb-4a2a-4d1f-8e00-ed3498c9328d",
+      "sha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac",
+      "start": 10.333333333333334,
+      "sourceStart": 0,
+      "sourceEnd": 3.2573333333333334,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac",
+        "duration": 3.2573333333333334,
+        "narration": {
+          "text": "Cut an ad. Find the words. Make them move.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Cut",
+                "start": 0.144,
+                "end": 0.294
+              },
+              {
+                "text": "an",
+                "start": 0.319,
+                "end": 0.394
+              },
+              {
+                "text": "ad.",
+                "start": 0.469,
+                "end": 0.794
+              },
+              {
+                "text": "Find",
+                "start": 1.109,
+                "end": 1.359
+              },
+              {
+                "text": "the",
+                "start": 1.384,
+                "end": 1.434
+              },
+              {
+                "text": "words.",
+                "start": 1.484,
+                "end": 1.859
+              },
+              {
+                "text": "Make",
+                "start": 2.189,
+                "end": 2.364
+              },
+              {
+                "text": "them",
+                "start": 2.3890000000000002,
+                "end": 2.539
+              },
+              {
+                "text": "move.",
+                "start": 2.589,
+                "end": 3.2573333333333334
+              }
+            ]
+          },
+          "wordTimingMapper": "phoneme-boundaries/2"
+        }
+      }
+    },
+    {
+      "assetId": "f5b9bb29-4cc7-4c1d-9664-cc7ca336d138",
+      "sha256": "41e8d69f2188e0f34b4543307e7737c267ae36adf0ce8b982dc1eb27231118df",
+      "start": 15.583333333333334,
+      "sourceStart": 0,
+      "sourceEnd": 1.7493333333333334,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "41e8d69f2188e0f34b4543307e7737c267ae36adf0ce8b982dc1eb27231118df",
+        "duration": 1.7493333333333334,
+        "narration": {
+          "text": "Turn a thought into a shot.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Turn",
+                "start": 0.12266666666666666,
+                "end": 0.32266666666666666
+              },
+              {
+                "text": "a",
+                "start": 0.3476666666666667,
+                "end": 0.39766666666666667
+              },
+              {
+                "text": "thought",
+                "start": 0.49766666666666665,
+                "end": 0.7226666666666667
+              },
+              {
+                "text": "into",
+                "start": 0.7476666666666667,
+                "end": 0.9476666666666667
+              },
+              {
+                "text": "a",
+                "start": 0.9976666666666667,
+                "end": 1.0476666666666667
+              },
+              {
+                "text": "shot.",
+                "start": 1.1476666666666666,
+                "end": 1.7493333333333334
+              }
+            ]
+          },
+          "wordTimingMapper": "phoneme-boundaries/2"
+        }
+      }
+    },
+    {
+      "assetId": "c4ef0ca0-0121-43dc-a2ac-985040a945d3",
+      "sha256": "35ee7966a127a1fb3b90a7bad4fb8f674f5ec4b2b69b4873c0c244e448f95cc9",
+      "start": 20.125,
+      "sourceStart": 0,
+      "sourceEnd": 3.6279166666666667,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "35ee7966a127a1fb3b90a7bad4fb8f674f5ec4b2b69b4873c0c244e448f95cc9",
+        "duration": 3.6279166666666667,
+        "narration": {
+          "text": "Comfy SDK. Open weights. Editable layers.",
+          "voice": "am_michael",
+          "speed": 1.12,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Comfy",
+                "start": 0.055,
+                "end": 0.43
+              },
+              {
+                "text": "SDK.",
+                "start": 0.48,
+                "end": 1.255
+              },
+              {
+                "text": "Open",
+                "start": 1.43,
+                "end": 1.7550000000000001
+              },
+              {
+                "text": "weights.",
+                "start": 1.805,
+                "end": 2.23
+              },
+              {
+                "text": "Editable",
+                "start": 2.4650000000000003,
+                "end": 2.8400000000000003
+              },
+              {
+                "text": "layers.",
+                "start": 2.89,
+                "end": 3.488
+              }
+            ]
+          },
+          "wordTimingMapper": "phoneme-boundaries/2"
+        }
+      }
+    },
+    {
+      "assetId": "24101f44-dafd-4836-852c-36760c69bb3c",
+      "sha256": "de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf",
+      "start": 24.625,
+      "sourceStart": 0,
+      "sourceEnd": 2.3553333333333333,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf",
+        "duration": 2.3553333333333333,
+        "narration": {
+          "text": "And this edit? Made in Aftertake.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "And",
+                "start": 0.14766666666666667,
+                "end": 0.24766666666666667
+              },
+              {
+                "text": "this",
+                "start": 0.27266666666666667,
+                "end": 0.44766666666666666
+              },
+              {
+                "text": "edit?",
+                "start": 0.5226666666666666,
+                "end": 0.9226666666666666
+              },
+              {
+                "text": "Made",
+                "start": 1.1026666666666667,
+                "end": 1.3276666666666668
+              },
+              {
+                "text": "in",
+                "start": 1.3526666666666667,
+                "end": 1.4276666666666666
+              },
+              {
+                "text": "Aftertake.",
+                "start": 1.5026666666666666,
+                "end": 2.3553333333333333
+              }
+            ]
+          },
+          "wordTimingMapper": "phoneme-boundaries/2"
+        }
+      }
+    },
+    {
+      "assetId": "69216fb0-049d-4f70-a3cf-582001ebae8e",
+      "sha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c",
+      "start": 28,
+      "sourceStart": 0,
+      "sourceEnd": 1.792,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c",
+        "duration": 1.792,
+        "narration": {
+          "text": "Your next take starts here.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Your",
+                "start": 0.19033333333333333,
+                "end": 0.29033333333333333
+              },
+              {
+                "text": "next",
+                "start": 0.3403333333333333,
+                "end": 0.5653333333333334
+              },
+              {
+                "text": "take",
+                "start": 0.6153333333333333,
+                "end": 0.8403333333333334
+              },
+              {
+                "text": "starts",
+                "start": 0.8903333333333333,
+                "end": 1.2153333333333334
+              },
+              {
+                "text": "here.",
+                "start": 1.2653333333333334,
+                "end": 1.7653333333333334
+              }
+            ]
+          },
+          "wordTimingMapper": "phoneme-boundaries/2"
+        }
+      }
+    },
+    {
+      "assetId": "35a6e867-68ae-488e-a1fe-9c9e44cfe40b",
+      "sha256": "aece5ce0048f626367951e0710a025f4a1e09e5ab0a2d51c243e25d793c40ff9",
+      "start": 0,
+      "sourceStart": 0,
+      "sourceEnd": 30.625,
+      "volume": 0.4,
+      "fadeIn": 0.12,
+      "fadeOut": 1.2
+    }
+  ],
+  "sourceVolume": 0,
+  "normalizeAudio": true,
+  "sourceFiles": {
+    "44c6ad07-50f1-4981-8a16-2387719c1aff": {
+      "path": "examples/motion-design/media/c29b4e28631f-prepared-source.mp4",
+      "sha256": "c29b4e28631fe52c3cdbb2d4401672ee5837077e941588a33eb49a4e42e3c1d3"
+    },
+    "c11168bd-97ee-4f5b-84b6-0d5e45a44295": {
+      "path": "examples/motion-design/media/3a0dd291c52d-result.mp4",
+      "sha256": "3a0dd291c52d3b56090bea1e05f01c1ae6cb67bbdafed0ceb37f081038b21558"
+    },
+    "f4355a00-78de-46a1-ae86-a90eb532f91f": {
+      "path": "examples/motion-design/media/5576f8612cb2-finish-result.mp4",
+      "sha256": "5576f8612cb2af82b9415866e24ee94258b375973ec29f7c21e971125869a466"
+    },
+    "d3ac41b3-6b8f-490a-af35-d27026247abd": {
+      "path": "examples/motion-design/media/927d60e6bd88-duplicates-ui.jpg",
+      "sha256": "927d60e6bd88eac702b7816ddd67c06cb2341486d4f1b4f95d8320c6e49a1112"
+    },
+    "45c2e4c8-c859-4fc6-b1d1-079f1a5f75f2": {
+      "path": "examples/motion-design/media/cf8f06acf85a-finishing-full-comparison.jpg",
+      "sha256": "cf8f06acf85ae36b61e0ed29a0bf6d42fec65d9f4c071caac76c564ea9788816"
+    },
+    "9e901b04-1ffd-4ba4-a7fb-2da10cfa89f4": {
+      "path": "examples/motion-design/media/8198d77f034d-character-reference.jpg",
+      "sha256": "8198d77f034db4b1761ad72c90db5adeccc113c26150c860615bf5c901974cbd"
+    },
+    "aeae18b4-3ecc-4f68-a702-87472a716b03": {
+      "path": "examples/motion-design/media/d407fdcfe42d-prepared-source.mp4",
+      "sha256": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92"
+    },
+    "270d322a-45c0-4066-b690-d57f5fc76ac9": {
+      "path": "examples/motion-design/media/405d60314b65-result.mp4",
+      "sha256": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe"
+    },
+    "cebfdc9b-cc79-4dcd-a045-61ffe63b357d": {
+      "path": "examples/motion-design/media/51f802a81dca-ui-hook-before.png",
+      "sha256": "51f802a81dca9c3e5133f2881429f197328aa9969c2a1e60112cd058fec33293"
+    },
+    "4ffd80f5-8794-4b34-ba6e-97481ceb6fa9": {
+      "path": "examples/motion-design/media/e282241567cc-ui-hook-after.png",
+      "sha256": "e282241567cc9cb5806e289e2420f2ac1180f31e1934d5a4d62ca522f73cf993"
+    },
+    "93b5352c-2bc0-4285-a944-fab207d5ca18": {
+      "path": "examples/motion-design/media/d3f8ee4a6557-grounds-full-source.mp4",
+      "sha256": "d3f8ee4a65578fc0dc1744a4319c87e2d6f166b873190ab358c660358093decb"
+    },
+    "39195c51-db36-4670-96ba-002cd9987635": {
+      "path": "examples/motion-design/media/23899604b6a9-create-ui.jpg",
+      "sha256": "23899604b6a9412db83695a5b198dd1b2c798b74abf5d7d81337e338a6af1506"
+    },
+    "1fbe9a6e-bb6f-4d47-83f2-df72c8b97d66": {
+      "path": "examples/motion-design/media/213a657b5fc6-result.mp4",
+      "sha256": "213a657b5fc69de4fe54deb1962de42e64d93ac03bb751a0e8c614a85fac01b2"
+    },
+    "34bf3efa-c9f3-4a0a-ad19-1e8be1cec67a": {
+      "path": "examples/motion-design/media/e92b1b4e6ccf-brand-white.png",
+      "sha256": "e92b1b4e6ccf27cb6f1047ccc23db9ba2b68266f03711fc9a6e14536ebaec692"
+    },
+    "7b38c04a-cf08-4e70-8461-c5607f5bdd10": {
+      "path": "examples/motion-design/media/d84ec8cc2db8-source.png",
+      "sha256": "d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5"
+    },
+    "557212f1-dafb-4bdd-b58f-fcc2173baef8": {
+      "path": "examples/motion-design/media/5d6f841d36d5-poster.jpg",
+      "sha256": "5d6f841d36d5f61351e010bd3ff2dd8a6bddf62f4fb8a691be04096f27ec1853"
+    },
+    "c1cf57f9-4510-4a9c-8a0d-586dac818487": {
+      "path": "examples/motion-design/media/853415d850d4-01-one.wav",
+      "sha256": "853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373"
+    },
+    "0ce4319b-ab73-4cb8-8e09-29ddbdde1681": {
+      "path": "examples/motion-design/media/b7a9feb69880-01-three.wav",
+      "sha256": "b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5"
+    },
+    "4e5bbf2a-b933-4751-9606-0972e0efcf22": {
+      "path": "examples/motion-design/media/4de45a135132-03-finish.wav",
+      "sha256": "4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92"
+    },
+    "2256b725-b6ac-4e00-9b6f-6145f5932cd6": {
+      "path": "examples/motion-design/media/97b8e81bed7f-02-character.wav",
+      "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867"
+    },
+    "9a10aabb-4a2a-4d1f-8e00-ed3498c9328d": {
+      "path": "examples/motion-design/media/305774c38686-05-ad.wav",
+      "sha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac"
+    },
+    "f5b9bb29-4cc7-4c1d-9664-cc7ca336d138": {
+      "path": "examples/motion-design/media/41e8d69f2188-04-create.wav",
+      "sha256": "41e8d69f2188e0f34b4543307e7737c267ae36adf0ce8b982dc1eb27231118df"
+    },
+    "c4ef0ca0-0121-43dc-a2ac-985040a945d3": {
+      "path": "examples/motion-design/media/35ee7966a127-how-built-voice.wav",
+      "sha256": "35ee7966a127a1fb3b90a7bad4fb8f674f5ec4b2b69b4873c0c244e448f95cc9"
+    },
+    "24101f44-dafd-4836-852c-36760c69bb3c": {
+      "path": "examples/motion-design/media/de91fb08df61-08-reveal.wav",
+      "sha256": "de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf"
+    },
+    "69216fb0-049d-4f70-a3cf-582001ebae8e": {
+      "path": "examples/motion-design/media/12801120013f-09-close.wav",
+      "sha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c"
+    },
+    "35a6e867-68ae-488e-a1fe-9c9e44cfe40b": {
+      "path": "examples/motion-design/media/aece5ce0048f-music-bed.wav",
+      "sha256": "aece5ce0048f626367951e0710a025f4a1e09e5ab0a2d51c243e25d793c40ff9"
+    },
+    "c5a17b84-4dd5-48c0-bc20-ea5336e5f5f4": {
+      "path": "examples/motion-design/media/3d6de50c0706-reveal-native-hero-project.png",
+      "sha256": "3d6de50c0706598fcd187c48999474031808551fd33b18df099dd1e7480b4d2c"
+    }
+  },
+  "notes": "A native Aftertake Film: genuine UI states with authored camera moves, tracked source-pixel duplicates and finishing, local H3 character replacement, native LTX-2.5 reference animation, locally voiced Kokoro narration and independently editable motion graphics. The reveal shows this 16-cut,16-title,19-graphic,11-sound-clip project at the three-copies hero frame (1.3333s), captured in the actual editor. No simulated cursor or continuous-screen-recording claim. Original public/licensed example assets; no private user photos or hosted API generation."
+}
