@@ -351,7 +351,7 @@ def assemble(settings):
             audio_filters.append(f"[{index+1}:a:0]atrim=start={audio['sourceStart']}:end={audio['sourceEnd']},"
                 f"asetpts=PTS-STARTPTS,aresample=48000,aformat=channel_layouts=stereo,volume={audio['volume']},adelay={delay}S:all=1[voice{index}]")
             audio_links.append(f'[voice{index}]')
-        audio_filters.append(''.join(audio_links) + f'amix=inputs={len(audio_links)}:duration=first:normalize=0,alimiter=limit=0.95:level=0,atrim=duration={duration},asetpts=N/SR/TB[audio]')
+        audio_filters.append(''.join(audio_links) + f'amix=inputs={len(audio_links)}:duration=first:normalize=0,alimiter=limit=0.95:level=0:latency=1,atrim=duration={duration},asetpts=N/SR/TB[audio]')
         master = folder / 'mix.wav'
         run([*audio_arguments, '-filter_complex_threads', '2', '-filter_complex', ';'.join(audio_filters),
             '-map', '[audio]', '-c:a', 'pcm_s16le', '-t', str(duration), str(master)])

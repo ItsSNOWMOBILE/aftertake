@@ -15,7 +15,7 @@ workflow = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(workflow)
 
 
-def replacement_graph():
+def replacement_graph(request=None):
     # The installed Relay recipe is deliberately absent on CPU CI. These are its
     # adapter-facing slots, not a second implementation of the model workflow.
     recipe = {name: workflow.node(kind) for name, kind in {
@@ -25,6 +25,7 @@ def replacement_graph():
         'plan': 'H3RelayWindowPlan', 'sampling_memory': 'H3RelaySamplingMemory',
         'finish': 'H3RelayFinishWindows', 'video': 'SaveVideo',
     }.items()}
+    recipe['reference_conditioning']['inputs']['ref_images.ref_image_0']=['reference',0]
     with tempfile.TemporaryDirectory(prefix='aftertake-character-graph-') as directory:
         root = Path(directory)
         installed = root / '.runtime/ComfyUI/custom_nodes/h3-relay/h3_relay/workflows.py'
@@ -33,7 +34,7 @@ def replacement_graph():
         with patch.object(workflow, 'ROOT', root):
             return workflow.build({
                 'id': 'test-result', 'kind': 'replacement', 'prompt': 'Replace the selected person.',
-                'request': {'selectionId': 'test-selection', 'seed': 42},
+                'request': request or {'selectionId': 'test-selection', 'seed': 42},
                 'selectionRequest': {'resolution': '768', 'trimStart': 2},
             })
 
@@ -101,6 +102,53 @@ def render_export_path(graph, prepared, generated, raw_mask, count):
 
 
 class CharacterWorkflowTests(unittest.TestCase):
+    def test_independent_photos_bind_separate_contiguous_pictures_with_and_without_primary_focus(self):
+        primary={'width':960,'height':1280}
+        supporting=[
+            {'reference':{'width':640,'height':960}},
+            {'reference':{'width':1000,'height':800},'faceBox':{'x':.2,'y':.1,'width':.4,'height':.5}},
+            {'reference':{'width':200,'height':300}},
+        ]
+        for focus in [None,{'x':.3,'y':.1,'width':.4,'height':.3}]:
+            with self.subTest(primary_focus=bool(focus)):
+                request={'selectionId':'test-selection','seed':42,'reference':primary,'identityReferences':supporting}
+                if focus:request['faceBox']=focus
+                graph=replacement_graph(request)
+                inputs=graph['reference_conditioning']['inputs']
+                count=1+bool(focus)+len(supporting)
+                self.assertEqual(sorted(key for key in inputs if key.startswith('ref_images.')),
+                                 [f'ref_images.ref_image_{index}' for index in range(count)])
+                self.assertEqual(inputs['ref_images.ref_image_0'],['reference',0])
+                if focus:self.assertEqual(inputs['ref_images.ref_image_1'],['face_reference',0])
+                for index,photo in enumerate(supporting):
+                    self.assertEqual(graph[f'identity_reference_{index}'],workflow.node('LoadImage',image=f'IDENTITY_{index+1}.png'))
+                    crop=graph[f'identity_face_{index}']['inputs']
+                    self.assertEqual(crop['images'],[f'identity_reference_{index}',0])
+                    self.assertEqual(inputs[f'ref_images.ref_image_{index+1+bool(focus)}'],[f'identity_face_{index}',0])
+                    self.assertLessEqual(crop['target_width'],512)
+                    self.assertAlmostEqual(crop['target_height'],crop['target_width']*crop['height']/crop['width'],delta=.5)
+                self.assertEqual(graph['identity_face_0']['inputs']['target_height'],768)
+                crop=graph['identity_face_1']['inputs']
+                self.assertEqual((crop['x'],crop['y'],crop['width'],crop['height']),(200,80,400,400))
+                self.assertEqual((crop['target_width'],crop['target_height']),(400,400))
+                self.assertEqual(graph['identity_face_2']['inputs']['target_width'],200)
+                self.assertEqual(json.loads(graph['save']['inputs']['recipe_json'])['request'],request)
+
+    def test_maximum_supporting_photos_fit_nine_native_slots_and_empty_refs_keep_legacy_graph(self):
+        request={'selectionId':'test-selection','seed':42,'reference':{'width':960,'height':1280},
+                 'faceBox':{'x':.3,'y':.1,'width':.4,'height':.3}}
+        legacy=replacement_graph(request)
+        empty=replacement_graph({**request,'identityReferences':[]})
+        # The embedded request must record the caller's empty list, while all
+        # native nodes, links and the old primary crop stay unchanged.
+        empty['save']['inputs']['recipe_json']=legacy['save']['inputs']['recipe_json']
+        self.assertEqual(empty,legacy)
+        maximum=replacement_graph({**request,'identityReferences':[
+            {'reference':{'width':640,'height':960}} for _ in range(7)]})
+        slots=maximum['reference_conditioning']['inputs']
+        self.assertEqual(sum(key.startswith('ref_images.') for key in slots),9)
+        self.assertEqual(slots['ref_images.ref_image_8'],['identity_face_6',0])
+
     def test_export_graph_has_valid_links_and_uses_the_unpadded_reviewed_mask(self):
         graph = replacement_graph()
         json.dumps(graph, allow_nan=False)

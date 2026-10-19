@@ -7,6 +7,7 @@ import {
   characterSelectionKey,
   characterPrompt,
   parseCharacterSelectionInfo,
+  characterMaxIdentityReferences,
 } from '../src/character.js';
 import { registerCharacterTools } from '../server/character-tools.js';
 import { characterRouter } from '../server/characters.js';
@@ -54,6 +55,14 @@ const request = {
   prompt: 'Keep the cup.',
   faceBox: { x: 0.3, y: 0.1, width: 0.4, height: 0.3 },
 };
+const identities = Array.from({ length: 8 }, (_, index) => ({
+  reference: {
+    ...reference,
+    id: randomUUID(),
+    sha256: (index + 1).toString(16).repeat(64),
+    name: `Independent photo ${index + 1}`,
+  },
+}));
 test('character selection binds the actual source, selected range and points', () => {
   assert.ok(characterSelectionSchema.safeParse(selection).success);
   assert.equal(characterSelectionSchema.safeParse({ ...selection, positive: [] }).success, false);
@@ -99,6 +108,73 @@ test('identity focus uses the actual photo and keeps face/wardrobe references di
   );
 });
 
+test('supporting identity photos validate distinct originals, crops and the nine-picture capacity', () => {
+  assert.equal(characterMaxIdentityReferences, 7);
+  const multi = { ...request, identityReferences: identities.slice(0, 7) };
+  assert.deepEqual(characterRequestSchema.parse(JSON.parse(JSON.stringify(multi))), multi);
+  assert.equal(
+    characterRequestSchema.safeParse({ ...request, identityReferences: identities }).success,
+    false,
+  );
+  for (const extra of [
+    { reference },
+    { reference: { ...identities[0].reference, id: reference.id } },
+    { reference: { ...identities[0].reference, sha256: reference.sha256 } },
+    { ...identities[0], faceBox: { x: 0.9, y: 0, width: 0.4, height: 0.4 } },
+    { ...identities[0], faceBox: { x: 0, y: 0, width: 0.05, height: 0.9 } },
+    { reference: { ...identities[0].reference, kind: 'video' } },
+    { reference: { ...identities[0].reference, width: 8000, height: 1000 } },
+  ])
+    assert.equal(
+      characterRequestSchema.safeParse({ ...request, identityReferences: [extra] }).success,
+      false,
+    );
+  for (const duplicate of [
+    identities[0],
+    { reference: { ...identities[0].reference, id: randomUUID() } },
+  ])
+    assert.equal(
+      characterRequestSchema.safeParse({
+        ...request,
+        identityReferences: [identities[0], duplicate],
+      }).success,
+      false,
+    );
+  assert.ok(
+    characterRequestSchema.safeParse({
+      ...request,
+      identityReferences: [
+        { ...identities[0], faceBox: { x: 0.5, y: 0.5, width: 0.5, height: 0.5 } },
+      ],
+    }).success,
+  );
+});
+
+test('picture roles remain stable for old recipes and follow actual optional crop slots', () => {
+  const legacy = characterPrompt(request);
+  assert.equal(characterPrompt({ ...request, identityReferences: [] }), legacy);
+  assert.equal(characterRequestSchema.parse(request).identityReferences, undefined);
+  const withCrop = characterPrompt({ ...request, identityReferences: identities.slice(0, 2) });
+  assert.match(
+    withCrop,
+    /<Picture 3>, <Picture 4> are additional unmodified identity references of the SAME person/,
+  );
+  assert.match(withCrop, /identity only/);
+  assert.match(withCrop, /Do not copy their clothing, backgrounds, poses or lighting/);
+  assert.match(withCrop, /<Picture 1> remains the clothing reference/);
+  const withoutCrop = characterPrompt({
+    ...request,
+    faceBox: undefined,
+    identityReferences: identities.slice(0, 2),
+  });
+  assert.match(withoutCrop, /<Picture 2>, <Picture 3> are additional/);
+  assert.doesNotMatch(withoutCrop, /<Picture 4>/);
+  assert.match(
+    characterPrompt({ ...request, wardrobe: 'source', identityReferences: [identities[0]] }),
+    /Keep the source outfit from <Video 1>/,
+  );
+});
+
 test('high-resolution selections cannot reuse standard tracking or accept an oversized returned canvas', () => {
   const standard = { ...selection, resolution: '480' as const },
     high = { ...selection, resolution: '768' as const };
@@ -136,16 +212,18 @@ test('agent character tools bind the reviewed mask, retain the source photo and 
     request: selection,
     selection: { maskSha256: 'c'.repeat(64), emptyFrames: [] as number[], frames: 192 },
   };
+  const multiRequest = { ...request, identityReferences: identities.slice(0, 3) };
   const replacement = {
     id: randomUUID(),
     kind: 'replacement',
     state: 'queued',
-    request,
+    request: multiRequest,
     requestKey: 'stable-character-request',
   };
   const api = async (route: string, body?: any, key?: string) => {
     calls.push({ route, body, key });
     if (route === '/api/characters/' + request.selectionId) return tracked;
+    if (route === '/api/characters/' + replacement.id) return replacement;
     if (route === '/api/characters/replacements') return replacement;
     if (route === '/api/characters') return [replacement, tracked];
     throw Error('Unexpected route ' + route);
@@ -165,11 +243,13 @@ test('agent character tools bind the reviewed mask, retain the source photo and 
   );
   assert.equal(calls.filter((c) => c.route === '/api/characters/replacements').length, 0);
   for (let i = 0; i < 2; i++) {
-    const result = await replace.run({
-      requestId: 'stable-character-request',
-      maskSha256: 'c'.repeat(64),
-      request,
-    });
+    const result = await replace.run(
+      replace.schema.parse({
+        requestId: 'stable-character-request',
+        maskSha256: 'c'.repeat(64),
+        request: multiRequest,
+      }),
+    );
     assert.equal(result.data.id, replacement.id);
   }
   const submissions = calls.filter((c) => c.route === '/api/characters/replacements');
@@ -179,6 +259,12 @@ test('agent character tools bind the reviewed mask, retain the source photo and 
   );
   assert.deepEqual(submissions[0].body.reference, reference);
   assert.deepEqual(submissions[0].body.faceBox, request.faceBox);
+  assert.deepEqual(submissions[0].body.identityReferences, multiRequest.identityReferences);
+  const recipe = await tools.get('aftertake_character_recipe').run({ id: replacement.id });
+  assert.deepEqual(
+    characterRequestSchema.parse(JSON.parse(JSON.stringify(recipe.data.replacement))),
+    multiRequest,
+  );
   tracked.selection.emptyFrames = [4];
   await assert.rejects(
     replace.run({ requestId: 'new-character-request', maskSha256: 'c'.repeat(64), request }),

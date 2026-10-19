@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // Include this revision in new export identities when renderer behavior changes.
-export const filmRenderRevision = 3;
+export const filmRenderRevision = 4;
 import type { Recipe } from './domain';
 
 export const spokenWordSchema = z

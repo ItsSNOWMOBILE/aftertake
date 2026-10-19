@@ -115,6 +115,28 @@ export async function characterRouter(context: {
       );
     return selection;
   }
+  async function resolveReferences(request: CharacterRequest) {
+    const [reference, ...supporting] = await Promise.all([
+      resolveClipAsset(request.reference, clips, 'character photo'),
+      ...(request.identityReferences ?? []).map((identity, index) =>
+        resolveClipAsset(identity.reference, clips, `supporting identity photo ${index + 1}`),
+      ),
+    ]);
+    // Re-validate stored image kinds, dimensions, crops and duplicates, rather
+    // than trusting the caller's descriptions of the imported media.
+    return characterRequestSchema.parse({
+      ...request,
+      reference,
+      ...(request.identityReferences
+        ? {
+            identityReferences: request.identityReferences.map((identity, index) => ({
+              ...identity,
+              reference: supporting[index],
+            })),
+          }
+        : {}),
+    });
+  }
   async function bind(record: CharacterJob) {
     const workflow = client.workflows.fromJson(structuredClone(record.workflow));
     if (record.kind === 'selection') {
@@ -129,9 +151,9 @@ export async function characterRouter(context: {
       const request = record.request as CharacterRequest,
         selection = await resolveSelection(request.selectionId);
       const sourceRequest = selection.request as CharacterSelectionRequest;
-      const [source, reference] = await Promise.all([
+      const [source, references] = await Promise.all([
         resolveClipAsset(sourceRequest.clip, clips, 'source video'),
-        resolveClipAsset(request.reference, clips, 'character photo'),
+        resolveReferences(request),
       ]);
       workflow.setInput('source', 'file', client.assets.fromFile(file(selection.id, 'source.mp4')));
       workflow.setInput(
@@ -142,8 +164,14 @@ export async function characterRouter(context: {
       workflow.setInput(
         record.workflow.body_reference?.class_type === 'LoadImage' ? 'body_reference' : 'reference',
         'image',
-        client.assets.fromFile(path.join(clips, path.basename(reference.url))),
+        client.assets.fromFile(path.join(clips, path.basename(references.reference.url))),
       );
+      for (const [index, identity] of (references.identityReferences ?? []).entries())
+        workflow.setInput(
+          `identity_reference_${index}`,
+          'image',
+          client.assets.fromFile(path.join(clips, path.basename(identity.reference.url))),
+        );
       workflow.setInput(
         'original_audio',
         'filename',
@@ -417,10 +445,7 @@ export async function characterRouter(context: {
       } else {
         const r = input as CharacterRequest;
         selection = await resolveSelection(r.selectionId);
-        request = characterRequestSchema.parse({
-          ...r,
-          reference: await resolveClipAsset(r.reference, clips, 'character photo'),
-        });
+        request = await resolveReferences(r);
       }
       const id = randomUUID(),
         workflow = await buildCharacterWorkflow(

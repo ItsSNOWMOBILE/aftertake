@@ -153,7 +153,7 @@ test('narrated cuts refuse short footage, changed source or voice bytes, mismatc
 test('browser exports use the native content identity, rejoin uncertain work and only retry observed failures', async () => {
   const draft = prepareNarratedCut(input(), pictures, voices).draft,
     key = await filmExportKey(draft);
-  assert.equal(key, 'film-r3-' + contentDigest(draft));
+  assert.equal(key, 'film-r4-' + contentDigest(draft));
   assert.notEqual(await filmExportKey(draft, 1), key);
   assert.equal(exportAttemptKey(key, []), key);
   assert.equal(exportAttemptKey(key, [{ requestKey: key, state: 'assembling' }]), key);

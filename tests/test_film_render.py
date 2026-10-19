@@ -16,6 +16,42 @@ spec.loader.exec_module(renderer)
 
 
 class FilmRenderTest(unittest.TestCase):
+    def test_trimmed_soundtrack_starts_on_its_timeline_without_mastering_delay(self):
+        with tempfile.TemporaryDirectory(prefix='aftertake-audio-alignment-') as temporary:
+            folder=Path(temporary);Image.new('RGB',(160,90),'#123456').save(folder/'picture.png')
+            rate=48000;t=np.arange(2*rate)/rate
+            # A changing frequency makes a few milliseconds of lookahead delay
+            # observable; a periodic tone could accidentally correlate after it.
+            signal=.22*np.sin(2*np.pi*(370*t+730*t*t))*(.7+.3*np.sin(2*np.pi*3.7*t))
+            pcm=(signal*32767).astype('<i2')
+            with wave.open(str(folder/'source.wav'),'wb') as audio:
+                audio.setparams((2,2,rate,0,'NONE','not compressed'))
+                audio.writeframes(np.column_stack([pcm,pcm]).astype('<i2').tobytes())
+            gain=10**(-1/20);target=folder/'aligned.mp4'
+            renderer.assemble({'output':str(target),'width':160,'height':90,
+                'shots':[{'source':str(folder/'picture.png'),'kind':'image','start':0,'end':2}],
+                'titles':[],'fonts':str(ROOT/'public/fonts'),'sourceVolume':0,'normalizeAudio':False,
+                'audio':[{'source':str(folder/'source.wav'),'start':.25,'sourceStart':.1,'sourceEnd':1.1,'volume':gain}],
+                'manifest':{}})
+            with av.open(str(target)) as movie:
+                self.assertEqual(sum(1 for _ in movie.decode(video=0)),48)
+            with av.open(str(target)) as movie:
+                stream=movie.streams.audio[0]
+                self.assertEqual(stream.rate,rate)
+                self.assertAlmostEqual(float(stream.duration*stream.time_base),2,delta=1/rate)
+                sound=np.concatenate([f.to_ndarray() for f in movie.decode(audio=0)],axis=1).mean(axis=0)
+            # Compare an interior window at the authored clock, with no lag
+            # search that could conceal a timing error in the exported movie.
+            first,last=round(.3*rate),round(1.2*rate)
+            reference=pcm[round(.15*rate):round(1.05*rate)].astype(float)/32768
+            actual=sound[first:last].astype(float)
+            correlation=float(np.dot(reference,actual)/np.sqrt(np.dot(reference,reference)*np.dot(actual,actual)))
+            self.assertGreater(correlation,.995,'The continuous soundtrack moved off its authored timeline.')
+            measured_gain=float(np.dot(reference,actual)/np.dot(reference,reference))
+            self.assertAlmostEqual(measured_gain,gain,delta=.01)
+            self.assertLess(float(np.abs(sound[:round(.2*rate)]).max()),.001)
+            self.assertLess(float(np.abs(sound[round(1.3*rate):]).max()),.001)
+
     def test_spoken_highlights_follow_word_times_and_phrase_changes_across_a_cut(self):
         with tempfile.TemporaryDirectory(prefix='aftertake-spoken-') as temporary:
             folder=Path(temporary);Image.new('RGB',(640,360),'#123456').save(folder/'picture.png')

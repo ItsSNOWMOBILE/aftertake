@@ -79,7 +79,8 @@ export function registerCharacterTools({
             'Choose resolution 480 (default, up to 0.5 MP) or 768 (up to 1 MP) before tracking. Higher resolution uses more memory; the selection reports its actual size. Generation retains the reviewed selection resolution.',
             'Call aftertake_track_character with a stable requestId, then inspect its real tracked overlay with aftertake_inspect_character.',
             'Reject missing limbs, other selected people or lost tracking. Make a deliberate new selection if necessary.',
-            'Use the original photo directly. An optional faceBox crops the real head; it does not generate a new face.',
+            'Use the original primary photo directly. An optional faceBox crops the real head; it does not generate a new face. The primary photo controls reference clothing.',
+            'Optionally add up to seven identityReferences from different original photos of the same person. Each has its own image reference and optional faceBox. Supporting photos provide identity detail only; they do not control clothing or motion. Extra references use more memory and do not guarantee better likeness.',
             'Call aftertake_replace_character with the inspected mask hash and a separate stable requestId. Timeouts require status/reconciliation, not a new request.',
             'Inspect the resulting clip for likeness, hands, occlusions and continuation joins. Technical checks do not certify appearance.',
             'A completed take is a studio clip. Inspect or promote its clipId with the existing studio-to-film tools, then edit it in the same film plan.',
@@ -101,7 +102,7 @@ export function registerCharacterTools({
   );
   tool(
     'aftertake_replace_character',
-    'Replace the reviewed person with a reference photo using native H3 Character Swap V1.5. Supply the inspected mask hash. Preserves the source performance and audio; likeness and articulation require visual review.',
+    'Replace the reviewed person using native H3 Character Swap V1.5. Supply the inspected mask hash, primary photo and optional supporting identityReferences. Source performance, likeness, articulation and scene preservation require visual review; original source audio is retained when present.',
     z.object({ requestId, maskSha256: digest, request: characterRequestSchema }),
     async (input) => {
       const selection = await api<CharacterJob>('/api/characters/' + input.request.selectionId);
@@ -202,7 +203,7 @@ export function registerCharacterTools({
   );
   tool(
     'aftertake_character_recipe',
-    'Retrieve the source-bound selection, original reference/crop, seed, SDK job id, actual executed graph and output hash for a character take.',
+    'Retrieve the source-bound selection, original primary/supporting references and crops, seed, SDK job id, actual executed graph and output hash for a character take.',
     z.object({ id: uuid }),
     async ({ id }) => {
       const job = await api<CharacterJob>('/api/characters/' + id),

@@ -27,13 +27,30 @@ const faceBoxSchema = z
     (b) => b.x + b.width <= 1.000001 && b.y + b.height <= 1.000001,
     'Keep the face focus inside the photo.',
   );
+export type CharacterFaceBox = z.infer<typeof faceBoxSchema>;
+export const characterMaxIdentityReferences = 7;
+const imageReferenceSchema = clipSchema.extend({ kind: z.literal('image') });
+function faceAspect(reference: Clip, box?: CharacterFaceBox) {
+  return ((box?.width ?? 1) * reference.width) / ((box?.height ?? 1) * reference.height);
+}
+const identityReferenceSchema = z
+  .object({ reference: imageReferenceSchema, faceBox: faceBoxSchema.optional() })
+  .refine(
+    (r) => faceAspect(r.reference, r.faceBox) >= 0.5 && faceAspect(r.reference, r.faceBox) <= 2,
+    'Crop the supporting photo to include the full head in a roughly square face focus.',
+  );
+export type CharacterIdentityReference = z.infer<typeof identityReferenceSchema>;
 export const characterRequestSchema = z
   .object({
     format: z.literal('aftertake-character/1'),
     name: z.string().trim().min(1).max(100),
     selectionId: z.string().uuid(),
-    reference: clipSchema.extend({ kind: z.literal('image') }),
+    reference: imageReferenceSchema,
     faceBox: faceBoxSchema.optional(),
+    identityReferences: z
+      .array(identityReferenceSchema)
+      .max(characterMaxIdentityReferences)
+      .optional(),
     prompt: z.string().trim().max(2000),
     wardrobe: z.enum(['reference', 'source']).optional(),
     seed: z
@@ -45,10 +62,23 @@ export const characterRequestSchema = z
   .refine(
     (r) =>
       !r.faceBox ||
-      ((r.faceBox.width * r.reference.width) / (r.faceBox.height * r.reference.height) >= 0.5 &&
-        (r.faceBox.width * r.reference.width) / (r.faceBox.height * r.reference.height) <= 2),
+      (faceAspect(r.reference, r.faceBox) >= 0.5 && faceAspect(r.reference, r.faceBox) <= 2),
     'Include the full head in a roughly square face focus.',
-  );
+  )
+  .superRefine((r, context) => {
+    const ids = new Set([r.reference.id]),
+      hashes = new Set([r.reference.sha256]);
+    for (const [index, identity] of (r.identityReferences ?? []).entries()) {
+      if (ids.has(identity.reference.id) || hashes.has(identity.reference.sha256))
+        context.addIssue({
+          code: 'custom',
+          path: ['identityReferences', index, 'reference'],
+          message: 'Choose a different original photo for each supporting identity reference.',
+        });
+      ids.add(identity.reference.id);
+      hashes.add(identity.reference.sha256);
+    }
+  });
 export type CharacterSelectionRequest = z.infer<typeof characterSelectionSchema>;
 export type CharacterRequest = z.infer<typeof characterRequestSchema>;
 export const characterSelectionInfoSchema = z
@@ -119,6 +149,9 @@ export function characterPrompt(r: CharacterRequest) {
     `Replace ONLY the selected person in <Video 1> with the person in <Picture 1>.`,
     r.faceBox
       ? "<Picture 1> is the original character photo. <Picture 2> is an unmodified crop of the SAME person's head. Use its close facial detail to preserve identity."
+      : '',
+    r.identityReferences?.length
+      ? `${r.identityReferences.map((_, index) => `<Picture ${index + (r.faceBox ? 3 : 2)}>`).join(', ')} ${r.identityReferences.length === 1 ? 'is an additional unmodified identity reference' : 'are additional unmodified identity references'} of the SAME person shown in <Picture 1>${r.faceBox ? ' and <Picture 2>' : ''}. Use consistent facial proportions, hair and skin details from these supporting photos for identity only. Do not copy their clothing, backgrounds, poses or lighting. They are not additional characters. <Picture 1> remains the clothing reference when replacing the source outfit.`
       : '',
     `Preserve the reference person's facial identity, facial proportions, hair and skin. Follow the source performance's pose, gaze, expression, hand gestures and movement.`,
     r.wardrobe === 'source'

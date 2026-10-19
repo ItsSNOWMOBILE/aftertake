@@ -49,6 +49,21 @@ def build(value):
         graph['face_reference']=node('AftertakeCropRegion',images=['reference',0],x=x,y=y,width=w,height=h,
             target_width=512,target_height=max(64,round(512*h/w/32)*32))
         graph['reference_conditioning']['inputs']['ref_images.ref_image_1']=['face_reference',0]
+    # Independent original photos are kept as separate native picture inputs.
+    # Prepare only their supplied crop (or full photo), never a synthesized face.
+    next_reference=2 if request.get('faceBox') else 1
+    for index,identity_reference in enumerate(request.get('identityReferences') or []):
+        photo=identity_reference['reference'];b=identity_reference.get('faceBox') or {'x':0,'y':0,'width':1,'height':1}
+        x=min(photo['width']-1,max(0,round(b['x']*photo['width'])))
+        y=min(photo['height']-1,max(0,round(b['y']*photo['height'])))
+        w=min(photo['width']-x,max(1,round(b['width']*photo['width'])))
+        h=min(photo['height']-y,max(1,round(b['height']*photo['height'])))
+        name=f'identity_reference_{index}';crop=f'identity_face_{index}'
+        target_width=min(512,w)
+        graph[name]=node('LoadImage',image=f'IDENTITY_{index+1}.png')
+        graph[crop]=node('AftertakeCropRegion',images=[name,0],x=x,y=y,width=w,height=h,
+            target_width=target_width,target_height=max(1,round(target_width*h/w)))
+        graph['reference_conditioning']['inputs'][f'ref_images.ref_image_{next_reference+index}']=[crop,0]
     graph['reference_conditioning']['inputs']['prompt']=value['prompt']
     graph['mask_video']=node('LoadVideo',file='MASK.mkv')
     graph['mask_components']=node('GetVideoComponents',video=['mask_video',0])

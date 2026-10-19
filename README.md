@@ -45,7 +45,7 @@ assemble it with narration and editable typography.
 
 | Create | Direct | Finish |
 | :--- | :--- | :--- |
-| **Images from words** with Z-Image Turbo | **Character replacement** with SAM3 tracking and native H3 | **Portrait, square and landscape edits** in Film |
+| **Images from words** with Z-Image Turbo | **Character replacement** with SAM3 tracking, multiple reference photos and native H3 | **Portrait, square and landscape edits** in Film |
 | **Video with sound** from native LTX-2.5 | **Painted, timed VFX** that composite onto the source | **Kinetic typography** with editable word timing |
 | **Reference-frame edits** with Qwen-Image-Edit | **Camera guidance, first/last frames and motion transfer** | **Local narration**, measured cuts and frame-based dissolves |
 

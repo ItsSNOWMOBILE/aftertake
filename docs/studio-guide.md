@@ -70,11 +70,19 @@ The public trial has no inference endpoint and uploads no user media.
 
 Replace character uses a separate native H3 workflow. Pick a person in a
 continuous source shot, track their whole body with SAM3, and inspect the moving
-selection before generating. Supply the original identity photo, optionally
+selection before generating. Supply the primary original identity photo, optionally
 focus its real head, and choose whether to use its clothing or retain the source
-outfit. H3 Character Swap V1.5 receives that photo, the source performance,
+outfit. Add up to seven supporting photos of the same person, each with its own
+optional face focus. They guide identity; the primary photo sets reference clothing.
+H3 Character Swap V1.5 receives the separate photos, the source performance,
 tracked latent edit mask and continuation history directly. The frame editor
 does not redraw the identity first. Source audio is retained at 24 fps.
+
+Recipes preserve every reference photo hash and crop. Import the matching files
+before reopening a recipe in another workspace; missing references stop restoration.
+See [reproduce a character swap](how-to-reproduce-character-swap.md) for generation,
+source audio and complete Film export steps. Additional photos use more memory and
+do not guarantee better likeness.
 
 New takes composite the decoded character over the prepared source through the
 tracked mask, with a 32-pixel margin and a small soft edge. This restores logos,

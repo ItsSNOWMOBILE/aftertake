@@ -460,7 +460,7 @@ app.post(
       );
       res.status(422).json({
         error:
-          'Could not read this source. Use a valid video from 1 second to 10 minutes, or a still image, up to 4K.',
+          'Could not read this source. Use a video from 1 second to 10 minutes, up to 4K, or a still photo up to 64 MP and 16,384 pixels per side. Photos are resized to fit 4K.',
       });
     }
   },

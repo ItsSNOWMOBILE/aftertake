@@ -14,13 +14,16 @@ import { apiFetch, browserDemo, mediaUrl } from './transport';
 import { findImportedClip, type Clip, type Engine } from './domain';
 import {
   characterBusy,
+  characterMaxIdentityReferences,
   characterRequestSchema,
   characterSelectionKey,
   characterSelectionSchema,
   type CharacterJob,
+  type CharacterIdentityReference,
   type CharacterRequest,
   type CharacterSelectionRequest,
 } from './character';
+import CharacterReferenceEditor from './CharacterReferenceEditor';
 import './character-studio.css';
 
 async function api<T>(url: string, init?: RequestInit) {
@@ -44,6 +47,12 @@ function download(value: unknown, filename = 'aftertake-character-recipe.json') 
 }
 type Point = { x: number; y: number };
 type FaceBox = NonNullable<CharacterRequest['faceBox']>;
+function supportingFaceNeedsFocus(entry: CharacterIdentityReference) {
+  const box = entry.faceBox;
+  const ratio =
+    ((box?.width ?? 1) * entry.reference.width) / ((box?.height ?? 1) * entry.reference.height);
+  return ratio < 0.5 || ratio > 2;
+}
 export default function CharacterStudio({
   clips,
   jobs,
@@ -87,8 +96,8 @@ export default function CharacterStudio({
   const [name, setName] = useState('A new character, the same moment'),
     [prompt, setPrompt] = useState(''),
     [seed, setSeed] = useState(509101);
-  const [faceBox, setFaceBox] = useState<FaceBox>(),
-    [faceDraft, setFaceDraft] = useState<FaceBox>();
+  const [faceBox, setFaceBox] = useState<FaceBox>();
+  const [identityReferences, setIdentityReferences] = useState<CharacterIdentityReference[]>([]);
   const [wardrobe, setWardrobe] = useState<'reference' | 'source'>('reference');
   const [resolution, setResolution] = useState<'480' | '768'>('480');
   const [view, setView] = useState<'frame' | 'source' | 'selection' | 'result'>('frame');
@@ -100,9 +109,9 @@ export default function CharacterStudio({
     [selectionEngine, setSelectionEngine] = useState<Engine | null>(null);
   const dialog = useRef<HTMLElement>(null),
     fileInput = useRef<HTMLInputElement>(null),
+    identityFileInput = useRef<HTMLInputElement>(null),
     recipeInput = useRef<HTMLInputElement>(null);
-  const uploadRole = useRef<'source' | 'reference'>('source'),
-    faceStart = useRef<Point | null>(null);
+  const uploadRole = useRef<'source' | 'reference'>('source');
   const pending = jobs.find(characterBusy),
     locked = sending || uploading || Boolean(pending) || otherBusy;
   const selectionRequest: CharacterSelectionRequest | undefined = source
@@ -151,6 +160,7 @@ export default function CharacterStudio({
           selectionId: selection.id,
           reference: { ...reference, kind: 'image' },
           faceBox,
+          ...(identityReferences.length ? { identityReferences } : {}),
           wardrobe,
           prompt,
           seed,
@@ -233,15 +243,73 @@ export default function CharacterStudio({
     setView('frame');
     setError('');
   }
-  function focusCoordinate(field: keyof FaceBox, value: number) {
-    if (!faceBox || !Number.isFinite(value)) return;
-    const box = { ...faceBox, [field]: value / 100 };
-    box.x = Math.max(0, Math.min(0.95, box.x));
-    box.y = Math.max(0, Math.min(0.95, box.y));
-    box.width = Math.max(0.05, Math.min(1 - box.x, box.width));
-    box.height = Math.max(0.05, Math.min(1 - box.y, box.height));
-    setFaceBox(box);
+  function changeReference(photo: Clip) {
+    setReferenceId(photo.id);
+    setFaceBox(undefined);
+    setIdentityReferences((current) =>
+      current.filter(
+        (entry) => entry.reference.id !== photo.id && entry.reference.sha256 !== photo.sha256,
+      ),
+    );
     setError('');
+  }
+  function addIdentityPhoto(photo: Clip) {
+    if (photo.kind !== 'image') return setError('Choose a still photo of the same person.');
+    if (identityReferences.length >= characterMaxIdentityReferences)
+      return setError(`Use up to ${characterMaxIdentityReferences} supporting photos.`);
+    if (
+      photo.id === reference?.id ||
+      photo.sha256 === reference?.sha256 ||
+      identityReferences.some(
+        (entry) => entry.reference.id === photo.id || entry.reference.sha256 === photo.sha256,
+      )
+    )
+      return setError('That photo is already a reference. Choose a different view.');
+    setIdentityReferences((current) => [...current, { reference: { ...photo, kind: 'image' } }]);
+    setError('');
+  }
+  function resolveIdentityPhotos(entries: CharacterIdentityReference[] = []) {
+    return entries.map((entry) => {
+      const photo = findImportedClip(clips, entry.reference);
+      if (!photo || photo.kind !== 'image')
+        throw Error(`Import the matching supporting photo first: ${entry.reference.name}`);
+      return {
+        reference: { ...photo, kind: 'image' as const },
+        ...(entry.faceBox ? { faceBox: entry.faceBox } : {}),
+      };
+    });
+  }
+  async function uploadIdentityPhotos(files: File[]) {
+    if (!files.length) return;
+    if (files.length + identityReferences.length > characterMaxIdentityReferences)
+      return setError(
+        `Choose no more than ${characterMaxIdentityReferences - identityReferences.length} additional photos.`,
+      );
+    setUploading(true);
+    setError('');
+    const added: CharacterIdentityReference[] = [];
+    try {
+      for (const file of files) {
+        const photo = await api<Clip>(`/api/clips?name=${encodeURIComponent(file.name)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/octet-stream' },
+          body: file,
+        });
+        onImport(photo);
+        if (photo.kind !== 'image') throw Error(`Choose a still photo: ${file.name}`);
+        if (
+          photo.sha256 === reference?.sha256 ||
+          [...identityReferences, ...added].some((entry) => entry.reference.sha256 === photo.sha256)
+        )
+          throw Error(`${file.name} is already a reference. Choose a different view.`);
+        added.push({ reference: { ...photo, kind: 'image' } });
+      }
+    } catch (failure) {
+      setError((failure as Error).message);
+    } finally {
+      setIdentityReferences((current) => [...current, ...added]);
+      setUploading(false);
+    }
   }
   async function upload(file?: File) {
     if (!file) return;
@@ -256,8 +324,7 @@ export default function CharacterStudio({
       onImport(clip);
       if (uploadRole.current === 'reference') {
         if (clip.kind !== 'image') throw Error('Choose a still photo for the character reference.');
-        setReferenceId(clip.id);
-        setFaceBox(undefined);
+        changeReference(clip);
       } else {
         if (clip.kind === 'image') throw Error('Choose a video for the source performance.');
         setSourceId(clip.id);
@@ -338,6 +405,12 @@ export default function CharacterStudio({
       return setError(
         'Import the matching source video and character photo before reusing this recipe.',
       );
+    let supporting: CharacterIdentityReference[];
+    try {
+      supporting = resolveIdentityPhotos(r.identityReferences);
+    } catch (failure) {
+      return setError((failure as Error).message);
+    }
     setSourceId(clip.id);
     setReferenceId(photo.id);
     setTrimStart(selected.trimStart);
@@ -350,6 +423,7 @@ export default function CharacterStudio({
     setPrompt(r.prompt);
     setSeed(r.seed);
     setFaceBox(r.faceBox);
+    setIdentityReferences(supporting);
     setWardrobe(r.wardrobe || 'reference');
     setView('selection');
     setNotice('Settings restored. Review the selection before creating a new take.');
@@ -364,6 +438,13 @@ export default function CharacterStudio({
       const s = characterSelectionSchema.parse(value.selection),
         clip = findImportedClip(clips, s.clip);
       if (!clip) throw Error(`Import the matching source video first: ${s.clip.name}`);
+      const replacement = value.replacement
+        ? characterRequestSchema.parse(value.replacement)
+        : undefined;
+      const photo = replacement ? findImportedClip(clips, replacement.reference) : undefined;
+      const supporting = replacement ? resolveIdentityPhotos(replacement.identityReferences) : [];
+      if (replacement && (!photo || photo.kind !== 'image'))
+        throw Error(`Import the matching character photo first: ${replacement.reference.name}`);
       setSourceId(clip.id);
       setTrimStart(s.trimStart);
       setDuration(s.duration);
@@ -372,17 +453,31 @@ export default function CharacterStudio({
       setSelectionId('');
       setView('frame');
       setResolution(s.resolution || '480');
-      if (value.replacement) {
-        const r = characterRequestSchema.parse(value.replacement),
-          photo = findImportedClip(clips, r.reference);
+      if (replacement) {
+        const r = replacement;
         setName(r.name);
         setPrompt(r.prompt);
         setSeed(r.seed);
         setFaceBox(r.faceBox);
+        setIdentityReferences(supporting);
         setWardrobe(r.wardrobe || 'reference');
         setReferenceId(photo?.id || '');
-        if (!photo) setNotice(`Import the matching character photo: ${r.reference.name}`);
+      } else {
+        setReferenceId('');
+        setFaceBox(undefined);
+        setIdentityReferences([]);
+        setWardrobe('reference');
+        setName('A new character, the same moment');
+        setPrompt('');
+        setSeed(509101);
       }
+      setResultId('');
+      setError('');
+      setNotice(
+        replacement
+          ? 'Recipe restored with its matching source and reference photos. Review the selection before generating.'
+          : 'Source selection restored. Choose your character photos, then review the selection before generating.',
+      );
     } catch (e) {
       setError((e as Error).message);
     }
@@ -406,7 +501,6 @@ export default function CharacterStudio({
       setSending(false);
     }
   }
-  const focusedFace = faceDraft || faceBox;
   const status = view === 'result' ? viewed : view === 'selection' ? selection : pending;
   return (
     <div className="modal-backdrop character-backdrop" onClick={onClose}>
@@ -444,8 +538,8 @@ export default function CharacterStudio({
         <div className="eyebrow">CHARACTER REPLACEMENT</div>
         <h2>New character. Same scene.</h2>
         <p className="character-intro">
-          Choose the person in your shot, then replace them with someone from a reference photo.
-          Review the tracked selection before generating.
+          Choose the person in your shot, then guide their replacement with reference photos. Review
+          the tracked selection before generating.
         </p>
         <div className="character-grid">
           <div className="character-view-column">
@@ -917,14 +1011,18 @@ export default function CharacterStudio({
               <h3>The replacement character</h3>
             </div>
             <label>
-              REFERENCE PHOTO
+              PRIMARY PHOTO
               <select
                 aria-label="Character reference photo"
                 value={referenceId}
                 disabled={locked}
                 onChange={(e) => {
-                  setReferenceId(e.target.value);
-                  setFaceBox(undefined);
+                  const photo = photos.find((entry) => entry.id === e.target.value);
+                  if (photo) changeReference(photo);
+                  else {
+                    setReferenceId('');
+                    setFaceBox(undefined);
+                  }
                 }}
               >
                 <option value="">Choose a photo</option>
@@ -947,116 +1045,119 @@ export default function CharacterStudio({
               Import photo
             </button>
             {reference && (
-              <>
-                <div
-                  className="character-face-canvas"
-                  style={{ aspectRatio: String(reference.width / reference.height) }}
-                  aria-label="Character photo and optional face focus"
-                  onPointerDown={(e) => {
-                    if (locked) return;
-                    faceStart.current = point(e);
-                    e.currentTarget.setPointerCapture(e.pointerId);
-                  }}
-                  onPointerMove={(e) => {
-                    if (!faceStart.current) return;
-                    const p = point(e),
-                      s = faceStart.current;
-                    setFaceDraft({
-                      x: Math.min(p.x, s.x),
-                      y: Math.min(p.y, s.y),
-                      width: Math.abs(p.x - s.x),
-                      height: Math.abs(p.y - s.y),
-                    });
-                  }}
-                  onPointerUp={(e) => {
-                    const s = faceStart.current;
-                    faceStart.current = null;
-                    setFaceDraft(undefined);
-                    if (!s) return;
-                    const p = point(e),
-                      box = {
-                        x: Math.min(p.x, s.x),
-                        y: Math.min(p.y, s.y),
-                        width: Math.abs(p.x - s.x),
-                        height: Math.abs(p.y - s.y),
-                      };
-                    if (box.width >= 0.05 && box.height >= 0.05) setFaceBox(box);
-                    else setError('Drag a box around the whole head to focus the face.');
-                  }}
-                  onPointerCancel={() => {
-                    faceStart.current = null;
-                    setFaceDraft(undefined);
-                  }}
-                >
-                  <img
-                    draggable={false}
-                    src={mediaUrl(reference.url)}
-                    alt="Your original character photo"
-                  />
-                  {focusedFace && (
-                    <span
-                      className="character-face-box"
-                      style={{
-                        left: `${focusedFace.x * 100}%`,
-                        top: `${focusedFace.y * 100}%`,
-                        width: `${focusedFace.width * 100}%`,
-                        height: `${focusedFace.height * 100}%`,
-                      }}
-                    />
-                  )}
-                </div>
-                <p className="character-hint">
-                  Optional face focus: drag a box around the whole head, including hair and chin.
-                  The original photo still supplies clothing.
-                </p>
-                {faceBox && (
-                  <button
-                    className="button"
-                    disabled={locked}
-                    onClick={() => setFaceBox(undefined)}
-                  >
-                    Clear face focus
-                  </button>
-                )}
-              </>
+              <CharacterReferenceEditor
+                key={reference.id}
+                photo={reference}
+                value={faceBox}
+                onChange={setFaceBox}
+                disabled={locked}
+                label="Primary reference"
+                suppliesOutfit
+              />
             )}
-            {reference && (
-              <div className="character-face-controls">
-                <button
-                  className="button"
-                  disabled={locked}
-                  onClick={() =>
-                    setFaceBox({
-                      x: 0.3,
-                      y: 0.1,
-                      width: 0.4,
-                      height: Math.min(0.8, (0.4 * reference.width) / reference.height),
-                    })
-                  }
-                >
-                  {faceBox ? 'Reset face focus' : 'Add face focus'}
-                </button>
-                {faceBox && (
-                  <fieldset disabled={locked}>
-                    <legend>Face focus · percent of photo</legend>
-                    {(['x', 'y', 'width', 'height'] as const).map((field, i) => (
-                      <label key={field}>
-                        {['LEFT', 'TOP', 'WIDTH', 'HEIGHT'][i]}
-                        <input
-                          aria-label={`Face focus ${['left', 'top', 'width', 'height'][i]} percent`}
-                          type="number"
-                          min={i < 2 ? 0 : 5}
-                          max={i < 2 ? 95 : 100}
-                          step={0.1}
-                          value={Math.round(faceBox[field] * 1000) / 10}
-                          onChange={(e) => focusCoordinate(field, Number(e.target.value))}
-                        />
-                      </label>
-                    ))}
-                  </fieldset>
-                )}
+            <section
+              className="character-identity-references"
+              aria-label="Supporting identity photos"
+            >
+              <div className="character-reference-heading">
+                <h4>Supporting photos</h4>
+                <span>
+                  {identityReferences.length}/{characterMaxIdentityReferences}
+                </span>
               </div>
-            )}
+              <p className="character-hint">
+                Add other views of the same person to guide facial identity. The primary photo
+                controls the reference outfit. For group photos, focus only on their head.
+              </p>
+              <label>
+                ADD FROM YOUR PHOTOS
+                <select
+                  aria-label="Add supporting reference photo"
+                  value=""
+                  disabled={locked || identityReferences.length >= characterMaxIdentityReferences}
+                  onChange={(event) => {
+                    const photo = photos.find((entry) => entry.id === event.target.value);
+                    if (photo) addIdentityPhoto(photo);
+                  }}
+                >
+                  <option value="">Choose another view</option>
+                  {photos
+                    .filter(
+                      (photo) =>
+                        photo.sha256 !== reference?.sha256 &&
+                        !identityReferences.some(
+                          (entry) => entry.reference.sha256 === photo.sha256,
+                        ),
+                    )
+                    .map((photo) => (
+                      <option key={photo.id} value={photo.id}>
+                        {photo.name}
+                      </option>
+                    ))}
+                </select>
+              </label>
+              <button
+                className="button"
+                disabled={
+                  locked ||
+                  browserDemo ||
+                  identityReferences.length >= characterMaxIdentityReferences
+                }
+                onClick={() => identityFileInput.current?.click()}
+              >
+                <Upload size={13} /> Import supporting photos
+              </button>
+              {identityReferences.map((entry, index) => (
+                <article className="character-identity-card" key={entry.reference.id}>
+                  <div className="character-identity-summary">
+                    <img
+                      src={mediaUrl(entry.reference.url)}
+                      alt={`Supporting photo ${index + 1}`}
+                    />
+                    <div>
+                      <strong>{entry.reference.name}</strong>
+                      <span>Identity reference {index + 1}</span>
+                    </div>
+                    <button
+                      className="button"
+                      aria-label={`Remove supporting photo ${index + 1}: ${entry.reference.name}`}
+                      disabled={locked}
+                      onClick={() =>
+                        setIdentityReferences((current) =>
+                          current.filter((_, item) => item !== index),
+                        )
+                      }
+                    >
+                      <X size={13} />
+                    </button>
+                  </div>
+                  {supportingFaceNeedsFocus(entry) && (
+                    <p className="character-reference-error" role="status">
+                      {entry.faceBox ? 'Adjust' : 'Add'} the face focus around the full head before
+                      generating. Use a roughly square crop.
+                    </p>
+                  )}
+                  <details>
+                    <summary>{entry.faceBox ? 'Edit face focus' : 'Add face focus'}</summary>
+                    <CharacterReferenceEditor
+                      photo={entry.reference}
+                      value={entry.faceBox}
+                      onChange={(box) =>
+                        setIdentityReferences((current) =>
+                          current.map((item, itemIndex) =>
+                            itemIndex === index
+                              ? { reference: item.reference, ...(box ? { faceBox: box } : {}) }
+                              : item,
+                          ),
+                        )
+                      }
+                      disabled={locked}
+                      label={`Supporting photo ${index + 1}`}
+                    />
+                  </details>
+                </article>
+              ))}
+            </section>
             <div className="character-step">
               <span>03</span>
               <h3>Direct the take</h3>
@@ -1217,6 +1318,17 @@ export default function CharacterStudio({
               onChange={(e) => {
                 void upload(e.target.files?.[0]);
                 e.target.value = '';
+              }}
+            />
+            <input
+              ref={identityFileInput}
+              type="file"
+              hidden
+              multiple
+              accept="image/png,image/jpeg,image/webp"
+              onChange={(event) => {
+                void uploadIdentityPhotos(Array.from(event.target.files || []));
+                event.target.value = '';
               }}
             />
             <input

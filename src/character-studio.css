@@ -1,5 +1,6 @@
 .character-backdrop {
   z-index: 65;
+  grid-template-columns: minmax(0, 1fr);
 }
 .character-studio {
   width: min(1220px, 96vw);
@@ -406,7 +407,7 @@
   }
   .character-studio {
     padding: 22px !important;
-    max-height: 96vh;
+    max-height: min(96vh, calc(100dvh - 40px));
   }
   .character-studio h2 {
     font-size: 25px;
@@ -455,6 +456,85 @@
 .character-face-controls input {
   width: 100%;
   min-width: 0;
+}
+.character-identity-references {
+  display: grid;
+  gap: 10px;
+  border-top: 1px solid #354137;
+  padding-top: 16px;
+  margin-top: 6px;
+}
+.character-reference-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.character-reference-heading h4 {
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
+}
+.character-reference-heading > span {
+  font: 10px monospace;
+  color: #b9cfaa;
+}
+.character-identity-references > .character-hint {
+  margin: 0 0 3px;
+}
+.character-identity-card {
+  background: #121713;
+  border: 1px solid #354137;
+  border-radius: 7px;
+  padding: 10px;
+  min-width: 0;
+}
+.character-identity-summary {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.character-identity-summary > img {
+  width: 42px;
+  height: 48px;
+  object-fit: contain;
+  background: #090d0a;
+  border-radius: 4px;
+}
+.character-identity-summary > div {
+  min-width: 0;
+  flex: 1;
+  display: grid;
+  gap: 4px;
+}
+.character-identity-summary strong {
+  font-size: 11px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.character-identity-summary span {
+  color: #a2b19a;
+  font-size: 10px;
+}
+.character-identity-summary .button {
+  flex: 0 0 30px;
+  min-height: 30px;
+  padding: 5px;
+}
+.character-identity-card details {
+  margin-top: 9px;
+}
+.character-identity-card summary {
+  color: #bfd5ac;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 3px 0;
+}
+.character-reference-error {
+  color: #e6b898;
+  font-size: 11px;
+  line-height: 1.5;
+  margin: 0;
 }
 .character-native-workflow {
   margin-top: 18px;
