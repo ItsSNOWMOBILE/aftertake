@@ -47,7 +47,7 @@ def main(argv=None):
     if args.character_swap and not all(shutil.which(name) for name in ('ffmpeg','ffprobe')):
         raise SystemExit('The character profile needs FFmpeg and FFprobe. Install both on PATH or pass --ffmpeg-bin PATH_TO_BIN before downloading the profile; use the same flag when launching the engine.')
     RUNTIME.mkdir(exist_ok=True)
-    if args.models_dir is not None: model_root(args.models_dir)
+    models_directory = model_root(args.models_dir) if args.models_dir is not None else None
     if not PYTHON.exists(): run(sys.executable, '-m', 'venv', VENV)
     repos = [*REPOS]
     if args.character_swap:
@@ -82,7 +82,7 @@ def main(argv=None):
     shutil.copytree(ROOT / 'custom_nodes/aftertake', RUNTIME / 'ComfyUI/custom_nodes/aftertake', dirs_exist_ok=True)
     if not args.skip_models:
         profile = ['--character-swap'] if args.character_swap else ['--image-gen'] if args.image_gen else ['--motion-transfer'] if args.motion_transfer else ['--ltx25'] if args.inpaint else []
-        run(PYTHON, ROOT / 'scripts/download-models.py', *profile, *(['--models-dir', args.models_dir] if args.models_dir else []))
+        run(PYTHON, ROOT / 'scripts/download-models.py', *profile, *(['--models-dir', str(models_directory)] if models_directory is not None else []))
     run(PYTHON, ROOT / 'scripts/create-study.py')
     print('Runtime installed. Start it with: python scripts/engine.py')
     return 0

@@ -58,7 +58,7 @@ class SetupLaunchTests(unittest.TestCase):
                                                VENV=self.venv, PYTHON=self.python, REPOS=[]))
         self.stack.enter_context(patch.object(setup.platform, 'machine', return_value='x86_64'))
         self.which = self.stack.enter_context(patch.object(setup.shutil, 'which', side_effect=self.find_tool))
-        self.models = self.stack.enter_context(patch.object(setup, 'model_root', return_value=self.root / 'models'))
+        self.models = self.stack.enter_context(patch.object(setup, 'model_root', side_effect=lambda value: Path(value).expanduser().resolve()))
         self.copy = self.stack.enter_context(patch.object(setup.shutil, 'copytree', side_effect=lambda *a, **k: self.events.append('copy')))
         self.run = self.stack.enter_context(patch.object(setup, 'run', side_effect=self.record_command))
         self.probe = self.stack.enter_context(patch.object(setup.subprocess, 'run', side_effect=self.run_probe))
@@ -189,6 +189,33 @@ class SetupLaunchTests(unittest.TestCase):
             setup.main([])
         self.probe.assert_not_called()
         self.assert_no_models()
+
+    def test_relative_model_directory_survives_different_downloader_working_directory(self):
+        spec = importlib.util.spec_from_file_location('setup_real_model_storage', ROOT / 'scripts/model_storage.py')
+        storage = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(storage)
+        caller = self.root / 'different caller directory'
+        caller.mkdir()
+        config = self.runtime / 'model-storage.json'
+        previous = Path.cwd()
+        try:
+            with (patch.object(storage, 'ROOT', self.root), patch.object(storage, 'CONFIG', config),
+                  patch.object(setup, 'model_root', storage.model_root)):
+                os.chdir(caller)
+                self.assertEqual(setup.main(['--models-dir', 'weights disk']), 0)
+                command = self.downloads()[0]
+                forwarded = command[command.index('--models-dir') + 1]
+                expected = (caller / 'weights disk').resolve()
+                self.assertTrue(Path(forwarded).is_absolute())
+                self.assertEqual(Path(forwarded), expected)
+                # The real downloader starts in ROOT, unlike the caller. Its
+                # storage resolver must keep the same disk and remembered path.
+                os.chdir(self.root)
+                self.assertEqual(storage.model_root(forwarded), expected)
+                self.assertEqual(Path(json.loads(config.read_text(encoding='utf-8'))['directory']), expected)
+                self.assertFalse((self.root / 'weights disk').exists())
+        finally:
+            os.chdir(previous)
 
 
 if __name__ == '__main__':
