@@ -189,14 +189,6 @@
     display: none;
   }
 }
-.creation-modes {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-@media (max-width: 760px) {
-  .creation-modes {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
 .button.image-generate:hover:not(:disabled) {
   background: #e1efa9;
   color: #27331c;

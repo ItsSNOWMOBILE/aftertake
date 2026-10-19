@@ -63,6 +63,8 @@ import ImageStudio from './ImageStudio';
 import VideoStudio from './VideoStudio';
 import { videoBusy, type VideoGeneration } from './video-generation';
 import CharacterStudio from './CharacterStudio';
+import ComputeSettings from './ComputeSettings';
+import AftertakeBrand from './AftertakeBrand';
 import { characterBusy, type CharacterJob } from './character';
 import { ImagePlus, ScanFace } from 'lucide-react';
 import { spatialMask } from './mask';
@@ -1024,8 +1026,8 @@ export default function App() {
   return (
     <div className="app-shell">
       <aside className="rail" aria-label="Studio navigation">
-        <div className="brand-mark" aria-label="Aftertake">
-          a<span>↗</span>
+        <div className="brand-mark">
+          <AftertakeBrand compact />
         </div>
         <button
           className="rail-button selected"
@@ -1057,22 +1059,27 @@ export default function App() {
           <Layers2 size={21} />
         </button>
         <div className="rail-bottom">
-          <button
-            className="rail-button"
-            title="Engine settings"
-            onClick={() => setEngineOpen(true)}
-          >
+          <button className="rail-button" title="Render setup" onClick={() => setEngineOpen(true)}>
             <Settings2 size={20} />
           </button>
           <button className="rail-button" title="How it works" onClick={() => setHelpOpen(true)}>
             <CircleHelp size={20} />
           </button>
-          <div className="avatar">J</div>
+          <div className="avatar" title={browserDemo ? 'Example workspace' : 'Local workspace'}>
+            {browserDemo ? 'E' : 'L'}
+          </div>
         </div>
       </aside>
       <header className="header">
         <div className="wordmark">
-          aftertake<span>{exampleWorkspace ? 'EXAMPLE WORKSPACE' : 'OPEN STUDIO'}</span>
+          <AftertakeBrand className="header-brand" />
+          <span>
+            {browserDemo
+              ? 'RECORDED DEMO'
+              : exampleWorkspace
+                ? 'EXAMPLE WORKSPACE'
+                : 'LOCAL STUDIO'}
+          </span>
         </div>
         <div className="breadcrumb">
           <span>Workspace</span>
@@ -1095,15 +1102,19 @@ export default function App() {
           >
             <FolderOpen size={17} />
           </button>
-          <button className="engine-chip" onClick={() => setEngineOpen(true)}>
+          <button
+            className="engine-chip"
+            aria-label="Render setup"
+            onClick={() => setEngineOpen(true)}
+          >
             <i className={engine.ready ? 'dot ready' : 'dot'} />
             {browserDemo
-              ? 'Browser examples'
+              ? 'Recorded demo'
               : engine.ready
-                ? 'Local engine ready'
+                ? 'Local · Ready'
                 : engine.connected
-                  ? 'Installing models'
-                  : 'Local engine offline'}
+                  ? 'Local · Needs setup'
+                  : 'Local · Offline'}
           </button>
           <button className="button browse-recipes" onClick={() => setLibraryOpen(true)}>
             <Sparkles size={14} />
@@ -1254,11 +1265,14 @@ export default function App() {
         <div className="workspace-title">
           <div>
             <div className="eyebrow">
-              THE DIRECTOR’S DESK <span>01 / COMPOSE</span>
+              YOUR CREATIVE STUDIO <span>01 / COMPOSE</span>
             </div>
             <h1>
-              Direct the impossible<span>.</span>
+              Make the next take<span>.</span>
             </h1>
+            <p className="workspace-subtitle">
+              Create footage, change the cast or cut your next ad.
+            </p>
           </div>
           <button className="icon-button" title="How it works" onClick={() => setHelpOpen(true)}>
             <CircleHelp size={18} />
@@ -1273,17 +1287,13 @@ export default function App() {
                   : 'Try the recorded examples.'}
               </strong>
               <p>
-                Edit cues and export recipes. Recorded results stay unchanged. New generation,
-                tracking and film export run in the local studio.
+                Compare real outputs, adjust cues and save recipes. This demo uses recorded results.
+                New generation and Film export run in the local studio.
               </p>
             </div>
-            <a
-              href="https://github.com/ItsSNOWMOBILE/aftertake#run-locally"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Run locally ↗
-            </a>
+            <button className="browser-render-options" onClick={() => setEngineOpen(true)}>
+              Render options <ArrowUpRight size={13} />
+            </button>
           </section>
         )}
         {exampleWorkspace && !browserDemo && (
@@ -2274,7 +2284,7 @@ export default function App() {
           </button>
           {!engine.ready && (
             <button className="setup-link" onClick={() => setEngineOpen(true)}>
-              Connect your local engine <ArrowUpRight size={11} />
+              Set up rendering <ArrowUpRight size={11} />
             </button>
           )}
           {hasOutput && (
@@ -2584,7 +2594,20 @@ export default function App() {
           </button>
         </div>
       )}
-      {(engineOpen || helpOpen) && (
+      {engineOpen && (
+        <ComputeSettings
+          engine={engine}
+          setupProfile={
+            isTransfer
+              ? ' --motion-transfer'
+              : recipe?.pipeline === 'inpaint' || isCinema
+                ? ' --inpaint'
+                : ''
+          }
+          onClose={() => setEngineOpen(false)}
+        />
+      )}
+      {helpOpen && (
         <div
           className="modal-backdrop"
           onClick={() => {
@@ -2596,7 +2619,7 @@ export default function App() {
             className="modal"
             role="dialog"
             aria-modal="true"
-            aria-label={engineOpen ? 'Local engine' : 'How Aftertake works'}
+            aria-label="How Aftertake works"
             onClick={(e) => e.stopPropagation()}
           >
             <button
@@ -2609,98 +2632,37 @@ export default function App() {
             >
               <X size={19} />
             </button>
-            {engineOpen ? (
-              <>
-                <div className="eyebrow">YOUR RENDER ENGINE</div>
-                <h2>{engine.ready ? 'Ready when you are.' : 'Bring your own horsepower.'}</h2>
-                <p>{engine.message}</p>
-                {engine.gpu && <div className="gpu-detail">{engine.gpu}</div>}
-                {engine.missing.length > 0 && (
-                  <ul>
-                    {engine.missing.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                )}
-                <p>
-                  The studio uses the official Comfy SDK and a local Comfy v2 proxy. Install the
-                  runtime first, then run the engine and studio in separate terminals:
-                </p>
-                <pre>
-                  python scripts/setup.py
-                  {isTransfer
-                    ? ' --motion-transfer'
-                    : recipe?.pipeline === 'inpaint' || isCinema
-                      ? ' --inpaint'
-                      : ''}
-                  {'\n'}python scripts/engine.py{'\n'}pnpm dev
-                </pre>
-                {recipe?.pipeline === 'inpaint' && (
-                  <>
-                    <p>
-                      Masked edits also need the{' '}
-                      <a
-                        href="https://huggingface.co/Lightricks/LTX-2.3-22b-IC-LoRA-In-Outpainting"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        inpainting adapter from Lightricks
-                      </a>
-                      . Complete its publisher access flow, download the file, then run:
-                    </p>
-                    <pre>
-                      python scripts/import-adapter.py
-                      /path/to/ltx-2.3-22b-ic-lora-in-outpainting-0.9.safetensors
-                    </pre>
-                  </>
-                )}
-                {isCinema && <p>Optional framing tracks need the public motion-control adapter:</p>}
-                {isCinema && <pre>python scripts/download-models.py --motion</pre>}
-                <small>
-                  {isTransfer
-                    ? 'This profile downloads approximately 25 GB of public weights.'
-                    : recipe?.pipeline === 'inpaint' || isCinema
-                      ? 'This profile downloads approximately 42 GB of weights.'
-                      : 'This profile downloads approximately 28 GB of weights.'}{' '}
-                  Runtime and model files stay outside the source repository.
-                </small>
-              </>
-            ) : (
-              <>
-                <div className="eyebrow">THE AFTERTAKE METHOD</div>
-                <h2>
-                  Small cues.
-                  <br />
-                  Impossible consequences.
-                </h2>
-                <ol>
-                  <li>
-                    <strong>Bring a moment.</strong> Import a short, steady video. The included room
-                    is an original procedural camera study.
-                  </li>
-                  <li>
-                    <strong>Paint the possibility.</strong> Brush over a region, then choose when
-                    the transformation appears.
-                  </li>
-                  <li>
-                    <strong>Direct the change.</strong> Pick an exploration or write your own visual
-                    direction. Render with local open weights.
-                  </li>
-                  <li>
-                    <strong>Pass it on.</strong> Export the video, share the recipe with the source,
-                    or open the graph in ComfyUI.
-                  </li>
-                </ol>
-                <p>
-                  Outside the cue, the composite keeps the source pixels before video encoding.
-                  Generative results inside the cue are experimental; explore a few takes.
-                </p>
-                <small>
-                  Space: play/pause · Ctrl/Cmd + Z: undo stroke · Drop a clip anywhere on the
-                  viewer.
-                </small>
-              </>
-            )}
+            <div className="eyebrow">THE AFTERTAKE METHOD</div>
+            <h2>
+              Small cues.
+              <br />
+              Impossible consequences.
+            </h2>
+            <ol>
+              <li>
+                <strong>Bring a moment.</strong> Import a short, steady video. The included room is
+                an original procedural camera study.
+              </li>
+              <li>
+                <strong>Paint the possibility.</strong> Brush over a region, then choose when the
+                transformation appears.
+              </li>
+              <li>
+                <strong>Direct the change.</strong> Pick an exploration or write your own visual
+                direction. Render with local open weights.
+              </li>
+              <li>
+                <strong>Pass it on.</strong> Export the video, share the recipe with the source, or
+                open the graph in ComfyUI.
+              </li>
+            </ol>
+            <p>
+              Outside the cue, the composite keeps the source pixels before video encoding.
+              Generative results inside the cue are experimental; explore a few takes.
+            </p>
+            <small>
+              Space: play/pause · Ctrl/Cmd + Z: undo stroke · Drop a clip anywhere on the viewer.
+            </small>
           </section>
         </div>
       )}

@@ -30,6 +30,7 @@ import { generationAdmission, generationKeyConflict } from './generation-admissi
 import { scriptDraftRouter } from './script-drafts.js';
 import { characterRouter } from './characters.js';
 import { videoRouter } from './videos.js';
+import { computeRouter } from './compute.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 await loadWorkspaceEnvironment(root);
@@ -466,6 +467,7 @@ app.post(
   },
 );
 app.use(express.json({ limit: '2mb' }));
+app.use('/api/compute', computeRouter({ localEngine: engine }));
 app.use('/api/script-drafts', await scriptDraftRouter({ root, data }));
 const frameEdits = await frameEditorRouter({
   data,

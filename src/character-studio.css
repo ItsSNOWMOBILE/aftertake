@@ -18,6 +18,66 @@
   font-size: 13px;
   line-height: 1.65;
 }
+.character-workflow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 22px 0 0;
+}
+.character-workflow li {
+  min-width: 0;
+}
+.character-workflow button {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  height: 100%;
+  padding: 13px 14px;
+  border: 1px solid #354137;
+  border-radius: 8px;
+  background: #151b16;
+  color: #c9d3c3;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+}
+.character-workflow [data-state='current'] button {
+  background: #222d1d;
+  border-color: #819c5e;
+}
+.character-workflow [data-state='ready'] .character-workflow-number {
+  background: #b9db8f;
+  border-color: #b9db8f;
+  color: #192712;
+}
+.character-workflow-number {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  border: 1px solid #536448;
+  border-radius: 50%;
+  color: #c5e8a1;
+  font: 11px monospace;
+}
+.character-workflow button > span:last-child {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.character-workflow strong {
+  font-size: 12px;
+  font-weight: 500;
+}
+.character-workflow small {
+  font-size: 10px;
+  line-height: 1.4;
+  color: #a6b39c;
+}
 .character-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 325px;
@@ -131,6 +191,21 @@
   text-align: center;
   font-size: 13px;
 }
+.character-empty p {
+  margin: 0;
+  color: #d7e3ce;
+  font-size: 14px;
+}
+.character-empty small {
+  max-width: 340px;
+  line-height: 1.7;
+  font-size: 12px;
+  color: #a6b39c;
+}
+.character-empty .button {
+  margin-top: 8px;
+  font-size: 12px;
+}
 .character-controls {
   display: flex;
   flex-direction: column;
@@ -143,7 +218,7 @@
   flex-direction: column;
   gap: 7px;
   color: #a5b49f;
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 1px;
 }
 .character-controls input,
@@ -181,6 +256,7 @@
   align-items: center;
   gap: 10px;
   margin: 20px 0 2px;
+  scroll-margin-block: 20px;
 }
 .character-step h3 {
   font-size: 14px;
@@ -193,6 +269,49 @@
   border: 1px solid #46613c;
   border-radius: 50%;
   padding: 7px;
+}
+.character-step > div {
+  display: grid;
+  gap: 5px;
+}
+.character-step small {
+  color: #97a58e;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.character-action-hint {
+  color: #b6c3ad;
+  font-size: 11px;
+  line-height: 1.6;
+  margin: 0 0 3px;
+}
+.character-review-selection {
+  background: #222c1d;
+  border-color: #536c40;
+  color: #c5e8a1;
+}
+.character-photo-empty {
+  display: flex;
+  gap: 12px;
+  padding: 15px;
+  border: 1px dashed #4b5c42;
+  border-radius: 7px;
+  color: #bdd69e;
+  background: #172015;
+}
+.character-photo-empty > svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+.character-photo-empty strong {
+  font-size: 12px;
+  font-weight: 500;
+}
+.character-photo-empty p {
+  color: #a8b49f;
+  font-size: 11px;
+  line-height: 1.6;
+  margin: 6px 0 0;
 }
 .character-range {
   display: grid;
@@ -208,14 +327,47 @@
   flex: 0 0 38px;
 }
 .character-face-canvas {
-  width: min(100%, 245px);
-  margin: 5px auto;
+  width: min(100%, 210px);
+  margin: 0 auto;
   position: relative;
   border: 1px solid #40523b;
   border-radius: 5px;
   overflow: hidden;
   cursor: crosshair;
   touch-action: none;
+}
+.character-reference-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 78px;
+  align-items: start;
+  gap: 12px;
+  margin-top: 5px;
+}
+.character-face-preview {
+  display: grid;
+  gap: 6px;
+  color: #c5d8b5;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.character-face-preview > svg {
+  height: 92px;
+  background: #090d0a;
+  border: 1px solid #475b3a;
+  border-radius: 5px;
+}
+.character-face-preview small {
+  font-size: 9px;
+  color: #9ba890;
+}
+.character-reference-preview {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+.character-face-canvas[aria-disabled='true'] {
+  cursor: default;
 }
 .character-face-canvas img {
   display: block;
@@ -333,6 +485,7 @@
   font-size: 11px;
   line-height: 1.6;
   border-radius: 6px;
+  margin-bottom: 12px;
 }
 .character-progress button {
   align-self: flex-start;
@@ -345,6 +498,57 @@
 .character-progress span {
   color: #adc498;
   font-size: 10px;
+}
+.character-progress-heading {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.character-progress-heading > svg {
+  flex: 0 0 auto;
+  color: #c6e7a6;
+}
+.character-progress-heading strong {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 500;
+}
+.character-progress-heading > span {
+  color: #d5f1b9;
+  font: 12px monospace;
+}
+.character-progress > p {
+  color: #b8c9ac;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.character-progress progress {
+  width: 100%;
+  height: 6px;
+  border: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  accent-color: #b9db8f;
+}
+.character-progress progress::-webkit-progress-bar {
+  background: #11190f;
+}
+.character-progress progress::-webkit-progress-value {
+  background: #b9db8f;
+}
+.character-progress progress::-moz-progress-bar {
+  background: #b9db8f;
+}
+.character-progress-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.character-progress-footer button {
+  padding: 5px 0;
+  font-size: 11px;
 }
 .character-install {
   padding: 13px;
@@ -392,6 +596,12 @@
 .character-studio .button svg {
   flex-shrink: 0;
 }
+.character-studio button:focus-visible,
+.character-studio summary:focus-visible,
+.character-step:focus-visible {
+  outline: 2px solid #c3e994;
+  outline-offset: 3px;
+}
 @media (max-width: 950px) {
   .character-grid {
     grid-template-columns: minmax(0, 1fr) 285px;
@@ -421,8 +631,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .character-face-canvas {
-    max-height: none;
-    width: 210px;
+    width: min(100%, 210px);
   }
   .character-controls {
     border-top: 1px solid #394231;
@@ -432,9 +641,70 @@
     margin-top: 15px;
   }
 }
+@media (max-width: 500px) {
+  .character-workflow {
+    gap: 6px;
+    margin-top: 18px;
+  }
+  .character-workflow button {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px 8px;
+  }
+  .character-workflow strong {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .character-workflow small {
+    font-size: 10px;
+  }
+  .character-workflow-number {
+    width: 23px;
+    height: 23px;
+    flex-basis: 23px;
+  }
+  .character-empty {
+    padding: 24px 18px;
+  }
+  .character-point-tools button,
+  .character-controls .button,
+  .character-view-tabs button,
+  .character-identity-card summary,
+  .character-face-numbers summary {
+    min-height: 42px;
+  }
+}
 .character-face-controls {
   display: grid;
   gap: 8px;
+}
+.character-face-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.character-face-actions .button {
+  flex: 1;
+  white-space: nowrap;
+}
+.character-face-numbers summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 6px 0;
+  color: #b8cda6;
+  font-size: 11px;
+}
+.character-face-numbers summary::-webkit-details-marker {
+  display: none;
+}
+.character-face-numbers summary::before {
+  content: '+';
+  margin-right: 7px;
+  font: 14px monospace;
+}
+.character-face-numbers[open] summary::before {
+  content: '−';
 }
 .character-face-controls fieldset {
   display: grid;
@@ -475,6 +745,12 @@
   font-weight: 500;
   margin: 0;
 }
+.character-reference-heading h4 small {
+  font-size: 10px;
+  font-weight: 400;
+  color: #96a58b;
+  margin-left: 5px;
+}
 .character-reference-heading > span {
   font: 10px monospace;
   color: #b9cfaa;
@@ -494,10 +770,10 @@
   align-items: center;
   gap: 9px;
 }
-.character-identity-summary > img {
-  width: 42px;
-  height: 48px;
-  object-fit: contain;
+.character-identity-summary > svg {
+  width: 54px;
+  height: 62px;
+  flex: 0 0 54px;
   background: #090d0a;
   border-radius: 4px;
 }
@@ -517,8 +793,8 @@
   font-size: 10px;
 }
 .character-identity-summary .button {
-  flex: 0 0 30px;
-  min-height: 30px;
+  flex: 0 0 44px;
+  min-height: 44px;
   padding: 5px;
 }
 .character-identity-card details {
@@ -548,6 +824,16 @@
 }
 .character-native-workflow .character-output-actions {
   margin-top: 10px;
+}
+@media (pointer: coarse) {
+  .character-studio .button,
+  .character-point-tools button,
+  .character-view-tabs button,
+  .character-identity-card summary,
+  .character-face-numbers summary,
+  .character-progress-footer button {
+    min-height: 44px;
+  }
 }
 @media (min-width: 731px) {
   .character-view-column {

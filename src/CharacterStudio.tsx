@@ -23,7 +23,7 @@ import {
   type CharacterRequest,
   type CharacterSelectionRequest,
 } from './character';
-import CharacterReferenceEditor from './CharacterReferenceEditor';
+import CharacterReferenceEditor, { CharacterReferencePreview } from './CharacterReferenceEditor';
 import './character-studio.css';
 
 async function api<T>(url: string, init?: RequestInit) {
@@ -47,10 +47,8 @@ function download(value: unknown, filename = 'aftertake-character-recipe.json') 
 }
 type Point = { x: number; y: number };
 type FaceBox = NonNullable<CharacterRequest['faceBox']>;
-function supportingFaceNeedsFocus(entry: CharacterIdentityReference) {
-  const box = entry.faceBox;
-  const ratio =
-    ((box?.width ?? 1) * entry.reference.width) / ((box?.height ?? 1) * entry.reference.height);
+function faceNeedsFocus(photo: Clip, box?: FaceBox) {
+  const ratio = ((box?.width ?? 1) * photo.width) / ((box?.height ?? 1) * photo.height);
   return ratio < 0.5 || ratio > 2;
 }
 export default function CharacterStudio({
@@ -82,7 +80,7 @@ export default function CharacterStudio({
       : videos[0]?.id || '',
   );
   const source = videos.find((c) => c.id === sourceId);
-  const [referenceId, setReferenceId] = useState(photos[0]?.id || ''),
+  const [referenceId, setReferenceId] = useState(''),
     [trimStart, setTrimStart] = useState(0);
   const reference = photos.find((c) => c.id === referenceId);
   const [duration, setDuration] = useState(Math.min(5, source?.duration || 5)),
@@ -111,6 +109,10 @@ export default function CharacterStudio({
     fileInput = useRef<HTMLInputElement>(null),
     identityFileInput = useRef<HTMLInputElement>(null),
     recipeInput = useRef<HTMLInputElement>(null);
+  const sourceStep = useRef<HTMLDivElement>(null),
+    identityStep = useRef<HTMLDivElement>(null),
+    generateStep = useRef<HTMLDivElement>(null),
+    preview = useRef<HTMLDivElement>(null);
   const uploadRole = useRef<'source' | 'reference'>('source');
   const pending = jobs.find(characterBusy),
     locked = sending || uploading || Boolean(pending) || otherBusy;
@@ -214,6 +216,11 @@ export default function CharacterStudio({
     setResultId('');
     setView('frame');
     setError('');
+  }
+  function showPreview(next: typeof view) {
+    setView(next);
+    preview.current?.scrollIntoView({ block: 'start' });
+    preview.current?.focus({ preventScroll: true });
   }
   function range(start: number, length: number) {
     if (!source) return;
@@ -503,6 +510,120 @@ export default function CharacterStudio({
     }
   }
   const status = view === 'result' ? viewed : view === 'selection' ? selection : pending;
+  const selectionValidation = characterSelectionSchema.safeParse(selectionRequest);
+  const requestValidation = characterRequestSchema.safeParse(request);
+  const identityNeedsFocus = identityReferences.some((entry) =>
+    faceNeedsFocus(entry.reference, entry.faceBox),
+  );
+  const primaryNeedsFocus = Boolean(reference && faceBox && faceNeedsFocus(reference, faceBox));
+  const identityReady = Boolean(reference && !primaryNeedsFocus && !identityNeedsFocus);
+  const canGenerate =
+    !browserDemo &&
+    !locked &&
+    Boolean(engine?.ready) &&
+    Boolean(selectionReady) &&
+    requestValidation.success;
+  const trackHint = !source
+    ? 'Import a video, then mark the person in its first frame.'
+    : !positive.length
+      ? 'Place at least one green point inside the person to enable tracking.'
+      : !selectionValidation.success
+        ? selectionValidation.error.issues[0].message
+        : selectionReady
+          ? 'Selection tracked. Watch the overlay to check hair, hands and nearby people.'
+          : pending?.kind === 'selection'
+            ? 'Your tracking job appears beside the preview. Review its overlay when it finishes.'
+            : locked
+              ? 'Wait for the current import or job before starting tracking.'
+              : browserDemo
+                ? 'Open the local studio to track your own source video.'
+                : !selectionEngine
+                  ? 'Checking the local tracking engine…'
+                  : !selectionEngine.ready
+                    ? 'The tracking engine is not ready. See the setup details below.'
+                    : 'Track this range, then review the overlay before generating.';
+  const generateHint = !selectionReady
+    ? 'First track the person and review the selection preview.'
+    : !reference
+      ? 'Choose a primary photo of the replacement character.'
+      : primaryNeedsFocus || identityNeedsFocus
+        ? 'Adjust the marked face focus before generating.'
+        : !name.trim()
+          ? 'Give this take a name before generating.'
+          : !requestValidation.success
+            ? 'Check the photo and take settings above.'
+            : uploading
+              ? 'Importing your media. Generation will be available when the import finishes.'
+              : sending
+                ? 'Sending your request to the local studio…'
+                : browserDemo
+                  ? 'Open the local studio to generate your own take.'
+                  : !engine
+                    ? 'Checking the local character engine…'
+                    : !engine.ready
+                      ? 'The character engine is not ready. See the setup details below.'
+                      : otherBusy && !pending
+                        ? 'Another generation is running. Review your settings while it finishes.'
+                        : pending
+                          ? 'Your submitted job is shown beside the preview. Check its status before starting another.'
+                          : 'Ready. Review the tracked selection, then generate your take.';
+  const uncertainJob = pending && ['connection_lost', 'submission_unknown'].includes(pending.state);
+  const workflowSteps = [
+    {
+      label: 'Source & tracking',
+      detail:
+        pending?.kind === 'selection'
+          ? uncertainJob
+            ? 'Check submitted job'
+            : 'Tracking person…'
+          : selectionReady
+            ? 'Tracked · review overlay'
+            : source
+              ? positive.length
+                ? 'Person marked'
+                : 'Mark the person'
+              : 'Choose a video',
+      ready: Boolean(selectionReady),
+      ref: sourceStep,
+    },
+    {
+      label: 'Identity photos',
+      detail: reference
+        ? identityReady
+          ? `${identityReferences.length + 1} photo${identityReferences.length ? 's' : ''} selected`
+          : 'Adjust face focus'
+        : 'Choose a primary photo',
+      ready: identityReady,
+      ref: identityStep,
+    },
+    {
+      label: 'Generate take',
+      detail:
+        pending?.kind === 'replacement'
+          ? uncertainJob
+            ? 'Check submitted job'
+            : 'Generating…'
+          : canGenerate
+            ? 'Ready to generate'
+            : !selectionReady || !identityReady
+              ? 'Complete the earlier steps'
+              : browserDemo
+                ? 'Use the local studio'
+                : locked
+                  ? 'Waiting for the studio'
+                  : !engine?.ready
+                    ? 'Engine not ready'
+                    : 'Check take settings',
+      ready: false,
+      ref: generateStep,
+    },
+  ];
+  const currentStep =
+    pending?.kind === 'replacement' ? 2 : !selectionReady ? 0 : !identityReady ? 1 : 2;
+  const reportedProgress =
+    pending?.progress != null && Number.isFinite(pending.progress)
+      ? Math.max(0, Math.min(1, pending.progress))
+      : undefined;
   return (
     <div className="modal-backdrop character-backdrop" onClick={onClose}>
       <section
@@ -539,17 +660,52 @@ export default function CharacterStudio({
         <div className="eyebrow">CHARACTER REPLACEMENT</div>
         <h2>New character. Same scene.</h2>
         <p className="character-intro">
-          Choose the person in your shot, then guide their replacement with reference photos. Review
-          the tracked selection before generating.
+          Track one person in a continuous shot. Add their replacement’s photos, then generate a new
+          take with the source scene and audio.
         </p>
+        <ol className="character-workflow" aria-label="Character workflow steps">
+          {workflowSteps.map((step, index) => (
+            <li
+              key={step.label}
+              data-state={step.ready ? 'ready' : index === currentStep ? 'current' : 'waiting'}
+            >
+              <button
+                aria-current={index === currentStep ? 'step' : undefined}
+                onClick={() => {
+                  step.ref.current?.scrollIntoView({ block: 'start' });
+                  step.ref.current?.focus({ preventScroll: true });
+                }}
+              >
+                <span className="character-workflow-number" aria-hidden="true">
+                  {step.ready ? <Check size={14} /> : index + 1}
+                </span>
+                <span>
+                  <strong>{step.label}</strong>
+                  <small>{step.detail}</small>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ol>
         <div className="character-grid">
-          <div className="character-view-column">
-            <div className="character-view-tabs" aria-label="Character preview">
-              <button className={view === 'frame' ? 'active' : ''} onClick={() => setView('frame')}>
+          <div
+            className="character-view-column"
+            ref={preview}
+            role="region"
+            aria-label="Character preview"
+            tabIndex={-1}
+          >
+            <div className="character-view-tabs" role="group" aria-label="Character preview">
+              <button
+                aria-pressed={view === 'frame'}
+                className={view === 'frame' ? 'active' : ''}
+                onClick={() => setView('frame')}
+              >
                 Select person
               </button>
               <button
                 disabled={!source}
+                aria-pressed={view === 'source'}
                 className={view === 'source' ? 'active' : ''}
                 onClick={() => {
                   setSourceReviewId(view === 'result' ? resultSelection?.id || '' : '');
@@ -560,6 +716,7 @@ export default function CharacterStudio({
               </button>
               <button
                 disabled={!selection?.selection}
+                aria-pressed={view === 'selection'}
                 className={view === 'selection' ? 'active' : ''}
                 onClick={() => setView('selection')}
               >
@@ -567,17 +724,60 @@ export default function CharacterStudio({
               </button>
               <button
                 disabled={!viewed}
+                aria-pressed={view === 'result'}
                 className={view === 'result' ? 'active' : ''}
                 onClick={() => setView('result')}
               >
                 Result
               </button>
             </div>
+            {pending && (
+              <div className="character-progress" role="status" aria-live="polite">
+                <div className="character-progress-heading">
+                  <LoaderCircle size={17} className="spin" aria-hidden="true" />
+                  <strong>
+                    {uncertainJob
+                      ? 'Check the submitted job'
+                      : pending.kind === 'selection'
+                        ? 'Tracking the selected person'
+                        : 'Generating your character take'}
+                  </strong>
+                  {reportedProgress !== undefined && (
+                    <span>{Math.round(reportedProgress * 100)}%</span>
+                  )}
+                </div>
+                <p>{pending.stage || pending.state.replaceAll('_', ' ')}</p>
+                <progress
+                  max={1}
+                  value={reportedProgress}
+                  aria-label="Engine-reported job progress"
+                />
+                <div className="character-progress-footer">
+                  <span>
+                    {uncertainJob
+                      ? 'Connection uncertain. Progress may be out of date.'
+                      : reportedProgress === undefined
+                        ? 'Waiting for engine progress.'
+                        : 'Progress reported by the engine.'}
+                  </span>
+                  {uncertainJob ? (
+                    <button disabled={sending} onClick={() => void act(pending, 'reconcile')}>
+                      Check status
+                    </button>
+                  ) : pending.jobId && pending.state !== 'finalizing' ? (
+                    <button disabled={sending} onClick={() => void act(pending, 'cancel')}>
+                      Cancel job
+                    </button>
+                  ) : null}
+                </div>
+              </div>
+            )}
             <div
               className={`character-stage ${view === 'frame' ? 'character-pick' : ''}`}
               style={{ aspectRatio: String(aspect) }}
-              role={view === 'frame' ? 'button' : undefined}
-              tabIndex={view === 'frame' ? 0 : undefined}
+              role={view === 'frame' && source ? 'button' : undefined}
+              tabIndex={view === 'frame' && source ? 0 : undefined}
+              aria-disabled={view === 'frame' && source ? locked : undefined}
               aria-label={
                 view === 'frame'
                   ? 'Choose the person: click the image, or use arrow keys then Enter to add a point'
@@ -687,6 +887,24 @@ export default function CharacterStudio({
                         ? 'Click the person to begin.'
                         : 'Import a source video to begin.'}
                   </p>
+                  {!source && (
+                    <>
+                      <small>
+                        Use a continuous 1–15 second shot. You’ll mark the person to replace in its
+                        first frame.
+                      </small>
+                      <button
+                        className="button"
+                        disabled={locked || browserDemo}
+                        onClick={() => {
+                          uploadRole.current = 'source';
+                          fileInput.current?.click();
+                        }}
+                      >
+                        <Upload size={14} /> Import source video
+                      </button>
+                    </>
+                  )}
                 </div>
               )}
             </div>
@@ -695,6 +913,7 @@ export default function CharacterStudio({
                 <div className="character-point-tools">
                   <button
                     disabled={locked}
+                    aria-pressed={pointMode === 'positive'}
                     className={pointMode === 'positive' ? 'active' : ''}
                     onClick={() => setPointMode('positive')}
                   >
@@ -702,6 +921,7 @@ export default function CharacterStudio({
                   </button>
                   <button
                     disabled={locked}
+                    aria-pressed={pointMode === 'negative'}
                     className={pointMode === 'negative' ? 'active' : ''}
                     onClick={() => setPointMode('negative')}
                   >
@@ -768,6 +988,7 @@ export default function CharacterStudio({
               </p>
             )}
             {status &&
+              status.id !== (uncertainJob ? pending.id : undefined) &&
               ['connection_lost', 'submission_unknown', 'output_error'].includes(status.state) && (
                 <button
                   className="button"
@@ -908,9 +1129,16 @@ export default function CharacterStudio({
               <Upload size={12} />
               Import character recipe
             </button>
-            <div className="character-step">
+            <div className="character-step" ref={sourceStep} tabIndex={-1}>
               <span>01</span>
-              <h3>The source performance</h3>
+              <div>
+                <h3>Source & tracking</h3>
+                <small>
+                  {selectionReady
+                    ? 'Tracked selection ready for review'
+                    : 'Choose the shot and mark one person'}
+                </small>
+              </div>
             </div>
             <label>
               SOURCE VIDEO
@@ -948,7 +1176,7 @@ export default function CharacterStudio({
                   min={0}
                   max={Math.max(0, (source?.duration || 1) - 1)}
                   step=".1"
-                  value={trimStart}
+                  value={Number(trimStart.toFixed(3))}
                   disabled={locked || !source}
                   onChange={(e) => range(Number(e.target.value), duration)}
                 />
@@ -961,7 +1189,7 @@ export default function CharacterStudio({
                   min={1}
                   max={Math.min(15, (source?.duration || 15) - trimStart)}
                   step=".1"
-                  value={duration}
+                  value={Number(duration.toFixed(3))}
                   disabled={locked || !source}
                   onChange={(e) => range(trimStart, Number(e.target.value))}
                 />
@@ -993,10 +1221,7 @@ export default function CharacterStudio({
             <button
               className="button character-track"
               disabled={
-                browserDemo ||
-                locked ||
-                !selectionEngine?.ready ||
-                !characterSelectionSchema.safeParse(selectionRequest).success
+                browserDemo || locked || !selectionEngine?.ready || !selectionValidation.success
               }
               onClick={() => void submit('selection')}
             >
@@ -1007,9 +1232,29 @@ export default function CharacterStudio({
               )}
               Track selected person
             </button>
-            <div className="character-step">
+            <p className="character-action-hint">{trackHint}</p>
+            {source && !positive.length && (
+              <button
+                className="button character-review-selection"
+                onClick={() => showPreview('frame')}
+              >
+                Mark the person in the preview <ArrowUpRight size={13} />
+              </button>
+            )}
+            {selectionReady && (
+              <button
+                className="button character-review-selection"
+                onClick={() => showPreview('selection')}
+              >
+                Review tracked selection <ArrowUpRight size={13} />
+              </button>
+            )}
+            <div className="character-step" ref={identityStep} tabIndex={-1}>
               <span>02</span>
-              <h3>The replacement character</h3>
+              <div>
+                <h3>Identity photos</h3>
+                <small>One primary photo, plus optional other views</small>
+              </div>
             </div>
             <label>
               PRIMARY PHOTO
@@ -1045,6 +1290,18 @@ export default function CharacterStudio({
               <Upload size={13} />
               Import photo
             </button>
+            {!reference && (
+              <div className="character-photo-empty">
+                <ScanFace size={21} aria-hidden="true" />
+                <div>
+                  <strong>Who should replace them?</strong>
+                  <p>
+                    Start with a clear photo of one person. Include the outfit if you want to use
+                    it.
+                  </p>
+                </div>
+              </div>
+            )}
             {reference && (
               <CharacterReferenceEditor
                 key={reference.id}
@@ -1061,7 +1318,9 @@ export default function CharacterStudio({
               aria-label="Supporting identity photos"
             >
               <div className="character-reference-heading">
-                <h4>Supporting photos</h4>
+                <h4>
+                  Other views <small>optional</small>
+                </h4>
                 <span>
                   {identityReferences.length}/{characterMaxIdentityReferences}
                 </span>
@@ -1111,13 +1370,14 @@ export default function CharacterStudio({
               {identityReferences.map((entry, index) => (
                 <article className="character-identity-card" key={entry.reference.id}>
                   <div className="character-identity-summary">
-                    <img
-                      src={mediaUrl(entry.reference.url)}
-                      alt={`Supporting photo ${index + 1}`}
+                    <CharacterReferencePreview
+                      photo={entry.reference}
+                      box={entry.faceBox}
+                      label={`Supporting photo ${index + 1}: ${entry.faceBox ? 'selected face focus' : 'full photo'}`}
                     />
                     <div>
                       <strong>{entry.reference.name}</strong>
-                      <span>Identity reference {index + 1}</span>
+                      <span>{entry.faceBox ? 'Face focus' : 'Full photo'} · identity only</span>
                     </div>
                     <button
                       className="button"
@@ -1132,14 +1392,17 @@ export default function CharacterStudio({
                       <X size={13} />
                     </button>
                   </div>
-                  {supportingFaceNeedsFocus(entry) && (
+                  {faceNeedsFocus(entry.reference, entry.faceBox) && (
                     <p className="character-reference-error" role="status">
                       {entry.faceBox ? 'Adjust' : 'Add'} the face focus around the full head before
                       generating. Use a roughly square crop.
                     </p>
                   )}
                   <details>
-                    <summary>{entry.faceBox ? 'Edit face focus' : 'Add face focus'}</summary>
+                    <summary>
+                      {entry.faceBox ? 'Edit face focus' : 'Add face focus'}
+                      {faceNeedsFocus(entry.reference, entry.faceBox) ? ' · needs attention' : ''}
+                    </summary>
                     <CharacterReferenceEditor
                       photo={entry.reference}
                       value={entry.faceBox}
@@ -1159,9 +1422,12 @@ export default function CharacterStudio({
                 </article>
               ))}
             </section>
-            <div className="character-step">
+            <div className="character-step" ref={generateStep} tabIndex={-1}>
               <span>03</span>
-              <h3>Direct the take</h3>
+              <div>
+                <h3>Generate your take</h3>
+                <small>Set the outfit and add any final direction</small>
+              </div>
             </div>
             <label>
               OUTFIT
@@ -1225,35 +1491,20 @@ export default function CharacterStudio({
             </label>
             <button
               className="button character-generate"
-              disabled={
-                browserDemo ||
-                locked ||
-                !engine?.ready ||
-                !selectionReady ||
-                !characterRequestSchema.safeParse(request).success
-              }
+              disabled={!canGenerate}
+              aria-describedby="character-generate-hint"
               onClick={() => void submit('replacement')}
             >
               <ScanFace size={15} />
               Replace selected person
             </button>
+            <p className="character-action-hint" id="character-generate-hint">
+              {generateHint}
+            </p>
             <p className="character-hint">
               H3 Character Swap V1.5 · 24 fps · source audio retained. This is generative editing:
               review the finished likeness and motion.
             </p>
-            {pending && (
-              <div className="character-progress" role="status">
-                <strong>{pending.stage || pending.state.replaceAll('_', ' ')}</strong>
-                {pending.progress !== null && (
-                  <span>{Math.round(pending.progress * 100)}% reported by Comfy</span>
-                )}
-                {pending.jobId && pending.state !== 'finalizing' && (
-                  <button disabled={sending} onClick={() => void act(pending, 'cancel')}>
-                    Cancel job
-                  </button>
-                )}
-              </div>
-            )}
             {otherBusy && !pending && (
               <p className="character-hint">
                 Another generation is active. You can review character takes while it finishes.

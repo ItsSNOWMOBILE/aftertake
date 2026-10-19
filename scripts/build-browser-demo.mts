@@ -37,6 +37,7 @@ const fonts = Object.fromEntries(
     ]),
   ),
 );
+const favicon = (await readFile(path.join(root, 'public/brand/favicon.svg'))).toString('base64');
 if (fontBase)
   snapshot.externalFonts = Object.entries(fonts).map(([name, bytes]) => ({
     name,
@@ -84,6 +85,12 @@ await build({
     {
       name: 'browser-demo-fonts',
       enforce: 'pre',
+      transformIndexHtml: {
+        order: 'pre',
+        handler(html) {
+          return html.replace('/brand/favicon.svg', `data:image/svg+xml;base64,${favicon}`);
+        },
+      },
       transform(code, id) {
         if (!id.replaceAll('\\', '/').endsWith('/src/style.css')) return;
         for (const [name, bytes] of Object.entries(fonts))

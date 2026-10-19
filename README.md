@@ -103,6 +103,17 @@ python scripts/setup-film.py
 Optional local narration is installed separately with
 `python scripts/setup-narration.py`. These Python setup paths use **Python 3.12**.
 
+### Prepare cloud rendering
+
+Open **Render setup** to prepare a Comfy Cloud connection or a compatible managed
+deployment. You can save the setup before adding an API key. Credentials stay in
+the local server memory; an explicit account check never starts a generation.
+
+**Cloud generation is not enabled yet.** Billing ownership, workflow compatibility
+and remote job recovery still need verification. The recorded browser editor does
+not collect keys. See the [cloud connection guide](docs/cloud-setup.md) for the
+current framework and an offline character-workflow deployment inventory.
+
 ### Generate new footage
 
 Requires **Python 3.12**, an **NVIDIA CUDA GPU**, and space for the selected

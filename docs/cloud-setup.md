@@ -1,0 +1,56 @@
+# Compute connections
+
+Aftertake currently renders through the local studio's startup Comfy engine. The recorded browser demo does not accept API keys or send live generation requests.
+
+The local studio's compute settings prepare a connection to Comfy Cloud or a managed Comfy deployment. They do not activate cloud generation. A successful credential check is not proof that the account can run Aftertake's workflows or that a deployment will charge the intended account.
+
+## Prepare a connection
+
+1. Open the local studio and its compute settings. Choose Local, Comfy Cloud or Managed deployment.
+2. For Comfy Cloud, enter your own API key when you are ready. You can leave the key unset while reviewing the setup.
+3. For a managed deployment, use its HTTPS `*.run.comfy.app` origin. Paths, custom ports, URL credentials, queries and fragments are rejected.
+4. Save the connection, then explicitly run a check. Cloud checks send the key only to `https://cloud.comfy.org/api/user` using the documented `X-API-Key` header. This read-only request has a five-second deadline and does not follow redirects. It does not submit a workflow, purchase credits or provision a deployment.
+5. Disconnect to discard the entered key. Restarting the studio also discards it.
+
+Keys entered in these settings are held only in the local server's memory. They are not written to `.env`, browser storage, project files, recipes, logs or status responses. Status responses expose only whether a key was supplied. Account documents and provider error bodies are not returned to the browser. The managed-deployment connection currently has no verified read-only metadata probe, so its authentication remains unverified.
+
+## What a check establishes
+
+Local checks report readiness separately for each workflow using the existing engine's nodes and model menus. Cloud checks distinguish reachability from credential acceptance. Subscription eligibility, available credits, billing ownership and workflow compatibility remain unverified. Every cloud generation capability therefore remains blocked, even after an accepted credential.
+
+Saved connection settings are candidates. Local submissions, running jobs, saved-job recovery and cancellation continue using the same startup SDK client. Selecting or disconnecting a candidate does not reroute work or change the startup environment.
+
+## Before cloud generation can become available
+
+A supported execution profile must provide Aftertake's exact custom nodes, models, media upload/download behavior and output metadata contract. Character replacement also needs the pinned H3 Relay recipe, SAM3 and its required model files. A generic Comfy endpoint is not sufficient evidence of compatibility.
+
+The account owner must separately establish an eligible subscription, credits and the deployment's billing rules before any cloud execution is enabled. This release performs no account creation, purchase, deployment provisioning or billable trial. It does not assume that a visitor's personal credits pay for another workspace's managed endpoint.
+
+The application also needs verified provider-specific job routing and recovery before it can activate a remote connection. A shared hosted service additionally needs authenticated users, isolated credentials, media and job ownership, and a secure credential lifecycle. The current settings are connection preparation for an owner-run local studio, not a shared hosted BYOK service.
+
+## Local API
+
+- `GET /api/compute` returns safe connection and capability status.
+- `POST /api/compute/connection` accepts `{ "provider": "local" }`, `{ "provider": "comfy-cloud", "apiKey": "..." }`, or `{ "provider": "managed-deployment", "endpoint": "https://example.run.comfy.app", "apiKey": "..." }`. Remote keys can be omitted until a later connection update.
+- `POST /api/compute/probe` explicitly checks the selected candidate or local engine.
+- `DELETE /api/compute/connection` clears the candidate and its memory-held key.
+
+These routes retain the local studio's existing loopback host and same-origin write restrictions. Client-supplied claims such as `billingVerified` or `compatibilityVerified` are rejected.
+
+## Prepare an offline character-swap inventory
+
+Run this from a source checkout, without a key or an engine:
+
+```sh
+python scripts/prepare-cloud-profile.py --profile character-swap --output .runtime/cloud/character-swap-inventory.json
+```
+
+This writes a provider-independent `aftertake-cloud-profile-inventory/1` JSON report. It is not a Comfy Build configuration or a certified deployable Linux release. The command performs no login, network request, upload, installation, build, deployment or generation.
+
+The report reads repository and Python/PyTorch pins from `scripts/setup.py`, model revisions/sizes/SHA-256 pins from `docs/models-character-swap.json`, and required nodes/model menus from `server/character-profile.ts`. It includes the existing setup stack, rather than claiming a minimal H3 worker image. It records exact runtime dependency pins, FFmpeg/FFprobe requirements, hashes of Aftertake's custom-node files, and hashes of the profile's supporting source files. The application-side H3 graph builder's dependency on the pinned Relay recipe is explicit. An installed local copy of that small recipe is fingerprinted when available; its presence does not certify a remote worker.
+
+To report which expected models are present on an existing model disk, optionally add `--models-dir PATH_TO_MODELS`. The path is not included in the report. This checks filenames and sizes only: model contents are never read or hashed, and a matching size is reported as `present-unhashed`. The expected hashes remain manifest evidence, not fresh verification. Missing source files, absent models and size mismatches are reported separately. Invalid pins, escaping paths or a disagreement between the model manifest and runtime model menus stop the export.
+
+The inventory contains no `.env` data, API keys, account records, personal reference photos, source media, projects or job records. Source hashes describe the current checkout bytes; regenerate the report after changing code or checking out another revision.
+
+Before translating this report into a provider's documented build format, validate Linux dependency resolution, GPU capacity/kernels, codecs, all required node/model capabilities and real output contracts on the intended worker. Then separately verify account/billing ownership and isolated job recovery. The report always leaves deployment readiness false and performs none of those steps automatically.
