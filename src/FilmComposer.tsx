@@ -16,7 +16,16 @@ import {
   X,
 } from 'lucide-react';
 import { renderDimensions, type Render } from './domain';
-import { filmDraftSchema, filmTimeline, type Film, type FilmDraft, type FilmAsset } from './film';
+import {
+  filmDraftSchema,
+  filmTimeline,
+  filmDimensions,
+  type Film,
+  type FilmDraft,
+  type FilmAsset,
+} from './film';
+import { motionAt, motionProgress } from './film-motion';
+import { GraphicPreview, MotionGraphicsEditor, MotionTrackEditor } from './MotionGraphics';
 import {
   titleMotion,
   titleTypography,
@@ -528,6 +537,13 @@ function DraftPlayer({
           />
         ))}
         {!visible.length && <span>Your film starts here.</span>}
+        <GraphicPreview
+          graphics={draft.graphics || []}
+          assets={assets}
+          time={visualTime}
+          width={filmDimensions(draft)[0]}
+          height={filmDimensions(draft)[1]}
+        />
         {(draft.titles || [])
           .filter((title) => visualTime >= title.start && visualTime < title.end)
           .map((title) => {
@@ -537,6 +553,10 @@ function DraftPlayer({
             let wordIndex = 0,
               characterIndex = 0;
             const spoken = spokenTitleState(title, visualTime);
+            const transform = motionAt(
+              title.motion,
+              motionProgress(title.start, title.end, visualTime),
+            );
             const content =
               title.animation === 'spoken' ? (
                 <span className="spoken-words">
@@ -612,35 +632,50 @@ function DraftPlayer({
             return (
               <div
                 key={title.id}
-                className={`draft-title ${title.style} ${title.position} motion-${title.animation}`}
+                className="draft-title-transform"
                 style={{
-                  color: title.color,
-                  opacity: motion.opacity,
-                  fontSize: title.fontSize ? `${title.fontSize / 12.8}cqw` : undefined,
-                  fontWeight: typography.fontWeight,
-                  textAlign: typography.align,
-                  WebkitTextStroke: typography.stroke
-                    ? `${2 / 12.8}cqw #080c09be`
-                    : '0 transparent',
-                  paintOrder: 'stroke fill',
-                  translate:
-                    title.animation === 'rise'
-                      ? `0 ${-18 * (1 - Math.min(1, (visualTime - title.start) / 0.35))}px`
-                      : undefined,
+                  position: 'absolute',
+                  inset: 0,
+                  pointerEvents: 'none',
+                  opacity: transform.opacity,
+                  transform: title.motion
+                    ? `translate(${transform.x * 100}%, ${transform.y * 100}%) rotate(${transform.rotation}deg) scale(${transform.scale * transform.scaleX}, ${transform.scale * transform.scaleY})`
+                    : undefined,
+                  transformOrigin: '50% 50%',
                 }}
               >
-                <span
-                  className="title-content"
+                <div
+                  className={`draft-title ${title.style} ${title.position} motion-${title.animation}`}
                   style={{
-                    transform: title.animation === 'impact' ? `scale(${motion.scale})` : undefined,
-                    clipPath:
-                      title.animation === 'wipe'
-                        ? `inset(0 ${(1 - motion.ease) * 100}% 0 0)`
+                    color: title.color,
+                    opacity: motion.opacity,
+                    fontSize: title.fontSize ? `${title.fontSize / 12.8}cqw` : undefined,
+                    fontWeight: typography.fontWeight,
+                    textAlign: typography.align,
+                    WebkitTextStroke: typography.stroke
+                      ? `${2 / 12.8}cqw #080c09be`
+                      : '0 transparent',
+                    paintOrder: 'stroke fill',
+                    translate:
+                      title.animation === 'rise'
+                        ? `0 ${-18 * (1 - Math.min(1, (visualTime - title.start) / 0.35))}px`
                         : undefined,
                   }}
                 >
-                  {content}
-                </span>
+                  <span
+                    className="title-content"
+                    style={{
+                      transform:
+                        title.animation === 'impact' ? `scale(${motion.scale})` : undefined,
+                      clipPath:
+                        title.animation === 'wipe'
+                          ? `inset(0 ${(1 - motion.ease) * 100}% 0 0)`
+                          : undefined,
+                    }}
+                  >
+                    {content}
+                  </span>
+                </div>
               </div>
             );
           })}
@@ -932,6 +967,7 @@ export default function FilmComposer({
           ...value,
           shots: value.shots.map(({ assetId: _asset, renderId: _render, ...edit }) => edit),
           audio: value.audio?.map(({ assetId: _asset, ...edit }) => edit),
+          graphics: value.graphics?.map(({ assetId: _asset, ...edit }) => edit),
         });
       if (editingSettings(submitted) !== editingSettings(resolved))
         throw Error(
@@ -1048,9 +1084,23 @@ export default function FilmComposer({
               setDraft({ ...draft, aspect: event.target.value as FilmDraft['aspect'] })
             }
           >
-            <option value="landscape">16:9 · 720p</option>
-            <option value="portrait">9:16 · 720p</option>
-            <option value="square">1:1 · 720p</option>
+            <option value="landscape">Landscape · 16:9</option>
+            <option value="portrait">Portrait · 9:16</option>
+            <option value="square">Square · 1:1</option>
+          </select>
+        </label>
+        <label>
+          Export size
+          <select
+            aria-label="Film export resolution"
+            value={draft.resolution || '720p'}
+            onChange={(event) =>
+              setDraft({ ...draft, resolution: event.target.value as FilmDraft['resolution'] })
+            }
+          >
+            <option value="720p">720p · quick export</option>
+            <option value="1080p">1080p · full HD</option>
+            <option value="2160p">2160p · 4K canvas</option>
           </select>
         </label>
       </div>
@@ -1060,6 +1110,9 @@ export default function FilmComposer({
         </span>
         <span>
           <strong>{viewing.titles?.length || 0}</strong> titles
+        </span>
+        <span>
+          <strong>{viewing.graphics?.length || 0}</strong> graphics
         </span>
         <span>
           <strong>{viewing.audio?.length || 0}</strong> sound clips
@@ -1507,6 +1560,16 @@ export default function FilmComposer({
                 />
               </label>
             </div>
+            <MotionTrackEditor
+              motion={title.motion}
+              onChange={(motion) => titleChange(title.id, { motion })}
+              onPreview={(progress) => {
+                setPauseRequest((request) => request + 1);
+                const first = Math.ceil(title.start * 24 - 1e-7);
+                const last = Math.ceil(title.end * 24 - 1e-7) - 1;
+                setTime((first + Math.round(progress * (last - first))) / 24);
+              }}
+            />
             {title.words && (
               <details className="film-speech-timing">
                 <summary>Speech timing · {title.words.length} words</summary>
@@ -1556,6 +1619,17 @@ export default function FilmComposer({
           </div>
         ))}
       </details>
+      <MotionGraphicsEditor
+        graphics={draft.graphics || []}
+        assets={assets}
+        duration={duration}
+        time={time}
+        onChange={(graphics) => setDraft({ ...draft, graphics })}
+        onSeek={(value) => {
+          setPauseRequest((request) => request + 1);
+          setTime(value);
+        }}
+      />
       <details className="film-editor-section" open>
         <summary>
           03 / Voice & sound <span>{draft.audio?.length || 0} clips</span>

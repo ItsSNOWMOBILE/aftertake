@@ -1,0 +1,57 @@
+{
+  "format": "aftertake-motion-demo-status/1",
+  "appRevision": "8dfa49c297daf3f2f0b639fa17bd101c986bfa8b",
+  "project": {
+    "format": "aftertake-film/3",
+    "sha256": "8918a1ea0dbae94fac20083984b015639b90c2028c5c9de36994efb2be801a08",
+    "durationSeconds": 30.625,
+    "fps": 24,
+    "canvas": [
+      1920,
+      1080
+    ],
+    "shots": 16,
+    "titles": 16,
+    "graphics": 19,
+    "audio": 11
+  },
+  "reveal": {
+    "kind": "actual-editor-still",
+    "playheadSeconds": 1.3333333333333333,
+    "sha256": "3d6de50c0706598fcd187c48999474031808551fd33b18df099dd1e7480b4d2c"
+  },
+  "checks": {
+    "sourceHashesVerified": 27,
+    "copiedBytesUnchanged": true,
+    "pathsCheckoutRelative": true,
+    "selectedNarrationWindowsMatched": 10
+  },
+  "providedPreview": {
+    "filename": "aftertake-motion-design.mp4",
+    "includedInInputArchive": false,
+    "verificationSource": "Separate native export verified by the parent task; not a render performed by this package builder.",
+    "filmId": "1d20fbf7-6110-43de-8efa-8b0e5cb4c05a",
+    "sha256": "5692b8ea53d442d3ffdda03581708c65c87360e792a006249a1acfde33371eac",
+    "width": 1920,
+    "height": 1080,
+    "frames": 735,
+    "fps": 24,
+    "durationSeconds": 30.625,
+    "embeddedProjectMatches": true,
+    "audioNonzero": true,
+    "audioClippingDetected": false,
+    "updatedRevealFrameReviewed": true,
+    "continuousPlaybackOrAudioAuditionClaimed": false
+  },
+  "scope": {
+    "appliesTo": "package-builder",
+    "freshRenderPerformed": false,
+    "continuousMotionWatched": false,
+    "audioAuditionPerformed": false,
+    "creativeApprovalClaimed": false,
+    "continuousScreenCaptureClaimed": false,
+    "newInferenceReproducedByBundle": false,
+    "filmEditReproducedFromRecordedInputs": true
+  },
+  "notes": "Native Film reassembly package. Real UI stills with authored framing, completed local model results, independent graphic/title keys, separate generic narration and procedural music. Export/runtime differences can change MP4 bytes. Review a real export before publishing."
+}

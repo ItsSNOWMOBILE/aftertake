@@ -11,7 +11,7 @@ An open-source creative studio for short-form video, product stories and visual 
 [![Status: Experimental](https://img.shields.io/badge/status-experimental-c3d4a6?labelColor=182015)](#project-status)
 
 **[Try the browser editor](https://aftertake-studio.right-bard-9761.chatgpt.site/studio/)** ·
-**[Watch the demo](https://aftertake-studio.right-bard-9761.chatgpt.site/)** ·
+**[Watch the new demo](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/motion-design-preview-2026-10-19/aftertake-motion-design.mp4)** ·
 **[Read the studio guide](docs/studio-guide.md)**
 
 </div>
@@ -21,6 +21,23 @@ An open-source creative studio for short-form video, product stories and visual 
 [![Aftertake's real text-to-video studio showing a generated amber fragrance bottle, its prompt, and editable settings](examples/text-video/studio.jpg)](https://aftertake-studio.right-bard-9761.chatgpt.site/create/)
 
 <p align="center"><sub>A real local LTX-2.5 render, with generated ambience. <a href="https://aftertake-studio.right-bard-9761.chatgpt.site/create/">Watch the shot and inspect its workflow →</a></sub></p>
+
+## One take. Your next take.
+
+[![Editable moving cards, typography and shapes in Aftertake's native motion graphics demo](examples/motion-design/poster.jpg)](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/motion-design-preview-2026-10-19/aftertake-motion-design.mp4)
+
+**[Watch the narrated 30.6-second preview →](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/motion-design-preview-2026-10-19/aftertake-motion-design.mp4)**
+
+One performance becomes three. Change the character, revise an ad, animate a
+reference, then build the story with **19 editable graphic layers**. The closing
+reveal shows this film inside the actual editor. It was authored and exported
+through Aftertake's own MCP at 1080p and 24 fps.
+
+The [editable project and reproduction guide](examples/motion-design/README.md)
+and [exact media package](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/motion-design-preview-2026-10-19/aftertake-motion-inputs.zip)
+let you replay the edit without a diffusion GPU.
+This is a review preview; the UI sequences use genuine held captures and native
+camera moves.
 
 ## Hotel Lobby, recast
 
@@ -46,15 +63,20 @@ assemble it with narration and editable typography.
 | Create | Direct | Finish |
 | :--- | :--- | :--- |
 | **Images from words** with Z-Image Turbo | **Character replacement** with SAM3 tracking, multiple reference photos and native H3 | **Portrait, square and landscape edits** in Film |
-| **Video with sound** from native LTX-2.5 | **Painted, timed VFX** that composite onto the source | **Kinetic typography** with editable word timing |
+| **Video with sound** from native LTX-2.5 | **Painted, timed VFX** that composite onto the source | **Kinetic typography and motion graphics** with editable keyframes |
 | **Reference-frame edits** with Qwen-Image-Edit | **Camera guidance, first/last frames and motion transfer** | **Local narration**, measured cuts and frame-based dissolves |
 | **Depth-finished stills** with native DA3 Small | **Tracked subject copies** with position, scale, rotation and mask controls | **Color and texture finishing** with exact before/after frame previews |
 | **Layered still compositions** from imported transparent images | **Shape and image masks**, clipping and 27 blend modes | **Selective HSL, master/RGB curves and 3D LUTs** shared with adjustment layers |
 
-Use the visual editor or connect an agent through **39 MCP tools**. Both work with
+Use the visual editor or connect an agent through **40 MCP tools**. Both work with
 the same local studio, persisted jobs and editable projects. Generation uses the
 official Comfy SDK and open-weight model workflows; editing existing footage and
 local narration can run on the CPU.
+
+**Film motion graphics** adds timed shapes, image overlays and title transforms
+with editable easing, independent scale axes and 720p, 1080p or 4K export canvases.
+The native CPU renderer keeps these layers on the film's 24 fps clock.
+See [the motion graphics guide](docs/motion-graphics.md).
 
 ### One performance. Extra copies.
 
@@ -103,7 +125,7 @@ The focused film was assembled in Aftertake itself; its editable
 
 [![Watch Make it yours — a narrated film made in Aftertake](docs/assets/make-it-yours-poster.jpg)](https://aftertake-studio.right-bard-9761.chatgpt.site/make-it-yours/)
 
-**[Make it yours · 40.5 seconds →](https://aftertake-studio.right-bard-9761.chatgpt.site/make-it-yours/)**
+**[Earlier film: Make it yours · 40.5 seconds →](https://aftertake-studio.right-bard-9761.chatgpt.site/make-it-yours/)**
 starts with a vertical ad, changes its hook in the actual editor, then shows
 tracked copies and H3 character replacement. The closing reveal opens its own
 Film timeline. [Both editable projects and the input bundle](examples/product-film/README.md)
@@ -246,6 +268,7 @@ also includes measured engine times and decoded frame/audio checks.
 | [Studio guide](docs/studio-guide.md) | Detailed controls, setup profiles and troubleshooting |
 | [Text-to-video](docs/text-video.md) | Native video/audio sampling, formats and actual render evidence |
 | [Narrated cuts](docs/narrated-cut.md) | Scripts, measured voices, captions and pacing |
+| [Motion graphics](docs/motion-graphics.md) | Animated titles, shapes, image overlays and export sizes |
 | [MCP reference](docs/mcp.md) | Agent setup, tools and recovery behavior |
 | [Examples](examples/README.md) | Recorded projects, provenance and remixing |
 | [Media attribution](docs/media-attribution.md) | Footage, fonts and generated references |
