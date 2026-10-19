@@ -54,6 +54,7 @@ import {
 import './style.css';
 import FilmDesk from './FilmComposer';
 import TakeLibrary from './TakeLibrary';
+import TakeBlend, { takeBlendMatches } from './TakeBlend';
 import TakeStatus from './take-status';
 import { TakeClient, takeBusy, takeRecoverable } from './take-client';
 import RecipeLibrary from './RecipeLibrary';
@@ -655,7 +656,7 @@ export default function App() {
   const paintWidth = editingComposite ? presentation.width : dimensions.width;
   const paintHeight = editingComposite ? presentation.height : dimensions.height;
   useEffect(() => {
-    setPaintTarget('generation');
+    setPaintTarget(recipe?.compositeRegion ? 'composite' : 'generation');
     setRedo([]);
   }, [recipe?.clip.id, recipe?.pipeline]);
   function changePaintCue(partial: Partial<Cue>) {
@@ -852,6 +853,25 @@ export default function App() {
     if (video.current) video.current.currentTime = render.recipe.trimStart;
     if (outputVideo.current) outputVideo.current.currentTime = 0;
   }
+  function prepareTakeBlend(render: Render) {
+    const base = recipe && takeBlendMatches(render, recipe) ? recipe : render.recipe;
+    const next = separateComposite(base, true);
+    const anchor = next.compositeRegion?.anchor || 0;
+    selectTake(render);
+    setRecipe(next);
+    setPaintTarget('composite');
+    setMode('cue');
+    setTime(anchor);
+    if (video.current) video.current.currentTime = next.trimStart + anchor;
+    if (outputVideo.current) outputVideo.current.currentTime = anchor;
+    frame.current?.scrollIntoView({ block: 'center' });
+  }
+  function useGenerationBlendArea() {
+    setRecipe((current) => (current ? separateComposite(current, false) : current));
+    setPaintTarget('generation');
+    setRedo([]);
+    setMode(take?.output ? 'compare' : 'cue');
+  }
   function pointer(event: React.PointerEvent<HTMLCanvasElement>) {
     const bounds = event.currentTarget.getBoundingClientRect();
     return {
@@ -1034,6 +1054,10 @@ export default function App() {
   async function exportWorkflow() {
     if (!recipe) return;
     try {
+      if (take?.recomposition && renderSettingsKey(recipe) === renderSettingsKey(take.recipe)) {
+        download('aftertake-blend-provenance.json', take.recomposition);
+        return;
+      }
       download(
         'aftertake-workflow-api.json',
         take?.workflow && renderSettingsKey(recipe) === renderSettingsKey(take.recipe)
@@ -2055,6 +2079,16 @@ export default function App() {
             onChange={(e) => seek(Number(e.target.value))}
           />
         </section>
+        <TakeBlend
+          take={take}
+          recipe={recipe}
+          onPrepare={prepareTakeBlend}
+          onUseGenerationRegion={useGenerationBlendArea}
+          onComplete={(render, activate) => {
+            setRenders((all) => [render, ...all.filter((item) => item.id !== render.id)]);
+            if (activate) selectTake(render);
+          }}
+        />
         <TakeLibrary
           renders={renders}
           titles={exampleNames}
@@ -2658,7 +2692,11 @@ export default function App() {
             onClick={() => void exportWorkflow()}
           >
             <ArrowDownToLine size={12} />
-            Export ComfyUI workflow
+            {take?.recomposition &&
+            recipe &&
+            renderSettingsKey(recipe) === renderSettingsKey(take.recipe)
+              ? 'Export blend receipt & original graph'
+              : 'Export ComfyUI workflow'}
           </button>
         </div>
       </aside>

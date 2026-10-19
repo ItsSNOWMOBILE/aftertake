@@ -112,6 +112,12 @@ root, including resolved symbolic links; remote media URLs are not accepted.
 | `aftertake_depth_action` | Cancels or reconciles the same accepted depth operation without changing its source or settings. |
 | `aftertake_effect_recipe` | Returns editable effect settings and their source/model/media bindings. |
 | `aftertake_cancel_finishing` | Requests worker cancellation; `canceling` remains busy until the subprocess closes. |
+| `aftertake_refine_blend` | Re-composites a saved native region edit with a different final painted area or source color match, using its original raw video and preserving the original take. No model is invoked. |
+| `aftertake_blend_status` | Reads that CPU job by record ID or original request ID, including its processing receipt and completed take. |
+| `aftertake_cancel_blend` | Cancels the CPU worker without deleting the original take or starting another generation. |
+
+For saved regional takes, [Refine a saved take’s blend](refining-a-take.md)
+explains the supported final-area controls, CPU dependencies and provenance.
 
 `aftertake_import_media` defaults to Film. Set `destination: "studio"` to import
 a generation source through the native source normalizer. Inspect a canonical

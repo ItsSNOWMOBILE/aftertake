@@ -5,11 +5,13 @@ import { takeBusy } from './take-client';
 import './take-library.css';
 
 const pipelineLabel = (take: Render) =>
-  take.recipe.pipeline === 'cinema'
-    ? 'Camera · LTX-2.5'
-    : take.recipe.pipeline === 'motion-transfer'
-      ? 'Motion · Wan Animate 2'
-      : 'Transform · LTX';
+  take.recomposition
+    ? 'Refined blend · CPU'
+    : take.recipe.pipeline === 'cinema'
+      ? 'Camera · LTX-2.5'
+      : take.recipe.pipeline === 'motion-transfer'
+        ? 'Motion · Wan Animate 2'
+        : 'Transform · LTX';
 
 export default function TakeLibrary({
   renders,

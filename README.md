@@ -68,7 +68,7 @@ assemble it with narration and editable typography.
 | **Depth-finished stills** with native DA3 Small | **Tracked subject copies** with position, scale, rotation and mask controls | **Color and texture finishing** with exact before/after frame previews |
 | **Layered still compositions** from imported transparent images | **Shape and image masks**, clipping and 27 blend modes | **Selective HSL, master/RGB curves and 3D LUTs** shared with adjustment layers |
 
-Use the visual editor or connect an agent through **40 MCP tools**. Both work with
+Use the visual editor or connect an agent through **43 MCP tools**. Both work with
 the same local studio, persisted jobs and editable projects. Generation uses the
 official Comfy SDK and open-weight model workflows; editing existing footage and
 local narration can run on the CPU.

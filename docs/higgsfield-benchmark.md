@@ -1,6 +1,9 @@
 # Higgsfield replacement benchmark
 
-Reviewed October 18, 2026. The product goal is an open replacement for useful
+Native capability inventory updated October 19, 2026, from `fde2053` and the
+saved-take blend refinement in this revision.
+Competitor observations retain their original dates and pinned revisions below.
+The product goal is an open replacement for useful
 Higgsfield workflows. Competition readiness and full feature parity are
 different milestones. A control is counted as implemented only when it changes
 the executed workflow; generative quality still needs visual review.
@@ -34,20 +37,57 @@ behavior has been inspected.
 | Full film-stock/camera/lens catalogs and multi-shot cinematic direction | Missing / partial compared with the existing small look library |
 | Soul ID / persistent character identity across projects and scenes | Missing |
 | AI Influencer structured character builder | Missing |
-| Broad effects/preset marketplace | Partial: thirteen bundled reviewed recipes |
+| Broad effects/preset marketplace | Partial: thirteen bundled recipes; twelve received final-quality refreshes and the current coastal example was retained. Complete playback quality is not certified |
 | Ads Studio and Marketing Studio | Partial: optional local brief-to-script suggestions, a measured narrated-cut builder, editable type/voices and hook variants; footage discovery, campaign planning, batch strategy and performance optimization remain missing |
 | Canvas, workflow chaining and team collaboration | Missing |
 | Dedicated 3D Jutsu workflows | Missing |
 | Dedicated upscaling/restoration delivery workflow | Missing |
 | Bulk variations, batch grids and collections | Missing |
-| Long continuous generation and native 1080p/4K delivery | Missing; current finished generation is short and film export is 720p |
-| Film cuts, imported footage/stills, typography and voiceover | Implemented locally; 48 cuts, timed type, generic local Kokoro voices, a measured narrated-cut builder and editable projects |
-| Prompt-driven motion design and kinetic typography | Partial: editable entrances plus Follow voice word highlights using Kokoro timing estimates, with manual word adjustment; freeform generative motion graphics remain missing |
+| Long continuous generation and native 1080p/4K generation | Missing; current model outputs are short. Film supports 720p, 1080p and 2160p export canvases; resizing a source for export does not regenerate or AI-upscale it |
+| Film cuts, imported footage/stills, typography and voiceover | Implemented locally; 48 cuts, 80 titles, generic local Kokoro voices, a measured narrated-cut builder, source-audio mixing and portable projects |
+| Prompt-driven motion design and kinetic typography | Editable 2D motion implemented: title transforms, up to 24 rectangle/ellipse/image layers, 2–12 keys per track, easing, independent axes and alpha. Existing text entrances and Follow voice timing remain available; freeform generative motion design and full After Effects compatibility are not implemented |
+| Subject effects, color finishing and still-image layers | Tracked source-pixel copies; video color/texture finishing; still-image and adjustment layers with shape/image masks, clipping, 27 blend modes, HSL, curves and LUTs. Optional native depth estimation supports still-image depth effects; this is not a general video compositing or 3D suite |
 | Full character/avatar audio performance workflows | Missing; narration and mixing do not establish this capability. Separate experimental LivePortrait utilities refine the lower face or reconstruct a head from an aligned portrait and original video motion with SAM contours. One bridge candidate is verified; these CLI passes do not establish general head fidelity or audio-driven dialogue |
-| Agent generation and editing via MCP | Implemented locally: twenty-seven typed tools cover native image/frame/video generation, direct text-to-video with sound, native SAM3/H3 character selection/replacement, optional local script drafts, inspection, measured narration, persistent beat plans and native exports; the product-shot chain is verified live, while broad automated creative direction remains unproven |
-| Managed cloud rendering, accounts, billing, shared projects and public generation API | Connection preparation only: local session-held keys, read-only Cloud account checks and an offline deployment inventory. Cloud generation, verified billing, remote job recovery and hosted user isolation are not enabled; the hosted site reviews recorded examples |
+| Agent generation and editing via MCP | Forty-three native tools cover creation, SAM3/H3 selection/replacement, effects, saved-take CPU blend refinement, source inspection, measured narration, saved edit plans, complete Film motion graphics, export and decoded review. An external MCP agent authored the new native demo; broad automatic creative direction remains unproven |
+| Managed cloud rendering, accounts, billing, shared projects and public generation API | Native branch retains connection preparation and recorded browser examples. A separate optional branch has actual paid Comfy Router LTX-2.5 Fast text-to-video, durable jobs and local Film handoff. Remote native H3/painted workflows, shared hosted accounts and multi-user isolation remain unimplemented; see the branch distinction below |
 
-The focused 53.04-second film was cut, titled, voiced and exported through Aftertake. It has 19 cuts, 24 editable title layers and 13 complete outer narration clips. The actual local MCP session receipt and editable project are included. The film is prepared for review and is not a submitted entry or evidence of full suite parity.
+The new [30.625-second native film](../examples/motion-design/README.md) has
+16 cuts, 16 titles, 19 graphic layers and 11 audio tracks on a 1920 × 1080,
+24 fps canvas. It was authored and exported through Aftertake's MCP. Its exact
+27-source package was imported into a fresh CPU-only workspace and re-exported;
+all 735 decoded RGB frames, decoded PCM samples and timestamps matched the
+original. This verifies replay of completed inputs, not fresh H3/LTX inference
+on another GPU or continuous creative playback/listening approval. UI sequences
+use genuine held captures with authored framing, not continuous interaction.
+
+The earlier 53.04-second film remains available with its editable project and
+native MCP receipts. These are review artifacts, not submitted entries or
+evidence of full suite parity. [Motion graphics](motion-graphics.md) documents
+the controls, bounded CPU rendering and format-3 project requirements.
+
+Saved regional takes can now [refine their final blend](refining-a-take.md)
+without invoking a model. A Golden Falls example opened through the normal
+importer and recomposed through the app API matched the earlier tighter-mask
+candidate in all 97 decoded frames and timestamps. This preserves more source
+forest around the effect; it does not improve the generated liquid's physics.
+
+### Optional hosted branch
+
+The separate [hosted implementation at `673c865`](https://github.com/ItsSNOWMOBILE/aftertake/tree/673c865e82fb1b5a37b83f542ec8c022a0353bc1)
+adds explicit paid LTX-2.5 Fast text-to-video using Comfy Router: landscape or
+portrait 720p, two to five seconds, optional generated sound, memory-held keys,
+persisted recovery and downloaded outputs that can enter Film. A real paid
+two-second request completed; its returned 49-frame, 24 fps output measures
+2.0417 seconds. This does not deploy native character replacement, painted edits
+or custom Comfy graphs to Cloud. The public recorded browser editor does not
+collect keys or start hosted jobs.
+
+Open Weights Only eligibility for the optional backend has not been established.
+The [official category rule](https://comfy.org/open-source-higgsfield/) excludes
+partner nodes and closed-source APIs; it gives no stated optional-backend
+exemption. Keep native competition evidence distinct from hosted outputs and
+consult the [hosted guide at that revision](https://github.com/ItsSNOWMOBILE/aftertake/blob/673c865e82fb1b5a37b83f542ec8c022a0353bc1/docs/hosted-generation.md)
+for its billing and recovery scope.
 
 Higgsfield's official [explainer skill](https://github.com/higgsfield-ai/skills/blob/main/higgsfield-video-explainer/SKILL.md)
 pairs narration and visuals, generates voice before assembly, and validates
@@ -84,9 +124,9 @@ and repeatable starting points a major part of the experience.
 | Animate a reference or connect two images | LTX-2.5 first-frame conditioning; optional ending image, upload/select/inspect or create with local Qwen; hash-bound recipe sharing; first/last guides with optional motion tracks | Real draft and finish transitions checked on the forest scene. Endpoints are soft constraints; broader scene and transition quality remain under evaluation |
 | Direct camera and look | Five movement suggestions, four lens characters, five lighting options; inspectable prompt; four output grades; optional motion-track conditioning | Prompt-only direction is unreliable. Guided pullback and static framing passed visual checks on one room; broader scene coverage and 3D camera reconstruction remain open |
 | Keep a film look across sources | Named local look library, built-in looks, settings preserved in recipes and MP4 metadata | No multi-user collaboration or identity lock |
-| Start from an effect | Searchable library of thirteen reviewed effects, camera and motion recipes with actual source/result previews; inspect/import recorded takes or apply direction to your source and cue | More varied scenes and effects needed |
+| Start from an effect | Searchable library of thirteen effects, camera and motion recipes with actual source/result previews; inspect/import recorded takes or apply direction to your source and cue | More varied scenes and effects needed; refreshed generations still require temporal visual review |
 | Iterate and remix | Durable takes, search/type/state filters, browser favorites, source/result/compare, seeds, editable recipes and executed graph export | Batch variation grid and collections needed |
-| Finish a longer film | Trim and join up to 48 takes, imported videos or stills; timed typography, local narration, audio mixing and optional normalization; three 720p canvas shapes; hash-bound version-2 editable project | Longer continuous generation, advanced transitions and native 1080p delivery remain open |
+| Finish a longer film | Trim and join up to 48 takes, imported videos or stills; keyed camera framing, timed type, shape/image graphics, local narration and audio mixing; landscape/portrait/square export at 720p, 1080p or 2160p; hash-bound `aftertake-film/3` projects for new motion/export settings | Longer continuous generation, more transition types and source-detail restoration remain open; a larger export canvas does not establish native high-resolution inference |
 
 The frame-animation path loads the same public LTX-2.5 backbone, text encoder
 and VAE as masked editing, with **no inpainting adapter**. Camera and look
@@ -158,6 +198,13 @@ effects. Search, type/state filters and browser-persisted take favorites have
 been implemented locally as the first iteration improvement. These directions
 are independent implementations; no competitor code or media is incorporated.
 
+October 19 follow-through: native Film now supports independently keyed
+camera framing, title transforms, shapes and image overlays, plus 1080p/2160p
+export canvases. The new narrated film and portable media package exercise
+these capabilities. Continuous UI recording and cursor choreography are not
+demonstrated by its held UI captures; broader automatic creative direction,
+batch variation grids and native cloud deployment remain separate work.
+
 Follow-through: Aftertake now has a native Z-Image Turbo text-to-image mode,
 three frame shapes, six prompt styles, seed/history/recipe import and export,
 and an explicit handoff to Cinema. A real 1152 × 768 image and its subsequent
@@ -220,9 +267,11 @@ targets LTX-2.3 reference sheets and has a separate publisher access gate; it
 has not been downloaded or represented as an installed capability.
 
 First-frame animation, saved film looks and guided framing have completed real
-SDK renders. The film desk now trims and orders up to 48 takes or imported media,
-adds timed type and voiceover, exports 720p MP4s and saves a hash-bound editable
-project. Upright phone-video handling and trimmed source sound also passed a
+SDK renders. Film now trims and orders up to 48 takes or imported media, adds
+timed type, keyed 2D graphics and voiceover, and exports 720p/1080p/2160p canvas
+MP4s with hash-bound editable projects. New graphic/title motion and explicit
+export-size settings require `aftertake-film/3`; legacy projects remain
+supported. Upright phone-video handling and trimmed source sound also passed a
 native masked-edit render on the local RTX 5080.
 
 ## Agent behavior audit — October 18
@@ -233,11 +282,13 @@ Its narrated-explainer workflow measures voice before visuals, pairs each block
 explicitly, and assembles a finished film. These are useful orchestration
 patterns; the explainer's fixed ten-second blocks are specific to that product.
 
-Aftertake has the underlying typed assets, local workflows, persistent jobs and
-editable film format. The current narrated demo uses a measured beat ledger,
-but a general agent that owns an edit plan and targeted revisions is still
-pending. The implementation mapping and official source revision are recorded
-in `higgsfield-agent-audit.json`.
+Aftertake has typed assets, local workflows, persistent jobs and an editable
+Film format. An external MCP agent can inspect sources, save a complete edit,
+export it, review decoded frames and save a targeted revision; the new native
+motion film exercises that path. The studio does not contain its own general
+creative-director LLM, and technical review does not establish artistic quality.
+The October 18 implementation mapping and official source revision are retained
+in `higgsfield-agent-audit.json` as historical research.
 
 The live MCP initialization returned HTTP 401 without authentication. Its
 private video-editing instruction payload and authenticated tool behavior have
