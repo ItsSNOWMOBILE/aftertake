@@ -76,6 +76,14 @@ outfit. H3 Character Swap V1.5 receives that photo, the source performance,
 tracked latent edit mask and continuation history directly. The frame editor
 does not redraw the identity first. Source audio is retained at 24 fps.
 
+New takes composite the decoded character over the prepared source through the
+tracked mask, with a 32-pixel margin and a small soft edge. This restores logos,
+other people and background outside that edit region instead of keeping H3's
+reconstruction of them. Inspect nearby objects and mask edges; the margin is
+part of the edited area, and final video encoding can change pixel values.
+The [Hotel Lobby walkthrough](../examples/hotel-lobby/) includes the raw H3
+output and the separately executed native Comfy finish for comparison.
+
 The character workspace includes take history, source/result review, reusable
 recipes, MP4 downloads and a Film handoff. **Continue in ComfyUI** exports the
 actual executed API graph, lossless tracked mask and prepared source; supply

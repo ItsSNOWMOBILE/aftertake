@@ -1,0 +1,172 @@
+{
+  "format": "aftertake-hotel-lobby-public-capture-receipts/1",
+  "description": "Actual Character Studio screenshots held statically as silent video; no generated UI motion or progress.",
+  "selectionId": "875c5933-c399-41e7-9ada-ec12c5a5de4a",
+  "replacementId": "9e62b61f-5124-452e-bd64-52a4b1747d7c",
+  "nativeH3JobId": "5949d3ac-847d-4a06-b780-a83d853ceccf",
+  "roles": {
+    "reference_and_face_focus": {
+      "sha256": "1b4cfd14d48bc65affc75cabafff4dd7dfc09b5a571680f1ece200f0063914ca",
+      "method": "Actual CUA screenshot held statically",
+      "stillHold": true,
+      "frames": 96,
+      "fps": 24,
+      "width": 1280,
+      "height": 720,
+      "duration": 4.0,
+      "hasAudio": false,
+      "decodedFramesIdentical": true,
+      "decodedFrameSHA256": "e72bf126ef76e60e2f19cf8249df0355d071bcfc55c49ed92f793d911c589119",
+      "sourceRGBRoundTripMeanAbsError": 0.4562590422453704,
+      "sourceRGBRoundTripMaxAbsError": 2,
+      "intermediateEncoder": "PyAV/libx264 lossless CRF 0, yuv444p, CPU; no animation",
+      "bytes": 337884,
+      "path": "capture-holds/reference_and_face_focus.mp4",
+      "sourceScreenshot": {
+        "path": "captures/reference-and-reviewed-mask.jpg",
+        "sha256": "037944dbe9e42ee29c1f0079bfe71ecc74eef866d8bbeeb69258c45791fd61f3",
+        "timestamp": {
+          "kind": "capture-log",
+          "value": "2026-10-19T00:25:53.616000Z",
+          "epochMilliseconds": 1792369553616
+        }
+      }
+    },
+    "target_selection": {
+      "sha256": "bd46e52f1db1839702de4f3ff409c5326fef2de3eb3f627b3e88667995f82a4c",
+      "method": "Actual CUA screenshot held statically",
+      "stillHold": true,
+      "frames": 24,
+      "fps": 24,
+      "width": 1280,
+      "height": 720,
+      "duration": 1.0,
+      "hasAudio": false,
+      "decodedFramesIdentical": true,
+      "decodedFrameSHA256": "f678655f3b4e3976c96a4162420ce1d9de3e02d9c24e37091386b1bcd117e79e",
+      "sourceRGBRoundTripMeanAbsError": 0.4642024739583333,
+      "sourceRGBRoundTripMaxAbsError": 2,
+      "intermediateEncoder": "PyAV/libx264 lossless CRF 0, yuv444p, CPU; no animation",
+      "bytes": 320759,
+      "path": "capture-holds/target_selection.mp4",
+      "sourceScreenshot": {
+        "path": "captures/selection-before-track.jpg",
+        "sha256": "c61357559db28b5f8f2be0bec4cb0b12e6dfa24e2c97f4e12cb425abbf06c469",
+        "timestamp": {
+          "kind": "filesystem-mtime",
+          "value": "2026-10-19T00:22:35.953602Z"
+        }
+      }
+    },
+    "sam3_review": {
+      "sha256": "81f57ea679bbc725065aefc8cd956180230cec35c1c85e02aa57181eb8344d7c",
+      "method": "Actual CUA screenshot held statically",
+      "stillHold": true,
+      "frames": 84,
+      "fps": 24,
+      "width": 1280,
+      "height": 720,
+      "duration": 3.5,
+      "hasAudio": false,
+      "decodedFramesIdentical": true,
+      "decodedFrameSHA256": "e72bf126ef76e60e2f19cf8249df0355d071bcfc55c49ed92f793d911c589119",
+      "sourceRGBRoundTripMeanAbsError": 0.4562590422453704,
+      "sourceRGBRoundTripMaxAbsError": 2,
+      "intermediateEncoder": "PyAV/libx264 lossless CRF 0, yuv444p, CPU; no animation",
+      "bytes": 337056,
+      "path": "capture-holds/sam3_review.mp4",
+      "sourceScreenshot": {
+        "path": "captures/reference-and-reviewed-mask.jpg",
+        "sha256": "037944dbe9e42ee29c1f0079bfe71ecc74eef866d8bbeeb69258c45791fd61f3",
+        "timestamp": {
+          "kind": "capture-log",
+          "value": "2026-10-19T00:25:53.616000Z",
+          "epochMilliseconds": 1792369553616
+        }
+      }
+    },
+    "h3_setup": {
+      "sha256": "5dceb5cf800a2958f7663748f3618cdf15b60ff2c6bbc8de7e6225283a7aa1f3",
+      "method": "Actual CUA screenshot held statically",
+      "stillHold": true,
+      "frames": 24,
+      "fps": 24,
+      "width": 1280,
+      "height": 720,
+      "duration": 1.0,
+      "hasAudio": false,
+      "decodedFramesIdentical": true,
+      "decodedFrameSHA256": "167726daa6a64f0e22d255c05088f139510df8142464fa70e34c8b7513da03c7",
+      "sourceRGBRoundTripMeanAbsError": 0.44584563078703704,
+      "sourceRGBRoundTripMaxAbsError": 2,
+      "intermediateEncoder": "PyAV/libx264 lossless CRF 0, yuv444p, CPU; no animation",
+      "bytes": 337784,
+      "path": "capture-holds/h3_setup.mp4",
+      "sourceScreenshot": {
+        "path": "captures/before-h3.jpg",
+        "sha256": "cb9cd30da19bd47adfbfe8b2436f28ce9f90d0748808378d8c355b3a18923bde",
+        "timestamp": {
+          "kind": "filesystem-mtime",
+          "value": "2026-10-19T00:25:54.073960Z"
+        }
+      }
+    },
+    "h3_progress": {
+      "sha256": "cef8c5ae1a79c3fc8481ef9dbbf1897dfcd596bc9ab0186a869f353a47e23257",
+      "method": "Actual CUA screenshot held statically",
+      "stillHold": true,
+      "frames": 84,
+      "fps": 24,
+      "width": 1280,
+      "height": 720,
+      "duration": 3.5,
+      "hasAudio": false,
+      "decodedFramesIdentical": true,
+      "decodedFrameSHA256": "fc09e948f18cba3fdb2e58b21a18fdf689dced0152fc3619a52d3b8f8773a6cc",
+      "sourceRGBRoundTripMeanAbsError": 0.32623227719907405,
+      "sourceRGBRoundTripMaxAbsError": 2,
+      "intermediateEncoder": "PyAV/libx264 lossless CRF 0, yuv444p, CPU; no animation",
+      "bytes": 176693,
+      "statesObserved": [
+        "Applying character and source performance"
+      ],
+      "path": "capture-holds/h3_progress.mp4",
+      "sourceScreenshot": {
+        "path": "captures/h3-running-002.jpg",
+        "sha256": "537d5d470e4d0ab119789b6b66ccb687bbbbae73705aa46fc88e5acaabce1549",
+        "timestamp": {
+          "kind": "capture-log",
+          "value": "2026-10-19T00:31:20.193000Z",
+          "epochMilliseconds": 1792369880193
+        }
+      }
+    },
+    "completed_result_and_workflow": {
+      "sha256": "70030c068b92e246792448b03b9fff9578a54844fede64c05ed819956d0bb87c",
+      "method": "Actual CUA screenshot held statically",
+      "stillHold": true,
+      "frames": 93,
+      "fps": 24,
+      "width": 1280,
+      "height": 720,
+      "duration": 3.875,
+      "hasAudio": false,
+      "decodedFramesIdentical": true,
+      "decodedFrameSHA256": "29a8bfd824883703add9a602095aade59f339ea5b06ec872a0127f917809d0f9",
+      "sourceRGBRoundTripMeanAbsError": 0.5314742476851851,
+      "sourceRGBRoundTripMaxAbsError": 2,
+      "intermediateEncoder": "PyAV/libx264 lossless CRF 0, yuv444p, CPU; no animation",
+      "bytes": 261029,
+      "path": "capture-holds/completed_result_and_workflow.mp4",
+      "sourceScreenshot": {
+        "path": "captures/completed-workflow.jpg",
+        "sha256": "c7a930c77c93fef9b5de024359219550c8589b70c75750085337ecfaf96964f7",
+        "timestamp": {
+          "kind": "capture-log",
+          "value": "2026-10-19T00:33:17.674000Z",
+          "epochMilliseconds": 1792369997674
+        }
+      }
+    }
+  }
+}

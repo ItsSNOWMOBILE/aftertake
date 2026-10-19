@@ -1,0 +1,514 @@
+{
+  "format": "aftertake-hotel-lobby-public-voice-receipts/1",
+  "origin": "Native local Kokoro narration through aftertake_voice",
+  "receipts": [
+    {
+      "beat": "01-source",
+      "path": "voices/01-source.wav",
+      "asset": {
+        "kind": "audio",
+        "id": "67da56c7-c4ae-4c62-8c61-76ba9fb0cb25",
+        "sha256": "32edcb1463deb74cb7099f4ff1f30d52fdc0dfb6cc2959fe8ded0ebb30e616ea",
+        "duration": 2.0573333333333332,
+        "createdAt": "2026-10-19T00:29:29.161Z",
+        "narration": {
+          "text": "Hotel Lobby, with a new cast.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Hotel",
+                "start": 0.09033333333333333,
+                "end": 0.4653333333333333
+              },
+              {
+                "text": "Lobby,",
+                "start": 0.5153333333333333,
+                "end": 0.9403333333333334
+              },
+              {
+                "text": "with",
+                "start": 1.0403333333333333,
+                "end": 1.1403333333333334
+              },
+              {
+                "text": "a",
+                "start": 1.1653333333333333,
+                "end": 1.1903333333333332
+              },
+              {
+                "text": "new",
+                "start": 1.2403333333333333,
+                "end": 1.3403333333333334
+              },
+              {
+                "text": "cast.",
+                "start": 1.3903333333333334,
+                "end": 1.8773333333333333
+              }
+            ]
+          }
+        }
+      },
+      "measured": {
+        "sampleRate": 24000,
+        "channels": 1,
+        "bitsPerSample": 16,
+        "sampleFrames": 49376,
+        "duration": 2.0573333333333332,
+        "rms": 0.0588150594879215,
+        "peak": 0.3551025390625,
+        "clippedSamples": 0,
+        "sha256": "32edcb1463deb74cb7099f4ff1f30d52fdc0dfb6cc2959fe8ded0ebb30e616ea",
+        "bytes": 98796
+      }
+    },
+    {
+      "beat": "02-reference",
+      "path": "voices/02-reference.wav",
+      "asset": {
+        "kind": "audio",
+        "id": "81b30075-8bd6-45cb-b271-3a0bfb78ecda",
+        "sha256": "6008438a599ddf639da4102b0d2b8d6a3422d3d64130b0dbe12cc476c3c09bef",
+        "duration": 2.3473333333333333,
+        "createdAt": "2026-10-19T00:29:31.565Z",
+        "narration": {
+          "text": "Start with your photo and focus the face.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Start",
+                "start": 0.11533333333333333,
+                "end": 0.36533333333333334
+              },
+              {
+                "text": "with",
+                "start": 0.3903333333333333,
+                "end": 0.4653333333333333
+              },
+              {
+                "text": "your",
+                "start": 0.49033333333333334,
+                "end": 0.5653333333333334
+              },
+              {
+                "text": "photo",
+                "start": 0.6153333333333333,
+                "end": 1.0903333333333334
+              },
+              {
+                "text": "and",
+                "start": 1.1653333333333333,
+                "end": 1.2403333333333333
+              },
+              {
+                "text": "focus",
+                "start": 1.3153333333333332,
+                "end": 1.5903333333333334
+              },
+              {
+                "text": "the",
+                "start": 1.6403333333333334,
+                "end": 1.6903333333333332
+              },
+              {
+                "text": "face.",
+                "start": 1.7403333333333333,
+                "end": 2.1973333333333334
+              }
+            ]
+          }
+        }
+      },
+      "measured": {
+        "sampleRate": 24000,
+        "channels": 1,
+        "bitsPerSample": 16,
+        "sampleFrames": 56336,
+        "duration": 2.3473333333333333,
+        "rms": 0.05839370387862795,
+        "peak": 0.4249267578125,
+        "clippedSamples": 0,
+        "sha256": "6008438a599ddf639da4102b0d2b8d6a3422d3d64130b0dbe12cc476c3c09bef",
+        "bytes": 112716
+      }
+    },
+    {
+      "beat": "03-selection",
+      "path": "voices/03-selection.wav",
+      "asset": {
+        "kind": "audio",
+        "id": "5830941a-1b88-4ff5-843c-2a849d935b0f",
+        "sha256": "97d00ba28d812fa79af5716172c353f89f7af7f442a7f2b01ea72502bde61aed",
+        "duration": 3.188,
+        "createdAt": "2026-10-19T00:29:34.163Z",
+        "narration": {
+          "text": "Select the left performer, then review the tracked mask.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Select",
+                "start": 0.11533333333333333,
+                "end": 0.44033333333333335
+              },
+              {
+                "text": "the",
+                "start": 0.4653333333333333,
+                "end": 0.5153333333333333
+              },
+              {
+                "text": "left",
+                "start": 0.5653333333333334,
+                "end": 0.7653333333333333
+              },
+              {
+                "text": "performer,",
+                "start": 0.8153333333333334,
+                "end": 1.4403333333333332
+              },
+              {
+                "text": "then",
+                "start": 1.5903333333333334,
+                "end": 1.7653333333333334
+              },
+              {
+                "text": "review",
+                "start": 1.8153333333333332,
+                "end": 2.090333333333333
+              },
+              {
+                "text": "the",
+                "start": 2.1153333333333335,
+                "end": 2.1653333333333333
+              },
+              {
+                "text": "tracked",
+                "start": 2.215333333333333,
+                "end": 2.5153333333333334
+              },
+              {
+                "text": "mask.",
+                "start": 2.5653333333333332,
+                "end": 3.008
+              }
+            ]
+          }
+        }
+      },
+      "measured": {
+        "sampleRate": 24000,
+        "channels": 1,
+        "bitsPerSample": 16,
+        "sampleFrames": 76512,
+        "duration": 3.188,
+        "rms": 0.06066323199801743,
+        "peak": 0.401397705078125,
+        "clippedSamples": 0,
+        "sha256": "97d00ba28d812fa79af5716172c353f89f7af7f442a7f2b01ea72502bde61aed",
+        "bytes": 153068
+      }
+    },
+    {
+      "beat": "04-h3",
+      "path": "voices/04-h3.wav",
+      "asset": {
+        "kind": "audio",
+        "id": "7a73bdbd-3b2c-417d-9346-f52de92adb94",
+        "sha256": "1736e5472adb1604d9b5bf81c7412b8d49e212c4a6d6c26cc09cc787753be21c",
+        "duration": 2.616,
+        "createdAt": "2026-10-19T00:29:36.534Z",
+        "narration": {
+          "text": "H three replaces the selected person.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "H",
+                "start": 0.094,
+                "end": 0.344
+              },
+              {
+                "text": "three",
+                "start": 0.419,
+                "end": 0.794
+              },
+              {
+                "text": "replaces",
+                "start": 0.844,
+                "end": 1.344
+              },
+              {
+                "text": "the",
+                "start": 1.369,
+                "end": 1.419
+              },
+              {
+                "text": "selected",
+                "start": 1.469,
+                "end": 1.894
+              },
+              {
+                "text": "person.",
+                "start": 1.944,
+                "end": 2.496
+              }
+            ]
+          }
+        }
+      },
+      "measured": {
+        "sampleRate": 24000,
+        "channels": 1,
+        "bitsPerSample": 16,
+        "sampleFrames": 62784,
+        "duration": 2.616,
+        "rms": 0.05631688359299426,
+        "peak": 0.373443603515625,
+        "clippedSamples": 0,
+        "sha256": "1736e5472adb1604d9b5bf81c7412b8d49e212c4a6d6c26cc09cc787753be21c",
+        "bytes": 125612
+      }
+    },
+    {
+      "beat": "05-comparison",
+      "path": "voices/05-comparison.wav",
+      "asset": {
+        "kind": "audio",
+        "id": "d6d51267-3bfd-41ef-813d-48aed61a0a7d",
+        "sha256": "3fee987ca0138090b4dbafa70428b4f03117fed57eea7dbea162654225c25e32",
+        "duration": 2.7626666666666666,
+        "createdAt": "2026-10-19T00:29:38.911Z",
+        "narration": {
+          "text": "Waits omitted. Compare the source and result.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Waits",
+                "start": 0.094,
+                "end": 0.394
+              },
+              {
+                "text": "omitted.",
+                "start": 0.444,
+                "end": 1.019
+              },
+              {
+                "text": "Compare",
+                "start": 1.144,
+                "end": 1.444
+              },
+              {
+                "text": "the",
+                "start": 1.469,
+                "end": 1.519
+              },
+              {
+                "text": "source",
+                "start": 1.594,
+                "end": 1.919
+              },
+              {
+                "text": "and",
+                "start": 1.969,
+                "end": 2.044
+              },
+              {
+                "text": "result.",
+                "start": 2.069,
+                "end": 2.6026666666666665
+              }
+            ]
+          }
+        }
+      },
+      "measured": {
+        "sampleRate": 24000,
+        "channels": 1,
+        "bitsPerSample": 16,
+        "sampleFrames": 66304,
+        "duration": 2.7626666666666666,
+        "rms": 0.05847400578779224,
+        "peak": 0.379241943359375,
+        "clippedSamples": 0,
+        "sha256": "3fee987ca0138090b4dbafa70428b4f03117fed57eea7dbea162654225c25e32",
+        "bytes": 132652
+      }
+    },
+    {
+      "beat": "06-result",
+      "path": "voices/06-result.wav",
+      "asset": {
+        "kind": "audio",
+        "id": "3ce9dc16-2e8f-4062-af12-5f8bd5b525eb",
+        "sha256": "b9d87c317a2871646d7f1094d54a8f121f43665beb7fd4a51ea39632f8f70574",
+        "duration": 1.998,
+        "createdAt": "2026-10-19T00:29:41.261Z",
+        "narration": {
+          "text": "Same scene. New character.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Same",
+                "start": 0.119,
+                "end": 0.369
+              },
+              {
+                "text": "scene.",
+                "start": 0.444,
+                "end": 0.844
+              },
+              {
+                "text": "New",
+                "start": 1.099,
+                "end": 1.1989999999999998
+              },
+              {
+                "text": "character.",
+                "start": 1.249,
+                "end": 1.858
+              }
+            ]
+          }
+        }
+      },
+      "measured": {
+        "sampleRate": 24000,
+        "channels": 1,
+        "bitsPerSample": 16,
+        "sampleFrames": 47952,
+        "duration": 1.998,
+        "rms": 0.05792916592089924,
+        "peak": 0.43548583984375,
+        "clippedSamples": 0,
+        "sha256": "b9d87c317a2871646d7f1094d54a8f121f43665beb7fd4a51ea39632f8f70574",
+        "bytes": 95948
+      }
+    },
+    {
+      "beat": "07-workflow",
+      "path": "voices/07-workflow.wav",
+      "asset": {
+        "kind": "audio",
+        "id": "4f6aaa29-6025-4b14-9c6b-6103cfae7c26",
+        "sha256": "cc761c2eb957e9116ffb1fd0bc66df10605c923520a1d7e7113fd2cb803acf86",
+        "duration": 2.8152916666666665,
+        "createdAt": "2026-10-19T00:29:43.890Z",
+        "narration": {
+          "text": "Made in Aftertake. Open the saved workflow.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Made",
+                "start": 0.094,
+                "end": 0.294
+              },
+              {
+                "text": "in",
+                "start": 0.319,
+                "end": 0.394
+              },
+              {
+                "text": "Aftertake.",
+                "start": 0.469,
+                "end": 1.194
+              },
+              {
+                "text": "Open",
+                "start": 1.344,
+                "end": 1.594
+              },
+              {
+                "text": "the",
+                "start": 1.619,
+                "end": 1.669
+              },
+              {
+                "text": "saved",
+                "start": 1.744,
+                "end": 2.044
+              },
+              {
+                "text": "workflow.",
+                "start": 2.094,
+                "end": 2.6453333333333333
+              }
+            ]
+          }
+        }
+      },
+      "measured": {
+        "sampleRate": 24000,
+        "channels": 1,
+        "bitsPerSample": 16,
+        "sampleFrames": 67567,
+        "duration": 2.8152916666666665,
+        "rms": 0.06126135531277767,
+        "peak": 0.497650146484375,
+        "clippedSamples": 0,
+        "sha256": "cc761c2eb957e9116ffb1fd0bc66df10605c923520a1d7e7113fd2cb803acf86",
+        "bytes": 135178
+      }
+    }
+  ]
+}

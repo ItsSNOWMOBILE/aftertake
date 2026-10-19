@@ -1,0 +1,87 @@
+{
+  "format": "aftertake-hotel-lobby-storyboard/1",
+  "fps": 24,
+  "frames": 624,
+  "duration": 26.0,
+  "beats": [
+    {
+      "beat": "01-source",
+      "start": 0.0,
+      "end": 3.0416666666666665,
+      "spokenText": "Hotel Lobby, with a new cast.",
+      "voiceStart": 0.125,
+      "voiceEnd": 2.1823333333333332,
+      "shotNumbers": [
+        1
+      ]
+    },
+    {
+      "beat": "02-reference",
+      "start": 3.0416666666666665,
+      "end": 7.041666666666667,
+      "spokenText": "Start with your photo and focus the face.",
+      "voiceStart": 3.1666666666666665,
+      "voiceEnd": 5.513999999999999,
+      "shotNumbers": [
+        2
+      ]
+    },
+    {
+      "beat": "03-selection",
+      "start": 7.041666666666667,
+      "end": 11.541666666666666,
+      "spokenText": "Select the left performer, then review the tracked mask.",
+      "voiceStart": 7.166666666666667,
+      "voiceEnd": 10.354666666666667,
+      "shotNumbers": [
+        3,
+        4
+      ]
+    },
+    {
+      "beat": "04-h3",
+      "start": 11.541666666666666,
+      "end": 16.041666666666668,
+      "spokenText": "H three replaces the selected person.",
+      "voiceStart": 11.666666666666666,
+      "voiceEnd": 14.282666666666666,
+      "shotNumbers": [
+        5,
+        6
+      ]
+    },
+    {
+      "beat": "05-comparison",
+      "start": 16.041666666666668,
+      "end": 19.083333333333332,
+      "spokenText": "Waits omitted. Compare the source and result.",
+      "voiceStart": 16.166666666666668,
+      "voiceEnd": 18.929333333333336,
+      "shotNumbers": [
+        7
+      ]
+    },
+    {
+      "beat": "06-result",
+      "start": 19.083333333333332,
+      "end": 22.125,
+      "spokenText": "Same scene. New character.",
+      "voiceStart": 19.208333333333332,
+      "voiceEnd": 21.206333333333333,
+      "shotNumbers": [
+        8
+      ]
+    },
+    {
+      "beat": "07-workflow",
+      "start": 22.125,
+      "end": 26.0,
+      "spokenText": "Made in Aftertake. Open the saved workflow.",
+      "voiceStart": 22.25,
+      "voiceEnd": 25.065291666666667,
+      "shotNumbers": [
+        9
+      ]
+    }
+  ]
+}

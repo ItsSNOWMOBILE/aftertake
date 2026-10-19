@@ -1,0 +1,749 @@
+{
+  "format": "aftertake-film/2",
+  "name": "Hotel Lobby / character swap",
+  "aspect": "landscape",
+  "shots": [
+    {
+      "assetId": "49915731-07a6-49f0-b0a6-f2b81eb0f82a",
+      "sha256": "494316e22299d94a12ba665050df06557a9b5e29936dd9983f6e9b58608919cf",
+      "start": 0.0,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.0666666666666667,
+        "endZoom": 1.0666666666666667,
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "assetId": "ab6143fd-e0bf-4c43-b8df-13f734895a91",
+      "sha256": "1b4cfd14d48bc65affc75cabafff4dd7dfc09b5a571680f1ece200f0063914ca",
+      "start": 0.0,
+      "end": 4.0,
+      "dissolve": 0
+    },
+    {
+      "assetId": "53dfbae0-62b6-44c6-a075-798834fff9f1",
+      "sha256": "bd46e52f1db1839702de4f3ff409c5326fef2de3eb3f627b3e88667995f82a4c",
+      "start": 0.0,
+      "end": 1.0,
+      "dissolve": 0
+    },
+    {
+      "assetId": "8e4f21a3-f648-4871-9770-fa8242701b12",
+      "sha256": "81f57ea679bbc725065aefc8cd956180230cec35c1c85e02aa57181eb8344d7c",
+      "start": 0.0,
+      "end": 3.5,
+      "dissolve": 0
+    },
+    {
+      "assetId": "f9b8f086-e64d-4cfc-b874-ea118e100ed2",
+      "sha256": "5dceb5cf800a2958f7663748f3618cdf15b60ff2c6bbc8de7e6225283a7aa1f3",
+      "start": 0.0,
+      "end": 1.0,
+      "dissolve": 0
+    },
+    {
+      "assetId": "1f3c757c-b853-4f43-8bb7-60713d58a575",
+      "sha256": "cef8c5ae1a79c3fc8481ef9dbbf1897dfcd596bc9ab0186a869f353a47e23257",
+      "start": 0.0,
+      "end": 3.5,
+      "dissolve": 0
+    },
+    {
+      "assetId": "f8383042-5069-4d97-ac10-848685d4a15f",
+      "sha256": "2ce8bdc7d9e0abfc601ea9e84c6a2ed1a12e30ed3cd53728253d6aee1ab6e5d7",
+      "start": 0.0,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.0666666666666667,
+        "endZoom": 1.0666666666666667,
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "assetId": "49915731-07a6-49f0-b0a6-f2b81eb0f82a",
+      "sha256": "494316e22299d94a12ba665050df06557a9b5e29936dd9983f6e9b58608919cf",
+      "start": 0.0,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.0666666666666667,
+        "endZoom": 1.0666666666666667,
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "assetId": "b2c840af-1688-4778-9f3c-10adf931513d",
+      "sha256": "70030c068b92e246792448b03b9fff9578a54844fede64c05ed819956d0bb87c",
+      "start": 0.0,
+      "end": 3.875,
+      "dissolve": 0
+    }
+  ],
+  "titles": [
+    {
+      "id": "06843d81-b7fd-55b0-8394-de653b42e95e",
+      "text": "Hotel Lobby, with a new cast.",
+      "start": 0.0,
+      "end": 3.0416666666666665,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 27,
+      "color": "#ffffff"
+    },
+    {
+      "id": "aa6ca390-09c9-562c-a908-7971a3f805c3",
+      "text": "HOTEL LOBBY Â· COLORS / QUAVO & TAKEOFF (2022)",
+      "start": 0.0,
+      "end": 3.0416666666666665,
+      "style": "kicker",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 19,
+      "color": "#ffffff"
+    },
+    {
+      "id": "15e5f40f-0f82-5a81-bbbb-e8b3b3101b10",
+      "text": "Start with your photo and focus the face.",
+      "start": 3.0416666666666665,
+      "end": 7.041666666666667,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 27,
+      "color": "#ffffff"
+    },
+    {
+      "id": "d2b5262b-6846-5f56-b7f1-1c50787e9207",
+      "text": "YOUR PHOTO Â· FACE FOCUS",
+      "start": 3.0416666666666665,
+      "end": 7.041666666666667,
+      "style": "kicker",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 19,
+      "color": "#ffffff"
+    },
+    {
+      "id": "65c2f6c8-29c7-5791-bcf1-040f2fee83e0",
+      "text": "Select the left performer, then review the tracked mask.",
+      "start": 7.041666666666667,
+      "end": 11.541666666666666,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 27,
+      "color": "#ffffff"
+    },
+    {
+      "id": "2e53064c-a229-5a24-b5e3-5f7e612db1f6",
+      "text": "SAM3 Â· REVIEW THE TRACKED PERSON",
+      "start": 7.041666666666667,
+      "end": 11.541666666666666,
+      "style": "kicker",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 19,
+      "color": "#ffffff"
+    },
+    {
+      "id": "9d65fbe0-1377-5f84-b0df-b36d9887068c",
+      "text": "H3 replaces the selected person.",
+      "start": 11.541666666666666,
+      "end": 16.041666666666668,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 27,
+      "color": "#ffffff"
+    },
+    {
+      "id": "b8e45bff-c1dd-58f1-b34f-cbba0e90dd34",
+      "text": "H3 CHARACTER SWAP V1.5 Â· GENERATION WAITS OMITTED",
+      "start": 11.541666666666666,
+      "end": 16.041666666666668,
+      "style": "kicker",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 19,
+      "color": "#ffffff"
+    },
+    {
+      "id": "6f5f7a0f-bd8e-5196-a38f-dfedc5a939a7",
+      "text": "Waits omitted. Compare the source and result.",
+      "start": 16.041666666666668,
+      "end": 19.083333333333332,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 27,
+      "color": "#ffffff"
+    },
+    {
+      "id": "a50b8375-5faf-5fe2-8b83-a6adc3cbc0a7",
+      "text": "SOURCE Â· MATCHED PREPARED FRAMES Â· GENERATION WAITS OMITTED",
+      "start": 16.041666666666668,
+      "end": 19.083333333333332,
+      "style": "kicker",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 19,
+      "color": "#ffffff"
+    },
+    {
+      "id": "9d745380-de1d-5482-9c5a-eb9daf2fc936",
+      "text": "Same scene. New character.",
+      "start": 19.083333333333332,
+      "end": 22.125,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 27,
+      "color": "#ffffff"
+    },
+    {
+      "id": "72c46b3f-2166-5497-afe2-c848cac5ea86",
+      "text": "RESULT Â· H3 + TRACKED-MASK COMPOSITE Â· GENERATION WAITS OMITTED",
+      "start": 19.083333333333332,
+      "end": 22.125,
+      "style": "kicker",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 19,
+      "color": "#ffffff"
+    },
+    {
+      "id": "81337e71-bbf3-5377-8873-294b28567180",
+      "text": "Made in Aftertake. Open the saved workflow.",
+      "start": 22.125,
+      "end": 26.0,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 27,
+      "color": "#ffffff"
+    },
+    {
+      "id": "74d94b4a-a19c-5931-ac8a-ffdf2c737916",
+      "text": "MADE IN AFTERTAKE Â· H3 + TRACKED-MASK COMPOSITE",
+      "start": 22.125,
+      "end": 26.0,
+      "style": "kicker",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 19,
+      "color": "#ffffff"
+    }
+  ],
+  "audio": [
+    {
+      "assetId": "67da56c7-c4ae-4c62-8c61-76ba9fb0cb25",
+      "sha256": "32edcb1463deb74cb7099f4ff1f30d52fdc0dfb6cc2959fe8ded0ebb30e616ea",
+      "start": 0.125,
+      "sourceStart": 0,
+      "sourceEnd": 2.0573333333333332,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "32edcb1463deb74cb7099f4ff1f30d52fdc0dfb6cc2959fe8ded0ebb30e616ea",
+        "duration": 2.0573333333333332,
+        "narration": {
+          "text": "Hotel Lobby, with a new cast.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Hotel",
+                "start": 0.09033333333333333,
+                "end": 0.4653333333333333
+              },
+              {
+                "text": "Lobby,",
+                "start": 0.5153333333333333,
+                "end": 0.9403333333333334
+              },
+              {
+                "text": "with",
+                "start": 1.0403333333333333,
+                "end": 1.1403333333333334
+              },
+              {
+                "text": "a",
+                "start": 1.1653333333333333,
+                "end": 1.1903333333333332
+              },
+              {
+                "text": "new",
+                "start": 1.2403333333333333,
+                "end": 1.3403333333333334
+              },
+              {
+                "text": "cast.",
+                "start": 1.3903333333333334,
+                "end": 1.8773333333333333
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "81b30075-8bd6-45cb-b271-3a0bfb78ecda",
+      "sha256": "6008438a599ddf639da4102b0d2b8d6a3422d3d64130b0dbe12cc476c3c09bef",
+      "start": 3.1666666666666665,
+      "sourceStart": 0,
+      "sourceEnd": 2.3473333333333333,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "6008438a599ddf639da4102b0d2b8d6a3422d3d64130b0dbe12cc476c3c09bef",
+        "duration": 2.3473333333333333,
+        "narration": {
+          "text": "Start with your photo and focus the face.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Start",
+                "start": 0.11533333333333333,
+                "end": 0.36533333333333334
+              },
+              {
+                "text": "with",
+                "start": 0.3903333333333333,
+                "end": 0.4653333333333333
+              },
+              {
+                "text": "your",
+                "start": 0.49033333333333334,
+                "end": 0.5653333333333334
+              },
+              {
+                "text": "photo",
+                "start": 0.6153333333333333,
+                "end": 1.0903333333333334
+              },
+              {
+                "text": "and",
+                "start": 1.1653333333333333,
+                "end": 1.2403333333333333
+              },
+              {
+                "text": "focus",
+                "start": 1.3153333333333332,
+                "end": 1.5903333333333334
+              },
+              {
+                "text": "the",
+                "start": 1.6403333333333334,
+                "end": 1.6903333333333332
+              },
+              {
+                "text": "face.",
+                "start": 1.7403333333333333,
+                "end": 2.1973333333333334
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "5830941a-1b88-4ff5-843c-2a849d935b0f",
+      "sha256": "97d00ba28d812fa79af5716172c353f89f7af7f442a7f2b01ea72502bde61aed",
+      "start": 7.166666666666667,
+      "sourceStart": 0,
+      "sourceEnd": 3.188,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "97d00ba28d812fa79af5716172c353f89f7af7f442a7f2b01ea72502bde61aed",
+        "duration": 3.188,
+        "narration": {
+          "text": "Select the left performer, then review the tracked mask.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Select",
+                "start": 0.11533333333333333,
+                "end": 0.44033333333333335
+              },
+              {
+                "text": "the",
+                "start": 0.4653333333333333,
+                "end": 0.5153333333333333
+              },
+              {
+                "text": "left",
+                "start": 0.5653333333333334,
+                "end": 0.7653333333333333
+              },
+              {
+                "text": "performer,",
+                "start": 0.8153333333333334,
+                "end": 1.4403333333333332
+              },
+              {
+                "text": "then",
+                "start": 1.5903333333333334,
+                "end": 1.7653333333333334
+              },
+              {
+                "text": "review",
+                "start": 1.8153333333333332,
+                "end": 2.090333333333333
+              },
+              {
+                "text": "the",
+                "start": 2.1153333333333335,
+                "end": 2.1653333333333333
+              },
+              {
+                "text": "tracked",
+                "start": 2.215333333333333,
+                "end": 2.5153333333333334
+              },
+              {
+                "text": "mask.",
+                "start": 2.5653333333333332,
+                "end": 3.008
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "7a73bdbd-3b2c-417d-9346-f52de92adb94",
+      "sha256": "1736e5472adb1604d9b5bf81c7412b8d49e212c4a6d6c26cc09cc787753be21c",
+      "start": 11.666666666666666,
+      "sourceStart": 0,
+      "sourceEnd": 2.616,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "1736e5472adb1604d9b5bf81c7412b8d49e212c4a6d6c26cc09cc787753be21c",
+        "duration": 2.616,
+        "narration": {
+          "text": "H three replaces the selected person.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "H",
+                "start": 0.094,
+                "end": 0.344
+              },
+              {
+                "text": "three",
+                "start": 0.419,
+                "end": 0.794
+              },
+              {
+                "text": "replaces",
+                "start": 0.844,
+                "end": 1.344
+              },
+              {
+                "text": "the",
+                "start": 1.369,
+                "end": 1.419
+              },
+              {
+                "text": "selected",
+                "start": 1.469,
+                "end": 1.894
+              },
+              {
+                "text": "person.",
+                "start": 1.944,
+                "end": 2.496
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "d6d51267-3bfd-41ef-813d-48aed61a0a7d",
+      "sha256": "3fee987ca0138090b4dbafa70428b4f03117fed57eea7dbea162654225c25e32",
+      "start": 16.166666666666668,
+      "sourceStart": 0,
+      "sourceEnd": 2.7626666666666666,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "3fee987ca0138090b4dbafa70428b4f03117fed57eea7dbea162654225c25e32",
+        "duration": 2.7626666666666666,
+        "narration": {
+          "text": "Waits omitted. Compare the source and result.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Waits",
+                "start": 0.094,
+                "end": 0.394
+              },
+              {
+                "text": "omitted.",
+                "start": 0.444,
+                "end": 1.019
+              },
+              {
+                "text": "Compare",
+                "start": 1.144,
+                "end": 1.444
+              },
+              {
+                "text": "the",
+                "start": 1.469,
+                "end": 1.519
+              },
+              {
+                "text": "source",
+                "start": 1.594,
+                "end": 1.919
+              },
+              {
+                "text": "and",
+                "start": 1.969,
+                "end": 2.044
+              },
+              {
+                "text": "result.",
+                "start": 2.069,
+                "end": 2.6026666666666665
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "3ce9dc16-2e8f-4062-af12-5f8bd5b525eb",
+      "sha256": "b9d87c317a2871646d7f1094d54a8f121f43665beb7fd4a51ea39632f8f70574",
+      "start": 19.208333333333332,
+      "sourceStart": 0,
+      "sourceEnd": 1.998,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "b9d87c317a2871646d7f1094d54a8f121f43665beb7fd4a51ea39632f8f70574",
+        "duration": 1.998,
+        "narration": {
+          "text": "Same scene. New character.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Same",
+                "start": 0.119,
+                "end": 0.369
+              },
+              {
+                "text": "scene.",
+                "start": 0.444,
+                "end": 0.844
+              },
+              {
+                "text": "New",
+                "start": 1.099,
+                "end": 1.1989999999999998
+              },
+              {
+                "text": "character.",
+                "start": 1.249,
+                "end": 1.858
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "4f6aaa29-6025-4b14-9c6b-6103cfae7c26",
+      "sha256": "cc761c2eb957e9116ffb1fd0bc66df10605c923520a1d7e7113fd2cb803acf86",
+      "start": 22.25,
+      "sourceStart": 0,
+      "sourceEnd": 2.8152916666666665,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "cc761c2eb957e9116ffb1fd0bc66df10605c923520a1d7e7113fd2cb803acf86",
+        "duration": 2.8152916666666665,
+        "narration": {
+          "text": "Made in Aftertake. Open the saved workflow.",
+          "voice": "af_heart",
+          "speed": 1.05,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Made",
+                "start": 0.094,
+                "end": 0.294
+              },
+              {
+                "text": "in",
+                "start": 0.319,
+                "end": 0.394
+              },
+              {
+                "text": "Aftertake.",
+                "start": 0.469,
+                "end": 1.194
+              },
+              {
+                "text": "Open",
+                "start": 1.344,
+                "end": 1.594
+              },
+              {
+                "text": "the",
+                "start": 1.619,
+                "end": 1.669
+              },
+              {
+                "text": "saved",
+                "start": 1.744,
+                "end": 2.044
+              },
+              {
+                "text": "workflow.",
+                "start": 2.094,
+                "end": 2.6453333333333333
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "sourceVolume": 0,
+  "normalizeAudio": true,
+  "sourceFiles": {
+    "f8383042-5069-4d97-ac10-848685d4a15f": {
+      "path": "examples/hotel-lobby/prepared-source.mp4",
+      "sha256": "2ce8bdc7d9e0abfc601ea9e84c6a2ed1a12e30ed3cd53728253d6aee1ab6e5d7"
+    },
+    "49915731-07a6-49f0-b0a6-f2b81eb0f82a": {
+      "path": "examples/hotel-lobby/result.mp4",
+      "sha256": "494316e22299d94a12ba665050df06557a9b5e29936dd9983f6e9b58608919cf"
+    },
+    "ab6143fd-e0bf-4c43-b8df-13f734895a91": {
+      "path": "examples/hotel-lobby/capture-holds/reference_and_face_focus.mp4",
+      "sha256": "1b4cfd14d48bc65affc75cabafff4dd7dfc09b5a571680f1ece200f0063914ca"
+    },
+    "53dfbae0-62b6-44c6-a075-798834fff9f1": {
+      "path": "examples/hotel-lobby/capture-holds/target_selection.mp4",
+      "sha256": "bd46e52f1db1839702de4f3ff409c5326fef2de3eb3f627b3e88667995f82a4c"
+    },
+    "8e4f21a3-f648-4871-9770-fa8242701b12": {
+      "path": "examples/hotel-lobby/capture-holds/sam3_review.mp4",
+      "sha256": "81f57ea679bbc725065aefc8cd956180230cec35c1c85e02aa57181eb8344d7c"
+    },
+    "f9b8f086-e64d-4cfc-b874-ea118e100ed2": {
+      "path": "examples/hotel-lobby/capture-holds/h3_setup.mp4",
+      "sha256": "5dceb5cf800a2958f7663748f3618cdf15b60ff2c6bbc8de7e6225283a7aa1f3"
+    },
+    "1f3c757c-b853-4f43-8bb7-60713d58a575": {
+      "path": "examples/hotel-lobby/capture-holds/h3_progress.mp4",
+      "sha256": "cef8c5ae1a79c3fc8481ef9dbbf1897dfcd596bc9ab0186a869f353a47e23257"
+    },
+    "b2c840af-1688-4778-9f3c-10adf931513d": {
+      "path": "examples/hotel-lobby/capture-holds/completed_result_and_workflow.mp4",
+      "sha256": "70030c068b92e246792448b03b9fff9578a54844fede64c05ed819956d0bb87c"
+    },
+    "67da56c7-c4ae-4c62-8c61-76ba9fb0cb25": {
+      "path": "examples/hotel-lobby/voices/01-source.wav",
+      "sha256": "32edcb1463deb74cb7099f4ff1f30d52fdc0dfb6cc2959fe8ded0ebb30e616ea"
+    },
+    "81b30075-8bd6-45cb-b271-3a0bfb78ecda": {
+      "path": "examples/hotel-lobby/voices/02-reference.wav",
+      "sha256": "6008438a599ddf639da4102b0d2b8d6a3422d3d64130b0dbe12cc476c3c09bef"
+    },
+    "5830941a-1b88-4ff5-843c-2a849d935b0f": {
+      "path": "examples/hotel-lobby/voices/03-selection.wav",
+      "sha256": "97d00ba28d812fa79af5716172c353f89f7af7f442a7f2b01ea72502bde61aed"
+    },
+    "7a73bdbd-3b2c-417d-9346-f52de92adb94": {
+      "path": "examples/hotel-lobby/voices/04-h3.wav",
+      "sha256": "1736e5472adb1604d9b5bf81c7412b8d49e212c4a6d6c26cc09cc787753be21c"
+    },
+    "d6d51267-3bfd-41ef-813d-48aed61a0a7d": {
+      "path": "examples/hotel-lobby/voices/05-comparison.wav",
+      "sha256": "3fee987ca0138090b4dbafa70428b4f03117fed57eea7dbea162654225c25e32"
+    },
+    "3ce9dc16-2e8f-4062-af12-5f8bd5b525eb": {
+      "path": "examples/hotel-lobby/voices/06-result.wav",
+      "sha256": "b9d87c317a2871646d7f1094d54a8f121f43665beb7fd4a51ea39632f8f70574"
+    },
+    "4f6aaa29-6025-4b14-9c6b-6103cfae7c26": {
+      "path": "examples/hotel-lobby/voices/07-workflow.wav",
+      "sha256": "cc761c2eb957e9116ffb1fd0bc66df10605c923520a1d7e7113fd2cb803acf86"
+    }
+  },
+  "notes": "Hotel Lobby character-replacement walkthrough. Actual UI screenshots held statically; H3 plus a tracked-mask source composite. Silent matched source/result with local Kokoro narration. Generation waits omitted."
+}

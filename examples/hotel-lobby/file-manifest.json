@@ -1,0 +1,195 @@
+{
+  "format": "aftertake-example-files/1",
+  "entries": [
+    {
+      "path": "capture-holds/completed_result_and_workflow.mp4",
+      "bytes": 261029,
+      "sha256": "70030c068b92e246792448b03b9fff9578a54844fede64c05ed819956d0bb87c"
+    },
+    {
+      "path": "capture-holds/h3_progress.mp4",
+      "bytes": 176693,
+      "sha256": "cef8c5ae1a79c3fc8481ef9dbbf1897dfcd596bc9ab0186a869f353a47e23257"
+    },
+    {
+      "path": "capture-holds/h3_setup.mp4",
+      "bytes": 337784,
+      "sha256": "5dceb5cf800a2958f7663748f3618cdf15b60ff2c6bbc8de7e6225283a7aa1f3"
+    },
+    {
+      "path": "capture-holds/reference_and_face_focus.mp4",
+      "bytes": 337884,
+      "sha256": "1b4cfd14d48bc65affc75cabafff4dd7dfc09b5a571680f1ece200f0063914ca"
+    },
+    {
+      "path": "capture-holds/sam3_review.mp4",
+      "bytes": 337056,
+      "sha256": "81f57ea679bbc725065aefc8cd956180230cec35c1c85e02aa57181eb8344d7c"
+    },
+    {
+      "path": "capture-holds/target_selection.mp4",
+      "bytes": 320759,
+      "sha256": "bd46e52f1db1839702de4f3ff409c5326fef2de3eb3f627b3e88667995f82a4c"
+    },
+    {
+      "path": "capture-receipts.json",
+      "bytes": 6761,
+      "sha256": "487e514473b03d2cc86dea04f9b4c93693ab10af38c0f2ff07ae778694da55e7"
+    },
+    {
+      "path": "captures/before-h3.jpg",
+      "bytes": 101214,
+      "sha256": "cb9cd30da19bd47adfbfe8b2436f28ce9f90d0748808378d8c355b3a18923bde"
+    },
+    {
+      "path": "captures/completed-workflow.jpg",
+      "bytes": 95179,
+      "sha256": "c7a930c77c93fef9b5de024359219550c8589b70c75750085337ecfaf96964f7"
+    },
+    {
+      "path": "captures/h3-running-002.jpg",
+      "bytes": 70722,
+      "sha256": "537d5d470e4d0ab119789b6b66ccb687bbbbae73705aa46fc88e5acaabce1549"
+    },
+    {
+      "path": "captures/reference-and-reviewed-mask.jpg",
+      "bytes": 93230,
+      "sha256": "037944dbe9e42ee29c1f0079bfe71ecc74eef866d8bbeeb69258c45791fd61f3"
+    },
+    {
+      "path": "captures/selection-before-track.jpg",
+      "bytes": 88200,
+      "sha256": "c61357559db28b5f8f2be0bec4cb0b12e6dfa24e2c97f4e12cb425abbf06c469"
+    },
+    {
+      "path": "evidence.json",
+      "bytes": 4256,
+      "sha256": "b761c040e95aacc01c4b8f4432fd64e64ac262a2e1cd3e32c23912566de2c8de"
+    },
+    {
+      "path": "h3-workflow-api.json",
+      "bytes": 14488,
+      "sha256": "a824992c26f65bec2b1ce2a43ff46f7f3e35ed53965b5696298c1999fc162e03"
+    },
+    {
+      "path": "narration.txt",
+      "bytes": 284,
+      "sha256": "39f838d9a480743cc7feed2b9dd7d6a27981bd6e5b6dc20b2938279f57b1e550"
+    },
+    {
+      "path": "native-h3.mp4",
+      "bytes": 1653435,
+      "sha256": "0ca862f301f87b19d035e52dc5e651d2aac5c426bac319a169a7e968ae52cf8e"
+    },
+    {
+      "path": "poster.jpg",
+      "bytes": 145406,
+      "sha256": "5d6e8f31f9aa1c651077d40dbdf3567e0978c6e7e32443febe62b455c2f29c5f"
+    },
+    {
+      "path": "prepared-source.mp4",
+      "bytes": 2242623,
+      "sha256": "2ce8bdc7d9e0abfc601ea9e84c6a2ed1a12e30ed3cd53728253d6aee1ab6e5d7"
+    },
+    {
+      "path": "project.json",
+      "bytes": 24473,
+      "sha256": "bebed5b78a42ee36128b450649347ae5d9f46176c73939a70c48c9569bd8c648"
+    },
+    {
+      "path": "protected-workflow-api.json",
+      "bytes": 2845,
+      "sha256": "91f58e24031bd31b8f9bded682bb8bba817c4892568b730a00a80247e5493956"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2266,
+      "sha256": "ef68a1e483629d84419f83ad068dec89b61fcdeccb9d1d99bb7e62155e51144f"
+    },
+    {
+      "path": "recipe.json",
+      "bytes": 18671,
+      "sha256": "d3443f9223d75229aa4fccf3230dea8573651a78cdb7556ddc729275042d199e"
+    },
+    {
+      "path": "result.mp4",
+      "bytes": 1376010,
+      "sha256": "494316e22299d94a12ba665050df06557a9b5e29936dd9983f6e9b58608919cf"
+    },
+    {
+      "path": "selection-mask.mkv",
+      "bytes": 95519,
+      "sha256": "48bae91b4e273b7aa56f5e14f8a38224e5b9beecfa537a942bd37e0f01d5c8cd"
+    },
+    {
+      "path": "selection-preview.mp4",
+      "bytes": 1546624,
+      "sha256": "16fe7a560d30cdfc8d5637487824e88fe2718a3f2448416c8bb6d684d4fee25f"
+    },
+    {
+      "path": "selection-workflow-api.json",
+      "bytes": 4083,
+      "sha256": "a631120c2000c64e314ca75ec4ab795efb4306c104c066f01af43ebfd52533f9"
+    },
+    {
+      "path": "source-input.mp4",
+      "bytes": 1767181,
+      "sha256": "3891550f12f2d59acc16feac50e5f81d1e87449c619f2fef8894b23784b69433"
+    },
+    {
+      "path": "source-original-short.mp4",
+      "bytes": 3142514,
+      "sha256": "d08386610f9ade7ff79ff60c78dc3939e51e2204e7dc901873dd0cc5e9928356"
+    },
+    {
+      "path": "storyboard.json",
+      "bytes": 2101,
+      "sha256": "44178506a23051a2e056572f503517f35552fe5fe95e865d51a3632c9784e5e6"
+    },
+    {
+      "path": "voices/01-source.wav",
+      "bytes": 98796,
+      "sha256": "32edcb1463deb74cb7099f4ff1f30d52fdc0dfb6cc2959fe8ded0ebb30e616ea"
+    },
+    {
+      "path": "voices/02-reference.wav",
+      "bytes": 112716,
+      "sha256": "6008438a599ddf639da4102b0d2b8d6a3422d3d64130b0dbe12cc476c3c09bef"
+    },
+    {
+      "path": "voices/03-selection.wav",
+      "bytes": 153068,
+      "sha256": "97d00ba28d812fa79af5716172c353f89f7af7f442a7f2b01ea72502bde61aed"
+    },
+    {
+      "path": "voices/04-h3.wav",
+      "bytes": 125612,
+      "sha256": "1736e5472adb1604d9b5bf81c7412b8d49e212c4a6d6c26cc09cc787753be21c"
+    },
+    {
+      "path": "voices/05-comparison.wav",
+      "bytes": 132652,
+      "sha256": "3fee987ca0138090b4dbafa70428b4f03117fed57eea7dbea162654225c25e32"
+    },
+    {
+      "path": "voices/06-result.wav",
+      "bytes": 95948,
+      "sha256": "b9d87c317a2871646d7f1094d54a8f121f43665beb7fd4a51ea39632f8f70574"
+    },
+    {
+      "path": "voices/07-workflow.wav",
+      "bytes": 135178,
+      "sha256": "cc761c2eb957e9116ffb1fd0bc66df10605c923520a1d7e7113fd2cb803acf86"
+    },
+    {
+      "path": "voices.json",
+      "bytes": 16556,
+      "sha256": "1c66b319c948246f4de03bf0cfb8c04b6fb97422f380746eca33159661b722c7"
+    },
+    {
+      "path": "walkthrough.mp4",
+      "bytes": 3915038,
+      "sha256": "dcf150f7f92f85e67146ad85aa5701a01b6d023a982197cc15b654c9514e01d5"
+    }
+  ]
+}

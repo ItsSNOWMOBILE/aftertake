@@ -1,0 +1,118 @@
+{
+  "format": "aftertake-hotel-lobby-evidence/1",
+  "walkthrough": {
+    "file": "walkthrough.mp4",
+    "filmId": "80fb3912-80c9-4d9b-9f64-681b6c21ad20",
+    "sha256": "dcf150f7f92f85e67146ad85aa5701a01b6d023a982197cc15b654c9514e01d5",
+    "frames": 624,
+    "fps": 24,
+    "width": 1280,
+    "height": 720,
+    "duration": 26,
+    "shots": 9,
+    "titleLayers": 14,
+    "voiceClips": 7,
+    "sourceAudioGain": 0
+  },
+  "nativeJobs": {
+    "selectionId": "875c5933-c399-41e7-9ada-ec12c5a5de4a",
+    "sam3JobId": "23455bb2-efad-4a09-9e98-a7413c1846b5",
+    "replacementId": "9e62b61f-5124-452e-bd64-52a4b1747d7c",
+    "h3JobId": "5949d3ac-847d-4a06-b780-a83d853ceccf",
+    "compositeJobId": "add229a8-8186-41b2-8f13-91431f862288"
+  },
+  "source": {
+    "title": "Quavo & Takeoff — HOTEL LOBBY | A COLORS SHOW",
+    "publisher": "COLORS",
+    "url": "https://www.youtube.com/watch?v=x9yop0nYR9g",
+    "date": "2022-06-17",
+    "excerptStartSeconds": 16,
+    "excerptEndSeconds": 19.04,
+    "originalExcerpt": {
+      "file": "source-original-short.mp4",
+      "sha256": "d08386610f9ade7ff79ff60c78dc3939e51e2204e7dc901873dd0cc5e9928356",
+      "frames": 76,
+      "fps": 25,
+      "width": 1920,
+      "height": 1080,
+      "duration": 3.04,
+      "hasAudio": false
+    },
+    "initialInput": {
+      "file": "source-input.mp4",
+      "sha256": "3891550f12f2d59acc16feac50e5f81d1e87449c619f2fef8894b23784b69433",
+      "frames": 73,
+      "fps": 24,
+      "width": 1280,
+      "height": 768
+    },
+    "enginePreparedSource": {
+      "file": "prepared-source.mp4",
+      "sha256": "2ce8bdc7d9e0abfc601ea9e84c6a2ed1a12e30ed3cd53728253d6aee1ab6e5d7",
+      "frames": 73,
+      "fps": 24,
+      "width": 1280,
+      "height": 768
+    },
+    "preparation": "Nearest original 25 fps frames sampled at 24 fps. Uniform 1920×1080 to 1280×720 scale plus 24-pixel top/bottom pads. Native preparation re-encodes the input. Source audio excluded."
+  },
+  "method": {
+    "selection": "SAM3 tracks the selected left performer.",
+    "replacement": "H3 Character Swap V1.5, one reference photo with a face-focus box, seed 509201.",
+    "composition": "Native Comfy ImageCompositeMasked. The SAM3 mask is grown 32 pixels and blurred with radius 3, sigma 1.5; H3 pixels inside, prepared source outside.",
+    "framing": "Identical centered 16/15 native framing removes the known pads and contain sidebars without stretching.",
+    "ui": "Six silent holds from five actual UI screenshots. No cursor, spinner animation or progress values generated. Generation waits omitted.",
+    "audio": "Seven generic local Kokoro af_heart narration clips, speed 1.05. No original song audio."
+  },
+  "outputs": {
+    "rawH3": {
+      "file": "native-h3.mp4",
+      "sha256": "0ca862f301f87b19d035e52dc5e651d2aac5c426bac319a169a7e968ae52cf8e"
+    },
+    "trackedMask": {
+      "file": "selection-mask.mkv",
+      "sha256": "48bae91b4e273b7aa56f5e14f8a38224e5b9beecfa537a942bd37e0f01d5c8cd"
+    },
+    "finished": {
+      "file": "result.mp4",
+      "sha256": "494316e22299d94a12ba665050df06557a9b5e29936dd9983f6e9b58608919cf"
+    },
+    "recipe": "recipe.json",
+    "selectionGraph": "selection-workflow-api.json",
+    "h3Graph": "h3-workflow-api.json",
+    "compositeGraph": "protected-workflow-api.json"
+  },
+  "review": {
+    "resultFramesInspected": 73,
+    "walkthroughFramesDecoded": 624,
+    "walkthroughLayoutFramesInspected": [
+      0,
+      24,
+      73,
+      121,
+      169,
+      193,
+      277,
+      301,
+      385,
+      421,
+      458,
+      482,
+      531,
+      580,
+      623
+    ],
+    "narrationIntervalsOverlap": false,
+    "listeningReviewPerformed": false,
+    "continuousPlaybackReviewPerformed": false,
+    "limits": "The replacement is generative. Exact likeness, mouth articulation, and universal pixel-identical preservation are not established. Decoded-frame and audio-timing checks do not establish listening quality."
+  },
+  "provenance": {
+    "voices": "voices.json",
+    "captures": "capture-receipts.json",
+    "project": "project.json",
+    "fileChecksums": "file-manifest.json",
+    "referenceImageDistributed": false,
+    "referenceExposure": "Reference-face view inside actual UI screenshots; supply your own portrait for regeneration."
+  }
+}

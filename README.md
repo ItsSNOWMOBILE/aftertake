@@ -22,6 +22,21 @@ An open-source creative studio for short-form video, product stories and visual 
 
 <p align="center"><sub>A real local LTX-2.5 render, with generated ambience. <a href="https://aftertake-studio.right-bard-9761.chatgpt.site/create/">Watch the shot and inspect its workflow →</a></sub></p>
 
+## Hotel Lobby, recast
+
+[![Hotel Lobby character swap — watch the narrated generation walkthrough](examples/hotel-lobby/poster.jpg)](examples/hotel-lobby/walkthrough.mp4)
+
+**[Watch the 26-second generation walkthrough →](examples/hotel-lobby/walkthrough.mp4)**
+
+A supplied portrait becomes the performer on the left. Follow the real reference,
+tracked selection, H3 generation and matched before/after. A tracked-mask composite
+keeps the surrounding performance, then Aftertake assembles the narration and type.
+Generation waits are omitted; the UI steps are held captures from the actual run.
+
+The [executed workflows, settings and editable film](examples/hotel-lobby/README.md)
+are included. Source performance: **COLORS · Quavo & Takeoff, “HOTEL LOBBY” (2022)**;
+the short demonstration is silent apart from original local narration.
+
 ## From the first prompt to the final cut
 
 Aftertake brings generation and editing into one local workspace. Start with words,

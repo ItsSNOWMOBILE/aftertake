@@ -1,0 +1,130 @@
+{
+  "source": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "875c5933-c399-41e7-9ada-ec12c5a5de4a-source.mp4"
+    }
+  },
+  "source_frames": {
+    "class_type": "GetVideoComponents",
+    "inputs": {
+      "video": [
+        "source",
+        0
+      ]
+    }
+  },
+  "native": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "result.mp4"
+    }
+  },
+  "native_frames": {
+    "class_type": "GetVideoComponents",
+    "inputs": {
+      "video": [
+        "native",
+        0
+      ]
+    }
+  },
+  "mask": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "875c5933-c399-41e7-9ada-ec12c5a5de4a-mask.mkv"
+    }
+  },
+  "mask_frames": {
+    "class_type": "GetVideoComponents",
+    "inputs": {
+      "video": [
+        "mask",
+        0
+      ]
+    }
+  },
+  "raw_mask": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "mask_frames",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "protect_grow": {
+    "class_type": "GrowMask",
+    "inputs": {
+      "mask": [
+        "raw_mask",
+        0
+      ],
+      "expand": 32,
+      "tapered_corners": false
+    }
+  },
+  "protect_rgb": {
+    "class_type": "MaskToImage",
+    "inputs": {
+      "mask": [
+        "protect_grow",
+        0
+      ]
+    }
+  },
+  "protect_blur": {
+    "class_type": "ImageBlur",
+    "inputs": {
+      "image": [
+        "protect_rgb",
+        0
+      ],
+      "blur_radius": 3,
+      "sigma": 1.5
+    }
+  },
+  "protect_mask": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "protect_blur",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "protected": {
+    "class_type": "ImageCompositeMasked",
+    "inputs": {
+      "destination": [
+        "source_frames",
+        0
+      ],
+      "source": [
+        "native_frames",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "resize_source": false,
+      "mask": [
+        "protect_mask",
+        0
+      ]
+    }
+  },
+  "save": {
+    "class_type": "AftertakeSaveVideo",
+    "inputs": {
+      "images": [
+        "protected",
+        0
+      ],
+      "fps": 24,
+      "filename_prefix": "aftertake/hotel-lobby/protected-scene",
+      "recipe_json": "{\"format\":\"aftertake-character-composite-output/1\",\"h3JobId\":\"5949d3ac-847d-4a06-b780-a83d853ceccf\",\"selectionId\":\"875c5933-c399-41e7-9ada-ec12c5a5de4a\",\"preparedSourceSHA256\":\"2ce8bdc7d9e0abfc601ea9e84c6a2ed1a12e30ed3cd53728253d6aee1ab6e5d7\",\"nativeH3SHA256\":\"0ca862f301f87b19d035e52dc5e651d2aac5c426bac319a169a7e968ae52cf8e\",\"maskSHA256\":\"48bae91b4e273b7aa56f5e14f8a38224e5b9beecfa537a942bd37e0f01d5c8cd\",\"seed\":509201,\"method\":\"Native Comfy ImageCompositeMasked: reviewed SAM3 mask grown 32 px, Gaussian radius 3 sigma 1.5; generated pixels inside, prepared source outside. No resampling, grading, retouching or source audio.\"}"
+    }
+  }
+}

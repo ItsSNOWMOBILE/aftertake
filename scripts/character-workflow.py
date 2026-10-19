@@ -58,8 +58,17 @@ def build(value):
     graph['plan']['inputs'].update(window_frames='56',history_frames='18',seed=request['seed'])
     graph['sampling_memory']['inputs']['activation_memory_gib']=6.
     graph.pop('video',None)  # The app exporter receives decoded frames directly.
+    # The model reconstructs the full scene. Restore the prepared source outside
+    # the reviewed edit region, using its original timeline rather than padded H3 masks.
+    graph['source_frames']=node('ImageFromBatch',image=['prepare',0],batch_index=0,length=['prepare',5])
+    graph['composite_expand_mask']=node('GrowMask',mask=['raw_mask',0],expand=32,tapered_corners=False)
+    graph['composite_mask_image']=node('MaskToImage',mask=['composite_expand_mask',0])
+    graph['composite_blur']=node('ImageBlur',image=['composite_mask_image',0],blur_radius=3,sigma=1.5)
+    graph['composite_mask']=node('ImageToMask',image=['composite_blur',0],channel='red')
+    graph['source_composite']=node('ImageCompositeMasked',destination=['source_frames',0],source=['finish',0],
+        x=0,y=0,resize_source=False,mask=['composite_mask',0])
     graph['original_audio']=node('AftertakeLoadClip',filename='ORIGINAL.mp4',width=64,height=64,frames=1,fps=24,trim_start=0)
-    graph['save']=node('AftertakeSaveVideo',images=['finish',0],fps=24,filename_prefix=f'aftertake/characters/{identity}/result',
+    graph['save']=node('AftertakeSaveVideo',images=['source_composite',0],fps=24,filename_prefix=f'aftertake/characters/{identity}/result',
         recipe_json=json.dumps({'format':'aftertake-character-output/1','request':request,'selectionId':request['selectionId']}),
         source_audio=['original_audio',1],audio_start=value['selectionRequest']['trimStart'])
     return graph

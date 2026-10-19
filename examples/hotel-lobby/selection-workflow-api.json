@@ -1,0 +1,181 @@
+{
+  "source": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "28c2391a-e1a5-4bf9-ac9e-f95036ad3186.mp4"
+    }
+  },
+  "slice": {
+    "class_type": "Video Slice",
+    "inputs": {
+      "video": [
+        "source",
+        0
+      ],
+      "start_time": 0,
+      "duration": 3.0416666666666665,
+      "strict_duration": true
+    }
+  },
+  "prepare": {
+    "class_type": "H3RelayPrepareSource",
+    "inputs": {
+      "video": [
+        "slice",
+        0
+      ],
+      "resolution": "768",
+      "duration_seconds": 0,
+      "missing_audio": "silence"
+    }
+  },
+  "frames": {
+    "class_type": "ImageFromBatch",
+    "inputs": {
+      "image": [
+        "prepare",
+        0
+      ],
+      "batch_index": 0,
+      "length": [
+        "prepare",
+        5
+      ]
+    }
+  },
+  "first": {
+    "class_type": "ImageFromBatch",
+    "inputs": {
+      "image": [
+        "frames",
+        0
+      ],
+      "batch_index": 0,
+      "length": 1
+    }
+  },
+  "points": {
+    "class_type": "AftertakeSubjectPoints",
+    "inputs": {
+      "images": [
+        "first",
+        0
+      ],
+      "source_width": 1280,
+      "source_height": 768,
+      "points_json": "{\"positive\": [{\"x\": 0.41999999999999993, \"y\": 0.55}, {\"x\": 0.41999999999999993, \"y\": 0.24999999999999978}], \"negative\": [{\"x\": 0.7000000000000002, \"y\": 0.3999999999999999}]}"
+    }
+  },
+  "sam": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "sam3.1_multiplex_fp16.safetensors"
+    }
+  },
+  "people": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "sam",
+        1
+      ],
+      "text": "person:12"
+    }
+  },
+  "detect": {
+    "class_type": "SAM3_Detect",
+    "inputs": {
+      "model": [
+        "sam",
+        0
+      ],
+      "image": [
+        "first",
+        0
+      ],
+      "conditioning": [
+        "people",
+        0
+      ],
+      "threshold": 0.35,
+      "refine_iterations": 2,
+      "individual_masks": true
+    }
+  },
+  "choose": {
+    "class_type": "AftertakeSelectCharacterMask",
+    "inputs": {
+      "masks": [
+        "detect",
+        0
+      ],
+      "positive_coords": [
+        "points",
+        0
+      ],
+      "negative_coords": [
+        "points",
+        1
+      ]
+    }
+  },
+  "track": {
+    "class_type": "SAM3_VideoTrack",
+    "inputs": {
+      "images": [
+        "frames",
+        0
+      ],
+      "model": [
+        "sam",
+        0
+      ],
+      "initial_mask": [
+        "choose",
+        0
+      ],
+      "detection_threshold": 0.5,
+      "max_objects": 1,
+      "detect_interval": 1
+    }
+  },
+  "mask": {
+    "class_type": "SAM3_TrackToMask",
+    "inputs": {
+      "track_data": [
+        "track",
+        0
+      ],
+      "object_indices": "0"
+    }
+  },
+  "selection": {
+    "class_type": "AftertakeSaveCharacterSelection",
+    "inputs": {
+      "images": [
+        "frames",
+        0
+      ],
+      "masks": [
+        "mask",
+        0
+      ],
+      "filename_prefix": "aftertake/characters/875c5933-c399-41e7-9ada-ec12c5a5de4a/selection",
+      "request_json": "{\"format\": \"aftertake-character-selection/1\", \"clip\": {\"id\": \"28c2391a-e1a5-4bf9-ac9e-f95036ad3186\", \"name\": \"hotel-lobby-source-16s.mp4\", \"sha256\": \"3891550f12f2d59acc16feac50e5f81d1e87449c619f2fef8894b23784b69433\", \"width\": 1280, \"height\": 768, \"duration\": 3.0416666666666665, \"url\": \"/media/28c2391a-e1a5-4bf9-ac9e-f95036ad3186.mp4\", \"hasAudio\": false}, \"trimStart\": 0, \"duration\": 3.0416666666666665, \"positive\": [{\"x\": 0.41999999999999993, \"y\": 0.55}, {\"x\": 0.41999999999999993, \"y\": 0.24999999999999978}], \"negative\": [{\"x\": 0.7000000000000002, \"y\": 0.3999999999999999}], \"resolution\": \"768\"}"
+    }
+  },
+  "source_save": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "prepare",
+        8
+      ],
+      "filename_prefix": "aftertake/characters/875c5933-c399-41e7-9ada-ec12c5a5de4a/source",
+      "format": "mp4",
+      "format.codec": "h264",
+      "format.codec.encoding": "re-encode",
+      "format.codec.encoding.crf": 14
+    }
+  }
+}
