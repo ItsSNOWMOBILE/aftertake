@@ -10,12 +10,12 @@
   right: 10px;
   bottom: 10px;
   padding: 10px 12px;
-  border: 1px solid #526246;
+  border: 1px solid var(--control-border, #657168);
   border-radius: 6px;
-  background: #111a13ed;
-  color: #d5e7c1;
+  background: #15191df2;
+  color: var(--text-primary, #eef1eb);
   font:
-    11px/1.5 'DM Sans',
+    12px/1.5 'DM Sans',
     sans-serif;
   pointer-events: none;
 }
@@ -28,10 +28,16 @@
   pointer-events: auto;
 }
 .recorded-media-error button {
-  min-height: 36px;
+  min-height: 40px;
   padding: 7px 10px;
-  border: 1px solid #8ca96c;
+  border: 1px solid var(--control-border, #657168);
   border-radius: 4px;
-  background: #2b3a22;
-  color: #e2f3cd;
+  background: var(--control-bg, #101612);
+  color: var(--text-primary, #eef1eb);
+  font-size: 14px;
+}
+@media (pointer: coarse) {
+  .recorded-media-error button {
+    min-height: 44px;
+  }
 }

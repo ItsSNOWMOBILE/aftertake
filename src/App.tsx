@@ -1993,11 +1993,14 @@ export default function App() {
         <div className="inspector-body">
           <div className="step-label">
             <b>01</b>
-            <span>MAKE IT YOURS</span>
+            <span>Direction</span>
           </div>
           <h2>
-            A little direction.
-            <br />A different reality.
+            {isCinema
+              ? 'Describe your shot'
+              : isTransfer
+                ? 'Describe your character'
+                : 'Describe the change'}
           </h2>
           <p className="inspector-intro">
             {isTransfer
@@ -2009,7 +2012,7 @@ export default function App() {
                   : 'Tell the painted part of your shot what to become.'}
           </p>
           <label className="input-label" htmlFor="direction">
-            YOUR DIRECTION <Sparkles size={12} />
+            Your direction <Sparkles size={12} />
           </label>
           <textarea
             id="direction"

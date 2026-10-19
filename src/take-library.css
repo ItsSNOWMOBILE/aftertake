@@ -9,11 +9,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid #3a4732;
+  border: 1px solid var(--control-border, #657168);
   border-radius: 5px;
   padding: 8px 10px;
   flex: 1 1 240px;
-  color: #a8ba92;
+  color: var(--text-secondary, #b7c1b9);
+  background: var(--control-bg, #101612);
   min-width: 0;
 }
 .take-search input {
@@ -21,8 +22,8 @@
   min-width: 0;
   background: none;
   border: 0;
-  color: #e4ebd9;
-  font-size: 11px;
+  color: var(--text-primary, #eef1eb);
+  font-size: 14px;
   outline-offset: 2px;
 }
 .take-search button {
@@ -30,13 +31,13 @@
 }
 .take-tools select,
 .take-favorites {
-  background: #20291c;
-  border: 1px solid #3a4732;
+  background: var(--control-bg, #101612);
+  border: 1px solid var(--control-border, #657168);
   border-radius: 5px;
   padding: 9px;
-  color: #bfcead;
+  color: var(--text-label, #d4dcd5);
   font:
-    11px 'DM Sans',
+    14px 'DM Sans',
     sans-serif;
 }
 .take-favorites {
@@ -50,8 +51,8 @@
   border-color: #91a96b;
 }
 .take-count {
-  font-size: 10px;
-  color: #91a180;
+  font-size: 12px;
+  color: var(--text-secondary, #b7c1b9);
   margin-left: auto;
 }
 .take-row {
@@ -75,9 +76,9 @@
 .take-star {
   width: 42px;
   flex-shrink: 0;
-  border: 1px solid #33442a;
+  border: 1px solid var(--control-border, #657168);
   border-radius: 4px;
-  color: #728965;
+  color: var(--text-secondary, #b7c1b9);
 }
 .no-takes > button {
   margin-left: auto;
@@ -95,11 +96,16 @@
     min-height: 44px;
     flex-basis: 100%;
   }
+  .take-search input,
+  .take-tools select {
+    font-size: 16px;
+  }
   .take-row .take {
     gap: 8px;
   }
   .take-row .take-state {
-    font-size: 7px;
+    font-size: 12px;
+    line-height: 1.4;
     max-width: 68px;
     overflow-wrap: anywhere;
   }
