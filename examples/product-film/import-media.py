@@ -2,16 +2,27 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import uuid
 import zipfile
+
+
+def filesystem_path(value):
+    """Keep deep Windows checkouts usable without changing global OS settings."""
+    value = value.resolve()
+    text = str(value)
+    if os.name == 'nt' and not text.startswith('\\\\?\\'):
+        return Path('\\\\?\\UNC\\' + text[2:] if text.startswith('\\\\') else '\\\\?\\' + text)
+    return value
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('archive', type=Path)
     args = parser.parse_args()
-    folder = Path(__file__).resolve().parent
+    args.archive = filesystem_path(args.archive)
+    folder = filesystem_path(Path(__file__).parent)
     root = folder.parents[1]
     manifest = json.loads((folder / 'media-bundle.json').read_text(encoding='utf-8'))
     if args.archive.stat().st_size != manifest['bytes']:

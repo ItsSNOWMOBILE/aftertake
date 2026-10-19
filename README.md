@@ -101,10 +101,13 @@ and the **[53-second narrated walkthrough](https://aftertake-studio.right-bard-9
 The focused film was assembled in Aftertake itself; its editable
 [Film project](examples/judges-film/README.md) is included.
 
-The **[39-second product edit](https://aftertake-studio.right-bard-9761.chatgpt.site/edit-preview/)**
-adds faster typography, tracked copies, high-resolution stock inserts and a reveal
-of its own Film timeline. Its [editable project and optional input bundle](examples/product-film/README.md)
-let you reopen the complete edit without adding those media files to Git history.
+[![Watch Make it yours — a narrated film made in Aftertake](docs/assets/make-it-yours-poster.jpg)](https://aftertake-studio.right-bard-9761.chatgpt.site/make-it-yours/)
+
+**[Make it yours · 40.5 seconds →](https://aftertake-studio.right-bard-9761.chatgpt.site/make-it-yours/)**
+starts with a vertical ad, changes its hook in the actual editor, then shows
+tracked copies and H3 character replacement. The closing reveal opens its own
+Film timeline. [Both editable projects and the input bundle](examples/product-film/README.md)
+let you reopen the main film and its coffee ad without a diffusion GPU.
 
 ## Start here
 

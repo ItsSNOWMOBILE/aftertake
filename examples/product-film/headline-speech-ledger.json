@@ -1,392 +1,296 @@
-{
-  "format": "aftertake-headline-speech-alignment/1",
-  "fps": 24,
-  "voicedHeadlineCount": 14,
-  "openingPlacement": "Complete One WAV starts0s so its spoken word ends before the0.75s visual switch. Three WAV starts at0.875 minus its measured word onset, so the spoken word begins exactly0.875s. No word or WAV is truncated.",
-  "nonSpokenTitles": [
-    "AFTERTAKE brand cards",
-    "Attribution footer"
-  ],
-  "headlines": [
-    {
-      "text": "ONE",
-      "voiceId": "01-one",
-      "voiceFile": "examples/product-film/voices/01-one.wav",
-      "voiceAssetSha256": "853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373",
-      "voiceStart": 0,
-      "words": [
-        {
-          "text": "One.",
-          "start": 0.17266666666666666,
-          "end": 0.6976666666666667
-        }
-      ],
-      "actualSpeechStart": 0.17266666666666666,
-      "actualSpeechEnd": 0.6976666666666667,
-      "titleStart": 0.16666666666666666,
-      "titleEnd": 0.75,
-      "titleOnsetDifferenceMs": -6.000000000000005,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    },
-    {
-      "text": "THREE",
-      "voiceId": "01-three",
-      "voiceFile": "examples/product-film/voices/01-three.wav",
-      "voiceAssetSha256": "b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5",
-      "voiceStart": 0.7273333333333334,
-      "words": [
-        {
-          "text": "Three.",
-          "start": 0.14766666666666667,
-          "end": 0.7893333333333333
-        }
-      ],
-      "actualSpeechStart": 0.875,
-      "actualSpeechEnd": 1.5166666666666666,
-      "titleStart": 0.875,
-      "titleEnd": 1.6666666666666667,
-      "titleOnsetDifferenceMs": 0,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    },
-    {
-      "text": "Change the character.",
-      "voiceId": "02-character",
-      "voiceFile": "examples/product-film/voices/02-character.wav",
-      "voiceAssetSha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
-      "voiceStart": 7,
-      "words": [
-        {
-          "text": "Change",
-          "start": 1.4276666666666666,
-          "end": 1.7776666666666667
-        },
-        {
-          "text": "the",
-          "start": 1.8026666666666666,
-          "end": 1.8526666666666667
-        },
-        {
-          "text": "character.",
-          "start": 1.9026666666666667,
-          "end": 2.7252916666666667
-        }
-      ],
-      "actualSpeechStart": 8.427666666666667,
-      "actualSpeechEnd": 9.725291666666667,
-      "titleStart": 8.416666666666666,
-      "titleEnd": 9.875,
-      "titleOnsetDifferenceMs": -11.000000000001009,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    },
-    {
-      "text": "A shot.",
-      "voiceId": "04-create",
-      "voiceFile": "examples/product-film/voices/04-create.wav",
-      "voiceAssetSha256": "41e8d69f2188e0f34b4543307e7737c267ae36adf0ce8b982dc1eb27231118df",
-      "voiceStart": 14.125,
-      "words": [
-        {
-          "text": "a",
-          "start": 0.9976666666666667,
-          "end": 1.0476666666666667
-        },
-        {
-          "text": "shot.",
-          "start": 1.1476666666666666,
-          "end": 1.7493333333333334
-        }
-      ],
-      "actualSpeechStart": 15.122666666666667,
-      "actualSpeechEnd": 15.874333333333333,
-      "titleStart": 15.083333333333334,
-      "titleEnd": 16,
-      "titleOnsetDifferenceMs": -39.33333333333344,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    },
-    {
-      "text": "Cut an ad.",
-      "voiceId": "05-ad",
-      "voiceFile": "examples/product-film/voices/05-ad.wav",
-      "voiceAssetSha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac",
-      "voiceStart": 18.25,
-      "words": [
-        {
-          "text": "Cut",
-          "start": 0.144,
-          "end": 0.294
-        },
-        {
-          "text": "an",
-          "start": 0.319,
-          "end": 0.394
-        },
-        {
-          "text": "ad.",
-          "start": 0.469,
-          "end": 0.794
-        }
-      ],
-      "actualSpeechStart": 18.394,
-      "actualSpeechEnd": 19.044,
-      "titleStart": 18.375,
-      "titleEnd": 19.208333333333332,
-      "titleOnsetDifferenceMs": -18.99999999999835,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    },
-    {
-      "text": "Find the words.",
-      "voiceId": "05-ad",
-      "voiceFile": "examples/product-film/voices/05-ad.wav",
-      "voiceAssetSha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac",
-      "voiceStart": 18.25,
-      "words": [
-        {
-          "text": "Find",
-          "start": 1.109,
-          "end": 1.359
-        },
-        {
-          "text": "the",
-          "start": 1.384,
-          "end": 1.434
-        },
-        {
-          "text": "words.",
-          "start": 1.484,
-          "end": 1.859
-        }
-      ],
-      "actualSpeechStart": 19.359,
-      "actualSpeechEnd": 20.109,
-      "titleStart": 19.333333333333332,
-      "titleEnd": 20.25,
-      "titleOnsetDifferenceMs": -25.666666666669613,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    },
-    {
-      "text": "Make them move.",
-      "voiceId": "05-ad",
-      "voiceFile": "examples/product-film/voices/05-ad.wav",
-      "voiceAssetSha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac",
-      "voiceStart": 18.25,
-      "words": [
-        {
-          "text": "Make",
-          "start": 2.189,
-          "end": 2.364
-        },
-        {
-          "text": "them",
-          "start": 2.3890000000000002,
-          "end": 2.539
-        },
-        {
-          "text": "move.",
-          "start": 2.589,
-          "end": 3.2573333333333334
-        }
-      ],
-      "actualSpeechStart": 20.439,
-      "actualSpeechEnd": 21.507333333333335,
-      "titleStart": 20.416666666666668,
-      "titleEnd": 21.666666666666668,
-      "titleOnsetDifferenceMs": -22.333333333332206,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    },
-    {
-      "text": "Ask an agent.",
-      "voiceId": "06-agent",
-      "voiceFile": "examples/product-film/voices/06-agent.wav",
-      "voiceAssetSha256": "f84778109212d4c6e4d069222f791d07d990982445b7207061f53db3dc80bc7d",
-      "voiceStart": 24.125,
-      "words": [
-        {
-          "text": "Ask",
-          "start": 0.194,
-          "end": 0.494
-        },
-        {
-          "text": "an",
-          "start": 0.519,
-          "end": 0.569
-        },
-        {
-          "text": "agent.",
-          "start": 0.619,
-          "end": 1.219
-        }
-      ],
-      "actualSpeechStart": 24.319,
-      "actualSpeechEnd": 25.344,
-      "titleStart": 24.291666666666668,
-      "titleEnd": 25.5,
-      "titleOnsetDifferenceMs": -27.33333333333121,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    },
-    {
-      "text": "Open weights.",
-      "voiceId": "07-open",
-      "voiceFile": "examples/product-film/voices/07-open.wav",
-      "voiceAssetSha256": "380e1f634dbb21be97cb0ca8a71344fda82d5d43d12b0de29537f66cfafa97c3",
-      "voiceStart": 28.125,
-      "words": [
-        {
-          "text": "Open",
-          "start": 0.12266666666666666,
-          "end": 0.4726666666666667
-        },
-        {
-          "text": "weights.",
-          "start": 0.5226666666666666,
-          "end": 1.0976666666666666
-        }
-      ],
-      "actualSpeechStart": 28.247666666666667,
-      "actualSpeechEnd": 29.222666666666665,
-      "titleStart": 28.208333333333332,
-      "titleEnd": 29.333333333333332,
-      "titleOnsetDifferenceMs": -39.33333333333522,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    },
-    {
-      "text": "One studio.",
-      "voiceId": "07-open",
-      "voiceFile": "examples/product-film/voices/07-open.wav",
-      "voiceAssetSha256": "380e1f634dbb21be97cb0ca8a71344fda82d5d43d12b0de29537f66cfafa97c3",
-      "voiceStart": 28.125,
-      "words": [
-        {
-          "text": "One",
-          "start": 1.2476666666666667,
-          "end": 1.4476666666666667
-        },
-        {
-          "text": "studio.",
-          "start": 1.4976666666666667,
-          "end": 1.9976666666666667
-        }
-      ],
-      "actualSpeechStart": 29.372666666666667,
-      "actualSpeechEnd": 30.122666666666667,
-      "titleStart": 29.333333333333332,
-      "titleEnd": 30.25,
-      "titleOnsetDifferenceMs": -39.33333333333522,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    },
-    {
-      "text": "Powered by Comfy.",
-      "voiceId": "07-open",
-      "voiceFile": "examples/product-film/voices/07-open.wav",
-      "voiceAssetSha256": "380e1f634dbb21be97cb0ca8a71344fda82d5d43d12b0de29537f66cfafa97c3",
-      "voiceStart": 28.125,
-      "words": [
-        {
-          "text": "Powered",
-          "start": 2.292666666666667,
-          "end": 2.617666666666667
-        },
-        {
-          "text": "by",
-          "start": 2.667666666666667,
-          "end": 2.8176666666666668
-        },
-        {
-          "text": "Comfy.",
-          "start": 2.867666666666667,
-          "end": 3.526666666666667
-        }
-      ],
-      "actualSpeechStart": 30.417666666666666,
-      "actualSpeechEnd": 31.651666666666667,
-      "titleStart": 30.416666666666668,
-      "titleEnd": 31.791666666666668,
-      "titleOnsetDifferenceMs": -0.9999999999976694,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    },
-    {
-      "text": "MADE IN AFTERTAKE",
-      "voiceId": "08-reveal",
-      "voiceFile": "examples/product-film/voices/08-reveal.wav",
-      "voiceAssetSha256": "de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf",
-      "voiceStart": 32.125,
-      "words": [
-        {
-          "text": "Made",
-          "start": 1.1026666666666667,
-          "end": 1.3276666666666668
-        },
-        {
-          "text": "in",
-          "start": 1.3526666666666667,
-          "end": 1.4276666666666666
-        },
-        {
-          "text": "Aftertake.",
-          "start": 1.5026666666666666,
-          "end": 2.3553333333333333
-        }
-      ],
-      "actualSpeechStart": 33.227666666666664,
-      "actualSpeechEnd": 34.480333333333334,
-      "titleStart": 33.208333333333336,
-      "titleEnd": 34.625,
-      "titleOnsetDifferenceMs": -19.33333333332854,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    },
-    {
-      "text": "Your next take",
-      "voiceId": "09-close",
-      "voiceFile": "examples/product-film/voices/09-close.wav",
-      "voiceAssetSha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c",
-      "voiceStart": 35.125,
-      "words": [
-        {
-          "text": "Your",
-          "start": 0.19033333333333333,
-          "end": 0.29033333333333333
-        },
-        {
-          "text": "next",
-          "start": 0.3403333333333333,
-          "end": 0.5653333333333334
-        },
-        {
-          "text": "take",
-          "start": 0.6153333333333333,
-          "end": 0.8403333333333334
-        }
-      ],
-      "actualSpeechStart": 35.315333333333335,
-      "actualSpeechEnd": 35.965333333333334,
-      "titleStart": 35.291666666666664,
-      "titleEnd": 36,
-      "titleOnsetDifferenceMs": -23.66666666667072,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    },
-    {
-      "text": "starts here.",
-      "voiceId": "09-close",
-      "voiceFile": "examples/product-film/voices/09-close.wav",
-      "voiceAssetSha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c",
-      "voiceStart": 35.125,
-      "words": [
-        {
-          "text": "starts",
-          "start": 0.8903333333333333,
-          "end": 1.2153333333333334
-        },
-        {
-          "text": "here.",
-          "start": 1.2653333333333334,
-          "end": 1.7653333333333334
-        }
-      ],
-      "actualSpeechStart": 36.01533333333333,
-      "actualSpeechEnd": 36.89033333333333,
-      "titleStart": 36,
-      "titleEnd": 37.041666666666664,
-      "titleOnsetDifferenceMs": -15.333333333330756,
-      "method": "Native Kokoro phoneme timing receipt; title onset rounds down to the nearest24fps frame. Tail is125ms unless bounded by the next phrase or visual boundary."
-    }
-  ]
-}
+[
+  {
+    "name": "Make time.",
+    "start": 0,
+    "sourceStart": 0,
+    "sourceEnd": 1.1406666666666667,
+    "sha256": "c2cff8b3d9544e9b2e65c952565a87b140819563038d8e4b7dc6adf7fc7c20f8",
+    "heardWords": [
+      {
+        "text": "Make",
+        "start": 0.17266666666666666,
+        "end": 0.39766666666666667
+      },
+      {
+        "text": "time.",
+        "start": 0.44766666666666666,
+        "end": 1.1306666666666667
+      }
+    ]
+  },
+  {
+    "name": "05-ad",
+    "start": 5.25,
+    "sourceStart": 1.03,
+    "sourceEnd": 1.95,
+    "sha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac",
+    "heardWords": [
+      {
+        "text": "Find",
+        "start": 5.329,
+        "end": 5.579
+      },
+      {
+        "text": "the",
+        "start": 5.604,
+        "end": 5.654
+      },
+      {
+        "text": "words.",
+        "start": 5.704,
+        "end": 6.079
+      }
+    ]
+  },
+  {
+    "name": "Make it yours.",
+    "start": 7.75,
+    "sourceStart": 0,
+    "sourceEnd": 1.3226666666666667,
+    "sha256": "57ebdce93ca43bc9ab5e28a233e676355153c4469e04ea214af9ef3f66cb9381",
+    "heardWords": [
+      {
+        "text": "Make",
+        "start": 7.9013333333333335,
+        "end": 8.126333333333333
+      },
+      {
+        "text": "it",
+        "start": 8.151333333333334,
+        "end": 8.251333333333333
+      },
+      {
+        "text": "yours.",
+        "start": 8.326333333333334,
+        "end": 9.072666666666667
+      }
+    ]
+  },
+  {
+    "name": "01-one",
+    "start": 13.75,
+    "sourceStart": 0,
+    "sourceEnd": 0.794,
+    "sha256": "853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373",
+    "heardWords": [
+      {
+        "text": "One.",
+        "start": 13.922666666666666,
+        "end": 14.447666666666667
+      }
+    ]
+  },
+  {
+    "name": "01-three",
+    "start": 16.7916666667,
+    "sourceStart": 0,
+    "sourceEnd": 0.8392916666666667,
+    "sha256": "b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5",
+    "heardWords": [
+      {
+        "text": "Three.",
+        "start": 16.939333333366665,
+        "end": 17.58100000003333
+      }
+    ]
+  },
+  {
+    "name": "03-finish",
+    "start": 19.8333333333,
+    "sourceStart": 0,
+    "sourceEnd": 1.8133333333333332,
+    "sha256": "4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92",
+    "heardWords": [
+      {
+        "text": "Give",
+        "start": 19.934666666633333,
+        "end": 20.109666666633334
+      },
+      {
+        "text": "every",
+        "start": 20.184666666633333,
+        "end": 20.459666666633336
+      },
+      {
+        "text": "frame",
+        "start": 20.559666666633333,
+        "end": 20.884666666633333
+      },
+      {
+        "text": "your",
+        "start": 20.934666666633333,
+        "end": 21.034666666633335
+      },
+      {
+        "text": "look.",
+        "start": 21.084666666633336,
+        "end": 21.634666666633333
+      }
+    ]
+  },
+  {
+    "name": "02-character",
+    "start": 24.375,
+    "sourceStart": 0,
+    "sourceEnd": 1.28,
+    "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+    "heardWords": [
+      {
+        "text": "Keep",
+        "start": 24.472666666666665,
+        "end": 24.672666666666668
+      },
+      {
+        "text": "the",
+        "start": 24.697666666666667,
+        "end": 24.747666666666667
+      },
+      {
+        "text": "performance.",
+        "start": 24.797666666666668,
+        "end": 25.572666666666667
+      }
+    ]
+  },
+  {
+    "name": "02-character",
+    "start": 27.4166666667,
+    "sourceStart": 1.34,
+    "sourceEnd": 2.7252916666666667,
+    "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+    "heardWords": [
+      {
+        "text": "Change",
+        "start": 27.504333333366667,
+        "end": 27.854333333366665
+      },
+      {
+        "text": "the",
+        "start": 27.879333333366667,
+        "end": 27.929333333366667
+      },
+      {
+        "text": "character.",
+        "start": 27.979333333366665,
+        "end": 28.801958333366667
+      }
+    ]
+  },
+  {
+    "name": "07-open",
+    "start": 30.4583333333,
+    "sourceStart": 0,
+    "sourceEnd": 3.526666666666667,
+    "sha256": "380e1f634dbb21be97cb0ca8a71344fda82d5d43d12b0de29537f66cfafa97c3",
+    "heardWords": [
+      {
+        "text": "Open",
+        "start": 30.580999999966668,
+        "end": 30.930999999966666
+      },
+      {
+        "text": "weights.",
+        "start": 30.980999999966667,
+        "end": 31.555999999966666
+      },
+      {
+        "text": "One",
+        "start": 31.705999999966668,
+        "end": 31.905999999966667
+      },
+      {
+        "text": "studio.",
+        "start": 31.955999999966668,
+        "end": 32.455999999966664
+      },
+      {
+        "text": "Powered",
+        "start": 32.750999999966666,
+        "end": 33.07599999996667
+      },
+      {
+        "text": "by",
+        "start": 33.125999999966666,
+        "end": 33.275999999966665
+      },
+      {
+        "text": "Comfy.",
+        "start": 33.32599999996667,
+        "end": 33.98499999996667
+      }
+    ]
+  },
+  {
+    "name": "08-reveal",
+    "start": 34.875,
+    "sourceStart": 0,
+    "sourceEnd": 2.3553333333333333,
+    "sha256": "de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf",
+    "heardWords": [
+      {
+        "text": "And",
+        "start": 35.022666666666666,
+        "end": 35.12266666666667
+      },
+      {
+        "text": "this",
+        "start": 35.147666666666666,
+        "end": 35.32266666666666
+      },
+      {
+        "text": "edit?",
+        "start": 35.397666666666666,
+        "end": 35.797666666666665
+      },
+      {
+        "text": "Made",
+        "start": 35.977666666666664,
+        "end": 36.202666666666666
+      },
+      {
+        "text": "in",
+        "start": 36.227666666666664,
+        "end": 36.30266666666667
+      },
+      {
+        "text": "Aftertake.",
+        "start": 36.37766666666667,
+        "end": 37.230333333333334
+      }
+    ]
+  },
+  {
+    "name": "09-close",
+    "start": 38.375,
+    "sourceStart": 0,
+    "sourceEnd": 1.792,
+    "sha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c",
+    "heardWords": [
+      {
+        "text": "Your",
+        "start": 38.565333333333335,
+        "end": 38.665333333333336
+      },
+      {
+        "text": "next",
+        "start": 38.715333333333334,
+        "end": 38.940333333333335
+      },
+      {
+        "text": "take",
+        "start": 38.99033333333333,
+        "end": 39.215333333333334
+      },
+      {
+        "text": "starts",
+        "start": 39.26533333333333,
+        "end": 39.590333333333334
+      },
+      {
+        "text": "here.",
+        "start": 39.64033333333333,
+        "end": 40.14033333333333
+      }
+    ]
+  }
+]

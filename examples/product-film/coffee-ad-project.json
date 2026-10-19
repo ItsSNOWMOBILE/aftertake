@@ -1,0 +1,444 @@
+{
+  "format": "aftertake-film/2",
+  "name": "Aftertake / one coffee ad / change the hook",
+  "aspect": "portrait",
+  "shots": [
+    {
+      "assetId": "ec6bbd90-a730-47ba-b0ad-70ed9848c518",
+      "sha256": "e0e6d1fdac0df7c9f39b22c228fad615cf1aa565ebf87adc34aac30bf4789390",
+      "start": 1,
+      "end": 3,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.1,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "assetId": "32cf873a-3b3f-46e0-b7de-fb7218c249b1",
+      "sha256": "49c0142cb30d909a36a9b638b4bc867872081cce6983c3dc9cc9ea83cc6bb848",
+      "start": 0.75,
+      "end": 4,
+      "dissolve": 0
+    },
+    {
+      "assetId": "cebfdc9b-cc79-4dcd-a045-61ffe63b357d",
+      "sha256": "51f802a81dca9c3e5133f2881429f197328aa9969c2a1e60112cd058fec33293",
+      "start": 0,
+      "end": 1,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 3,
+        "endZoom": 3,
+        "x": 0.775,
+        "y": 0.5,
+        "keyframes": [
+          {
+            "at": 0,
+            "zoom": 3,
+            "x": 0.775,
+            "y": 0.5,
+            "easing": "linear"
+          },
+          {
+            "at": 0.1,
+            "zoom": 3,
+            "x": 0.7403790087463556,
+            "y": 0.5,
+            "easing": "linear"
+          },
+          {
+            "at": 0.2,
+            "zoom": 3,
+            "x": 0.6510932944606413,
+            "y": 0.5,
+            "easing": "linear"
+          },
+          {
+            "at": 0.35,
+            "zoom": 3,
+            "x": 0.4625,
+            "y": 0.5,
+            "easing": "linear"
+          },
+          {
+            "at": 0.5,
+            "zoom": 3,
+            "x": 0.2739067055393586,
+            "y": 0.5,
+            "easing": "linear"
+          },
+          {
+            "at": 0.7,
+            "zoom": 3,
+            "x": 0.15000000000000002,
+            "y": 0.5,
+            "easing": "linear"
+          },
+          {
+            "at": 0.85,
+            "zoom": 3,
+            "x": 0.15000000000000002,
+            "y": 0.5,
+            "easing": "hold"
+          },
+          {
+            "at": 1,
+            "zoom": 3,
+            "x": 0.15000000000000002,
+            "y": 0.5,
+            "easing": "hold"
+          }
+        ]
+      }
+    },
+    {
+      "assetId": "4ffd80f5-8794-4b34-ba6e-97481ceb6fa9",
+      "sha256": "e282241567cc9cb5806e289e2420f2ac1180f31e1934d5a4d62ca522f73cf993",
+      "start": 0,
+      "end": 1.5,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 3,
+        "endZoom": 3,
+        "x": 0.15,
+        "y": 0.5,
+        "keyframes": [
+          {
+            "at": 0,
+            "zoom": 3,
+            "x": 0.15,
+            "y": 0.5
+          },
+          {
+            "at": 0.4666666666666667,
+            "zoom": 3,
+            "x": 0.15,
+            "y": 0.5,
+            "easing": "hold"
+          },
+          {
+            "at": 0.8666666666666667,
+            "zoom": 3,
+            "x": 0.775,
+            "y": 0.5,
+            "easing": "ease-in-out"
+          },
+          {
+            "at": 1,
+            "zoom": 3,
+            "x": 0.775,
+            "y": 0.5,
+            "easing": "hold"
+          }
+        ]
+      }
+    },
+    {
+      "assetId": "93b5352c-2bc0-4285-a944-fab207d5ca18",
+      "sha256": "d3f8ee4a65578fc0dc1744a4319c87e2d6f166b873190ab358c660358093decb",
+      "start": 3.4583333333333335,
+      "end": 6.958333333333333,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.1,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "assetId": "5ef5444c-4f91-4a44-9baa-de41f0532ec1",
+      "sha256": "02870edee059d439914e9c409adf45430c37042cf7a14e678aa16f7020175d24",
+      "start": 2.5,
+      "end": 3.75,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.5,
+        "endZoom": 1.05,
+        "x": 0.5,
+        "y": 0.72,
+        "keyframes": [
+          {
+            "at": 0,
+            "zoom": 1.5,
+            "x": 0.5,
+            "y": 0.72
+          },
+          {
+            "at": 0.7,
+            "zoom": 1.05,
+            "x": 0.5,
+            "y": 0.6,
+            "easing": "ease-out"
+          },
+          {
+            "at": 1,
+            "zoom": 1.05,
+            "x": 0.5,
+            "y": 0.6,
+            "easing": "hold"
+          }
+        ]
+      }
+    },
+    {
+      "assetId": "32cf873a-3b3f-46e0-b7de-fb7218c249b1",
+      "sha256": "49c0142cb30d909a36a9b638b4bc867872081cce6983c3dc9cc9ea83cc6bb848",
+      "start": 1,
+      "end": 4,
+      "dissolve": 0
+    },
+    {
+      "assetId": "81f71a45-374d-4771-82f1-af3342a1fc78",
+      "sha256": "68c9ff90dc1d3ec2cb5faa95186b54c99ff8bccb2c44b8881b0ad7e83777e1f7",
+      "start": 0,
+      "end": 1,
+      "dissolve": 0
+    }
+  ],
+  "titles": [
+    {
+      "id": "1e4d895e-646c-5daf-b66a-441157ba980a",
+      "text": "Make time.",
+      "start": 0.16666666666666666,
+      "end": 1.9166666666666667,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 140,
+      "fontWeight": 500,
+      "stroke": false,
+      "align": "left",
+      "color": "#f8f4ea"
+    },
+    {
+      "id": "137e7b14-40ab-5c93-9425-9d38ab6370ea",
+      "text": "Make it yours.",
+      "start": 7.916666666666667,
+      "end": 11.125,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 140,
+      "fontWeight": 500,
+      "stroke": false,
+      "align": "left",
+      "color": "#f8f4ea"
+    },
+    {
+      "id": "9a9654cc-d199-535b-885d-42c6edf50a8d",
+      "text": "Aftertake.",
+      "start": 15.5,
+      "end": 16.5,
+      "style": "headline",
+      "position": "center",
+      "animation": "none",
+      "fontSize": 120,
+      "fontWeight": 500,
+      "stroke": false,
+      "align": "center",
+      "color": "#17221A"
+    }
+  ],
+  "audio": [
+    {
+      "assetId": "e1e7d604-046a-4fa6-bc14-36a8e1d3d796",
+      "sha256": "c2cff8b3d9544e9b2e65c952565a87b140819563038d8e4b7dc6adf7fc7c20f8",
+      "start": 0,
+      "sourceStart": 0,
+      "sourceEnd": 1.1406666666666667,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "c2cff8b3d9544e9b2e65c952565a87b140819563038d8e4b7dc6adf7fc7c20f8",
+        "duration": 1.1406666666666667,
+        "narration": {
+          "text": "Make time.",
+          "voice": "am_michael",
+          "speed": 1.03,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Make",
+                "start": 0.17266666666666666,
+                "end": 0.39766666666666667
+              },
+              {
+                "text": "time.",
+                "start": 0.44766666666666666,
+                "end": 1.1306666666666667
+              }
+            ]
+          }
+        }
+      },
+      "fadeIn": 0.02,
+      "fadeOut": 0.02
+    },
+    {
+      "assetId": "cdd85947-af7d-4093-9a82-00b60d786688",
+      "sha256": "57ebdce93ca43bc9ab5e28a233e676355153c4469e04ea214af9ef3f66cb9381",
+      "start": 7.75,
+      "sourceStart": 0,
+      "sourceEnd": 1.3226666666666667,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "57ebdce93ca43bc9ab5e28a233e676355153c4469e04ea214af9ef3f66cb9381",
+        "duration": 1.3226666666666667,
+        "narration": {
+          "text": "Make it yours.",
+          "voice": "am_michael",
+          "speed": 1.03,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Make",
+                "start": 0.15133333333333332,
+                "end": 0.37633333333333335
+              },
+              {
+                "text": "it",
+                "start": 0.4013333333333333,
+                "end": 0.5013333333333333
+              },
+              {
+                "text": "yours.",
+                "start": 0.5763333333333334,
+                "end": 1.3226666666666667
+              }
+            ]
+          }
+        }
+      },
+      "fadeIn": 0.02,
+      "fadeOut": 0.02
+    },
+    {
+      "assetId": "5ba67145-66dd-4fb7-a9b5-e5b969c611a0",
+      "sha256": "2aed8bf9b972cb02d0c4e206e4db00d4625bcf08e726560e6be899c9505f42c5",
+      "start": 14.852333333333334,
+      "sourceStart": 0,
+      "sourceEnd": 1.5573333333333332,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "2aed8bf9b972cb02d0c4e206e4db00d4625bcf08e726560e6be899c9505f42c5",
+        "duration": 1.5573333333333332,
+        "narration": {
+          "text": "Made in Aftertake.",
+          "voice": "am_michael",
+          "speed": 1.03,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Made",
+                "start": 0.17266666666666666,
+                "end": 0.39766666666666667
+              },
+              {
+                "text": "in",
+                "start": 0.44766666666666666,
+                "end": 0.5476666666666666
+              },
+              {
+                "text": "Aftertake.",
+                "start": 0.6476666666666666,
+                "end": 1.5476666666666667
+              }
+            ]
+          }
+        }
+      },
+      "fadeIn": 0.02,
+      "fadeOut": 0.02
+    },
+    {
+      "assetId": "35a6e867-68ae-488e-a1fe-9c9e44cfe40b",
+      "sha256": "aece5ce0048f626367951e0710a025f4a1e09e5ab0a2d51c243e25d793c40ff9",
+      "start": 0,
+      "sourceStart": 22.5,
+      "sourceEnd": 39,
+      "volume": 0.45,
+      "fadeIn": 0.12,
+      "fadeOut": 1
+    }
+  ],
+  "sourceVolume": 0,
+  "normalizeAudio": true,
+  "sourceFiles": {
+    "ec6bbd90-a730-47ba-b0ad-70ed9848c518": {
+      "path": "examples/product-film/full-demo-media/e0e6d1fdac0df7c9f39b22c228fad615cf1aa565ebf87adc34aac30bf4789390.mp4",
+      "sha256": "e0e6d1fdac0df7c9f39b22c228fad615cf1aa565ebf87adc34aac30bf4789390"
+    },
+    "5ef5444c-4f91-4a44-9baa-de41f0532ec1": {
+      "path": "examples/product-film/full-demo-media/02870edee059d439914e9c409adf45430c37042cf7a14e678aa16f7020175d24.mp4",
+      "sha256": "02870edee059d439914e9c409adf45430c37042cf7a14e678aa16f7020175d24"
+    },
+    "32cf873a-3b3f-46e0-b7de-fb7218c249b1": {
+      "path": "examples/product-film/full-demo-media/49c0142cb30d909a36a9b638b4bc867872081cce6983c3dc9cc9ea83cc6bb848.mp4",
+      "sha256": "49c0142cb30d909a36a9b638b4bc867872081cce6983c3dc9cc9ea83cc6bb848"
+    },
+    "81f71a45-374d-4771-82f1-af3342a1fc78": {
+      "path": "examples/product-film/full-demo-media/68c9ff90dc1d3ec2cb5faa95186b54c99ff8bccb2c44b8881b0ad7e83777e1f7.png",
+      "sha256": "68c9ff90dc1d3ec2cb5faa95186b54c99ff8bccb2c44b8881b0ad7e83777e1f7"
+    },
+    "e1e7d604-046a-4fa6-bc14-36a8e1d3d796": {
+      "path": "examples/product-film/full-demo-media/c2cff8b3d9544e9b2e65c952565a87b140819563038d8e4b7dc6adf7fc7c20f8.wav",
+      "sha256": "c2cff8b3d9544e9b2e65c952565a87b140819563038d8e4b7dc6adf7fc7c20f8"
+    },
+    "5c8b7f7e-ede9-4485-9017-0f820629b35c": {
+      "path": "examples/product-film/full-demo-media/5abfd38467ba4652932bb95d1311d96dcb4804354ce61ce2ce24f6564614cb73.wav",
+      "sha256": "5abfd38467ba4652932bb95d1311d96dcb4804354ce61ce2ce24f6564614cb73"
+    },
+    "cdd85947-af7d-4093-9a82-00b60d786688": {
+      "path": "examples/product-film/full-demo-media/57ebdce93ca43bc9ab5e28a233e676355153c4469e04ea214af9ef3f66cb9381.wav",
+      "sha256": "57ebdce93ca43bc9ab5e28a233e676355153c4469e04ea214af9ef3f66cb9381"
+    },
+    "5ba67145-66dd-4fb7-a9b5-e5b969c611a0": {
+      "path": "examples/product-film/full-demo-media/2aed8bf9b972cb02d0c4e206e4db00d4625bcf08e726560e6be899c9505f42c5.wav",
+      "sha256": "2aed8bf9b972cb02d0c4e206e4db00d4625bcf08e726560e6be899c9505f42c5"
+    },
+    "35a6e867-68ae-488e-a1fe-9c9e44cfe40b": {
+      "path": "examples/product-film/full-demo-media/aece5ce0048f626367951e0710a025f4a1e09e5ab0a2d51c243e25d793c40ff9.wav",
+      "sha256": "aece5ce0048f626367951e0710a025f4a1e09e5ab0a2d51c243e25d793c40ff9"
+    },
+    "cebfdc9b-cc79-4dcd-a045-61ffe63b357d": {
+      "path": "examples/product-film/full-demo-media/51f802a81dca9c3e5133f2881429f197328aa9969c2a1e60112cd058fec33293.png",
+      "sha256": "51f802a81dca9c3e5133f2881429f197328aa9969c2a1e60112cd058fec33293"
+    },
+    "4ffd80f5-8794-4b34-ba6e-97481ceb6fa9": {
+      "path": "examples/product-film/full-demo-media/e282241567cc9cb5806e289e2420f2ac1180f31e1934d5a4d62ca522f73cf993.png",
+      "sha256": "e282241567cc9cb5806e289e2420f2ac1180f31e1934d5a4d62ca522f73cf993"
+    },
+    "93b5352c-2bc0-4285-a944-fab207d5ca18": {
+      "path": "examples/product-film/full-demo-media/d3f8ee4a65578fc0dc1744a4319c87e2d6f166b873190ab358c660358093decb.mp4",
+      "sha256": "d3f8ee4a65578fc0dc1744a4319c87e2d6f166b873190ab358c660358093decb"
+    }
+  },
+  "notes": "A 16.5-second portrait coffee ad built and exported in Aftertake Film. Genuine before/after editor stills show a hook change from Make time to Make it yours. The revised result continues from the displayed grounds frame. Cuts, camera paths, typography, narration and audio fades remain editable. Source provenance and the input bundle are documented in README.md."
+}

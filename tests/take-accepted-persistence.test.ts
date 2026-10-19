@@ -18,12 +18,39 @@ const temporaryPrefix = 'aftertake-take-accepted-';
 type FaultOperation = 'write' | 'rename';
 type RecordData = Record<string, any>;
 
-async function until<T>(read: () => Promise<T>, ready: (value: T) => boolean): Promise<T> {
+function recordSummary(value: unknown) {
+  if (!value || typeof value !== 'object') return value;
+  const record = value as RecordData;
+  return Object.fromEntries(
+    ['id', 'state', 'jobId', 'requestKey', 'requestDigest', 'updatedAt', 'error'].map((key) => [
+      key,
+      record[key],
+    ]),
+  );
+}
+
+async function until<T>(
+  phase: string,
+  read: () => Promise<T>,
+  ready: (value: T) => boolean,
+): Promise<T> {
   const timeout = AbortSignal.timeout(15000);
-  while (true) {
-    const value = await read();
-    if (ready(value)) return value;
-    await delay(20, undefined, { signal: timeout });
+  let lastValue: T | undefined;
+  try {
+    while (true) {
+      lastValue = await read();
+      if (ready(lastValue)) return lastValue;
+      await delay(20, undefined, { signal: timeout });
+    }
+  } catch (error) {
+    throw new Error(
+      `Accepted-take fixture stopped while ${phase}; last observation: ${JSON.stringify(
+        typeof lastValue === 'string'
+          ? 'See the bounded child log in the fixture diagnostic.'
+          : recordSummary(lastValue),
+      )}`,
+      { cause: error },
+    );
   }
 }
 
@@ -67,10 +94,23 @@ const directory = process.env.AFTERTAKE_DATA_DIR;
 const renderDirectory = path.join(directory, 'renders');
 const marker = path.join(directory, 'backend-accepted');
 const log = path.join(directory, 'faults.jsonl');
+const diagnostics = path.join(directory, 'metadata-errors.jsonl');
 const operation = process.env.AFTERTAKE_TEST_FAULT_OPERATION;
 const limit = Number(process.env.AFTERTAKE_TEST_FAULT_LIMIT);
 let failures = 0;
+let diagnosticCount = 0;
 const uuid = '[0-9a-f-]{36}';
+function metadataError(kind, filename, error) {
+  if (typeof filename !== 'string' || path.dirname(filename) !== renderDirectory) return;
+  if (diagnosticCount++ >= 32) return;
+  try {
+    fs.appendFileSync(diagnostics, JSON.stringify({
+      kind, filename: path.basename(filename), code: error?.code, atMs: Date.now(),
+      injected: error?.message === 'Synthetic accepted-job metadata failure',
+      pid: process.pid,
+    }) + '\\n');
+  } catch { /* Diagnostics must never replace the original storage error. */ }
+}
 function fail(kind, filename) {
   if (kind !== operation || failures >= limit || !fs.existsSync(marker)) return;
   if (typeof filename !== 'string' || path.dirname(filename) !== renderDirectory) return;
@@ -84,13 +124,23 @@ function fail(kind, filename) {
 }
 const originalWrite = fs.promises.writeFile;
 fs.promises.writeFile = async function(filename, ...args) {
-  fail('write', filename);
-  return originalWrite.call(this, filename, ...args);
+  try {
+    fail('write', filename);
+    return await originalWrite.call(this, filename, ...args);
+  } catch (error) {
+    metadataError('write', filename, error);
+    throw error;
+  }
 };
 const originalRename = fs.promises.rename;
 fs.promises.rename = async function(source, destination, ...args) {
-  fail('rename', destination);
-  return originalRename.call(this, source, destination, ...args);
+  try {
+    fail('rename', destination);
+    return await originalRename.call(this, source, destination, ...args);
+  } catch (error) {
+    metadataError('rename', destination, error);
+    throw error;
+  }
 };
 syncBuiltinESMExports();
 `,
@@ -114,9 +164,37 @@ for (const operation of ['write', 'rename'] as const) {
         let acceptedGenerations = 0;
         let backendFailure: unknown;
         let appId: string | undefined;
+        let lastNativeState: RecordData | undefined;
+        let lastDiskState: unknown;
+        const startedAt = Date.now();
+        let phase = 'create fixture';
+        const phases: { phase: string; elapsedMs: number }[] = [];
+        const requests: RecordData[] = [];
+        const childLogs: { pid?: number; faultLimit: number; tail: string }[] = [];
+        function enterPhase(name: string) {
+          phase = name;
+          phases.push({ phase, elapsedMs: Date.now() - startedAt });
+          if (phases.length > 32) phases.shift();
+        }
+        function traceRequest(owner: string, method: string, pathname: string) {
+          const entry: RecordData = {
+            owner,
+            method,
+            pathname,
+            elapsedMs: Date.now() - startedAt,
+          };
+          requests.push(entry);
+          if (requests.length > 64) requests.shift();
+          return entry;
+        }
         const engine = createServer(async (request, response) => {
+          const pathname = new URL(request.url || '/', 'http://localhost').pathname;
+          const trace = traceRequest('engine', request.method || '', pathname);
+          response.once('finish', () => {
+            trace.status = response.statusCode;
+            trace.completedMs = Date.now() - startedAt;
+          });
           try {
-            const pathname = new URL(request.url || '/', 'http://localhost').pathname;
             const chunks: Buffer[] = [];
             for await (const chunk of request) chunks.push(Buffer.from(chunk));
             response.setHeader('Content-Type', 'application/json');
@@ -202,6 +280,12 @@ for (const operation of ['write', 'rename'] as const) {
         assert.ok(engineAddress && typeof engineAddress !== 'string');
         const engineUrl = `http://127.0.0.1:${engineAddress.port}`;
         function jobSnapshot(status: 'queued' | 'failed') {
+          lastNativeState = {
+            id: nativeId,
+            status,
+            error: status === 'failed' ? 'execution_error' : null,
+            elapsedMs: Date.now() - startedAt,
+          };
           return {
             id: nativeId,
             status,
@@ -236,6 +320,7 @@ for (const operation of ['write', 'rename'] as const) {
           child = undefined;
         }
         async function start(limit: number) {
+          enterPhase(`start studio ${mainPids.length + 1} with fault limit ${limit}`);
           const reservation = createServer().listen(0, '127.0.0.1');
           await once(reservation, 'listening');
           const address = reservation.address();
@@ -272,9 +357,16 @@ for (const operation of ['write', 'rename'] as const) {
           );
           assert.ok(child.pid);
           mainPids.push(child.pid);
-          child.stdout!.on('data', (part) => (output += part.toString()));
-          child.stderr!.on('data', (part) => (output += part.toString()));
+          const childLog = { pid: child.pid, faultLimit: limit, tail: '' };
+          childLogs.push(childLog);
+          const appendOutput = (part: Buffer) => {
+            output = (output + part.toString()).slice(-16384);
+            childLog.tail = (childLog.tail + part.toString()).slice(-4000);
+          };
+          child.stdout!.on('data', appendOutput);
+          child.stderr!.on('data', appendOutput);
           await until(
+            phase,
             async () => {
               assert.equal(child!.exitCode, null, output.slice(-2000));
               return output;
@@ -282,28 +374,48 @@ for (const operation of ['write', 'rename'] as const) {
             (text) => text.includes('Aftertake studio:'),
           );
         }
-        const post = (key: string, input = recipe) =>
-          fetch(`${base}/api/renders`, {
+        async function request(label: string, endpoint: string, init?: RequestInit) {
+          enterPhase(label);
+          const trace = traceRequest('studio', init?.method || 'GET', endpoint);
+          try {
+            const response = await fetch(`${base}${endpoint}`, init);
+            trace.status = response.status;
+            trace.completedMs = Date.now() - startedAt;
+            return response;
+          } catch (error) {
+            trace.error = error instanceof Error ? error.name : typeof error;
+            throw error;
+          }
+        }
+        const post = (key: string, input = recipe, label = 'submit original take') =>
+          request(label, '/api/renders', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Idempotency-Key': key },
             body: JSON.stringify(input),
             signal: AbortSignal.timeout(15000),
           });
-        const list = () =>
-          fetch(`${base}/api/renders`, { signal: AbortSignal.timeout(5000) }).then(
+        const list = (label: string) =>
+          request(label, '/api/renders', { signal: AbortSignal.timeout(5000) }).then(
             (response) => response.json() as Promise<RecordData[]>,
           );
-        const diskRecord = async () =>
-          JSON.parse(await readFile(path.join(renderDirectory, `${appId}.json`), 'utf8'));
+        const diskRecord = async () => {
+          const saved = JSON.parse(
+            await readFile(path.join(renderDirectory, `${appId}.json`), 'utf8'),
+          );
+          lastDiskState = recordSummary(saved);
+          return saved;
+        };
         const key = `accepted-${operation}-${failureCount}`;
         try {
           await start(failureCount);
-          const health = await fetch(`${base}/api/engine`).then((response) => response.json());
+          const health = await request('check engine readiness', '/api/engine').then((response) =>
+            response.json(),
+          );
           assert.equal(health.ready, true);
           const response = await post(key);
           assert.equal(response.status, failureCount === 1 ? 502 : 500, output);
           const body = await response.json();
-          const [inMemory] = await list();
+          const [inMemory] = await list('inspect accepted in-memory take');
           assert.equal(inMemory.id, appId);
           assert.equal(inMemory.jobId, nativeId);
           assert.equal(inMemory.state, 'submission_unknown');
@@ -333,18 +445,24 @@ for (const operation of ['write', 'rename'] as const) {
             failureCount === 1 ? [1] : [1, 2],
           );
 
-          const rejoined = await post(key);
+          const rejoined = await post(key, recipe, 'rejoin original take before restart');
           assert.equal(rejoined.status, 202);
           assert.deepEqual(await rejoined.json(), inMemory);
-          assert.equal((await post(key, { ...recipe, seed: recipe.seed + 1 })).status, 409);
-          assert.equal((await post(`${key}-new`)).status, 409);
+          assert.equal(
+            (await post(key, { ...recipe, seed: recipe.seed + 1 }, 'reject changed original key'))
+              .status,
+            409,
+          );
+          assert.equal((await post(`${key}-new`, recipe, 'reject competing take')).status, 409);
           assert.equal(submissions.length, 1);
 
+          enterPhase('stop studio before restart');
           await stop();
           await start(0);
           if (failureCount === 1) {
-            await until(diskRecord, (record) => record.state === 'failed');
-            const [recovered] = await list();
+            enterPhase('observe failed native job persisted after restart');
+            await until(phase, diskRecord, (record) => record.state === 'failed');
+            const [recovered] = await list('inspect recovered failed take');
             assert.equal(recovered.state, 'failed');
             assert.equal(recovered.jobId, nativeId);
             assertIdentity(recovered, original);
@@ -357,8 +475,9 @@ for (const operation of ['write', 'rename'] as const) {
               'Known native IDs must be observed without resubmission.',
             );
           } else {
-            await until(diskRecord, (record) => record.state === 'submission_unknown');
-            const [reloaded] = await list();
+            enterPhase('observe uncertain submission persisted after restart');
+            await until(phase, diskRecord, (record) => record.state === 'submission_unknown');
+            const [reloaded] = await list('inspect recovered uncertain take');
             assert.equal(reloaded.state, 'submission_unknown');
             assert.equal(reloaded.jobId, undefined);
             assertIdentity(reloaded, original);
@@ -370,10 +489,11 @@ for (const operation of ['write', 'rename'] as const) {
               'Startup must not replay a request without a native ID.',
             );
 
-            const reconciled = await fetch(`${base}/api/renders/${appId}/reconcile`, {
-              method: 'POST',
-              signal: AbortSignal.timeout(15000),
-            });
+            const reconciled = await request(
+              'explicitly reconcile original uncertain take',
+              `/api/renders/${appId}/reconcile`,
+              { method: 'POST', signal: AbortSignal.timeout(15000) },
+            );
             assert.equal(reconciled.status, 502);
             const reconciledBody = await reconciled.json();
             assert.equal(reconciledBody.render.state, 'submission_unknown');
@@ -385,10 +505,14 @@ for (const operation of ['write', 'rename'] as const) {
             assert.deepEqual(submissions[1].graph, submissions[0].graph);
             assertIdentity(submissions[1].saved, original);
             assert.equal(nativeReads.length, 0);
-            const joinedAgain = await post(key);
+            const joinedAgain = await post(key, recipe, 'rejoin reconciled original take');
             assert.equal(joinedAgain.status, 202);
             assert.deepEqual(await joinedAgain.json(), reconciledBody.render);
-            assert.equal((await post(`${key}-new`)).status, 409);
+            assert.equal(
+              (await post(`${key}-new`, recipe, 'reject competing take after reconciliation'))
+                .status,
+              409,
+            );
             assert.equal(submissions.length, 2);
           }
           assert.equal(acceptedGenerations, 1);
@@ -399,6 +523,61 @@ for (const operation of ['write', 'rename'] as const) {
           );
           const finalFaultLog = await readFile(path.join(directory, 'faults.jsonl'), 'utf8');
           assert.equal(finalFaultLog.trim().split('\n').length, failureCount);
+        } catch (error) {
+          let currentDiskState: unknown;
+          try {
+            currentDiskState = recordSummary(
+              JSON.parse(await readFile(path.join(renderDirectory, `${appId}.json`), 'utf8')),
+            );
+          } catch (readError) {
+            currentDiskState = { readError: (readError as NodeJS.ErrnoException).code };
+          }
+          const metadataErrors = await readFile(
+            path.join(directory, 'metadata-errors.jsonl'),
+            'utf8',
+          )
+            .then((text) =>
+              text
+                .trim()
+                .split('\n')
+                .slice(-32)
+                .map((line) => JSON.parse(line)),
+            )
+            .catch((readError: NodeJS.ErrnoException) => ({ readError: readError.code }));
+          let details = JSON.stringify({
+            phase,
+            operation,
+            failureCount,
+            elapsedMs: Date.now() - startedAt,
+            lastDiskState,
+            currentDiskState,
+            lastNativeState,
+            acceptedGenerations,
+            submissionCount: submissions.length,
+            nativeReadCount: nativeReads.length,
+            backendFailure:
+              backendFailure instanceof Error
+                ? { name: backendFailure.name, message: backendFailure.message }
+                : backendFailure,
+            child: child && {
+              pid: child.pid,
+              exitCode: child.exitCode,
+              signalCode: child.signalCode,
+            },
+            phases,
+            requests,
+            metadataErrors,
+            childLogs,
+          });
+          for (const [filename, label] of [
+            [directory, '<fixture>'],
+            [process.cwd(), '<workspace>'],
+            [tmpdir(), '<tmp>'],
+          ]) {
+            details = details.replaceAll(JSON.stringify(filename).slice(1, -1), label);
+            details = details.replaceAll(filename.replaceAll('\\', '/'), label);
+          }
+          throw new Error(`Accepted-take fixture failure: ${details}`, { cause: error });
         } finally {
           await stop();
           engine.closeAllConnections();

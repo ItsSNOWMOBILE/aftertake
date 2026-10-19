@@ -1,53 +1,68 @@
-# One performance. Your next take.
+# Make it yours
 
-[Watch the 39-second edit](https://aftertake-studio.right-bard-9761.chatgpt.site/edit-preview/)
-or [download the MP4](https://aftertake-studio.right-bard-9761.chatgpt.site/edit-preview/review.mp4).
+[Watch the narrated 40.5-second film](https://aftertake-studio.right-bard-9761.chatgpt.site/make-it-yours/)
+or [download the MP4](https://aftertake-studio.right-bard-9761.chatgpt.site/make-it-yours/review.mp4).
 
-The edit combines tracked subject copies, native H3 character replacement,
-color finishing, LTX reference animation, a portrait ad and editable typography.
-Its final reveal shows the actual Film project used to assemble it.
+A vertical coffee ad becomes a different hook. One performance becomes three
+tracked dancers, then a finished grade. A native H3 comparison changes the
+character. The closing reveal shows the actual Film project used for the edit.
 
-All 19 cuts, 17 titles and 11 sound layers are native Aftertake Film operations.
-The 39-second output has 936 frames at 24 fps. Headline timing follows measured
-Kokoro word onsets; original synthesized music is a separate sound layer.
-The UI footage consists of held captures from the real editor, with generation
-waits omitted. These captures demonstrate the workflow, rather than replaying
-every model execution in real time.
+The main film has **13 cuts, 12 titles and 12 sound clips**, rendered at
+1280 × 720, 24 fps. It uses the saved portrait-ad export as footage;
+`coffee-ad-project.json` separately retains that ad's cuts, camera moves,
+typography and sound. Both projects were exported through Aftertake's native
+Film tools. The UI sections are genuine still captures with authored camera
+movement. Source/result pairs replay the same short performance for comparison.
 
 ## Reopen the edit
 
-Start the local studio with the CPU Film runtime installed. Download the
-[optional input bundle](https://aftertake-studio.right-bard-9761.chatgpt.site/edit-preview/film-inputs-a3a8d7660417c10a.zip).
-It contains only the additional screen captures, high-resolution stock inserts,
-narration and music. Existing example sources come from this repository.
-The bundle stays outside Git history; `media-bundle.json` records every checksum.
+Install dependencies and the small CPU Film runtime, then start the example
+workspace. Python setup uses Python 3.12.
 
 ```sh
-python examples/product-film/import-media.py /path/to/film-inputs-a3a8d7660417c10a.zip
+pnpm install --frozen-lockfile
+python scripts/setup-film.py
+pnpm demo
+```
+
+Download the [40.7 MB input bundle](https://aftertake-studio.right-bard-9761.chatgpt.site/make-it-yours/film-inputs-aa6e20876a7f044d.zip).
+It contains the additional footage, UI stills, narration, music and saved
+portrait-ad output. Four existing dance and H3 inputs remain in this checkout.
+The manifest records every checksum; the importer checks the complete archive
+and refuses to overwrite changed local inputs.
+
+In another terminal, run:
+
+```sh
+python examples/product-film/import-media.py /path/to/film-inputs-aa6e20876a7f044d.zip
+python scripts/import-film-project.py examples/product-film/coffee-ad-project.json --url http://127.0.0.1:4312
 python scripts/import-film-project.py examples/product-film/project.json --url http://127.0.0.1:4312
 ```
 
-Open **Film assembly → Import film project**, select `project.json`, then inspect
-the draft or export it. You can change the narration, titles, footage, framing
-and timing. Assembling the existing footage needs no diffusion GPU. Generating
-new footage uses the corresponding model profiles and hardware checks.
+Open **Film assembly → Import film project** and select either JSON project.
+Importing starts no render. Change the shots, words, framing and timing, then
+export through Film assembly. To carry a change from the coffee ad into the
+main film, export the revised ad and deliberately replace its source footage.
 
-`output-receipt.json` identifies the reviewed export. Different FFmpeg builds or
-encoders may produce different container bytes; the source hashes and native
-project retain the exact edit. The full-motion review and creative approval
-remain with the viewer.
+Assembling these existing inputs needs no diffusion GPU. Generating new
+footage uses the corresponding model profiles and hardware checks.
 
-## Sources and reproduction
+## Sources and verification
 
-- Dance footage and tracked masks: [subject-duplicates](../subject-duplicates/README.md).
-- Character result: [character-h3-high](../character-h3-high/README.md).
-- Reference animation: [observatory recipe](../observatory/recipe.json).
-- Coffee footage: Michael Burrows, Pexels; see `coffee-source-receipts.json` and
-  [the original source credits](../social-ad/sources.json). High-resolution
-  inserts retain the original encoded packets; creative framing happens in Film.
-- Narration: local Kokoro; `voice-receipts.json` includes requests, model hashes
-  and measured word timing. `headline-speech-ledger.json` maps titles to speech.
-- Original score: CC0-1.0; generator source is MIT. See [MUSIC.md](MUSIC.md).
-- `capture-receipts.json` identifies actual editor captures and their timing limits.
+- Dance footage and original tracked pixels: [subject-duplicates](../subject-duplicates/README.md).
+- Native H3 performance: [character-h3-high](../character-h3-high/README.md).
+- Coffee footage: Michael Burrows / Pexels; see `coffee-source-receipts.json`
+  and [the original attribution](../social-ad/sources.json).
+- Local Kokoro narration and measured words are retained in both projects.
+  `headline-speech-ledger.json` records the main film's spoken timeline.
+- Original score: CC0-1.0; see [MUSIC.md](MUSIC.md).
+- `source-provenance.json` maps all 30 unique inputs to their source hashes
+  and attribution. `output-receipt.json` identifies the native export.
 
-The reference video's footage, soundtrack, branding and narration are not included.
+Source hashes, the native Film record and the project decoded from the MP4
+were checked, alongside selected frames and every cut boundary. Container
+bytes can differ between FFmpeg builds. Watch the film to assess its motion,
+sound and creative quality.
+
+The [earlier 39-second edit](https://aftertake-studio.right-bard-9761.chatgpt.site/edit-preview/)
+remains available with its original project and input bundle.
