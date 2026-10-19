@@ -97,3 +97,30 @@ test('canonical export digests ignore object property order but distinguish chan
   );
   assert.notEqual(contentDigest({ start: 1 }), contentDigest({ start: 1.01 }));
 });
+
+test('agent title styling survives compilation and portable export without changing legacy defaults', () => {
+  const legacy = compileEditPlan(plan(), pictures, voices);
+  assert.equal('fontWeight' in legacy.draft.titles![0], false);
+  assert.equal('stroke' in legacy.draft.titles![0], false);
+  assert.equal('align' in legacy.draft.titles![0], false);
+  const styled = plan();
+  Object.assign(styled.beats[0], {
+    style: 'headline',
+    fontWeight: 500,
+    stroke: false,
+    align: 'left',
+  });
+  const result = compileEditPlan(styled, pictures, voices);
+  for (const title of [result.draft.titles![0], result.manifest.titles![0]]) {
+    assert.equal(title.fontWeight, 500);
+    assert.equal(title.stroke, false);
+    assert.equal(title.align, 'left');
+  }
+  assert.notEqual(result.identity, legacy.identity);
+  assert.equal(result.identity, compileEditPlan(styled, pictures, voices).identity);
+  for (const invalid of [{ fontWeight: 450 }, { stroke: 'false' }, { align: 'justify' }]) {
+    const broken = plan();
+    Object.assign(broken.beats[0], invalid);
+    assert.throws(() => compileEditPlan(broken, pictures, voices));
+  }
+});

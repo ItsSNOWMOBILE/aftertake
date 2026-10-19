@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 // Include this revision in new export identities when renderer behavior changes.
-export const filmRenderRevision = 4;
+export const filmRenderRevision = 6;
 import type { Recipe } from './domain';
 
 export const spokenWordSchema = z
@@ -58,6 +58,11 @@ export const filmTitleSchema = z
     words: z.array(titleWordSchema).min(1).max(120).optional(),
     motionDuration: z.number().min(0.15).max(4).optional(),
     fontSize: z.number().min(16).max(180).optional(),
+    fontWeight: z
+      .union([z.literal(400), z.literal(500), z.literal(600), z.literal(700)])
+      .optional(),
+    stroke: z.boolean().optional(),
+    align: z.enum(['left', 'center', 'right']).optional(),
     color: z.string().regex(/^#[a-fA-F0-9]{6}$/),
   })
   .refine((title) => title.end - title.start >= 0.25, 'A title needs at least a quarter second.')

@@ -17,7 +17,13 @@ import {
 } from 'lucide-react';
 import { renderDimensions, type Render } from './domain';
 import { filmDraftSchema, filmTimeline, type Film, type FilmDraft, type FilmAsset } from './film';
-import { titleMotion, wordMotion, spokenTitleState, retimeSpokenWord } from './title-motion';
+import {
+  titleMotion,
+  titleTypography,
+  wordMotion,
+  spokenTitleState,
+  retimeSpokenWord,
+} from './title-motion';
 import { apiFetch, browserDemo, mediaUrl } from './transport';
 import PreviewVideo from './PreviewVideo';
 import './film.css';
@@ -238,6 +244,7 @@ function DraftPlayer({
           .filter((title) => time >= title.start && time < title.end)
           .map((title) => {
             const motion = titleMotion(title, time),
+              typography = titleTypography(title),
               words = title.text.trim().split(/\s+/);
             let wordIndex = 0,
               characterIndex = 0;
@@ -257,6 +264,7 @@ function DraftPlayer({
                             backgroundColor: active ? title.color : 'transparent',
                             boxShadow: active ? `0 0 0 .08em ${title.color}` : undefined,
                             textShadow: active ? 'none' : undefined,
+                            WebkitTextStroke: active ? '0 transparent' : undefined,
                           }}
                         >
                           {word.text}
@@ -321,6 +329,12 @@ function DraftPlayer({
                   color: title.color,
                   opacity: motion.opacity,
                   fontSize: title.fontSize ? `${title.fontSize / 12.8}cqw` : undefined,
+                  fontWeight: typography.fontWeight,
+                  textAlign: typography.align,
+                  WebkitTextStroke: typography.stroke
+                    ? `${2 / 12.8}cqw #080c09be`
+                    : '0 transparent',
+                  paintOrder: 'stroke fill',
                   translate:
                     title.animation === 'rise'
                       ? `0 ${-18 * (1 - Math.min(1, (time - title.start) / 0.35))}px`
@@ -1165,6 +1179,50 @@ export default function FilmComposer({
                     titleChange(title.id, { fontSize: Number(event.target.value) })
                   }
                 />
+              </label>
+              <label>
+                Weight
+                <select
+                  aria-label={`Title ${index + 1} font weight`}
+                  value={titleTypography(title).fontWeight}
+                  onChange={(event) =>
+                    titleChange(title.id, {
+                      fontWeight: Number(event.target.value) as Title['fontWeight'],
+                    })
+                  }
+                >
+                  <option value={400}>Regular</option>
+                  <option value={500}>Medium</option>
+                  <option value={600}>Semibold</option>
+                  <option value={700}>Bold</option>
+                </select>
+              </label>
+              <label>
+                Alignment
+                <select
+                  aria-label={`Title ${index + 1} alignment`}
+                  value={titleTypography(title).align}
+                  onChange={(event) =>
+                    titleChange(title.id, { align: event.target.value as Title['align'] })
+                  }
+                >
+                  <option value="left">Left</option>
+                  <option value="center">Center</option>
+                  <option value="right">Right</option>
+                </select>
+              </label>
+              <label>
+                Outline
+                <select
+                  aria-label={`Title ${index + 1} outline`}
+                  value={titleTypography(title).stroke ? 'on' : 'off'}
+                  onChange={(event) =>
+                    titleChange(title.id, { stroke: event.target.value === 'on' })
+                  }
+                >
+                  <option value="on">On</option>
+                  <option value="off">Off</option>
+                </select>
               </label>
               <label>
                 Color

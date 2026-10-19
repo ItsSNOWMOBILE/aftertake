@@ -8,7 +8,7 @@ import {
   narratedRowKeys,
   narrationFromFilm,
 } from '../src/narrated-cut.js';
-import type { FilmAsset } from '../src/film.js';
+import { filmRenderRevision, type FilmAsset } from '../src/film.js';
 
 const picture = '00000000-0000-4000-8000-000000000001',
   voiceId = '00000000-0000-4000-8000-000000000002';
@@ -153,7 +153,7 @@ test('narrated cuts refuse short footage, changed source or voice bytes, mismatc
 test('browser exports use the native content identity, rejoin uncertain work and only retry observed failures', async () => {
   const draft = prepareNarratedCut(input(), pictures, voices).draft,
     key = await filmExportKey(draft);
-  assert.equal(key, 'film-r4-' + contentDigest(draft));
+  assert.equal(key, `film-r${filmRenderRevision}-` + contentDigest(draft));
   assert.notEqual(await filmExportKey(draft, 1), key);
   assert.equal(exportAttemptKey(key, []), key);
   assert.equal(exportAttemptKey(key, [{ requestKey: key, state: 'assembling' }]), key);

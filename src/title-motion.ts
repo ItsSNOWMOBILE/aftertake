@@ -1,5 +1,12 @@
 import type { FilmDraft } from './film';
 export type FilmTitle = NonNullable<FilmDraft['titles']>[number];
+export function titleTypography(title: FilmTitle) {
+  return {
+    fontWeight: title.fontWeight ?? (title.style === 'headline' ? 700 : 400),
+    stroke: title.stroke ?? title.style !== 'caption',
+    align: title.align ?? 'center',
+  };
+}
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
 export const kineticAnimations = new Set(['build', 'typewriter', 'impact', 'wipe']);
 export function speechPhrases(words: { text: string; start: number; end: number }[]) {

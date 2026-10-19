@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { filmTitleSchema } from '../src/film.js';
 import {
   titleMotion,
+  titleTypography,
   wordMotion,
   speechPhrases,
   spokenTitleState,
@@ -28,6 +29,49 @@ test('kinetic title timing and size survive a portable project round trip', () =
   }
   assert.equal(filmTitleSchema.safeParse({ ...title, fontSize: 500 }).success, false);
   assert.equal(filmTitleSchema.safeParse({ ...title, motionDuration: 0 }).success, false);
+});
+
+test('title appearance is optional for older projects and retains explicit choices for every motion', () => {
+  assert.deepEqual(titleTypography(title), { fontWeight: 700, stroke: true, align: 'center' });
+  assert.deepEqual(titleTypography({ ...title, style: 'caption' }), {
+    fontWeight: 400,
+    stroke: false,
+    align: 'center',
+  });
+  assert.deepEqual(titleTypography({ ...title, style: 'kicker' }), {
+    fontWeight: 400,
+    stroke: true,
+    align: 'center',
+  });
+  for (const animation of [
+    'none',
+    'fade',
+    'rise',
+    'build',
+    'typewriter',
+    'impact',
+    'wipe',
+  ] as const) {
+    const styled = {
+      ...title,
+      animation,
+      fontWeight: 500 as const,
+      stroke: false,
+      align: 'left' as const,
+    };
+    assert.deepEqual(filmTitleSchema.parse(JSON.parse(JSON.stringify(styled))), styled);
+    assert.deepEqual(titleTypography(styled), { fontWeight: 500, stroke: false, align: 'left' });
+  }
+  for (const invalid of [
+    { fontWeight: 450 },
+    { fontWeight: '500' },
+    { stroke: 'false' },
+    { align: 'justify' },
+  ])
+    assert.equal(filmTitleSchema.safeParse({ ...title, ...invalid }).success, false);
+  assert.equal('fontWeight' in filmTitleSchema.parse(title), false);
+  assert.equal('stroke' in filmTitleSchema.parse(title), false);
+  assert.equal('align' in filmTitleSchema.parse(title), false);
 });
 
 test('spoken phrases follow measured words through gaps and scrub backward without changing the layout', () => {

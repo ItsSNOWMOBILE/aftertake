@@ -30,10 +30,24 @@ def title_window(title, cut_first, count):
 
 def title_image(title, width, height, fonts, layout=False):
     scale = width / 1280
+    align = title.get('align', 'center')
+    weight = title.get('fontWeight')
+    outlined = title.get('stroke', title['style'] != 'caption')
+    if align not in ('left', 'center', 'right'):
+        raise ValueError('Title alignment must be left, center or right.')
+    if weight is not None and (type(weight) is not int or weight not in (400, 500, 600, 700)):
+        raise ValueError('Title font weight must be 400, 500, 600 or 700.')
+    if type(outlined) is not bool:
+        raise ValueError('Title outline must be a boolean.')
     size = round(title.get('fontSize',{'headline':72,'caption':48,'kicker':28}[title['style']]) * scale)
     font = ImageFont.truetype(str(Path(fonts) / ('manrope.ttf' if title['style'] == 'headline' else 'dm-sans.ttf')), size)
-    if title['style'] == 'headline':
+    if weight is not None:
+        # Preserve every other variable-font axis (DM Sans also has optical size).
+        axes = font.get_variation_axes()
+        font.set_variation_by_axes([weight if axis['name'] == b'Weight' else axis['default'] for axis in axes])
+    elif title['style'] == 'headline':
         font.set_variation_by_axes([700])
+    stroke = max(1, round(2 * scale)) if outlined else 0
     image = Image.new('RGBA', (width, height))
     draw = ImageDraw.Draw(image)
     lines = []
@@ -48,32 +62,34 @@ def title_image(title, width, height, fonts, layout=False):
                 line = candidate
         lines.append(line)
     text = '\n'.join(lines)
-    box = draw.multiline_textbbox((0, 0), text, font=font, spacing=round(size * .22), align='center')
+    box = draw.multiline_textbbox((0, 0), text, font=font, spacing=round(size * .22), align=align)
     text_height = box[3] - box[1]
+    text_width = box[2] - box[0]
     y = {'top': height * .12, 'center': (height - text_height) / 2, 'bottom': height * .86 - text_height}[title['position']]
-    x = (width - (box[2] - box[0])) / 2
+    x = (width - text_width) / 2 if align == 'center' else width * .09 + (width * .82 - text_width) * (align == 'right')
+    right = width - x if align == 'center' else x + text_width
     pad = round(16 * scale)
     if title['style'] == 'caption':
-        draw.rounded_rectangle((max(0, x-pad), y-pad, min(width, width-x+pad), y+text_height+pad), radius=round(8*scale), fill=(12, 18, 11, 205))
-    draw.multiline_text((x, y-box[1]), text, font=font, spacing=round(size*.22), align='center', fill=title['color'],
-        stroke_width=max(1, round(2 * scale)) if title['style'] != 'caption' else 0, stroke_fill=(8, 12, 9, 190))
+        draw.rounded_rectangle((max(0, x-pad), y-pad, min(width, right+pad), y+text_height+pad), radius=round(8*scale), fill=(12, 18, 11, 205))
+    draw.multiline_text((x, y-box[1]), text, font=font, spacing=round(size*.22), align=align, fill=title['color'],
+        stroke_width=stroke, stroke_fill=(8, 12, 9, 190))
     if not layout:
         return image
     glyphs = Image.new('RGBA', (width, height))
     glyph_draw = ImageDraw.Draw(glyphs)
-    stroke = max(1, round(2*scale)) if title['style'] != 'caption' else 0
     origin_y = y-box[1]
-    glyph_draw.multiline_text((x,origin_y),text,font=font,spacing=round(size*.22),align='center',fill=title['color'],
+    glyph_draw.multiline_text((x,origin_y),text,font=font,spacing=round(size*.22),align=align,fill=title['color'],
         stroke_width=stroke,stroke_fill=(8,12,9,190))
     background = Image.new('RGBA',(width,height))
     if title['style'] == 'caption':
-        ImageDraw.Draw(background).rounded_rectangle((max(0,x-pad),y-pad,min(width,width-x+pad),y+text_height+pad),radius=round(8*scale),fill=(12,18,11,205))
+        ImageDraw.Draw(background).rounded_rectangle((max(0,x-pad),y-pad,min(width,right+pad),y+text_height+pad),radius=round(8*scale),fill=(12,18,11,205))
     # Derive line advance from the same layout engine used for the final image.
     spacing=round(size*.22)
     advance=glyph_draw.multiline_textbbox((0,0),'A\nA',font=font,spacing=spacing)[3]-glyph_draw.textbbox((0,0),'A',font=font)[3]
     words=[];character_index=0
     for line_index,line in enumerate(lines):
-        line_x=(width-glyph_draw.textlength(line,font=font))/2
+        line_width=glyph_draw.textlength(line,font=font)
+        line_x=(width-line_width)/2 if align == 'center' else x+(text_width-line_width)*(align == 'right')
         prefix=''
         for word in line.split(' '):
             if not word:
@@ -204,6 +220,26 @@ def join_picture(segments, output, width, height):
         for packet in stream.encode():container.mux(packet)
 
 
+def framing_canvas(width, height, zoom):
+    """Retain crop detail within a bounded, aspect-exact CPU work canvas."""
+    # Ordinary gentle pushes keep their original single-sample path and cost.
+    # Strong crops need retained source detail before enlargement.
+    if zoom <= 1.25:
+        return width, height
+    divisor = math.gcd(width, height)
+    unit_width, unit_height = width // divisor, height // divisor
+    # An even unit count keeps both dimensions codec-friendly without changing
+    # their ratio; independently rounding dimensions would move the anchor.
+    limit = min(4096 // unit_width, 4096 // unit_height,
+        math.isqrt((4096 * 4096) // (unit_width * unit_height))) // 2 * 2
+    if limit < divisor:
+        raise ValueError('Framed film output exceeds the 4096-pixel CPU work canvas limit.')
+    # Strong moves use a stable 3x lattice. A work canvas only a few pixels
+    # larger than the output adds a second visible sampling beat on reduction.
+    units = min(math.ceil(divisor * max(3, zoom) / 2) * 2, limit)
+    return unit_width * units, unit_height * units
+
+
 def assemble(settings):
     output = Path(settings['output'])
     width, height = settings['width'], settings['height']
@@ -258,10 +294,12 @@ def assemble(settings):
             args = ['-loop', '1', '-framerate', '24', '-i', source] if still else ['-ss', str(shot['start']), '-i', source]
             framing = shot.get('framing')
             zoom_filter = ''
+            work_width, work_height = width, height
             if framing:
                 zoom, end_zoom, x, y = (framing[key] for key in ['zoom', 'endZoom', 'x', 'y'])
                 if not (1 <= zoom <= 3 and 1 <= end_zoom <= 3 and 0 <= x <= 1 and 0 <= y <= 1):
                     raise ValueError('A shot needs bounded framing settings.')
+                work_width, work_height = framing_canvas(width, height, max(zoom, end_zoom))
                 # zoompan rounds its crop rectangle to whole input pixels,
                 # making slow moves jump. Perspective maps a fractional crop
                 # to the output corners, keeping both scale and anchor smooth.
@@ -271,8 +309,10 @@ def assemble(settings):
                 left, top = f'(W-W/{z})*{x}', f'(H-H/{z})*{y}'
                 right, bottom = f'{left}+W/{z}', f'{top}+H/{z}'
                 zoom_filter = f",format=yuv444p,perspective=x0='{left}':y0='{top}':x1='{right}':y1='{top}':x2='{left}':y2='{bottom}':x3='{right}':y3='{bottom}':sense=source:eval=frame:interpolation=cubic"
-            filters = [f'[0:v:0]scale={width}:{height}:force_original_aspect_ratio=decrease:force_divisible_by=2,'
-                f'pad={width}:{height}:(ow-iw)/2:(oh-ih)/2:color=0x141815,setsar=1,tpad=stop_mode=clone:stop_duration=1,fps=24,'
+                if (work_width, work_height) != (width, height):
+                    zoom_filter += f',scale={width}:{height}:flags=lanczos'
+            filters = [f'[0:v:0]scale={work_width}:{work_height}:force_original_aspect_ratio=decrease:force_divisible_by=2,'
+                f'pad={work_width}:{work_height}:(ow-iw)/2:(oh-ih)/2:color=0x141815,setsar=1,tpad=stop_mode=clone:stop_duration=1,fps=24,'
                 f'trim=end_frame={count},setpts=N/(24*TB){zoom_filter}[picture]']
             # Render only the layers intersecting this cut. Delaying every
             # full-film PNG input inside one global framesync graph can stall

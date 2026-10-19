@@ -5,6 +5,7 @@ import {
   filmTimeline,
   filmRequestSchema,
   filmRenderRevision,
+  filmTitleSchema,
   voiceWordTimingSchema,
   portableVoiceSource,
   type FilmAsset,
@@ -43,6 +44,9 @@ export const editPlanSchema = z.object({
         position: z.enum(['top', 'center', 'bottom']).optional(),
         captionTail: z.number().min(0).max(5).optional(),
         fontSize: z.number().min(16).max(180).default(48),
+        fontWeight: filmTitleSchema.shape.fontWeight,
+        stroke: filmTitleSchema.shape.stroke,
+        align: filmTitleSchema.shape.align,
         color: z
           .string()
           .regex(/^#[a-fA-F0-9]{6}$/)
@@ -142,6 +146,9 @@ export function compileEditPlan(
         position: beat.position || 'bottom',
         animation: beat.animation,
         fontSize: beat.fontSize,
+        ...(beat.fontWeight === undefined ? {} : { fontWeight: beat.fontWeight }),
+        ...(beat.stroke === undefined ? {} : { stroke: beat.stroke }),
+        ...(beat.align === undefined ? {} : { align: beat.align }),
         color: beat.color,
         ...(words ? { words } : {}),
       });

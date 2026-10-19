@@ -381,7 +381,7 @@
   background: none;
   border-radius: 0;
   padding: 0;
-  text-shadow: 0 2px 5px #080c09bb;
+  text-shadow: none;
 }
 .draft-title.headline {
   letter-spacing: -0.035em;

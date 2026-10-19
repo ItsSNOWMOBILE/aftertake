@@ -16,6 +16,56 @@ spec.loader.exec_module(renderer)
 
 
 class FilmRenderTest(unittest.TestCase):
+    def test_title_typography_preserves_style_defaults_and_clean_variable_weight_glyphs(self):
+        base={'text':'Make it\nyours.','start':0,'end':3,'position':'center','animation':'build','fontSize':96,'color':'#ffffff'}
+        for style in ['headline','caption','kicker']:
+            legacy={**base,'style':style}
+            explicit={**legacy,'fontWeight':700 if style=='headline' else 400,'stroke':style!='caption','align':'center'}
+            for layout in [False,True]:
+                before=renderer.title_image(legacy,640,360,ROOT/'public/fonts',layout=layout)
+                after=renderer.title_image(explicit,640,360,ROOT/'public/fonts',layout=layout)
+                if layout:
+                    before=renderer.title_motion_frame(legacy,before,1.5)
+                    after=renderer.title_motion_frame(explicit,after,1.5)
+                np.testing.assert_array_equal(np.asarray(before),np.asarray(after))
+            light=np.asarray(renderer.title_image({**legacy,'fontWeight':400,'stroke':False},640,360,ROOT/'public/fonts'))
+            bold=np.asarray(renderer.title_image({**legacy,'fontWeight':700,'stroke':False},640,360,ROOT/'public/fonts'))
+            self.assertGreater(int(bold[:,:,3].sum()),int(light[:,:,3].sum()))
+        plain=np.asarray(renderer.title_image({**base,'style':'headline','stroke':False},640,360,ROOT/'public/fonts'))
+        self.assertTrue(np.all(plain[:,:,:3][plain[:,:,3]>0]==255),'Disabling the outline must leave clean white glyph edges.')
+        for invalid in [{'fontWeight':True},{'fontWeight':450},{'stroke':'false'},{'align':'justify'}]:
+            with self.assertRaises(ValueError):
+                renderer.title_image({**base,'style':'headline',**invalid},640,360,ROOT/'public/fonts')
+
+    def test_static_and_kinetic_exports_keep_weight_outline_alignment_and_embedded_project(self):
+        with tempfile.TemporaryDirectory(prefix='aftertake-film-typography-') as temporary:
+            folder=Path(temporary);Image.new('RGB',(640,360),'#123456').save(folder/'picture.png')
+            titles=[{'text':'Make it\nyours.','start':index*1.5,'end':index*1.5+1.4,'style':'headline',
+                'position':'center','animation':animation,'motionDuration':.4,'fontSize':96,'color':'#ffffff',
+                'fontWeight':500,'stroke':False,'align':align}
+                for index,(animation,align) in enumerate([('none','left'),('build','center'),('typewriter','right')])]
+            target=folder/'typography.mp4'
+            renderer.assemble({'output':str(target),'width':640,'height':360,
+                'shots':[{'source':str(folder/'picture.png'),'kind':'image','start':0,'end':1.5}for _ in titles],
+                'titles':titles,'audio':[],'sourceVolume':0,'fonts':str(ROOT/'public/fonts'),'manifest':{'titles':titles}})
+            with av.open(str(target))as movie:
+                self.assertEqual(json.loads(movie.metadata['comment'])['titles'],titles)
+                decoded=list(movie.decode(video=0))
+            self.assertEqual(len(decoded),108)
+            for index,frame in enumerate(decoded):
+                self.assertAlmostEqual(frame.time,index/24,places=6)
+            centers=[]
+            for index,title in enumerate(titles):
+                actual=decoded[index*36+24].to_ndarray(format='rgb24')
+                expected=np.asarray(renderer.title_image(title,640,360,ROOT/'public/fonts'))
+                ys,xs=np.where(actual.min(axis=2)>190)
+                ey,ex=np.where(expected[:,:,3]>190)
+                self.assertGreater(len(xs),1000)
+                np.testing.assert_allclose([xs.min(),xs.max(),ys.min(),ys.max()],[ex.min(),ex.max(),ey.min(),ey.max()],atol=2)
+                centers.append(float(xs.mean()))
+            self.assertGreater(centers[1]-centers[0],150)
+            self.assertGreater(centers[2]-centers[1],150)
+
     def test_trimmed_soundtrack_starts_on_its_timeline_without_mastering_delay(self):
         with tempfile.TemporaryDirectory(prefix='aftertake-audio-alignment-') as temporary:
             folder=Path(temporary);Image.new('RGB',(160,90),'#123456').save(folder/'picture.png')
@@ -168,6 +218,38 @@ class FilmRenderTest(unittest.TestCase):
             self.assertGreater(areas[-1],areas[0]*3.8)
             self.assertLess(areas[-1],areas[0]*4.2)
             self.assertTrue(all(b >= a-100 for a,b in zip(areas,areas[1:])))
+
+    def test_zoom_preserves_source_detail_before_reducing_to_the_final_canvas(self):
+        self.assertEqual(renderer.framing_canvas(1280,720,3),(3840,2160))
+        self.assertEqual(renderer.framing_canvas(720,1280,3),(2160,3840))
+        self.assertEqual(renderer.framing_canvas(1280,720,1),(1280,720))
+        self.assertEqual(renderer.framing_canvas(1280,720,1.25),(1280,720))
+        bounded=renderer.framing_canvas(1920,1080,3)
+        self.assertLessEqual(max(bounded),4096)
+        self.assertEqual(bounded[0]*1080,bounded[1]*1920)
+        with tempfile.TemporaryDirectory(prefix='aftertake-film-detail-') as temporary:
+            folder=Path(temporary)
+            # This source detail is resolvable in the final 3x crop, but is
+            # above Nyquist if the whole source is first reduced to 640px.
+            stripe=np.rint(128+100*np.sin(np.arange(1920)*np.pi/2)).astype(np.uint8)
+            picture=np.broadcast_to(stripe[None,:,None],(1080,1920,3)).copy()
+            Image.fromarray(picture).save(folder/'detail.png')
+            decoded={}
+            for name,framing in [('plain',None),('identity',{'zoom':1,'endZoom':1,'x':.7,'y':.4}),
+                ('zoom',{'zoom':3,'endZoom':3,'x':.5,'y':.5})]:
+                target=folder/f'{name}.mp4'
+                renderer.assemble({'output':str(target),'width':640,'height':360,
+                    'shots':[{'source':str(folder/'detail.png'),'kind':'image','start':0,'end':.25,
+                        **({'framing':framing}if framing else {})}],
+                    'titles':[],'audio':[],'sourceVolume':0,'fonts':str(ROOT/'public/fonts'),'manifest':{}})
+                with av.open(str(target))as movie:
+                    decoded[name]=[f.to_ndarray(format='rgb24')for f in movie.decode(video=0)]
+            self.assertEqual(len(decoded['zoom']),6)
+            for a,b in zip(decoded['plain'],decoded['identity']):
+                np.testing.assert_array_equal(a,b)
+            detail=decoded['zoom'][2][40:-40,40:-40].mean(axis=(0,2))
+            self.assertGreater(float(detail.std()),55,'The crop lost detail by shrinking the source before zooming.')
+            self.assertLess(float(decoded['plain'][2][40:-40,40:-40].std()),10)
 
     def test_slow_off_center_framing_has_no_pixel_step_shake(self):
         with tempfile.TemporaryDirectory(prefix='aftertake-film-smooth-') as temporary:
