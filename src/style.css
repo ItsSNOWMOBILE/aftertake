@@ -1670,7 +1670,7 @@ textarea:focus {
 }
 @media (max-width: 700px) {
   .app-shell {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: 64px auto auto 28px;
   }
   .rail {
@@ -1679,7 +1679,11 @@ textarea:focus {
   .header {
     grid-column: 1;
     grid-row: 1;
-    padding: 0 16px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .header-brand {
+    width: 130px;
   }
   .wordmark {
     font-size: 24px;
@@ -2020,7 +2024,7 @@ textarea:focus {
     display: none;
   }
   .header-actions {
-    gap: 8px;
+    gap: 6px;
   }
   .wordmark {
     font-size: 22px;
