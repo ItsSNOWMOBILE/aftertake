@@ -48,4 +48,11 @@ test('the real finishing workspace exposes disabled-by-default optics and explic
   assert(markup.includes('does not repair composite seams'));
   assert(markup.includes('Preview frame'));
   assert(markup.includes('Save finished take'));
+  assert.match(markup, /aria-label="Selective HSL channel"/);
+  assert.match(markup, /aria-label="Selective red hueDegrees"/);
+  assert.match(markup, /aria-label="Tone curve channel"/);
+  assert.match(markup, /aria-label="master monotone tone curve"/);
+  assert.match(markup, /aria-label="master point1 input"/);
+  assert(markup.includes('My LUT expects display-referred sRGB.'));
+  assert(markup.includes('Import .cube'));
 });

@@ -12,12 +12,14 @@ import {
   finishingIsIdentity,
   finishingRecipeSchema,
   finishingRequestSchema,
+  finishingSourceFiles,
   type FinishingJob,
   type FinishingRequest,
 } from '../src/finishing.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
 import { contentDigest } from './edit-plan.js';
 import { RequestError } from './http-errors.js';
+import { finishingLutStore, resolveFinishingLutSettings } from './finishing-luts.js';
 
 const processor = 'aftertake-cpu-finishing/1' as const;
 const receiptSchema = z
@@ -313,7 +315,9 @@ export async function finishingRouter(context: {
         409,
       );
     }
-    return { request: finishingRequestSchema.parse({ ...request, clip }), source };
+    const normalized = finishingRequestSchema.parse({ ...request, clip });
+    const resolvedLuts = await resolveFinishingLutSettings(context.data, normalized.settings);
+    return { request: normalized, source, resolvedLuts };
   }
   async function preflight() {
     try {
@@ -331,6 +335,7 @@ export async function finishingRouter(context: {
       processor,
       request: job.request,
       sourceSha256: job.sourceSha256,
+      sourceFiles: finishingSourceFiles(job.request.settings),
       ...(job.outputSha256 ? { outputSha256: job.outputSha256 } : {}),
       ...(job.clock ? { clock: job.clock } : {}),
     });
@@ -340,7 +345,12 @@ export async function finishingRouter(context: {
     if (!job) throw new RequestError('That finishing job was not found.', 404);
     return job;
   }
-  async function render(job: FinishingJob, source: string, controller: AbortController) {
+  async function render(
+    job: FinishingJob,
+    source: string,
+    controller: AbortController,
+    resolvedLuts: Record<string, string>,
+  ) {
     const suffix = finishingIsIdentity(job.request.settings)
       ? path.extname(source).toLowerCase()
       : job.request.clip.kind === 'image'
@@ -356,7 +366,14 @@ export async function finishingRouter(context: {
       if (controller.signal.aborted) throw new Error('Canceled.');
       job.state = 'running';
       await persist(job);
-      await atomicJson(work, { mode: 'finish', source, output, receipt, request: job.request });
+      await atomicJson(work, {
+        mode: 'finish',
+        source,
+        output,
+        receipt,
+        request: job.request,
+        resolvedLuts,
+      });
       await worker([script, work], { signal: controller.signal, timeout: 60 * 60_000 });
       if (controller.signal.aborted) throw new Error('Canceled.');
       const result = receiptSchema.parse(JSON.parse(await readFile(receipt, 'utf8')));
@@ -424,6 +441,7 @@ export async function finishingRouter(context: {
       if (operation === job.id) operation = undefined;
     }
   }
+  router.use('/luts', (await finishingLutStore(context.data)).router);
   router.get('/', (_req, res) =>
     res.json([...jobs.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt))),
   );
@@ -465,6 +483,7 @@ export async function finishingRouter(context: {
         output,
         receipt,
         request: preview.request,
+        resolvedLuts: preview.resolvedLuts,
         time: input.time,
       });
       await worker([script, work], { timeout: 5 * 60_000 });
@@ -527,7 +546,7 @@ export async function finishingRouter(context: {
       operation = id;
       const controller = new AbortController();
       controllers.set(id, controller);
-      void render(job, bound.source, controller);
+      void render(job, bound.source, controller, bound.resolvedLuts);
       return { job, existing: false };
     });
     res.status(result.existing ? 200 : 202).json(result.job);

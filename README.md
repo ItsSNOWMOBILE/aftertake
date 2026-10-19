@@ -49,8 +49,9 @@ assemble it with narration and editable typography.
 | **Video with sound** from native LTX-2.5 | **Painted, timed VFX** that composite onto the source | **Kinetic typography** with editable word timing |
 | **Reference-frame edits** with Qwen-Image-Edit | **Camera guidance, first/last frames and motion transfer** | **Local narration**, measured cuts and frame-based dissolves |
 | **Depth-finished stills** with native DA3 Small | **Tracked subject copies** with position, scale, rotation and mask controls | **Color and texture finishing** with exact before/after frame previews |
+| **Layered still compositions** from imported transparent images | **Shape and image masks**, clipping and 27 blend modes | **Selective HSL, master/RGB curves and 3D LUTs** shared with adjustment layers |
 
-Use the visual editor or connect an agent through **36 MCP tools**. Both work with
+Use the visual editor or connect an agent through **39 MCP tools**. Both work with
 the same local studio, persisted jobs and editable projects. Generation uses the
 official Comfy SDK and open-weight model workflows; editing existing footage and
 local narration can run on the CPU.
@@ -69,7 +70,17 @@ replays on the CPU without a running generation engine.
 **Color & finish** adds five adjustable looks, white balance, exposure, contrast,
 saturation, grain, sharpness and vignette. Preview the actual processed frame,
 undo or redo settings, and save a new take while preserving the source clock and
-audio. **Depth & light** adds measured lens blur, haze and directional lighting
+audio. Selective HSL adjusts eight color ranges; master/RGB curves and an imported
+display-sRGB `.cube` LUT add precise grading. Glow, warm halation and a small
+prism offset provide editable optical finishes.
+
+**Layers & masks** combines up to eight still-image and adjustment layers. Reorder,
+duplicate, transform and blend images; attach rectangle, ellipse or image masks;
+and limit a color grade with opacity or clipping. Preview the actual composition,
+then export a PNG and a portable, hash-bound layer plan. This runs in the CPU
+image runtime. See [the layer guide](docs/layer-stack.md).
+
+**Depth & light** adds measured lens blur, haze and directional lighting
 to still images, using an optional 137 MB DA3 Small model on CUDA BF16. Finish
 the still, then use it as an animation reference. Video depth is not supported.
 
@@ -89,6 +100,11 @@ the **[agent editing workflow](https://aftertake-studio.right-bard-9761.chatgpt.
 and the **[53-second narrated walkthrough](https://aftertake-studio.right-bard-9761.chatgpt.site/judges/)**.
 The focused film was assembled in Aftertake itself; its editable
 [Film project](examples/judges-film/README.md) is included.
+
+The **[39-second product edit](https://aftertake-studio.right-bard-9761.chatgpt.site/edit-preview/)**
+adds faster typography, tracked copies, high-resolution stock inserts and a reveal
+of its own Film timeline. Its [editable project and optional input bundle](examples/product-film/README.md)
+let you reopen the complete edit without adding those media files to Git history.
 
 ## Start here
 

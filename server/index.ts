@@ -35,6 +35,8 @@ import { videoRouter } from './videos.js';
 import { computeRouter } from './compute.js';
 import { subjectEffectsRouter } from './subject-effects.js';
 import { finishingRouter } from './finishing.js';
+import { resolveFinishingLutSettings } from './finishing-luts.js';
+import { layerStackRouter } from './layer-stack.js';
 import { computeFeatures, type ComputeFeature } from '../src/compute.js';
 import { depthEffectsRouter } from './depth-effects.js';
 import {
@@ -533,6 +535,13 @@ app.use(
 );
 const finishing = await finishingRouter({ root, data, python });
 app.use('/api/finishing', finishing.router);
+const layerStacks = await layerStackRouter({
+  root,
+  data,
+  python,
+  resolveFinishingSettings: (settings) => resolveFinishingLutSettings(data, settings),
+});
+app.use('/api/layer-stacks', layerStacks.router);
 const depthEffects = await depthEffectsRouter({
   target: jobTarget,
   root,

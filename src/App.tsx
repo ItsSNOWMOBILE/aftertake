@@ -69,6 +69,7 @@ import { videoBusy, type VideoGeneration } from './video-generation';
 import CharacterStudio from './CharacterStudio';
 import FinishingStudio from './FinishingStudio';
 import DepthEffectsStudio from './DepthEffectsStudio';
+import LayerStudio from './LayerStudio';
 import ComputeSettings from './ComputeSettings';
 import AftertakeBrand from './AftertakeBrand';
 import { characterBusy, type CharacterJob } from './character';
@@ -170,6 +171,7 @@ export default function App() {
   const [finishingClip, setFinishingClip] = useState<Clip | null>(null);
   const [openingFinish, setOpeningFinish] = useState(false);
   const [depthClip, setDepthClip] = useState<Clip | null>(null);
+  const [layerStudioOpen, setLayerStudioOpen] = useState(false);
   const [characterJobs, setCharacterJobs] = useState<CharacterJob[]>([]);
   const [recordedCharacterId, setRecordedCharacterId] = useState('');
   const [recordedVideoId, setRecordedVideoId] = useState('');
@@ -1567,6 +1569,18 @@ export default function App() {
             )}
             Color &amp; finish
           </button>
+          <button
+            className="button"
+            onClick={() => {
+              video.current?.pause();
+              outputVideo.current?.pause();
+              setPlaying(false);
+              setLayerStudioOpen(true);
+            }}
+          >
+            <Layers2 size={13} />
+            Layers &amp; masks
+          </button>
           {recipe?.clip.kind === 'image' && (
             <button className="button" onClick={() => setDepthClip(recipe.clip)}>
               <Layers2 size={13} />
@@ -2628,6 +2642,26 @@ export default function App() {
             setRecipe({ ...makeRecipe(clip), name: clip.name });
             setMode('source');
             setToast('Finished footage is ready as your source.');
+          }}
+        />
+      )}
+      {layerStudioOpen && (
+        <LayerStudio
+          initialClip={recipe?.clip.kind === 'image' ? recipe.clip : undefined}
+          onClose={() => setLayerStudioOpen(false)}
+          onImport={(clip) =>
+            setClips((all) => (all.some((item) => item.id === clip.id) ? all : [...all, clip]))
+          }
+          onFilmAdded={() => setFilmMediaRevision((value) => value + 1)}
+          onUse={(clip) => {
+            video.current?.pause();
+            outputVideo.current?.pause();
+            setPlaying(false);
+            setTake(null);
+            setTime(0);
+            setRecipe({ ...makeRecipe(clip), name: clip.name });
+            setMode('source');
+            setToast('Your layered still is ready to edit, animate or add to your film.');
           }}
         />
       )}

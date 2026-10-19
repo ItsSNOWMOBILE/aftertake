@@ -1,16 +1,26 @@
 import { z } from 'zod';
 import { clipSchema, type Clip } from './domain.js';
+import {
+  selectiveColorSchema,
+  defaultSelectiveColor,
+  curvesSchema,
+  defaultCurves,
+  lutDescriptorSchema,
+  gradingIsIdentity,
+} from './grading.js';
 
 /** These operations run in this order on upright RGB frames, without generation. */
 export const finishingPipeline = [
   'linear-light exposure and white balance',
   'contrast and saturation',
+  'selective HSL and master/RGB monotone curves',
   'film look',
   'highlight glow and warm halation',
   'edge-clamped RGB displacement',
   'sharpen',
   'vignette',
   'seeded grain',
+  'display-sRGB 3D LUT',
 ] as const;
 
 export const finishingPresets = [
@@ -67,13 +77,21 @@ export const finishingSettingsSchema = z
     halationRadius: z.number().min(0).max(32).default(defaultOpticalFinishing.halationRadius),
     chromaticStrength: amount.default(defaultOpticalFinishing.chromaticStrength),
     chromaticOffset: z.number().min(0).max(8).default(defaultOpticalFinishing.chromaticOffset),
+    selectiveColor: selectiveColorSchema.default(defaultSelectiveColor),
+    curves: curvesSchema.default(defaultCurves),
+    lut: lutDescriptorSchema.nullable().default(null),
+    lutStrength: amount.default(0),
     seed: z
       .number()
       .int()
       .min(0)
       .max(2 ** 32 - 1),
   })
-  .strict();
+  .strict()
+  .refine(
+    (settings) => settings.lutStrength === 0 || settings.lut !== null,
+    'Import a 3D LUT before increasing its strength.',
+  );
 
 export type FinishingSettings = z.infer<typeof finishingSettingsSchema>;
 export const defaultFinishingSettings: FinishingSettings = {
@@ -89,6 +107,10 @@ export const defaultFinishingSettings: FinishingSettings = {
   lookStrength: 0,
   seed: 42,
   ...defaultOpticalFinishing,
+  selectiveColor: defaultSelectiveColor,
+  curves: defaultCurves,
+  lut: null,
+  lutStrength: 0,
 };
 
 export function applyOpticalFinishingPreset(settings: FinishingSettings, id: string) {
@@ -106,6 +128,17 @@ export function matchingOpticalFinishingPreset(settings: FinishingSettings) {
     )?.id || 'custom'
   );
 }
+export function finishingSourceFiles(settings: FinishingSettings) {
+  return settings.lut
+    ? [
+        {
+          role: 'lut' as const,
+          sha256: settings.lut.sha256,
+          filename: `${settings.lut.sha256}.cube`,
+        },
+      ]
+    : [];
+}
 
 export function finishingIsIdentity(settings: FinishingSettings) {
   return (
@@ -120,6 +153,7 @@ export function finishingIsIdentity(settings: FinishingSettings) {
     (settings.glowStrength ?? 0) === 0 &&
     (settings.halationStrength ?? 0) === 0 &&
     (settings.chromaticStrength ?? 0) === 0 &&
+    gradingIsIdentity(settings) &&
     (settings.preset === 'clean' || settings.lookStrength === 0)
   );
 }
@@ -155,12 +189,35 @@ export const finishingRecipeSchema = z
       .regex(/^[a-f0-9]{64}$/)
       .optional(),
     clock: finishingClockSchema.optional(),
+    sourceFiles: z
+      .array(
+        z
+          .object({
+            role: z.literal('lut'),
+            sha256: z.string().regex(/^[a-f0-9]{64}$/),
+            filename: z.string().regex(/^[a-f0-9]{64}\.cube$/),
+          })
+          .strict(),
+      )
+      .max(1)
+      .optional(),
   })
   .strict()
   .refine((recipe) => recipe.sourceSha256 === recipe.request.clip.sha256, {
     message: 'The recipe source hash must match its original clip.',
     path: ['sourceSha256'],
-  });
+  })
+  .refine(
+    (recipe) =>
+      !recipe.sourceFiles ||
+      (recipe.sourceFiles.length === (recipe.request.settings.lut ? 1 : 0) &&
+        recipe.sourceFiles.every(
+          (asset) =>
+            asset.sha256 === recipe.request.settings.lut?.sha256 &&
+            asset.filename === `${asset.sha256}.cube`,
+        )),
+    'The LUT companion must match the recipe settings.',
+  );
 export type FinishingRecipe = z.infer<typeof finishingRecipeSchema>;
 export type FinishingJob = {
   id: string;

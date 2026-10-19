@@ -1,0 +1,248 @@
+{
+  "format": "aftertake-layer-stack-recipe/1",
+  "processor": "aftertake-cpu-layer-stack/1",
+  "request": {
+    "format": "aftertake-layer-stack/1",
+    "name": "Coastal picture-in-picture study",
+    "canvas": {
+      "width": 768,
+      "height": 432
+    },
+    "layers": [
+      {
+        "type": "image",
+        "id": "b81d4fd0-1540-441d-8cc6-5aacc3757440",
+        "name": "Castle on the original coast",
+        "visible": true,
+        "opacity": 1,
+        "blend": "normal",
+        "dissolveSeed": 42,
+        "clipToBelow": false,
+        "source": {
+          "assetId": "d9562f5d-f5e4-40e3-ba91-1986617b3096",
+          "sha256": "43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa"
+        },
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "rotation": 0,
+          "flipX": false
+        }
+      },
+      {
+        "type": "image",
+        "id": "530108e5-b2ec-4f6d-8f9d-d8b98768cf92",
+        "name": "Soft-light sky contrast",
+        "visible": true,
+        "opacity": 0.18,
+        "blend": "soft-light",
+        "dissolveSeed": 42,
+        "clipToBelow": false,
+        "mask": {
+          "kind": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 0.52,
+          "enabled": true,
+          "invert": false,
+          "grow": 0,
+          "feather": 12
+        },
+        "source": {
+          "assetId": "d9562f5d-f5e4-40e3-ba91-1986617b3096",
+          "sha256": "43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa"
+        },
+        "transform": {
+          "x": 0,
+          "y": 0,
+          "scale": 1,
+          "rotation": 0,
+          "flipX": false
+        }
+      },
+      {
+        "type": "image",
+        "id": "dfe37af8-374b-4787-a2bb-74d57c49f198",
+        "name": "Ellipse picture in picture",
+        "visible": true,
+        "opacity": 1,
+        "blend": "normal",
+        "dissolveSeed": 42,
+        "clipToBelow": false,
+        "mask": {
+          "kind": "ellipse",
+          "x": 0.04,
+          "y": 0.04,
+          "width": 0.92,
+          "height": 0.92,
+          "enabled": true,
+          "invert": false,
+          "grow": 0,
+          "feather": 2
+        },
+        "source": {
+          "assetId": "25500bfc-4f4c-4a94-9d4d-f1f18d4bdec8",
+          "sha256": "d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5"
+        },
+        "transform": {
+          "x": -0.28,
+          "y": 0.02,
+          "scale": 0.42,
+          "rotation": -5,
+          "flipX": false
+        }
+      },
+      {
+        "type": "adjustment",
+        "id": "22015d55-61ad-45e5-b2a6-dbe811d83ce9",
+        "name": "Restrained print finish",
+        "visible": true,
+        "opacity": 1,
+        "blend": "normal",
+        "dissolveSeed": 42,
+        "clipToBelow": false,
+        "mask": {
+          "kind": "rectangle",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1,
+          "enabled": true,
+          "invert": false,
+          "grow": 0,
+          "feather": 0
+        },
+        "settings": {
+          "exposureEV": 0,
+          "contrast": 0.08,
+          "saturation": 0,
+          "temperature": 0,
+          "tint": 0,
+          "sharpen": 0,
+          "vignette": 0,
+          "grain": 0,
+          "preset": "warm-film",
+          "lookStrength": 0.12,
+          "glowStrength": 0.08,
+          "glowRadius": 8,
+          "halationStrength": 0,
+          "halationRadius": 6,
+          "chromaticStrength": 0,
+          "chromaticOffset": 1.5,
+          "selectiveColor": {
+            "red": {
+              "hueDegrees": 0,
+              "saturation": 0,
+              "lightness": 0
+            },
+            "orange": {
+              "hueDegrees": 0,
+              "saturation": 0,
+              "lightness": 0
+            },
+            "yellow": {
+              "hueDegrees": 0,
+              "saturation": 0,
+              "lightness": 0
+            },
+            "green": {
+              "hueDegrees": 0,
+              "saturation": 0,
+              "lightness": 0
+            },
+            "aqua": {
+              "hueDegrees": 0,
+              "saturation": 0,
+              "lightness": 0
+            },
+            "blue": {
+              "hueDegrees": 0,
+              "saturation": 0,
+              "lightness": 0
+            },
+            "purple": {
+              "hueDegrees": 0,
+              "saturation": 0,
+              "lightness": 0
+            },
+            "magenta": {
+              "hueDegrees": 0,
+              "saturation": 0,
+              "lightness": 0
+            }
+          },
+          "curves": {
+            "master": [
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 1,
+                "y": 1
+              }
+            ],
+            "red": [
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 1,
+                "y": 1
+              }
+            ],
+            "green": [
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 1,
+                "y": 1
+              }
+            ],
+            "blue": [
+              {
+                "x": 0,
+                "y": 0
+              },
+              {
+                "x": 1,
+                "y": 1
+              }
+            ]
+          },
+          "lut": null,
+          "lutStrength": 0,
+          "seed": 42
+        }
+      }
+    ]
+  },
+  "media": [
+    {
+      "assetId": "d9562f5d-f5e4-40e3-ba91-1986617b3096",
+      "sha256": "43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa",
+      "filename": "edited-first-frame.png"
+    },
+    {
+      "assetId": "25500bfc-4f4c-4a94-9d4d-f1f18d4bdec8",
+      "sha256": "d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5",
+      "filename": "source.png"
+    }
+  ],
+  "output": {
+    "id": "dfc65ef0-b866-4a47-99e0-992291dc84de",
+    "name": "Coastal picture-in-picture study",
+    "sha256": "a3893fe6a5f56e282416501115029f4776d7f3c55706ed5d0bc4a3f17292e876",
+    "width": 768,
+    "height": 432,
+    "duration": 30,
+    "url": "/media/dfc65ef0-b866-4a47-99e0-992291dc84de.png",
+    "kind": "image",
+    "hasAudio": false
+  }
+}

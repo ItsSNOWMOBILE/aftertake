@@ -20,12 +20,14 @@ import {
   applyOpticalFinishingPreset,
   matchingOpticalFinishingPreset,
   opticalFinishingPresets,
+  finishingSourceFiles,
   type FinishingJob,
   type FinishingRequest,
   type FinishingSettings,
 } from './finishing';
 import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
 import PreviewVideo from './PreviewVideo';
+import GradingControls from './GradingControls';
 import './image-studio.css';
 import './finishing-studio.css';
 
@@ -625,6 +627,7 @@ export default function FinishingStudio({
                 />
               </label>
             ))}
+            <GradingControls settings={history.now} disabled={locked} onChange={change} />
             <fieldset className="finishing-optics" disabled={locked}>
               <legend>Optical effects</legend>
               <label>
@@ -767,6 +770,7 @@ export default function FinishingStudio({
                           format: 'aftertake-finishing-recipe/1',
                           processor: 'aftertake-cpu-finishing/1',
                           sourceSha256: clip.sha256,
+                          sourceFiles: finishingSourceFiles(history.now),
                           request: request(),
                         },
                         'aftertake-finishing.json',

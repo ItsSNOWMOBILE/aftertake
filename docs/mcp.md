@@ -98,12 +98,15 @@ root, including resolved symbolic links; remote media URLs are not accepted.
 | `aftertake_character_action` | Cancels or reconciles that same character operation. |
 | `aftertake_inspect_character` | Decodes actual overlay/result frames for identity, limb, occlusion and continuation review. |
 | `aftertake_character_recipe` | Returns source-bound settings, mask provenance, executed graph, native job ID and completed output. |
-| `aftertake_effects_workspace` | Lists saved subject, finishing and depth jobs plus canonical source clips. |
+| `aftertake_effects_workspace` | Lists saved subject, finishing, depth and layered-image jobs plus canonical clips and Film image assets. |
 | `aftertake_duplicate_subject` | Composites up to four extra copies of the reviewed source person, or applies masked background blur/exposure, using original pixels and sound. |
 | `aftertake_finish_media` | Starts or rejoins a CPU color/texture export with source-hash-bound settings and original frame timing/audio. |
 | `aftertake_preview_finish` | Returns one actual processed PNG using the same finishing function as final export; creates no finished clip. |
+| `aftertake_compose_layers` | Composites up to eight still-image and adjustment layers with masks, transforms, clipping and 27 blend modes; stable request IDs rejoin saved work. |
+| `aftertake_preview_layers` | Returns the actual PNG from the same layer processor as export, without saving a finished image. |
+| `aftertake_resolve_layers` | Rebinds a portable layer recipe to imported source and mask images by exact SHA256 before preview or export. |
 | `aftertake_depth_effect` | Estimates one still's depth with pinned DA3 Small BF16 weights, then applies depth blur, haze or directional shading. |
-| `aftertake_effect_status` | Reads a subject, finishing or depth record by ID or stable request ID; observation starts no new generation. |
+| `aftertake_effect_status` | Reads a subject, finishing, depth or layer record by ID or stable request ID; observation starts no new generation. |
 | `aftertake_depth_action` | Cancels or reconciles the same accepted depth operation without changing its source or settings. |
 | `aftertake_effect_recipe` | Returns editable effect settings and their source/model/media bindings. |
 | `aftertake_cancel_finishing` | Requests worker cancellation; `canceling` remains busy until the subprocess closes. |
@@ -292,6 +295,30 @@ project** in the matching workspace. It retains editable cuts, dissolves,
 typography and whole voice clips. Repeating the same reviewed plan finds the
 same plan identity. A changed beat creates a different plan; existing picture
 and voice assets remain reusable.
+
+## Layered still images and advanced grading
+
+Import image and mask files with `aftertake_import_media` using its default Film
+destination. `aftertake_effects_workspace` exposes their asset IDs and hashes.
+Build an `aftertake-layer-stack/1` request with a bounded canvas and up to eight
+layers, **bottom first**. An image layer binds `{ assetId, sha256 }`, a transform,
+opacity and blend mode; an adjustment layer carries `FinishingSettings`.
+Rectangle, ellipse and imported-image masks remain editable. Preview with
+`aftertake_preview_layers`, then save with `aftertake_compose_layers` and a stable
+`requestId`. Read its status using `kind: "layers"`.
+
+`aftertake_effect_recipe` returns its portable recipe. Import all exact image
+and mask companions on another machine, then call `aftertake_resolve_layers`;
+it rebinds hashes without starting a composition. An active LUT additionally
+needs its exact `.cube` companion imported through **Color & finish** or the
+documented LUT asset endpoint. See [the layer contract](layer-stack.md).
+
+Finishing and adjustment layers share `selectiveColor` (red, orange, yellow,
+green, aqua, blue, purple and magenta; each with `hueDegrees`, `saturation` and
+`lightness`), monotone `curves` (master, red, green and blue), plus a nullable
+hash-bound `lut` descriptor and `lutStrength`. Curves contain 2–16 normalized
+anchors, with increasing input positions and nondecreasing output values.
+Defaults preserve older recipes. See [grading settings and LUT portability](finishing.md).
 
 ## Recovery and review
 

@@ -1,0 +1,194 @@
+{
+  "format": "aftertake-original-music/1",
+  "title": "More possibilities — original demo bed",
+  "generator": "examples/product-film/generate-music-bed.py",
+  "generatorSha256": "d56e091b9b4dcef2e8cc65d63857dcbf28c83d2b9bd9407100edb9ffdd326bbd",
+  "audio": "examples/product-film/music-bed.wav",
+  "audioSha256": "aece5ce0048f626367951e0710a025f4a1e09e5ab0a2d51c243e25d793c40ff9",
+  "musicLicense": "CC0-1.0",
+  "generatorLicense": "MIT",
+  "provenance": "Original CPU oscillator/noise synthesis and event arrangement created for Aftertake. No third-party samples, music recordings or reference-film audio used. Narration was only measured to set ducking; no narration is embedded.",
+  "duration": 39.0,
+  "sampleRate": 48000,
+  "channels": 2,
+  "bitsPerSample": 24,
+  "samplesPerChannel": 1872000,
+  "pictureFrames": 936,
+  "pictureFPS": 24,
+  "seed": 20261019,
+  "measuredLoudness": {
+    "input_i": -30.35,
+    "input_tp": -12.41,
+    "input_lra": 10.5
+  },
+  "samplePeakDbfs": -12.406974726010079,
+  "rmsDbfs": -33.06723735454783,
+  "clippedSamples": 0,
+  "last10msMaximum": 4.0103282209766506e-09,
+  "suggestedFilmVolume": 1,
+  "alreadyDuckedForSuppliedVoiceWindows": true,
+  "voiceWindows": [
+    {
+      "id": "01-one",
+      "start": 0.0,
+      "end": 0.794,
+      "voiceRmsDbfs": -23.0951585478082,
+      "bedRmsDbfs": -33.490162727140145,
+      "voiceToBedRmsMarginDb": 10.395004179331945,
+      "bedPeakDbfs": -21.747796940910895
+    },
+    {
+      "id": "01-three",
+      "start": 0.7273333333333333,
+      "end": 1.566625,
+      "voiceRmsDbfs": -23.811555938902597,
+      "bedRmsDbfs": -33.8115559389026,
+      "voiceToBedRmsMarginDb": 10.000000000000004,
+      "bedPeakDbfs": -23.372885854277243
+    },
+    {
+      "id": "02-character",
+      "start": 7.0,
+      "end": 9.725291666666667,
+      "voiceRmsDbfs": -25.704255431790912,
+      "bedRmsDbfs": -39.29571416208705,
+      "voiceToBedRmsMarginDb": 13.59145873029614,
+      "bedPeakDbfs": -22.704255431790912
+    },
+    {
+      "id": "03-finish",
+      "start": 11.375,
+      "end": 13.188333333333333,
+      "voiceRmsDbfs": -25.27552312766185,
+      "bedRmsDbfs": -35.77122292617874,
+      "voiceToBedRmsMarginDb": 10.495699798516888,
+      "bedPeakDbfs": -22.27552312766185
+    },
+    {
+      "id": "04-create",
+      "start": 14.125,
+      "end": 15.874333333333333,
+      "voiceRmsDbfs": -24.960049258169438,
+      "bedRmsDbfs": -34.960049258169434,
+      "voiceToBedRmsMarginDb": 9.999999999999996,
+      "bedPeakDbfs": -22.04464384751221
+    },
+    {
+      "id": "05-ad",
+      "start": 18.25,
+      "end": 21.507333333333335,
+      "voiceRmsDbfs": -26.482355280741178,
+      "bedRmsDbfs": -38.91398253089184,
+      "voiceToBedRmsMarginDb": 12.431627250150665,
+      "bedPeakDbfs": -23.48235528074118
+    },
+    {
+      "id": "06-agent",
+      "start": 24.125,
+      "end": 27.197,
+      "voiceRmsDbfs": -26.087734615048504,
+      "bedRmsDbfs": -38.6370216184526,
+      "voiceToBedRmsMarginDb": 12.549287003404096,
+      "bedPeakDbfs": -23.087734615048507
+    },
+    {
+      "id": "07-open",
+      "start": 28.125,
+      "end": 31.651666666666667,
+      "voiceRmsDbfs": -25.73811985250159,
+      "bedRmsDbfs": -38.51220931021447,
+      "voiceToBedRmsMarginDb": 12.774089457712883,
+      "bedPeakDbfs": -22.738119852501587
+    },
+    {
+      "id": "08-reveal",
+      "start": 32.125,
+      "end": 34.480333333333334,
+      "voiceRmsDbfs": -25.36192857634184,
+      "bedRmsDbfs": -37.60812835477922,
+      "voiceToBedRmsMarginDb": 12.24619977843738,
+      "bedPeakDbfs": -22.36192857634184
+    },
+    {
+      "id": "09-close",
+      "start": 35.125,
+      "end": 36.917,
+      "voiceRmsDbfs": -25.199206891009787,
+      "bedRmsDbfs": -35.19920689100979,
+      "voiceToBedRmsMarginDb": 10.0,
+      "bedPeakDbfs": -22.43045783643001
+    },
+    {
+      "id": "embedded-ad-voice",
+      "start": 22.5,
+      "end": 24.0,
+      "voiceRmsDbfs": -28.53398302638488,
+      "bedRmsDbfs": -43.53398302638488,
+      "voiceToBedRmsMarginDb": 15.0,
+      "bedPeakDbfs": -31.310631587969592
+    }
+  ],
+  "featureMarkers": [
+    {
+      "label": "three-dancer reveal",
+      "frame": 18,
+      "seconds": 0.75,
+      "sample": 36000
+    },
+    {
+      "label": "brand card",
+      "frame": 73,
+      "seconds": 3.0416666666666665,
+      "sample": 146000
+    },
+    {
+      "label": "character result",
+      "frame": 216,
+      "seconds": 9.0,
+      "sample": 432000
+    },
+    {
+      "label": "finishing result",
+      "frame": 301,
+      "seconds": 12.541666666666666,
+      "sample": 602000
+    },
+    {
+      "label": "create result",
+      "frame": 360,
+      "seconds": 15.0,
+      "sample": 720000
+    },
+    {
+      "label": "ad montage",
+      "frame": 432,
+      "seconds": 18.0,
+      "sample": 864000
+    },
+    {
+      "label": "agent workspace",
+      "frame": 576,
+      "seconds": 24.0,
+      "sample": 1152000
+    },
+    {
+      "label": "open weights",
+      "frame": 672,
+      "seconds": 28.0,
+      "sample": 1344000
+    },
+    {
+      "label": "made in Aftertake reveal",
+      "frame": 768,
+      "seconds": 32.0,
+      "sample": 1536000
+    },
+    {
+      "label": "closing call to action",
+      "frame": 840,
+      "seconds": 35.0,
+      "sample": 1680000
+    }
+  ],
+  "reviewScope": "Waveform, clipping, exact sample/frame grid, measured loudness and narration margins. No claim of human listening or full-film creative approval."
+}

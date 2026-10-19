@@ -1,0 +1,26 @@
+{
+  "format": "aftertake-layer-stack-native-proof/1",
+  "stillOnly": true,
+  "gpuUsed": false,
+  "fixtureWorker": false,
+  "width": 768,
+  "height": 432,
+  "previewSha256": "a3893fe6a5f56e282416501115029f4776d7f3c55706ed5d0bc4a3f17292e876",
+  "outputSha256": "a3893fe6a5f56e282416501115029f4776d7f3c55706ed5d0bc4a3f17292e876",
+  "replaySha256": "a3893fe6a5f56e282416501115029f4776d7f3c55706ed5d0bc4a3f17292e876",
+  "exactPngByteReplay": true,
+  "importCreatedNoJob": true,
+  "stableRequestRejoined": true,
+  "inputs": [
+    {
+      "file": "examples/coastal-kingdom/edited-first-frame.png",
+      "sha256": "43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa",
+      "provenance": "Public Aftertake example; Qwen edit of licensed Dean Diemert Pexels lighthouse source, as recorded in its frame recipe."
+    },
+    {
+      "file": "examples/observatory/source.png",
+      "sha256": "d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5",
+      "provenance": "Public Aftertake generated Z-Image example; saved image-recipe.json."
+    }
+  ]
+}

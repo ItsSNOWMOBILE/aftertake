@@ -140,7 +140,7 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
   try {
     await client.connect(transport);
     const list = await client.listTools();
-    assert.equal(list.tools.length, 36);
+    assert.equal(list.tools.length, 39);
     for (const name of [
       'aftertake_character_workspace',
       'aftertake_track_character',
@@ -154,6 +154,9 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
       'aftertake_preview_finish',
       'aftertake_depth_effect',
       'aftertake_depth_action',
+      'aftertake_compose_layers',
+      'aftertake_preview_layers',
+      'aftertake_resolve_layers',
     ])
       assert.ok(
         list.tools.some((tool) => tool.name === name),

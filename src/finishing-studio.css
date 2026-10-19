@@ -160,7 +160,8 @@
   color: var(--text-secondary, #b8bec5);
   font-size: 12px;
 }
-.finishing-optics {
+.finishing-optics,
+.finishing-grade {
   display: grid;
   gap: 12px;
   min-width: 0;
@@ -169,17 +170,54 @@
   border: 1px solid var(--control-border, #657168);
   border-radius: 7px;
 }
-.finishing-optics legend {
+.finishing-optics legend,
+.finishing-grade legend {
   color: var(--text-primary, #eef1eb);
   font-size: 16px;
   font-weight: 550;
   padding: 0 5px;
 }
-.finishing-studio .finishing-optics p {
+.finishing-studio .finishing-optics p,
+.finishing-studio .finishing-grade p {
   margin: 0;
   color: var(--text-secondary, #b7c1b9);
   font-size: 12px;
   line-height: 1.6;
+}
+.finishing-curve-graph {
+  width: 100%;
+  height: auto;
+  background: #111612;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  overflow: visible;
+}
+.finishing-curve-points {
+  display: grid;
+  gap: 8px;
+}
+.finishing-curve-points > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 44px;
+  gap: 8px;
+  align-items: end;
+}
+.finishing-curve-points label {
+  min-width: 0;
+}
+.finishing-lut-declaration {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+}
+.finishing-lut-declaration input {
+  width: 20px;
+  height: 20px;
+  min-height: 20px;
+  flex: 0 0 20px;
+}
+.finishing-lut-info {
+  overflow-wrap: anywhere;
 }
 .finishing-optics .finishing-slider > span {
   gap: 10px;

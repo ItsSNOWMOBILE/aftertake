@@ -2,6 +2,7 @@
 from fractions import Fraction
 import importlib.util
 from hashlib import sha256
+from copy import deepcopy
 from pathlib import Path
 import tempfile
 import unittest
@@ -66,7 +67,7 @@ class FinishingTest(unittest.TestCase):
     def test_old_settings_keep_the_pre_optics_pixels_and_missing_defaults(self):
         pixels = np.random.default_rng(5).integers(0, 256, (48, 64, 3), dtype=np.uint8)
         legacy = {key: value for key, value in finishing.DEFAULTS.items()
-                  if key not in finishing.OPTICAL_DEFAULTS}
+                  if key not in finishing.OPTICAL_DEFAULTS and key not in finishing.grading.GRADING_DEFAULTS}
         legacy.update(exposureEV=.4, contrast=.2, saturation=-.15, temperature=.3,
                       tint=-.2, preset='warm-film', lookStrength=.6, sharpen=.4,
                       grain=.45, vignette=.3, seed=31)
@@ -244,7 +245,16 @@ class FinishingTest(unittest.TestCase):
                                          'sample_rate': rate}, 2)
             req = request(describe(source), preset='cool-film', lookStrength=.5,
                           glowStrength=.3, halationStrength=.2, chromaticStrength=.25)
-            receipt = run(source, target, req)
+            rows=['TITLE "Sound test"','LUT_3D_SIZE 2']
+            rows += [f'{r*.8+.1} {g*.9} {b*.85}' for b in (0,1) for g in (0,1) for r in (0,1)]
+            lut=folder/'sound.cube';lut.write_text('\n'.join(rows)+'\n',encoding='utf-8')
+            digest=finishing.file_hash(lut)
+            req['settings']=deepcopy(req['settings'])
+            req['settings']['selectiveColor']['green']['saturation']=.2
+            req['settings']['curves']['master']=[dict(x=0,y=.02),dict(x=.5,y=.55),dict(x=1,y=.97)]
+            req['settings'].update(lut=dict(sha256=digest,title='Sound test',size=2,domainMin=[0,0,0],
+                domainMax=[1,1,1],interpolation='trilinear',colorSpace='srgb'),lutStrength=.5)
+            receipt = run(source, target, req,resolvedLuts={digest:str(lut)})
             self.assertTrue(receipt['hasAudio'])
             def decode_audio(path):
                 with av.open(str(path)) as movie:

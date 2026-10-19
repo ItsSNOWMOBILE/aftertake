@@ -199,7 +199,11 @@ test('finishing controls are bounded, complete and default to a true bypass', ()
 
 test('optical recipes retain the color grade, validate portable parameters and keep old settings off', () => {
   const legacy = Object.fromEntries(
-    Object.entries(defaultFinishingSettings).filter(([key]) => !(key in defaultOpticalFinishing)),
+    Object.entries(defaultFinishingSettings).filter(
+      ([key]) =>
+        !(key in defaultOpticalFinishing) &&
+        !['selectiveColor', 'curves', 'lut', 'lutStrength'].includes(key),
+    ),
   );
   const parsed = finishingRequestSchema.parse({ ...request, settings: legacy });
   assert.deepEqual(parsed.settings, defaultFinishingSettings);
@@ -242,7 +246,11 @@ test('optical recipes retain the color grade, validate portable parameters and k
 
 test('legacy accepted keys migrate only after their original content digest is verified', async () => {
   const settings = Object.fromEntries(
-    Object.entries(request.settings).filter(([key]) => !(key in defaultOpticalFinishing)),
+    Object.entries(request.settings).filter(
+      ([key]) =>
+        !(key in defaultOpticalFinishing) &&
+        !['selectiveColor', 'curves', 'lut', 'lutStrength'].includes(key),
+    ),
   );
   const legacyRequest = { ...request, settings };
   const original = generationAdmission(
@@ -342,6 +350,77 @@ test('optical parameters survive exact preview, accepted export and portable imp
     for (const work of f.calls) assert.deepEqual(work.request.settings, settings);
   } finally {
     await f.close();
+  }
+});
+
+test('LUT upload validates declaration and hash-bound companions transfer to a clean workspace', async () => {
+  const a = await fixture(),
+    b = await fixture();
+  const lines = [
+    'TITLE "Portable grade"',
+    'LUT_3D_SIZE 2',
+    'DOMAIN_MIN 0.2 0.2 0.2',
+    'DOMAIN_MAX 0.8 0.8 0.8',
+  ];
+  for (const blue of [0, 1])
+    for (const green of [0, 1]) for (const red of [0, 1]) lines.push(`${blue} ${red} ${green}`);
+  const bytes = Buffer.from(lines.join('\n') + '\n');
+  async function upload(url: string, body: Buffer, declaration = 'srgb') {
+    return fetch(`${url}/luts`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/octet-stream', 'X-LUT-Color-Space': declaration },
+      body: new Uint8Array(body).buffer,
+    });
+  }
+  try {
+    assert.equal((await upload(a.url, bytes, 'log')).status, 400);
+    assert.equal((await upload(a.url, Buffer.from('LUT_1D_SIZE 2\n0 0 0\n1 1 1'))).status, 400);
+    const response = await upload(a.url, bytes);
+    assert.equal(response.status, 201);
+    const lut = await response.json();
+    assert.equal(lut.sha256, hash(bytes));
+    assert.deepEqual(lut.domainMin, [0.2, 0.2, 0.2]);
+    assert.deepEqual(
+      Buffer.from(await (await fetch(`${a.url}/luts/${lut.sha256}`)).arrayBuffer()),
+      bytes,
+    );
+    assert.equal((await fetch(`${a.url}/luts/${'0'.repeat(64)}/info`)).status, 409);
+    const req = { ...request, settings: { ...request.settings, lut, lutStrength: 0.7 } };
+    const accepted = await a.post('', req, 'lut-grade');
+    assert.equal(accepted.status, 202);
+    const job = await terminal(a.url, ((await accepted.json()) as FinishingJob).id);
+    assert(!JSON.stringify(job).includes(a.data));
+    assert.equal(a.calls[0].request.settings.lut?.sha256, lut.sha256);
+    const portable = await (await fetch(`${a.url}/${job.id}/recipe`)).json();
+    assert.deepEqual(portable.sourceFiles, [
+      { role: 'lut', sha256: lut.sha256, filename: `${lut.sha256}.cube` },
+    ]);
+    assert.equal((await b.post('/import-recipe', portable)).status, 409);
+    assert.equal((await b.post('/preview', { request: req, time: 0 })).status, 409);
+    assert.equal(b.calls.length, 0);
+    assert.equal((await upload(b.url, bytes)).status, 201);
+    const imported = await b.post('/import-recipe', portable);
+    assert.equal(imported.status, 200);
+    assert.deepEqual((await imported.json()).request.settings, req.settings);
+    assert.equal(b.calls.length, 0, 'Restoring a companion and recipe starts no render.');
+    const forged = { ...req, settings: { ...req.settings, lut: { ...lut, domainMin: [0, 0, 0] } } };
+    assert.equal((await b.post('', forged)).status, 409);
+    assert.equal(b.calls.length, 0);
+    await writeFile(
+      path.join(b.data, 'finishing-luts', `${lut.sha256}.cube`),
+      bytes.toString() + '# changed\n',
+    );
+    assert.equal((await b.post('', req)).status, 409);
+    assert.equal(b.calls.length, 0);
+    const inactive = { ...req, settings: { ...req.settings, lutStrength: 0 } };
+    assert.equal(
+      (await b.post('/import-recipe', { ...portable, request: inactive })).status,
+      200,
+      'Disabled LUTs do not require the companion asset.',
+    );
+  } finally {
+    await a.close();
+    await b.close();
   }
 });
 

@@ -19,7 +19,7 @@ character transformation with open-weight models through the official Comfy SDK.
 **Agent creation and editing:** the [local MCP interface](mcp.md) generates
 images, edits reference frames, renders native video recipes, inspects actual
 results, and assembles measured narration and editable type through Film.
-Thirty-six typed tools cover generation, tracked-person effects, color finishing,
+Typed tools cover generation, tracked-person effects, color finishing,
 still-image depth and editing, retaining operation keys across reconnect and restart.
 Editing existing footage works with the small CPU film runtime; new image/video
 generation uses the local Comfy engine. Complete recorded examples are in
@@ -28,7 +28,9 @@ generation uses the local Comfy engine. Complete recorded examples are in
 [Review the generated product shot and narrated export](https://aftertake-studio.right-bard-9761.chatgpt.site/agent/generate.html).
 
 **Finish existing footage:** **Color & finish** provides real processed-frame
-comparison, editable film looks and texture controls. **Duplicate a tracked
+comparison, selective HSL, RGB curves, imported LUTs and texture controls.
+**Layers & masks** combines still images and adjustment layers with a real PNG
+preview and a portable plan. **Duplicate a tracked
 person** reuses the original performance and person mask for extra copies or a
 background-focus edit. These pixel operations run on the CPU with the film
 runtime. **Depth & light** adds optional model-estimated depth effects for still
@@ -191,6 +193,14 @@ color separation, with three editable recipes. Their strengths default to zero.
 Choosing a recipe preserves your color grade and starts no render. See
 [optical finishing](finishing.md) for exact controls and processing limits.
 
+**Selective HSL** adjusts red, orange, yellow, green, aqua, blue, purple or
+magenta while protecting neutral grays. **Tone curves** provides editable
+monotone master/R/G/B curves; the master runs before individual channels.
+**3D LUT** imports a display-referred sRGB `.cube` with edge size 2–64, up to
+16 MiB. Confirm its input color space before importing; log and ACES LUTs need
+conversions this workspace does not provide. Imported LUTs are hash-bound.
+Download their companion `.cube` files when moving a recipe to another workspace.
+
 Choose a source time and press **Preview frame**. The before/after slider uses
 an actual PNG processed by the same function as export, rather than a CSS
 approximation. Changing settings clears the old comparison. Still images use
@@ -212,6 +222,36 @@ restoring it elsewhere. Importing settings starts no export. Reuse settings
 prepares another deliberate edit. An uncertain request can rejoin its original
 operation; cancellation stays busy until the worker closes. If the server
 restarts mid-export, that job becomes interrupted rather than rerunning itself.
+
+## Layers and masks for still images
+
+Open **Layers & masks** and import PNG, JPEG or WebP images. PNG alpha stays
+intact. **Use current image as base** explicitly imports the current still as the
+bottom layer; video frames are not extracted automatically. A composition holds
+up to eight layers on a canvas no larger than four megapixels or 4096 pixels
+per side. The list shows the top layer first.
+
+Select an image layer to move, scale, rotate or flip it. Choose from 27 actual
+blend modes and set opacity; clipping uses an unclipped image beneath it as an
+alpha base. Add an adjustment layer to grade the composite below it with the
+same finishing, HSL, curves and LUT controls. Rectangle, ellipse or imported
+image masks can be inverted, grown/shrunk and feathered. Luminance masks use
+white to reveal and black to hide; alpha masks read image opacity. Image masks
+follow the image transform, while adjustment masks use the canvas.
+
+Choose **Render preview** to calculate the real PNG. The checkerboard indicates
+transparency, and edits mark an existing preview stale until rendered again.
+**Save PNG** preserves the requested stack as a durable job and writes a normal
+image clip. Download the image, use it as a source, or add it to Film. **Restore
+layers** reopens a saved composition’s editable settings; it does not render.
+
+**Export plan** saves the current ordered layers, controls and image/mask hashes.
+**Saved plan** downloads the recorded recipe for a completed output. Plans do
+not bundle original media. Import the matching image and mask files into Film
+media before **Import plan**; restoration rebinds them by content hash. Save and
+import any matching LUT companions too. Missing or changed bytes stop execution.
+This still-only CPU workspace requires the local runtime. The recorded browser
+trial does not calculate new layer compositions or submit model jobs.
 
 ## Depth and light for a still image
 

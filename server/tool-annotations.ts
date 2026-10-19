@@ -16,6 +16,7 @@ const idempotentWrites = new Set([
   'aftertake_duplicate_subject',
   'aftertake_finish_media',
   'aftertake_depth_effect',
+  'aftertake_compose_layers',
 ]);
 const destructiveWrites = new Set([
   'aftertake_generation_action',

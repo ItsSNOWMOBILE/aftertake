@@ -19,6 +19,8 @@ import av
 import numpy as np
 from PIL import Image, ImageFilter, ImageOps
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import grading_math as grading
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'custom_nodes/aftertake'))
 from media_utils import mux_source_audio, oriented_image
 
@@ -27,7 +29,7 @@ OPTICAL_DEFAULTS = dict(glowStrength=0, glowRadius=8, halationStrength=0,
                         halationRadius=6, chromaticStrength=0, chromaticOffset=1.5)
 DEFAULTS = dict(exposureEV=0, contrast=0, saturation=0, temperature=0, tint=0,
                 sharpen=0, vignette=0, grain=0, preset='clean', lookStrength=0, seed=42,
-                **OPTICAL_DEFAULTS)
+                **OPTICAL_DEFAULTS, **grading.GRADING_DEFAULTS)
 PRESETS = {'clean', 'warm-film', 'cool-film', 'noir', 'vintage'}
 SIGNED = ('contrast', 'saturation', 'temperature', 'tint')
 AMOUNTS = ('sharpen', 'vignette', 'grain', 'lookStrength')
@@ -44,9 +46,9 @@ def file_hash(path):
 
 def validate_settings(settings):
     if (not isinstance(settings, dict) or set(settings) - set(DEFAULTS) or
-            set(DEFAULTS) - set(OPTICAL_DEFAULTS) - set(settings)):
+            set(DEFAULTS) - set(OPTICAL_DEFAULTS) - set(grading.GRADING_DEFAULTS) - set(settings)):
         raise ValueError('Use a complete finishing settings object.')
-    settings = {**OPTICAL_DEFAULTS, **settings}
+    settings = {**OPTICAL_DEFAULTS, **grading.GRADING_DEFAULTS, **settings}
     for name in ('exposureEV',) + SIGNED + AMOUNTS:
         value = settings[name]
         lower, upper = (-3, 3) if name == 'exposureEV' else ((-1, 1) if name in SIGNED else (0, 1))
@@ -60,13 +62,18 @@ def validate_settings(settings):
         if (isinstance(value, bool) or not isinstance(value, (int, float)) or
                 not math.isfinite(value) or not 0 <= value <= maximum):
             raise ValueError('An optical finishing control is outside its supported range.')
+    grading.validate_grading(settings)
     return settings
 
 
 def is_identity(settings):
     return all(settings[name] == 0 for name in ('exposureEV',) + SIGNED + ('sharpen', 'vignette', 'grain')) and (
         settings['preset'] == 'clean' or settings['lookStrength'] == 0) and all(
-            settings.get(name, 0) == 0 for name in ('glowStrength', 'halationStrength', 'chromaticStrength'))
+            settings.get(name, 0) == 0 for name in ('glowStrength', 'halationStrength', 'chromaticStrength')) and grading.grading_identity(settings)
+
+
+def prepare_grading_context(settings, lut_path=None):
+    return grading.prepare_grading_context(validate_settings(settings), lut_path)
 
 
 def blur_highlights(values, radius):
@@ -96,13 +103,38 @@ def displace_channel(channel, offset):
     return channel[:, left] * (1 - fraction) + channel[:, right] * fraction
 
 
-def apply_optics(rgb, settings):
+def covered_unsharp_blur(rgb, coverage):
+    """Radius-one Gaussian mean without quantizing low-alpha color energy.
+
+    Blurring eight-bit premultiplied color would erase a dark color at alpha
+    1/255 before normalization. This bounded separable seven-tap filter keeps
+    the neighborhood sum in float32; it is used only by layer adjustments.
+    """
+    positions = np.arange(-3, 4, dtype=np.float32)
+    kernel = np.exp(-.5 * positions**2)
+    kernel /= kernel.sum()
+    values = np.concatenate([rgb * coverage[..., None], coverage[..., None]], axis=2)
+    for axis in (1, 0):
+        blurred = np.zeros_like(values)
+        coordinates = np.arange(values.shape[axis])
+        for offset, weight in zip(range(-3, 4), kernel):
+            indices = np.clip(coordinates + offset, 0, values.shape[axis] - 1)
+            blurred += np.take(values, indices, axis=axis) * weight
+        values = blurred
+    return np.divide(values[..., :3], values[..., 3:4], out=rgb.copy(),
+                     where=values[..., 3:4] > 1e-8)
+
+
+def apply_optics(rgb, settings, alpha_context=None):
     """Highlight-driven light spread, a warm outside halo, then optional RGB split."""
     if settings['glowStrength'] or settings['halationStrength']:
         bounded = np.clip(rgb, 0, 1)
         linear = np.where(bounded <= .04045, bounded / 12.92, ((bounded + .055) / 1.055) ** 2.4)
         luminance = np.sum(linear * np.array([.2126, .7152, .0722], dtype=np.float32), axis=2)
         highlights = np.clip((luminance - .65) / .35, 0, 1)
+        if alpha_context is not None:
+            # Light comes from covered pixels; invisible RGB is not emitted.
+            highlights *= alpha_context
         if highlights.any():
             if settings['glowStrength']:
                 spread = blur_highlights(linear * highlights[..., None], settings['glowRadius'])
@@ -117,18 +149,37 @@ def apply_optics(rgb, settings):
     if settings['chromaticStrength'] and settings['chromaticOffset']:
         strength = np.float32(settings['chromaticStrength'])
         separated = rgb.copy()
-        separated[..., 0] = displace_channel(rgb[..., 0], settings['chromaticOffset'])
-        separated[..., 2] = displace_channel(rgb[..., 2], -settings['chromaticOffset'])
+        for channel, offset in ((0, settings['chromaticOffset']), (2, -settings['chromaticOffset'])):
+            if alpha_context is None:
+                separated[..., channel] = displace_channel(rgb[..., channel], offset)
+            else:
+                support = displace_channel(alpha_context, offset)
+                weighted = displace_channel(rgb[..., channel] * alpha_context, offset)
+                separated[..., channel] = np.divide(weighted, support,
+                    out=rgb[..., channel].copy(), where=support > 1e-8)
         rgb = rgb * (1 - strength) + separated * strength
     return rgb
 
 
-def apply_finishing(image, settings, frame_index=0):
-    """Apply the documented RGB pipeline. Preview and final call this function."""
+def apply_finishing(image, settings, frame_index=0, grading_context=None, alpha_context=None):
+    """Apply the RGB pipeline; optional layer coverage excludes hidden neighbors.
+
+    Alpha is supplied only by the layer compositor and is not changed here. The
+    default RGB and fully opaque paths retain the existing pixel operations.
+    """
     settings = validate_settings(settings)
     image = image.convert('RGB')
+    if alpha_context is not None:
+        alpha_context = np.asarray(alpha_context, dtype=np.float32)
+        if (alpha_context.shape != (image.height, image.width) or
+                not np.isfinite(alpha_context).all() or
+                np.any((alpha_context < 0) | (alpha_context > 1))):
+            raise ValueError('Layer coverage must match the image and stay between zero and one.')
+        if np.all(alpha_context == 1):
+            alpha_context = None
     if is_identity(settings):
         return image.copy()
+    context = grading_context or prepare_grading_context(settings)
     rgb = np.asarray(image, dtype=np.float32) / 255
     linear = np.where(rgb <= .04045, rgb / 12.92, ((rgb + .055) / 1.055) ** 2.4)
     # White balance is a bounded linear-light channel gain, not a metadata edit.
@@ -141,6 +192,8 @@ def apply_finishing(image, settings, frame_index=0):
     rgb = (rgb - .5) * np.float32(2**settings['contrast']) + .5
     luma = np.sum(rgb * np.array([.2126, .7152, .0722], dtype=np.float32), axis=2, keepdims=True)
     rgb = luma + (rgb - luma) * np.float32(1 + settings['saturation'])
+    rgb = grading.selective_hsl(rgb, context['selective'])
+    rgb = grading.apply_curves(rgb, context['curves'])
     strength, preset = settings['lookStrength'], settings['preset']
     if strength and preset != 'clean':
         if preset == 'warm-film':
@@ -156,11 +209,18 @@ def apply_finishing(image, settings, frame_index=0):
             look = .06 + .88 * muted * np.array([1.04, 1.0, .93], dtype=np.float32)
         rgb = rgb * np.float32(1 - strength) + look * np.float32(strength)
     if any(settings[name] for name in ('glowStrength', 'halationStrength', 'chromaticStrength')):
-        rgb = apply_optics(rgb, settings)
+        rgb = apply_optics(rgb, settings, alpha_context)
     if settings['sharpen']:
         quantized = Image.fromarray(np.rint(np.clip(rgb, 0, 1) * 255).astype(np.uint8))
-        rgb = np.asarray(quantized.filter(ImageFilter.UnsharpMask(
-            radius=1, percent=round(200 * settings['sharpen']), threshold=2)), dtype=np.float32) / 255
+        if alpha_context is None:
+            rgb = np.asarray(quantized.filter(ImageFilter.UnsharpMask(
+                radius=1, percent=round(200 * settings['sharpen']), threshold=2)), dtype=np.float32) / 255
+        else:
+            rgb = np.asarray(quantized, dtype=np.float32) / 255
+            blurred = covered_unsharp_blur(rgb, alpha_context)
+            difference = rgb - blurred
+            rgb += np.where(np.abs(difference) > 2 / 255, difference, 0) * (
+                round(200 * settings['sharpen']) / 100)
     if settings['vignette']:
         height, width = rgb.shape[:2]
         y = ((np.arange(height, dtype=np.float32) + .5) / height * 2 - 1)[:, None]
@@ -171,6 +231,8 @@ def apply_finishing(image, settings, frame_index=0):
         rng = np.random.Generator(np.random.PCG64(np.random.SeedSequence([settings['seed'], frame_index])))
         noise = rng.standard_normal((*rgb.shape[:2], 1), dtype=np.float32) * np.float32(.035 * settings['grain'])
         rgb += noise
+    if settings['lutStrength']:
+        rgb = grading.apply_lut(rgb, context['lut'], settings['lutStrength'])
     return Image.fromarray(np.rint(np.clip(rgb, 0, 1) * 255).astype(np.uint8))
 
 
@@ -315,6 +377,8 @@ def process(work):
     settings, clip = validate_settings(request['settings']), request['clip']
     if file_hash(source) != clip['sha256']:
         raise ValueError('The original media changed. Import it again.')
+    lut_path = work.get('resolvedLuts', {}).get(settings['lut']['sha256']) if settings['lutStrength'] else None
+    grading_context = prepare_grading_context(settings, lut_path)
     mode = work.get('mode', 'finish')
     if mode not in ('finish', 'preview'):
         raise ValueError('Use a finishing export or preview.')
@@ -331,7 +395,7 @@ def process(work):
         if mode == 'finish' and is_identity(settings):
             shutil.copyfile(source, output)
         else:
-            apply_finishing(image, settings).save(output, format='PNG')
+            apply_finishing(image, settings, grading_context=grading_context).save(output, format='PNG')
         kind, duration = 'image', 1
     else:
         kind = 'video'
@@ -364,7 +428,7 @@ def process(work):
                     encoded_stream.time_base = time_base
                     encoded_stream.codec_context.time_base = time_base
                     encoded_stream.options = {'crf': '17', 'preset': 'fast', 'bf': '0'}
-                rendered = av.VideoFrame.from_image(apply_finishing(frame_image, settings, index))
+                rendered = av.VideoFrame.from_image(apply_finishing(frame_image, settings, index, grading_context))
                 pts, ticks = timestamp / time_base, frame_duration / time_base
                 if pts.denominator != 1 or ticks.denominator != 1:
                     raise ValueError('The source frame clock cannot be represented exactly.')
@@ -375,7 +439,7 @@ def process(work):
             if mode == 'preview':
                 selected, selected_index = preview_video(source, clip, preview_time)
                 duration = clip['duration']
-                apply_finishing(selected, settings, selected_index).save(output, format='PNG')
+                apply_finishing(selected, settings, selected_index, grading_context).save(output, format='PNG')
             else:
                 clock, has_audio, audio_trim_start = video_frames(source, clip, consume)
                 duration = clock['duration']

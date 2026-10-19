@@ -60,3 +60,38 @@ test('effect status rejoins by key without submitting another operation and reje
     /No saved effect/,
   );
 });
+
+test('layer tools keep source bindings, replay keys and portable resolve separate', async () => {
+  const runs = new Map<string, (input: any) => Promise<any>>();
+  const calls: any[] = [];
+  registerEffectsTools({
+    base: 'http://127.0.0.1:4310',
+    tool(name, _description, _schema, run) {
+      runs.set(name, run);
+    },
+    async api(path, body, key) {
+      calls.push({ path, body, key });
+      return (
+        path.endsWith('/resolve')
+          ? (body as { request: unknown }).request
+          : { id: 'layers-ready', state: 'succeeded' }
+      ) as any;
+    },
+  });
+  const request = {
+    canvas: { width: 320, height: 180 },
+    layers: [
+      {
+        source: { assetId: 'source', sha256: 'exact-image' },
+        mask: { source: { assetId: 'mask', sha256: 'exact-mask' } },
+      },
+    ],
+  };
+  await runs.get('aftertake_compose_layers')!({ request, requestId: 'layer-replay' });
+  assert.deepEqual(calls[0], { path: '/api/layer-stacks', body: request, key: 'layer-replay' });
+  const recipe = { request, media: ['source', 'mask'] };
+  assert.deepEqual((await runs.get('aftertake_resolve_layers')!({ recipe })).data, request);
+  assert.deepEqual(calls[1], { path: '/api/layer-stacks/resolve', body: recipe, key: undefined });
+  assert.equal(toolAnnotations('aftertake_compose_layers', false).idempotentHint, true);
+  assert.equal(toolAnnotations('aftertake_preview_layers', true).readOnlyHint, true);
+});

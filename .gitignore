@@ -16,3 +16,7 @@ __pycache__/
 *.pyc
 *.log
 test-results/
+# Optional review-film input bundle is downloaded separately, avoiding binary history.
+/examples/product-film/media/
+/examples/product-film/voices/
+/examples/product-film/music-bed.wav

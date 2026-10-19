@@ -1,0 +1,110 @@
+{
+  "duplicates": {
+    "format": "aftertake-ui-capture/1",
+    "savedEffectId": "2444219c-d064-4796-9727-330f316eb12b",
+    "method": "Timed actual browser screenshots during native video playback; normalized to24fps.",
+    "uiValuesInjected": false,
+    "editing": "Actual screenshot timestamps retained on a 24fps hold-last-sample timeline. The first 2s of the 2.132s capture are used. Source screen sampling is approximately 7fps; the separate native compositor result is 24fps. No optical-flow interpolation or fabricated UI frames.",
+    "path": "examples/product-film/media/capture-duplicates.mp4",
+    "sha256": "c80e350f4631c6fd2b71a76a6d9cd035446cc5c83ddca6459a469381612700e5",
+    "seconds": 2,
+    "outputFrames": 48,
+    "outputFPS": 24,
+    "silent": true
+  },
+  "character": {
+    "format": "aftertake-ui-capture/1",
+    "method": "Actual browser screenshots edited into a short reference-to-prompt UI step montage.",
+    "uiValuesInjected": false,
+    "typingIllustration": true,
+    "newGenerationStarted": false,
+    "editing": "Reference view held for0.55s, then four real typing steps time-compressed, with a0.375s final hold. The displayed concise direction illustrates editing the prompt; it is not claimed as the exact generation request. The complete actual source-bound prompt was restored after capture. The following H3 result comes from its separately recorded exact recipe.",
+    "capturedScreenshots": [
+      {
+        "key": "character-reference",
+        "file": "character-reference.jpg",
+        "capturedAt": "2026-10-19T16:16:37.436Z"
+      },
+      {
+        "key": "character-type-0",
+        "file": "character-type-0.jpg",
+        "capturedAt": "2026-10-19T16:16:49.205Z"
+      },
+      {
+        "key": "character-type-1",
+        "file": "character-type-1.jpg",
+        "capturedAt": "2026-10-19T16:16:50.701Z"
+      },
+      {
+        "key": "character-type-2",
+        "file": "character-type-2.jpg",
+        "capturedAt": "2026-10-19T16:16:52.147Z"
+      },
+      {
+        "key": "character-type-3",
+        "file": "character-type-3.jpg",
+        "capturedAt": "2026-10-19T16:16:53.517Z"
+      }
+    ],
+    "path": "examples/product-film/media/capture-character.mp4",
+    "sha256": "35e3de05307f92c9782592018aefaf3d901014f53e68a0a82b2dd2f0f5f7b5c8",
+    "seconds": 2,
+    "outputFrames": 48,
+    "outputFPS": 24,
+    "silent": true
+  },
+  "finishing": {
+    "format": "aftertake-ui-capture/1",
+    "method": "Single actual before/after comparison at source time0; held for1.5s. Replaces the earlier cropped slider sequence.",
+    "previewTime": 0,
+    "uiValuesInjected": false,
+    "editing": "Actual timestamped browser captures normalized to24fps using hold-last-sample. No interface drawn, invented or injected.",
+    "path": "examples/product-film/media/capture-finishing.mp4",
+    "sha256": "ba0b1cc223441b124db1811476205a2b2f45e6b0eb8b07f5939dcc1b3d244d12",
+    "seconds": 1.5,
+    "outputFrames": 36,
+    "outputFPS": 24,
+    "silent": true
+  },
+  "create": {
+    "format": "aftertake-ui-capture/1",
+    "method": "Actual working editor after importing the source and exact observatory recipe; held UI capture.",
+    "generationStarted": false,
+    "uiValuesInjected": false,
+    "editing": "Actual timestamped browser captures normalized to24fps using hold-last-sample. No interface drawn, invented or injected.",
+    "path": "examples/product-film/media/capture-create.mp4",
+    "sha256": "6865e308cddb4a7b80148d5469f1ef708308958d700046ed9c99ce8dbb1cae1c",
+    "seconds": 1,
+    "outputFrames": 24,
+    "outputFPS": 24,
+    "silent": true
+  },
+  "agent": {
+    "format": "aftertake-ui-capture/1",
+    "method": "Actual native Film playback with editable typography controls in view; timestamped screenshots.",
+    "project": "project-capture-pass.json",
+    "projectStage": "Same final cuts/title timing/voices/music before insertion of its own UI clips.",
+    "uiValuesInjected": false,
+    "editing": "Actual timestamped browser captures normalized to24fps using hold-last-sample. No interface drawn, invented or injected.",
+    "path": "examples/product-film/media/capture-agent.mp4",
+    "sha256": "ee8acd6c91d0c9ff8d2a7759c762266ef5f54b4af88dd1c81739fc6e5ad66224",
+    "seconds": 4,
+    "outputFrames": 96,
+    "outputFPS": 24,
+    "silent": true
+  },
+  "reveal": {
+    "format": "aftertake-ui-capture/1",
+    "method": "Actual39-second Film project playback showing19cuts17titles11audio tracks; first3seconds of timestamped screen capture.",
+    "project": "project-capture-pass.json",
+    "projectStage": "Same final cuts, title timing, voices and score before inserting its own UI screen recordings.",
+    "uiValuesInjected": false,
+    "editing": "Actual timestamped browser captures normalized to24fps using hold-last-sample. No interface drawn, invented or injected.",
+    "path": "examples/product-film/media/capture-reveal.mp4",
+    "sha256": "2c199afbc8785f788767f7f880f84bb99591eed1386900c135448fc79bece6f8",
+    "seconds": 3,
+    "outputFrames": 72,
+    "outputFPS": 24,
+    "silent": true
+  }
+}

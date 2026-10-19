@@ -36,8 +36,9 @@ completely, preserving the previous processor's pixels. When every adjustment
 is disabled, final export still copies the original file byte-for-byte.
 
 The shared processing order is exposure/white balance, contrast/saturation,
-color look, highlight glow/halation, RGB displacement, sharpening, vignette,
-then seeded grain. Glow and halation select high-luminance pixels and spread
+selective HSL, master then RGB curves, color look, highlight glow/halation,
+RGB displacement, sharpening, vignette, seeded grain, then the imported 3D LUT.
+Glow and halation select high-luminance pixels and spread
 their light in linear RGB. Blur pads with replicated edge pixels, and channel
 displacement clamps at the frame edge; neither operation wraps the opposite
 side into the image.
@@ -47,3 +48,77 @@ encoding preserves the source's rational timestamps, canvas and duration, and
 retains original sound once as AAC. It does not synthesize new frames or audio.
 The existing 4K pixel, ten-minute, 120 fps limits continue to apply. Review
 highlights and high-contrast edges at the target resolution before exporting.
+
+## Selective HSL
+
+Choose red, orange, yellow, green, aqua, blue, purple or magenta. Each channel
+has hue rotation (−30° to 30°), saturation (−1 to 1) and lightness (−1 to 1).
+The eight hue centers blend smoothly around the color wheel; an orange
+adjustment can leave a blue background unchanged. Low-chroma colors receive
+less adjustment and exact neutral grays remain unchanged. The lightness
+control uses HSL lightness, not measured scene luminance. Reset affects only
+the selected channel; all 24 values default to zero.
+
+The recipe field is `selectiveColor`, with one strict record per channel:
+`{hueDegrees, saturation, lightness}`. Conversion follows the
+[W3C display-sRGB/HSL definitions](https://www.w3.org/TR/css-color-4/#rgb-to-hsl).
+This is a display-referred grade, without an HDR/log color-space conversion.
+
+## Master and RGB curves
+
+Choose the master, red, green or blue curve. Edit input/output points with the
+numeric controls; **Add point** inserts an anchor in the largest input gap.
+The graph previews the same monotone cubic shape. Master is evaluated before
+the individual RGB curves. Each channel supports 2–16 points, normalized to 0–1,
+with input endpoints 0/1, increasing inputs and nondecreasing outputs. Inputs
+must be separated by at least 0.000001 to avoid ill-conditioned intervals.
+Lift the first output to raise blacks or lower the final output to limit whites.
+Reset one channel or all curves independently of other finishing settings.
+
+Curves use the published shape-preserving
+[PCHIP slope policy](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.PchipInterpolator.html),
+implemented independently without a SciPy dependency. The worker prepares
+4096-entry float tables once per job; neutral curves bypass the stage exactly.
+The portable `curves` object contains `master`, `red`, `green` and `blue` arrays
+of `{x,y}` points. Decreasing, duplicate, nonfinite or excessive point sets are
+rejected rather than silently repaired.
+
+## Imported 3D LUTs
+
+Confirm that a LUT expects **display-referred sRGB**, then import its original
+`.cube` file. Log/ACES LUTs require a deliberate color-space conversion and
+are outside this first version. Import selects the LUT at full strength but
+starts no render. Review a processed frame and adjust its strength before
+saving the take. **Remove LUT** clears it without changing other controls.
+
+The parser accepts a quoted `TITLE`, one `LUT_3D_SIZE` from 2–64, optional
+`DOMAIN_MIN/MAX` input bounds, and exactly N³ finite RGB triples. UTF-8/BOM,
+blank lines and comments are supported. The 16 MiB cap, header/entry counts and
+float bounds are checked before admission. One-dimensional/mixed LUTs,
+unsupported directives, malformed data and nonfinite entries are rejected.
+
+Sampling uses red-fastest ordering and trilinear interpolation. Following
+[OpenColorIO's IridasCube input-domain semantics](https://github.com/AcademySoftwareFoundation/OpenColorIO/blob/main/src/OpenColorIO/fileformats/FileFormatIridasCube.cpp),
+the domain maps **input coordinates**; it does not normalize the table's output
+values. Finite negative/greater-than-one outputs stay in float until final
+image quantization. The LUT runs last so existing finishing operations do not
+silently clip those values first.
+
+Recipes contain `lutStrength` and a `lut` descriptor with the original SHA-256,
+title, edge size, input domain, `interpolation:"trilinear"` and
+`colorSpace:"srgb"`. `sourceFiles` names the required `.cube` companion by its
+hash. **Save recipe** plus **Save companion .cube** makes the grade portable.
+Upload the companion in another workspace before applying an active imported
+grade. Missing, changed or descriptor-mismatched assets fail explicitly; no
+fallback look is substituted. At strength zero the asset need not be present.
+
+The API uploads raw bytes to `POST /api/finishing/luts` with
+`Content-Type:application/octet-stream` and `X-LUT-Color-Space:srgb`, returns
+the portable descriptor, and serves exact companion bytes from
+`GET /api/finishing/luts/:sha256`. Workers receive only server-resolved private
+asset paths; client-supplied filesystem paths and URLs are not settings.
+
+Older recipes default all selective adjustments to zero, curves to identity
+and LUT strength to zero. Their prior pixels and the original-file identity
+path are unchanged. Saved stable request keys migrate only after their original
+raw content digest is verified, preserving replay without repeating an export.

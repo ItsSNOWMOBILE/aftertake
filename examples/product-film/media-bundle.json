@@ -1,0 +1,120 @@
+{
+  "format": "aftertake-film-media-bundle/1",
+  "url": "https://aftertake-studio.right-bard-9761.chatgpt.site/edit-preview/film-inputs-a3a8d7660417c10a.zip",
+  "sha256": "a3a8d7660417c10abf303b712c1a1cea07fca1619f810557e23ac865a9657f67",
+  "bytes": 22850426,
+  "uncompressedBytes": 24673169,
+  "extractionRoot": "repository root",
+  "files": [
+    {
+      "path": "examples/product-film/media/brand-white.png",
+      "bytes": 4321,
+      "sha256": "e92b1b4e6ccf27cb6f1047ccc23db9ba2b68266f03711fc9a6e14536ebaec692"
+    },
+    {
+      "path": "examples/product-film/media/brew-source.mp4",
+      "bytes": 3618526,
+      "sha256": "02870edee059d439914e9c409adf45430c37042cf7a14e678aa16f7020175d24"
+    },
+    {
+      "path": "examples/product-film/media/capture-agent.mp4",
+      "bytes": 258528,
+      "sha256": "ee8acd6c91d0c9ff8d2a7759c762266ef5f54b4af88dd1c81739fc6e5ad66224"
+    },
+    {
+      "path": "examples/product-film/media/capture-character.mp4",
+      "bytes": 158419,
+      "sha256": "35e3de05307f92c9782592018aefaf3d901014f53e68a0a82b2dd2f0f5f7b5c8"
+    },
+    {
+      "path": "examples/product-film/media/capture-create.mp4",
+      "bytes": 141689,
+      "sha256": "6865e308cddb4a7b80148d5469f1ef708308958d700046ed9c99ce8dbb1cae1c"
+    },
+    {
+      "path": "examples/product-film/media/capture-duplicates.mp4",
+      "bytes": 219524,
+      "sha256": "c80e350f4631c6fd2b71a76a6d9cd035446cc5c83ddca6459a469381612700e5"
+    },
+    {
+      "path": "examples/product-film/media/capture-finishing.mp4",
+      "bytes": 66198,
+      "sha256": "ba0b1cc223441b124db1811476205a2b2f45e6b0eb8b07f5939dcc1b3d244d12"
+    },
+    {
+      "path": "examples/product-film/media/capture-reveal.mp4",
+      "bytes": 240301,
+      "sha256": "2c199afbc8785f788767f7f880f84bb99591eed1386900c135448fc79bece6f8"
+    },
+    {
+      "path": "examples/product-film/media/finish-result.mp4",
+      "bytes": 930767,
+      "sha256": "5576f8612cb2af82b9415866e24ee94258b375973ec29f7c21e971125869a466"
+    },
+    {
+      "path": "examples/product-film/media/grounds-source.mp4",
+      "bytes": 3841340,
+      "sha256": "e0e6d1fdac0df7c9f39b22c228fad615cf1aa565ebf87adc34aac30bf4789390"
+    },
+    {
+      "path": "examples/product-film/media/pour-source.mp4",
+      "bytes": 2908692,
+      "sha256": "49c0142cb30d909a36a9b638b4bc867872081cce6983c3dc9cc9ea83cc6bb848"
+    },
+    {
+      "path": "examples/product-film/music-bed.wav",
+      "bytes": 11232044,
+      "sha256": "aece5ce0048f626367951e0710a025f4a1e09e5ab0a2d51c243e25d793c40ff9"
+    },
+    {
+      "path": "examples/product-film/voices/01-one.wav",
+      "bytes": 38156,
+      "sha256": "853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373"
+    },
+    {
+      "path": "examples/product-film/voices/01-three.wav",
+      "bytes": 40330,
+      "sha256": "b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5"
+    },
+    {
+      "path": "examples/product-film/voices/02-character.wav",
+      "bytes": 130858,
+      "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867"
+    },
+    {
+      "path": "examples/product-film/voices/03-finish.wav",
+      "bytes": 87084,
+      "sha256": "4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92"
+    },
+    {
+      "path": "examples/product-film/voices/04-create.wav",
+      "bytes": 84012,
+      "sha256": "41e8d69f2188e0f34b4543307e7737c267ae36adf0ce8b982dc1eb27231118df"
+    },
+    {
+      "path": "examples/product-film/voices/05-ad.wav",
+      "bytes": 156396,
+      "sha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac"
+    },
+    {
+      "path": "examples/product-film/voices/06-agent.wav",
+      "bytes": 147500,
+      "sha256": "f84778109212d4c6e4d069222f791d07d990982445b7207061f53db3dc80bc7d"
+    },
+    {
+      "path": "examples/product-film/voices/07-open.wav",
+      "bytes": 169324,
+      "sha256": "380e1f634dbb21be97cb0ca8a71344fda82d5d43d12b0de29537f66cfafa97c3"
+    },
+    {
+      "path": "examples/product-film/voices/08-reveal.wav",
+      "bytes": 113100,
+      "sha256": "de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf"
+    },
+    {
+      "path": "examples/product-film/voices/09-close.wav",
+      "bytes": 86060,
+      "sha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c"
+    }
+  ]
+}

@@ -1,0 +1,627 @@
+[
+  {
+    "id": "01-one",
+    "request": {
+      "text": "One.",
+      "voice": "am_michael",
+      "speed": 1.08,
+      "timedWords": true
+    },
+    "path": "examples/product-film/voices/01-one.wav",
+    "asset": {
+      "kind": "audio",
+      "duration": 0.794,
+      "narration": {
+        "text": "One.",
+        "voice": "am_michael",
+        "speed": 1.08,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTimingMapper": "phoneme-boundaries/2",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "One.",
+              "start": 0.17266666666666666,
+              "end": 0.6976666666666667
+            }
+          ]
+        }
+      },
+      "id": "c1cf57f9-4510-4a9c-8a0d-586dac818487",
+      "name": "Narration · One.",
+      "extension": ".wav",
+      "sha256": "853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373",
+      "url": "/api/films/assets/c1cf57f9-4510-4a9c-8a0d-586dac818487/media",
+      "createdAt": "2026-10-19T16:30:34.633Z"
+    }
+  },
+  {
+    "id": "01-three",
+    "request": {
+      "text": "Three.",
+      "voice": "am_michael",
+      "speed": 1.08,
+      "timedWords": true
+    },
+    "path": "examples/product-film/voices/01-three.wav",
+    "asset": {
+      "kind": "audio",
+      "duration": 0.8392916666666667,
+      "narration": {
+        "text": "Three.",
+        "voice": "am_michael",
+        "speed": 1.08,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTimingMapper": "phoneme-boundaries/2",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Three.",
+              "start": 0.14766666666666667,
+              "end": 0.7893333333333333
+            }
+          ]
+        }
+      },
+      "id": "0ce4319b-ab73-4cb8-8e09-29ddbdde1681",
+      "name": "Narration · Three.",
+      "extension": ".wav",
+      "sha256": "b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5",
+      "url": "/api/films/assets/0ce4319b-ab73-4cb8-8e09-29ddbdde1681/media",
+      "createdAt": "2026-10-19T16:30:36.443Z"
+    }
+  },
+  {
+    "id": "02-character",
+    "request": {
+      "text": "Keep the performance. Change the character.",
+      "voice": "am_michael",
+      "speed": 1.08,
+      "timedWords": true
+    },
+    "path": "examples/product-film/voices/02-character.wav",
+    "asset": {
+      "kind": "audio",
+      "duration": 2.7252916666666667,
+      "narration": {
+        "text": "Keep the performance. Change the character.",
+        "voice": "am_michael",
+        "speed": 1.08,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTimingMapper": "phoneme-boundaries/2",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Keep",
+              "start": 0.09766666666666667,
+              "end": 0.2976666666666667
+            },
+            {
+              "text": "the",
+              "start": 0.32266666666666666,
+              "end": 0.37266666666666665
+            },
+            {
+              "text": "performance.",
+              "start": 0.4226666666666667,
+              "end": 1.1976666666666667
+            },
+            {
+              "text": "Change",
+              "start": 1.4276666666666666,
+              "end": 1.7776666666666667
+            },
+            {
+              "text": "the",
+              "start": 1.8026666666666666,
+              "end": 1.8526666666666667
+            },
+            {
+              "text": "character.",
+              "start": 1.9026666666666667,
+              "end": 2.7252916666666667
+            }
+          ]
+        }
+      },
+      "id": "2256b725-b6ac-4e00-9b6f-6145f5932cd6",
+      "name": "Narration · Keep the performance. Change the character.",
+      "extension": ".wav",
+      "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+      "url": "/api/films/assets/2256b725-b6ac-4e00-9b6f-6145f5932cd6/media",
+      "createdAt": "2026-10-19T16:14:17.053Z"
+    }
+  },
+  {
+    "id": "03-finish",
+    "request": {
+      "text": "Give every frame your look.",
+      "voice": "am_michael",
+      "speed": 1.08,
+      "timedWords": true
+    },
+    "path": "examples/product-film/voices/03-finish.wav",
+    "asset": {
+      "kind": "audio",
+      "duration": 1.8133333333333332,
+      "narration": {
+        "text": "Give every frame your look.",
+        "voice": "am_michael",
+        "speed": 1.08,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTimingMapper": "phoneme-boundaries/2",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Give",
+              "start": 0.10133333333333333,
+              "end": 0.2763333333333333
+            },
+            {
+              "text": "every",
+              "start": 0.35133333333333333,
+              "end": 0.6263333333333333
+            },
+            {
+              "text": "frame",
+              "start": 0.7263333333333334,
+              "end": 1.0513333333333332
+            },
+            {
+              "text": "your",
+              "start": 1.1013333333333333,
+              "end": 1.2013333333333334
+            },
+            {
+              "text": "look.",
+              "start": 1.2513333333333334,
+              "end": 1.8013333333333332
+            }
+          ]
+        }
+      },
+      "id": "4e5bbf2a-b933-4751-9606-0972e0efcf22",
+      "name": "Narration · Give every frame your look.",
+      "extension": ".wav",
+      "sha256": "4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92",
+      "url": "/api/films/assets/4e5bbf2a-b933-4751-9606-0972e0efcf22/media",
+      "createdAt": "2026-10-19T16:14:19.159Z"
+    }
+  },
+  {
+    "id": "04-create",
+    "request": {
+      "text": "Turn a thought into a shot.",
+      "voice": "am_michael",
+      "speed": 1.08,
+      "timedWords": true
+    },
+    "path": "examples/product-film/voices/04-create.wav",
+    "asset": {
+      "kind": "audio",
+      "duration": 1.7493333333333334,
+      "narration": {
+        "text": "Turn a thought into a shot.",
+        "voice": "am_michael",
+        "speed": 1.08,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTimingMapper": "phoneme-boundaries/2",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Turn",
+              "start": 0.12266666666666666,
+              "end": 0.32266666666666666
+            },
+            {
+              "text": "a",
+              "start": 0.3476666666666667,
+              "end": 0.39766666666666667
+            },
+            {
+              "text": "thought",
+              "start": 0.49766666666666665,
+              "end": 0.7226666666666667
+            },
+            {
+              "text": "into",
+              "start": 0.7476666666666667,
+              "end": 0.9476666666666667
+            },
+            {
+              "text": "a",
+              "start": 0.9976666666666667,
+              "end": 1.0476666666666667
+            },
+            {
+              "text": "shot.",
+              "start": 1.1476666666666666,
+              "end": 1.7493333333333334
+            }
+          ]
+        }
+      },
+      "id": "f5b9bb29-4cc7-4c1d-9664-cc7ca336d138",
+      "name": "Narration · Turn a thought into a shot.",
+      "extension": ".wav",
+      "sha256": "41e8d69f2188e0f34b4543307e7737c267ae36adf0ce8b982dc1eb27231118df",
+      "url": "/api/films/assets/f5b9bb29-4cc7-4c1d-9664-cc7ca336d138/media",
+      "createdAt": "2026-10-19T16:14:21.227Z"
+    }
+  },
+  {
+    "id": "05-ad",
+    "request": {
+      "text": "Cut an ad. Find the words. Make them move.",
+      "voice": "am_michael",
+      "speed": 1.08,
+      "timedWords": true
+    },
+    "path": "examples/product-film/voices/05-ad.wav",
+    "asset": {
+      "kind": "audio",
+      "duration": 3.2573333333333334,
+      "narration": {
+        "text": "Cut an ad. Find the words. Make them move.",
+        "voice": "am_michael",
+        "speed": 1.08,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTimingMapper": "phoneme-boundaries/2",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Cut",
+              "start": 0.144,
+              "end": 0.294
+            },
+            {
+              "text": "an",
+              "start": 0.319,
+              "end": 0.394
+            },
+            {
+              "text": "ad.",
+              "start": 0.469,
+              "end": 0.794
+            },
+            {
+              "text": "Find",
+              "start": 1.109,
+              "end": 1.359
+            },
+            {
+              "text": "the",
+              "start": 1.384,
+              "end": 1.434
+            },
+            {
+              "text": "words.",
+              "start": 1.484,
+              "end": 1.859
+            },
+            {
+              "text": "Make",
+              "start": 2.189,
+              "end": 2.364
+            },
+            {
+              "text": "them",
+              "start": 2.3890000000000002,
+              "end": 2.539
+            },
+            {
+              "text": "move.",
+              "start": 2.589,
+              "end": 3.2573333333333334
+            }
+          ]
+        }
+      },
+      "id": "9a10aabb-4a2a-4d1f-8e00-ed3498c9328d",
+      "name": "Narration · Cut an ad. Find the words. Make them move.",
+      "extension": ".wav",
+      "sha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac",
+      "url": "/api/films/assets/9a10aabb-4a2a-4d1f-8e00-ed3498c9328d/media",
+      "createdAt": "2026-10-19T16:14:23.642Z"
+    }
+  },
+  {
+    "id": "06-agent",
+    "request": {
+      "text": "Ask an agent. Keep every layer editable.",
+      "voice": "am_michael",
+      "speed": 1.08,
+      "timedWords": true
+    },
+    "path": "examples/product-film/voices/06-agent.wav",
+    "asset": {
+      "kind": "audio",
+      "duration": 3.072,
+      "narration": {
+        "text": "Ask an agent. Keep every layer editable.",
+        "voice": "am_michael",
+        "speed": 1.08,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTimingMapper": "phoneme-boundaries/2",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Ask",
+              "start": 0.194,
+              "end": 0.494
+            },
+            {
+              "text": "an",
+              "start": 0.519,
+              "end": 0.569
+            },
+            {
+              "text": "agent.",
+              "start": 0.619,
+              "end": 1.219
+            },
+            {
+              "text": "Keep",
+              "start": 1.344,
+              "end": 1.519
+            },
+            {
+              "text": "every",
+              "start": 1.594,
+              "end": 1.869
+            },
+            {
+              "text": "layer",
+              "start": 1.919,
+              "end": 2.244
+            },
+            {
+              "text": "editable.",
+              "start": 2.319,
+              "end": 3.072
+            }
+          ]
+        }
+      },
+      "id": "6efa34f4-7e3d-4676-8ddc-4beac8d67869",
+      "name": "Narration · Ask an agent. Keep every layer editable.",
+      "extension": ".wav",
+      "sha256": "f84778109212d4c6e4d069222f791d07d990982445b7207061f53db3dc80bc7d",
+      "url": "/api/films/assets/6efa34f4-7e3d-4676-8ddc-4beac8d67869/media",
+      "createdAt": "2026-10-19T16:14:26.135Z"
+    }
+  },
+  {
+    "id": "07-open",
+    "request": {
+      "text": "Open weights. One studio. Powered by Comfy.",
+      "voice": "am_michael",
+      "speed": 1.08,
+      "timedWords": true
+    },
+    "path": "examples/product-film/voices/07-open.wav",
+    "asset": {
+      "kind": "audio",
+      "duration": 3.526666666666667,
+      "narration": {
+        "text": "Open weights. One studio. Powered by Comfy.",
+        "voice": "am_michael",
+        "speed": 1.08,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTimingMapper": "phoneme-boundaries/2",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Open",
+              "start": 0.12266666666666666,
+              "end": 0.4726666666666667
+            },
+            {
+              "text": "weights.",
+              "start": 0.5226666666666666,
+              "end": 1.0976666666666666
+            },
+            {
+              "text": "One",
+              "start": 1.2476666666666667,
+              "end": 1.4476666666666667
+            },
+            {
+              "text": "studio.",
+              "start": 1.4976666666666667,
+              "end": 1.9976666666666667
+            },
+            {
+              "text": "Powered",
+              "start": 2.292666666666667,
+              "end": 2.617666666666667
+            },
+            {
+              "text": "by",
+              "start": 2.667666666666667,
+              "end": 2.8176666666666668
+            },
+            {
+              "text": "Comfy.",
+              "start": 2.867666666666667,
+              "end": 3.526666666666667
+            }
+          ]
+        }
+      },
+      "id": "197a5efd-103f-4fef-b1e7-43c54e38184e",
+      "name": "Narration · Open weights. One studio. Powered by Comfy.",
+      "extension": ".wav",
+      "sha256": "380e1f634dbb21be97cb0ca8a71344fda82d5d43d12b0de29537f66cfafa97c3",
+      "url": "/api/films/assets/197a5efd-103f-4fef-b1e7-43c54e38184e/media",
+      "createdAt": "2026-10-19T16:14:28.675Z"
+    }
+  },
+  {
+    "id": "08-reveal",
+    "request": {
+      "text": "And this edit? Made in Aftertake.",
+      "voice": "am_michael",
+      "speed": 1.08,
+      "timedWords": true
+    },
+    "path": "examples/product-film/voices/08-reveal.wav",
+    "asset": {
+      "kind": "audio",
+      "duration": 2.3553333333333333,
+      "narration": {
+        "text": "And this edit? Made in Aftertake.",
+        "voice": "am_michael",
+        "speed": 1.08,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTimingMapper": "phoneme-boundaries/2",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "And",
+              "start": 0.14766666666666667,
+              "end": 0.24766666666666667
+            },
+            {
+              "text": "this",
+              "start": 0.27266666666666667,
+              "end": 0.44766666666666666
+            },
+            {
+              "text": "edit?",
+              "start": 0.5226666666666666,
+              "end": 0.9226666666666666
+            },
+            {
+              "text": "Made",
+              "start": 1.1026666666666667,
+              "end": 1.3276666666666668
+            },
+            {
+              "text": "in",
+              "start": 1.3526666666666667,
+              "end": 1.4276666666666666
+            },
+            {
+              "text": "Aftertake.",
+              "start": 1.5026666666666666,
+              "end": 2.3553333333333333
+            }
+          ]
+        }
+      },
+      "id": "24101f44-dafd-4836-852c-36760c69bb3c",
+      "name": "Narration · And this edit? Made in Aftertake.",
+      "extension": ".wav",
+      "sha256": "de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf",
+      "url": "/api/films/assets/24101f44-dafd-4836-852c-36760c69bb3c/media",
+      "createdAt": "2026-10-19T16:14:30.924Z"
+    }
+  },
+  {
+    "id": "09-close",
+    "request": {
+      "text": "Your next take starts here.",
+      "voice": "am_michael",
+      "speed": 1.08,
+      "timedWords": true
+    },
+    "path": "examples/product-film/voices/09-close.wav",
+    "asset": {
+      "kind": "audio",
+      "duration": 1.792,
+      "narration": {
+        "text": "Your next take starts here.",
+        "voice": "am_michael",
+        "speed": 1.08,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTimingMapper": "phoneme-boundaries/2",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Your",
+              "start": 0.19033333333333333,
+              "end": 0.29033333333333333
+            },
+            {
+              "text": "next",
+              "start": 0.3403333333333333,
+              "end": 0.5653333333333334
+            },
+            {
+              "text": "take",
+              "start": 0.6153333333333333,
+              "end": 0.8403333333333334
+            },
+            {
+              "text": "starts",
+              "start": 0.8903333333333333,
+              "end": 1.2153333333333334
+            },
+            {
+              "text": "here.",
+              "start": 1.2653333333333334,
+              "end": 1.7653333333333334
+            }
+          ]
+        }
+      },
+      "id": "69216fb0-049d-4f70-a3cf-582001ebae8e",
+      "name": "Narration · Your next take starts here.",
+      "extension": ".wav",
+      "sha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c",
+      "url": "/api/films/assets/69216fb0-049d-4f70-a3cf-582001ebae8e/media",
+      "createdAt": "2026-10-19T16:14:33.067Z"
+    }
+  }
+]

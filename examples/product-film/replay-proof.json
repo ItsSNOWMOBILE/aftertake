@@ -1,0 +1,74 @@
+{
+  "format": "aftertake-product-film-replay/1",
+  "passed": true,
+  "referenceSha256": "2e995bc397fc3d3350bcca03120b6cc1139b08970636be33197cad7acc27c9b0",
+  "replaySha256": "0ab0922f416435072614695356457d6b39e896fc40db9c21574c8e150c19d4c5",
+  "sourceImports": 28,
+  "video": {
+    "framesCompared": 936,
+    "expectedFrames": 936,
+    "metadata": [
+      {
+        "width": 1280,
+        "height": 720,
+        "averageRate": "24/1",
+        "timeBase": "1/12288"
+      },
+      {
+        "width": 1280,
+        "height": 720,
+        "averageRate": "24/1",
+        "timeBase": "1/12288"
+      }
+    ],
+    "rgbExact": true,
+    "differentFrames": 0,
+    "maxChannelDifference": 0,
+    "firstDifferences": [],
+    "timestampsExact": true,
+    "timestampMismatches": 0,
+    "decodedRgbSha256": [
+      "66b32a9996d2665ce4f7855c4bceb6d8cfd05264332dcabbc9c7bac1ca2d7918",
+      "66b32a9996d2665ce4f7855c4bceb6d8cfd05264332dcabbc9c7bac1ca2d7918"
+    ]
+  },
+  "audio": {
+    "comparisonSampleRate": 48000,
+    "comparisonLayout": "stereo",
+    "metadata": [
+      {
+        "sourceSampleRate": 48000,
+        "sourceLayout": "stereo"
+      },
+      {
+        "sourceSampleRate": 48000,
+        "sourceLayout": "stereo"
+      }
+    ],
+    "samplesPerChannel": [
+      1872000,
+      1872000
+    ],
+    "floatPcmExact": true,
+    "timestampsExact": true,
+    "maxSampleDifference": 0.0,
+    "decodedFloatPcmSha256": [
+      "f3136525b354a13cd785730e88f184f457c42cdbf0e3b7a85299a5e2ef0f141e",
+      "f3136525b354a13cd785730e88f184f457c42cdbf0e3b7a85299a5e2ef0f141e"
+    ]
+  },
+  "renderPlanComparison": {
+    "afterAssetRebindingExact": true,
+    "referenceSha256": "ec15895351be0167c8a021478a83e1dbd2eade55e11083b90fb23a503ef48b2f",
+    "replaySha256": "ec15895351be0167c8a021478a83e1dbd2eade55e11083b90fb23a503ef48b2f",
+    "normalization": "Native embedded film manifests; remove imported asset IDs, embedded asset-library records and source display filenames. Preserve media SHA, every trim, dissolve, framing, title and audio setting."
+  },
+  "scope": {
+    "filmOnlyProductionRouter": true,
+    "freshWorkspace": true,
+    "hashVerifiedAssetImports": 28,
+    "newGpuJobs": 0,
+    "existingOwnerProcessesChanged": false,
+    "originalReferenceUnmodified": true
+  }
+}
