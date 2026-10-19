@@ -6,7 +6,7 @@
 An open-source creative studio for short-form video, product stories and visual effects.</p>
 
 [![Code: MIT](https://img.shields.io/badge/code-MIT-d5eb94?labelColor=182015)](LICENSE)
-[![CI](https://github.com/ItsSNOWMOBILE/aftertake/actions/workflows/ci.yml/badge.svg?branch=codex%2Faftertake-studio)](https://github.com/ItsSNOWMOBILE/aftertake/actions/workflows/ci.yml)
+[![CI](https://github.com/ItsSNOWMOBILE/aftertake/actions/workflows/ci.yml/badge.svg?branch=aftertake-studio)](https://github.com/ItsSNOWMOBILE/aftertake/actions/workflows/ci.yml)
 [![Comfy SDK](https://img.shields.io/badge/powered_by-Comfy_SDK-d5eb94?labelColor=182015)](https://github.com/Comfy-Org/comfy-typescript-sdk)
 [![Status: Experimental](https://img.shields.io/badge/status-experimental-c3d4a6?labelColor=182015)](#project-status)
 

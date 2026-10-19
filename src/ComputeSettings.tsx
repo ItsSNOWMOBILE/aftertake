@@ -321,7 +321,7 @@ export default function ComputeSettings({
                       {'\n'}python scripts/engine.py{'\n'}pnpm dev
                     </pre>
                     <a
-                      href="https://github.com/ItsSNOWMOBILE/aftertake/blob/codex/aftertake-studio/docs/studio-guide.md"
+                      href="https://github.com/ItsSNOWMOBILE/aftertake/blob/aftertake-studio/docs/studio-guide.md"
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -481,7 +481,7 @@ export default function ComputeSettings({
               </ol>
               <a
                 className="compute-doc-link"
-                href="https://github.com/ItsSNOWMOBILE/aftertake/blob/codex/aftertake-studio/docs/cloud-setup.md"
+                href="https://github.com/ItsSNOWMOBILE/aftertake/blob/aftertake-studio/docs/cloud-setup.md"
                 target="_blank"
                 rel="noreferrer"
               >

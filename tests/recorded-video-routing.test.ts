@@ -6,7 +6,7 @@ import { resolve } from 'node:path';
 
 const helper = await import(new URL('../public/recorded-video-preview.js', import.meta.url).href);
 const { resolveRecordedAssetURL, recordedVideoSourceURL, installRecordedVideoPreviews } = helper;
-const commit = '6244e15d630578a41f8b94ddb0155d05b27fb8dc';
+const commit = '2805cb7ebd987311e32357a5a4852970e924e94a';
 const raw = `https://raw.githubusercontent.com/ItsSNOWMOBILE/aftertake/${commit}/`;
 const pages = 'https://itssnowmobile.github.io/aftertake/';
 const base = pages + 'cast/h3.html';
@@ -45,7 +45,7 @@ test('Pages media and generated aliases use their pinned tracked sources', () =>
   for (const path of ['', 'index.html']) {
     assert.equal(
       resolveRecordedAssetURL(pages + path + '#source-downloads', base),
-      `https://github.com/ItsSNOWMOBILE/aftertake/blob/${commit}/README.md#run-locally`,
+      'https://github.com/ItsSNOWMOBILE/aftertake#run-locally',
     );
   }
 });
@@ -179,7 +179,10 @@ test('DOM routing fixes posters and links, reloads once, and fetches declared me
     assert.equal(video.source.getAttribute('src'), raw + 'examples/character-h3-high/result.mp4');
     assert.equal(image.getAttribute('src'), raw + 'examples/character-h3-high/reference.png');
     assert.equal(video.getAttribute('poster'), raw + 'examples/character-h3-high/poster.jpg');
-    assert.match(link.getAttribute('href')!, /README\.md#run-locally$/);
+    assert.equal(
+      link.getAttribute('href'),
+      'https://github.com/ItsSNOWMOBILE/aftertake#run-locally',
+    );
     assert.equal(recordedVideoSourceURL(video, base), video.source.getAttribute('src'));
     video.dispatch('play');
     await new Promise((done) => setImmediate(done));

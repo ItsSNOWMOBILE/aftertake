@@ -1,7 +1,7 @@
 const pagesOrigin = 'https://itssnowmobile.github.io';
 const pagesRoot = '/aftertake/';
 const sourceRoot =
-  'https://raw.githubusercontent.com/ItsSNOWMOBILE/aftertake/6244e15d630578a41f8b94ddb0155d05b27fb8dc/';
+  'https://raw.githubusercontent.com/ItsSNOWMOBILE/aftertake/2805cb7ebd987311e32357a5a4852970e924e94a/';
 const assetAliases = new Map([
   ['agent/guide.txt', 'docs/mcp.md'],
   ['agent/evidence.json', 'docs/agent-edit-evidence.json'],
@@ -39,12 +39,7 @@ export function resolveRecordedAssetURL(value, baseURI) {
   }
   const path = target.pathname.slice(pagesRoot.length);
   if ((path === '' || path === 'index.html') && target.hash === '#source-downloads') {
-    return (
-      'https://github.com/ItsSNOWMOBILE/aftertake/blob/' +
-      '6244e15d630578a41f8b94ddb0155d05b27fb8dc/README.md' +
-      target.search +
-      '#run-locally'
-    );
+    return 'https://github.com/ItsSNOWMOBILE/aftertake' + target.search + '#run-locally';
   }
   const source = assetAliases.get(path) || (path.startsWith('examples/') ? path : undefined);
   return source ? sourceRoot + source + target.search + target.hash : value;
