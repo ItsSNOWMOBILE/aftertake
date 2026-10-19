@@ -44,10 +44,12 @@ export default function ComputeSettings({
   engine,
   setupProfile,
   onClose,
+  onHostedVideo,
 }: {
   engine: Engine;
   setupProfile: string;
   onClose: () => void;
+  onHostedVideo?: () => void;
 }) {
   const [destination, setDestination] = useState<ComputeProvider>('local');
   const [status, setStatus] = useState<ComputeStatus>();
@@ -112,12 +114,12 @@ export default function ComputeSettings({
       if (action !== 'probe') setApiKey('');
       if (action === 'remove') {
         setEndpoint('');
-        setNotice('Saved cloud credentials removed. Your local engine selection is unchanged.');
+        setNotice('Saved workflow deployment credentials removed. Your local engine is unchanged.');
       } else if (action === 'save') {
         setNotice(
           value.configured?.hasApiKey
-            ? 'Connection saved for this server session. Cloud generation remains unavailable.'
-            : 'Cloud setup saved for this server session. Add your key when your account is ready.',
+            ? 'Workflow connection saved for this server session. Native workflow deployment remains unavailable.'
+            : 'Workflow deployment setup saved for this server session. Add your key when ready.',
         );
       } else setNotice('Connection check finished. No generation was started.');
     } catch (failure) {
@@ -182,7 +184,9 @@ export default function ComputeSettings({
         <div className="eyebrow">YOUR RENDER SETUP</div>
         <h2>A place for every take.</h2>
         <p className="compute-intro">
-          Use your own GPU today. Prepare a Comfy connection for cloud rendering.
+          {browserDemo
+            ? 'Explore recorded examples here. Your own studio supports local workflows and hosted LTX generation.'
+            : 'Run editing workflows on your GPU, or create hosted LTX videos with your Comfy credits.'}
         </p>
         <div className={`compute-active-strip ${!browserDemo && !engine.ready ? 'not-ready' : ''}`}>
           <span className="compute-status-dot" aria-hidden="true" />
@@ -195,8 +199,35 @@ export default function ComputeSettings({
                   ? 'Local engine connected · generation blocked'
                   : 'Local engine is offline'}
           </span>
-          <span>{browserDemo ? 'No credits used' : 'Cloud generation is not enabled'}</span>
+          <span>{browserDemo ? 'No credits used' : 'Native editing uses your local GPU'}</span>
         </div>
+        {onHostedVideo && !browserDemo && (
+          <section className="compute-local-card" aria-label="Hosted video generation">
+            <Cloud size={24} />
+            <div>
+              <strong>No GPU? Generate with Comfy credits.</strong>
+              <p>
+                Create 720p videos with LTX-2.5 Fast through Comfy Router. Your API key connects
+                inside the hosted video studio. Character replacement and painted edits use your
+                local engine.
+              </p>
+              <div className="compute-actions">
+                <button
+                  className="button compute-primary"
+                  disabled={busy}
+                  onClick={() => {
+                    onClose();
+                    onHostedVideo();
+                  }}
+                >
+                  <Cloud size={15} />
+                  Generate with Comfy credits
+                  <ArrowUpRight size={14} />
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
         <div className="compute-tabs" role="tablist" aria-label="Render destinations">
           {destinations.map(({ id, label, icon: Icon }, index) => (
             <button
@@ -307,8 +338,8 @@ export default function ComputeSettings({
                   </div>
                   {status?.configured && status.configured.provider !== 'local' && (
                     <p className="compute-hint">
-                      A cloud connection is saved below. Remove it to run the full local readiness
-                      check; local generation stays active.
+                      A workflow deployment connection is saved below. Remove it to run the full
+                      local readiness check; local generation stays active.
                     </p>
                   )}
                   <details className="compute-details">
@@ -338,12 +369,12 @@ export default function ComputeSettings({
                 <div>
                   <strong>
                     {destination === 'comfy-cloud'
-                      ? 'Prepare Comfy Cloud.'
-                      : 'Bring a compatible deployment.'}
+                      ? 'Prepare cloud workflows.'
+                      : 'Prepare a workflow deployment.'}
                   </strong>
                   <p>
                     {destination === 'comfy-cloud'
-                      ? 'Prepare your own Comfy API connection. Account billing and workflow support still need verification.'
+                      ? 'Prepare your own Comfy Cloud workflow connection. Account billing and support for Aftertake nodes still need verification.'
                       : 'For a Comfy API environment containing the models and nodes your workflow needs.'}
                   </p>
                 </div>
@@ -352,8 +383,9 @@ export default function ComputeSettings({
               <div className="compute-cloud-notice">
                 <LockKeyhole size={17} />
                 <p>
-                  Cloud generation is unavailable in this release. Saving or checking a connection
-                  does not start a render or change the active local engine.
+                  Deploying native editing workflows is unavailable in this release. Saving or
+                  checking this connection does not start a render. Hosted LTX video generation uses
+                  a separate Comfy Router connection.
                 </p>
               </div>
               {browserDemo ? (
@@ -476,7 +508,9 @@ export default function ComputeSettings({
                   <span>03</span>
                   <div>
                     <strong>Verified billing</strong>
-                    <p>Confirm whose credits pay for the run before enabling cloud generation.</p>
+                    <p>
+                      Confirm whose credits pay for the run before enabling workflow deployment.
+                    </p>
                   </div>
                 </li>
               </ol>
@@ -492,7 +526,9 @@ export default function ComputeSettings({
           )}
           {showChecks && status.checkedAt && (
             <details className="compute-details compute-verification" open={remote}>
-              <summary>{remote ? 'Connection checks' : 'Workflow availability'}</summary>
+              <summary>
+                {remote ? 'Native workflow connection checks' : 'Workflow availability'}
+              </summary>
               <ul>
                 {remote
                   ? status.checks.map((item) => (

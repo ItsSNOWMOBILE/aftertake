@@ -18,12 +18,22 @@ const idempotentWrites = new Set([
   'aftertake_finish_media',
   'aftertake_depth_effect',
   'aftertake_compose_layers',
+  'aftertake_generate_hosted_video',
+  'aftertake_recover_hosted_video',
 ]);
 const destructiveWrites = new Set([
   'aftertake_generation_action',
   'aftertake_character_action',
   'aftertake_cancel_finishing',
   'aftertake_depth_action',
+  'aftertake_cancel_hosted_video',
+]);
+const remoteTools = new Set([
+  'aftertake_hosted_video_connection',
+  'aftertake_estimate_hosted_video',
+  'aftertake_generate_hosted_video',
+  'aftertake_recover_hosted_video',
+  'aftertake_cancel_hosted_video',
 ]);
 
 export function toolAnnotations(name: string, readOnly: boolean) {
@@ -31,6 +41,6 @@ export function toolAnnotations(name: string, readOnly: boolean) {
     readOnlyHint: readOnly,
     destructiveHint: !readOnly && destructiveWrites.has(name),
     idempotentHint: readOnly || idempotentWrites.has(name),
-    openWorldHint: false,
+    openWorldHint: remoteTools.has(name),
   };
 }

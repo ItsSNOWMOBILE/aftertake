@@ -160,7 +160,7 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
   try {
     await client.connect(transport);
     const list = await client.listTools();
-    assert.equal(list.tools.length, 40);
+    assert.equal(list.tools.length, 47);
     for (const name of [
       'aftertake_character_workspace',
       'aftertake_track_character',
@@ -194,6 +194,18 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
     assert.equal(annotations('aftertake_save_film_edit').readOnlyHint, false);
     assert.equal(annotations('aftertake_import_media').idempotentHint, false);
     assert.equal(annotations('aftertake_draft_script').idempotentHint, false);
+    for (const name of ['aftertake_generate_hosted_video', 'aftertake_recover_hosted_video']) {
+      assert.equal(annotations(name).readOnlyHint, false);
+      assert.equal(annotations(name).idempotentHint, true);
+      assert.equal(annotations(name).openWorldHint, true);
+    }
+    assert.equal(annotations('aftertake_cancel_hosted_video').destructiveHint, true);
+    assert.equal(annotations('aftertake_cancel_hosted_video').openWorldHint, true);
+    assert.equal(annotations('aftertake_hosted_video_connection').readOnlyHint, true);
+    assert.equal(annotations('aftertake_hosted_video_connection').openWorldHint, true);
+    assert.equal(annotations('aftertake_estimate_hosted_video').readOnlyHint, true);
+    assert.equal(annotations('aftertake_estimate_hosted_video').openWorldHint, true);
+    assert.equal(annotations('aftertake_hosted_video_status').openWorldHint, false);
     for (const name of ['aftertake_character_action', 'aftertake_generation_action']) {
       assert.equal(annotations(name).readOnlyHint, false);
       assert.equal(annotations(name).destructiveHint, true);

@@ -11,4 +11,4 @@ if not python.exists():
     venv.create(environment, with_pip=True)
 subprocess.run([str(python), '-m', 'pip', 'install', 'av==19.0.1', 'Pillow==12.3.0', 'imageio-ffmpeg==0.6.0', 'numpy==2.5.2'], check=True)
 print('Film editing/export runtime is ready. Restart the local studio if it is running.')
-print('New image/video generation still needs the normal ComfyUI engine and model profiles.')
+print('Native generation needs the ComfyUI engine and model profiles. Hosted LTX generation uses a Comfy key and credits.')

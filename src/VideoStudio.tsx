@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import {
   ArrowUpRight,
   Clapperboard,
+  Cloud,
   Download,
   Film,
   LoaderCircle,
@@ -94,6 +95,7 @@ export default function VideoStudio({
   onUse,
   onClose,
   onFilmAdded,
+  onHostedVideo,
 }: {
   videos: VideoGeneration[];
   otherBusy: boolean;
@@ -101,6 +103,7 @@ export default function VideoStudio({
   onUse: (clip: Clip) => void;
   onClose: () => void;
   onFilmAdded?: () => void;
+  onHostedVideo?: () => void;
 }) {
   const [request, setRequest] = useState(() =>
     stored('aftertake-video-draft', videoRequestSchema.parse, initial),
@@ -306,6 +309,26 @@ export default function VideoStudio({
           Describe the shot, action and sound. Create a new video, then bring it into your cut with
           editable type and narration.
         </p>
+        {onHostedVideo && !browserDemo && (
+          <section className="image-receipt" aria-label="Hosted video generation">
+            <strong>Create without a local GPU.</strong>
+            <p>
+              Use your Comfy credits for a 720p LTX-2.5 Fast video. Hosted videos have their own
+              queue; the local controls below apply to your GPU.
+            </p>
+            <button
+              className="button"
+              onClick={() => {
+                onClose();
+                onHostedVideo();
+              }}
+            >
+              <Cloud size={15} />
+              Generate with Comfy credits
+              <ArrowUpRight size={14} />
+            </button>
+          </section>
+        )}
         <div className="image-studio-grid">
           <div className="image-picture-column">
             <div className="video-picture">

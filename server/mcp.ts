@@ -22,6 +22,7 @@ import { displayDimensions, renderDimensions, type Render, type Clip } from '../
 import { clipMediaRoute, registerGenerationTools } from './generation-tools.js';
 import { registerCharacterTools } from './character-tools.js';
 import { registerEffectsTools } from './effects-tools.js';
+import { registerRouterTools } from './router-tools.js';
 import { scriptRequestSchema } from '../src/script-draft.js';
 import { toolAnnotations } from './tool-annotations.js';
 import { resolveMediaRuntime } from './media-runtime.js';
@@ -742,4 +743,5 @@ tool(
 registerGenerationTools({ tool, api, bytes, base });
 registerCharacterTools({ tool, api, bytes, root, python, state });
 registerEffectsTools({ tool, api, base });
+registerRouterTools({ tool, base, state });
 await server.connect(new StdioServerTransport());

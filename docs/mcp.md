@@ -4,10 +4,11 @@ Aftertake exposes its real local film workflow through a stdio MCP server.
 An MCP client chooses the edit using the user's brief and selected assets.
 The server supplies media inspection, measured local narration, a persistent
 beat plan, native export and decoded review frames. It contains no LLM and
-requires no hosted inference service. Forty typed tools cover native image
+requires no hosted inference service for local editing. Forty-seven typed tools cover native image
 creation, reference editing, video generation, tracked-person effects, color
 finishing, still-image depth effects and narration-first Film editing.
-New generation requires the configured local Comfy engine and its model profile.
+Native generation requires the configured local Comfy engine and its model profile.
+Seven optional hosted LTX tools use Comfy Router and workspace credits instead.
 
 ## Start the studio
 
@@ -29,10 +30,10 @@ Reusing a saved person mask and color finishing also run on the CPU. Estimating
 new depth requires the optional native CUDA BF16 depth profile described below.
 
 Compute settings can store remote configuration for the server session and run
-read-only account checks. Cloud generation remains blocked until billing,
-workflow compatibility and job routing are verified; these tools currently use
-the configured local engine for new inference. Comfy credits do not yet activate
-remote execution.
+read-only account checks. Deployment of native editing workflows remains blocked
+until workflow compatibility and job routing are verified. Hosted LTX uses its
+own connection in the studio's **Generate with Comfy credits** screen, with keys
+held in server memory. No MCP tool accepts a key or changes the native renderer.
 
 Start the MCP process separately. It communicates over stdin/stdout and does
 not open a public server:
@@ -112,6 +113,13 @@ root, including resolved symbolic links; remote media URLs are not accepted.
 | `aftertake_depth_action` | Cancels or reconciles the same accepted depth operation without changing its source or settings. |
 | `aftertake_effect_recipe` | Returns editable effect settings and their source/model/media bindings. |
 | `aftertake_cancel_finishing` | Requests worker cancellation; `canceling` remains busy until the subprocess closes. |
+| `aftertake_hosted_video_connection` | Reads the separate hosted connection, optionally probing model access without generation. |
+| `aftertake_estimate_hosted_video` | Requests a quote for a supported Router LTX shot; unavailable pricing never means free generation. |
+| `aftertake_generate_hosted_video` | Deliberately starts one paid hosted shot, retaining its original `requestId`, inputs and server session. |
+| `aftertake_hosted_video_status` | Reads saved hosted requests or a selected request without submitting anything. |
+| `aftertake_recover_hosted_video` | Recovers the original handle/output or explicitly replays its unchanged uncertain admission. |
+| `aftertake_cancel_hosted_video` | Requests cancellation and retains the original job until the provider confirms its outcome. |
+| `aftertake_export_hosted_video_request` | Reads the credential-free model request and measured output receipt. |
 
 `aftertake_import_media` defaults to Film. Set `destination: "studio"` to import
 a generation source through the native source normalizer. Inspect a canonical
@@ -120,6 +128,25 @@ text-to-video results also use `clipId`, while finished reference/editing takes
 use `renderId`. Exactly one media role must be selected. Text-to-video status
 and actions use `kind: "video"`; check `profile: "text-video"` in the generation
 workspace first. New text videos need no source file. See `text-video.md`.
+
+### Hosted LTX with Comfy credits
+
+Connect the key in the local studio first. Use a stable `requestId` and identical
+`request` with format `aftertake-router-video/1`, a name and prompt, `aspect`
+(`landscape` or `portrait`), `seconds` (2–5) and `sound` (boolean). Only the
+explicit generation tool starts a new paid take. Retain that identifier across
+timeouts and poll status; use recovery for the original request instead of
+inventing another ID. Recovery of an uncertain submission can still dispatch
+that original request. An expired safe replay window or changed server session
+is not permission to create a replacement automatically.
+
+After completion, inspect the actual result and use its `clip.id` with
+`aftertake_use_source`. The exact MP4, including generated sound, is verified
+before Film import. The provider exposes no seed: exported settings record the
+request, not a guarantee of identical fresh footage. See the
+[hosted generation guide](hosted-generation.md) for billing, recovery and
+competition scope. The native character and regional-edit tools keep using
+their existing local workflows.
 
 ## Character replacement
 

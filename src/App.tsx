@@ -66,6 +66,7 @@ import { frameEditBusy, type FrameEdit } from './frame-edit';
 import { imageBusy, type ImageGeneration } from './image-generation';
 import ImageStudio from './ImageStudio';
 import VideoStudio from './VideoStudio';
+import HostedVideoStudio from './HostedVideoStudio';
 import { videoBusy, type VideoGeneration } from './video-generation';
 import CharacterStudio from './CharacterStudio';
 import FinishingStudio from './FinishingStudio';
@@ -174,6 +175,7 @@ export default function App() {
   const [imageStudioOpen, setImageStudioOpen] = useState(false);
   const [videos, setVideos] = useState<VideoGeneration[]>([]);
   const [videoStudioOpen, setVideoStudioOpen] = useState(false);
+  const [hostedVideoStudioOpen, setHostedVideoStudioOpen] = useState(false);
   const [filmMediaRevision, setFilmMediaRevision] = useState(0);
   const [characterStudioOpen, setCharacterStudioOpen] = useState(false);
   const [finishingClip, setFinishingClip] = useState<Clip | null>(null);
@@ -389,12 +391,12 @@ export default function App() {
     };
   }, [videos.some(videoBusy)]);
   useEffect(() => {
-    if (videoStudioOpen) {
+    if (videoStudioOpen || hostedVideoStudioOpen) {
       video.current?.pause();
       outputVideo.current?.pause();
       setPlaying(false);
     }
-  }, [videoStudioOpen]);
+  }, [videoStudioOpen, hostedVideoStudioOpen]);
   useEffect(() => {
     if (characterStudioOpen) {
       video.current?.pause();
@@ -2806,6 +2808,11 @@ export default function App() {
       )}
       {videoStudioOpen && (
         <VideoStudio
+          onHostedVideo={() => {
+            setVideoStudioOpen(false);
+            setRecordedVideoId('');
+            setHostedVideoStudioOpen(true);
+          }}
           onFilmAdded={() => setFilmMediaRevision((v) => v + 1)}
           videos={recordedFirst(videos, recordedVideoId)}
           otherBusy={
@@ -2833,6 +2840,27 @@ export default function App() {
             setMode('source');
             setToast(
               'Your generated video is ready as source footage. Add it to Film from the video studio to start a cut.',
+            );
+          }}
+        />
+      )}
+      {hostedVideoStudioOpen && (
+        <HostedVideoStudio
+          onClose={() => setHostedVideoStudioOpen(false)}
+          onFilmAdded={() => setFilmMediaRevision((v) => v + 1)}
+          onUse={(clip) => {
+            video.current?.pause();
+            outputVideo.current?.pause();
+            setPlaying(false);
+            setTake(null);
+            setTime(0);
+            setClips((all) => (all.some((c) => c.id === clip.id) ? all : [...all, clip]));
+            setRecipe({ ...makeRecipe(clip), name: clip.name });
+            setMode('source');
+            setToast(
+              clip.hasAudio
+                ? 'Your hosted video is ready as source footage, with its generated audio.'
+                : 'Your hosted video is ready as source footage.',
             );
           }}
         />
@@ -2995,6 +3023,10 @@ export default function App() {
       )}
       {engineOpen && (
         <ComputeSettings
+          onHostedVideo={() => {
+            setEngineOpen(false);
+            setHostedVideoStudioOpen(true);
+          }}
           engine={engine}
           setupProfile={
             isTransfer

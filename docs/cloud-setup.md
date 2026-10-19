@@ -1,8 +1,8 @@
 # Compute connections
 
-Aftertake currently renders through the local studio's startup Comfy engine. The recorded browser demo does not accept API keys or send live generation requests.
+Aftertake's native editing workflows render through the local studio's startup Comfy engine. Optional [hosted LTX generation](hosted-generation.md) uses a separate Comfy Router queue and credential connection. The recorded browser demo does not accept API keys or send live generation requests.
 
-The local studio's compute settings prepare a connection to Comfy Cloud or a managed Comfy deployment. They do not activate cloud generation. A successful credential check is not proof that the account can run Aftertake's workflows or that a deployment will charge the intended account.
+The local studio's compute settings prepare a connection to Comfy Cloud or a managed Comfy deployment. They do not deploy native editing workflows. A successful credential check is not proof that the account can run Aftertake's workflows or that a deployment will charge the intended account. The hosted LTX button opens its separate working Router integration.
 
 ## Prepare a connection
 
@@ -16,7 +16,7 @@ Keys entered in these settings are held only in the local server's memory. They 
 
 ## What a check establishes
 
-Local checks report readiness separately for each workflow using the existing engine's nodes and model menus. Cloud checks distinguish reachability from credential acceptance. Subscription eligibility, available credits, billing ownership and workflow compatibility remain unverified. Every cloud generation capability therefore remains blocked, even after an accepted credential.
+Local checks report readiness separately for each workflow using the existing engine's nodes and model menus. Cloud checks distinguish reachability from credential acceptance. Subscription eligibility, available credits, billing ownership and workflow compatibility remain unverified for native workflow deployment. Those capabilities remain blocked, even after an accepted credential. This does not describe the separate hosted LTX Router queue.
 
 Saved connection settings are candidates. Local submissions, running jobs, saved-job recovery and cancellation continue using the same startup SDK client. Selecting or disconnecting a candidate does not reroute work or change the startup environment.
 
@@ -34,13 +34,13 @@ Uploads retain the SDK's asset hashing, materialization and idempotency behavior
 
 A deadline, interrupted submit or stopped worker does not trigger a new generation. The existing job record and operation key remain the basis for recovery; the studio must be restarted after a worker failure. The SDK's job lookup currently has no abort parameter: a cancelled local wait discards its late result, while the SDK's own 30-second request timeout bounds the underlying lookup. Refresh, cancellation and event operations use the SDK's abort support.
 
-Loopback contract tests exercise two workers with different endpoints and credentials but identical job and output IDs. They cover real SDK asset upload, a throttled submission retry with the same key, polling, cancellation, progress and streamed downloads. They also check ambiguous submission failures, bounded requests, file/client ownership and rejection of invalid mutated graphs before IPC. This validates the local adapter boundary; it does not establish a cloud account's billing ownership, compatibility or recovery behavior. Remote execution remains disabled.
+Loopback contract tests exercise two workers with different endpoints and credentials but identical job and output IDs. They cover real SDK asset upload, a throttled submission retry with the same key, polling, cancellation, progress and streamed downloads. They also check ambiguous submission failures, bounded requests, file/client ownership and rejection of invalid mutated graphs before IPC. This validates the native adapter boundary; it does not establish a cloud account's billing ownership, compatibility or recovery behavior. Native workflow deployment remains disabled.
 
-## Before cloud generation can become available
+## Before native workflow deployment can become available
 
 A supported execution profile must provide Aftertake's exact custom nodes, models, media upload/download behavior and output metadata contract. Character replacement also needs the pinned H3 Relay recipe, SAM3 and its required model files. A generic Comfy endpoint is not sufficient evidence of compatibility.
 
-The account owner must separately establish an eligible subscription, credits and the deployment's billing rules before any cloud execution is enabled. This release performs no account creation, purchase, deployment provisioning or billable trial. It does not assume that a visitor's personal credits pay for another workspace's managed endpoint.
+The account owner must separately establish an eligible subscription, credits and the deployment's billing rules before native workflow deployment is enabled. This settings framework performs no account creation, purchase, deployment provisioning or billable trial. It does not assume that a visitor's personal credits pay for another workspace's managed endpoint. Explicit hosted LTX generation is a different integration and uses the connected Comfy Router workspace.
 
 The application also needs verified provider-specific job routing and recovery before it can activate a remote connection. A shared hosted service additionally needs authenticated users, isolated credentials, media and job ownership, and a secure credential lifecycle. The current settings are connection preparation for an owner-run local studio, not a shared hosted BYOK service.
 

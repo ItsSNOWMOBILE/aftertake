@@ -36,6 +36,7 @@ import { generationAdmission, generationKeyConflict } from './generation-admissi
 import { scriptDraftRouter } from './script-drafts.js';
 import { characterRouter } from './characters.js';
 import { videoRouter } from './videos.js';
+import { routerVideoRouter } from './router-videos.js';
 import { computeRouter } from './compute.js';
 import { subjectEffectsRouter } from './subject-effects.js';
 import { finishingRouter } from './finishing.js';
@@ -571,6 +572,8 @@ const videos = await videoRouter({
 });
 generation.register('videos', videos.busy);
 app.use('/api/videos', videos.router);
+const hostedVideos = await routerVideoRouter({ root, data, python });
+app.use('/api/router-videos', hostedVideos.router);
 app.use('/api/templates', await templateRouter(root, data, renders));
 app.use('/api/films', await filmRouter(root, data, python, renders));
 app.post('/api/cue-preview', async (req, res) => {
@@ -797,7 +800,10 @@ app.post('/api/renders/:id/reconcile', async (req, res) => {
 });
 
 const httpServer = createServer(app);
-httpServer.once('close', () => void client.close());
+httpServer.once('close', () => {
+  void client.close();
+  void hostedVideos.close();
+});
 if (process.argv.includes('--production')) app.use(express.static(path.join(root, 'dist')));
 else {
   const { createServer: createVite } = await import('vite');

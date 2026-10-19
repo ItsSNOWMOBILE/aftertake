@@ -51,10 +51,17 @@ assemble it with narration and editable typography.
 | **Depth-finished stills** with native DA3 Small | **Tracked subject copies** with position, scale, rotation and mask controls | **Color and texture finishing** with exact before/after frame previews |
 | **Layered still compositions** from imported transparent images | **Shape and image masks**, clipping and 27 blend modes | **Selective HSL, master/RGB curves and 3D LUTs** shared with adjustment layers |
 
-Use the visual editor or connect an agent through **39 MCP tools**. Both work with
-the same local studio, persisted jobs and editable projects. Generation uses the
-official Comfy SDK and open-weight model workflows; editing existing footage and
-local narration can run on the CPU.
+Use the visual editor or connect an agent through **47 MCP tools**. Both work with
+the same local studio, persisted jobs and editable projects. Native generation uses
+the official Comfy SDK and open-weight model workflows; editing existing footage
+and local narration can run on the CPU.
+
+This branch also includes **[generation with Comfy credits](docs/hosted-generation.md)**:
+short 720p LTX-2.5 Fast videos with optional sound through Comfy Router, without a
+local GPU. It has its own explicit paid queue and memory-only credential connection.
+Native character swaps and painted edits retain their existing workflows. The hosted
+API is separate from the native competition snapshot; **Open Weights Only eligibility
+for this optional backend has not been established**.
 
 ### One performance. Extra copies.
 
@@ -153,18 +160,23 @@ on Windows). An explicit selection is never replaced by another runtime.
 Optional local narration is installed separately with
 `python scripts/setup-narration.py`. These Python setup paths use **Python 3.12**.
 
-### Prepare cloud rendering
+### Use hosted generation or prepare a workflow deployment
+
+Choose **Generate with Comfy credits** from **Create video** or **Render setup**
+for supported hosted LTX text-to-video. See the [hosted generation guide](docs/hosted-generation.md)
+for key setup, billing, saved outputs and recovery. This path needs only the CPU
+Film runtime, with no local generation GPU or model download.
 
 Open **Render setup** to prepare a Comfy Cloud connection or a compatible managed
 deployment. You can save the setup before adding an API key. Credentials stay in
 the local server memory; an explicit account check never starts a generation.
 
-**Cloud generation is not enabled yet.** Billing ownership, workflow compatibility
-and remote job recovery still need verification. The recorded browser editor does
+**Deployment of native editing workflows is not enabled yet.** Workflow compatibility
+and provider-specific recovery still need verification. The recorded browser editor does
 not collect keys. See the [cloud connection guide](docs/cloud-setup.md) for the
 current framework and an offline character-workflow deployment inventory.
 
-### Generate new footage
+### Generate new footage on your own GPU
 
 Requires **Python 3.12**, an **NVIDIA CUDA GPU**, and space for the selected
 model profile. The tested development host is Windows with an RTX 5080
@@ -258,8 +270,8 @@ feature parity is still a work in progress.
 
 Character likeness, speaking faces, hands, occlusions and camera adherence need
 visual review. A successful render or passing media check does not establish
-visual quality. The browser trial reviews recorded results; fresh inference
-uses your configured local engine.
+visual quality. The browser trial reviews recorded results; fresh native inference
+uses your configured local engine. Hosted LTX has its separate explicit credits queue.
 
 ## Development
 
