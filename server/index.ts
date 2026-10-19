@@ -209,10 +209,11 @@ async function track(render: Render, initial?: Job) {
     })().catch(() => {});
     while (true) {
       await job.refresh();
-      render.state = job.status === 'succeeded' ? 'finalizing' : job.status;
+      const status = job.status;
+      render.state = status === 'succeeded' ? 'finalizing' : status;
       render.progress = streamedProgress;
       delete render.error;
-      if (job.status === 'succeeded') {
+      if (status === 'succeeded') {
         render.stage = 'Downloading outputs';
         const output = job.getOutputs('21')[0];
         const raw = job.getOutputs('22')[0];
@@ -239,10 +240,10 @@ async function track(render: Render, initial?: Job) {
         render.progress = 1;
         render.stage = 'Complete';
         render.state = 'succeeded';
-      } else if (job.status === 'failed') {
+      } else if (status === 'failed') {
         render.error = JSON.stringify(job.error);
       }
-      if (terminal.has(job.status)) {
+      if (terminal.has(status)) {
         // Release idle caches after cancellation/failure as well as success,
         // so browser video decoders can recover their VRAM on 16 GB cards.
         try {
@@ -262,7 +263,7 @@ async function track(render: Render, initial?: Job) {
         }
       }
       await persist(render);
-      if (terminal.has(job.status)) break;
+      if (terminal.has(status)) break;
       await new Promise((resolve) => setTimeout(resolve, 2000));
     }
   } catch (error) {

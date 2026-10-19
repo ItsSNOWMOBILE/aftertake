@@ -107,10 +107,11 @@ export async function frameEditorRouter(context: {
       })().catch(() => {});
       for (;;) {
         await job.refresh();
-        edit.state = job.status === 'succeeded' ? 'finalizing' : job.status;
+        const status = job.status;
+        edit.state = status === 'succeeded' ? 'finalizing' : status;
         edit.progress = progress;
         delete edit.error;
-        if (job.status === 'succeeded') {
+        if (status === 'succeeded') {
           edit.stage = 'Downloading edited frame';
           await persist(edit);
           const output = job.getOutputs('21')[0];
@@ -160,9 +161,9 @@ export async function frameEditorRouter(context: {
           } catch (error) {
             console.warn('Could not release idle frame-edit GPU cache:', error);
           }
-        } else if (job.status === 'failed') edit.error = JSON.stringify(job.error);
+        } else if (status === 'failed') edit.error = JSON.stringify(job.error);
         await persist(edit);
-        if (frameEditTerminal.has(job.status)) break;
+        if (frameEditTerminal.has(status)) break;
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     } catch (error) {

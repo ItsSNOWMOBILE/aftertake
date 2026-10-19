@@ -66,10 +66,11 @@ export async function imageRouter(context: {
       })().catch(() => {});
       for (;;) {
         await job.refresh();
-        image.state = job.status === 'succeeded' ? 'finalizing' : job.status;
+        const status = job.status;
+        image.state = status === 'succeeded' ? 'finalizing' : status;
         image.progress = progress;
         delete image.error;
-        if (job.status === 'succeeded') {
+        if (status === 'succeeded') {
           image.stage = 'Downloading generated image';
           await persist(image);
           const output = job.getOutputs('21')[0];
@@ -131,9 +132,9 @@ export async function imageRouter(context: {
           } catch {
             /* Image completion does not depend on releasing an idle cache. */
           }
-        } else if (job.status === 'failed') image.error = JSON.stringify(job.error);
+        } else if (status === 'failed') image.error = JSON.stringify(job.error);
         await persist(image);
-        if (imageTerminal.has(job.status)) break;
+        if (imageTerminal.has(status)) break;
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     } catch (error) {

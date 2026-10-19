@@ -183,7 +183,8 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
   let output = imagePng(wrong),
     first = true,
     admitting = false,
-    freeCalls = 0;
+    freeCalls = 0,
+    outputCalls = 0;
   const keys: string[] = [];
   const job = {
     id: randomUUID(),
@@ -196,6 +197,7 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
     getOutputs: () => [
       {
         toFile: async (file: string) => {
+          outputCalls++;
           await writeFile(file, output);
         },
       },
@@ -215,10 +217,19 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
     },
   } as unknown as Comfy;
   let imageFile = '',
+    runningWrites = 0,
     heldFailure = false,
+    releaseRunning!: () => void,
+    runningReady!: () => void,
     releaseFailure!: () => void,
     failureReady!: () => void;
-  const failurePersisting = new Promise<void>((resolve) => {
+  const runningPersisting = new Promise<void>((resolve) => {
+      runningReady = resolve;
+    }),
+    runningReleased = new Promise<void>((resolve) => {
+      releaseRunning = resolve;
+    }),
+    failurePersisting = new Promise<void>((resolve) => {
       failureReady = resolve;
     }),
     failureReleased = new Promise<void>((resolve) => {
@@ -226,9 +237,13 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
     }),
     rename = fs.rename;
   t.mock.method(fs, 'rename', async (...args: Parameters<typeof fs.rename>) => {
-    if (!heldFailure && args[1] === imageFile) {
+    if (args[1] === imageFile) {
       const pending = JSON.parse(await readFile(args[0], 'utf8')) as ImageGeneration;
-      if (pending.state === 'output_error') {
+      if (pending.state === 'running' && ++runningWrites === 2) {
+        runningReady();
+        await runningReleased;
+      }
+      if (!heldFailure && pending.state === 'output_error') {
         heldFailure = true;
         failureReady();
         await failureReleased;
@@ -310,11 +325,28 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
     assert.equal((await post(`/api/images/${image.id}/reconcile`)).status, 200);
     assert.deepEqual(keys, [image.id, image.id]);
     assert.equal((await post('/api/images', request)).status, 409);
+    await Promise.race([
+      runningPersisting,
+      delay(15000, undefined, { ref: false }).then(() => {
+        assert.fail('Image tracker did not begin persisting its running status within 15s.');
+      }),
+    ]);
+    // SDK events can refresh this same job handle while the tracker persists.
+    // A terminal status not yet processed must not make the running iteration exit.
     job.status = 'succeeded';
+    releaseRunning();
     await Promise.race([
       failurePersisting,
-      delay(15000, undefined, { ref: false }).then(() => {
-        assert.fail('Image did not begin persisting its workflow rejection within 15s.');
+      delay(15000, undefined, { ref: false }).then(async () => {
+        const saved = JSON.parse(await readFile(imageFile, 'utf8')) as ImageGeneration;
+        assert.fail(
+          `Image did not begin persisting its workflow rejection within 15s: ${JSON.stringify({
+            savedState: saved.state,
+            jobStatus: job.status,
+            runningWrites,
+            outputCalls,
+          })}`,
+        );
       }),
     ]);
     // Recoverable errors become public only after persistence and tracker cleanup.
@@ -348,6 +380,7 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
     assert.equal(imageBusy(completed), false);
     assert.equal(keys.length, 2);
     assert.equal(freeCalls, 0);
+    assert.equal(outputCalls, 3);
     assert.equal(completed.clip!.sha256, createHash('sha256').update(output).digest('hex'));
     const stored = JSON.parse(await readFile(path.join(data, 'clips', `${image.id}.json`), 'utf8'));
     assert.deepEqual(stored, completed.clip);
@@ -362,6 +395,7 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
     assert.equal((await finished.json()).id, image.id);
     assert.equal(keys.length, 2);
   } finally {
+    releaseRunning();
     releaseFailure();
     t.mock.restoreAll();
     syncBuiltinESMExports();

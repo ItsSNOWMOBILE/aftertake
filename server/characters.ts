@@ -270,7 +270,8 @@ export async function characterRouter(context: {
       })().catch(() => {});
       for (;;) {
         await job.refresh();
-        record.state = job.status === 'succeeded' ? 'finalizing' : job.status;
+        const status = job.status;
+        record.state = status === 'succeeded' ? 'finalizing' : status;
         record.progress = progress;
         delete record.error;
         if (record.state === 'running' && !record.stage)
@@ -278,14 +279,14 @@ export async function characterRouter(context: {
             record.kind === 'selection'
               ? 'Tracking the selected person'
               : 'Applying character and source performance';
-        if (job.status === 'succeeded') {
+        if (status === 'succeeded') {
           record.stage = 'Checking the downloaded frames';
           await persist(record);
           await finalize(record, job);
-        } else if (job.status === 'failed')
+        } else if (status === 'failed')
           record.error = job.error?.message || 'The native character job failed.';
         await persist(record);
-        if (characterTerminal.has(job.status)) break;
+        if (characterTerminal.has(status)) break;
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     } catch (error) {

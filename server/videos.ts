@@ -67,10 +67,11 @@ export async function videoRouter(context: {
       })().catch(() => {});
       for (;;) {
         await job.refresh();
-        video.state = job.status === 'succeeded' ? 'finalizing' : job.status;
+        const status = job.status;
+        video.state = status === 'succeeded' ? 'finalizing' : status;
         video.progress = progress;
         delete video.error;
-        if (job.status === 'succeeded') {
+        if (status === 'succeeded') {
           video.stage = 'Downloading generated video';
           await persist(video);
           const output = job.getOutputs('21')[0];
@@ -125,9 +126,9 @@ export async function videoRouter(context: {
           } catch {
             /* Video completion does not depend on releasing an idle cache. */
           }
-        } else if (job.status === 'failed') video.error = JSON.stringify(job.error);
+        } else if (status === 'failed') video.error = JSON.stringify(job.error);
         await persist(video);
-        if (videoTerminal.has(job.status)) break;
+        if (videoTerminal.has(status)) break;
         await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     } catch (error) {
