@@ -1,7 +1,10 @@
 """CPU graph-contract checks; no H3 installation, models or inference required."""
 import importlib.util
 import json
+import os
 from pathlib import Path
+import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -102,6 +105,58 @@ def render_export_path(graph, prepared, generated, raw_mask, count):
 
 
 class CharacterWorkflowTests(unittest.TestCase):
+    def test_cli_preserves_utf8_requests_and_prompts_with_cp1252_stdio(self):
+        selection = {
+            'format': 'aftertake-character-selection/1',
+            'clip': {'id': '00000000-0000-4000-8000-000000000001',
+                     'name': 'Bridge — café 中文.mp4', 'width': 1280, 'height': 534,
+                     'duration': 5.125, 'sha256': 'a' * 64, 'hasAudio': True,
+                     'url': '/media/00000000-0000-4000-8000-000000000001.mp4'},
+            'trimStart': 1, 'duration': 73 / 24, 'positive': [{'x': .35, 'y': .45}],
+            'negative': [], 'resolution': '768',
+        }
+        prompt = 'Preserve the source — lumière, café, 中文 character.'
+        replacement = {'format': 'aftertake-character/1', 'name': 'Character — Zoë 中文',
+                       'selectionId': '00000000-0000-4000-8000-000000000002',
+                       'reference': {'width': 768, 'height': 1152}, 'seed': 42,
+                       'prompt': prompt}
+
+        def invoke(script, payload):
+            env = {**os.environ, 'PYTHONIOENCODING': 'cp1252', 'PYTHONUTF8': '0'}
+            result = subprocess.run([sys.executable, str(script)],
+                                    input=json.dumps(payload, ensure_ascii=False).encode('utf-8'),
+                                    capture_output=True, timeout=30, env=env)
+            self.assertEqual(result.returncode, 0, result.stderr.decode('utf-8', errors='replace'))
+            return json.loads(result.stdout.decode('utf-8'))
+
+        with self.subTest(kind='selection'):
+            graph = invoke(ROOT / 'scripts/character-workflow.py',
+                           {'id': 'test-selection', 'kind': 'selection', 'request': selection})
+            self.assertEqual(json.loads(graph['selection']['inputs']['request_json']), selection)
+
+        # Run the exact CLI bytes in a temporary project root. Only the external
+        # Relay recipe is a fixture, so this tests the real stdio/main boundary
+        # on CPU CI without requiring the installed node pack or any inference.
+        with self.subTest(kind='replacement'), tempfile.TemporaryDirectory(prefix='aftertake-character-cli-') as directory:
+            root = Path(directory)
+            script = root / 'scripts/character-workflow.py'
+            script.parent.mkdir()
+            script.write_bytes((ROOT / 'scripts/character-workflow.py').read_bytes())
+            installed = root / '.runtime/ComfyUI/custom_nodes/h3-relay/h3_relay/workflows.py'
+            installed.parent.mkdir(parents=True)
+            recipe = {name: workflow.node(kind) for name, kind in {
+                'source': 'LoadVideo', 'prepare': 'H3RelayPrepareSource',
+                'video_vae': 'VAELoader', 'adapter': 'LoraLoaderModelOnly',
+                'reference': 'LoadImage', 'reference_conditioning': 'MiniMaxH3ReferenceToVideo',
+                'plan': 'H3RelayWindowPlan', 'sampling_memory': 'H3RelaySamplingMemory',
+                'finish': 'H3RelayFinishWindows', 'video': 'SaveVideo',
+            }.items()}
+            installed.write_text('def character_swap_graph(**kwargs):\n    return ' + repr(recipe) + '\n', encoding='utf-8')
+            graph = invoke(script, {'id': 'test-result', 'kind': 'replacement',
+                                   'request': replacement, 'selectionRequest': selection, 'prompt': prompt})
+            self.assertEqual(json.loads(graph['save']['inputs']['recipe_json'])['request'], replacement)
+            self.assertEqual(graph['reference_conditioning']['inputs']['prompt'], prompt)
+
     def test_independent_photos_bind_separate_contiguous_pictures_with_and_without_primary_focus(self):
         primary={'width':960,'height':1280}
         supporting=[

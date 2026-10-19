@@ -89,4 +89,6 @@ def build(value):
     return graph
 
 if __name__=='__main__':
-    print(json.dumps(build(json.load(sys.stdin))))
+    # The app writes UTF-8 JSON; Windows text pipes can otherwise use a legacy code page.
+    value=json.loads(sys.stdin.buffer.read().decode('utf-8'))
+    sys.stdout.buffer.write((json.dumps(build(value))+'\n').encode('utf-8'))
