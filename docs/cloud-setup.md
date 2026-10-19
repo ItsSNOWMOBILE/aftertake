@@ -68,3 +68,17 @@ Use `--feature all` to inspect all ten workflow profiles. `--system-stats` is op
 The command reads saved JSON from disk and makes no engine/API requests. URLs, explicit network-share paths and device namespaces are rejected before reading or writing files. It never uploads media, changes connections or starts a job. Reports contain input hashes, contract hashes and fixed expected component names; observed menu values, host paths and account documents are omitted. Missing or malformed model lists block readiness. Both list-style menus and `COMBO` menus with an `options` list are checked.
 
 Every report retains `generationReady: false`. Metadata origin and freshness, full graph validation, model bytes, GPU execution, media transport, output recovery and account billing still need verification. Run the check again against a fresh capture after changing the target worker or profile. The Python inventory above supplies the separate pinned deployment inputs.
+
+## Linux dependency candidate
+
+The full current setup resolves to **115 packages** for Linux x86_64, manylinux 2.28, Python 3.12.14 and CUDA 13.0. All 93 runtime pins and the three setup Torch pins are retained; the resolution adds 19 Linux CUDA/NVIDIA/Triton dependencies. The [hashed candidate](cloud/requirements-linux-cu130.candidate.txt), [input constraints](cloud/linux-cu130.in) and [resolution evidence](cloud/linux-cu130-resolution.json) record this metadata check. The working Windows environment was unchanged.
+
+Use uv **0.13.1** in a clean environment without inherited `UV_*` or `PIP_*` overrides to recheck the pinned candidate. Create the ignored `.runtime` directory if needed. The command below reads package metadata from PyPI and the official PyTorch CUDA index, preserves the candidate versions, and writes a separate output:
+
+```sh
+uv pip compile docs/cloud/linux-cu130.in --constraint docs/cloud/requirements-linux-cu130.candidate.txt --python-platform x86_64-manylinux_2_28 --python-version 3.12.14 --torch-backend cu130 --default-index https://pypi.org/simple --config-file docs/cloud/uv-resolve.toml --no-build --no-sources --no-python-downloads --no-managed-python --generate-hashes --no-header --no-annotate --emit-index-annotation --quiet --output-file .runtime/linux-cu130-recheck.txt
+```
+
+Add `--offline` when that resolver cache is already populated. The recorded offline recheck produced a byte-identical candidate. The evidence uses explicit LF-normalized text hashes for source files, following the repository's Git line-ending policy. Regenerate the evidence after changing setup constraints; when intentionally updating versions, remove the candidate constraint and review the new result separately.
+
+This candidate mirrors the complete existing setup and does not change the installer. Linux installation/imports, native libraries, NVIDIA drivers/kernels, GPU capacity and media outputs remain unverified. Deployment readiness stays false. See uv's [cross-platform resolution](https://docs.astral.sh/uv/concepts/resolution/) and [explicit PyTorch backend selection](https://docs.astral.sh/uv/guides/integration/pytorch/) for the resolver's scope.

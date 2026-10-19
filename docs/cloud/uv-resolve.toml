@@ -1,0 +1,2 @@
+# Explicit empty configuration for the documented metadata-only resolution.
+# Target platform, Python version, backend and public index are CLI arguments.
