@@ -4,10 +4,12 @@ import express from 'express';
 import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { createHash } from 'node:crypto';
 import { filmRouter } from '../server/films.js';
 import { contentDigest } from '../server/edit-plan.js';
 import { filmRequestSchema } from '../src/film.js';
+import { motionPreset } from '../src/film-motion.js';
 import { Client } from '@modelcontextprotocol/client';
 import { StdioClientTransport } from '@modelcontextprotocol/client/stdio';
 
@@ -101,6 +103,12 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
   let resolveCalls = 0;
   let retainCamera = true;
   let retainFit = true;
+  let retainGraphics = true;
+  let retainResolution = true;
+  let retainTitleMotion = true;
+  let exportCalls = 0;
+  let exportedDraft: any;
+  let reviewFilm: any;
   let receivedFit: unknown;
   app.post('/api/films/resolve', (req, res) => {
     resolveCalls++;
@@ -116,8 +124,49 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
         const { fit: _fit, ...framing } = shot.framing;
         return { ...shot, framing };
       });
+    if (!retainGraphics) delete draft.graphics;
+    if (!retainResolution) delete draft.resolution;
+    if (!retainTitleMotion)
+      draft.titles = draft.titles?.map(({ motion: _motion, ...title }: any) => title);
     res.json(draft);
   });
+  const filmId = '00000000-0000-4000-8000-000000000098';
+  app.post('/api/films', (req, res) => {
+    exportCalls++;
+    exportedDraft = req.body;
+    res.status(202).json({
+      ...req.body,
+      id: filmId,
+      state: 'assembling',
+      duration: 2,
+      requestKey: req.get('Idempotency-Key'),
+    });
+  });
+  app.get('/api/films/:id/manifest', (_req, res) => res.json(reviewFilm));
+  app.get('/api/films/:id/video', (_req, res) => res.send(Buffer.from('review transport fixture')));
+  // Only the native review process is stubbed. The MCP protocol, loopback API,
+  // portable project parsing and retention comparisons all run normally.
+  const reviewResultFile = path.join(directory, 'review-result.json');
+  const reviewHook = path.join(directory, 'review-process-fixture.mjs');
+  await writeFile(
+    reviewHook,
+    `import childProcess from 'node:child_process';
+import { syncBuiltinESMExports } from 'node:module';
+import { promisify } from 'node:util';
+import { readFile } from 'node:fs/promises';
+const original = childProcess.execFile;
+const originalAsync = promisify(original);
+function intercepted(...args) { return original(...args); }
+intercepted[promisify.custom] = async (file, args, options) => {
+  if (args?.[0]?.endsWith('review-film.py')) {
+    return { stdout: await readFile(${JSON.stringify(reviewResultFile)}, 'utf8'), stderr: '' };
+  }
+  return originalAsync(file, args, options);
+};
+childProcess.execFile = intercepted;
+syncBuiltinESMExports();
+`,
+  );
   const draftId = '00000000-0000-4000-8000-000000000099';
   let scriptCalls = 0,
     rejoinCalls = 0;
@@ -143,6 +192,8 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
   const transport = new StdioClientTransport({
     command: process.execPath,
     args: [
+      '--import',
+      pathToFileURL(reviewHook).href,
       '--import',
       'tsx',
       'server/mcp.ts',
@@ -280,6 +331,100 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
     const lostFit = await saveEdit(project);
     assert.equal(lostFit.isError, true);
     assert.match((lostFit.content as any)[0].text, /did not retain every edit setting/);
+    retainFit = true;
+    const motionProject = {
+      ...project,
+      format: 'aftertake-film/3',
+      name: 'A bound animated graphic',
+      resolution: '1080p',
+      titles: [
+        {
+          id: '00000000-0000-4000-8000-000000000003',
+          text: 'Move it.',
+          start: 0,
+          end: 2,
+          style: 'headline',
+          position: 'center',
+          animation: 'none',
+          color: '#ffffff',
+          motion: motionPreset('slide-up'),
+        },
+      ],
+      graphics: [
+        {
+          id: '00000000-0000-4000-8000-000000000004',
+          name: 'Logo card',
+          kind: 'image',
+          start: 0,
+          end: 2,
+          x: 0.5,
+          y: 0.5,
+          width: 0.3,
+          height: 0.2,
+          color: '#ffffff',
+          opacity: 1,
+          fillOpacity: 0.8,
+          assetId: '00000000-0000-4000-8000-000000000005',
+          sha256: 'b'.repeat(64),
+          motion: motionPreset('pop'),
+        },
+      ],
+    };
+    const savedMotion = await saveEdit(motionProject);
+    assert.ok(!savedMotion.isError);
+    const motionPlanId = (savedMotion.structuredContent as any).planId;
+    const exportMotion = () =>
+      client.callTool({ name: 'aftertake_export_plan', arguments: { planId: motionPlanId } });
+    for (const feature of ['graphics', 'resolution', 'titleMotion']) {
+      retainGraphics = feature !== 'graphics';
+      retainResolution = feature !== 'resolution';
+      retainTitleMotion = feature !== 'titleMotion';
+      const stripped = await exportMotion();
+      assert.equal(stripped.isError, true, `Export admitted stripped ${feature}`);
+      assert.match((stripped.content as any)[0].text, /did not retain every edit setting/);
+      assert.equal(exportCalls, 0, 'A changed edit reached the export POST.');
+    }
+    retainGraphics = retainResolution = retainTitleMotion = true;
+    const exported = await exportMotion();
+    assert.ok(!exported.isError);
+    assert.equal(exportCalls, 1);
+    assert.deepEqual(exportedDraft, filmRequestSchema.parse(motionProject));
+
+    reviewFilm = {
+      ...exportedDraft,
+      id: filmId,
+      state: 'ready',
+      duration: 2,
+      createdAt: new Date().toISOString(),
+      sourceVolume: 0,
+      normalizeAudio: true,
+    };
+    const review = async (embedded: unknown) => {
+      await writeFile(reviewResultFile, JSON.stringify({ manifest: embedded, frames: [] }));
+      return client.callTool({ name: 'aftertake_review_film', arguments: { filmId } });
+    };
+    const matched = await review(reviewFilm);
+    assert.ok(!matched.isError);
+    assert.equal((matched.structuredContent as any).embeddedProjectMatches, true);
+    const missingGraphics = structuredClone(reviewFilm);
+    delete missingGraphics.graphics;
+    const lostGraphics = await review(missingGraphics);
+    assert.equal(lostGraphics.isError, true);
+    assert.match((lostGraphics.content as any)[0].text, /differs.*graphics/);
+    const alteredGraphic = structuredClone(reviewFilm);
+    alteredGraphic.graphics[0].motion.keys[0].scaleX = 0.2;
+    const changedGraphic = await review(alteredGraphic);
+    assert.equal(changedGraphic.isError, true);
+    assert.match((changedGraphic.content as any)[0].text, /differs.*graphics/);
+    const wrongResolution = { ...reviewFilm, resolution: '720p' };
+    const lostResolution = await review(wrongResolution);
+    assert.equal(lostResolution.isError, true);
+    assert.match((lostResolution.content as any)[0].text, /differs.*resolution/);
+    delete reviewFilm.graphics;
+    delete reviewFilm.resolution;
+    const legacyMatch = await review(reviewFilm);
+    assert.ok(!legacyMatch.isError, 'Absent optional fields must not crash legacy review.');
+    assert.equal((legacyMatch.structuredContent as any).embeddedProjectMatches, true);
     const script = await client.callTool({
       name: 'aftertake_draft_script',
       arguments: {

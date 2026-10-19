@@ -6,7 +6,9 @@ import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import {
-  filmGeometry,
+  filmDimensions,
+  hasMotionFeatures,
+  filmFormat,
   filmTimeline,
   filmRequestSchema,
   filmManifestSchema,
@@ -418,6 +420,20 @@ export async function filmRouter(
       });
     }
     const checkedAudio = [];
+    const graphics: NonNullable<Film['graphics']> = [];
+    for (const graphic of manifest.graphics || []) {
+      if (graphic.kind !== 'image') {
+        graphics.push(graphic);
+        continue;
+      }
+      const asset = [...assets.values()].find(
+        (asset) => asset.kind === 'image' && asset.sha256 === graphic.sha256,
+      );
+      if (!asset)
+        throw new RequestError('Import the original graphic image before restoring this film.');
+      await checkedAsset(asset.id, 'image');
+      graphics.push({ ...graphic, assetId: asset.id });
+    }
     for (const track of manifest.audio || []) {
       const asset = [...assets.values()].find(
         (asset) => asset.sha256 === track.sha256 && asset.kind === 'audio',
@@ -446,8 +462,10 @@ export async function filmRouter(
     res.json({
       name: manifest.name,
       aspect: manifest.aspect,
+      ...(manifest.resolution ? { resolution: manifest.resolution } : {}),
       shots,
       ...(manifest.titles ? { titles: manifest.titles } : {}),
+      ...(manifest.graphics ? { graphics } : {}),
       ...(manifest.audio ? { audio } : {}),
       ...(manifest.sourceVolume !== undefined ? { sourceVolume: manifest.sourceVolume } : {}),
       ...(manifest.normalizeAudio !== undefined ? { normalizeAudio: manifest.normalizeAudio } : {}),
@@ -461,11 +479,12 @@ export async function filmRouter(
   router.get('/:id/manifest', (req, res) => {
     const film = films.get(req.params.id);
     if (!film) return void res.sendStatus(404);
+    let format = 'aftertake-film/1';
+    if (hasMotionFeatures(film)) format = 'aftertake-film/3';
+    else if (film.titles?.length || film.audio?.length || film.shots.some((shot) => shot.assetId))
+      format = 'aftertake-film/2';
     res.attachment('aftertake-film.json').json({
-      format:
-        film.titles?.length || film.audio?.length || film.shots.some((shot) => shot.assetId)
-          ? 'aftertake-film/2'
-          : 'aftertake-film/1',
+      format,
       ...film,
     });
   });
@@ -545,6 +564,23 @@ export async function filmRouter(
       const duration = filmTimeline(shots).at(-1)!.end;
       if (draft.titles?.some((title) => title.end > duration + 0.001))
         throw new RequestError('A title ends after the film.');
+      const graphics: NonNullable<Film['graphics']> = [],
+        graphicInputs = [];
+      for (const graphic of draft.graphics || []) {
+        if (graphic.end > duration + 0.001)
+          throw new RequestError('A graphic ends after the film.');
+        if (graphic.kind !== 'image') {
+          graphics.push(graphic);
+          graphicInputs.push(graphic);
+          continue;
+        }
+        const asset = await checkedAsset(graphic.assetId!, 'image');
+        if (graphic.sha256 && graphic.sha256 !== asset.sha256)
+          throw new RequestError('A graphic image differs from its saved content hash.');
+        const bound = { ...graphic, sha256: asset.sha256 };
+        graphics.push(bound);
+        graphicInputs.push({ ...bound, source: assetPath(asset) });
+      }
       const audio: NonNullable<Film['audio']> = [],
         audioInputs = [];
       for (const track of draft.audio || []) {
@@ -561,9 +597,11 @@ export async function filmRouter(
         id: randomUUID(),
         name: draft.name,
         aspect: draft.aspect,
+        ...(draft.resolution ? { resolution: draft.resolution } : {}),
         shots,
         ...(requestKey ? { requestKey, requestDigest } : {}),
         titles: draft.titles || [],
+        ...(draft.graphics ? { graphics } : {}),
         audio,
         sourceVolume: draft.sourceVolume ?? 1,
         normalizeAudio: draft.normalizeAudio ?? false,
@@ -574,7 +612,7 @@ export async function filmRouter(
       films.set(film.id, film);
       await save(film);
       const workfile = path.join(folder, `${film.id}.work.json`);
-      const [width, height] = filmGeometry[film.aspect];
+      const [width, height] = filmDimensions(film);
       await writeFile(
         workfile,
         JSON.stringify({
@@ -583,16 +621,19 @@ export async function filmRouter(
           height,
           shots: inputs,
           titles: film.titles,
+          ...(film.graphics ? { graphics: graphicInputs } : {}),
           audio: audioInputs,
           sourceVolume: film.sourceVolume,
           normalizeAudio: film.normalizeAudio,
           fonts: path.join(root, 'public/fonts'),
           manifest: {
-            format: 'aftertake-film/2',
+            format: filmFormat(film),
             name: film.name,
             aspect: film.aspect,
+            ...(film.resolution ? { resolution: film.resolution } : {}),
             shots: film.shots,
             titles: film.titles,
+            ...(film.graphics ? { graphics: film.graphics } : {}),
             audio: film.audio,
             sourceVolume: film.sourceVolume,
             normalizeAudio: film.normalizeAudio,

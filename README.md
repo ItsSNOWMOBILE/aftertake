@@ -46,7 +46,7 @@ assemble it with narration and editable typography.
 | Create | Direct | Finish |
 | :--- | :--- | :--- |
 | **Images from words** with Z-Image Turbo | **Character replacement** with SAM3 tracking, multiple reference photos and native H3 | **Portrait, square and landscape edits** in Film |
-| **Video with sound** from native LTX-2.5 | **Painted, timed VFX** that composite onto the source | **Kinetic typography** with editable word timing |
+| **Video with sound** from native LTX-2.5 | **Painted, timed VFX** that composite onto the source | **Kinetic typography and motion graphics** with editable keyframes |
 | **Reference-frame edits** with Qwen-Image-Edit | **Camera guidance, first/last frames and motion transfer** | **Local narration**, measured cuts and frame-based dissolves |
 | **Depth-finished stills** with native DA3 Small | **Tracked subject copies** with position, scale, rotation and mask controls | **Color and texture finishing** with exact before/after frame previews |
 | **Layered still compositions** from imported transparent images | **Shape and image masks**, clipping and 27 blend modes | **Selective HSL, master/RGB curves and 3D LUTs** shared with adjustment layers |
@@ -62,6 +62,11 @@ local GPU. It has its own explicit paid queue and memory-only credential connect
 Native character swaps and painted edits retain their existing workflows. The hosted
 API is separate from the native competition snapshot; **Open Weights Only eligibility
 for this optional backend has not been established**.
+
+**Film motion graphics** adds timed shapes, image overlays and title transforms
+with editable easing, independent scale axes and 720p, 1080p or 4K export canvases.
+The native CPU renderer keeps these layers on the film's 24 fps clock.
+See [the motion graphics guide](docs/motion-graphics.md).
 
 ### One performance. Extra copies.
 
@@ -258,6 +263,7 @@ also includes measured engine times and decoded frame/audio checks.
 | [Studio guide](docs/studio-guide.md) | Detailed controls, setup profiles and troubleshooting |
 | [Text-to-video](docs/text-video.md) | Native video/audio sampling, formats and actual render evidence |
 | [Narrated cuts](docs/narrated-cut.md) | Scripts, measured voices, captions and pacing |
+| [Motion graphics](docs/motion-graphics.md) | Animated titles, shapes, image overlays and export sizes |
 | [MCP reference](docs/mcp.md) | Agent setup, tools and recovery behavior |
 | [Examples](examples/README.md) | Recorded projects, provenance and remixing |
 | [Media attribution](docs/media-attribution.md) | Footage, fonts and generated references |
