@@ -245,14 +245,69 @@ function responseRecord(body: any) {
   return body.image || body.video || body.edit || body.character || body;
 }
 
-async function waitForSavedState(folder: string, id: string, state: string) {
-  const deadline = Date.now() + 5000;
-  while (Date.now() < deadline) {
-    const saved = JSON.parse(await readFile(path.join(folder, id + '.json'), 'utf8'));
-    if (saved.state === state) return saved;
-    await new Promise((resolve) => setTimeout(resolve, 10));
+type MetadataObservation = {
+  saved: Map<string, any>;
+  changed: Set<() => void>;
+  renameErrors: { code?: string; message: string; state?: string }[];
+  observerErrors: string[];
+};
+
+async function waitForSavedState(
+  folder: string,
+  id: string,
+  state: string,
+  observation: MetadataObservation,
+  trace: () => unknown,
+) {
+  let saved: any;
+  try {
+    saved = await new Promise((resolve, reject) => {
+      const changed = () => {
+        const record = observation.saved.get(id);
+        if (record?.state !== state) return;
+        cleanup();
+        resolve(record);
+      };
+      const timer = setTimeout(() => {
+        cleanup();
+        reject(Error('The restarted native tracker did not persist its terminal observation'));
+      }, 5000);
+      function cleanup() {
+        clearTimeout(timer);
+        observation.changed.delete(changed);
+      }
+      observation.changed.add(changed);
+      changed();
+    });
+  } catch {
+    let disk: any;
+    let readError: { code?: string; message: string } | undefined;
+    try {
+      disk = JSON.parse(await readFile(path.join(folder, id + '.json'), 'utf8'));
+    } catch (error) {
+      readError = {
+        code: (error as NodeJS.ErrnoException).code,
+        message: error instanceof Error ? error.message : String(error),
+      };
+    }
+    assert.fail(
+      'The restarted native tracker did not persist its terminal observation: ' +
+        JSON.stringify({
+          expectedState: state,
+          lastObserved: observation.saved.get(id),
+          disk,
+          readError,
+          renameErrors: observation.renameErrors,
+          observerErrors: observation.observerErrors,
+          trace: trace(),
+        }),
+    );
   }
-  assert.fail('The restarted native tracker did not persist its terminal observation');
+  // Observe the successful real replacement first. Repeated destination reads
+  // can themselves prevent metadata replacement on Windows.
+  const actual = JSON.parse(await readFile(path.join(folder, id + '.json'), 'utf8'));
+  assert.deepEqual(actual, saved);
+  return actual;
 }
 
 for (const family of ['image', 'video', 'frame', 'selection', 'replacement'] as const) {
@@ -267,6 +322,13 @@ for (const family of ['image', 'video', 'frame', 'selection', 'replacement'] as 
         const submitKeys: string[] = [];
         const lookupIds: string[] = [];
         const submittedGraphs = new WeakMap<object, unknown>();
+        const writtenMetadata = new Map<string, any>();
+        const observation: MetadataObservation = {
+          saved: new Map(),
+          changed: new Set(),
+          renameErrors: [],
+          observerErrors: [],
+        };
         let original: any;
         let failuresRemaining = 0;
         let failures = 0;
@@ -334,7 +396,18 @@ for (const family of ['image', 'video', 'frame', 'selection', 'replacement'] as 
                 code: 'EIO',
               });
             }
-            return originalWrite(...args);
+            const result = await originalWrite(...args);
+            if (
+              path.dirname(String(args[0])) === data.folder &&
+              temporaryName.test(path.basename(String(args[0])))
+            ) {
+              try {
+                writtenMetadata.set(String(args[0]), JSON.parse(String(args[1])));
+              } catch {
+                observation.observerErrors.push('Could not parse a successfully written payload');
+              }
+            }
+            return result;
           },
         );
         const renameMock = t.mock.method(
@@ -353,7 +426,35 @@ for (const family of ['image', 'video', 'frame', 'selection', 'replacement'] as 
                 code: 'EACCES',
               });
             }
-            return originalRename(...args);
+            const temporary = String(args[0]);
+            const destination = String(args[1]);
+            const ownMetadata =
+              path.dirname(destination) === data.folder &&
+              metadataName.test(path.basename(destination));
+            let result;
+            try {
+              result = await originalRename(...args);
+            } catch (error) {
+              if (ownMetadata)
+                observation.renameErrors.push({
+                  code: (error as NodeJS.ErrnoException).code,
+                  message: error instanceof Error ? error.message : String(error),
+                  state: writtenMetadata.get(temporary)?.state,
+                });
+              throw error;
+            }
+            if (ownMetadata) {
+              const record = writtenMetadata.get(temporary);
+              if (record && path.basename(destination) === record.id + '.json') {
+                writtenMetadata.delete(temporary);
+                observation.saved.set(record.id, record);
+                for (const changed of observation.changed) changed();
+              } else
+                observation.observerErrors.push(
+                  'Successful replacement lacked its matching payload',
+                );
+            }
+            return result;
           },
         );
         syncBuiltinESMExports();
@@ -385,7 +486,13 @@ for (const family of ['image', 'video', 'frame', 'selection', 'replacement'] as 
 
           await service.close();
           service = await siblingService(family, data, client);
-          const recovered = await waitForSavedState(data.folder, record.id, 'failed');
+          const recovered = await waitForSavedState(
+            data.folder,
+            record.id,
+            'failed',
+            observation,
+            () => ({ lookupIds, submitKeys, failures, failuresRemaining }),
+          );
           assert.equal(recovered.jobId, nativeId);
           assert.equal(recovered.requestKey, original.requestKey);
           assert.equal(recovered.requestDigest, original.requestDigest);
