@@ -4,7 +4,7 @@ Aftertake exposes its real local film workflow through a stdio MCP server.
 An MCP client chooses the edit using the user's brief and selected assets.
 The server supplies media inspection, measured local narration, a persistent
 beat plan, native export and decoded review frames. It contains no LLM and
-requires no hosted inference service. Thirty-six typed tools cover native image
+requires no hosted inference service. Forty typed tools cover native image
 creation, reference editing, video generation, tracked-person effects, color
 finishing, still-image depth effects and narration-first Film editing.
 New generation requires the configured local Comfy engine and its model profile.
@@ -77,6 +77,7 @@ root, including resolved symbolic links; remote media URLs are not accepted.
 | `aftertake_inspect_picture` | Returns decoded source or take frames at requested times before choosing trims. |
 | `aftertake_voice` | Generates local Kokoro narration or rejoins an exact cached script, voice and speed. |
 | `aftertake_save_plan` | Checks source hashes, measured speech and picture coverage; saves a portable editable project and timing ledger. |
+| `aftertake_save_film_edit` | Saves a complete native Film project with authored camera keyframes, independently timed typography and music; verifies sources and timing without rendering. |
 | `aftertake_export_plan` | Exports through the native Film renderer using a persistent idempotency key. |
 | `aftertake_plan_status` | Rejoins the recorded plan and reads actual native export states after client reconnection. |
 | `aftertake_review_film` | Returns decoded export frames, timestamps, sample audio diagnostics and embedded-project verification. |

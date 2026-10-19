@@ -4,6 +4,7 @@
 const idempotentWrites = new Set([
   'aftertake_voice',
   'aftertake_save_plan',
+  'aftertake_save_film_edit',
   'aftertake_export_plan',
   'aftertake_generate_image',
   'aftertake_generate_video',

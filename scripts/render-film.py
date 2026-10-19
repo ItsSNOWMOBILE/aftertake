@@ -240,9 +240,73 @@ def framing_canvas(width, height, zoom):
     return unit_width * units, unit_height * units
 
 
+def camera_keyframes(framing):
+    """Validate JSON camera data before constructing any FFmpeg expression."""
+    if framing is None:
+        return None
+    if not isinstance(framing, dict):
+        raise ValueError('Camera framing must be an object.')
+    if 'keyframes' not in framing:
+        return None
+
+    def number(value, low, high, name):
+        if type(value) not in (int, float) or not low <= value <= high or not math.isfinite(value):
+            raise ValueError(f'Camera {name} must be a finite number between {low} and {high}.')
+        return float(value)
+
+    # Retain the existing framing fields in portable projects, even though the
+    # keyed camera supplies the effective position and scale for this shot.
+    for name, low, high in [('zoom', 1, 3), ('endZoom', 1, 3), ('x', 0, 1), ('y', 0, 1)]:
+        number(framing.get(name), low, high, name)
+    values = framing['keyframes']
+    if not isinstance(values, list) or not 2 <= len(values) <= 8:
+        raise ValueError('Camera keyframes need between two and eight points.')
+    keys = []
+    for value in values:
+        if not isinstance(value, dict):
+            raise ValueError('Each camera keyframe must be an object.')
+        key = {name: number(value.get(name), low, high, name) for name, low, high in
+               [('at', 0, 1), ('zoom', 1, 3), ('x', 0, 1), ('y', 0, 1)]}
+        key['easing'] = value.get('easing', 'ease-in-out')
+        if key['easing'] not in ('linear', 'ease-in-out', 'ease-out', 'hold'):
+            raise ValueError('Choose a supported camera easing.')
+        if keys and key['at'] <= keys[-1]['at']:
+            raise ValueError('Camera keyframe times must increase strictly.')
+        keys.append(key)
+    if keys[0]['at'] != 0 or keys[-1]['at'] != 1:
+        raise ValueError('Camera keyframes must start at zero and end at one.')
+    return keys
+
+
+def camera_expressions(keys, count):
+    """Piecewise source-camera curves on the exact first-to-last frame clock."""
+    progress = f'((on-1)/{max(1, count-1)})'
+
+    def coordinate(name):
+        expression = repr(keys[-1][name])
+        for first, last in reversed(list(zip(keys, keys[1:]))):
+            value = repr(first[name])
+            if last['easing'] != 'hold':
+                part = f'(({progress}-{first["at"]!r})/{(last["at"]-first["at"])!r})'
+                if last['easing'] == 'ease-in-out':
+                    eased = f'({part}*{part}*(3-2*{part}))'
+                elif last['easing'] == 'ease-out':
+                    eased = f'(1-pow(1-{part},3))'
+                else:
+                    eased = part
+                value = f'({first[name]!r}+{(last[name]-first[name])!r}*{eased})'
+            # The arriving key controls easing. A hold changes to its exact
+            # destination at that key's time, including the shot's last frame.
+            expression = f'if(lt({progress},{last["at"]!r}),{value},{expression})'
+        return expression
+
+    return tuple(coordinate(name) for name in ('zoom', 'x', 'y'))
+
+
 def assemble(settings):
     output = Path(settings['output'])
     width, height = settings['width'], settings['height']
+    keyed_cameras = [camera_keyframes(shot.get('framing')) for shot in settings['shots']]
     binary = imageio_ffmpeg.get_ffmpeg_exe()
     def run(arguments):
         try:
@@ -299,14 +363,20 @@ def assemble(settings):
                 zoom, end_zoom, x, y = (framing[key] for key in ['zoom', 'endZoom', 'x', 'y'])
                 if not (1 <= zoom <= 3 and 1 <= end_zoom <= 3 and 0 <= x <= 1 and 0 <= y <= 1):
                     raise ValueError('A shot needs bounded framing settings.')
-                work_width, work_height = framing_canvas(width, height, max(zoom, end_zoom))
+                keys = keyed_cameras[index]
+                maximum_zoom = max(key['zoom'] for key in keys) if keys is not None else max(zoom, end_zoom)
+                work_width, work_height = framing_canvas(width, height, maximum_zoom)
                 # zoompan rounds its crop rectangle to whole input pixels,
                 # making slow moves jump. Perspective maps a fractional crop
                 # to the output corners, keeping both scale and anchor smooth.
                 # Work in 4:4:4 so chroma does not snap to two-pixel boundaries.
                 # perspective's output counter starts at one.
-                z = f'({zoom}+({end_zoom}-{zoom})*(on-1)/{max(1,count-1)})'
-                left, top = f'(W-W/{z})*{x}', f'(H-H/{z})*{y}'
+                if keys is None:
+                    z = f'({zoom}+({end_zoom}-{zoom})*(on-1)/{max(1,count-1)})'
+                    left, top = f'(W-W/{z})*{x}', f'(H-H/{z})*{y}'
+                else:
+                    z, anchor_x, anchor_y = camera_expressions(keys, count)
+                    left, top = f'(W-W/({z}))*({anchor_x})', f'(H-H/({z}))*({anchor_y})'
                 right, bottom = f'{left}+W/{z}', f'{top}+H/{z}'
                 zoom_filter = f",format=yuv444p,perspective=x0='{left}':y0='{top}':x1='{right}':y1='{top}':x2='{left}':y2='{bottom}':x3='{right}':y3='{bottom}':sense=source:eval=frame:interpolation=cubic"
                 if (work_width, work_height) != (width, height):
@@ -347,7 +417,14 @@ def assemble(settings):
             # narration when loudnorm buffers its opening analysis window. PCM
             # keeps each cut sample-exact; encode AAC only in the final movie.
             segment = folder / f'shot-{index:03d}.mov'
-            run([*args, '-filter_complex_threads', '2', '-filter_complex', ';'.join(filters), '-map', '[v]', '-map', '[a]',
+            graph_arguments = ['-filter_complex', ';'.join(filters)]
+            if keyed_cameras[index] is not None:
+                # Eight independently eased points can exceed Windows' command
+                # length after perspective expands all four corner expressions.
+                graph_file = folder / f'camera-filters-{index:03d}.txt'
+                graph_file.write_text(';'.join(filters), encoding='utf-8')
+                graph_arguments = ['-filter_complex_script', str(graph_file)]
+            run([*args, '-filter_complex_threads', '2', *graph_arguments, '-map', '[v]', '-map', '[a]',
                 '-c:v', 'libx264', '-threads', '2', '-crf', '18', '-preset', 'fast', '-pix_fmt', 'yuv420p', '-r', '24',
                 '-fps_mode', 'cfr', '-c:a', 'pcm_s16le', '-t', str(duration), str(segment)])
             segments.append((segment, duration, overlap, cut_start))

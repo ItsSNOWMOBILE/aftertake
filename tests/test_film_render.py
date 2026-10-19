@@ -1,10 +1,12 @@
 """Decode an actual export to verify title timing, cuts, sound and provenance."""
 import importlib.util
+from copy import deepcopy
 import json
 from pathlib import Path
 import tempfile
 import unittest
 import wave
+from unittest.mock import patch
 import av
 import numpy as np
 from PIL import Image
@@ -218,6 +220,86 @@ class FilmRenderTest(unittest.TestCase):
             self.assertGreater(areas[-1],areas[0]*3.8)
             self.assertLess(areas[-1],areas[0]*4.2)
             self.assertTrue(all(b >= a-100 for a,b in zip(areas,areas[1:])))
+
+    def test_camera_keyframes_render_pan_endpoints_easing_and_exact_hold_arrival(self):
+        with tempfile.TemporaryDirectory(prefix='aftertake-film-camera-') as temporary:
+            folder = Path(temporary)
+            picture = np.full((180, 320, 3), 24, dtype=np.uint8)
+            picture[86:94, 156:164] = [240, 24, 24]
+            Image.fromarray(picture).save(folder / 'marker.png')
+            shots = []
+            for easing in ['linear', 'ease-in-out', 'ease-out']:
+                shots.append({'source': str(folder / 'marker.png'), 'kind': 'image', 'start': 0, 'end': 25/24,
+                    'framing': {'zoom': 1, 'endZoom': 1, 'x': .5, 'y': .5, 'keyframes': [
+                        {'at': 0, 'zoom': 2, 'x': .2, 'y': .2},
+                        {'at': 1, 'zoom': 2, 'x': .8, 'y': .8, 'easing': easing}]}})
+            shots.append({'source': str(folder / 'marker.png'), 'kind': 'image', 'start': 0, 'end': 49/24,
+                'framing': {'zoom': 1, 'endZoom': 1, 'x': .5, 'y': .5, 'keyframes': [
+                    {'at': 0, 'zoom': 2, 'x': .2, 'y': .2},
+                    {'at': .5, 'zoom': 2, 'x': .5, 'y': .5, 'easing': 'hold'},
+                    {'at': 1, 'zoom': 2, 'x': .8, 'y': .8, 'easing': 'linear'}]}})
+            # Exercise the maximum curve count and an interior zoom exceeding
+            # both legacy zoom fields. The work canvas must retain that detail.
+            shots.append({'source': str(folder / 'marker.png'), 'kind': 'image', 'start': 0, 'end': .25,
+                'framing': {'zoom': 1, 'endZoom': 1, 'x': .5, 'y': .5, 'keyframes': [
+                    {'at': index / 7, 'zoom': 3 if index in (3, 4) else 2, 'x': .5, 'y': .5}
+                    for index in range(8)]}})
+            target = folder / 'camera.mp4'
+            with patch.object(renderer, 'framing_canvas', wraps=renderer.framing_canvas) as geometry:
+                renderer.assemble({'output': str(target), 'width': 320, 'height': 180, 'shots': shots,
+                    'titles': [], 'audio': [], 'sourceVolume': 0, 'fonts': str(ROOT / 'public/fonts'),
+                    'manifest': {'shots': shots}})
+            self.assertEqual([call.args[2] for call in geometry.call_args_list], [2, 2, 2, 2, 3])
+            with av.open(str(target)) as movie:
+                self.assertEqual(json.loads(movie.metadata['comment'])['shots'], shots)
+                decoded = list(movie.decode(video=0))
+            self.assertEqual(len(decoded), 130)
+            centers, areas = [], []
+            for index, frame in enumerate(decoded):
+                self.assertAlmostEqual(frame.time, index / 24, places=6)
+                pixels = frame.to_ndarray(format='rgb24')
+                y, x = np.where((pixels[:, :, 0] > 150) & (pixels[:, :, 1] < 90) & (pixels[:, :, 2] < 90))
+                self.assertGreater(len(x), 100)
+                areas.append(len(x))
+                centers.append([float(x.mean()), float(y.mean())])
+            centers = np.asarray(centers)
+            for start in [0, 25, 50]:
+                np.testing.assert_allclose(centers[start], [255, 143], atol=2)
+                np.testing.assert_allclose(centers[start + 24], [63, 35], atol=2)
+                self.assertTrue((np.diff(centers[start:start + 25, 0]) < .5).all())
+            # The quarter-frame positions distinguish the actual eased render
+            # from linear movement, independently of the curve helper's maths.
+            self.assertGreater(centers[31, 0], centers[6, 0] + 12)
+            self.assertLess(centers[56, 0], centers[6, 0] - 40)
+            np.testing.assert_allclose(centers[75:99], np.repeat(centers[75:76], 24, axis=0), atol=.15)
+            np.testing.assert_allclose(centers[99], [159, 89], atol=2)
+            np.testing.assert_allclose(centers[123], [63, 35], atol=2)
+            self.assertGreater(areas[127], areas[124] * 1.8, 'The interior keyed zoom must enlarge the marker.')
+            self.assertAlmostEqual(areas[129] / areas[124], 1, delta=.1)
+
+    def test_camera_keyframes_reject_unsafe_or_unordered_standalone_inputs_before_rendering(self):
+        base = {'zoom': 1, 'endZoom': 1, 'x': .5, 'y': .5, 'keyframes': [
+            {'at': 0, 'zoom': 1, 'x': .5, 'y': .5}, {'at': 1, 'zoom': 2, 'x': .6, 'y': .4}]}
+        invalid = []
+        for value in [None, [], base['keyframes'][:1], base['keyframes'] * 5]:
+            invalid.append({**base, 'keyframes': value})
+        for index, field, value in [(0, 'at', .1), (1, 'at', .9), (1, 'at', 0),
+                (1, 'zoom', float('nan')), (1, 'zoom', float('inf')), (1, 'zoom', 3.01),
+                (1, 'x', -.01), (1, 'y', True), (1, 'at', '1);movie=anything'),
+                (1, 'at', 10 ** 1000),
+                (1, 'easing', 'custom-expression')]:
+            framing = deepcopy(base)
+            framing['keyframes'][index][field] = value
+            invalid.append(framing)
+        invalid.append({**base, 'zoom': float('nan')})
+        self.assertEqual(renderer.camera_keyframes(base)[-1]['easing'], 'ease-in-out')
+        with tempfile.TemporaryDirectory(prefix='aftertake-camera-invalid-') as temporary:
+            for framing in invalid:
+                with self.subTest(framing=framing), patch.object(renderer.subprocess, 'run') as process:
+                    with self.assertRaisesRegex(ValueError, '[Cc]amera|[Ee]asing'):
+                        renderer.assemble({'output': str(Path(temporary) / 'invalid.mp4'), 'width': 160, 'height': 90,
+                            'shots': [{'source': 'unused.png', 'kind': 'image', 'start': 0, 'end': 1, 'framing': framing}]})
+                    process.assert_not_called()
 
     def test_zoom_preserves_source_detail_before_reducing_to_the_final_canvas(self):
         self.assertEqual(renderer.framing_canvas(1280,720,3),(3840,2160))

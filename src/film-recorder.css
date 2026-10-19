@@ -1,0 +1,122 @@
+.film-recorder {
+  width: 100%;
+  min-width: 0;
+  margin: 12px 0;
+  border: 1px solid var(--line, #3d4740);
+  border-radius: 8px;
+  background: var(--panel, #1b211d);
+  color: var(--text-primary, #eef1eb);
+}
+.film-recorder > summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.film-recorder > summary::before {
+  content: '+';
+  width: 12px;
+  color: var(--text-secondary, #b7c1b9);
+}
+.film-recorder[open] > summary::before {
+  content: '−';
+}
+.film-recorder-body {
+  padding: 0 14px 14px;
+}
+.film-recorder-body > p {
+  margin: 0 0 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-secondary, #b7c1b9);
+}
+.film-recorder-audio {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.film-recorder-audio input {
+  flex: 0 0 auto;
+  width: 17px;
+  height: 17px;
+  margin: 0;
+}
+.film-recorder-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.film-recorder-actions .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  white-space: normal;
+}
+.film-recorder-hint,
+.film-recorder-stats,
+.film-recorder-state {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-secondary, #b7c1b9);
+}
+.film-recorder-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.film-recorder-stats {
+  font-variant-numeric: tabular-nums;
+}
+.film-recorder-result {
+  min-width: 0;
+  margin-top: 12px;
+}
+.film-recorder-result video {
+  display: block;
+  width: 100%;
+  max-height: 420px;
+  background: #080b09;
+  border-radius: 5px;
+}
+.film-recorder-body > .film-recorder-notice,
+.film-recorder-body > .film-recorder-error {
+  margin-top: 12px;
+  padding: 9px 11px;
+  border: 1px solid var(--line, #3d4740);
+  border-radius: 5px;
+  background: var(--control-bg, #101612);
+  color: var(--text-primary, #eef1eb);
+  overflow-wrap: anywhere;
+}
+.film-recorder-body > .film-recorder-error {
+  border-color: #9d6262;
+  color: #ffd1cf;
+}
+.film-recorder summary:focus-visible {
+  outline: 2px solid #c1f36b;
+  outline-offset: 2px;
+}
+@media (max-width: 540px) {
+  .film-recorder-body,
+  .film-recorder > summary {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+  .film-recorder-actions > .button {
+    flex: 1 1 auto;
+  }
+  .film-recorder-stats {
+    flex-basis: 100%;
+  }
+}

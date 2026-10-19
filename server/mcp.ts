@@ -8,7 +8,16 @@ import { promisify } from 'node:util';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { compileEditPlan, contentDigest, editPlanSchema, type PlanPicture } from './edit-plan.js';
-import { narrationSchema, portableVoiceSource, type Film, type FilmAsset } from '../src/film.js';
+import {
+  narrationSchema,
+  portableVoiceSource,
+  filmManifestSchema,
+  filmRequestSchema,
+  filmTimeline,
+  filmRenderRevision,
+  type Film,
+  type FilmAsset,
+} from '../src/film.js';
 import { displayDimensions, renderDimensions, type Render, type Clip } from '../src/domain.js';
 import { clipMediaRoute, registerGenerationTools } from './generation-tools.js';
 import { registerCharacterTools } from './character-tools.js';
@@ -188,6 +197,7 @@ const guide = {
     'Voice each short beat first; use the returned measured duration and hash.',
     'Choose source trims covering the full voice, lead and tail. Preserve source clocks across before/after cuts; do not add accidental zooms.',
     'Save a beat plan. Caption defaults to the actual narration text. Inspect its timing ledger and editable project before exporting.',
+    'For authored camera moves, independent typography and music, save a complete native project with aftertake_save_film_edit. This checks the imported media without exporting.',
     'Export that plan once, retain its plan/job IDs and poll status. Repeating an export key rejoins the same native job.',
     'Review decoded frames and audio diagnostics, listen to the film, then revise only the affected beat. Technical checks do not establish visual or editorial quality.',
   ],
@@ -511,6 +521,72 @@ tool(
   false,
 );
 type EditPlanBeat = { visuals: { assetId?: string; renderId?: string }[] };
+tool(
+  'aftertake_save_film_edit',
+  'Save a complete editable native Film project with cuts, camera keyframes, independent titles and audio. Verifies source hashes and timing without rendering. Revise the project to create a new plan ID; export and review through the same plan tools.',
+  z.object({ project: filmManifestSchema }),
+  async ({ project }) => {
+    const draft = filmRequestSchema.parse(await api('/api/films/resolve', project));
+    const editContent = (value: z.infer<typeof filmRequestSchema>) => ({
+      ...value,
+      shots: value.shots.map(({ assetId: _asset, renderId: _render, ...edit }) => edit),
+      audio: value.audio?.map(({ assetId: _asset, ...edit }) => edit),
+    });
+    if (
+      contentDigest(editContent(draft)) !==
+      contentDigest(editContent(filmRequestSchema.parse(project)))
+    )
+      throw Error(
+        'The studio did not retain every edit setting. Restart it with the matching app version before saving this project.',
+      );
+    const timeline = filmTimeline(draft.shots);
+    const duration = timeline.at(-1)!.end;
+    if (draft.titles?.some((title) => title.end > duration + 0.001))
+      throw Error('A title ends after the film.');
+    if (
+      draft.audio?.some(
+        (track) => track.start + track.sourceEnd - track.sourceStart > duration + 1 / 24,
+      )
+    )
+      throw Error('An audio track ends after the film.');
+    const id = contentDigest({
+      format: 'aftertake-agent-film-edit/1',
+      rendererRevision: filmRenderRevision,
+      project,
+    });
+    let record;
+    try {
+      record = await planFile(id);
+      if (contentDigest(record.manifest) !== contentDigest(project))
+        throw Error('The saved edit differs from its project.');
+    } catch (error: any) {
+      if (error.code !== 'ENOENT') throw error;
+    }
+    if (!record) {
+      record = {
+        id,
+        base,
+        createdAt: new Date().toISOString(),
+        manifest: project,
+        duration,
+        ledger: timeline.map((cut, index) => ({ shot: index + 1, ...cut })),
+      };
+      await persist(id, record);
+      await writeFile(path.join(state, id + '.project.json'), JSON.stringify(project, null, 2));
+    }
+    return {
+      data: {
+        planId: id,
+        duration,
+        ledger: record.ledger,
+        projectPath: path.join(state, id + '.project.json'),
+        state: 'planned',
+        note: 'This saved edit has not been rendered. Review it in Film assembly before exporting.',
+      },
+    };
+  },
+  false,
+);
 tool(
   'aftertake_export_plan',
   'Export a saved plan through the real native Film renderer. Repeating planId/attempt returns the same job. Increment attempt only after an observed failed export; a timeout is not failure.',

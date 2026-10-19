@@ -1,7 +1,8 @@
 import { z } from 'zod';
+import { filmFramingSchema } from './film-camera';
 
 // Include this revision in new export identities when renderer behavior changes.
-export const filmRenderRevision = 6;
+export const filmRenderRevision = 7;
 import type { Recipe } from './domain';
 
 export const spokenWordSchema = z
@@ -32,14 +33,7 @@ export const filmShotSchema = z
     renderId: z.string().uuid().optional(),
     assetId: z.string().uuid().optional(),
     dissolve: z.number().min(0).max(1).optional(),
-    framing: z
-      .object({
-        zoom: z.number().min(1).max(3),
-        endZoom: z.number().min(1).max(3),
-        x: z.number().min(0).max(1),
-        y: z.number().min(0).max(1),
-      })
-      .optional(),
+    framing: filmFramingSchema.optional(),
     start: z.number().min(0).max(600),
     end: z.number().positive().max(600),
   })

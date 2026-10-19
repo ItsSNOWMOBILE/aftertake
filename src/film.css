@@ -396,9 +396,102 @@
 }
 .film-framing summary {
   cursor: pointer;
+  color: #e6e8eb;
+  min-height: 40px;
+  align-content: center;
 }
 .film-framing .film-layer-settings {
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+.film-camera-mode {
+  display: grid;
+  gap: 6px;
+  max-width: 320px;
+  margin: 10px 0;
+  font-size: 13px;
+  color: #c7ccd2;
+}
+.film-framing p,
+.film-camera-path > small {
+  display: block;
+  margin: 10px 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #b8bec5;
+}
+.film-camera-keys {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  padding: 0;
+  margin: 14px 0;
+}
+.film-shots .film-camera-keys > li {
+  display: block;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #4a5056;
+  border-radius: 6px;
+  background: #1b1e21;
+}
+.film-camera-key-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.film-camera-key-heading button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 6px 9px;
+  border: 1px solid #4a5056;
+  border-radius: 4px;
+  background: #202326;
+  color: #e6e8eb;
+  font-size: 13px;
+}
+.film-camera-key-heading .film-camera-remove {
+  color: #b8bec5;
+}
+.film-camera-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 12px;
+}
+.film-camera-fields label {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  font-size: 13px;
+  color: #c7ccd2;
+}
+.film-camera-fields input,
+.film-camera-fields select,
+.film-camera-mode select {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  padding: 8px;
+  border: 1px solid #657168;
+  border-radius: 4px;
+  background: #101612;
+  color: #e6e8eb;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.film-camera-fields input[readonly] {
+  color: #b8bec5;
+  border-color: #4a5056;
+}
+.film-camera-easing {
+  grid-column: 1 / -1;
+}
+.film-camera-path > .button {
+  min-height: 42px;
 }
 .film-desk.film-focused {
   position: fixed;
@@ -887,5 +980,13 @@
   }
   .film-layer-heading .replay-title {
     margin-left: 0;
+  }
+  .film-camera-fields {
+    grid-template-columns: 1fr;
+  }
+  .film-camera-fields input,
+  .film-camera-fields select,
+  .film-camera-mode select {
+    font-size: 16px;
   }
 }

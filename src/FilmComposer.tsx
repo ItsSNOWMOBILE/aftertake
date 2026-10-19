@@ -29,6 +29,8 @@ import PreviewVideo from './PreviewVideo';
 import './film.css';
 import NarratedCut from './NarratedCut';
 import { filmExportKey, exportAttemptKey } from './narrated-cut';
+import { cameraAt, type CameraKeyframe, type FilmFraming } from './film-camera';
+import { FilmRecorder } from './FilmRecorder';
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await apiFetch(url, init),
@@ -44,6 +46,267 @@ const json = (body: unknown): RequestInit => ({
 const rounded = (number: number) => Math.round(number * 24) / 24;
 const display = (number: number) => Number(number.toFixed(3));
 type Title = NonNullable<FilmDraft['titles']>[number];
+
+const defaultFraming: FilmFraming = { zoom: 1, endZoom: 1, x: 0.5, y: 0.5 };
+
+function ShotCameraEditor({
+  framing,
+  duration,
+  shotNumber,
+  onChange,
+  onSeek,
+}: {
+  framing?: FilmFraming;
+  duration: number;
+  shotNumber: number;
+  onChange: (framing: FilmFraming) => void;
+  onSeek: (seconds: number) => void;
+}) {
+  const current = framing || defaultFraming;
+  const keys = current.keyframes;
+  // Export samples first through last displayed frame, rather than the following cut boundary.
+  const cameraDuration = Math.max(1 / 24, rounded(duration) - 1 / 24);
+  function simpleChange(key: 'zoom' | 'endZoom' | 'x' | 'y', value: number) {
+    if (!Number.isFinite(value)) return;
+    const { keyframes: _keys, ...simple } = current;
+    onChange({
+      ...simple,
+      [key]: Math.max(
+        key === 'zoom' || key === 'endZoom' ? 1 : 0,
+        Math.min(key === 'zoom' || key === 'endZoom' ? 3 : 1, value),
+      ),
+    });
+  }
+  function writeKeys(next: CameraKeyframe[]) {
+    const first = next[0],
+      last = next[next.length - 1];
+    onChange({
+      zoom: first.zoom,
+      endZoom: last.zoom,
+      x: first.x,
+      y: first.y,
+      keyframes: next,
+    });
+  }
+  function changeMode(mode: string) {
+    if (mode === 'keyframes') {
+      writeKeys([
+        { at: 0, ...cameraAt(current, 0) },
+        { at: 1, ...cameraAt(current, 1), easing: 'linear' },
+      ]);
+    } else if (keys) {
+      const first = keys[0],
+        last = keys[keys.length - 1];
+      onChange({ zoom: first.zoom, endZoom: last.zoom, x: first.x, y: first.y });
+    }
+  }
+  let widestGap = 0;
+  for (let index = 1; keys && index < keys.length; index++) {
+    if (keys[index].at - keys[index - 1].at > (keys[widestGap + 1]?.at ?? 0) - keys[widestGap].at)
+      widestGap = index - 1;
+  }
+  const canAdd =
+    !!keys &&
+    keys.length < 8 &&
+    (keys[widestGap + 1].at - keys[widestGap].at) * cameraDuration >= 2 / 24 - 1e-6;
+  function addKey() {
+    if (!keys || !canAdd) return;
+    const at = (keys[widestGap].at + keys[widestGap + 1].at) / 2;
+    writeKeys([
+      ...keys.slice(0, widestGap + 1),
+      { at, ...cameraAt(current, at), easing: 'ease-in-out' },
+      ...keys.slice(widestGap + 1),
+    ]);
+    onSeek(at * cameraDuration);
+  }
+  function updateKey(index: number, change: Partial<CameraKeyframe>) {
+    if (!keys) return;
+    writeKeys(keys.map((key, keyIndex) => (keyIndex === index ? { ...key, ...change } : key)));
+  }
+  function moveKey(index: number, seconds: number) {
+    if (!keys || !Number.isFinite(seconds) || index === 0 || index === keys.length - 1) return;
+    const gap = keys[index + 1].at - keys[index - 1].at;
+    const margin = Math.min(1 / 24 / cameraDuration, gap / 3);
+    const at = Math.max(
+      keys[index - 1].at + margin,
+      Math.min(keys[index + 1].at - margin, seconds / cameraDuration),
+    );
+    updateKey(index, { at });
+    onSeek(at * cameraDuration);
+  }
+  return (
+    <details className="film-framing">
+      <summary>Camera & framing{keys ? ` · ${keys.length} keyframes` : ''}</summary>
+      <label className="film-camera-mode">
+        Camera motion
+        <select
+          aria-label={`Shot ${shotNumber} camera mode`}
+          value={keys ? 'keyframes' : 'simple'}
+          onChange={(event) => changeMode(event.target.value)}
+        >
+          <option value="simple">Simple zoom</option>
+          <option value="keyframes">Keyframe path</option>
+        </select>
+      </label>
+      {keys ? (
+        <div className="film-camera-path">
+          <p>
+            Set the camera at each moment. Focus 0 is left/top; 1 is right/bottom. Easing controls
+            the move into that keyframe. At 1× zoom the full canvas stays visible.
+          </p>
+          <ol className="film-camera-keys">
+            {keys.map((key, index) => (
+              <li key={index}>
+                <div className="film-camera-key-heading">
+                  <button
+                    type="button"
+                    onClick={() => onSeek(key.at * cameraDuration)}
+                    aria-label={`Preview shot ${shotNumber} keyframe ${index + 1}`}
+                  >
+                    <Play size={13} />
+                    {index === 0
+                      ? 'Start'
+                      : index === keys.length - 1
+                        ? 'End'
+                        : `Keyframe ${index + 1}`}
+                  </button>
+                  {index > 0 && index < keys.length - 1 && (
+                    <button
+                      type="button"
+                      className="film-camera-remove"
+                      aria-label={`Remove shot ${shotNumber} keyframe ${index + 1}`}
+                      onClick={() => writeKeys(keys.filter((_, keyIndex) => keyIndex !== index))}
+                    >
+                      <X size={14} /> Remove
+                    </button>
+                  )}
+                </div>
+                <div className="film-camera-fields">
+                  <label>
+                    Time in cut (s)
+                    <input
+                      type="number"
+                      step={1 / 24}
+                      min={0}
+                      max={cameraDuration}
+                      aria-label={`Shot ${shotNumber} keyframe ${index + 1} time`}
+                      value={display(key.at * cameraDuration)}
+                      readOnly={index === 0 || index === keys.length - 1}
+                      onChange={(event) => moveKey(index, event.target.valueAsNumber)}
+                    />
+                  </label>
+                  <label>
+                    Zoom
+                    <input
+                      type="number"
+                      min={1}
+                      max={3}
+                      step={0.05}
+                      aria-label={`Shot ${shotNumber} keyframe ${index + 1} zoom`}
+                      value={key.zoom}
+                      onChange={(event) => {
+                        const value = event.target.valueAsNumber;
+                        if (Number.isFinite(value))
+                          updateKey(index, { zoom: Math.max(1, Math.min(3, value)) });
+                      }}
+                    />
+                  </label>
+                  <label>
+                    Horizontal focus
+                    <input
+                      type="number"
+                      min={0}
+                      max={1}
+                      step={0.05}
+                      aria-label={`Shot ${shotNumber} keyframe ${index + 1} horizontal focus`}
+                      value={key.x}
+                      onChange={(event) => {
+                        const value = event.target.valueAsNumber;
+                        if (Number.isFinite(value))
+                          updateKey(index, { x: Math.max(0, Math.min(1, value)) });
+                      }}
+                    />
+                  </label>
+                  <label>
+                    Vertical focus
+                    <input
+                      type="number"
+                      min={0}
+                      max={1}
+                      step={0.05}
+                      aria-label={`Shot ${shotNumber} keyframe ${index + 1} vertical focus`}
+                      value={key.y}
+                      onChange={(event) => {
+                        const value = event.target.valueAsNumber;
+                        if (Number.isFinite(value))
+                          updateKey(index, { y: Math.max(0, Math.min(1, value)) });
+                      }}
+                    />
+                  </label>
+                  {index > 0 && (
+                    <label className="film-camera-easing">
+                      Move into keyframe
+                      <select
+                        aria-label={`Shot ${shotNumber} keyframe ${index + 1} easing`}
+                        value={key.easing || 'ease-in-out'}
+                        onChange={(event) =>
+                          updateKey(index, {
+                            easing: event.target.value as CameraKeyframe['easing'],
+                          })
+                        }
+                      >
+                        <option value="ease-in-out">Smooth start & stop</option>
+                        <option value="ease-out">Fast start, soft stop</option>
+                        <option value="linear">Constant speed</option>
+                        <option value="hold">Hold, then jump</option>
+                      </select>
+                    </label>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ol>
+          <button type="button" className="button" disabled={!canAdd} onClick={addKey}>
+            <Plus size={14} /> Add keyframe
+          </button>
+          <small>
+            Up to 8 keyframes. Start and end stay fixed to the first and last displayed frames.
+            Switching to Simple zoom removes intermediate moves and keeps the starting focus.
+          </small>
+        </div>
+      ) : (
+        <>
+          <div className="film-layer-settings">
+            {(
+              [
+                ['zoom', 'Start zoom', 1, 3],
+                ['endZoom', 'End zoom', 1, 3],
+                ['x', 'Horizontal focus', 0, 1],
+                ['y', 'Vertical focus', 0, 1],
+              ] as const
+            ).map(([key, label, min, max]) => (
+              <label key={key}>
+                {label}
+                <input
+                  aria-label={`Shot ${shotNumber} ${label.toLowerCase()}`}
+                  type="number"
+                  min={min}
+                  max={max}
+                  step={0.05}
+                  value={current[key]}
+                  onChange={(event) => simpleChange(key, event.target.valueAsNumber)}
+                />
+              </label>
+            ))}
+          </div>
+          <p>
+            Focus 0 is left/top; 1 is right/bottom. Use keyframes to pan, pause or change direction.
+          </p>
+        </>
+      )}
+    </details>
+  );
+}
 
 function ShotPicture({
   shot,
@@ -72,12 +335,13 @@ function ShotPicture({
   const sourceTime = rounded(shot.start) + Math.max(0, Math.min(elapsed, duration - 1 / 24));
   const progress = Math.max(0, Math.min(1, elapsed / Math.max(1 / 24, duration - 1 / 24)));
   const framing = shot.framing;
+  const camera = framing ? cameraAt(framing, progress) : undefined;
   const style = {
     opacity,
-    ...(framing
+    ...(camera
       ? {
-          transform: `scale(${framing.zoom + (framing.endZoom - framing.zoom) * progress})`,
-          transformOrigin: `${framing.x * 100}% ${framing.y * 100}%`,
+          transform: `scale(${camera.zoom})`,
+          transformOrigin: `${camera.x * 100}% ${camera.y * 100}%`,
         }
       : {}),
   };
@@ -151,6 +415,7 @@ function DraftPlayer({
   time,
   setTime,
   playRequest,
+  pauseRequest,
 }: {
   draft: FilmDraft;
   assets: FilmAsset[];
@@ -158,6 +423,7 @@ function DraftPlayer({
   time: number;
   setTime: (time: number) => void;
   playRequest: number;
+  pauseRequest: number;
 }) {
   const [playing, setPlaying] = useState(false);
   const [pictures, setPictures] = useState<Record<string, { ready: boolean; failed: boolean }>>({});
@@ -182,6 +448,9 @@ function DraftPlayer({
   useEffect(() => {
     if (playRequest) setPlaying(true);
   }, [playRequest]);
+  useEffect(() => {
+    setPlaying(false);
+  }, [pauseRequest]);
   useEffect(() => {
     if (!playing || !ready) return;
     const start = performance.now(),
@@ -472,6 +741,8 @@ export default function FilmComposer({
   const [trimAudio, setTrimAudio] = useState(false);
   const [focused, setFocused] = useState(false);
   const [playRequest, setPlayRequest] = useState(0);
+  const [pauseRequest, setPauseRequest] = useState(0);
+  const pendingCameraSeek = useRef<number | null>(null);
   const [preparedPreview, setPreparedPreview] = useState<{
     draft: FilmDraft;
     identity: string;
@@ -481,7 +752,8 @@ export default function FilmComposer({
   const finished = renders.filter((take) => take.state === 'succeeded' && take.output);
   const visualAssets = assets.filter((asset) => asset.kind !== 'audio'),
     audioAssets = assets.filter((asset) => asset.kind === 'audio');
-  const duration = filmTimeline(draft.shots).at(-1)?.end || 0,
+  const cuts = filmTimeline(draft.shots);
+  const duration = cuts.at(-1)?.end || 0,
     pending = films.some((film) => film.state === 'assembling');
   const viewing = preparedPreview?.draft || draft,
     viewingDuration = filmTimeline(viewing.shots).at(-1)?.end || 0;
@@ -502,7 +774,8 @@ export default function FilmComposer({
     setPreparedPreview(null);
   }, [draft]);
   useEffect(() => {
-    setTime(0);
+    setTime(pendingCameraSeek.current ?? 0);
+    pendingCameraSeek.current = null;
   }, [preparedPreview?.identity]);
   useEffect(() => {
     let live = true;
@@ -568,8 +841,8 @@ export default function FilmComposer({
       ],
     }));
   }
-  async function importAsset(file?: File) {
-    if (!file) return;
+  async function importAsset(file?: File): Promise<boolean> {
+    if (!file) return false;
     setBusy('Importing media…');
     setError('');
     try {
@@ -581,8 +854,10 @@ export default function FilmComposer({
       setAssets((all) => [asset, ...all.filter((item) => item.id !== asset.id)]);
       if (asset.kind === 'audio') setAudioChoice(asset.id);
       else setChoice(`asset:${asset.id}`);
+      return true;
     } catch (error) {
       setError((error as Error).message);
+      return false;
     } finally {
       setBusy('');
     }
@@ -623,13 +898,28 @@ export default function FilmComposer({
     setError('');
     try {
       if (file.size > 2 * 1024 * 1024) throw Error('Use a film manifest under 2 MB.');
-      const resolved = await request<FilmDraft>('/api/films/resolve', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: await file.text(),
-      });
+      const project = await file.text();
+      const submitted = filmDraftSchema.parse(JSON.parse(project));
+      const resolved = filmDraftSchema.parse(
+        await request<FilmDraft>('/api/films/resolve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: project,
+        }),
+      );
+      // Resolution may rebind media IDs by hash, but must retain the complete edit.
+      const editingSettings = (value: FilmDraft) =>
+        JSON.stringify({
+          ...value,
+          shots: value.shots.map(({ assetId: _asset, renderId: _render, ...edit }) => edit),
+          audio: value.audio?.map(({ assetId: _asset, ...edit }) => edit),
+        });
+      if (editingSettings(submitted) !== editingSettings(resolved))
+        throw Error(
+          'The studio did not retain every edit setting. Restart it with the matching app version before importing this project. Your current film has been kept.',
+        );
       if (!browserDemo) setAssets(await request<FilmAsset[]>('/api/films/assets'));
-      setDraft(filmDraftSchema.parse(resolved));
+      setDraft(resolved);
       setTime(0);
     } catch (error) {
       setError((error as Error).message);
@@ -683,9 +973,18 @@ export default function FilmComposer({
           <Upload size={14} />
           Import media
         </button>
+        <FilmRecorder
+          disabled={browserDemo || !!busy || pending}
+          onRecorded={async (file) => {
+            if (!(await importAsset(file)))
+              throw Error(
+                'Film could not import this recording. The recording is still available to retry.',
+              );
+          }}
+        />
         <button
           className="film-import"
-          disabled={browserDemo}
+          disabled={browserDemo || !!busy}
           onClick={() => manifestInput.current?.click()}
         >
           Import film project ↗
@@ -788,6 +1087,7 @@ export default function FilmComposer({
         time={time}
         setTime={setTime}
         playRequest={playRequest}
+        pauseRequest={pauseRequest}
       />
       <details className="film-editor-section" open>
         <summary>
@@ -849,20 +1149,6 @@ export default function FilmComposer({
               const shots = [...draft.shots];
               [shots[index], shots[index + delta]] = [shots[index + delta], shots[index]];
               setDraft({ ...draft, shots });
-            }
-            function reframe(key: 'zoom' | 'endZoom' | 'x' | 'y', value: number) {
-              if (!Number.isFinite(value)) return;
-              const framing = {
-                ...(shot.framing || { zoom: 1, endZoom: 1, x: 0.5, y: 0.5 }),
-                [key]: Math.max(
-                  key === 'zoom' || key === 'endZoom' ? 1 : 0,
-                  Math.min(key === 'zoom' || key === 'endZoom' ? 3 : 1, value),
-                ),
-              };
-              setDraft({
-                ...draft,
-                shots: draft.shots.map((item, i) => (i === index ? { ...item, framing } : item)),
-              });
             }
             return (
               <li key={index}>
@@ -926,59 +1212,27 @@ export default function FilmComposer({
                       <span>seconds · overlaps trims; 0 = cut</span>
                     </label>
                   )}
-                  <details className="film-framing">
-                    <summary>Framing & zoom</summary>
-                    <div className="film-layer-settings">
-                      <label>
-                        Start zoom
-                        <input
-                          aria-label={`Shot ${index + 1} starting zoom`}
-                          type="number"
-                          min={1}
-                          max={3}
-                          step={0.05}
-                          value={shot.framing?.zoom ?? 1}
-                          onChange={(event) => reframe('zoom', Number(event.target.value))}
-                        />
-                      </label>
-                      <label>
-                        End zoom
-                        <input
-                          aria-label={`Shot ${index + 1} ending zoom`}
-                          type="number"
-                          min={1}
-                          max={3}
-                          step={0.05}
-                          value={shot.framing?.endZoom ?? 1}
-                          onChange={(event) => reframe('endZoom', Number(event.target.value))}
-                        />
-                      </label>
-                      <label>
-                        Focus X
-                        <input
-                          aria-label={`Shot ${index + 1} horizontal focus`}
-                          type="number"
-                          min={0}
-                          max={1}
-                          step={0.05}
-                          value={shot.framing?.x ?? 0.5}
-                          onChange={(event) => reframe('x', Number(event.target.value))}
-                        />
-                      </label>
-                      <label>
-                        Focus Y
-                        <input
-                          aria-label={`Shot ${index + 1} vertical focus`}
-                          type="number"
-                          min={0}
-                          max={1}
-                          step={0.05}
-                          value={shot.framing?.y ?? 0.5}
-                          onChange={(event) => reframe('y', Number(event.target.value))}
-                        />
-                      </label>
-                    </div>
-                  </details>
+                  <ShotCameraEditor
+                    framing={shot.framing}
+                    duration={cuts[index].duration}
+                    shotNumber={index + 1}
+                    onChange={(framing) =>
+                      setDraft({
+                        ...draft,
+                        shots: draft.shots.map((item, i) =>
+                          i === index ? { ...item, framing } : item,
+                        ),
+                      })
+                    }
+                    onSeek={(seconds) => {
+                      const target = cuts[index].start + seconds;
+                      setPauseRequest((request) => request + 1);
+                      if (preparedPreview) {
+                        pendingCameraSeek.current = target;
+                        setPreparedPreview(null);
+                      } else setTime(target);
+                    }}
+                  />
                 </div>
                 <div className="film-order">
                   <button

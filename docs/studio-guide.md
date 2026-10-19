@@ -504,6 +504,23 @@ actual workflows, title timing and narration receipts. Existing version-1 film
 manifests remain readable. Restore a project after importing its original media;
 identity follows content hashes, so local asset IDs can differ.
 
+Open a shot's **Camera & framing** to choose a simple zoom or a **Keyframe path**.
+Paths support two to eight camera positions with editable time, zoom and horizontal
+or vertical focus. Each arriving keyframe chooses constant speed, a smooth start
+and stop, a fast start with a soft stop, or a hold followed by a jump. Previewing
+a keyframe pauses at that moment. The endpoints stay on the first and last
+displayed frames; the same curves are used in the browser and CPU export.
+Switching to a simple zoom removes intermediate camera positions. Camera paths
+remain editable in the portable project and through `aftertake_save_film_edit`.
+
+**Record your screen** captures an actual tab, window or screen through the
+browser's normal sharing chooser. Audio is optional and never uses the microphone.
+Review the local WebM before choosing **Import into Film**; it is not uploaded
+automatically. Capture is limited to two minutes and 96 MB. The recorder requests
+30 fps and a visible cursor, while the browser and selected surface determine the
+actual result. It needs a supported desktop browser on HTTPS or localhost; the
+recorded public demo cannot start a capture.
+
 Choose a title's **Motion**, **Entrance seconds**, **Type size** and color, then
 click **Replay motion**. The expanded editor keeps its preview beside the title
 controls. Motion follows the film clock when playing or scrubbing and exports

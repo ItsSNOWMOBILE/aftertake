@@ -98,6 +98,18 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
   app.use(express.json());
   for (const route of ['/api/films/assets', '/api/renders', '/api/films'])
     app.get(route, (_req, res) => res.json([]));
+  let resolveCalls = 0;
+  let retainCamera = true;
+  app.post('/api/films/resolve', (req, res) => {
+    resolveCalls++;
+    const { format: _format, ...draft } = req.body;
+    if (!retainCamera)
+      draft.shots = draft.shots.map((shot: any) => {
+        const { keyframes: _keys, ...framing } = shot.framing;
+        return { ...shot, framing };
+      });
+    res.json(draft);
+  });
   const draftId = '00000000-0000-4000-8000-000000000099';
   let scriptCalls = 0,
     rejoinCalls = 0;
@@ -140,7 +152,7 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
   try {
     await client.connect(transport);
     const list = await client.listTools();
-    assert.equal(list.tools.length, 39);
+    assert.equal(list.tools.length, 40);
     for (const name of [
       'aftertake_character_workspace',
       'aftertake_track_character',
@@ -157,6 +169,7 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
       'aftertake_compose_layers',
       'aftertake_preview_layers',
       'aftertake_resolve_layers',
+      'aftertake_save_film_edit',
     ])
       assert.ok(
         list.tools.some((tool) => tool.name === name),
@@ -169,6 +182,8 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
     const annotations = (name: string) =>
       list.tools.find((tool) => tool.name === name)!.annotations!;
     assert.equal(annotations('aftertake_voice').idempotentHint, true);
+    assert.equal(annotations('aftertake_save_film_edit').idempotentHint, true);
+    assert.equal(annotations('aftertake_save_film_edit').readOnlyHint, false);
     assert.equal(annotations('aftertake_import_media').idempotentHint, false);
     assert.equal(annotations('aftertake_draft_script').idempotentHint, false);
     for (const name of ['aftertake_character_action', 'aftertake_generation_action']) {
@@ -181,6 +196,63 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
     const workspace = await client.callTool({ name: 'aftertake_workspace', arguments: {} });
     assert.ok(!workspace.isError);
     assert.deepEqual((workspace.structuredContent as any).filmAssets, []);
+    const project = {
+      format: 'aftertake-film/2',
+      name: 'A native camera edit',
+      aspect: 'landscape',
+      shots: [
+        {
+          assetId: '00000000-0000-4000-8000-000000000001',
+          sha256: 'a'.repeat(64),
+          start: 0,
+          end: 2,
+          framing: {
+            zoom: 1,
+            endZoom: 2,
+            x: 0.5,
+            y: 0.5,
+            keyframes: [
+              { at: 0, zoom: 1, x: 0.5, y: 0.5 },
+              { at: 1, zoom: 2, x: 0.8, y: 0.6, easing: 'ease-in-out' },
+            ],
+          },
+        },
+      ],
+    };
+    const saveEdit = (value: unknown) =>
+      client.callTool({ name: 'aftertake_save_film_edit', arguments: { project: value } });
+    const saved = await saveEdit(project);
+    assert.ok(!saved.isError);
+    const replay = await saveEdit(project);
+    assert.equal((saved.structuredContent as any).duration, 2);
+    assert.equal((saved.structuredContent as any).planId, (replay.structuredContent as any).planId);
+    assert.equal(resolveCalls, 2);
+    const changed = await saveEdit({ ...project, name: 'A revised camera edit' });
+    assert.notEqual(
+      (saved.structuredContent as any).planId,
+      (changed.structuredContent as any).planId,
+    );
+    const overrun = await saveEdit({
+      ...project,
+      titles: [
+        {
+          id: '00000000-0000-4000-8000-000000000003',
+          text: 'Too late',
+          start: 1,
+          end: 3,
+          style: 'headline',
+          position: 'center',
+          animation: 'none',
+          color: '#ffffff',
+        },
+      ],
+    });
+    assert.equal(overrun.isError, true);
+    assert.match((overrun.content as any)[0].text, /title ends after/);
+    retainCamera = false;
+    const incompatible = await saveEdit(project);
+    assert.equal(incompatible.isError, true);
+    assert.match((incompatible.content as any)[0].text, /did not retain every edit setting/);
     const script = await client.callTool({
       name: 'aftertake_draft_script',
       arguments: {
