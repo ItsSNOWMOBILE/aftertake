@@ -771,60 +771,6 @@ export default function LayerStudio({
             <p className="layer-studio-muted">
               Top of this list appears above the layers below it.
             </p>
-            <div className="layer-add-actions">
-              <button
-                className="button"
-                disabled={browserDemo || locked || draft.layers.length >= 8}
-                onClick={() => mediaInput.current?.click()}
-              >
-                <ImagePlus size={16} /> Import image
-              </button>
-              <button
-                className="button"
-                disabled={browserDemo || locked || draft.layers.length >= 8}
-                onClick={addAdjustment}
-              >
-                <SlidersHorizontal size={16} /> Adjustment
-              </button>
-            </div>
-            {initialClip?.kind === 'image' && (
-              <button
-                className="layer-small-button"
-                disabled={browserDemo || locked || draft.layers.length >= 8}
-                onClick={() => void useCurrent()}
-              >
-                Use current image as base
-              </button>
-            )}
-            {images.length > 0 && (
-              <div className="layer-studio-field">
-                <label>
-                  Imported still images
-                  <select
-                    value={assetChoice}
-                    disabled={locked}
-                    onChange={(event) => setAssetChoice(event.target.value)}
-                  >
-                    <option value="">Choose an image…</option>
-                    {images.map((asset) => (
-                      <option key={asset.id} value={asset.id}>
-                        {asset.name}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <button
-                  className="layer-small-button"
-                  disabled={locked || !assetChoice || draft.layers.length >= 8}
-                  onClick={() => {
-                    const asset = images.find((item) => item.id === assetChoice);
-                    if (asset) addImage(asset);
-                  }}
-                >
-                  Add chosen image
-                </button>
-              </div>
-            )}
             <ol className="layer-stack-list">
               {[...draft.layers].reverse().map((item) => {
                 const asset =
@@ -887,6 +833,60 @@ export default function LayerStudio({
               <p className="layer-studio-muted">
                 Import a still to begin. PNG transparency stays intact.
               </p>
+            )}
+            <div className="layer-add-actions">
+              <button
+                className="button"
+                disabled={browserDemo || locked || draft.layers.length >= 8}
+                onClick={() => mediaInput.current?.click()}
+              >
+                <ImagePlus size={16} /> Import image
+              </button>
+              <button
+                className="button"
+                disabled={browserDemo || locked || draft.layers.length >= 8}
+                onClick={addAdjustment}
+              >
+                <SlidersHorizontal size={16} /> Adjustment
+              </button>
+            </div>
+            {initialClip?.kind === 'image' && (
+              <button
+                className="layer-small-button"
+                disabled={browserDemo || locked || draft.layers.length >= 8}
+                onClick={() => void useCurrent()}
+              >
+                Use current image as base
+              </button>
+            )}
+            {images.length > 0 && (
+              <div className="layer-studio-field">
+                <label>
+                  Imported still images
+                  <select
+                    value={assetChoice}
+                    disabled={locked}
+                    onChange={(event) => setAssetChoice(event.target.value)}
+                  >
+                    <option value="">Choose an image…</option>
+                    {images.map((asset) => (
+                      <option key={asset.id} value={asset.id}>
+                        {asset.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <button
+                  className="layer-small-button"
+                  disabled={locked || !assetChoice || draft.layers.length >= 8}
+                  onClick={() => {
+                    const asset = images.find((item) => item.id === assetChoice);
+                    if (asset) addImage(asset);
+                  }}
+                >
+                  Add chosen image
+                </button>
+              </div>
             )}
             <div className="layer-file-actions">
               <button
@@ -1054,21 +1054,26 @@ export default function LayerStudio({
               </>
             )}
             {jobs.length > 0 && (
-              <div className="layer-save-list" aria-label="Saved compositions">
-                {jobs.slice(0, 8).map((job) => (
-                  <button
-                    key={job.id}
-                    aria-pressed={job.id === viewedId}
-                    onClick={() => setViewedId(job.id)}
-                  >
-                    <strong>{job.request.name}</strong>
-                    <small>
-                      {job.state} · {job.request.layers.length} layers · {job.request.canvas.width}{' '}
-                      × {job.request.canvas.height}
-                    </small>
-                  </button>
-                ))}
-              </div>
+              <details className="layer-saved-projects" open={!!active}>
+                <summary>
+                  {active ? 'Rendering composition…' : 'Saved compositions'} ({jobs.length})
+                </summary>
+                <div className="layer-save-list" aria-label="Saved compositions">
+                  {jobs.slice(0, 8).map((job) => (
+                    <button
+                      key={job.id}
+                      aria-pressed={job.id === viewedId}
+                      onClick={() => setViewedId(job.id)}
+                    >
+                      <strong>{job.request.name}</strong>
+                      <small>
+                        {job.state} · {job.request.layers.length} layers ·{' '}
+                        {job.request.canvas.width} × {job.request.canvas.height}
+                      </small>
+                    </button>
+                  ))}
+                </div>
+              </details>
             )}
           </main>
           <aside
