@@ -62,6 +62,12 @@ enable Comfy's `--lowvram` option, whose non-dynamic path can move text encoding
 to the CPU. Transfer overhead can increase on constrained devices; equal
 throughput across different GPUs or offload modes is not promised.
 
+Native generation admission also checks that sequential mode is actually active:
+aggressive eviction and disabled result caching, CPU intermediate storage, and
+no conflicting `--gpu-only` or `--highvram` setting. A manual Comfy launch with
+contradictory settings fails explicitly. Balanced mode, including `auto` above
+16 GiB, preserves the existing native placement and cache choices.
+
 `--reserve-vram` defaults to 3 GiB and `--workspace-vram` to 6 GiB. The latter is
 an explicit admission budget, matching the existing H3 sampling-workspace setting;
 it is **not** a measured minimum or a guarantee that every model, duration or
@@ -73,11 +79,20 @@ Completed mask/frame encoding can stage CUDA tensors through a bounded pinned
 host buffer without changing their dtype or values. The staging utility also
 supports transfer back to the selected CUDA device. This bounds stage-transfer
 workspace; it does not partition internal attention/UNet activations or release
-a full batch still retained by the native graph. Existing native H3 stage
-offloading, VAE behavior and model hooks remain in place. Internal diffusion
-activation offloading is **not implemented**: the pinned engine exposes no safe
-ownership hook for it. Adding that requires a separately validated upstream
-integration; completed-frame staging is not a substitute for that capability.
+a full batch still retained by the native graph.
+
+For H3 and LTX video profiles, sequential admission verifies the expected native
+VAE's chunked output-buffer API without constructing a model. Native CUDA decoding
+can then write finalized chunks into CPU output storage and release the completed
+GPU chunks. The native decoder, its overlap handling and kernels remain unchanged.
+This uses the pinned engine's existing streaming path; it is separate from the
+bounded encoding transfers above. The report describes an expected class API,
+not a claim that a particular checkpoint is already loaded.
+
+**Internal denoiser activation offloading is not implemented.** Its live residual
+tensors have no safe ownership hook in this pinned engine. Adding that requires a
+separately validated upstream integration. Streamed decoder output does not reduce
+those internal attention/MLP activation peaks or guarantee that a whole job fits.
 
 ## Precision follows execution, not filenames
 
@@ -106,8 +121,18 @@ wrapper and preserves tensor bytes, quantization metadata and model math.
 
 The development host is an RTX 5080 with 16 GB VRAM and 32 GB system RAM.
 Tiny native BF16, optimized SDPA, FP8 and H3 INT8 attention probes pass there.
+An unmodified native H3 temporal decode loop with a tiny tensor-only test backbone
+also confirms that CPU output values match its GPU-canvas result and completed
+GPU chunks are released before the next chunk. This loads no neural weights and
+is not a full-size memory or image-quality benchmark.
 Mocked-device tests cover Ampere/BF16, unsupported native FP8, GPU remapping,
 memory pressure, cached residency and failed initialization.
+
+A clean Windows source archive, in a path with spaces and launched from another
+folder, has also been checked with a newly installed Python runtime and a separate
+frozen frontend dependency install. Dependency consistency, CUDA preflight, the
+web build and all 13 recorded examples passed. Model weights were deliberately
+excluded. Linux dependency metadata and CPU CI do not certify Linux GPU inference.
 
 **No 3090 or 12 GB end-to-end generation certification is claimed.** Validate
 the intended model, dimensions and duration on that device. Hardware preflight

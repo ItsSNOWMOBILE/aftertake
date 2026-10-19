@@ -29,6 +29,13 @@ def facts(free=12 * GIB):
         kernel_probes=('bf16-matmul-and-optimized-sdpa',))
 
 
+def native_management():
+    return types.SimpleNamespace(current_loaded_models=[], DISABLE_SMART_MEMORY=True,
+        args=types.SimpleNamespace(cache_none=True, gpu_only=False, highvram=False),
+        VRAMState=types.SimpleNamespace(HIGH_VRAM='high', NORMAL_VRAM='normal'), vram_state='normal',
+        intermediate_device=lambda: torch.device('cpu'))
+
+
 class RuntimeHardwareTests(unittest.TestCase):
     def test_native_output_signatures_are_unchanged_and_validation_uses_only_json(self):
         self.assertEqual(set(nodes.AftertakeSaveVideo.INPUT_TYPES()['required']),
@@ -158,7 +165,8 @@ class RuntimeHardwareTests(unittest.TestCase):
         model = types.SimpleNamespace(model=object(), load_device=torch.device('cuda:0'))
         loaded = types.SimpleNamespace(model=model, device=torch.device('cuda:0'),
             model_loaded_memory=lambda: 8 * GIB)
-        management = types.SimpleNamespace(current_loaded_models=[loaded])
+        management = native_management()
+        management.current_loaded_models = [loaded]
         allowances = []
         class Backend:
             def __init__(self, selected): self.config = selected
@@ -178,6 +186,8 @@ class RuntimeHardwareTests(unittest.TestCase):
                 patch.object(hardware, 'NvidiaExecutionBackend', Backend), \
                 patch.object(character, '_runtime_device_policy', return_value=(management, torch.device('cuda:0'))), \
                 patch.object(character, '_engine_idle', return_value=True), \
+                patch.object(character, 'verify_native_decoder_contract', return_value=types.SimpleNamespace(
+                    as_dict=lambda: {'architecture': 'MiniMaxH3VideoVAE', 'comfy_has_chunked_io': True})), \
                 patch.object(character, '_kitchen_attention_probe', return_value='comfy-kitchen-int8-attention') as attention:
             ready = character.runtime_hardware_report('character-swap')
         self.assertTrue(ready['ready'])
@@ -185,7 +195,54 @@ class RuntimeHardwareTests(unittest.TestCase):
         self.assertEqual(ready['facts']['reclaimable_vram_bytes'], 8 * GIB)
         self.assertIn('comfy-kitchen-int8-attention', ready['facts']['kernel_probes'])
         self.assertEqual(ready['policy'], {'cpuInference': False, 'float32Fallback': False})
+        self.assertEqual(ready['memoryPolicy']['effective_mode'], 'sequential')
+        self.assertIs(ready['memoryPolicy']['cpu_output_staging'], True)
+        self.assertIs(ready['memoryPolicy']['denoiser_activation_offload'], False)
         attention.assert_called_once()
+
+    def test_runtime_rejects_inactive_sequential_policy_before_decoder_or_attention(self):
+        class Backend:
+            def __init__(self, _): pass
+            def inspect(self): return facts()
+            def preflight(self, **_): return facts()
+        management = native_management()
+        management.args.cache_none = False
+        with patch.object(hardware.HardwareConfig, 'from_environment', return_value=hardware.HardwareConfig()), \
+                patch.object(hardware, 'NvidiaExecutionBackend', Backend), \
+                patch.object(character, '_runtime_device_policy', return_value=(management, torch.device('cuda:0'))), \
+                patch.object(character, 'verify_native_decoder_contract', side_effect=AssertionError('No decoder check after rejected placement')), \
+                patch.object(character, '_kitchen_attention_probe', side_effect=AssertionError('No attention probe after rejected placement')):
+            report = character.runtime_hardware_report('character-swap')
+        self.assertFalse(report['ready'])
+        self.assertIsNone(report['memoryPolicy'])
+        self.assertEqual(report['checks'][-1]['id'], 'sequential_native_flags_required')
+        self.assertIn('--disable-smart-memory --cache-none', report['checks'][-1]['message'])
+        self.assertEqual([check['id'] for check in report['checks'] if check['state'] == 'pass'],
+            ['cuda', 'native-bf16', 'memory', 'kernel-probe'])
+
+    def test_balanced_runtime_preserves_gpu_intermediates_and_does_not_claim_streaming(self):
+        class Backend:
+            def __init__(self, _): pass
+            def inspect(self): return facts()
+            def preflight(self, **_): return facts()
+        management = native_management()
+        management.DISABLE_SMART_MEMORY = False
+        management.args.cache_none = False
+        management.args.gpu_only = True
+        management.vram_state = 'high'
+        management.intermediate_device = lambda: torch.device('cuda:0')
+        config = hardware.HardwareConfig(memory_mode='balanced')
+        with patch.object(hardware.HardwareConfig, 'from_environment', return_value=config), \
+                patch.object(hardware, 'NvidiaExecutionBackend', Backend), \
+                patch.object(character, '_runtime_device_policy', return_value=(management, torch.device('cuda:0'))), \
+                patch.object(character, 'verify_native_decoder_contract', side_effect=AssertionError('Balanced preserves existing decoder choice')):
+            report = character.runtime_hardware_report('text-video')
+        self.assertTrue(report['ready'])
+        self.assertEqual(report['memoryPolicy']['effective_mode'], 'balanced')
+        self.assertFalse(report['memoryPolicy']['cpu_output_staging'])
+        self.assertIsNone(report['memoryPolicy']['native_decoder_contract'])
+        self.assertTrue(management.args.gpu_only)
+        self.assertFalse(management.args.cache_none)
 
     def test_runtime_report_sanitizes_unexpected_failures_and_does_not_probe_unknown_profiles(self):
         with patch.object(character, '_runtime_device_policy', side_effect=RuntimeError('private path or token')):

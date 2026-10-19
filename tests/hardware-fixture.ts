@@ -35,12 +35,45 @@ export function hardwareFixture(profile: ComputeFeature) {
       required_workspace_gib: 6,
       require_native_fp8: false,
     },
+    memoryPolicy: {
+      requested_mode: 'auto',
+      effective_mode: 'sequential',
+      intermediate_device: 'cpu',
+      cpu_intermediate_storage: true,
+      native_smart_memory_disabled: true,
+      node_result_cache_disabled: true,
+      high_vram_residency: false,
+      cpu_output_staging: true,
+      denoiser_activation_offload: false,
+      native_decoder_contract:
+        profile === 'character-swap'
+          ? {
+              architecture: 'MiniMaxH3VideoVAE',
+              module: 'comfy.ldm.minimax.vae',
+              comfy_has_chunked_io: true,
+              decode_output_buffer: true,
+            }
+          : ['structure', 'motion', 'inpaint', 'cinema', 'text-video'].includes(profile)
+            ? {
+                architecture: 'VideoVAE',
+                module: 'comfy.ldm.lightricks.vae.causal_video_autoencoder',
+                comfy_has_chunked_io: true,
+                decode_output_buffer: true,
+              }
+            : null,
+    },
     checks: [
       ...[
         'cuda',
         'native-bf16',
         'memory',
         'kernel-probe',
+        'native-memory',
+        ...(['structure', 'motion', 'inpaint', 'cinema', 'text-video', 'character-swap'].includes(
+          profile,
+        )
+          ? ['native-decoder-staging']
+          : []),
         ...(profile === 'character-swap' ? ['h3-attention'] : []),
       ].map((id) => ({ id, state: 'pass', message: 'Synthetic passing metadata.' })),
     ],

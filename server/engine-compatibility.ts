@@ -141,13 +141,56 @@ export function evaluateEngineCompatibility({
         own(reportedChecks[index], 'state') === 'pass',
     );
   check(
+    'hardware-runtime-ready',
+    hardwareFormat && own(hardwareInfo, 'ready') === true && reportPassed,
+    'The engine hardware preflight is not ready. Resolve the reported setup checks and retry.',
+  );
+  const nativeMemory = own(hardwareInfo, 'memoryPolicy');
+  const effectiveMode =
+    memoryMode === 'auto' && integer(total)
+      ? total <= 16 * 1024 ** 3
+        ? 'sequential'
+        : 'balanced'
+      : memoryMode;
+  const sequential = effectiveMode === 'sequential';
+  check(
+    'hardware-native-residency',
+    hardwareFormat &&
+      own(nativeMemory, 'requested_mode') === memoryMode &&
+      own(nativeMemory, 'effective_mode') === effectiveMode &&
+      own(nativeMemory, 'denoiser_activation_offload') === false &&
+      passedCheck('native-memory') &&
+      (!sequential ||
+        (own(nativeMemory, 'intermediate_device') === 'cpu' &&
+          own(nativeMemory, 'cpu_intermediate_storage') === true &&
+          own(nativeMemory, 'cpu_output_staging') === true &&
+          own(nativeMemory, 'native_smart_memory_disabled') === true &&
+          own(nativeMemory, 'node_result_cache_disabled') === true &&
+          own(nativeMemory, 'high_vram_residency') === false)),
+    'The running engine must match its memory policy. For sequential residency, restart through the Aftertake launcher or use --disable-smart-memory --cache-none without --gpu-only or --highvram.',
+  );
+  const ltxDecoder = ['structure', 'motion', 'inpaint', 'cinema', 'text-video'].includes(feature);
+  if (sequential && (ltxDecoder || feature === 'character-swap')) {
+    const decoder = own(nativeMemory, 'native_decoder_contract');
+    check(
+      'hardware-native-decoder-staging',
+      own(decoder, 'architecture') === (ltxDecoder ? 'VideoVAE' : 'MiniMaxH3VideoVAE') &&
+        own(decoder, 'module') ===
+          (ltxDecoder
+            ? 'comfy.ldm.lightricks.vae.causal_video_autoencoder'
+            : 'comfy.ldm.minimax.vae') &&
+        own(decoder, 'comfy_has_chunked_io') === true &&
+        own(decoder, 'decode_output_buffer') === true &&
+        passedCheck('native-decoder-staging'),
+      'Sequential video decoding requires the pinned native chunked output-buffer API. Update the runtime and Aftertake nodes, then restart the engine.',
+    );
+  }
+  check(
     'hardware-kernel-probes',
     hardwareFormat &&
-      own(hardwareInfo, 'ready') === true &&
       strings(nativeProbes) &&
       nativeProbes.includes('bf16-matmul-and-optimized-sdpa') &&
-      ['cuda', 'native-bf16', 'memory', 'kernel-probe'].every(passedCheck) &&
-      reportPassed,
+      ['cuda', 'native-bf16', 'memory', 'kernel-probe'].every(passedCheck),
     'The selected GPU must pass the tiny native BF16 and optimized CUDA attention probes before generation.',
   );
   if (own(config, 'require_native_fp8') === true)

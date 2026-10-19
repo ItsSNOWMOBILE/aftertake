@@ -8,7 +8,8 @@ from fractions import Fraction
 import av
 import numpy as np
 import torch
-from .vram import host_tensor
+from .vram import (host_tensor, resolve_memory_policy, verify_native_residency,
+    verify_native_decoder_contract, ResidencyPolicyError)
 
 
 GENERATION_PROFILES = frozenset(('structure', 'inpaint', 'cinema', 'motion-transfer',
@@ -91,7 +92,7 @@ def runtime_hardware_report(profile):
     if profile not in GENERATION_PROFILES:
         raise ValueError('Choose a supported Aftertake generation profile.')
     report = {'format': 'aftertake-hardware-status/1', 'profile': profile,
-        'ready': False, 'backend': 'cuda', 'facts': None, 'config': None, 'checks': [],
+        'ready': False, 'backend': 'cuda', 'facts': None, 'config': None, 'memoryPolicy': None, 'checks': [],
         'policy': {'cpuInference': False, 'float32Fallback': False}}
     try:
         config = HardwareConfig.from_environment()
@@ -105,20 +106,34 @@ def runtime_hardware_report(profile):
         report['facts'] = {**measured.as_dict(), 'reclaimable_vram_bytes': reclaimable}
         facts = backend.preflight(reclaimable_vram_bytes=reclaimable)
         report['facts'] = facts.as_dict()
-        probes = list(facts.kernel_probes)
-        if profile == 'character-swap':
-            probes.append(_kitchen_attention_probe(facts))
-            report['checks'].append({'id': 'h3-attention', 'state': 'pass',
-                'message': 'The selected CUDA GPU executes Comfy Kitchen INT8 attention.'})
-        report['facts']['kernel_probes'] = probes
         report['checks'].extend([
             {'id': 'cuda', 'state': 'pass', 'message': 'The selected execution device is NVIDIA CUDA.'},
             {'id': 'native-bf16', 'state': 'pass', 'message': 'Native BF16 execution is available.'},
             {'id': 'memory', 'state': 'pass', 'message': 'Current free VRAM and verified idle model residency cover the configured reserve and workspace budget.'},
             {'id': 'kernel-probe', 'state': 'pass', 'message': 'Tiny CUDA BF16 and optimized attention probes passed.'},
         ])
+        placement = resolve_memory_policy(config.memory_mode, facts.total_vram_bytes)
+        residency = verify_native_residency(placement, management)
+        decoder = verify_native_decoder_contract(profile) if placement.effective_mode == 'sequential' else None
+        report['memoryPolicy'] = {**residency.as_dict(),
+            'native_decoder_contract': None if decoder is None else decoder.as_dict(),
+            'cpu_output_staging': residency.cpu_intermediate_storage,
+            'denoiser_activation_offload': False}
+        report['checks'].append({'id': 'native-memory', 'state': 'pass',
+            'message': 'Native sequential eviction, disabled result caching and CPU intermediate storage are active; model execution stays on CUDA.'
+                if placement.effective_mode == 'sequential' else
+                'Native balanced residency preserves existing placement and cache settings.'})
+        if decoder is not None:
+            report['checks'].append({'id': 'native-decoder-staging', 'state': 'pass',
+                'message': 'The expected video decoder exposes native chunked output-buffer IO, with sequential intermediate storage on CPU.'})
+        probes = list(facts.kernel_probes)
+        if profile == 'character-swap':
+            probes.append(_kitchen_attention_probe(facts))
+            report['checks'].append({'id': 'h3-attention', 'state': 'pass',
+                'message': 'The selected CUDA GPU executes Comfy Kitchen INT8 attention.'})
+        report['facts']['kernel_probes'] = probes
         report['ready'] = True
-    except HardwareConfigurationError as error:
+    except (HardwareConfigurationError, ResidencyPolicyError) as error:
         report['checks'].append({'id': error.code, 'state': 'blocked', 'message': str(error)})
     except Exception:
         report['checks'].append({'id': 'runtime-hardware-unavailable', 'state': 'blocked',

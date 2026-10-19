@@ -384,3 +384,148 @@ test('an explicitly requested native FP8 path needs its own device capability an
   hardwareInfo.facts.kernel_probes.push('native-fp8-scaled-matmul');
   assert.equal(evaluateReport().compatible, true);
 });
+
+test('sequential admission requires actual native eviction, cache and CPU storage facts', () => {
+  const feature = 'character-swap';
+  const original = hardwareFixture(feature);
+  const changes = [
+    (value: any) => {
+      delete value.memoryPolicy;
+    },
+    (value: any) => {
+      value.memoryPolicy.effective_mode = 'balanced';
+    },
+    (value: any) => {
+      value.memoryPolicy.native_smart_memory_disabled = false;
+    },
+    (value: any) => {
+      value.memoryPolicy.node_result_cache_disabled = false;
+    },
+    (value: any) => {
+      value.memoryPolicy.intermediate_device = 'cuda:0';
+    },
+    (value: any) => {
+      value.memoryPolicy.cpu_output_staging = false;
+    },
+    (value: any) => {
+      value.memoryPolicy.high_vram_residency = true;
+    },
+    (value: any) => {
+      value.memoryPolicy.denoiser_activation_offload = true;
+    },
+    (value: any) => {
+      value.checks = value.checks.filter((item: any) => item.id !== 'native-memory');
+    },
+  ];
+  for (const mutate of changes) {
+    const hardwareInfo = structuredClone(original);
+    mutate(hardwareInfo);
+    const result = evaluateEngineCompatibility({
+      feature,
+      objectInfo: fixture(feature),
+      systemStats,
+      hardwareInfo,
+    });
+    assert.equal(result.compatible, false);
+    assert.ok(
+      result.checks.some(
+        (item) => item.id === 'hardware-native-residency' && item.state === 'blocked',
+      ),
+    );
+  }
+});
+
+test('sequential video admission needs the expected native decoder output-buffer contract', () => {
+  for (const feature of ['character-swap', 'text-video'] as const) {
+    const original = hardwareFixture(feature);
+    for (const field of [
+      'architecture',
+      'module',
+      'comfy_has_chunked_io',
+      'decode_output_buffer',
+    ]) {
+      const hardwareInfo = structuredClone(original) as any;
+      delete hardwareInfo.memoryPolicy.native_decoder_contract[field];
+      const result = evaluateEngineCompatibility({
+        feature,
+        objectInfo: fixture(feature),
+        systemStats,
+        hardwareInfo,
+      });
+      assert.equal(result.compatible, false);
+      assert.ok(
+        result.checks.some(
+          (item) => item.id === 'hardware-native-decoder-staging' && item.state === 'blocked',
+        ),
+      );
+    }
+  }
+});
+
+test('balanced residency preserves explicit GPU intermediates while auto on 16 GiB requires sequential', () => {
+  const feature = 'text-video';
+  const hardwareInfo = hardwareFixture(feature) as any;
+  hardwareInfo.config.memory_mode = 'balanced';
+  Object.assign(hardwareInfo.memoryPolicy, {
+    requested_mode: 'balanced',
+    effective_mode: 'balanced',
+    intermediate_device: 'cuda:0',
+    cpu_intermediate_storage: false,
+    cpu_output_staging: false,
+    native_smart_memory_disabled: false,
+    node_result_cache_disabled: false,
+    high_vram_residency: true,
+    native_decoder_contract: null,
+  });
+  const evaluateReport = () =>
+    evaluateEngineCompatibility({
+      feature,
+      objectInfo: fixture(feature),
+      systemStats,
+      hardwareInfo,
+    });
+  const saved = structuredClone(hardwareInfo);
+  assert.equal(evaluateReport().compatible, true);
+  assert.deepEqual(hardwareInfo, saved, 'Admission only observes native placement.');
+  hardwareInfo.config.memory_mode = hardwareInfo.memoryPolicy.requested_mode = 'auto';
+  hardwareInfo.facts.total_vram_bytes = 24 * 1024 ** 3;
+  assert.equal(evaluateReport().compatible, true);
+  hardwareInfo.facts.total_vram_bytes = 16 * 1024 ** 3;
+  assert.equal(evaluateReport().compatible, false);
+});
+
+test('a later residency failure does not mislabel successful native precision probes', () => {
+  const feature = 'text-video';
+  const hardwareInfo = hardwareFixture(feature) as any;
+  hardwareInfo.ready = false;
+  hardwareInfo.memoryPolicy = null;
+  hardwareInfo.checks = hardwareInfo.checks.filter(
+    (item: any) => !['native-memory', 'native-decoder-staging'].includes(item.id),
+  );
+  hardwareInfo.checks.push({
+    id: 'sequential_native_flags_required',
+    state: 'blocked',
+    message: 'Enable native sequential placement.',
+  });
+  const result = evaluateEngineCompatibility({
+    feature,
+    objectInfo: fixture(feature),
+    systemStats,
+    hardwareInfo,
+  });
+  assert.equal(result.compatible, false);
+  assert.equal(result.checks.find((item) => item.id === 'hardware-kernel-probes')?.state, 'pass');
+  assert.equal(
+    result.checks.find((item) => item.id === 'hardware-runtime-ready')?.state,
+    'blocked',
+  );
+  assert.equal(
+    result.checks.find((item) => item.id === 'hardware-native-residency')?.state,
+    'blocked',
+  );
+  assert.ok(
+    !result.missing.includes(
+      'The selected GPU must pass the tiny native BF16 and optimized CUDA attention probes before generation.',
+    ),
+  );
+});

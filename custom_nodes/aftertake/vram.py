@@ -4,8 +4,10 @@ Residency changes never change checkpoint bytes, precision, kernels or output
 dimensions. ActivationStore is an explicit stage-boundary tool, not an internal
 diffusion activation-offload hook. It performs copies only, never inference.
 """
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from contextlib import contextmanager
+import importlib
+import inspect
 import threading
 from typing import Any
 
@@ -56,6 +58,149 @@ def resolve_memory_policy(mode='auto', total_vram_bytes=None, *, safe_weight_cop
     if safe_weight_copies:
         flags.extend(('--disable-fast-disk', '--async-offload', '1'))
     return MemoryPolicy(mode, selected, total_vram_bytes, tuple(flags), reason, safe_weight_copies)
+
+
+class ResidencyPolicyError(RuntimeError):
+    """The running native placement does not match its requested policy."""
+
+    def __init__(self, code, message):
+        super().__init__(message)
+        self.code = code
+
+
+@dataclass(frozen=True)
+class NativeResidencyFacts:
+    requested_mode: str
+    effective_mode: str
+    intermediate_device: str
+    cpu_intermediate_storage: bool | None
+    native_smart_memory_disabled: bool | None
+    node_result_cache_disabled: bool | None
+    high_vram_residency: bool | None
+
+    def as_dict(self):
+        return asdict(self)
+
+
+@dataclass(frozen=True)
+class NativeDecoderContract:
+    """Expected native class API, not a claim about a loaded model instance."""
+    architecture: str
+    module: str
+    comfy_has_chunked_io: bool
+    decode_output_buffer: bool
+
+    def as_dict(self):
+        return asdict(self)
+
+
+def verify_native_decoder_contract(profile, *, importer=importlib.import_module):
+    """Check the pinned video decoder's chunked-output API without allocation.
+
+    This imports and inspects classes only. It never constructs a decoder, loads
+    weights, or asserts that a particular model instance is already loaded. CPU
+    output placement and CUDA inference are verified separately by the runtime.
+    The contract covers native decoder output staging, not denoiser activations.
+    """
+    if profile in ('character-selection', 'sam3', 'SAM3', 'frame-edit', 'image-gen', 'motion-transfer'):
+        return None
+    if profile == 'character-swap':
+        module_name, architecture = 'comfy.ldm.minimax.vae', 'MiniMaxH3VideoVAE'
+    elif profile in ('structure', 'motion', 'inpaint', 'cinema', 'text-video'):
+        module_name = 'comfy.ldm.lightricks.vae.causal_video_autoencoder'
+        architecture = 'VideoVAE'
+    else:
+        raise ResidencyPolicyError('native_decoder_contract_unavailable',
+            'Choose a supported Aftertake generation profile before checking its native decoder contract.')
+    try:
+        native_class = getattr(importer(module_name), architecture)
+        if not isinstance(native_class, type):
+            raise TypeError('Expected a native decoder class.')
+        if getattr(native_class, 'comfy_has_chunked_io', None) is not True:
+            raise ValueError('Native chunked output IO is unavailable.')
+        decode = getattr(native_class, 'decode', None)
+        if not callable(decode) or not callable(getattr(native_class, 'decode_output_shape', None)):
+            raise ValueError('Native decoder output methods are unavailable.')
+        signature = inspect.signature(decode)
+        output_buffer = signature.parameters.get('output_buffer')
+        if (output_buffer is None or output_buffer.default is not None
+            or output_buffer.kind not in (inspect.Parameter.POSITIONAL_OR_KEYWORD, inspect.Parameter.KEYWORD_ONLY)):
+            raise ValueError('Native decoder requires optional output_buffer=None.')
+        # Native VAE callers pass a latent tensor and the output canvas by keyword.
+        # Signature binding verifies that call shape without invoking the method.
+        signature.bind(None, object(), output_buffer=None)
+    except Exception as error:
+        raise ResidencyPolicyError('native_decoder_contract_unavailable',
+            f'The native {architecture} chunked-output API is unavailable or incompatible. '
+            'Update to Aftertake\'s pinned ComfyUI runtime and custom nodes, then restart the engine. '
+            'No decoder instance or model weights were loaded during this check.') from error
+    return NativeDecoderContract(architecture, module_name, True, True)
+
+
+def verify_native_residency(policy, management):
+    """Observe actual native placement flags without changing their behavior.
+
+    Effective sequential requires CPU intermediate storage so native chunk-aware
+    VAEs can write finalized output off the GPU, native aggressive eviction and
+    no node-result cache. Balanced (including auto on larger devices) preserves
+    an existing native GPU-storage/high-VRAM choice.
+
+    CPU storage is not CPU model execution. These facts do not assert that an
+    arbitrary loaded VAE implements chunked IO, or that denoiser residuals are
+    offloaded. The runtime must verify a profile's native decoder separately.
+    """
+    if not isinstance(policy, MemoryPolicy):
+        raise ResidencyPolicyError('invalid_memory_policy', 'Resolve a valid Aftertake memory policy before checking native placement.')
+
+    def boolean(value):
+        return value if isinstance(value, bool) else None
+
+    options = getattr(management, 'args', None)
+    smart_disabled = boolean(getattr(management, 'DISABLE_SMART_MEMORY', None))
+    cache_disabled = boolean(getattr(options, 'cache_none', None))
+    gpu_only = boolean(getattr(options, 'gpu_only', None))
+    high_argument = boolean(getattr(options, 'highvram', None))
+    state = getattr(management, 'vram_state', None)
+    states = getattr(management, 'VRAMState', None)
+    high_state = getattr(states, 'HIGH_VRAM', None)
+    known_states = tuple(getattr(states, name, None) for name in
+                        ('DISABLED', 'NO_VRAM', 'LOW_VRAM', 'NORMAL_VRAM', 'HIGH_VRAM', 'SHARED'))
+    state_known = state is not None and any(value is not None and state == value for value in known_states)
+    high_residency = state == high_state if state_known and high_state is not None else None
+    if gpu_only is True or high_argument is True:
+        high_residency = True
+    storage, cpu_storage = 'unknown', None
+    try:
+        device = management.intermediate_device()
+        kind = getattr(device, 'type', None)
+        if kind == 'cpu':
+            storage, cpu_storage = 'cpu', True
+        elif kind == 'cuda':
+            key = _cuda_device_key(device)
+            storage = f'cuda:{key[1]}' if key is not None else 'cuda'
+            cpu_storage = False
+        elif isinstance(kind, str):
+            storage, cpu_storage = 'other', False
+    except Exception:
+        pass
+    facts = NativeResidencyFacts(policy.requested_mode, policy.effective_mode, storage,
+        cpu_storage, smart_disabled, cache_disabled, high_residency)
+    if policy.effective_mode == 'sequential':
+        if high_residency is not False:
+            raise ResidencyPolicyError('sequential_residency_conflict',
+                'Sequential residency cannot retain all models in HIGH_VRAM/gpu-only mode. '
+                'Restart through the Aftertake launcher with --memory-mode sequential, without --highvram or --gpu-only.')
+        if cpu_storage is not True:
+            raise ResidencyPolicyError('cpu_intermediate_storage_required',
+                'Sequential residency requires CPU intermediate storage for native streamed decoder outputs. '
+                'Restart through the Aftertake launcher with --memory-mode sequential and without --gpu-only. '
+                'Model inference still runs on CUDA.')
+        if smart_disabled is not True or cache_disabled is not True:
+            raise ResidencyPolicyError('sequential_native_flags_required',
+                'Sequential residency is configured but not active in this ComfyUI process. '
+                'Restart through the Aftertake launcher or use --disable-smart-memory --cache-none. '
+                'These flags preserve native CUDA kernels and model precision.')
+    return facts
 
 
 def _cuda_device_key(device):

@@ -1,4 +1,5 @@
 import importlib.util
+from enum import Enum
 from pathlib import Path
 import sys
 import types
@@ -51,6 +52,240 @@ class MemoryPolicyTests(unittest.TestCase):
                 vram.resolve_memory_policy(total_vram_bytes=size)
         with self.assertRaises(ValueError):
             vram.resolve_memory_policy(safe_weight_copies='yes')
+
+
+class NativeResidencyPolicyTests(unittest.TestCase):
+    class NativeState(Enum):
+        NORMAL_VRAM = 3
+        HIGH_VRAM = 4
+
+    def management(self):
+        forbidden = Mock(side_effect=AssertionError('Placement verification must not alter residency.'))
+        return types.SimpleNamespace(
+            args=types.SimpleNamespace(cache_none=True, gpu_only=False, highvram=False),
+            DISABLE_SMART_MEMORY=True,
+            VRAMState=self.NativeState,
+            vram_state=self.NativeState.NORMAL_VRAM,
+            intermediate_device=Mock(return_value=torch.device('cpu')),
+            free_memory=forbidden, unload_all_models=forbidden, soft_empty_cache=forbidden,
+        )
+
+    def verify(self, management, mode='auto', total_gib=16):
+        policy = vram.resolve_memory_policy(mode, total_gib * vram.GIB)
+        return vram.verify_native_residency(policy, management)
+
+    def assert_policy_error(self, code, management):
+        with self.assertRaises(vram.ResidencyPolicyError) as raised:
+            self.verify(management)
+        self.assertEqual(raised.exception.code, code)
+        self.assertIn('Aftertake launcher', str(raised.exception))
+
+    def test_effective_sequential_reports_actual_native_storage_without_mutation(self):
+        for mode, size in (('auto', 12), ('auto', 16), ('sequential', 24)):
+            with self.subTest(mode=mode, size=size):
+                management = self.management()
+                original_args = vars(management.args).copy()
+                facts = self.verify(management, mode, size)
+                self.assertEqual(facts.as_dict(), {
+                    'requested_mode': mode, 'effective_mode': 'sequential',
+                    'intermediate_device': 'cpu', 'cpu_intermediate_storage': True,
+                    'native_smart_memory_disabled': True, 'node_result_cache_disabled': True,
+                    'high_vram_residency': False,
+                })
+                facts.as_dict()['intermediate_device'] = 'cuda:0'
+                self.assertEqual(facts.intermediate_device, 'cpu')
+                with self.assertRaises(AttributeError):
+                    facts.intermediate_device = 'cuda:0'
+                self.assertEqual(vars(management.args), original_args)
+                self.assertEqual(management.vram_state, self.NativeState.NORMAL_VRAM)
+                management.intermediate_device.assert_called_once_with()
+                management.free_memory.assert_not_called()
+
+    def test_sequential_rejects_each_high_residency_contradiction(self):
+        for contradiction in ('state', 'gpu_only', 'highvram'):
+            with self.subTest(contradiction=contradiction):
+                management = self.management()
+                if contradiction == 'state':
+                    management.vram_state = self.NativeState.HIGH_VRAM
+                else:
+                    setattr(management.args, contradiction, True)
+                self.assert_policy_error('sequential_residency_conflict', management)
+
+    def test_sequential_requires_cpu_intermediate_storage(self):
+        for device in ('cuda:1', 'cuda', 'meta'):
+            with self.subTest(device=device):
+                management = self.management()
+                management.intermediate_device.return_value = torch.device(device)
+                self.assert_policy_error('cpu_intermediate_storage_required', management)
+
+    def test_sequential_rejects_unavailable_or_unknown_placement_facts(self):
+        for unknown in ('state', 'state_enum', 'device', 'device_query'):
+            with self.subTest(unknown=unknown):
+                management = self.management()
+                expected = 'sequential_residency_conflict'
+                if unknown == 'state':
+                    management.vram_state = object()
+                elif unknown == 'state_enum':
+                    del management.VRAMState
+                elif unknown == 'device':
+                    management.intermediate_device.return_value = object()
+                    expected = 'cpu_intermediate_storage_required'
+                else:
+                    management.intermediate_device.side_effect = RuntimeError('Native placement unavailable')
+                    expected = 'cpu_intermediate_storage_required'
+                self.assert_policy_error(expected, management)
+
+    def test_sequential_requires_actual_eviction_and_result_cache_flags(self):
+        for flag in ('DISABLE_SMART_MEMORY', 'cache_none'):
+            for value in (False, None, 1, 'true'):
+                with self.subTest(flag=flag, value=value):
+                    management = self.management()
+                    owner = management if flag == 'DISABLE_SMART_MEMORY' else management.args
+                    if value is None:
+                        delattr(owner, flag)
+                    else:
+                        setattr(owner, flag, value)
+                    self.assert_policy_error('sequential_native_flags_required', management)
+
+    def test_effective_balanced_preserves_explicit_native_gpu_storage(self):
+        for mode, size in (('balanced', 12), ('auto', 24)):
+            with self.subTest(mode=mode, size=size):
+                management = self.management()
+                management.args.cache_none = False
+                management.args.gpu_only = True
+                management.DISABLE_SMART_MEMORY = False
+                management.vram_state = self.NativeState.HIGH_VRAM
+                management.intermediate_device.return_value = torch.device('cuda:1')
+                facts = self.verify(management, mode, size)
+                self.assertEqual(facts.effective_mode, 'balanced')
+                self.assertEqual(facts.intermediate_device, 'cuda:1')
+                self.assertFalse(facts.cpu_intermediate_storage)
+                self.assertFalse(facts.native_smart_memory_disabled)
+                self.assertFalse(facts.node_result_cache_disabled)
+                self.assertTrue(facts.high_vram_residency)
+                self.assertTrue(management.args.gpu_only)
+                management.free_memory.assert_not_called()
+
+    def test_balanced_reports_unknown_facts_without_inventing_active_placement(self):
+        policy = vram.resolve_memory_policy('balanced')
+        facts = vram.verify_native_residency(policy, object())
+        self.assertEqual(facts.intermediate_device, 'unknown')
+        self.assertIsNone(facts.cpu_intermediate_storage)
+        self.assertIsNone(facts.high_vram_residency)
+        self.assertIsNone(facts.node_result_cache_disabled)
+        self.assertIsNone(facts.native_smart_memory_disabled)
+
+    def test_placement_check_requires_a_resolved_policy(self):
+        with self.assertRaises(vram.ResidencyPolicyError) as raised:
+            vram.verify_native_residency(types.SimpleNamespace(effective_mode='balanced'), self.management())
+        self.assertEqual(raised.exception.code, 'invalid_memory_policy')
+
+
+class NativeDecoderContractTests(unittest.TestCase):
+    def native_class(self, **overrides):
+        def forbidden_constructor(*_args, **_kwargs):
+            raise AssertionError('Contract inspection must not construct or allocate a model.')
+
+        def decode(self, latent, output_buffer=None):
+            raise AssertionError('Contract inspection must not decode a tensor.')
+
+        def decode_output_shape(self, input_shape):
+            raise AssertionError('Contract inspection must not run decoder methods.')
+
+        members = {'__new__': forbidden_constructor, '__init__': forbidden_constructor,
+                   'comfy_has_chunked_io': True, 'decode': decode,
+                   'decode_output_shape': decode_output_shape}
+        members.update(overrides)
+        return type('TinyDecoderApiOnly', (), members)
+
+    def verify(self, profile, native_class=None):
+        native_class = self.native_class() if native_class is None else native_class
+        importer = Mock(return_value=types.SimpleNamespace(
+            MiniMaxH3VideoVAE=native_class, VideoVAE=native_class))
+        return vram.verify_native_decoder_contract(profile, importer=importer), importer
+
+    def test_video_profiles_check_exact_native_class_without_instantiation(self):
+        for profile in ('character-swap', 'structure', 'motion', 'inpaint', 'cinema', 'text-video'):
+            with self.subTest(profile=profile):
+                facts, importer = self.verify(profile)
+                is_h3 = profile == 'character-swap'
+                module = ('comfy.ldm.minimax.vae' if is_h3 else
+                          'comfy.ldm.lightricks.vae.causal_video_autoencoder')
+                self.assertEqual(facts.as_dict(), {
+                    'architecture': 'MiniMaxH3VideoVAE' if is_h3 else 'VideoVAE',
+                    'module': module, 'comfy_has_chunked_io': True, 'decode_output_buffer': True,
+                })
+                importer.assert_called_once_with(module)
+                facts.as_dict()['comfy_has_chunked_io'] = False
+                self.assertTrue(facts.comfy_has_chunked_io)
+                with self.assertRaises(AttributeError):
+                    facts.architecture = 'OtherDecoder'
+
+    def test_nonvideo_profiles_do_not_import_or_claim_wan_decoder_support(self):
+        importer = Mock(side_effect=AssertionError('No decoder import for non-video profiles.'))
+        for profile in ('character-selection', 'sam3', 'SAM3', 'frame-edit', 'image-gen', 'motion-transfer'):
+            self.assertIsNone(vram.verify_native_decoder_contract(profile, importer=importer))
+        importer.assert_not_called()
+
+    def test_missing_import_or_class_has_actionable_pinned_runtime_error(self):
+        for importer in (Mock(side_effect=ImportError('Native module missing')),
+                         Mock(return_value=types.SimpleNamespace()),
+                         Mock(return_value=types.SimpleNamespace(VideoVAE=object()))):
+            with self.subTest(importer=importer):
+                with self.assertRaises(vram.ResidencyPolicyError) as raised:
+                    vram.verify_native_decoder_contract('structure', importer=importer)
+                self.assertEqual(raised.exception.code, 'native_decoder_contract_unavailable')
+                self.assertIn('pinned ComfyUI runtime and custom nodes', str(raised.exception))
+
+    def test_chunked_flag_and_output_methods_must_match_native_api(self):
+        invalid = [self.native_class(comfy_has_chunked_io=value) for value in (False, None, 1, 'true')]
+        invalid.extend(self.native_class(**{method: None}) for method in ('decode', 'decode_output_shape'))
+        for native_class in invalid:
+            with self.subTest(native_class=native_class):
+                with self.assertRaises(vram.ResidencyPolicyError) as raised:
+                    self.verify('character-swap', native_class)
+                self.assertEqual(raised.exception.code, 'native_decoder_contract_unavailable')
+
+    def test_decode_must_accept_optional_keyword_output_buffer_and_latent(self):
+        def no_canvas(self, latent):
+            pass
+
+        def required_canvas(self, latent, output_buffer):
+            pass
+
+        def wrong_default(self, latent, output_buffer=False):
+            pass
+
+        def positional_canvas(self, latent, output_buffer=None, /):
+            pass
+
+        def no_latent(self, output_buffer=None):
+            pass
+
+        def additional_required(self, latent, extra, output_buffer=None):
+            pass
+
+        def generic_kwargs(self, latent, **kwargs):
+            pass
+
+        for decode in (no_canvas, required_canvas, wrong_default, positional_canvas,
+                       no_latent, additional_required, generic_kwargs):
+            with self.subTest(decode=decode.__name__):
+                with self.assertRaises(vram.ResidencyPolicyError):
+                    self.verify('structure', self.native_class(decode=decode))
+
+        def keyword_canvas(self, latent, *, output_buffer=None):
+            raise AssertionError('Never called')
+
+        facts, _ = self.verify('structure', self.native_class(decode=keyword_canvas))
+        self.assertTrue(facts.decode_output_buffer)
+
+    def test_unknown_profile_does_not_silently_bypass_decoder_check(self):
+        importer = Mock(side_effect=AssertionError('Unknown profiles must not import native code.'))
+        with self.assertRaises(vram.ResidencyPolicyError) as raised:
+            vram.verify_native_decoder_contract('character-swap-typo', importer=importer)
+        self.assertEqual(raised.exception.code, 'native_decoder_contract_unavailable')
+        importer.assert_not_called()
 
 
 class ReclaimableResidencyTests(unittest.TestCase):
