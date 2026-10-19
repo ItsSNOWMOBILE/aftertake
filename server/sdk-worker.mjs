@@ -70,6 +70,12 @@ const plain = (value) =>
   (Object.getPrototypeOf(value) === Object.prototype || Object.getPrototypeOf(value) === null);
 const own = (value, key) => plain(value) && Object.hasOwn(value, key);
 const positive = (value) => Number.isSafeInteger(value) && value > 0;
+// Local proxies can return opaque asset IDs. Preserve them for SDK URL encoding.
+const outputId = (value) =>
+  typeof value === 'string' &&
+  value.length > 0 &&
+  value.length <= 4096 &&
+  !/[\x00-\x1f\x7f]/.test(value);
 function requireId(value) {
   if (typeof value !== 'string' || !uuid.test(value)) throw new Invalid();
   return value;
@@ -234,12 +240,7 @@ function snapshot(job) {
         }
       : null,
     outputs: outputs.map((output) => {
-      if (
-        typeof output.id !== 'string' ||
-        !uuid.test(output.id) ||
-        typeof output.nodeId !== 'string' ||
-        output.nodeId.length > 128
-      )
+      if (!outputId(output.id) || typeof output.nodeId !== 'string' || output.nodeId.length > 128)
         throw new Unexpected();
       return {
         id: output.id,
@@ -381,7 +382,7 @@ async function start() {
     if (op === 'download') {
       exact(args, ['jobId', 'outputId', 'path']);
       requireId(args.jobId);
-      requireId(args.outputId);
+      if (!outputId(args.outputId)) throw new Invalid();
       const destination = await outputPath(args.path, writeRoots);
       signal.throwIfAborted();
       const job = await loadJob(args.jobId, signal);

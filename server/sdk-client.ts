@@ -45,6 +45,16 @@ const statuses = new Set([
   'expired',
 ]);
 const uuid = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
+// The tested local v2 proxy uses opaque signed output IDs rather than UUIDs.
+// Keep them private and unchanged; the SDK owns URL encoding for retrieval.
+function validAssetId(value: unknown): value is string {
+  return (
+    typeof value === 'string' &&
+    value.length > 0 &&
+    value.length <= 4096 &&
+    !/[\x00-\x1f\x7f]/.test(value)
+  );
+}
 
 function failure(code: string, httpStatus?: number) {
   const messages: Record<string, string> = {
@@ -201,7 +211,7 @@ function snapshot(value: unknown): Snapshot {
   const outputs = dto.outputs.map((output) => {
     if (
       !output ||
-      !uuid.test(output.id) ||
+      !validAssetId(output.id) ||
       typeof output.nodeId !== 'string' ||
       output.nodeId.length > 128
     )

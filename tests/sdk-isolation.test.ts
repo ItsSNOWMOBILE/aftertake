@@ -77,17 +77,18 @@ async function fixture(label: string) {
   let origin = '';
   let providerError: unknown = null;
   let unnamedOutput = false;
+  let outputId = assetId;
   let graph: Record<string, any> | undefined;
   function output() {
     return {
-      id: assetId,
+      id: outputId,
       node_id: 'save',
       name: 'result.bin',
       type: 'video',
       content_type: 'application/octet-stream',
       size_bytes: content.length,
       hash: null,
-      url: origin + '/api/v2/assets/' + assetId + '/content',
+      url: origin + '/api/v2/assets/' + encodeURIComponent(outputId) + '/content',
       url_expires_at: '2030-01-01T00:00:00Z',
     };
   }
@@ -244,6 +245,9 @@ async function fixture(label: string) {
     includeUnnamedOutput() {
       unnamedOutput = true;
     },
+    setOutputId(value: string) {
+      outputId = value;
+    },
     get graph() {
       return graph;
     },
@@ -381,6 +385,70 @@ test(
     } finally {
       await Promise.all(clients.map((client) => client.close()));
       await Promise.all(fixtures.map((f) => f.close()));
+      await data.close();
+    }
+  },
+);
+
+test(
+  'opaque local-proxy output identities survive submit, restored snapshots and exact streamed download routing',
+  { timeout: 15000 },
+  async () => {
+    const data = await directory();
+    const f = await fixture('opaque-output');
+    // The real local proxy can return signed opaque asset identities even though
+    // SDK comments describe UUIDs. This token is synthetic, never a live capability.
+    const token = ' synthetic-output-identity.雪.' + 'x'.repeat(180) + '.part+/=%?&# ';
+    f.setOutputId(token);
+    const client = await createIsolatedClient({
+      baseUrl: f.origin,
+      readRoots: [data.read],
+      writeRoots: [data.write],
+    });
+    try {
+      const results = await Promise.allSettled([
+        client.submit(client.workflows.fromJson({ save: { class_type: 'Mock', inputs: {} } }), {
+          idempotencyKey: randomUUID(),
+        }),
+        client.jobs.get(jobId),
+      ]);
+      assert.deepEqual(
+        results.map((result) => result.status),
+        ['fulfilled', 'fulfilled'],
+        'A valid opaque output must not discard an accepted submit or restored job snapshot',
+      );
+      for (const [index, result] of results.entries()) {
+        assert.equal(result.status, 'fulfilled');
+        if (result.status !== 'fulfilled') continue;
+        assert.equal(result.value.id, jobId);
+        await result.value.refresh();
+        const outputs = result.value.getOutputs('save');
+        assert.equal(outputs.length, 1);
+        const destination = path.join(data.write, 'opaque-' + index + '.bin');
+        await outputs[0].toFile(destination);
+        assert.deepEqual(await readFile(destination), f.content);
+      }
+      const downloads = f.requests.filter((request) => request.pathname.endsWith('/content'));
+      assert.equal(downloads.length, 2);
+      assert.ok(
+        downloads.every(
+          (request) =>
+            request.pathname === '/api/v2/assets/' + encodeURIComponent(token) + '/content',
+        ),
+      );
+      assert.equal(
+        f.requests.filter(
+          (request) => request.pathname === '/api/v2/jobs' && request.method === 'POST',
+        ).length,
+        1,
+      );
+      for (const invalid of ['', 'synthetic\nidentity', 'x'.repeat(4097)]) {
+        f.setOutputId(invalid);
+        await assert.rejects(client.jobs.get(jobId));
+      }
+    } finally {
+      await client.close();
+      await f.close();
       await data.close();
     }
   },
