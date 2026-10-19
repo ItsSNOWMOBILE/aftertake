@@ -502,6 +502,10 @@ test('exact preview is transient, preserves request settings and rejects outside
     assert.deepEqual(f.calls[0].request, req);
     assert.equal(f.calls[0].mode, 'preview');
     assert.deepEqual(await (await fetch(f.url)).json(), []);
+    // The response can arrive before the route's finally block has removed its
+    // transient files. The operation stays busy until that cleanup completes.
+    for (let attempt = 0; f.busy() && attempt < 100; attempt++) await delay(5);
+    assert.equal(f.busy(), false, 'Preview cleanup should release its operation.');
     assert.deepEqual(await readdir(path.join(f.data, 'finishing')), []);
     for (const time of [-1, 0.2, 1])
       assert.equal((await f.post('/preview', { request: req, time })).status, 400);
