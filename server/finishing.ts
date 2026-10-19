@@ -16,6 +16,7 @@ import {
   type FinishingRequest,
 } from '../src/finishing.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
+import { contentDigest } from './edit-plan.js';
 import { RequestError } from './http-errors.js';
 
 const processor = 'aftertake-cpu-finishing/1' as const;
@@ -200,10 +201,30 @@ export async function finishingRouter(context: {
   for (const name of await readdir(folder)) {
     if (!/^[a-f0-9-]{36}\.json$/.test(name)) continue;
     try {
-      const job: FinishingJob = storedJobSchema.parse(
-        JSON.parse(await readFile(path.join(folder, name), 'utf8')),
-      );
+      const raw = JSON.parse(await readFile(path.join(folder, name), 'utf8'));
+      const job: FinishingJob = storedJobSchema.parse(raw);
       if (name !== `${job.id}.json`) continue;
+      // Adding disabled optical controls normalizes an older settings object.
+      // Only migrate a stable key after verifying its original accepted content.
+      const identity = (request: FinishingRequest) => ({
+        name: request.name,
+        sourceSha256: request.clip.sha256,
+        settings: request.settings,
+        format: request.format,
+      });
+      const verifiedIdentity = Boolean(
+        job.requestKey &&
+        job.requestDigest &&
+        job.requestDigest === contentDigest(identity(raw.request)),
+      );
+      let changed = false;
+      if (verifiedIdentity) {
+        const normalizedDigest = contentDigest(identity(job.request));
+        if (normalizedDigest !== job.requestDigest) {
+          job.requestDigest = normalizedDigest;
+          changed = true;
+        }
+      }
       if (finishingBusy(job)) {
         job.state = 'interrupted';
         job.error = 'Finishing stopped when the server restarted. Start a new finish to retry.';
@@ -220,7 +241,21 @@ export async function finishingRouter(context: {
         delete job.outputSha256;
         delete job.clock;
         delete job.identity;
-        await persist(job);
+        changed = true;
+      }
+      if (changed) {
+        job.updatedAt = new Date().toISOString();
+        try {
+          await atomicJson(path.join(folder, `${job.id}.json`), {
+            ...job,
+            // Unknown identities remain bound to their original request/digest.
+            request: verifiedIdentity ? job.request : raw.request,
+          });
+        } catch {
+          // Keep the accepted key in memory even if the disk is unavailable;
+          // dropping it would allow an accidental second admission.
+          console.warn('Could not persist a restored finishing record.');
+        }
       }
       jobs.set(job.id, job);
     } catch {

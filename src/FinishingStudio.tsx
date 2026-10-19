@@ -17,6 +17,9 @@ import {
   finishingBusy,
   finishingRequestSchema,
   finishingRecipeSchema,
+  applyOpticalFinishingPreset,
+  matchingOpticalFinishingPreset,
+  opticalFinishingPresets,
   type FinishingJob,
   type FinishingRequest,
   type FinishingSettings,
@@ -44,6 +47,14 @@ const controls: {
   { key: 'vignette', label: 'Vignette', min: 0, max: 1, step: 0.02 },
   { key: 'grain', label: 'Film grain', min: 0, max: 1, step: 0.01 },
 ];
+const opticalControls = [
+  { key: 'glowStrength', label: 'Highlight glow', max: 1, step: 0.01, unit: '' },
+  { key: 'glowRadius', label: 'Glow radius', max: 32, step: 0.5, unit: ' px' },
+  { key: 'halationStrength', label: 'Warm halation', max: 1, step: 0.01, unit: '' },
+  { key: 'halationRadius', label: 'Halo radius', max: 32, step: 0.5, unit: ' px' },
+  { key: 'chromaticStrength', label: 'Color separation', max: 1, step: 0.01, unit: '' },
+  { key: 'chromaticOffset', label: 'Color offset', max: 8, step: 0.25, unit: ' px' },
+] as const;
 async function api<T>(path: string, body?: unknown, key?: string): Promise<T> {
   const response = await apiFetch(
     path,
@@ -614,6 +625,53 @@ export default function FinishingStudio({
                 />
               </label>
             ))}
+            <fieldset className="finishing-optics" disabled={locked}>
+              <legend>Optical effects</legend>
+              <label>
+                OPTICAL RECIPE
+                <select
+                  aria-label="Finishing optical recipe"
+                  value={matchingOpticalFinishingPreset(history.now)}
+                  onChange={(event) =>
+                    change(applyOpticalFinishingPreset(history.now, event.target.value))
+                  }
+                >
+                  <option value="custom" disabled>
+                    Custom adjustments
+                  </option>
+                  {opticalFinishingPresets.map((preset) => (
+                    <option key={preset.id} value={preset.id}>
+                      {preset.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <p>
+                Glow and warm halos spread bright highlights. Color separation adds a stylized
+                red/blue edge; it does not repair composite seams. Recipes keep your color grade.
+                Review with Preview frame before saving a finished take.
+              </p>
+              {opticalControls.map((control) => (
+                <label className="finishing-slider" key={control.key}>
+                  <span>
+                    {control.label}
+                    <output>
+                      {history.now[control.key].toFixed(2)}
+                      {control.unit}
+                    </output>
+                  </span>
+                  <input
+                    aria-label={'Finishing ' + control.label.toLowerCase()}
+                    type="range"
+                    min="0"
+                    max={control.max}
+                    step={control.step}
+                    value={history.now[control.key]}
+                    onChange={(event) => change({ [control.key]: Number(event.target.value) })}
+                  />
+                </label>
+              ))}
+            </fieldset>
             {history.now.grain > 0 && (
               <label>
                 GRAIN SEED

@@ -51,6 +51,10 @@ test('depth first use describes its real still-only workflow without a fabricate
   assert.match(markup, /Import a still image to begin/);
   assert.match(markup, /This version processes still images/);
   assert.match(markup, /does not reconstruct physical shadows/);
+  assert.match(markup, /aria-label="Depth effect preset"/);
+  for (const label of ['Natural depth focus', 'Soft atmosphere', 'Directional depth light'])
+    assert.ok(markup.includes(label));
+  assert.match(markup, /Applying a preset does not run the model/);
   for (const label of [
     'Focus depth',
     'Lens blur',

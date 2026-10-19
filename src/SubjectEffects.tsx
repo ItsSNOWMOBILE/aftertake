@@ -12,6 +12,11 @@ import {
 } from './subject-effects';
 import { apiFetch, browserDemo, saveMedia } from './transport';
 import PreviewVideo from './PreviewVideo';
+import {
+  subjectEffectPresets,
+  applySubjectEffectPreset,
+  matchingSubjectEffectPreset,
+} from './effect-presets';
 
 type Selection = { id: string; request: CharacterSelectionRequest; info: CharacterSelectionInfo };
 type ImportResult = {
@@ -143,6 +148,7 @@ export default function SubjectEffects({
       }
     : undefined;
   const validation = subjectEffectRequestSchema.safeParse(request);
+  const preset = matchingSubjectEffectPreset(request);
   const history = jobs.filter((job) => job.request.selectionId === selection?.id);
   const viewed = history.find((job) => job.id === viewedId) || history[0];
   const pending = jobs.find((job) => job.state === 'queued' || job.state === 'running');
@@ -190,6 +196,16 @@ export default function SubjectEffects({
     setCopies((current) =>
       current.map((copy, item) => (item === index ? { ...copy, ...patch } : copy)),
     );
+  }
+  function applyPreset(id: string) {
+    if (!request || !id) return;
+    const next = applySubjectEffectPreset(request, id);
+    setCopies(next.copies);
+    setFeather(next.feather ?? 0);
+    setGrow(next.grow ?? 0);
+    setBackgroundBlur(next.backgroundBlur ?? 0);
+    setBackgroundExposureEV(next.backgroundExposureEV ?? 0);
+    setNotice('Preset loaded. Review placement and build a new preview to apply it.');
   }
   function restore(job: SubjectEffectJob) {
     setOverride({ id: job.request.selectionId, ...job.selection });
@@ -605,6 +621,26 @@ export default function SubjectEffects({
                 )}
               </div>
               <div className="subject-effects-controls">
+                <label>
+                  Starting look
+                  <select
+                    aria-label="Subject effect preset"
+                    value={preset?.id || ''}
+                    disabled={busy}
+                    onChange={(event) => applyPreset(event.target.value)}
+                  >
+                    <option value="">Custom settings</option>
+                    {subjectEffectPresets.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <p className="subject-effects-note">
+                  {preset?.description ||
+                    'Choose an editable starting point, then adjust the controls. Applying a preset does not render.'}
+                </p>
                 <label>
                   EFFECT NAME
                   <input

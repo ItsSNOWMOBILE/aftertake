@@ -1,6 +1,7 @@
 """Small, actual CPU exports: pixels, source clock, previews and original sound."""
 from fractions import Fraction
 import importlib.util
+from hashlib import sha256
 from pathlib import Path
 import tempfile
 import unittest
@@ -62,6 +63,72 @@ def run(source, output, req, **options):
 
 
 class FinishingTest(unittest.TestCase):
+    def test_old_settings_keep_the_pre_optics_pixels_and_missing_defaults(self):
+        pixels = np.random.default_rng(5).integers(0, 256, (48, 64, 3), dtype=np.uint8)
+        legacy = {key: value for key, value in finishing.DEFAULTS.items()
+                  if key not in finishing.OPTICAL_DEFAULTS}
+        legacy.update(exposureEV=.4, contrast=.2, saturation=-.15, temperature=.3,
+                      tint=-.2, preset='warm-film', lookStrength=.6, sharpen=.4,
+                      grain=.45, vignette=.3, seed=31)
+        image = Image.fromarray(pixels)
+        old = finishing.apply_finishing(image, legacy)
+        normalized = finishing.apply_finishing(image, {**legacy, **finishing.OPTICAL_DEFAULTS})
+        self.assertEqual(old.tobytes(), normalized.tobytes())
+        # Golden pixels from the processor before optical effects were added.
+        self.assertEqual(sha256(old.tobytes()).hexdigest(),
+                         '16cdc56928c173d533988351dec5446cc1beb81931df8632f446e5f8638f7580')
+        self.assertTrue(finishing.is_identity({**finishing.DEFAULTS, 'glowRadius': 32,
+                                             'halationRadius': 32, 'chromaticOffset': 8}))
+
+    def test_glow_and_halation_follow_highlights_without_edge_wrap(self):
+        pixels = np.full((48, 64, 3), 40, dtype=np.uint8)
+        pixels[18:30, 26:38] = 255
+        image = Image.fromarray(pixels)
+        glow = np.asarray(finishing.apply_finishing(image, {**finishing.DEFAULTS,
+                           'glowStrength': 1, 'glowRadius': 4}))
+        self.assertTrue(np.all(glow[23, 24] > pixels[23, 24]))
+        halo = np.asarray(finishing.apply_finishing(image, {**finishing.DEFAULTS,
+                           'halationStrength': 1, 'halationRadius': 4}))
+        self.assertGreater(int(halo[23, 24, 0]), int(halo[23, 24, 1]))
+        self.assertGreater(int(halo[23, 24, 1]), int(halo[23, 24, 2]))
+        np.testing.assert_array_equal(halo[23, 31], pixels[23, 31])
+        dark = Image.fromarray(np.full_like(pixels, 80))
+        for key in ('glowStrength', 'halationStrength'):
+            np.testing.assert_array_equal(np.asarray(finishing.apply_finishing(
+                dark, {**finishing.DEFAULTS, key: 1})), np.asarray(dark))
+        pixels[:] = 40
+        pixels[:, :6] = 255
+        edge = np.asarray(finishing.apply_finishing(Image.fromarray(pixels),
+                          {**finishing.DEFAULTS, 'glowStrength': 1, 'glowRadius': 4}))
+        np.testing.assert_array_equal(edge[:, -1], pixels[:, -1])
+        white = Image.fromarray(np.full_like(pixels, 255))
+        np.testing.assert_array_equal(np.asarray(finishing.apply_finishing(white,
+            {**finishing.DEFAULTS, 'glowStrength': 1, 'glowRadius': 32,
+             'halationStrength': 1, 'halationRadius': 32})), np.asarray(white))
+
+    def test_chromatic_sampling_is_subpixel_and_clamps_instead_of_wrapping(self):
+        channel = np.tile(np.arange(8, dtype=np.float32) / 8, (3, 1))
+        shifted = finishing.displace_channel(channel, 1.5)
+        self.assertAlmostEqual(float(shifted[0, 4]), float((channel[0, 2] + channel[0, 3]) / 2))
+        self.assertEqual(float(shifted[0, 0]), float(channel[0, 0]))
+        pixels = np.zeros((12, 20, 3), dtype=np.uint8)
+        pixels[:, :3] = 255
+        result = np.asarray(finishing.apply_finishing(Image.fromarray(pixels),
+                            {**finishing.DEFAULTS, 'chromaticStrength': 1, 'chromaticOffset': 1.5}))
+        self.assertTrue(np.any(result[..., 0] != result[..., 2]))
+        np.testing.assert_array_equal(result[:, -1], pixels[:, -1])
+        np.testing.assert_array_equal(result[..., 1], pixels[..., 1])
+        tiny = Image.fromarray(np.full((1, 1, 3), 93, dtype=np.uint8))
+        np.testing.assert_array_equal(np.asarray(finishing.apply_finishing(tiny,
+            {**finishing.DEFAULTS, 'chromaticStrength': 1, 'chromaticOffset': 8})), np.asarray(tiny))
+
+    def test_optical_bounds_reject_nonfinite_boolean_and_excessive_values(self):
+        for name, maximum in {'glowStrength': 1, 'glowRadius': 32, 'halationStrength': 1,
+                              'halationRadius': 32, 'chromaticStrength': 1, 'chromaticOffset': 8}.items():
+            for invalid in (True, float('nan'), float('inf'), -.1, maximum + .01):
+                with self.subTest(name=name, value=invalid), self.assertRaises(ValueError):
+                    finishing.validate_settings({**finishing.DEFAULTS, name: invalid})
+
     def test_controls_make_visible_bounded_changes_without_resizing(self):
         pixels = np.zeros((32, 48, 3), dtype=np.uint8)
         pixels[:] = [80, 120, 160]
@@ -105,7 +172,8 @@ class FinishingTest(unittest.TestCase):
                         url='/media/source.png', hasAudio=False)
             req = request(clip, exposureEV=.4, contrast=.2, saturation=-.15, temperature=.3,
                           tint=-.2, preset='warm-film', lookStrength=.6, sharpen=.4,
-                          grain=.45, vignette=.3, seed=31)
+                          grain=.45, vignette=.3, seed=31, glowStrength=.3, glowRadius=5,
+                          halationStrength=.4, halationRadius=4, chromaticStrength=.3, chromaticOffset=1.5)
             run(source, folder / 'final.png', req)
             run(source, folder / 'preview.png', req, mode='preview', time=0)
             self.assertEqual((folder / 'final.png').read_bytes(), (folder / 'preview.png').read_bytes())
@@ -123,7 +191,8 @@ class FinishingTest(unittest.TestCase):
                 with self.subTest(name=name):
                     source, target = folder / f'{name}.mp4', folder / f'{name}-out.mp4'
                     video(source, pts, rate)
-                    req = request(describe(source), exposureEV=.3, saturation=.2)
+                    req = request(describe(source), exposureEV=.3, saturation=.2,
+                                  glowStrength=.2, halationStrength=.2, chromaticStrength=.3)
                     receipt = run(source, target, req)
                     finishing.verify_output_clock(target, receipt['clock'])
                     with av.open(str(source)) as original, av.open(str(target)) as finished:
@@ -173,7 +242,8 @@ class FinishingTest(unittest.TestCase):
             from media_utils import mux_generated_audio
             mux_generated_audio(source, {'waveform': np.array([[left, right]], dtype=np.float32),
                                          'sample_rate': rate}, 2)
-            req = request(describe(source), preset='cool-film', lookStrength=.5)
+            req = request(describe(source), preset='cool-film', lookStrength=.5,
+                          glowStrength=.3, halationStrength=.2, chromaticStrength=.25)
             receipt = run(source, target, req)
             self.assertTrue(receipt['hasAudio'])
             def decode_audio(path):

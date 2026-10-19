@@ -186,6 +186,11 @@ vignette and seeded grain. Warm film, Cool film, Noir and Vintage looks have
 their own strength control. Undo/redo retains recent settings; Reset returns
 to the clean, zero-strength default.
 
+**Optical effects** adds highlight glow, warm halation and stylized red/blue
+color separation, with three editable recipes. Their strengths default to zero.
+Choosing a recipe preserves your color grade and starts no render. See
+[optical finishing](finishing.md) for exact controls and processing limits.
+
 Choose a source time and press **Preview frame**. The before/after slider uses
 an actual PNG processed by the same function as export, rather than a CSS
 approximation. Changing settings clears the old comparison. Still images use

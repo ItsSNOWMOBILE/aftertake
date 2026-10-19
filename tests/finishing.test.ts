@@ -13,6 +13,10 @@ import { handleRequestError } from '../server/http-errors.js';
 import { generationAdmission } from '../server/generation-admission.js';
 import {
   defaultFinishingSettings,
+  defaultOpticalFinishing,
+  applyOpticalFinishingPreset,
+  matchingOpticalFinishingPreset,
+  opticalFinishingPresets,
   finishingBusy,
   finishingIsIdentity,
   finishingRecipeSchema,
@@ -172,6 +176,12 @@ test('finishing controls are bounded, complete and default to a true bypass', ()
     ['saturation', Infinity],
     ['temperature', NaN],
     ['sharpen', -0.1],
+    ['glowStrength', 1.01],
+    ['glowRadius', 32.01],
+    ['halationStrength', NaN],
+    ['halationRadius', Infinity],
+    ['chromaticStrength', -0.01],
+    ['chromaticOffset', 8.01],
   ] as const)
     assert(
       !finishingRequestSchema.safeParse({
@@ -185,6 +195,154 @@ test('finishing controls are bounded, complete and default to a true bypass', ()
       settings: { ...defaultFinishingSettings, lutPath: '/private' },
     }).success,
   );
+});
+
+test('optical recipes retain the color grade, validate portable parameters and keep old settings off', () => {
+  const legacy = Object.fromEntries(
+    Object.entries(defaultFinishingSettings).filter(([key]) => !(key in defaultOpticalFinishing)),
+  );
+  const parsed = finishingRequestSchema.parse({ ...request, settings: legacy });
+  assert.deepEqual(parsed.settings, defaultFinishingSettings);
+  assert(finishingIsIdentity(parsed.settings));
+  assert(
+    finishingIsIdentity({
+      ...defaultFinishingSettings,
+      glowRadius: 32,
+      halationRadius: 32,
+      chromaticOffset: 8,
+    }),
+  );
+  const grade = {
+    ...defaultFinishingSettings,
+    exposureEV: 0.6,
+    preset: 'warm-film' as const,
+    lookStrength: 0.8,
+    seed: 9,
+  };
+  for (const preset of opticalFinishingPresets) {
+    const settings = applyOpticalFinishingPreset(grade, preset.id);
+    assert.equal(settings.exposureEV, grade.exposureEV);
+    assert.equal(settings.preset, grade.preset);
+    assert.equal(settings.lookStrength, grade.lookStrength);
+    assert.equal(settings.seed, grade.seed);
+    assert.equal(matchingOpticalFinishingPreset(settings), preset.id);
+    const portable = finishingRecipeSchema.parse({
+      format: 'aftertake-finishing-recipe/1',
+      processor: 'aftertake-cpu-finishing/1',
+      sourceSha256: baseClip.sha256,
+      request: { ...request, settings },
+    });
+    assert.deepEqual(portable.request.settings, settings);
+    if (preset.id !== 'off')
+      assert(!finishingIsIdentity({ ...defaultFinishingSettings, ...preset.settings }));
+  }
+  assert.throws(() => applyOpticalFinishingPreset(grade, 'invented'));
+  assert.equal(matchingOpticalFinishingPreset({ ...grade, chromaticOffset: 3.25 }), 'custom');
+});
+
+test('legacy accepted keys migrate only after their original content digest is verified', async () => {
+  const settings = Object.fromEntries(
+    Object.entries(request.settings).filter(([key]) => !(key in defaultOpticalFinishing)),
+  );
+  const legacyRequest = { ...request, settings };
+  const original = generationAdmission(
+    'legacy-finish-key',
+    {
+      name: legacyRequest.name,
+      sourceSha256: baseClip.sha256,
+      settings,
+      format: legacyRequest.format,
+    },
+    [],
+  );
+  const legacy = {
+    id: randomUUID(),
+    request: legacyRequest,
+    sourceSha256: baseClip.sha256,
+    state: 'failed',
+    error: 'Previous finish failed.',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    ...original.identity,
+  } as unknown as FinishingJob;
+  const f = await fixture({ initialJob: legacy });
+  try {
+    const replay = await f.post('', legacyRequest, 'legacy-finish-key');
+    assert.equal(replay.status, 200);
+    const restored = (await replay.json()) as FinishingJob;
+    assert.equal(restored.id, legacy.id);
+    assert.equal(restored.state, 'failed');
+    assert.equal(restored.error, legacy.error);
+    assert.equal(f.calls.length, 0);
+    assert.notEqual(restored.requestDigest, legacy.requestDigest);
+    const saved = JSON.parse(
+      await readFile(path.join(f.data, 'finishing', `${legacy.id}.json`), 'utf8'),
+    );
+    assert.deepEqual(saved.request.settings, defaultFinishingSettings);
+    assert.equal(saved.requestDigest, restored.requestDigest);
+    assert.equal(
+      (
+        await f.post(
+          '',
+          {
+            ...request,
+            settings: { ...request.settings, glowStrength: 0.2 },
+          },
+          'legacy-finish-key',
+        )
+      ).status,
+      409,
+    );
+    assert.equal(f.calls.length, 0);
+  } finally {
+    await f.close();
+  }
+  const damaged = { ...legacy, requestDigest: '0'.repeat(64) };
+  const unsafe = await fixture({ initialJob: damaged });
+  try {
+    assert.equal((await unsafe.post('', legacyRequest, 'legacy-finish-key')).status, 409);
+    assert.equal(unsafe.calls.length, 0);
+    const saved = JSON.parse(
+      await readFile(path.join(unsafe.data, 'finishing', `${legacy.id}.json`), 'utf8'),
+    );
+    assert.equal(saved.requestDigest, damaged.requestDigest);
+    assert.deepEqual(saved.request.settings, settings);
+  } finally {
+    await unsafe.close();
+  }
+});
+
+test('optical parameters survive exact preview, accepted export and portable import', async () => {
+  const f = await fixture();
+  try {
+    const settings = {
+      ...request.settings,
+      glowStrength: 0.35,
+      glowRadius: 8.5,
+      halationStrength: 0.2,
+      halationRadius: 6.5,
+      chromaticStrength: 0.4,
+      chromaticOffset: 1.25,
+    };
+    const req = { ...request, settings };
+    const preview = await f.post('/preview', { request: req, time: 0 });
+    assert.equal(preview.status, 200);
+    await preview.arrayBuffer();
+    for (let attempt = 0; f.busy() && attempt < 100; attempt++) await delay(5);
+    assert(!f.busy());
+    const accepted = await f.post('', req, 'optical-finish');
+    assert.equal(accepted.status, 202);
+    const job = await terminal(f.url, ((await accepted.json()) as FinishingJob).id);
+    const portable = await (await fetch(`${f.url}/${job.id}/recipe`)).json();
+    assert.deepEqual(portable.request.settings, settings);
+    const imported = await f.post('/import-recipe', portable);
+    assert.equal(imported.status, 200);
+    assert.deepEqual((await imported.json()).request.settings, settings);
+    assert.equal(f.calls.length, 2);
+    for (const work of f.calls) assert.deepEqual(work.request.settings, settings);
+  } finally {
+    await f.close();
+  }
 });
 
 test('successful finish is a normal saved Clip with a hash-bound portable recipe', async () => {

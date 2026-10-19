@@ -116,6 +116,7 @@
   color: var(--text-label, #c7ccd2);
 }
 .subject-effects-controls input:not([type='range']):not([type='checkbox']),
+.subject-effects-controls select,
 .subject-effects-import input {
   width: 100%;
   min-width: 0;
@@ -296,6 +297,7 @@
   }
   .subject-effects-saved select,
   .subject-effects-controls input:not([type='range']):not([type='checkbox']),
+  .subject-effects-controls select,
   .subject-effects-import input {
     font-size: 16px;
   }

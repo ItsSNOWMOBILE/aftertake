@@ -168,13 +168,18 @@ The browser's import flow validates their hashes before restoring the selection.
 
 Color finishing accepts `format: "aftertake-finishing/1"`, a name, an imported
 `clip` and complete `settings`. Start from `defaultFinishingSettings` in
-`src/finishing.ts`: all adjustments zero, `preset: "clean"`, `lookStrength: 0`
+`src/finishing.ts`: all effect strengths zero, `preset: "clean"`, `lookStrength: 0`
 and `seed: 42`. Available controls are `exposureEV` (−3 to 3), `contrast`,
 `saturation`, `temperature` and `tint` (−1 to 1), plus `sharpen`, `vignette`,
 `grain` and `lookStrength` (0 to 1). Presets are `clean`, `warm-film`, `cool-film`,
 `noir` and `vintage`; the unsigned 32-bit seed fixes grain per source frame.
-The pipeline is linear-light exposure/white balance, contrast/saturation,
-film look, sharpening, vignette, then grain.
+Optical controls add `glowStrength`, `halationStrength` and `chromaticStrength`
+(0 to 1, default zero), `glowRadius` and `halationRadius` (0 to 32 pixels,
+default 8 and 6), and `chromaticOffset` (0 to 8 pixels, default 1.5). Missing
+optical fields in older recipes default to disabled effects. The pipeline is
+linear-light exposure/white balance, contrast/saturation, film look, highlight
+glow/halation, RGB displacement, sharpening, vignette, then grain. See
+[optical finishing](finishing.md) for the effect boundaries.
 
 Call `aftertake_preview_finish` with the same request and a `time` inside its
 source range; stills use time zero. Preview selects the first source frame at

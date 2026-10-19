@@ -96,6 +96,16 @@ test('subject effects require a complete saved selection, independent of generat
   assert.match(markup, /Source audio retained/);
   assert.match(markup, /No ComfyUI connection or credits required/);
   assert.match(markup, /640 × 384/);
+  assert.match(markup, /aria-label="Subject effect preset"/);
+  for (const label of [
+    'Three-person ensemble',
+    'Mirror partner',
+    'Translucent copies',
+    'Background focus',
+    'Subtle focus',
+  ])
+    assert.ok(markup.includes(label));
+  assert.match(markup, /Applying a preset does not render/);
   for (const label of [
     'Horizontal',
     'Vertical',

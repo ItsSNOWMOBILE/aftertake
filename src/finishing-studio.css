@@ -160,6 +160,30 @@
   color: var(--text-secondary, #b8bec5);
   font-size: 12px;
 }
+.finishing-optics {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  margin: 4px 0;
+  padding: 14px;
+  border: 1px solid var(--control-border, #657168);
+  border-radius: 7px;
+}
+.finishing-optics legend {
+  color: var(--text-primary, #eef1eb);
+  font-size: 16px;
+  font-weight: 550;
+  padding: 0 5px;
+}
+.finishing-studio .finishing-optics p {
+  margin: 0;
+  color: var(--text-secondary, #b7c1b9);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.finishing-optics .finishing-slider > span {
+  gap: 10px;
+}
 @media (max-width: 760px) {
   .finishing-studio .image-studio-grid {
     grid-template-columns: 1fr;

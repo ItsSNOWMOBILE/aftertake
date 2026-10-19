@@ -6,6 +6,8 @@ export const finishingPipeline = [
   'linear-light exposure and white balance',
   'contrast and saturation',
   'film look',
+  'highlight glow and warm halation',
+  'edge-clamped RGB displacement',
   'sharpen',
   'vignette',
   'seeded grain',
@@ -21,6 +23,32 @@ export const finishingPresets = [
 
 const signed = z.number().min(-1).max(1);
 const amount = z.number().min(0).max(1);
+export const defaultOpticalFinishing = {
+  glowStrength: 0,
+  glowRadius: 8,
+  halationStrength: 0,
+  halationRadius: 6,
+  chromaticStrength: 0,
+  chromaticOffset: 1.5,
+};
+export const opticalFinishingPresets = [
+  { id: 'off', name: 'Off', settings: { ...defaultOpticalFinishing } },
+  {
+    id: 'soft-glow',
+    name: 'Soft highlight glow',
+    settings: { ...defaultOpticalFinishing, glowStrength: 0.3, glowRadius: 12 },
+  },
+  {
+    id: 'warm-halation',
+    name: 'Warm highlight halo',
+    settings: { ...defaultOpticalFinishing, halationStrength: 0.4, halationRadius: 8 },
+  },
+  {
+    id: 'prismatic',
+    name: 'Subtle prism',
+    settings: { ...defaultOpticalFinishing, chromaticStrength: 0.5, chromaticOffset: 1.5 },
+  },
+] as const;
 export const finishingSettingsSchema = z
   .object({
     exposureEV: z.number().min(-3).max(3),
@@ -33,6 +61,12 @@ export const finishingSettingsSchema = z
     grain: amount,
     preset: z.enum(['clean', 'warm-film', 'cool-film', 'noir', 'vintage']),
     lookStrength: amount,
+    glowStrength: amount.default(defaultOpticalFinishing.glowStrength),
+    glowRadius: z.number().min(0).max(32).default(defaultOpticalFinishing.glowRadius),
+    halationStrength: amount.default(defaultOpticalFinishing.halationStrength),
+    halationRadius: z.number().min(0).max(32).default(defaultOpticalFinishing.halationRadius),
+    chromaticStrength: amount.default(defaultOpticalFinishing.chromaticStrength),
+    chromaticOffset: z.number().min(0).max(8).default(defaultOpticalFinishing.chromaticOffset),
     seed: z
       .number()
       .int()
@@ -54,7 +88,24 @@ export const defaultFinishingSettings: FinishingSettings = {
   preset: 'clean',
   lookStrength: 0,
   seed: 42,
+  ...defaultOpticalFinishing,
 };
+
+export function applyOpticalFinishingPreset(settings: FinishingSettings, id: string) {
+  const preset = opticalFinishingPresets.find((item) => item.id === id);
+  if (!preset) throw new Error('Choose a supported optical finishing recipe.');
+  return { ...settings, ...preset.settings };
+}
+
+export function matchingOpticalFinishingPreset(settings: FinishingSettings) {
+  return (
+    opticalFinishingPresets.find((preset) =>
+      (Object.keys(defaultOpticalFinishing) as (keyof typeof defaultOpticalFinishing)[]).every(
+        (key) => settings[key] === preset.settings[key],
+      ),
+    )?.id || 'custom'
+  );
+}
 
 export function finishingIsIdentity(settings: FinishingSettings) {
   return (
@@ -66,6 +117,9 @@ export function finishingIsIdentity(settings: FinishingSettings) {
     settings.sharpen === 0 &&
     settings.vignette === 0 &&
     settings.grain === 0 &&
+    (settings.glowStrength ?? 0) === 0 &&
+    (settings.halationStrength ?? 0) === 0 &&
+    (settings.chromaticStrength ?? 0) === 0 &&
     (settings.preset === 'clean' || settings.lookStrength === 0)
   );
 }

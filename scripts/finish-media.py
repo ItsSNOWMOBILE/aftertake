@@ -23,8 +23,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'custom_nodes/after
 from media_utils import mux_source_audio, oriented_image
 
 PROCESSOR = 'aftertake-cpu-finishing/1'
+OPTICAL_DEFAULTS = dict(glowStrength=0, glowRadius=8, halationStrength=0,
+                        halationRadius=6, chromaticStrength=0, chromaticOffset=1.5)
 DEFAULTS = dict(exposureEV=0, contrast=0, saturation=0, temperature=0, tint=0,
-                sharpen=0, vignette=0, grain=0, preset='clean', lookStrength=0, seed=42)
+                sharpen=0, vignette=0, grain=0, preset='clean', lookStrength=0, seed=42,
+                **OPTICAL_DEFAULTS)
 PRESETS = {'clean', 'warm-film', 'cool-film', 'noir', 'vintage'}
 SIGNED = ('contrast', 'saturation', 'temperature', 'tint')
 AMOUNTS = ('sharpen', 'vignette', 'grain', 'lookStrength')
@@ -40,8 +43,10 @@ def file_hash(path):
 
 
 def validate_settings(settings):
-    if not isinstance(settings, dict) or set(settings) != set(DEFAULTS):
+    if (not isinstance(settings, dict) or set(settings) - set(DEFAULTS) or
+            set(DEFAULTS) - set(OPTICAL_DEFAULTS) - set(settings)):
         raise ValueError('Use a complete finishing settings object.')
+    settings = {**OPTICAL_DEFAULTS, **settings}
     for name in ('exposureEV',) + SIGNED + AMOUNTS:
         value = settings[name]
         lower, upper = (-3, 3) if name == 'exposureEV' else ((-1, 1) if name in SIGNED else (0, 1))
@@ -49,17 +54,78 @@ def validate_settings(settings):
             raise ValueError('A finishing control is outside its supported range.')
     if settings['preset'] not in PRESETS or type(settings['seed']) is not int or not 0 <= settings['seed'] < 2**32:
         raise ValueError('Use a supported film look and unsigned 32-bit seed.')
+    for name, maximum in {'glowStrength': 1, 'glowRadius': 32, 'halationStrength': 1,
+                          'halationRadius': 32, 'chromaticStrength': 1, 'chromaticOffset': 8}.items():
+        value = settings[name]
+        if (isinstance(value, bool) or not isinstance(value, (int, float)) or
+                not math.isfinite(value) or not 0 <= value <= maximum):
+            raise ValueError('An optical finishing control is outside its supported range.')
     return settings
 
 
 def is_identity(settings):
     return all(settings[name] == 0 for name in ('exposureEV',) + SIGNED + ('sharpen', 'vignette', 'grain')) and (
-        settings['preset'] == 'clean' or settings['lookStrength'] == 0)
+        settings['preset'] == 'clean' or settings['lookStrength'] == 0) and all(
+            settings.get(name, 0) == 0 for name in ('glowStrength', 'halationStrength', 'chromaticStrength'))
+
+
+def blur_highlights(values, radius):
+    """Bounded RGB/L blur with replicated edges; never wrap an edge to its opposite.
+
+    The diffusion-free optics work at the export canvas resolution. Pillow's
+    bounded eight-bit blur is intentional; it is not a model precision change.
+    """
+    if radius == 0:
+        return values.copy()
+    padding = math.ceil(3 * radius)
+    pixels = np.rint(np.clip(values, 0, 1) * 255).astype(np.uint8)
+    axes = ((padding, padding), (padding, padding)) + (((0, 0),) if pixels.ndim == 3 else ())
+    padded = Image.fromarray(np.pad(pixels, axes, mode='edge'))
+    blurred = padded.filter(ImageFilter.GaussianBlur(radius))
+    cropped = blurred.crop((padding, padding, padding + pixels.shape[1], padding + pixels.shape[0]))
+    return np.asarray(cropped, dtype=np.float32) / 255
+
+
+def displace_channel(channel, offset):
+    """Subpixel horizontal sampling with edge clamping and no canvas-size change."""
+    coordinates = np.clip(np.arange(channel.shape[1], dtype=np.float32) - offset,
+                          0, channel.shape[1] - 1)
+    left = np.floor(coordinates).astype(np.intp)
+    right = np.minimum(left + 1, channel.shape[1] - 1)
+    fraction = coordinates - left
+    return channel[:, left] * (1 - fraction) + channel[:, right] * fraction
+
+
+def apply_optics(rgb, settings):
+    """Highlight-driven light spread, a warm outside halo, then optional RGB split."""
+    if settings['glowStrength'] or settings['halationStrength']:
+        bounded = np.clip(rgb, 0, 1)
+        linear = np.where(bounded <= .04045, bounded / 12.92, ((bounded + .055) / 1.055) ** 2.4)
+        luminance = np.sum(linear * np.array([.2126, .7152, .0722], dtype=np.float32), axis=2)
+        highlights = np.clip((luminance - .65) / .35, 0, 1)
+        if highlights.any():
+            if settings['glowStrength']:
+                spread = blur_highlights(linear * highlights[..., None], settings['glowRadius'])
+                linear += np.float32(.75 * settings['glowStrength']) * spread
+            if settings['halationStrength']:
+                spread = blur_highlights(highlights, settings['halationRadius'])
+                halo = np.maximum(spread - highlights, 0)
+                warmth = np.array([1, .22, .04], dtype=np.float32)
+                linear += np.float32(.5 * settings['halationStrength']) * halo[..., None] * warmth
+            rgb = np.where(linear <= .0031308, linear * 12.92,
+                           1.055 * np.maximum(linear, 0)**(1 / 2.4) - .055)
+    if settings['chromaticStrength'] and settings['chromaticOffset']:
+        strength = np.float32(settings['chromaticStrength'])
+        separated = rgb.copy()
+        separated[..., 0] = displace_channel(rgb[..., 0], settings['chromaticOffset'])
+        separated[..., 2] = displace_channel(rgb[..., 2], -settings['chromaticOffset'])
+        rgb = rgb * (1 - strength) + separated * strength
+    return rgb
 
 
 def apply_finishing(image, settings, frame_index=0):
     """Apply the documented RGB pipeline. Preview and final call this function."""
-    validate_settings(settings)
+    settings = validate_settings(settings)
     image = image.convert('RGB')
     if is_identity(settings):
         return image.copy()
@@ -89,6 +155,8 @@ def apply_finishing(image, settings, frame_index=0):
             muted = luma + .68 * (rgb - luma)
             look = .06 + .88 * muted * np.array([1.04, 1.0, .93], dtype=np.float32)
         rgb = rgb * np.float32(1 - strength) + look * np.float32(strength)
+    if any(settings[name] for name in ('glowStrength', 'halationStrength', 'chromaticStrength')):
+        rgb = apply_optics(rgb, settings)
     if settings['sharpen']:
         quantized = Image.fromarray(np.rint(np.clip(rgb, 0, 1) * 255).astype(np.uint8))
         rgb = np.asarray(quantized.filter(ImageFilter.UnsharpMask(

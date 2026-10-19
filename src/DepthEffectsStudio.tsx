@@ -12,6 +12,11 @@ import {
 import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
 import './image-studio.css';
 import './depth-effects-studio.css';
+import {
+  depthEffectPresets,
+  applyDepthEffectPreset,
+  matchingDepthEffectPreset,
+} from './effect-presets';
 
 async function api<T>(url: string, body?: unknown, key?: string): Promise<T> {
   const response = await apiFetch(
@@ -109,6 +114,7 @@ export default function DepthEffectsStudio({
   const changed = Boolean(
     viewed && parsed.success && JSON.stringify(viewed.request) !== JSON.stringify(parsed.data),
   );
+  const preset = matchingDepthEffectPreset(settings);
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     dialog.current?.querySelector<HTMLElement>('button')?.focus();
@@ -156,6 +162,19 @@ export default function DepthEffectsStudio({
     setSelected(job.id);
     setView(job.clip ? 'result' : 'source');
     setError('');
+  }
+  function applyPreset(id: string) {
+    if (!id) return;
+    // Only editable settings change; submitted jobs and admission keys remain
+    // available to rejoin an uncertain request using their original identity.
+    const chosen = depthEffectPresets.find((item) => item.id === id);
+    if (!chosen) return;
+    setSettings(
+      parsed.success
+        ? applyDepthEffectPreset(parsed.data, id).settings
+        : structuredClone(chosen.settings),
+    );
+    setNotice('Preset loaded. Review the still-image settings before creating a result.');
   }
   async function render() {
     if (browserDemo || sending || active || otherBusy || !parsed.success || !engine?.ready) return;
@@ -485,6 +504,26 @@ export default function DepthEffectsStudio({
             )}
           </div>
           <div className="image-controls depth-effects-controls">
+            <label>
+              Starting look · still image
+              <select
+                aria-label="Depth effect preset"
+                value={preset?.id || ''}
+                disabled={sending}
+                onChange={(event) => applyPreset(event.target.value)}
+              >
+                <option value="">Custom settings</option>
+                {depthEffectPresets.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <p className="depth-effects-note">
+              {preset?.description ||
+                'Choose an editable still-image starting point. Applying a preset does not run the model or create a result.'}
+            </p>
             <label>
               SOURCE IMAGE
               <select
