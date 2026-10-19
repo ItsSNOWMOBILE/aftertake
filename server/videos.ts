@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { mkdir, readFile, readdir, rename, unlink, writeFile } from 'node:fs/promises';
 import { createHash, randomUUID } from 'node:crypto';
 import path from 'node:path';
-import type { Comfy, Job } from '@comfyorg/sdk';
+import type { EngineClient, EngineJob } from './sdk-port.js';
 import type { Engine } from '../src/domain.js';
 import {
   videoBusy,
@@ -19,7 +19,7 @@ import { assertJobTarget, jobTargetIssue, type JobTarget } from './job-target.js
 
 export async function videoRouter(context: {
   data: string;
-  client: Comfy;
+  client: EngineClient;
   target: JobTarget;
   uiUrl: string;
   root: string;
@@ -36,7 +36,7 @@ export async function videoRouter(context: {
   await Promise.all([folder, clips].map((folder) => mkdir(folder, { recursive: true })));
   const videos = new Map<string, VideoGeneration>(),
     active = new Set<string>(),
-    handles = new Map<string, Job>();
+    handles = new Map<string, EngineJob>();
   async function persist(video: VideoGeneration) {
     video.updatedAt = new Date().toISOString();
     const target = path.join(folder, video.id + '.json'),
@@ -59,7 +59,7 @@ export async function videoRouter(context: {
     }
     return false;
   }
-  async function track(video: VideoGeneration, initial?: Job) {
+  async function track(video: VideoGeneration, initial?: EngineJob) {
     if (active.has(video.id)) return;
     if (jobTargetIssue(video, target)) {
       await targetMatches(video);

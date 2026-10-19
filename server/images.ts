@@ -4,7 +4,7 @@ import { mkdir, readFile, readdir, rename, unlink, writeFile } from 'node:fs/pro
 import { createHash, randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
-import type { Comfy, Job } from '@comfyorg/sdk';
+import type { EngineClient, EngineJob } from './sdk-port.js';
 import type { Engine } from '../src/domain.js';
 import {
   imageBusy,
@@ -21,7 +21,7 @@ import { assertJobTarget, jobTargetIssue, type JobTarget } from './job-target.js
 
 export async function imageRouter(context: {
   data: string;
-  client: Comfy;
+  client: EngineClient;
   target: JobTarget;
   uiUrl: string;
   engine: () => Promise<Engine>;
@@ -35,7 +35,7 @@ export async function imageRouter(context: {
   await Promise.all([folder, clips].map((folder) => mkdir(folder, { recursive: true })));
   const images = new Map<string, ImageGeneration>(),
     active = new Set<string>(),
-    handles = new Map<string, Job>();
+    handles = new Map<string, EngineJob>();
   async function persist(image: ImageGeneration) {
     image.updatedAt = new Date().toISOString();
     const target = path.join(folder, image.id + '.json'),
@@ -58,7 +58,7 @@ export async function imageRouter(context: {
     }
     return false;
   }
-  async function track(image: ImageGeneration, initial?: Job) {
+  async function track(image: ImageGeneration, initial?: EngineJob) {
     if (active.has(image.id)) return;
     if (jobTargetIssue(image, target)) {
       await targetMatches(image);

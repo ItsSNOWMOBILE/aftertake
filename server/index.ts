@@ -7,7 +7,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { Comfy, type Job } from '@comfyorg/sdk';
+import type { EngineJob } from './sdk-port.js';
+import { createIsolatedClient } from './sdk-client.js';
 import { handleRequestError, RequestError } from './http-errors.js';
 import { loadWorkspaceEnvironment } from './environment.js';
 import { cancelAndRefresh } from './job-cancel.js';
@@ -41,8 +42,7 @@ import {
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 await loadWorkspaceEnvironment(root);
-process.env.COMFY_BASE_URL ||= 'http://127.0.0.1:8189';
-const sdkBaseUrl = canonicalNativeBaseUrl(process.env.COMFY_BASE_URL);
+const sdkBaseUrl = canonicalNativeBaseUrl(process.env.COMFY_BASE_URL || 'http://127.0.0.1:8189');
 const uiUrl = canonicalNativeBaseUrl(process.env.COMFY_UI_URL || 'http://127.0.0.1:8188');
 const data = path.resolve(root, process.env.AFTERTAKE_DATA_DIR || '.data');
 const clipDir = path.join(data, 'clips');
@@ -61,7 +61,7 @@ const python =
     : path.join(root, '.runtime/film-venv', pythonSuffix));
 const exec = promisify(execFile);
 const renders = new Map<string, Render>();
-const handles = new Map<string, Job>();
+const handles = new Map<string, EngineJob>();
 const active = new Set<string>();
 const generation = new GenerationCoordinator();
 let previewBusy = false;
@@ -71,7 +71,12 @@ const jobTarget = createJobTarget({
   uiBaseUrl: uiUrl,
   allowLegacyLoopback: true,
 });
-const client = new Comfy();
+const client = await createIsolatedClient({
+  baseUrl: sdkBaseUrl,
+  apiKey: process.env.COMFY_API_KEY?.trim() || undefined,
+  readRoots: [data],
+  writeRoots: [data],
+});
 const terminal = new Set(['succeeded', 'failed', 'canceled', 'expired', 'output_error']);
 generation.register('take', () =>
   [...renders.values()].some((render) => !terminal.has(render.state)),
@@ -117,6 +122,13 @@ async function engine(
     | 'character-selection'
     | 'character-swap' = 'structure',
 ): Promise<Engine> {
+  if (!client.available)
+    return {
+      connected: false,
+      ready: false,
+      missing: [],
+      message: 'The SDK connection stopped. Restart the studio to reconnect saved jobs.',
+    };
   const cached = healthCache.get(pipeline);
   if (cached && cached.until > Date.now()) return cached.value;
   let result: Engine;
@@ -175,7 +187,7 @@ async function targetMatches(render: Render) {
   }
   return false;
 }
-async function track(render: Render, initial?: Job) {
+async function track(render: Render, initial?: EngineJob) {
   if (active.has(render.id)) return;
   if (jobTargetIssue(render, jobTarget)) {
     await targetMatches(render);
@@ -214,11 +226,13 @@ async function track(render: Render, initial?: Job) {
             '47': 'Reading edited frame',
             '48': 'Refining appearance',
           };
+          const nodeClass = (render.workflow?.[event.currentNode || ''] as { class_type?: unknown })
+            ?.class_type;
           render.stage =
             stages[event.currentNode || ''] ||
-            event.currentNodeClass ||
-            event.message ||
-            'Processing workflow';
+            (typeof nodeClass === 'string' && /^[a-zA-Z0-9_.:-]{1,128}$/.test(nodeClass)
+              ? nodeClass
+              : 'Processing workflow');
         }
       }
     })().catch(() => {});
@@ -743,6 +757,7 @@ app.post('/api/renders/:id/reconcile', async (req, res) => {
 });
 
 const httpServer = createServer(app);
+httpServer.once('close', () => void client.close());
 if (process.argv.includes('--production')) app.use(express.static(path.join(root, 'dist')));
 else {
   const { createServer: createVite } = await import('vite');

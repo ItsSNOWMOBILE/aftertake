@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { mkdir, readFile, readdir, rename, unlink, writeFile } from 'node:fs/promises';
 import { createHash, randomUUID } from 'node:crypto';
 import path from 'node:path';
-import type { Comfy, Job } from '@comfyorg/sdk';
+import type { EngineClient, EngineJob } from './sdk-port.js';
 import {
   frameEditBusy,
   frameEditRequestSchema,
@@ -52,7 +52,7 @@ export function inspectFramePng(bytes: Buffer) {
 
 export async function frameEditorRouter(context: {
   data: string;
-  client: Comfy;
+  client: EngineClient;
   target: JobTarget;
   engine: () => Promise<Engine>;
   uiUrl: string;
@@ -66,7 +66,7 @@ export async function frameEditorRouter(context: {
   await mkdir(folder, { recursive: true });
   const edits = new Map<string, FrameEdit>(),
     active = new Set<string>(),
-    handles = new Map<string, Job>();
+    handles = new Map<string, EngineJob>();
   async function persist(edit: FrameEdit) {
     edit.updatedAt = new Date().toISOString();
     const target = path.join(folder, `${edit.id}.json`),
@@ -96,7 +96,7 @@ export async function frameEditorRouter(context: {
     }
     return false;
   }
-  async function track(edit: FrameEdit, initial?: Job) {
+  async function track(edit: FrameEdit, initial?: EngineJob) {
     if (active.has(edit.id)) return;
     if (jobTargetIssue(edit, target)) {
       await targetMatches(edit);

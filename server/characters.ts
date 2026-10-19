@@ -6,7 +6,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { promisify, isDeepStrictEqual } from 'node:util';
 import path from 'node:path';
-import type { Comfy, Job } from '@comfyorg/sdk';
+import type { EngineClient, EngineJob } from './sdk-port.js';
 import type { Clip, Engine } from '../src/domain.js';
 import {
   characterBusy,
@@ -31,7 +31,7 @@ export async function characterRouter(context: {
   root: string;
   data: string;
   python: string;
-  client: Comfy;
+  client: EngineClient;
   target: JobTarget;
   uiUrl: string;
   engine: (selectionOnly: boolean) => Promise<Engine>;
@@ -46,7 +46,7 @@ export async function characterRouter(context: {
   await mkdir(clips, { recursive: true });
   const jobs = new Map<string, CharacterJob>(),
     active = new Set<string>(),
-    handles = new Map<string, Job>();
+    handles = new Map<string, EngineJob>();
   const file = (id: string, suffix: string) => path.join(folder, `${id}-${suffix}`);
   async function persist(record: CharacterJob) {
     record.updatedAt = new Date().toISOString();
@@ -209,7 +209,7 @@ export async function characterRouter(context: {
     }
     return metadata.workflow;
   }
-  async function finalize(record: CharacterJob, job: Job) {
+  async function finalize(record: CharacterJob, job: EngineJob) {
     if (record.kind === 'selection') {
       const masks = job.getOutputs('selection'),
         source = job.getOutputs('source_save')[0];
@@ -284,7 +284,7 @@ export async function characterRouter(context: {
     }
     return false;
   }
-  async function track(record: CharacterJob, initial?: Job) {
+  async function track(record: CharacterJob, initial?: EngineJob) {
     if (active.has(record.id)) return;
     if (jobTargetIssue(record, target)) {
       await targetMatches(record);
@@ -300,7 +300,10 @@ export async function characterRouter(context: {
         for await (const event of job.events(controller.signal))
           if (event.kind === 'progress') {
             progress = event.value < 1 ? event.value : null;
-            const node = (event.currentNodeClass || String(event.currentNode || '')).toLowerCase();
+            const nodeClass = record.workflow[event.currentNode || '']?.class_type;
+            const node = (
+              typeof nodeClass === 'string' ? nodeClass : String(event.currentNode || '')
+            ).toLowerCase();
             record.stage = node.includes('track')
               ? 'Tracking the selected person'
               : node.includes('sampler') || node.includes('sample')

@@ -12,7 +12,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import express from 'express';
-import type { Comfy } from '@comfyorg/sdk';
+import type { EngineClient } from '../server/sdk-port.js';
 import { imageRouter } from '../server/images.js';
 import { buildImageWorkflow, imageRequirements } from '../server/image-workflow.js';
 import {
@@ -220,7 +220,7 @@ test('ambiguous image admission keeps its key and rejects a mismatched output be
       }
       return job;
     },
-  } as unknown as Comfy;
+  } as unknown as EngineClient;
   let imageFile = '',
     runningWrites = 0,
     heldFailure = false,
@@ -464,7 +464,7 @@ test('restarting observes known image jobs and holds uncertain submissions for e
       assert.equal(options.idempotencyKey, unknown.id);
       return job;
     },
-  } as unknown as Comfy;
+  } as unknown as EngineClient;
   const images = await imageRouter({
     data,
     client,

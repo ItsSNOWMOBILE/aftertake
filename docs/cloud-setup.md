@@ -22,7 +22,17 @@ Saved connection settings are candidates. Local submissions, running jobs, saved
 
 New native jobs save a versioned fingerprint of the startup API and native-engine endpoints before asset upload or submission. Takes, images, text-to-video, frame edits and character jobs check that fingerprint before submission, polling, cancellation or recovery. A different startup endpoint blocks those operations and preserves the original job ID, operation key and workflow. Restore the original engine configuration to recover the job. The binding contains no endpoint addresses or credentials; it identifies endpoint configuration, not an engine instance, account, model set or verified cloud worker.
 
-Historical records without a binding are never silently assigned to a new target. Legacy recovery is permitted only when both startup endpoints use loopback addresses. A missing binding on a non-loopback target, or any malformed existing binding, blocks recovery. Completed local outputs remain available. Per-account client isolation and provider-specific recovery still require separate validation before cloud execution can be enabled.
+Historical records without a binding are never silently assigned to a new target. Legacy recovery is permitted only when both startup endpoints use loopback addresses. A missing binding on a non-loopback target, or any malformed existing binding, blocks recovery. Completed local outputs remain available. Real provider account isolation and provider-specific recovery still require separate validation before cloud execution can be enabled.
+
+## SDK execution boundary
+
+The startup renderer uses the real Comfy SDK inside a dedicated Node worker. Its endpoint and credential are captured when the studio starts, in a copied worker environment; candidate connection changes do not mutate that environment or the main process. SDK jobs, workflows and assets stay inside the worker. The studio exchanges bounded workflow JSON, file bindings, safe job snapshots and progress. Inputs and streamed output files must stay within the configured local data directories, with real-path checks inside the worker.
+
+Uploads retain the SDK's asset hashing, materialization and idempotency behavior. Output downloads stream to a temporary sibling file before publication. Progress uses a separate pull stream, so it does not block status polling, cancellation or concurrent downloads. Pending requests, streams and retained SDK handles are bounded. Errors expose fixed messages and an allow-listed code/status rather than provider response text, credentials or signed URLs.
+
+A deadline, interrupted submit or stopped worker does not trigger a new generation. The existing job record and operation key remain the basis for recovery; the studio must be restarted after a worker failure. The SDK's job lookup currently has no abort parameter: a cancelled local wait discards its late result, while the SDK's own 30-second request timeout bounds the underlying lookup. Refresh, cancellation and event operations use the SDK's abort support.
+
+Loopback contract tests exercise two workers with different endpoints and credentials but identical job and output IDs. They cover real SDK asset upload, a throttled submission retry with the same key, polling, cancellation, progress and streamed downloads. They also check ambiguous submission failures, bounded requests, file/client ownership and rejection of invalid mutated graphs before IPC. This validates the local adapter boundary; it does not establish a cloud account's billing ownership, compatibility or recovery behavior. Remote execution remains disabled.
 
 ## Before cloud generation can become available
 

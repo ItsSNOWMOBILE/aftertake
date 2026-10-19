@@ -8,7 +8,7 @@ import { mkdtemp, mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
 import express from 'express';
-import type { Comfy } from '@comfyorg/sdk';
+import type { EngineClient } from '../server/sdk-port.js';
 import { frameEditorRouter, inspectFramePng } from '../server/frame-edits.js';
 import { buildFrameEditWorkflow } from '../server/frame-workflow.js';
 import { frameEditRequestSchema, type FrameEditRequest } from '../src/frame-edit.js';
@@ -122,7 +122,7 @@ test('accepted-but-unobserved frame submissions recover by the same key and publ
       }
       return job;
     },
-  } as unknown as Comfy;
+  } as unknown as EngineClient;
   const context = {
     data,
     client,

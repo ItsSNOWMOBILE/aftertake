@@ -11,7 +11,7 @@ import { syncBuiltinESMExports } from 'node:module';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
-import type { Comfy } from '@comfyorg/sdk';
+import type { EngineClient } from '../server/sdk-port.js';
 import {
   videoRequestSchema,
   videoDimensions,
@@ -162,7 +162,7 @@ test('native video admission rejoins its key and rejects mismatched workflow or 
       }
       return job;
     },
-  } as unknown as Comfy;
+  } as unknown as EngineClient;
   let videoFile = '',
     heldFailure = false,
     releaseFailure!: () => void,
