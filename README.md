@@ -73,8 +73,9 @@ The focused film was assembled in Aftertake itself; its editable
 
 **[Open the recorded editor →](https://aftertake-studio.right-bard-9761.chatgpt.site/studio/)**
 
-Review thirteen VFX and reference recipes, plus separate H3 and text-to-video
-examples. **Replace character** opens a completed H3 take: switch between its
+Open the featured **H3 character replacement** or **portrait text-to-video**
+cards, then explore thirteen VFX, camera and motion recipes. The character card
+opens the recorded **1536 × 640** H3 take: switch between its
 source, tracked selection and result, then inspect the reference photo and export
 the original recipe or executed workflow. Adjust cues and compare the other
 recorded takes without a GPU. Videos load as you open them. New generation,

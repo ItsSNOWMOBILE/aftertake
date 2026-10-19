@@ -5,25 +5,25 @@
       "bytes": 1114017,
       "sha256": "e3373be04dce7bb375284939bd12a06d07e8033732c41f5c80c73d154425fb99",
       "frames": 97,
-      "fps": 24.0,
+      "fps": 24,
       "width": 768,
       "height": 432,
       "duration": 4.041666666666667
     },
     "camera-take.mp4": {
-      "bytes": 1486252,
-      "sha256": "0082a7102a54f6419c76c8af860a3e9525beb267036a44239022948eba65ee96",
+      "bytes": 1353113,
+      "sha256": "beec6978e441b013b29b5450298846693f95fb4ee84d58cc5e282a3cac9e0905",
       "frames": 97,
-      "fps": 24.0,
+      "fps": 24,
       "width": 768,
-      "height": 448,
+      "height": 432,
       "duration": 4.041666666666667
     },
     "source.mp4": {
       "bytes": 1252907,
       "sha256": "5029ea3c92f7fd79fe154116804bb12c76b7b88669d40980443813ac62f2b88b",
       "frames": 101,
-      "fps": 24.0,
+      "fps": 24,
       "width": 768,
       "height": 432,
       "duration": 4.208333333333333
@@ -31,6 +31,18 @@
     "edited-frame.png": {
       "bytes": 474967,
       "sha256": "43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa"
+    },
+    "camera-recipe.json": {
+      "bytes": 1232,
+      "sha256": "ddcc9408e57d5d163ed1d789ee84380263a0298f59a66979ab0f08f6c4c9ed3c"
+    },
+    "camera-workflow-api.json": {
+      "bytes": 56944,
+      "sha256": "ace481f67ca9e72818107f1e954c43a5270ed9b5ea7c990220c5ce6ec37e0926"
+    },
+    "camera-poster.jpg": {
+      "bytes": 44300,
+      "sha256": "c969014b1618bafcc3a9cce344ca25cdb44d337446706957a5e057ce40071760"
     }
   },
   "transformation": {
@@ -45,8 +57,27 @@
     "displayGeometryMatchesSource": true
   },
   "cameraTake": {
-    "renderId": "f15f0f87-510a-4ecb-9ef5-393fec7ea8e8",
-    "sdkJobId": "ffb3a619-128c-4b29-9d0b-ad2762751028"
+    "renderId": "2eaace67-2cf8-49fc-9b3b-dc5c2dfe7be3",
+    "sdkJobId": "cfe98f7c-8201-41a1-9e1f-7d809db54866",
+    "createdAt": "2026-10-19T14:02:42.867Z",
+    "seed": 2960,
+    "recipe": "camera-recipe.json",
+    "workflow": "camera-workflow-api.json",
+    "workflowSource": "Unmodified recipe and actual executed graph extracted from camera-take.mp4 UTF-8 metadata.",
+    "inputFiles": {
+      "b1262e85-c2ba-4334-bc61-8faa573b106d.png": "edited-frame.png"
+    },
+    "displayGeometryMatchesSource": true,
+    "rawGeneration": {
+      "file": "../examples/castle-pullback/raw.mp4",
+      "bytes": 1486341,
+      "sha256": "a2ad4ae01a77dde2fd855f7e4f46c6b98b0af831d07b3a6a60899bb9104d53f0",
+      "frames": 97,
+      "fps": 24,
+      "width": 768,
+      "height": 448,
+      "duration": 4.041666666666667
+    }
   },
   "source": {
     "author": "Dean Diemert",
@@ -60,7 +91,7 @@
   "models": "Local open-weight Qwen Image Edit followed by LTX-2.5 and LTX-2.3 IC in/outpainting adapter. Model licenses apply separately.",
   "audio": "Silent",
   "notice": "App demonstration excerpt and generated outputs. No creator endorsement implied.",
-  "nativeVideoCodecReview": "docs/generation-motion-evidence.json",
+  "nativeVideoCodecReview": "https://github.com/ItsSNOWMOBILE/aftertake/blob/8c8aeba5e0d56e9167b0a946c2fa767010c5e583/docs/generation-motion-evidence.json",
   "hostedFiles": {
     "transformation.mp4": "../examples/coastal-kingdom/result.mp4",
     "source.mp4": "../examples/coastal-kingdom/source.mp4",

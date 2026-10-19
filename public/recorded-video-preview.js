@@ -14,8 +14,6 @@ const assetAliases = new Map([
   ['castle/source.mp4', 'examples/coastal-kingdom/source.mp4'],
   ['castle/transformation.mp4', 'examples/coastal-kingdom/result.mp4'],
   ['castle/camera-take.mp4', 'examples/castle-pullback/result.mp4'],
-  ['examples/crystal-transition/raw.mp4', 'examples/crystal-transition/result.mp4'],
-  ['examples/castle-pullback/raw.mp4', 'examples/castle-pullback/result.mp4'],
 ]);
 
 // Pages publishes docs/, while the packaged showcase also includes examples/

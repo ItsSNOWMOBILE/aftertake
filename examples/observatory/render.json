@@ -1,8 +1,15 @@
 {
-  "id": "8abae2a5-bd8a-4f45-8d36-8f024635c8cf",
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "bc4e8020-06f0-4c70-9d6e-aff4c5f1453c",
+  "requestKey": "gallery-refresh-20261019-observatory-final-5090",
+  "requestDigest": "9daa2cf21837beb7cdfa11d35aec78fc525d42fd416876da118e216519c9b40c",
   "recipe": {
     "format": "aftertake/1",
-    "name": "Above the clouds",
+    "name": "Above the clouds — current pipeline refresh",
     "clip": {
       "id": "3fe583c9-b872-4995-985e-39085d87ab80",
       "name": "Above the clouds",
@@ -37,8 +44,8 @@
   },
   "state": "succeeded",
   "progress": 1,
-  "createdAt": "2026-10-18T03:21:01.814Z",
-  "updatedAt": "2026-10-18T03:22:26.818Z",
+  "createdAt": "2026-10-19T14:06:08.371Z",
+  "updatedAt": "2026-10-19T14:07:30.871Z",
   "workflow": {
     "1": {
       "class_type": "UnetLoaderGGUF",
@@ -114,10 +121,7 @@
         "frames": 1,
         "fps": 24,
         "trim_start": 0
-      },
-      "is_changed": [
-        "d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5"
-      ]
+      }
     },
     "11": {
       "class_type": "EmptyLTXVLatentVideo",
@@ -252,7 +256,9 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/cinema",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Above the clouds\",\"clip\":{\"id\":\"3fe583c9-b872-4995-985e-39085d87ab80\",\"name\":\"Above the clouds\",\"sha256\":\"d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5\",\"width\":1152,\"height\":768,\"duration\":1,\"url\":\"/media/3fe583c9-b872-4995-985e-39085d87ab80.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A continuous cinematic aerial shot of a copper-domed observatory on a rocky ridge above a sea of clouds at sunrise. The solid telescope dome and building remain unchanged. Wisps of cloud drift slowly through the valley as the camera gently pulls back, revealing more of the mountain ridge. Realistic scale, stable architecture, serene golden light.\",\"cue\":{\"start\":0.4,\"end\":0.5625,\"fade\":0.4,\"feather\":0.055,\"anchor\":0,\"strokes\":[]},\"seed\":5090,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"tracks\"}}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Above the clouds — current pipeline refresh\",\"clip\":{\"id\":\"3fe583c9-b872-4995-985e-39085d87ab80\",\"name\":\"Above the clouds\",\"sha256\":\"d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5\",\"width\":1152,\"height\":768,\"duration\":1,\"url\":\"/media/3fe583c9-b872-4995-985e-39085d87ab80.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A continuous cinematic aerial shot of a copper-domed observatory on a rocky ridge above a sea of clouds at sunrise. The solid telescope dome and building remain unchanged. Wisps of cloud drift slowly through the valley as the camera gently pulls back, revealing more of the mountain ridge. Realistic scale, stable architecture, serene golden light.\",\"cue\":{\"start\":0.4,\"end\":0.5625,\"fade\":0.4,\"feather\":0.055,\"anchor\":0,\"strokes\":[]},\"seed\":5090,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"tracks\"}}",
+        "display_width": 768,
+        "display_height": 512
       }
     },
     "22": {
@@ -264,7 +270,7 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/generation",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Above the clouds\",\"clip\":{\"id\":\"3fe583c9-b872-4995-985e-39085d87ab80\",\"name\":\"Above the clouds\",\"sha256\":\"d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5\",\"width\":1152,\"height\":768,\"duration\":1,\"url\":\"/media/3fe583c9-b872-4995-985e-39085d87ab80.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A continuous cinematic aerial shot of a copper-domed observatory on a rocky ridge above a sea of clouds at sunrise. The solid telescope dome and building remain unchanged. Wisps of cloud drift slowly through the valley as the camera gently pulls back, revealing more of the mountain ridge. Realistic scale, stable architecture, serene golden light.\",\"cue\":{\"start\":0.4,\"end\":0.5625,\"fade\":0.4,\"feather\":0.055,\"anchor\":0,\"strokes\":[]},\"seed\":5090,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"tracks\"}}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Above the clouds — current pipeline refresh\",\"clip\":{\"id\":\"3fe583c9-b872-4995-985e-39085d87ab80\",\"name\":\"Above the clouds\",\"sha256\":\"d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5\",\"width\":1152,\"height\":768,\"duration\":1,\"url\":\"/media/3fe583c9-b872-4995-985e-39085d87ab80.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A continuous cinematic aerial shot of a copper-domed observatory on a rocky ridge above a sea of clouds at sunrise. The solid telescope dome and building remain unchanged. Wisps of cloud drift slowly through the valley as the camera gently pulls back, revealing more of the mountain ridge. Realistic scale, stable architecture, serene golden light.\",\"cue\":{\"start\":0.4,\"end\":0.5625,\"fade\":0.4,\"feather\":0.055,\"anchor\":0,\"strokes\":[]},\"seed\":5090,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"tracks\"}}"
       }
     },
     "41": {
@@ -320,13 +326,13 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/framing-guide",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Above the clouds\",\"clip\":{\"id\":\"3fe583c9-b872-4995-985e-39085d87ab80\",\"name\":\"Above the clouds\",\"sha256\":\"d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5\",\"width\":1152,\"height\":768,\"duration\":1,\"url\":\"/media/3fe583c9-b872-4995-985e-39085d87ab80.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A continuous cinematic aerial shot of a copper-domed observatory on a rocky ridge above a sea of clouds at sunrise. The solid telescope dome and building remain unchanged. Wisps of cloud drift slowly through the valley as the camera gently pulls back, revealing more of the mountain ridge. Realistic scale, stable architecture, serene golden light.\",\"cue\":{\"start\":0.4,\"end\":0.5625,\"fade\":0.4,\"feather\":0.055,\"anchor\":0,\"strokes\":[]},\"seed\":5090,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"tracks\"}}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Above the clouds — current pipeline refresh\",\"clip\":{\"id\":\"3fe583c9-b872-4995-985e-39085d87ab80\",\"name\":\"Above the clouds\",\"sha256\":\"d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5\",\"width\":1152,\"height\":768,\"duration\":1,\"url\":\"/media/3fe583c9-b872-4995-985e-39085d87ab80.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A continuous cinematic aerial shot of a copper-domed observatory on a rocky ridge above a sea of clouds at sunrise. The solid telescope dome and building remain unchanged. Wisps of cloud drift slowly through the valley as the camera gently pulls back, revealing more of the mountain ridge. Realistic scale, stable architecture, serene golden light.\",\"cue\":{\"start\":0.4,\"end\":0.5625,\"fade\":0.4,\"feather\":0.055,\"anchor\":0,\"strokes\":[]},\"seed\":5090,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"tracks\"}}"
       }
     }
   },
-  "jobId": "14af37f2-f3df-46d9-a592-5510df1aeaef",
+  "jobId": "e6e41bdd-1b64-49ac-bf04-0d9250b78c86",
   "stage": "Complete",
-  "output": "/outputs/8abae2a5-bd8a-4f45-8d36-8f024635c8cf.mp4",
-  "rawOutput": "/outputs/8abae2a5-bd8a-4f45-8d36-8f024635c8cf-raw.mp4",
-  "guideOutput": "/outputs/8abae2a5-bd8a-4f45-8d36-8f024635c8cf-guide.mp4"
+  "output": "/outputs/bc4e8020-06f0-4c70-9d6e-aff4c5f1453c.mp4",
+  "rawOutput": "/outputs/bc4e8020-06f0-4c70-9d6e-aff4c5f1453c-raw.mp4",
+  "guideOutput": "/outputs/bc4e8020-06f0-4c70-9d6e-aff4c5f1453c-guide.mp4"
 }

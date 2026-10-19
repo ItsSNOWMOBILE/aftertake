@@ -1,8 +1,15 @@
 {
-  "id": "ca56f918-ba61-4935-86ca-13814f22d56c",
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "485bbac4-d1ab-4ae5-ab66-00dca339978a",
+  "requestKey": "gallery-refresh-20261019-reclaimed-final-104",
+  "requestDigest": "255e2c97e50a841e8518ca2f76aca1a835344eccb056468bbeeec3c83e6d45ef",
   "recipe": {
     "format": "aftertake/1",
-    "name": "Living walls - sampling and resolution check",
+    "name": "Living walls - sampling and resolution check — current pipeline refresh",
     "clip": {
       "id": "a7e24e70-2168-4e9c-b97f-06ae1401f558",
       "name": "The light room · camera study.mp4",
@@ -55,8 +62,8 @@
   },
   "state": "succeeded",
   "progress": 1,
-  "createdAt": "2026-10-17T14:59:33.663Z",
-  "updatedAt": "2026-10-17T15:01:02.943Z",
+  "createdAt": "2026-10-19T13:47:49.204Z",
+  "updatedAt": "2026-10-19T13:49:36.570Z",
   "workflow": {
     "1": {
       "class_type": "UnetLoaderGGUF",
@@ -132,10 +139,7 @@
         "frames": 97,
         "fps": 24,
         "trim_start": 0
-      },
-      "is_changed": [
-        "c54ab72b1e49289da2ea7df20e950a492e27a3c791da89d9e74da44031849b4b"
-      ]
+      }
     },
     "9": {
       "class_type": "AftertakeCueMask",
@@ -203,7 +207,7 @@
           1
         ],
         "crop": "disabled",
-        "use_tiled_encode": true,
+        "use_tiled_encode": false,
         "tile_size": 256,
         "tile_overlap": 64,
         "attention_strength": 1
@@ -283,7 +287,7 @@
       }
     },
     "19": {
-      "class_type": "VAEDecodeTiled",
+      "class_type": "VAEDecode",
       "inputs": {
         "samples": [
           "18",
@@ -292,11 +296,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "20": {
@@ -313,6 +313,11 @@
         "mask": [
           "9",
           0
+        ],
+        "match_color": false,
+        "spatial_mask": [
+          "9",
+          2
         ]
       }
     },
@@ -325,7 +330,14 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/composite",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Living walls - sampling and resolution check\",\"clip\":{\"id\":\"a7e24e70-2168-4e9c-b97f-06ae1401f558\",\"name\":\"The light room · camera study.mp4\",\"sha256\":\"c54ab72b1e49289da2ea7df20e950a492e27a3c791da89d9e74da44031849b4b\",\"width\":768,\"height\":448,\"duration\":5,\"url\":\"/media/a7e24e70-2168-4e9c-b97f-06ae1401f558.mp4\"},\"prompt\":\"Thick living emerald moss, delicate green ferns and trailing ivy completely cover the surface. Rich botanical detail, tiny leaves sway gently, realistic natural lighting and coherent perspective.\",\"cue\":{\"start\":0,\"end\":4.041666666666667,\"fade\":0.3,\"feather\":0.08,\"anchor\":1,\"strokes\":[{\"points\":[{\"x\":0.12,\"y\":0.2},{\"x\":0.18,\"y\":0.85}],\"radius\":0.48},{\"points\":[{\"x\":0.88,\"y\":0.2},{\"x\":0.82,\"y\":0.85}],\"radius\":0.48}]},\"seed\":104,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\"}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Living walls - sampling and resolution check — current pipeline refresh\",\"clip\":{\"id\":\"a7e24e70-2168-4e9c-b97f-06ae1401f558\",\"name\":\"The light room · camera study.mp4\",\"sha256\":\"c54ab72b1e49289da2ea7df20e950a492e27a3c791da89d9e74da44031849b4b\",\"width\":768,\"height\":448,\"duration\":5,\"url\":\"/media/a7e24e70-2168-4e9c-b97f-06ae1401f558.mp4\"},\"prompt\":\"Thick living emerald moss, delicate green ferns and trailing ivy completely cover the surface. Rich botanical detail, tiny leaves sway gently, realistic natural lighting and coherent perspective.\",\"cue\":{\"start\":0,\"end\":4.041666666666667,\"fade\":0.3,\"feather\":0.08,\"anchor\":1,\"strokes\":[{\"points\":[{\"x\":0.12,\"y\":0.2},{\"x\":0.18,\"y\":0.85}],\"radius\":0.48},{\"points\":[{\"x\":0.88,\"y\":0.2},{\"x\":0.82,\"y\":0.85}],\"radius\":0.48}]},\"seed\":104,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\"}",
+        "source_audio": [
+          "8",
+          1
+        ],
+        "audio_start": 0,
+        "display_width": 768,
+        "display_height": 448
       }
     },
     "22": {
@@ -337,7 +349,7 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/generation",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Living walls - sampling and resolution check\",\"clip\":{\"id\":\"a7e24e70-2168-4e9c-b97f-06ae1401f558\",\"name\":\"The light room · camera study.mp4\",\"sha256\":\"c54ab72b1e49289da2ea7df20e950a492e27a3c791da89d9e74da44031849b4b\",\"width\":768,\"height\":448,\"duration\":5,\"url\":\"/media/a7e24e70-2168-4e9c-b97f-06ae1401f558.mp4\"},\"prompt\":\"Thick living emerald moss, delicate green ferns and trailing ivy completely cover the surface. Rich botanical detail, tiny leaves sway gently, realistic natural lighting and coherent perspective.\",\"cue\":{\"start\":0,\"end\":4.041666666666667,\"fade\":0.3,\"feather\":0.08,\"anchor\":1,\"strokes\":[{\"points\":[{\"x\":0.12,\"y\":0.2},{\"x\":0.18,\"y\":0.85}],\"radius\":0.48},{\"points\":[{\"x\":0.88,\"y\":0.2},{\"x\":0.82,\"y\":0.85}],\"radius\":0.48}]},\"seed\":104,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\"}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Living walls - sampling and resolution check — current pipeline refresh\",\"clip\":{\"id\":\"a7e24e70-2168-4e9c-b97f-06ae1401f558\",\"name\":\"The light room · camera study.mp4\",\"sha256\":\"c54ab72b1e49289da2ea7df20e950a492e27a3c791da89d9e74da44031849b4b\",\"width\":768,\"height\":448,\"duration\":5,\"url\":\"/media/a7e24e70-2168-4e9c-b97f-06ae1401f558.mp4\"},\"prompt\":\"Thick living emerald moss, delicate green ferns and trailing ivy completely cover the surface. Rich botanical detail, tiny leaves sway gently, realistic natural lighting and coherent perspective.\",\"cue\":{\"start\":0,\"end\":4.041666666666667,\"fade\":0.3,\"feather\":0.08,\"anchor\":1,\"strokes\":[{\"points\":[{\"x\":0.12,\"y\":0.2},{\"x\":0.18,\"y\":0.85}],\"radius\":0.48},{\"points\":[{\"x\":0.88,\"y\":0.2},{\"x\":0.82,\"y\":0.85}],\"radius\":0.48}]},\"seed\":104,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\"}"
       }
     },
     "23": {
@@ -428,7 +440,7 @@
       }
     },
     "30": {
-      "class_type": "VAEEncodeTiled",
+      "class_type": "VAEEncode",
       "inputs": {
         "pixels": [
           "29",
@@ -437,11 +449,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "31": {
@@ -489,7 +497,7 @@
       }
     },
     "34": {
-      "class_type": "VAEDecodeTiled",
+      "class_type": "VAEDecode",
       "inputs": {
         "samples": [
           "33",
@@ -498,11 +506,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "35": {
@@ -568,13 +572,13 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/coarse",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Living walls - sampling and resolution check\",\"clip\":{\"id\":\"a7e24e70-2168-4e9c-b97f-06ae1401f558\",\"name\":\"The light room · camera study.mp4\",\"sha256\":\"c54ab72b1e49289da2ea7df20e950a492e27a3c791da89d9e74da44031849b4b\",\"width\":768,\"height\":448,\"duration\":5,\"url\":\"/media/a7e24e70-2168-4e9c-b97f-06ae1401f558.mp4\"},\"prompt\":\"Thick living emerald moss, delicate green ferns and trailing ivy completely cover the surface. Rich botanical detail, tiny leaves sway gently, realistic natural lighting and coherent perspective.\",\"cue\":{\"start\":0,\"end\":4.041666666666667,\"fade\":0.3,\"feather\":0.08,\"anchor\":1,\"strokes\":[{\"points\":[{\"x\":0.12,\"y\":0.2},{\"x\":0.18,\"y\":0.85}],\"radius\":0.48},{\"points\":[{\"x\":0.88,\"y\":0.2},{\"x\":0.82,\"y\":0.85}],\"radius\":0.48}]},\"seed\":104,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\"}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Living walls - sampling and resolution check — current pipeline refresh\",\"clip\":{\"id\":\"a7e24e70-2168-4e9c-b97f-06ae1401f558\",\"name\":\"The light room · camera study.mp4\",\"sha256\":\"c54ab72b1e49289da2ea7df20e950a492e27a3c791da89d9e74da44031849b4b\",\"width\":768,\"height\":448,\"duration\":5,\"url\":\"/media/a7e24e70-2168-4e9c-b97f-06ae1401f558.mp4\"},\"prompt\":\"Thick living emerald moss, delicate green ferns and trailing ivy completely cover the surface. Rich botanical detail, tiny leaves sway gently, realistic natural lighting and coherent perspective.\",\"cue\":{\"start\":0,\"end\":4.041666666666667,\"fade\":0.3,\"feather\":0.08,\"anchor\":1,\"strokes\":[{\"points\":[{\"x\":0.12,\"y\":0.2},{\"x\":0.18,\"y\":0.85}],\"radius\":0.48},{\"points\":[{\"x\":0.88,\"y\":0.2},{\"x\":0.82,\"y\":0.85}],\"radius\":0.48}]},\"seed\":104,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\"}"
       }
     }
   },
-  "jobId": "081a3218-d2d8-4421-bb29-3a21cd866bfa",
+  "jobId": "3715e738-3b71-4d16-9871-5774f6882fa5",
   "stage": "Complete",
-  "output": "/outputs/ca56f918-ba61-4935-86ca-13814f22d56c.mp4",
-  "rawOutput": "/outputs/ca56f918-ba61-4935-86ca-13814f22d56c-raw.mp4",
-  "coarseOutput": "/outputs/ca56f918-ba61-4935-86ca-13814f22d56c-coarse.mp4"
+  "output": "/outputs/485bbac4-d1ab-4ae5-ab66-00dca339978a.mp4",
+  "rawOutput": "/outputs/485bbac4-d1ab-4ae5-ab66-00dca339978a-raw.mp4",
+  "coarseOutput": "/outputs/485bbac4-d1ab-4ae5-ab66-00dca339978a-coarse.mp4"
 }

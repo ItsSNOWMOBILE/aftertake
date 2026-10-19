@@ -1,6 +1,6 @@
 {
   "format": "aftertake/1",
-  "name": "Motion-guided pullback — test",
+  "name": "Motion-guided pullback — test — current pipeline refresh",
   "clip": {
     "id": "f3fe6177-e57e-4b0e-8a9d-11c85ac9cc9d",
     "name": "room-reference.png",
@@ -8,8 +8,8 @@
     "width": 768,
     "height": 432,
     "duration": 1,
-    "kind": "image",
-    "url": "/media/f3fe6177-e57e-4b0e-8a9d-11c85ac9cc9d.png"
+    "url": "/media/f3fe6177-e57e-4b0e-8a9d-11c85ac9cc9d.png",
+    "kind": "image"
   },
   "prompt": "A bright empty living room with a ceiling fan, white walls, a window at the far end and soft sunlight falling across a gray carpet. Realistic architectural cinematography, a peaceful continuous shot.",
   "cue": {
@@ -21,7 +21,7 @@
     "strokes": []
   },
   "seed": 42,
-  "quality": "draft",
+  "quality": "final",
   "trimStart": 0,
   "pipeline": "cinema",
   "cinema": {

@@ -1,8 +1,15 @@
 {
-  "id": "034b4b2f-2664-4636-8c17-44d64debe1c8",
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "976e8342-651b-46f1-bebf-e11126727600",
+  "requestKey": "gallery-refresh-20261019-winter-valley-final-2961",
+  "requestDigest": "5f3234b317ec11d831175a0a9458518820b941127c5fb114d45bda60e6450045",
   "recipe": {
     "format": "aftertake/1",
-    "name": "A season in a moment",
+    "name": "A season in a moment — current pipeline refresh",
     "clip": {
       "id": "80b2d12e-8765-4c66-8d06-096df65fb7bc",
       "name": "misty-mountains - Florian Delee - Pexels.mp4",
@@ -79,8 +86,8 @@
   },
   "state": "succeeded",
   "progress": 1,
-  "createdAt": "2026-10-18T01:06:13.512Z",
-  "updatedAt": "2026-10-18T01:07:54.970Z",
+  "createdAt": "2026-10-19T14:04:07.741Z",
+  "updatedAt": "2026-10-19T14:06:05.925Z",
   "workflow": {
     "1": {
       "class_type": "UnetLoaderGGUF",
@@ -156,10 +163,7 @@
         "frames": 97,
         "fps": 24,
         "trim_start": 0
-      },
-      "is_changed": [
-        "6c8a715365bcef18c6a54210c731957cd2f8dd3ebb6d0ba184fe833de1cbd415"
-      ]
+      }
     },
     "9": {
       "class_type": "AftertakeCueMask",
@@ -307,7 +311,7 @@
       }
     },
     "19": {
-      "class_type": "VAEDecodeTiled",
+      "class_type": "VAEDecode",
       "inputs": {
         "samples": [
           "18",
@@ -316,11 +320,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "20": {
@@ -337,6 +337,11 @@
         "mask": [
           "9",
           0
+        ],
+        "match_color": false,
+        "spatial_mask": [
+          "9",
+          2
         ]
       }
     },
@@ -349,12 +354,14 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/composite",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"A season in a moment\",\"clip\":{\"id\":\"80b2d12e-8765-4c66-8d06-096df65fb7bc\",\"name\":\"misty-mountains - Florian Delee - Pexels.mp4\",\"sha256\":\"6c8a715365bcef18c6a54210c731957cd2f8dd3ebb6d0ba184fe833de1cbd415\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/80b2d12e-8765-4c66-8d06-096df65fb7bc.mp4\",\"hasAudio\":false},\"prompt\":\"A pristine alpine mountain valley covered in deep white winter snow. Preserve the original mountain contours and camera movement. The winding path remains visible in the snow, with subtle cool blue shadows and warm sunlight. Low clouds drift naturally between the snowy peaks. Crisp photorealistic winter drone cinematography, a single continuous shot.\",\"cue\":{\"start\":0.35,\"end\":3.85,\"fade\":0.35,\"feather\":0.035,\"tracking\":\"flow\",\"anchor\":1.5,\"strokes\":[{\"points\":[{\"x\":0,\"y\":0.9},{\"x\":0.35,\"y\":0.9},{\"x\":0.7,\"y\":0.9},{\"x\":1,\"y\":0.9}],\"radius\":0.5,\"mode\":\"paint\"},{\"points\":[{\"x\":0.8,\"y\":0.55},{\"x\":1,\"y\":0.4}],\"radius\":0.3,\"mode\":\"paint\"}]},\"seed\":2961,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"directionStrength\":1,\"editReference\":{\"id\":\"1d1ed4f9-60f9-4ddb-91e6-6ba718c93fab\",\"name\":\"Edited frame · Transform this exact green alpine mountain landscape into deep winter.\",\"sha256\":\"1418e830cd915dc855844c04d1ef2cb56ad7ba2cc38893b2fc8611c3dd3e6b9d\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/1d1ed4f9-60f9-4ddb-91e6-6ba718c93fab.png\",\"kind\":\"image\",\"hasAudio\":false}}",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"A season in a moment — current pipeline refresh\",\"clip\":{\"id\":\"80b2d12e-8765-4c66-8d06-096df65fb7bc\",\"name\":\"misty-mountains - Florian Delee - Pexels.mp4\",\"sha256\":\"6c8a715365bcef18c6a54210c731957cd2f8dd3ebb6d0ba184fe833de1cbd415\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/80b2d12e-8765-4c66-8d06-096df65fb7bc.mp4\",\"hasAudio\":false},\"prompt\":\"A pristine alpine mountain valley covered in deep white winter snow. Preserve the original mountain contours and camera movement. The winding path remains visible in the snow, with subtle cool blue shadows and warm sunlight. Low clouds drift naturally between the snowy peaks. Crisp photorealistic winter drone cinematography, a single continuous shot.\",\"cue\":{\"start\":0.35,\"end\":3.85,\"fade\":0.35,\"feather\":0.035,\"tracking\":\"flow\",\"anchor\":1.5,\"strokes\":[{\"points\":[{\"x\":0,\"y\":0.9},{\"x\":0.35,\"y\":0.9},{\"x\":0.7,\"y\":0.9},{\"x\":1,\"y\":0.9}],\"radius\":0.5,\"mode\":\"paint\"},{\"points\":[{\"x\":0.8,\"y\":0.55},{\"x\":1,\"y\":0.4}],\"radius\":0.3,\"mode\":\"paint\"}]},\"seed\":2961,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"directionStrength\":1,\"editReference\":{\"id\":\"1d1ed4f9-60f9-4ddb-91e6-6ba718c93fab\",\"name\":\"Edited frame · Transform this exact green alpine mountain landscape into deep winter.\",\"sha256\":\"1418e830cd915dc855844c04d1ef2cb56ad7ba2cc38893b2fc8611c3dd3e6b9d\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/1d1ed4f9-60f9-4ddb-91e6-6ba718c93fab.png\",\"kind\":\"image\",\"hasAudio\":false}}",
         "source_audio": [
           "8",
           1
         ],
-        "audio_start": 0
+        "audio_start": 0,
+        "display_width": 768,
+        "display_height": 432
       }
     },
     "22": {
@@ -366,7 +373,7 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/generation",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"A season in a moment\",\"clip\":{\"id\":\"80b2d12e-8765-4c66-8d06-096df65fb7bc\",\"name\":\"misty-mountains - Florian Delee - Pexels.mp4\",\"sha256\":\"6c8a715365bcef18c6a54210c731957cd2f8dd3ebb6d0ba184fe833de1cbd415\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/80b2d12e-8765-4c66-8d06-096df65fb7bc.mp4\",\"hasAudio\":false},\"prompt\":\"A pristine alpine mountain valley covered in deep white winter snow. Preserve the original mountain contours and camera movement. The winding path remains visible in the snow, with subtle cool blue shadows and warm sunlight. Low clouds drift naturally between the snowy peaks. Crisp photorealistic winter drone cinematography, a single continuous shot.\",\"cue\":{\"start\":0.35,\"end\":3.85,\"fade\":0.35,\"feather\":0.035,\"tracking\":\"flow\",\"anchor\":1.5,\"strokes\":[{\"points\":[{\"x\":0,\"y\":0.9},{\"x\":0.35,\"y\":0.9},{\"x\":0.7,\"y\":0.9},{\"x\":1,\"y\":0.9}],\"radius\":0.5,\"mode\":\"paint\"},{\"points\":[{\"x\":0.8,\"y\":0.55},{\"x\":1,\"y\":0.4}],\"radius\":0.3,\"mode\":\"paint\"}]},\"seed\":2961,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"directionStrength\":1,\"editReference\":{\"id\":\"1d1ed4f9-60f9-4ddb-91e6-6ba718c93fab\",\"name\":\"Edited frame · Transform this exact green alpine mountain landscape into deep winter.\",\"sha256\":\"1418e830cd915dc855844c04d1ef2cb56ad7ba2cc38893b2fc8611c3dd3e6b9d\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/1d1ed4f9-60f9-4ddb-91e6-6ba718c93fab.png\",\"kind\":\"image\",\"hasAudio\":false}}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"A season in a moment — current pipeline refresh\",\"clip\":{\"id\":\"80b2d12e-8765-4c66-8d06-096df65fb7bc\",\"name\":\"misty-mountains - Florian Delee - Pexels.mp4\",\"sha256\":\"6c8a715365bcef18c6a54210c731957cd2f8dd3ebb6d0ba184fe833de1cbd415\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/80b2d12e-8765-4c66-8d06-096df65fb7bc.mp4\",\"hasAudio\":false},\"prompt\":\"A pristine alpine mountain valley covered in deep white winter snow. Preserve the original mountain contours and camera movement. The winding path remains visible in the snow, with subtle cool blue shadows and warm sunlight. Low clouds drift naturally between the snowy peaks. Crisp photorealistic winter drone cinematography, a single continuous shot.\",\"cue\":{\"start\":0.35,\"end\":3.85,\"fade\":0.35,\"feather\":0.035,\"tracking\":\"flow\",\"anchor\":1.5,\"strokes\":[{\"points\":[{\"x\":0,\"y\":0.9},{\"x\":0.35,\"y\":0.9},{\"x\":0.7,\"y\":0.9},{\"x\":1,\"y\":0.9}],\"radius\":0.5,\"mode\":\"paint\"},{\"points\":[{\"x\":0.8,\"y\":0.55},{\"x\":1,\"y\":0.4}],\"radius\":0.3,\"mode\":\"paint\"}]},\"seed\":2961,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"directionStrength\":1,\"editReference\":{\"id\":\"1d1ed4f9-60f9-4ddb-91e6-6ba718c93fab\",\"name\":\"Edited frame · Transform this exact green alpine mountain landscape into deep winter.\",\"sha256\":\"1418e830cd915dc855844c04d1ef2cb56ad7ba2cc38893b2fc8611c3dd3e6b9d\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/1d1ed4f9-60f9-4ddb-91e6-6ba718c93fab.png\",\"kind\":\"image\",\"hasAudio\":false}}"
       }
     },
     "23": {
@@ -457,7 +464,7 @@
       }
     },
     "30": {
-      "class_type": "VAEEncodeTiled",
+      "class_type": "VAEEncode",
       "inputs": {
         "pixels": [
           "29",
@@ -466,11 +473,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "31": {
@@ -518,7 +521,7 @@
       }
     },
     "34": {
-      "class_type": "VAEDecodeTiled",
+      "class_type": "VAEDecode",
       "inputs": {
         "samples": [
           "33",
@@ -527,11 +530,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "35": {
@@ -597,7 +596,7 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/coarse",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"A season in a moment\",\"clip\":{\"id\":\"80b2d12e-8765-4c66-8d06-096df65fb7bc\",\"name\":\"misty-mountains - Florian Delee - Pexels.mp4\",\"sha256\":\"6c8a715365bcef18c6a54210c731957cd2f8dd3ebb6d0ba184fe833de1cbd415\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/80b2d12e-8765-4c66-8d06-096df65fb7bc.mp4\",\"hasAudio\":false},\"prompt\":\"A pristine alpine mountain valley covered in deep white winter snow. Preserve the original mountain contours and camera movement. The winding path remains visible in the snow, with subtle cool blue shadows and warm sunlight. Low clouds drift naturally between the snowy peaks. Crisp photorealistic winter drone cinematography, a single continuous shot.\",\"cue\":{\"start\":0.35,\"end\":3.85,\"fade\":0.35,\"feather\":0.035,\"tracking\":\"flow\",\"anchor\":1.5,\"strokes\":[{\"points\":[{\"x\":0,\"y\":0.9},{\"x\":0.35,\"y\":0.9},{\"x\":0.7,\"y\":0.9},{\"x\":1,\"y\":0.9}],\"radius\":0.5,\"mode\":\"paint\"},{\"points\":[{\"x\":0.8,\"y\":0.55},{\"x\":1,\"y\":0.4}],\"radius\":0.3,\"mode\":\"paint\"}]},\"seed\":2961,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"directionStrength\":1,\"editReference\":{\"id\":\"1d1ed4f9-60f9-4ddb-91e6-6ba718c93fab\",\"name\":\"Edited frame · Transform this exact green alpine mountain landscape into deep winter.\",\"sha256\":\"1418e830cd915dc855844c04d1ef2cb56ad7ba2cc38893b2fc8611c3dd3e6b9d\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/1d1ed4f9-60f9-4ddb-91e6-6ba718c93fab.png\",\"kind\":\"image\",\"hasAudio\":false}}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"A season in a moment — current pipeline refresh\",\"clip\":{\"id\":\"80b2d12e-8765-4c66-8d06-096df65fb7bc\",\"name\":\"misty-mountains - Florian Delee - Pexels.mp4\",\"sha256\":\"6c8a715365bcef18c6a54210c731957cd2f8dd3ebb6d0ba184fe833de1cbd415\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/80b2d12e-8765-4c66-8d06-096df65fb7bc.mp4\",\"hasAudio\":false},\"prompt\":\"A pristine alpine mountain valley covered in deep white winter snow. Preserve the original mountain contours and camera movement. The winding path remains visible in the snow, with subtle cool blue shadows and warm sunlight. Low clouds drift naturally between the snowy peaks. Crisp photorealistic winter drone cinematography, a single continuous shot.\",\"cue\":{\"start\":0.35,\"end\":3.85,\"fade\":0.35,\"feather\":0.035,\"tracking\":\"flow\",\"anchor\":1.5,\"strokes\":[{\"points\":[{\"x\":0,\"y\":0.9},{\"x\":0.35,\"y\":0.9},{\"x\":0.7,\"y\":0.9},{\"x\":1,\"y\":0.9}],\"radius\":0.5,\"mode\":\"paint\"},{\"points\":[{\"x\":0.8,\"y\":0.55},{\"x\":1,\"y\":0.4}],\"radius\":0.3,\"mode\":\"paint\"}]},\"seed\":2961,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"directionStrength\":1,\"editReference\":{\"id\":\"1d1ed4f9-60f9-4ddb-91e6-6ba718c93fab\",\"name\":\"Edited frame · Transform this exact green alpine mountain landscape into deep winter.\",\"sha256\":\"1418e830cd915dc855844c04d1ef2cb56ad7ba2cc38893b2fc8611c3dd3e6b9d\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/1d1ed4f9-60f9-4ddb-91e6-6ba718c93fab.png\",\"kind\":\"image\",\"hasAudio\":false}}"
       }
     },
     "45": {
@@ -609,10 +608,7 @@
         "frames": 1,
         "fps": 24,
         "trim_start": 0
-      },
-      "is_changed": [
-        "1418e830cd915dc855844c04d1ef2cb56ad7ba2cc38893b2fc8611c3dd3e6b9d"
-      ]
+      }
     },
     "46": {
       "class_type": "LTXVImgToVideoInplace",
@@ -642,10 +638,7 @@
         "frames": 1,
         "fps": 24,
         "trim_start": 0
-      },
-      "is_changed": [
-        "1418e830cd915dc855844c04d1ef2cb56ad7ba2cc38893b2fc8611c3dd3e6b9d"
-      ]
+      }
     },
     "48": {
       "class_type": "LTXVImgToVideoInplace",
@@ -667,9 +660,9 @@
       }
     }
   },
-  "jobId": "76ab3e38-e33a-4ddd-afa5-97ede5afb005",
+  "jobId": "294211e5-5b1a-4e3f-8804-346cad810e3b",
   "stage": "Complete",
-  "output": "/outputs/034b4b2f-2664-4636-8c17-44d64debe1c8.mp4",
-  "rawOutput": "/outputs/034b4b2f-2664-4636-8c17-44d64debe1c8-raw.mp4",
-  "coarseOutput": "/outputs/034b4b2f-2664-4636-8c17-44d64debe1c8-coarse.mp4"
+  "output": "/outputs/976e8342-651b-46f1-bebf-e11126727600.mp4",
+  "rawOutput": "/outputs/976e8342-651b-46f1-bebf-e11126727600-raw.mp4",
+  "coarseOutput": "/outputs/976e8342-651b-46f1-bebf-e11126727600-coarse.mp4"
 }

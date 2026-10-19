@@ -1,8 +1,15 @@
 {
-  "id": "2a7c74eb-8313-499e-8276-6d598b0ac6d1",
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "69009304-60bc-40a9-be0c-841503277f7f",
+  "requestKey": "gallery-refresh-20261019-portal-final-9841",
+  "requestDigest": "380e6a83df46ea8269398273e17e5c2a3b38211686fa880262e83b026e391efd",
   "recipe": {
     "format": "aftertake/1",
-    "name": "An opening elsewhere - protected finish",
+    "name": "An opening elsewhere - protected finish — current pipeline refresh",
     "clip": {
       "id": "1a8778db-f724-43e2-ac8b-7ea0d7e6181a",
       "name": "Empty room - Curtis Adams.mp4",
@@ -48,8 +55,8 @@
   },
   "state": "succeeded",
   "progress": 1,
-  "createdAt": "2026-10-17T15:25:57.612Z",
-  "updatedAt": "2026-10-17T15:27:26.905Z",
+  "createdAt": "2026-10-19T13:49:37.899Z",
+  "updatedAt": "2026-10-19T13:51:14.272Z",
   "workflow": {
     "1": {
       "class_type": "UnetLoaderGGUF",
@@ -125,10 +132,7 @@
         "frames": 97,
         "fps": 24,
         "trim_start": 0
-      },
-      "is_changed": [
-        "f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2"
-      ]
+      }
     },
     "9": {
       "class_type": "AftertakeCueMask",
@@ -276,7 +280,7 @@
       }
     },
     "19": {
-      "class_type": "VAEDecodeTiled",
+      "class_type": "VAEDecode",
       "inputs": {
         "samples": [
           "18",
@@ -285,11 +289,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "20": {
@@ -306,6 +306,11 @@
         "mask": [
           "9",
           0
+        ],
+        "match_color": false,
+        "spatial_mask": [
+          "9",
+          2
         ]
       }
     },
@@ -318,7 +323,14 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/composite",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"An opening elsewhere - protected finish\",\"clip\":{\"id\":\"1a8778db-f724-43e2-ac8b-7ea0d7e6181a\",\"name\":\"Empty room - Curtis Adams.mp4\",\"sha256\":\"f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/1a8778db-f724-43e2-ac8b-7ea0d7e6181a.mp4\"},\"prompt\":\"A luminous circular portal filled with swirling deep blue nebula clouds, tiny stars and brilliant electric cyan filaments. The glowing rim shimmers with light. Photorealistic cinematic visual effects, coherent perspective.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.035,\"strokes\":[{\"points\":[{\"x\":0.5,\"y\":0.55}],\"radius\":0.42},{\"points\":[{\"x\":0.5,\"y\":0.12}],\"radius\":0.19,\"mode\":\"erase\"}]},\"seed\":9841,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"directionStrength\":1}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"An opening elsewhere - protected finish — current pipeline refresh\",\"clip\":{\"id\":\"1a8778db-f724-43e2-ac8b-7ea0d7e6181a\",\"name\":\"Empty room - Curtis Adams.mp4\",\"sha256\":\"f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/1a8778db-f724-43e2-ac8b-7ea0d7e6181a.mp4\"},\"prompt\":\"A luminous circular portal filled with swirling deep blue nebula clouds, tiny stars and brilliant electric cyan filaments. The glowing rim shimmers with light. Photorealistic cinematic visual effects, coherent perspective.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.035,\"strokes\":[{\"points\":[{\"x\":0.5,\"y\":0.55}],\"radius\":0.42},{\"points\":[{\"x\":0.5,\"y\":0.12}],\"radius\":0.19,\"mode\":\"erase\"}]},\"seed\":9841,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"directionStrength\":1}",
+        "source_audio": [
+          "8",
+          1
+        ],
+        "audio_start": 0,
+        "display_width": 768,
+        "display_height": 432
       }
     },
     "22": {
@@ -330,7 +342,7 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/generation",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"An opening elsewhere - protected finish\",\"clip\":{\"id\":\"1a8778db-f724-43e2-ac8b-7ea0d7e6181a\",\"name\":\"Empty room - Curtis Adams.mp4\",\"sha256\":\"f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/1a8778db-f724-43e2-ac8b-7ea0d7e6181a.mp4\"},\"prompt\":\"A luminous circular portal filled with swirling deep blue nebula clouds, tiny stars and brilliant electric cyan filaments. The glowing rim shimmers with light. Photorealistic cinematic visual effects, coherent perspective.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.035,\"strokes\":[{\"points\":[{\"x\":0.5,\"y\":0.55}],\"radius\":0.42},{\"points\":[{\"x\":0.5,\"y\":0.12}],\"radius\":0.19,\"mode\":\"erase\"}]},\"seed\":9841,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"directionStrength\":1}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"An opening elsewhere - protected finish — current pipeline refresh\",\"clip\":{\"id\":\"1a8778db-f724-43e2-ac8b-7ea0d7e6181a\",\"name\":\"Empty room - Curtis Adams.mp4\",\"sha256\":\"f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/1a8778db-f724-43e2-ac8b-7ea0d7e6181a.mp4\"},\"prompt\":\"A luminous circular portal filled with swirling deep blue nebula clouds, tiny stars and brilliant electric cyan filaments. The glowing rim shimmers with light. Photorealistic cinematic visual effects, coherent perspective.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.035,\"strokes\":[{\"points\":[{\"x\":0.5,\"y\":0.55}],\"radius\":0.42},{\"points\":[{\"x\":0.5,\"y\":0.12}],\"radius\":0.19,\"mode\":\"erase\"}]},\"seed\":9841,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"directionStrength\":1}"
       }
     },
     "23": {
@@ -421,7 +433,7 @@
       }
     },
     "30": {
-      "class_type": "VAEEncodeTiled",
+      "class_type": "VAEEncode",
       "inputs": {
         "pixels": [
           "29",
@@ -430,11 +442,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "31": {
@@ -482,7 +490,7 @@
       }
     },
     "34": {
-      "class_type": "VAEDecodeTiled",
+      "class_type": "VAEDecode",
       "inputs": {
         "samples": [
           "33",
@@ -491,11 +499,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "35": {
@@ -561,13 +565,13 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/coarse",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"An opening elsewhere - protected finish\",\"clip\":{\"id\":\"1a8778db-f724-43e2-ac8b-7ea0d7e6181a\",\"name\":\"Empty room - Curtis Adams.mp4\",\"sha256\":\"f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/1a8778db-f724-43e2-ac8b-7ea0d7e6181a.mp4\"},\"prompt\":\"A luminous circular portal filled with swirling deep blue nebula clouds, tiny stars and brilliant electric cyan filaments. The glowing rim shimmers with light. Photorealistic cinematic visual effects, coherent perspective.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.035,\"strokes\":[{\"points\":[{\"x\":0.5,\"y\":0.55}],\"radius\":0.42},{\"points\":[{\"x\":0.5,\"y\":0.12}],\"radius\":0.19,\"mode\":\"erase\"}]},\"seed\":9841,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"directionStrength\":1}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"An opening elsewhere - protected finish — current pipeline refresh\",\"clip\":{\"id\":\"1a8778db-f724-43e2-ac8b-7ea0d7e6181a\",\"name\":\"Empty room - Curtis Adams.mp4\",\"sha256\":\"f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/1a8778db-f724-43e2-ac8b-7ea0d7e6181a.mp4\"},\"prompt\":\"A luminous circular portal filled with swirling deep blue nebula clouds, tiny stars and brilliant electric cyan filaments. The glowing rim shimmers with light. Photorealistic cinematic visual effects, coherent perspective.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.035,\"strokes\":[{\"points\":[{\"x\":0.5,\"y\":0.55}],\"radius\":0.42},{\"points\":[{\"x\":0.5,\"y\":0.12}],\"radius\":0.19,\"mode\":\"erase\"}]},\"seed\":9841,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"directionStrength\":1}"
       }
     }
   },
-  "jobId": "2927a905-6074-4807-b71b-9dd8edc76f61",
+  "jobId": "f2cdf338-66b7-4585-96eb-aadb3116b401",
   "stage": "Complete",
-  "output": "/outputs/2a7c74eb-8313-499e-8276-6d598b0ac6d1.mp4",
-  "rawOutput": "/outputs/2a7c74eb-8313-499e-8276-6d598b0ac6d1-raw.mp4",
-  "coarseOutput": "/outputs/2a7c74eb-8313-499e-8276-6d598b0ac6d1-coarse.mp4"
+  "output": "/outputs/69009304-60bc-40a9-be0c-841503277f7f.mp4",
+  "rawOutput": "/outputs/69009304-60bc-40a9-be0c-841503277f7f-raw.mp4",
+  "coarseOutput": "/outputs/69009304-60bc-40a9-be0c-841503277f7f-coarse.mp4"
 }

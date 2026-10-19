@@ -158,7 +158,10 @@ test('reviewed examples work from a hidden checkout and import real bytes withou
       second = await open();
     assert.equal(first.render.id, second.render.id);
     assert.equal(renders.size, 1);
-    assert.equal(first.render.origin?.renderId, '2a7c74eb-8313-499e-8276-6d598b0ac6d1');
+    assert.equal(
+      first.render.origin?.renderId,
+      manifest.cases.find((item: { slug: string }) => item.slug === 'portal').renderId,
+    );
     const bytes = await readFile(path.join(directory, 'outputs', first.render.id + '.mp4'));
     assert.deepEqual(bytes, await readFile(path.join(root, 'examples/portal/result.mp4')));
     assert.equal(
@@ -255,7 +258,7 @@ test('reviewed examples work from a hidden checkout and import real bytes withou
     assert.equal(transition.render.recipe.pipeline, 'cinema');
     assert.deepEqual(
       await readFile(path.join(directory, 'outputs', path.basename(transition.render.rawOutput!))),
-      await readFile(path.join(root, 'examples/crystal-transition/result.mp4')),
+      await readFile(path.join(root, 'examples/crystal-transition/raw.mp4')),
     );
     assert.equal(
       transition.render.recipe.clip.id,
@@ -311,7 +314,7 @@ test('reviewed examples work from a hidden checkout and import real bytes withou
     assert.equal(castle.render.recipe.cinema?.guidance, 'tracks');
     assert.deepEqual(
       await readFile(path.join(directory, 'outputs', path.basename(castle.render.rawOutput!))),
-      await readFile(path.join(root, 'examples/castle-pullback/result.mp4')),
+      await readFile(path.join(root, 'examples/castle-pullback/raw.mp4')),
     );
     assert.equal(castle.render.recipe.cinema?.movement, 'pull');
     const observatory = (await fetch(url + '/observatory/open', { method: 'POST' }).then((r) =>

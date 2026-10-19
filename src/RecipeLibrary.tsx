@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { renderDimensions, type Clip, type Recipe, type Render } from './domain';
 import { filterTemplates, type Template } from './templates';
+import RecordedHighlights, { type RecordedWork, type RecordedWorkKind } from './RecordedHighlights';
 
 export default function RecipeLibrary({
   current,
@@ -21,12 +22,16 @@ export default function RecipeLibrary({
   onClose,
   onApply,
   onOpen,
+  recordedWork,
+  onOpenRecorded,
 }: {
   current: Recipe | null;
   busy: boolean;
   onClose: () => void;
   onApply: (item: Template) => void;
   onOpen: (render: Render, clip: Clip) => void;
+  recordedWork: RecordedWork;
+  onOpenRecorded: (kind: RecordedWorkKind, id: string) => void;
 }) {
   const [templates, setTemplates] = useState<Template[]>([]),
     [selected, setSelected] = useState<Template | null>(null);
@@ -120,7 +125,7 @@ export default function RecipeLibrary({
         className="recipe-library"
         role="dialog"
         aria-modal="true"
-        aria-label="Effects, motion and camera recipes"
+        aria-label="Recorded work and workflow examples"
         onClick={(event) => event.stopPropagation()}
         onKeyDown={(event) => {
           if (event.key !== 'Tab') return;
@@ -162,9 +167,9 @@ export default function RecipeLibrary({
               }}
             >
               <ArrowLeft size={14} />
-              All recipes
+              All examples
             </button>
-            <div className="eyebrow">{categories[selected.category]} / REAL LOCAL EXAMPLE</div>
+            <div className="eyebrow">{categories[selected.category]} / WORKFLOW EXAMPLE</div>
             <h2>{selected.title}</h2>
             <div className="recipe-detail">
               <div className="recipe-preview">
@@ -358,13 +363,18 @@ export default function RecipeLibrary({
           </>
         ) : (
           <>
-            <div className="eyebrow">
-              THE RECIPE LIBRARY / {templates.length.toString().padStart(2, '0')} REAL EXAMPLES
-            </div>
+            <div className="eyebrow">THE RECIPE LIBRARY</div>
             <h2>Find your next impossible.</h2>
             <p className="recipe-intro">
               Explore actual local renders, inspect their recipes, then make the direction your own.
             </p>
+            <RecordedHighlights work={recordedWork} busy={busy} onOpen={onOpenRecorded} />
+            <div className="recipe-section-heading">
+              <h3>Workflow examples</h3>
+              {templates.length > 0 && (
+                <span>{templates.length} VFX, camera and motion recipes</span>
+              )}
+            </div>
             <div className="recipe-filters">
               <label>
                 <Search size={15} />

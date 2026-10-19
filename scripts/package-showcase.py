@@ -97,14 +97,14 @@ def main():
         target=(output/name.removeprefix('docs/')).resolve()
         if output not in target.parents:raise ValueError('Castle alias path escapes output.')
         target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(data)
-    # Raw camera outputs can be identical to their finished takes. Keep their
-    # legacy public URLs while storing one canonical copy in source packages.
+    # Older camera examples deduplicated identical raw/final outputs. Preserve
+    # those legacy URLs, but never replace a distinct recorded raw generation.
     example_aliases={'examples/crystal-transition/raw.mp4':'examples/crystal-transition/result.mp4',
                      'examples/castle-pullback/raw.mp4':'examples/castle-pullback/result.mp4'}
     for name,canonical in example_aliases.items():
         target=(output/name).resolve()
         if output not in target.parents:raise ValueError('Example alias path escapes output.')
-        target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(blobs[canonical])
+        target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(blobs.get(name,blobs[canonical]))
     for prefix in archive_media_prefixes:
         loose_media = (output / prefix).resolve()
         if output not in loose_media.parents:

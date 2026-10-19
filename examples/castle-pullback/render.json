@@ -1,8 +1,15 @@
 {
-  "id": "f15f0f87-510a-4ecb-9ef5-393fec7ea8e8",
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "2eaace67-2cf8-49fc-9b3b-dc5c2dfe7be3",
+  "requestKey": "gallery-refresh-20261019-castle-pullback-final-2960",
+  "requestDigest": "8d8fea0d687ac33a1e70045e9fdb8f41099b3ea55398797e6ddfe50a92914fe9",
   "recipe": {
     "format": "aftertake/1",
-    "name": "The tide keeps a secret",
+    "name": "The tide keeps a secret — current pipeline refresh",
     "clip": {
       "id": "b1262e85-c2ba-4334-bc61-8faa573b106d",
       "name": "Edited frame · Replace the small white lighthouse and adjacent buildings on the cliff",
@@ -36,8 +43,8 @@
   },
   "state": "succeeded",
   "progress": 1,
-  "createdAt": "2026-10-18T03:06:47.398Z",
-  "updatedAt": "2026-10-18T03:09:56.442Z",
+  "createdAt": "2026-10-19T14:02:42.867Z",
+  "updatedAt": "2026-10-19T14:04:05.663Z",
   "workflow": {
     "1": {
       "class_type": "UnetLoaderGGUF",
@@ -113,10 +120,7 @@
         "frames": 1,
         "fps": 24,
         "trim_start": 0
-      },
-      "is_changed": [
-        "43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa"
-      ]
+      }
     },
     "11": {
       "class_type": "EmptyLTXVLatentVideo",
@@ -251,7 +255,9 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/cinema",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The tide keeps a secret\",\"clip\":{\"id\":\"b1262e85-c2ba-4334-bc61-8faa573b106d\",\"name\":\"Edited frame · Replace the small white lighthouse and adjacent buildings on the cliff\",\"sha256\":\"43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/b1262e85-c2ba-4334-bc61-8faa573b106d.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A magnificent ancient stone castle with tall slender towers and warm amber windows stands on a rugged coastal cliff at sunset. Gentle ocean waves roll toward the rocks below. The castle architecture stays stable and solid, the distant horizon remains level, and coastal vegetation moves softly in the breeze. Photorealistic fantasy cinematography, a dramatic cinematic establishing shot.\",\"cue\":{\"start\":0,\"end\":4,\"fade\":0.2,\"feather\":0.03,\"strokes\":[]},\"seed\":2960,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"wide\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"tracks\"}}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The tide keeps a secret — current pipeline refresh\",\"clip\":{\"id\":\"b1262e85-c2ba-4334-bc61-8faa573b106d\",\"name\":\"Edited frame · Replace the small white lighthouse and adjacent buildings on the cliff\",\"sha256\":\"43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/b1262e85-c2ba-4334-bc61-8faa573b106d.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A magnificent ancient stone castle with tall slender towers and warm amber windows stands on a rugged coastal cliff at sunset. Gentle ocean waves roll toward the rocks below. The castle architecture stays stable and solid, the distant horizon remains level, and coastal vegetation moves softly in the breeze. Photorealistic fantasy cinematography, a dramatic cinematic establishing shot.\",\"cue\":{\"start\":0,\"end\":4,\"fade\":0.2,\"feather\":0.03,\"strokes\":[]},\"seed\":2960,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"wide\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"tracks\"}}",
+        "display_width": 768,
+        "display_height": 432
       }
     },
     "22": {
@@ -263,7 +269,7 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/generation",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The tide keeps a secret\",\"clip\":{\"id\":\"b1262e85-c2ba-4334-bc61-8faa573b106d\",\"name\":\"Edited frame · Replace the small white lighthouse and adjacent buildings on the cliff\",\"sha256\":\"43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/b1262e85-c2ba-4334-bc61-8faa573b106d.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A magnificent ancient stone castle with tall slender towers and warm amber windows stands on a rugged coastal cliff at sunset. Gentle ocean waves roll toward the rocks below. The castle architecture stays stable and solid, the distant horizon remains level, and coastal vegetation moves softly in the breeze. Photorealistic fantasy cinematography, a dramatic cinematic establishing shot.\",\"cue\":{\"start\":0,\"end\":4,\"fade\":0.2,\"feather\":0.03,\"strokes\":[]},\"seed\":2960,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"wide\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"tracks\"}}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The tide keeps a secret — current pipeline refresh\",\"clip\":{\"id\":\"b1262e85-c2ba-4334-bc61-8faa573b106d\",\"name\":\"Edited frame · Replace the small white lighthouse and adjacent buildings on the cliff\",\"sha256\":\"43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/b1262e85-c2ba-4334-bc61-8faa573b106d.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A magnificent ancient stone castle with tall slender towers and warm amber windows stands on a rugged coastal cliff at sunset. Gentle ocean waves roll toward the rocks below. The castle architecture stays stable and solid, the distant horizon remains level, and coastal vegetation moves softly in the breeze. Photorealistic fantasy cinematography, a dramatic cinematic establishing shot.\",\"cue\":{\"start\":0,\"end\":4,\"fade\":0.2,\"feather\":0.03,\"strokes\":[]},\"seed\":2960,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"wide\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"tracks\"}}"
       }
     },
     "41": {
@@ -319,13 +325,13 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/framing-guide",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The tide keeps a secret\",\"clip\":{\"id\":\"b1262e85-c2ba-4334-bc61-8faa573b106d\",\"name\":\"Edited frame · Replace the small white lighthouse and adjacent buildings on the cliff\",\"sha256\":\"43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/b1262e85-c2ba-4334-bc61-8faa573b106d.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A magnificent ancient stone castle with tall slender towers and warm amber windows stands on a rugged coastal cliff at sunset. Gentle ocean waves roll toward the rocks below. The castle architecture stays stable and solid, the distant horizon remains level, and coastal vegetation moves softly in the breeze. Photorealistic fantasy cinematography, a dramatic cinematic establishing shot.\",\"cue\":{\"start\":0,\"end\":4,\"fade\":0.2,\"feather\":0.03,\"strokes\":[]},\"seed\":2960,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"wide\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"tracks\"}}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The tide keeps a secret — current pipeline refresh\",\"clip\":{\"id\":\"b1262e85-c2ba-4334-bc61-8faa573b106d\",\"name\":\"Edited frame · Replace the small white lighthouse and adjacent buildings on the cliff\",\"sha256\":\"43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/b1262e85-c2ba-4334-bc61-8faa573b106d.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A magnificent ancient stone castle with tall slender towers and warm amber windows stands on a rugged coastal cliff at sunset. Gentle ocean waves roll toward the rocks below. The castle architecture stays stable and solid, the distant horizon remains level, and coastal vegetation moves softly in the breeze. Photorealistic fantasy cinematography, a dramatic cinematic establishing shot.\",\"cue\":{\"start\":0,\"end\":4,\"fade\":0.2,\"feather\":0.03,\"strokes\":[]},\"seed\":2960,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"wide\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"tracks\"}}"
       }
     }
   },
-  "jobId": "ffb3a619-128c-4b29-9d0b-ad2762751028",
+  "jobId": "cfe98f7c-8201-41a1-9e1f-7d809db54866",
   "stage": "Complete",
-  "output": "/outputs/f15f0f87-510a-4ecb-9ef5-393fec7ea8e8.mp4",
-  "rawOutput": "/outputs/f15f0f87-510a-4ecb-9ef5-393fec7ea8e8-raw.mp4",
-  "guideOutput": "/outputs/f15f0f87-510a-4ecb-9ef5-393fec7ea8e8-guide.mp4"
+  "output": "/outputs/2eaace67-2cf8-49fc-9b3b-dc5c2dfe7be3.mp4",
+  "rawOutput": "/outputs/2eaace67-2cf8-49fc-9b3b-dc5c2dfe7be3-raw.mp4",
+  "guideOutput": "/outputs/2eaace67-2cf8-49fc-9b3b-dc5c2dfe7be3-guide.mp4"
 }

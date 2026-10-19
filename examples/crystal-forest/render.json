@@ -1,8 +1,15 @@
 {
-  "id": "bbe90566-782e-49c2-b308-43a1643103d9",
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "044ea348-4b4b-4f93-979f-696af457b907",
+  "requestKey": "gallery-refresh-20261019-crystal-forest-final-731",
+  "requestDigest": "6c01861f882915010fe9a913284bc4f17e13b370f4149deaf21d03b11ee3e9ef",
   "recipe": {
     "format": "aftertake/1",
-    "name": "The forest keeps a secret",
+    "name": "The forest keeps a secret — current pipeline refresh",
     "clip": {
       "id": "53d9e920-db14-4c04-8c3f-24a3af56a177",
       "name": "Forest falls - Mikhail Nilov.mp4",
@@ -94,8 +101,8 @@
   },
   "state": "succeeded",
   "progress": 1,
-  "createdAt": "2026-10-17T18:49:48.959Z",
-  "updatedAt": "2026-10-17T18:51:18.240Z",
+  "createdAt": "2026-10-19T13:54:40.068Z",
+  "updatedAt": "2026-10-19T13:56:27.697Z",
   "workflow": {
     "1": {
       "class_type": "UnetLoaderGGUF",
@@ -171,10 +178,7 @@
         "frames": 97,
         "fps": 24,
         "trim_start": 0
-      },
-      "is_changed": [
-        "b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57"
-      ]
+      }
     },
     "9": {
       "class_type": "AftertakeCueMask",
@@ -322,7 +326,7 @@
       }
     },
     "19": {
-      "class_type": "VAEDecodeTiled",
+      "class_type": "VAEDecode",
       "inputs": {
         "samples": [
           "18",
@@ -331,11 +335,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "20": {
@@ -352,6 +352,11 @@
         "mask": [
           "9",
           0
+        ],
+        "match_color": false,
+        "spatial_mask": [
+          "9",
+          2
         ]
       }
     },
@@ -364,12 +369,14 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/composite",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The forest keeps a secret\",\"clip\":{\"id\":\"53d9e920-db14-4c04-8c3f-24a3af56a177\",\"name\":\"Forest falls - Mikhail Nilov.mp4\",\"sha256\":\"b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4\"},\"prompt\":\"A tall, solid, translucent turquoise crystal monolith stands fixed among the trees. Sharp gemstone facets reflect soft daylight, faint luminous cyan refractions shimmer within the crystal. The monolith remains rigid and motionless, coherent geometry and consistent scale. Photorealistic cinematic VFX.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.025,\"strokes\":[{\"points\":[{\"x\":0.54,\"y\":0},{\"x\":0.54,\"y\":0.58}],\"radius\":0.2},{\"points\":[{\"x\":0.5401833326583235,\"y\":0.5797052752844045},{\"x\":0.5401833326583235,\"y\":0.624249987999808},{\"x\":0.5401833326583235,\"y\":0.6703307252916046},{\"x\":0.5401833326583235,\"y\":0.7148754380070081},{\"x\":0.5401833326583235,\"y\":0.7609561752988048},{\"x\":0.5401833326583235,\"y\":0.8055008880142083},{\"x\":0.5401833326583235,\"y\":0.8500456007296117},{\"x\":0.5401833326583235,\"y\":0.8961263380214084},{\"x\":0.5401833326583235,\"y\":0.9406710507368118}],\"radius\":0.13,\"mode\":\"paint\"}]},\"seed\":731,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"editReference\":{\"id\":\"5009120d-9816-41d2-9733-032b32541a1f\",\"name\":\"Edited frame · Replace the waterfall in the center of this forest with a tall translu\",\"sha256\":\"2723bccd53c823e306777d755d3dc0184f28b85e7b6a7bf4294688bea4944858\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/5009120d-9816-41d2-9733-032b32541a1f.png\",\"kind\":\"image\",\"hasAudio\":false}}",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The forest keeps a secret — current pipeline refresh\",\"clip\":{\"id\":\"53d9e920-db14-4c04-8c3f-24a3af56a177\",\"name\":\"Forest falls - Mikhail Nilov.mp4\",\"sha256\":\"b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4\"},\"prompt\":\"A tall, solid, translucent turquoise crystal monolith stands fixed among the trees. Sharp gemstone facets reflect soft daylight, faint luminous cyan refractions shimmer within the crystal. The monolith remains rigid and motionless, coherent geometry and consistent scale. Photorealistic cinematic VFX.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.025,\"strokes\":[{\"points\":[{\"x\":0.54,\"y\":0},{\"x\":0.54,\"y\":0.58}],\"radius\":0.2},{\"points\":[{\"x\":0.5401833326583235,\"y\":0.5797052752844045},{\"x\":0.5401833326583235,\"y\":0.624249987999808},{\"x\":0.5401833326583235,\"y\":0.6703307252916046},{\"x\":0.5401833326583235,\"y\":0.7148754380070081},{\"x\":0.5401833326583235,\"y\":0.7609561752988048},{\"x\":0.5401833326583235,\"y\":0.8055008880142083},{\"x\":0.5401833326583235,\"y\":0.8500456007296117},{\"x\":0.5401833326583235,\"y\":0.8961263380214084},{\"x\":0.5401833326583235,\"y\":0.9406710507368118}],\"radius\":0.13,\"mode\":\"paint\"}]},\"seed\":731,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"editReference\":{\"id\":\"5009120d-9816-41d2-9733-032b32541a1f\",\"name\":\"Edited frame · Replace the waterfall in the center of this forest with a tall translu\",\"sha256\":\"2723bccd53c823e306777d755d3dc0184f28b85e7b6a7bf4294688bea4944858\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/5009120d-9816-41d2-9733-032b32541a1f.png\",\"kind\":\"image\",\"hasAudio\":false}}",
         "source_audio": [
           "8",
           1
         ],
-        "audio_start": 0
+        "audio_start": 0,
+        "display_width": 768,
+        "display_height": 432
       }
     },
     "22": {
@@ -381,7 +388,7 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/generation",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The forest keeps a secret\",\"clip\":{\"id\":\"53d9e920-db14-4c04-8c3f-24a3af56a177\",\"name\":\"Forest falls - Mikhail Nilov.mp4\",\"sha256\":\"b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4\"},\"prompt\":\"A tall, solid, translucent turquoise crystal monolith stands fixed among the trees. Sharp gemstone facets reflect soft daylight, faint luminous cyan refractions shimmer within the crystal. The monolith remains rigid and motionless, coherent geometry and consistent scale. Photorealistic cinematic VFX.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.025,\"strokes\":[{\"points\":[{\"x\":0.54,\"y\":0},{\"x\":0.54,\"y\":0.58}],\"radius\":0.2},{\"points\":[{\"x\":0.5401833326583235,\"y\":0.5797052752844045},{\"x\":0.5401833326583235,\"y\":0.624249987999808},{\"x\":0.5401833326583235,\"y\":0.6703307252916046},{\"x\":0.5401833326583235,\"y\":0.7148754380070081},{\"x\":0.5401833326583235,\"y\":0.7609561752988048},{\"x\":0.5401833326583235,\"y\":0.8055008880142083},{\"x\":0.5401833326583235,\"y\":0.8500456007296117},{\"x\":0.5401833326583235,\"y\":0.8961263380214084},{\"x\":0.5401833326583235,\"y\":0.9406710507368118}],\"radius\":0.13,\"mode\":\"paint\"}]},\"seed\":731,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"editReference\":{\"id\":\"5009120d-9816-41d2-9733-032b32541a1f\",\"name\":\"Edited frame · Replace the waterfall in the center of this forest with a tall translu\",\"sha256\":\"2723bccd53c823e306777d755d3dc0184f28b85e7b6a7bf4294688bea4944858\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/5009120d-9816-41d2-9733-032b32541a1f.png\",\"kind\":\"image\",\"hasAudio\":false}}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The forest keeps a secret — current pipeline refresh\",\"clip\":{\"id\":\"53d9e920-db14-4c04-8c3f-24a3af56a177\",\"name\":\"Forest falls - Mikhail Nilov.mp4\",\"sha256\":\"b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4\"},\"prompt\":\"A tall, solid, translucent turquoise crystal monolith stands fixed among the trees. Sharp gemstone facets reflect soft daylight, faint luminous cyan refractions shimmer within the crystal. The monolith remains rigid and motionless, coherent geometry and consistent scale. Photorealistic cinematic VFX.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.025,\"strokes\":[{\"points\":[{\"x\":0.54,\"y\":0},{\"x\":0.54,\"y\":0.58}],\"radius\":0.2},{\"points\":[{\"x\":0.5401833326583235,\"y\":0.5797052752844045},{\"x\":0.5401833326583235,\"y\":0.624249987999808},{\"x\":0.5401833326583235,\"y\":0.6703307252916046},{\"x\":0.5401833326583235,\"y\":0.7148754380070081},{\"x\":0.5401833326583235,\"y\":0.7609561752988048},{\"x\":0.5401833326583235,\"y\":0.8055008880142083},{\"x\":0.5401833326583235,\"y\":0.8500456007296117},{\"x\":0.5401833326583235,\"y\":0.8961263380214084},{\"x\":0.5401833326583235,\"y\":0.9406710507368118}],\"radius\":0.13,\"mode\":\"paint\"}]},\"seed\":731,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"editReference\":{\"id\":\"5009120d-9816-41d2-9733-032b32541a1f\",\"name\":\"Edited frame · Replace the waterfall in the center of this forest with a tall translu\",\"sha256\":\"2723bccd53c823e306777d755d3dc0184f28b85e7b6a7bf4294688bea4944858\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/5009120d-9816-41d2-9733-032b32541a1f.png\",\"kind\":\"image\",\"hasAudio\":false}}"
       }
     },
     "23": {
@@ -472,7 +479,7 @@
       }
     },
     "30": {
-      "class_type": "VAEEncodeTiled",
+      "class_type": "VAEEncode",
       "inputs": {
         "pixels": [
           "29",
@@ -481,11 +488,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "31": {
@@ -533,7 +536,7 @@
       }
     },
     "34": {
-      "class_type": "VAEDecodeTiled",
+      "class_type": "VAEDecode",
       "inputs": {
         "samples": [
           "33",
@@ -542,11 +545,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "35": {
@@ -612,7 +611,7 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/coarse",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The forest keeps a secret\",\"clip\":{\"id\":\"53d9e920-db14-4c04-8c3f-24a3af56a177\",\"name\":\"Forest falls - Mikhail Nilov.mp4\",\"sha256\":\"b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4\"},\"prompt\":\"A tall, solid, translucent turquoise crystal monolith stands fixed among the trees. Sharp gemstone facets reflect soft daylight, faint luminous cyan refractions shimmer within the crystal. The monolith remains rigid and motionless, coherent geometry and consistent scale. Photorealistic cinematic VFX.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.025,\"strokes\":[{\"points\":[{\"x\":0.54,\"y\":0},{\"x\":0.54,\"y\":0.58}],\"radius\":0.2},{\"points\":[{\"x\":0.5401833326583235,\"y\":0.5797052752844045},{\"x\":0.5401833326583235,\"y\":0.624249987999808},{\"x\":0.5401833326583235,\"y\":0.6703307252916046},{\"x\":0.5401833326583235,\"y\":0.7148754380070081},{\"x\":0.5401833326583235,\"y\":0.7609561752988048},{\"x\":0.5401833326583235,\"y\":0.8055008880142083},{\"x\":0.5401833326583235,\"y\":0.8500456007296117},{\"x\":0.5401833326583235,\"y\":0.8961263380214084},{\"x\":0.5401833326583235,\"y\":0.9406710507368118}],\"radius\":0.13,\"mode\":\"paint\"}]},\"seed\":731,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"editReference\":{\"id\":\"5009120d-9816-41d2-9733-032b32541a1f\",\"name\":\"Edited frame · Replace the waterfall in the center of this forest with a tall translu\",\"sha256\":\"2723bccd53c823e306777d755d3dc0184f28b85e7b6a7bf4294688bea4944858\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/5009120d-9816-41d2-9733-032b32541a1f.png\",\"kind\":\"image\",\"hasAudio\":false}}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The forest keeps a secret — current pipeline refresh\",\"clip\":{\"id\":\"53d9e920-db14-4c04-8c3f-24a3af56a177\",\"name\":\"Forest falls - Mikhail Nilov.mp4\",\"sha256\":\"b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4\"},\"prompt\":\"A tall, solid, translucent turquoise crystal monolith stands fixed among the trees. Sharp gemstone facets reflect soft daylight, faint luminous cyan refractions shimmer within the crystal. The monolith remains rigid and motionless, coherent geometry and consistent scale. Photorealistic cinematic VFX.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.025,\"strokes\":[{\"points\":[{\"x\":0.54,\"y\":0},{\"x\":0.54,\"y\":0.58}],\"radius\":0.2},{\"points\":[{\"x\":0.5401833326583235,\"y\":0.5797052752844045},{\"x\":0.5401833326583235,\"y\":0.624249987999808},{\"x\":0.5401833326583235,\"y\":0.6703307252916046},{\"x\":0.5401833326583235,\"y\":0.7148754380070081},{\"x\":0.5401833326583235,\"y\":0.7609561752988048},{\"x\":0.5401833326583235,\"y\":0.8055008880142083},{\"x\":0.5401833326583235,\"y\":0.8500456007296117},{\"x\":0.5401833326583235,\"y\":0.8961263380214084},{\"x\":0.5401833326583235,\"y\":0.9406710507368118}],\"radius\":0.13,\"mode\":\"paint\"}]},\"seed\":731,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\",\"editReference\":{\"id\":\"5009120d-9816-41d2-9733-032b32541a1f\",\"name\":\"Edited frame · Replace the waterfall in the center of this forest with a tall translu\",\"sha256\":\"2723bccd53c823e306777d755d3dc0184f28b85e7b6a7bf4294688bea4944858\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/5009120d-9816-41d2-9733-032b32541a1f.png\",\"kind\":\"image\",\"hasAudio\":false}}"
       }
     },
     "45": {
@@ -624,10 +623,7 @@
         "frames": 1,
         "fps": 24,
         "trim_start": 0
-      },
-      "is_changed": [
-        "2723bccd53c823e306777d755d3dc0184f28b85e7b6a7bf4294688bea4944858"
-      ]
+      }
     },
     "46": {
       "class_type": "LTXVImgToVideoInplace",
@@ -657,10 +653,7 @@
         "frames": 1,
         "fps": 24,
         "trim_start": 0
-      },
-      "is_changed": [
-        "2723bccd53c823e306777d755d3dc0184f28b85e7b6a7bf4294688bea4944858"
-      ]
+      }
     },
     "48": {
       "class_type": "LTXVImgToVideoInplace",
@@ -682,9 +675,9 @@
       }
     }
   },
-  "jobId": "a8528116-b73d-4b05-a79a-3dd6b5655d15",
+  "jobId": "8dcd5c73-c3bc-4c7f-8df5-91aa338b953a",
   "stage": "Complete",
-  "output": "/outputs/bbe90566-782e-49c2-b308-43a1643103d9.mp4",
-  "rawOutput": "/outputs/bbe90566-782e-49c2-b308-43a1643103d9-raw.mp4",
-  "coarseOutput": "/outputs/bbe90566-782e-49c2-b308-43a1643103d9-coarse.mp4"
+  "output": "/outputs/044ea348-4b4b-4f93-979f-696af457b907.mp4",
+  "rawOutput": "/outputs/044ea348-4b4b-4f93-979f-696af457b907-raw.mp4",
+  "coarseOutput": "/outputs/044ea348-4b4b-4f93-979f-696af457b907-coarse.mp4"
 }

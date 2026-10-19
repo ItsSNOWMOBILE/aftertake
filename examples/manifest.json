@@ -1,11 +1,11 @@
 {
   "format": "aftertake-examples/1",
-  "featuredRenderId": "2a7c74eb-8313-499e-8276-6d598b0ac6d1",
+  "featuredRenderId": "69009304-60bc-40a9-be0c-841503277f7f",
   "cases": [
     {
       "slug": "reclaimed",
       "title": "Reclaimed",
-      "renderId": "ca56f918-ba61-4935-86ca-13814f22d56c",
+      "renderId": "485bbac4-d1ab-4ae5-ab66-00dca339978a",
       "credit": "Original procedural source by Aftertake contributors",
       "license": "MIT source; model terms apply to generated results",
       "source": "reclaimed/source.mp4",
@@ -17,7 +17,7 @@
     {
       "slug": "portal",
       "title": "An opening elsewhere",
-      "renderId": "2a7c74eb-8313-499e-8276-6d598b0ac6d1",
+      "renderId": "69009304-60bc-40a9-be0c-841503277f7f",
       "credit": "Curtis Adams / Pexels",
       "sourceUrl": "https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/",
       "license": "Pexels License; model terms also apply to generated results",
@@ -30,7 +30,7 @@
     {
       "slug": "golden-falls",
       "title": "The golden falls",
-      "renderId": "c729f8fb-5919-4152-be2c-8eeb56c3ffcf",
+      "renderId": "945450f2-d43a-488b-9f1d-d257af1537a1",
       "credit": "Mikhail Nilov / Pexels",
       "sourceUrl": "https://www.pexels.com/video/waterfall-in-the-middle-of-the-forest-6989026/",
       "license": "Pexels License; model terms also apply to generated results",
@@ -43,7 +43,7 @@
     {
       "slug": "quiet-approach",
       "title": "A quiet approach",
-      "renderId": "ade9d68a-6a3f-431d-8970-2b37f482aa4f",
+      "renderId": "9c7bfd6e-99d8-4c26-b79d-bcc2af220c11",
       "credit": "Curtis Adams / Pexels; still extracted from the licensed room source",
       "sourceUrl": "https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/",
       "license": "Pexels License; model terms also apply to generated results",
@@ -56,7 +56,7 @@
     {
       "slug": "guided-pullback",
       "title": "Beyond the frame",
-      "renderId": "4d104079-d530-47dd-936f-dade1212be0b",
+      "renderId": "25c1e7c2-d194-492f-affa-ad3ecdd427bd",
       "credit": "Curtis Adams / Pexels; still extracted from the licensed room source",
       "sourceUrl": "https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/",
       "license": "Pexels License; model terms also apply to generated results",
@@ -69,7 +69,7 @@
     {
       "slug": "reference-portal",
       "title": "An image to follow",
-      "renderId": "49b0792c-855f-43ed-b656-403351bb0976",
+      "renderId": "b7e7c543-ed04-4d5c-b25c-c53d53f89172",
       "credit": "Curtis Adams / Pexels; edited reference extracted from the earlier Aftertake portal render",
       "sourceUrl": "https://www.pexels.com/video/empty-room-with-ceiling-fan-and-carpet-19227392/",
       "license": "Pexels License; model terms also apply to generated results and the edited reference",
@@ -83,7 +83,7 @@
     {
       "slug": "crystal-forest",
       "title": "The forest keeps a secret",
-      "renderId": "bbe90566-782e-49c2-b308-43a1643103d9",
+      "renderId": "044ea348-4b4b-4f93-979f-696af457b907",
       "credit": "Mikhail Nilov / Pexels; appearance edited locally with Qwen-Image-Edit-2511",
       "sourceUrl": "https://www.pexels.com/video/waterfall-in-the-middle-of-the-forest-6989026/",
       "license": "Pexels License; Qwen and LTX model terms apply to generated results",
@@ -98,7 +98,7 @@
     {
       "slug": "signal",
       "title": "Signal — a new character",
-      "renderId": "d18450f0-a9ca-4a2b-9d24-fd75d00664c6",
+      "renderId": "1ddf2e33-5688-4b14-8bbb-2e7de23bc82f",
       "credit": "Original robot animation by Aftertake contributors; appearance created locally with Qwen-Image-Edit-2511",
       "license": "MIT source; Qwen and Wan model terms apply to generated results",
       "source": "signal/source.mp4",
@@ -112,7 +112,7 @@
     {
       "slug": "crystal-transition",
       "title": "Between falling water and crystal",
-      "renderId": "373aeb55-1569-411f-a541-7a7367617ec3",
+      "renderId": "543fac8e-9230-4c6e-ba51-932c414463a9",
       "credit": "Mikhail Nilov / Pexels; ending image created locally with Qwen-Image-Edit-2511",
       "sourceUrl": "https://www.pexels.com/video/waterfall-in-the-middle-of-the-forest-6989026/",
       "license": "Pexels License; Qwen and LTX model terms apply to generated results",
@@ -142,7 +142,7 @@
     {
       "slug": "castle-pullback",
       "title": "The tide keeps a secret",
-      "renderId": "f15f0f87-510a-4ecb-9ef5-393fec7ea8e8",
+      "renderId": "2eaace67-2cf8-49fc-9b3b-dc5c2dfe7be3",
       "credit": "Dean Diemert / Pexels; castle starting frame edited locally with Qwen-Image-Edit-2511",
       "sourceUrl": "https://www.pexels.com/video/a-lighthouse-is-seen-from-above-on-the-coast-20730898/",
       "license": "Pexels License; Qwen and LTX model terms apply to generated results",
@@ -155,7 +155,7 @@
     {
       "slug": "winter-valley",
       "title": "A season in a moment",
-      "renderId": "034b4b2f-2664-4636-8c17-44d64debe1c8",
+      "renderId": "976e8342-651b-46f1-bebf-e11126727600",
       "credit": "Florian Delée / Pexels; winter appearance edited locally with Qwen-Image-Edit-2511",
       "sourceUrl": "https://www.pexels.com/video/drone-captures-misty-mountains-in-france-at-sunrise-32651075/",
       "license": "Pexels License; Qwen and LTX model terms apply to generated results",
@@ -170,7 +170,7 @@
     {
       "slug": "observatory",
       "title": "Above the clouds",
-      "renderId": "8abae2a5-bd8a-4f45-8d36-8f024635c8cf",
+      "renderId": "bc4e8020-06f0-4c70-9d6e-aff4c5f1453c",
       "credit": "Original scene generated locally from text with Z-Image Turbo, then animated with LTX-2.5",
       "license": "Z-Image Turbo Apache-2.0; LTX model terms apply to generated results",
       "source": "observatory/source.png",
@@ -184,27 +184,27 @@
   "files": [
     {
       "source": "reclaimed/result.mp4",
-      "target": "outputs/ca56f918-ba61-4935-86ca-13814f22d56c.mp4",
-      "sha256": "dc0c4ca4bdf865935da142282b7f4522b0d9752c86aa96cdca7d5e98f46d1f5a",
-      "size": 1297364
+      "target": "outputs/485bbac4-d1ab-4ae5-ab66-00dca339978a.mp4",
+      "sha256": "0de5748d4e2010b09e7684aa930a98e72efe1db93036846fb89d9365da3dc7f9",
+      "size": 1166776
     },
     {
       "source": "reclaimed/raw.mp4",
-      "target": "outputs/ca56f918-ba61-4935-86ca-13814f22d56c-raw.mp4",
-      "sha256": "9422aa43c756e954d28f3ae189ad4acc3291046a9b3e06b572316a605af67ed5",
-      "size": 1253235
+      "target": "outputs/485bbac4-d1ab-4ae5-ab66-00dca339978a-raw.mp4",
+      "sha256": "b8dc7e05deed24457c12761e31aba46b21a3d58b0b9f1ff91c4af132ef29a66a",
+      "size": 1096360
     },
     {
       "source": "reclaimed/coarse.mp4",
-      "target": "outputs/ca56f918-ba61-4935-86ca-13814f22d56c-coarse.mp4",
-      "sha256": "1ea0cbddad98821b3903810a129c404a95e8fca2cefb2805eb5d198af73b9796",
-      "size": 791942
+      "target": "outputs/485bbac4-d1ab-4ae5-ab66-00dca339978a-coarse.mp4",
+      "sha256": "7714ebd5becd3021e9cacb51942ceb15ea8fac93b1e2694025f102a950a5e124",
+      "size": 689033
     },
     {
       "source": "reclaimed/poster.jpg",
       "target": "posters/reclaimed.jpg",
-      "sha256": "4ef8a10c0e3ad51b975353b68f4f8e12c5747aaa94abde4d8dc70e9ec8295548",
-      "size": 37629
+      "sha256": "a10287dd3ad932babb151d839580568c7cc52be051d438b6d00d66a0493a00d5",
+      "size": 37423
     },
     {
       "source": "reclaimed/source.mp4",
@@ -220,9 +220,9 @@
     },
     {
       "source": "reclaimed/render.json",
-      "target": "renders/ca56f918-ba61-4935-86ca-13814f22d56c.json",
-      "sha256": "e4beb64518c02592473a7e0600fa3b22db8c4d7b1b408952bef11474503220cd",
-      "size": 14344
+      "target": "renders/485bbac4-d1ab-4ae5-ab66-00dca339978a.json",
+      "sha256": "4734186e5ec855aef43a058604b3ba97e52b3033da9beac50c4c234b2d66bf4b",
+      "size": 14587
     },
     {
       "source": "previews/44f290639433d6b50d144b0608367653983a46ef02cb281b068996dd323b22d1.jpg",
@@ -946,27 +946,27 @@
     },
     {
       "source": "portal/result.mp4",
-      "target": "outputs/2a7c74eb-8313-499e-8276-6d598b0ac6d1.mp4",
-      "sha256": "c522c046b3182f1914680139a7778f8abc4704b16fd72f47daf70cc6d8fca360",
-      "size": 401634
+      "target": "outputs/69009304-60bc-40a9-be0c-841503277f7f.mp4",
+      "sha256": "94b28bd400836117f9f5be650a4ff1a0727d9f6aeaa7a4322acc3f5ac93998a3",
+      "size": 379993
     },
     {
       "source": "portal/raw.mp4",
-      "target": "outputs/2a7c74eb-8313-499e-8276-6d598b0ac6d1-raw.mp4",
-      "sha256": "3805ddc4467c603a789956a813d5172af92846e81158bea2d7b3da271d25d875",
-      "size": 422491
+      "target": "outputs/69009304-60bc-40a9-be0c-841503277f7f-raw.mp4",
+      "sha256": "7ed6f9636a7d34151baea258cb8af2a0f27a2afff7de111e2256bf901c2eaa8e",
+      "size": 415669
     },
     {
       "source": "portal/coarse.mp4",
-      "target": "outputs/2a7c74eb-8313-499e-8276-6d598b0ac6d1-coarse.mp4",
-      "sha256": "a213c189fb62c3db2ecb0779312173437db409cc18a446c2493a6a91b265d8ea",
-      "size": 207479
+      "target": "outputs/69009304-60bc-40a9-be0c-841503277f7f-coarse.mp4",
+      "sha256": "fa8a5cb68607282f9aa5f4d14b7d8b109158b58ddbb8148dd59146a6771b568c",
+      "size": 202842
     },
     {
       "source": "portal/poster.jpg",
       "target": "posters/portal.jpg",
-      "sha256": "9328191f10d20d36a4bf35d0c887e8cdb7af34b041759227268f47bdd64d078c",
-      "size": 23648
+      "sha256": "f97469bc9b1945b4e137128f4f74fef540b636f0c2f43e427821d39c552ebef1",
+      "size": 24432
     },
     {
       "source": "portal/source.mp4",
@@ -982,9 +982,9 @@
     },
     {
       "source": "portal/render.json",
-      "target": "renders/2a7c74eb-8313-499e-8276-6d598b0ac6d1.json",
-      "sha256": "04fd67aaed21ab26dd54ddc1a263391d738cfe0155aeceb7f2ffdde2176332bd",
-      "size": 14244
+      "target": "renders/69009304-60bc-40a9-be0c-841503277f7f.json",
+      "sha256": "3184b4f5920545707a835de02ab16befe11b430c0f67f957e76caee4110d6177",
+      "size": 14484
     },
     {
       "source": "previews/efc860f24c4aa5f2b5e2df1d615dc9d52c027dc57784463d73d7faa21b24858e.jpg",
@@ -1594,27 +1594,27 @@
     },
     {
       "source": "golden-falls/result.mp4",
-      "target": "outputs/c729f8fb-5919-4152-be2c-8eeb56c3ffcf.mp4",
-      "sha256": "4a027cf853b0585fd98d9ad9d5c319761daab393518b32938d29e33325025b35",
-      "size": 1444753
+      "target": "outputs/945450f2-d43a-488b-9f1d-d257af1537a1.mp4",
+      "sha256": "363739a46445bc504f8042277bd8cff90aae7db7c6641371f9016a318e88fd98",
+      "size": 1439129
     },
     {
       "source": "golden-falls/raw.mp4",
-      "target": "outputs/c729f8fb-5919-4152-be2c-8eeb56c3ffcf-raw.mp4",
-      "sha256": "d55908caac343b8aba1c4d80399d07783a32dcf609b5c2efb103d4d2f17d5ca9",
-      "size": 1858222
+      "target": "outputs/945450f2-d43a-488b-9f1d-d257af1537a1-raw.mp4",
+      "sha256": "4fece3636ef4ff174f567858e4991198a11dc69c81200dd42e9ada94508ffd6d",
+      "size": 1965483
     },
     {
       "source": "golden-falls/coarse.mp4",
-      "target": "outputs/c729f8fb-5919-4152-be2c-8eeb56c3ffcf-coarse.mp4",
-      "sha256": "d28fe6fc07aaab54eb8112ba1f588a0389f0ac5f86efc02ce3ec329ce022af88",
-      "size": 1234298
+      "target": "outputs/945450f2-d43a-488b-9f1d-d257af1537a1-coarse.mp4",
+      "sha256": "1c57b1f035d6786c8e3fdab99fef459193eeb0d989fc8ec60f4cbebd755dd53f",
+      "size": 1472639
     },
     {
       "source": "golden-falls/poster.jpg",
       "target": "posters/golden-falls.jpg",
-      "sha256": "e421925281d7cf4d96acb75bbdf4a1f4b0aca002d892d7a3617b72b1eca7d8cd",
-      "size": 60014
+      "sha256": "6434662693c556810fb11d0de6bc5e2ad899e9fbacd87d71e2ef353a66cde4bc",
+      "size": 61844
     },
     {
       "source": "golden-falls/source.mp4",
@@ -1630,9 +1630,9 @@
     },
     {
       "source": "golden-falls/render.json",
-      "target": "renders/c729f8fb-5919-4152-be2c-8eeb56c3ffcf.json",
-      "sha256": "85421a69ea177727d781a3e49ea5712b0c2c4f3f2721475fafddd9b62e8be273",
-      "size": 14088
+      "target": "renders/945450f2-d43a-488b-9f1d-d257af1537a1.json",
+      "sha256": "e356d6398050ad2e956dcf57ae0ac53b243deea3917ad92bbc647831b1837f02",
+      "size": 14334
     },
     {
       "source": "previews/ce99b8f6bfa28a593eaa1a53f5f75dfe6c510a705188b88018e38248201edcf1.jpg",
@@ -2242,21 +2242,21 @@
     },
     {
       "source": "quiet-approach/result.mp4",
-      "target": "outputs/ade9d68a-6a3f-431d-8970-2b37f482aa4f.mp4",
-      "sha256": "e5e00f151fdba5fd05da3d265fbc9e4655c4fe1ab956b529a9c1a8a6f441c8fc",
-      "size": 182047
+      "target": "outputs/9c7bfd6e-99d8-4c26-b79d-bcc2af220c11.mp4",
+      "sha256": "8ef1509d49a4162e1fc55af5529efcd8dee948e661cf46f09a37043a9c1c49d4",
+      "size": 473417
     },
     {
       "source": "quiet-approach/raw.mp4",
-      "target": "outputs/ade9d68a-6a3f-431d-8970-2b37f482aa4f-raw.mp4",
-      "sha256": "e5e00f151fdba5fd05da3d265fbc9e4655c4fe1ab956b529a9c1a8a6f441c8fc",
-      "size": 182047
+      "target": "outputs/9c7bfd6e-99d8-4c26-b79d-bcc2af220c11-raw.mp4",
+      "sha256": "0fdac7979c5c0d2089811d9d6898ebbb007cba6a769c815e9d6431124791ecb0",
+      "size": 494812
     },
     {
       "source": "quiet-approach/poster.jpg",
       "target": "posters/quiet-approach.jpg",
-      "sha256": "6a79602c00aef9c25e1239c09c7524b19cd58aa5e3568937608f5161398d9819",
-      "size": 16518
+      "sha256": "0f17968b041b4d8232ff6eb0f671803d510411d4ca1b2e24a1cdf7c89fdd17f4",
+      "size": 25222
     },
     {
       "source": "quiet-approach/source.png",
@@ -2267,14 +2267,14 @@
     {
       "source": "quiet-approach/clip.json",
       "target": "clips/f3fe6177-e57e-4b0e-8a9d-11c85ac9cc9d.json",
-      "sha256": "56136180a1068d075d9f5d2ea6d2ae43f6c066d63398db1a8e7e0d5afd071dac",
+      "sha256": "348cb22193dab3f07b5c53a8aef9eefb3fdda8dc7f6f4972bb1e13ad487ca8b1",
       "size": 292
     },
     {
       "source": "quiet-approach/render.json",
-      "target": "renders/ade9d68a-6a3f-431d-8970-2b37f482aa4f.json",
-      "sha256": "9171475635c0da3b8f9d25f0a7d1afbdf0854e42ae43655ea62933142e570304",
-      "size": 7400
+      "target": "renders/9c7bfd6e-99d8-4c26-b79d-bcc2af220c11.json",
+      "sha256": "f7e91591573c536dfeaec902a99b52368af535bf663bd6e2d88b8c59944aaeea",
+      "size": 7757
     },
     {
       "source": "previews/6fe2251c241512575873b28569c09b72bef3b65d405b9665da3cdffe8e2702d6.jpg",
@@ -2284,33 +2284,33 @@
     },
     {
       "source": "guided-pullback/result.mp4",
-      "target": "outputs/4d104079-d530-47dd-936f-dade1212be0b.mp4",
-      "sha256": "548d4fbc53b6c4381b34a1c0f2c9e7c0fcfeda1dddae7288e4a5710178b7dc74",
-      "size": 212475
+      "target": "outputs/25c1e7c2-d194-492f-affa-ad3ecdd427bd.mp4",
+      "sha256": "3fb2a043f2b9d450d4aede98b78004158357292ee1d7b8fbf0a288e92943abd4",
+      "size": 499520
     },
     {
       "source": "guided-pullback/raw.mp4",
-      "target": "outputs/4d104079-d530-47dd-936f-dade1212be0b-raw.mp4",
-      "sha256": "79bc8b6574227fd5fe6e055d39a799299ca5aeb2e80f5d480b436fd0d2f2cd06",
-      "size": 228191
+      "target": "outputs/25c1e7c2-d194-492f-affa-ad3ecdd427bd-raw.mp4",
+      "sha256": "1a1eced49f3c6ddc93fac3deab1b277196da3e9e88f7c042365faf011966bd48",
+      "size": 560704
     },
     {
       "source": "guided-pullback/guide.mp4",
-      "target": "outputs/4d104079-d530-47dd-936f-dade1212be0b-guide.mp4",
-      "sha256": "5acabedeb86b6562dad0bd8d80c96502c3412dbb1ba44a2869812a18ab1933e0",
-      "size": 64115
+      "target": "outputs/25c1e7c2-d194-492f-affa-ad3ecdd427bd-guide.mp4",
+      "sha256": "0273473d42336178ce09bbff12cdab0251d91b0fe5a50b743daa588d600c2c41",
+      "size": 122454
     },
     {
       "source": "guided-pullback/poster.jpg",
       "target": "posters/guided-pullback.jpg",
-      "sha256": "7dc8e63587c6affa3dde678f4fe4181738fe4a4a6985da9e30b88bffbca6b6de",
-      "size": 17475
+      "sha256": "e9878ac747338cef651d75dde2ee85f63e7e7729091d0aa9428f905811e49777",
+      "size": 23544
     },
     {
       "source": "guided-pullback/render.json",
-      "target": "renders/4d104079-d530-47dd-936f-dade1212be0b.json",
-      "sha256": "3331de77d3e434e6021be02ab297e938f72ddaa625d85af3089f8a6135b1b4b9",
-      "size": 33598
+      "target": "renders/25c1e7c2-d194-492f-affa-ad3ecdd427bd.json",
+      "sha256": "f18141093de346b0d8f17d5ae18293af9800cf00392ead43732f3411fca6372d",
+      "size": 58499
     },
     {
       "source": "reference-portal/edited-first-frame.png",
@@ -2332,33 +2332,33 @@
     },
     {
       "source": "reference-portal/result.mp4",
-      "target": "outputs/49b0792c-855f-43ed-b656-403351bb0976.mp4",
-      "sha256": "7c5d819f2b46b1eb13ec714fd0584303459f1511c0025324b9622ac70fe5964a",
-      "size": 394538
+      "target": "outputs/b7e7c543-ed04-4d5c-b25c-c53d53f89172.mp4",
+      "sha256": "e42691ec7cffa1a8e47f3c6a0c30556e00d108664fbb1118c33840b2c3ee5a4e",
+      "size": 372143
     },
     {
       "source": "reference-portal/raw.mp4",
-      "target": "outputs/49b0792c-855f-43ed-b656-403351bb0976-raw.mp4",
-      "sha256": "b76b6186c814f7c9b4b1b17da546aa4c72558db9d3f231e8f4e243fd0b9edb71",
-      "size": 409404
+      "target": "outputs/b7e7c543-ed04-4d5c-b25c-c53d53f89172-raw.mp4",
+      "sha256": "c1142147a3a1fce38a14637331302a9ffbb1f0f178d9d2106c507c7ee9192579",
+      "size": 401382
     },
     {
       "source": "reference-portal/coarse.mp4",
-      "target": "outputs/49b0792c-855f-43ed-b656-403351bb0976-coarse.mp4",
-      "sha256": "2783cdacf7a5c0cea5ba0a4a600a5edd72116d8cc9cd8f7480b4c8320a9a8a63",
-      "size": 200810
+      "target": "outputs/b7e7c543-ed04-4d5c-b25c-c53d53f89172-coarse.mp4",
+      "sha256": "bc6e1110aa08ae6e63e2f16decc81331a7b59bcbf9e66eafb196a57a12e13497",
+      "size": 189817
     },
     {
       "source": "reference-portal/poster.jpg",
       "target": "posters/reference-portal.jpg",
-      "sha256": "2c5e4adbdee6387a6f685bce56a9aab7be41a39a120130a5a18ef2734c754654",
-      "size": 23038
+      "sha256": "01093a87846f5e3d175048250f4590642b19d3c98177e2f52967a54e3ae47642",
+      "size": 23747
     },
     {
       "source": "reference-portal/render.json",
-      "target": "renders/49b0792c-855f-43ed-b656-403351bb0976.json",
-      "sha256": "f464983bdcf9662efc21025e4e22d0db4588b2d5b3cd6067661cba4fc59cafdb",
-      "size": 16902
+      "target": "renders/b7e7c543-ed04-4d5c-b25c-c53d53f89172.json",
+      "sha256": "cac5bc1bec1f47c940d6fbefea0a61c180dec6712122dcff687140c1049d9610",
+      "size": 16849
     },
     {
       "source": "crystal-forest/edited-first-frame.png",
@@ -2386,39 +2386,39 @@
     },
     {
       "source": "crystal-forest/frame-recipe.json",
-      "target": "frame-recipes/bbe90566-782e-49c2-b308-43a1643103d9.json",
+      "target": "frame-recipes/044ea348-4b4b-4f93-979f-696af457b907.json",
       "sha256": "3a7514e24283d239c263c5807dbd5af079a7f582f9ffdd38a30f694757338779",
       "size": 5617
     },
     {
       "source": "crystal-forest/result.mp4",
-      "target": "outputs/bbe90566-782e-49c2-b308-43a1643103d9.mp4",
-      "sha256": "17a4173b0141878daf1c4540e39c4779add64ddde463dad86bc588bfcca8ef5f",
-      "size": 1548565
+      "target": "outputs/044ea348-4b4b-4f93-979f-696af457b907.mp4",
+      "sha256": "58466390b52c27ef59f6d71d86be7e308b93db65f016bcdf60d93a696caae830",
+      "size": 1578778
     },
     {
       "source": "crystal-forest/raw.mp4",
-      "target": "outputs/bbe90566-782e-49c2-b308-43a1643103d9-raw.mp4",
-      "sha256": "b036b1a5515d87ad1a1b38c5e3f8a5ef61eae7efcf5e01f709eee17299a69304",
-      "size": 2164284
+      "target": "outputs/044ea348-4b4b-4f93-979f-696af457b907-raw.mp4",
+      "sha256": "62395e8350df167dd69bdd35c410618e2a8517da970c0a62bc8adcb775237ede",
+      "size": 2475682
     },
     {
       "source": "crystal-forest/coarse.mp4",
-      "target": "outputs/bbe90566-782e-49c2-b308-43a1643103d9-coarse.mp4",
-      "sha256": "ee46d074f60567604742021477676861b6617d33844d557c900f1674440187da",
-      "size": 1198240
+      "target": "outputs/044ea348-4b4b-4f93-979f-696af457b907-coarse.mp4",
+      "sha256": "323ec16ba40763b77e88de96889ff64c2272182117ab440b317f8532991383b1",
+      "size": 1421311
     },
     {
       "source": "crystal-forest/poster.jpg",
       "target": "posters/crystal-forest.jpg",
-      "sha256": "e43334484fb74c01b09ce25017d8ce889c70b30bfc407c9fab6130cb5b8eb3cb",
-      "size": 60543
+      "sha256": "26ba816baa7f568bc7230dd746dc022ede5af5c6c28766ff3bf4356e9d5bc2a9",
+      "size": 62503
     },
     {
       "source": "crystal-forest/render.json",
-      "target": "renders/bbe90566-782e-49c2-b308-43a1643103d9.json",
-      "sha256": "08cb11f5a7b864761bc40306247353051d8bf835225754349d60b76154e638b9",
-      "size": 20351
+      "target": "renders/044ea348-4b4b-4f93-979f-696af457b907.json",
+      "sha256": "259d63a61661c6f48a1a83bcacede0855a24891108c94be7ddd0467321e11511",
+      "size": 20296
     },
     {
       "source": "signal/appearance.png",
@@ -2446,27 +2446,27 @@
     },
     {
       "source": "signal/frame-recipe.json",
-      "target": "frame-recipes/d18450f0-a9ca-4a2b-9d24-fd75d00664c6.json",
+      "target": "frame-recipes/1ddf2e33-5688-4b14-8bbb-2e7de23bc82f.json",
       "sha256": "ae5333f1c76a7c9e0e17550fa94114d1a6a119486dd6aea6bbc0115ba9395218",
       "size": 5756
     },
     {
       "source": "signal/result.mp4",
-      "target": "outputs/d18450f0-a9ca-4a2b-9d24-fd75d00664c6.mp4",
-      "sha256": "28d501f57869ea4a9086e1d18b1bbd8233ac27c1f5336ac0252e0d991650a66c",
-      "size": 926297
+      "target": "outputs/1ddf2e33-5688-4b14-8bbb-2e7de23bc82f.mp4",
+      "sha256": "750aaa4a8fd0c56a4c2d1181bf642f3042fb904f29d5de7234a365a2dfe79204",
+      "size": 930761
     },
     {
-      "source": "signal/raw.mp4",
-      "target": "outputs/d18450f0-a9ca-4a2b-9d24-fd75d00664c6-raw.mp4",
-      "sha256": "28d501f57869ea4a9086e1d18b1bbd8233ac27c1f5336ac0252e0d991650a66c",
-      "size": 926297
+      "source": "signal/result.mp4",
+      "target": "outputs/1ddf2e33-5688-4b14-8bbb-2e7de23bc82f-raw.mp4",
+      "sha256": "750aaa4a8fd0c56a4c2d1181bf642f3042fb904f29d5de7234a365a2dfe79204",
+      "size": 930761
     },
     {
       "source": "signal/poster.jpg",
       "target": "posters/signal.jpg",
-      "sha256": "e608f131de9087c84c179b86e37f1bdf833b971dfcce0d336dd27e0fa3d15985",
-      "size": 13359
+      "sha256": "f4bcc23447156ad1515019fb858c932ded26ac50b578bf623ca63d70c7482eba",
+      "size": 13331
     },
     {
       "source": "signal/source.mp4",
@@ -2482,9 +2482,9 @@
     },
     {
       "source": "signal/render.json",
-      "target": "renders/d18450f0-a9ca-4a2b-9d24-fd75d00664c6.json",
-      "sha256": "6e1f7b3f43339c07661d7996ff729776c6169ecf452fcf2830db2d5fa0687c0b",
-      "size": 11551
+      "target": "renders/1ddf2e33-5688-4b14-8bbb-2e7de23bc82f.json",
+      "sha256": "4b9c4866af490d926fc905c2945c33cda636e7b4990e450ff22abaffe158dca8",
+      "size": 11816
     },
     {
       "source": "previews/873e96085343e228dd095dc6e3feb5c9045620414145f55984fc28e723f00871.jpg",
@@ -3070,33 +3070,33 @@
     },
     {
       "source": "crystal-transition/frame-recipe.json",
-      "target": "frame-recipes/373aeb55-1569-411f-a541-7a7367617ec3.json",
+      "target": "frame-recipes/543fac8e-9230-4c6e-ba51-932c414463a9.json",
       "sha256": "3a7514e24283d239c263c5807dbd5af079a7f582f9ffdd38a30f694757338779",
       "size": 5617
     },
     {
       "source": "crystal-transition/result.mp4",
-      "target": "outputs/373aeb55-1569-411f-a541-7a7367617ec3.mp4",
-      "sha256": "d5bf0fcb795381dc58c5eadb5119d149e80db8b36e30da39e1dd4a584ce4f0a3",
-      "size": 1494639
+      "target": "outputs/543fac8e-9230-4c6e-ba51-932c414463a9.mp4",
+      "sha256": "0ea8874562af8a335572df604f829ec6a972407e08c88cb6b18949aeb741b5b8",
+      "size": 1337134
     },
     {
-      "source": "crystal-transition/result.mp4",
-      "target": "outputs/373aeb55-1569-411f-a541-7a7367617ec3-raw.mp4",
-      "sha256": "d5bf0fcb795381dc58c5eadb5119d149e80db8b36e30da39e1dd4a584ce4f0a3",
-      "size": 1494639
+      "source": "crystal-transition/raw.mp4",
+      "target": "outputs/543fac8e-9230-4c6e-ba51-932c414463a9-raw.mp4",
+      "sha256": "8d35009b40a2fd53d4e636a5656fcfbb16651f154843aba162a7362725140edb",
+      "size": 1464544
     },
     {
       "source": "crystal-transition/poster.jpg",
       "target": "posters/crystal-transition.jpg",
-      "sha256": "317c3d400112b7f7deb66fc5a2f675de797afc58b0c5dfb40f154b392124036e",
-      "size": 62936
+      "sha256": "6970ac264e4a1581132e6fe613238b06d1ace6592ba72c638af1128169a20ebb",
+      "size": 65293
     },
     {
       "source": "crystal-transition/render.json",
-      "target": "renders/373aeb55-1569-411f-a541-7a7367617ec3.json",
-      "sha256": "8dd731adcdd61a3f1618b8b3c2b11967e6177523df83ea61aabd8c9610303864",
-      "size": 13099
+      "target": "renders/543fac8e-9230-4c6e-ba51-932c414463a9.json",
+      "sha256": "0a27590cffe554019b2f7cc3ff3edd2eab5e46c61f95a9198816ba6f9a0405db",
+      "size": 13259
     },
     {
       "source": "coastal-kingdom/edited-first-frame.png",
@@ -3778,33 +3778,33 @@
     },
     {
       "source": "castle-pullback/result.mp4",
-      "target": "outputs/f15f0f87-510a-4ecb-9ef5-393fec7ea8e8.mp4",
-      "sha256": "0082a7102a54f6419c76c8af860a3e9525beb267036a44239022948eba65ee96",
-      "size": 1486252
+      "target": "outputs/2eaace67-2cf8-49fc-9b3b-dc5c2dfe7be3.mp4",
+      "sha256": "beec6978e441b013b29b5450298846693f95fb4ee84d58cc5e282a3cac9e0905",
+      "size": 1353113
     },
     {
-      "source": "castle-pullback/result.mp4",
-      "target": "outputs/f15f0f87-510a-4ecb-9ef5-393fec7ea8e8-raw.mp4",
-      "sha256": "0082a7102a54f6419c76c8af860a3e9525beb267036a44239022948eba65ee96",
-      "size": 1486252
+      "source": "castle-pullback/raw.mp4",
+      "target": "outputs/2eaace67-2cf8-49fc-9b3b-dc5c2dfe7be3-raw.mp4",
+      "sha256": "a2ad4ae01a77dde2fd855f7e4f46c6b98b0af831d07b3a6a60899bb9104d53f0",
+      "size": 1486341
     },
     {
       "source": "castle-pullback/guide.mp4",
-      "target": "outputs/f15f0f87-510a-4ecb-9ef5-393fec7ea8e8-guide.mp4",
-      "sha256": "8e38337bd60056d59e51d9b6c91fb448045e6b1e3f3e712126e88c81f17fc432",
-      "size": 123505
+      "target": "outputs/2eaace67-2cf8-49fc-9b3b-dc5c2dfe7be3-guide.mp4",
+      "sha256": "906e73aae7db5a11977e33e2173fd05d0c88ed5ee964b47df29ab8393a847f99",
+      "size": 123594
     },
     {
       "source": "castle-pullback/poster.jpg",
       "target": "posters/castle-pullback.jpg",
-      "sha256": "c6e428f07921f69973efa3c6136a06294f1d36fd33abeb2aef93642d16851220",
-      "size": 43289
+      "sha256": "c969014b1618bafcc3a9cce344ca25cdb44d337446706957a5e057ce40071760",
+      "size": 44300
     },
     {
       "source": "castle-pullback/render.json",
-      "target": "renders/f15f0f87-510a-4ecb-9ef5-393fec7ea8e8.json",
-      "sha256": "0bcd77a70c34e08bbd597f5c12fa71c5a7f81c476b0ddefd44a6c6a97ffec2df",
-      "size": 59230
+      "target": "renders/2eaace67-2cf8-49fc-9b3b-dc5c2dfe7be3.json",
+      "sha256": "10f4e5e60030b312c140694285f997c0d3abbf8d694c1220a69632307b0b20a8",
+      "size": 59637
     },
     {
       "source": "winter-valley/edited-first-frame.png",
@@ -3832,33 +3832,33 @@
     },
     {
       "source": "winter-valley/frame-recipe.json",
-      "target": "frame-recipes/034b4b2f-2664-4636-8c17-44d64debe1c8.json",
+      "target": "frame-recipes/976e8342-651b-46f1-bebf-e11126727600.json",
       "sha256": "f1bd890f4c69572b6fc23f604cba129cfc708b31d486188fb3d648f3a36b270c",
       "size": 5842
     },
     {
       "source": "winter-valley/result.mp4",
-      "target": "outputs/034b4b2f-2664-4636-8c17-44d64debe1c8.mp4",
-      "sha256": "384b9f0bfc4312000ab4b7205db64fd002cf2c63d4bdd73428f069733190528e",
-      "size": 660141
+      "target": "outputs/976e8342-651b-46f1-bebf-e11126727600.mp4",
+      "sha256": "9d0db3cb65051affc025d6880b4c85c65723a5142de373803e3892d06d39d22d",
+      "size": 627114
     },
     {
       "source": "winter-valley/raw.mp4",
-      "target": "outputs/034b4b2f-2664-4636-8c17-44d64debe1c8-raw.mp4",
-      "sha256": "5c5b61082385c087afbc792d0eff00d901bcde448eac16785da2a6be23001160",
-      "size": 502267
+      "target": "outputs/976e8342-651b-46f1-bebf-e11126727600-raw.mp4",
+      "sha256": "4df2a564859826f72529880fcb22cb69806a24370d8960b3b3360b5bfff9911c",
+      "size": 478865
     },
     {
       "source": "winter-valley/coarse.mp4",
-      "target": "outputs/034b4b2f-2664-4636-8c17-44d64debe1c8-coarse.mp4",
-      "sha256": "251fa13892ebcd2331aac3066502b8a51fa4d5bf67caf654cb35ee08f6c882d7",
-      "size": 292380
+      "target": "outputs/976e8342-651b-46f1-bebf-e11126727600-coarse.mp4",
+      "sha256": "360ba1247d147de35f601ba566670254a41d9ff18328d7c5955b5743b370fae2",
+      "size": 288737
     },
     {
       "source": "winter-valley/poster.jpg",
       "target": "posters/winter-valley.jpg",
-      "sha256": "035f46dba7c34ce329d0a5e990a7080f387c4b2f86abd4262f678991a70a1384",
-      "size": 31225
+      "sha256": "7aa3dbab06b04be807d1b3415b56504038858be36d0b8986aa1d915d4297b330",
+      "size": 32932
     },
     {
       "source": "winter-valley/source.mp4",
@@ -3874,9 +3874,9 @@
     },
     {
       "source": "winter-valley/render.json",
-      "target": "renders/034b4b2f-2664-4636-8c17-44d64debe1c8.json",
-      "sha256": "b2961d9e030214e0bd35db7d867df6e60df346f5d86ddd51083fe693795d9def",
-      "size": 18935
+      "target": "renders/976e8342-651b-46f1-bebf-e11126727600.json",
+      "sha256": "db1d6f330fb459ff68571414c6254cc6fe6d2e6c7e343014df3f0e36fa01c9c0",
+      "size": 18880
     },
     {
       "source": "previews/4c09dc8c2f142386fa8aa0d50c5f6452624e8aabf74370ce988f5a8de6a95709.jpg",
@@ -4492,27 +4492,27 @@
     },
     {
       "source": "observatory/image-recipe.json",
-      "target": "image-recipes/8abae2a5-bd8a-4f45-8d36-8f024635c8cf.json",
+      "target": "image-recipes/bc4e8020-06f0-4c70-9d6e-aff4c5f1453c.json",
       "sha256": "74b47a509df682e7ee6c8428170c256ca9b2938b53ab22065ddd4ab161a34f87",
       "size": 3248
     },
     {
       "source": "observatory/result.mp4",
-      "target": "outputs/8abae2a5-bd8a-4f45-8d36-8f024635c8cf.mp4",
-      "sha256": "087e24783cc8ab0dc37bb2ce40858e3e6e66d005a2e8b24cacb54ec5f91baec7",
-      "size": 982519
+      "target": "outputs/bc4e8020-06f0-4c70-9d6e-aff4c5f1453c.mp4",
+      "sha256": "213a657b5fc69de4fe54deb1962de42e64d93ac03bb751a0e8c614a85fac01b2",
+      "size": 982608
     },
     {
-      "source": "observatory/raw.mp4",
-      "target": "outputs/8abae2a5-bd8a-4f45-8d36-8f024635c8cf-raw.mp4",
-      "sha256": "087e24783cc8ab0dc37bb2ce40858e3e6e66d005a2e8b24cacb54ec5f91baec7",
-      "size": 982519
+      "source": "observatory/result.mp4",
+      "target": "outputs/bc4e8020-06f0-4c70-9d6e-aff4c5f1453c-raw.mp4",
+      "sha256": "213a657b5fc69de4fe54deb1962de42e64d93ac03bb751a0e8c614a85fac01b2",
+      "size": 982608
     },
     {
       "source": "observatory/guide.mp4",
-      "target": "outputs/8abae2a5-bd8a-4f45-8d36-8f024635c8cf-guide.mp4",
-      "sha256": "714d5b448cc59b67950257df1658fb30553a1386b31b7572df9caeb549423235",
-      "size": 131919
+      "target": "outputs/bc4e8020-06f0-4c70-9d6e-aff4c5f1453c-guide.mp4",
+      "sha256": "cb89759266e9ae21aabb31f506ba50e7f1638d8f98464a63c92a5b2f47e4f223",
+      "size": 132008
     },
     {
       "source": "observatory/poster.jpg",
@@ -4534,9 +4534,9 @@
     },
     {
       "source": "observatory/render.json",
-      "target": "renders/8abae2a5-bd8a-4f45-8d36-8f024635c8cf.json",
-      "sha256": "8025a065b16c445fe7a3076e8f134d6d143f80992280d5c454c2bb76421fab76",
-      "size": 57983
+      "target": "renders/bc4e8020-06f0-4c70-9d6e-aff4c5f1453c.json",
+      "sha256": "31afbe856b6e73a83c4e4251df7e5396721ed8767c187f255e55f69466629335",
+      "size": 58386
     },
     {
       "source": "previews/f97e1450ca77cd9a1e222167609ae08f2946a3b2fd3d9a1e22d9538b4165a239.jpg",

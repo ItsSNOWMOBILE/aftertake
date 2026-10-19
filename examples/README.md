@@ -7,6 +7,28 @@ These are actual local Comfy SDK renders, captured on an RTX 5080 with 16 GB
 VRAM. The videos are pre-rendered examples; editing a recipe does not alter a
 past render. A connected local engine is needed to generate a new take.
 
+The browser gallery features the [native H3 character replacement](character-h3-high/README.md)
+and [portrait text-to-video with generated sound](text-video/README.md) above
+the VFX, camera and motion recipes. They retain their own character/video
+requests and executed workflows. The Wan motion-transfer example below is a
+different workflow from H3 character replacement.
+
+## Recorded quality and pipeline version
+
+On October 19, twelve workflow examples were regenerated through the normal
+studio API at **Final / 24 fps**, using the current decoder, compositing and
+source-aspect output settings. This replaces both earlier 16 fps camera drafts.
+The coastal transformation already matched the current pipeline and retains
+its reviewed output. All thirteen workflow examples now use Final settings.
+
+The featured H3 take is **1536 × 640**. The featured portrait text-to-video is
+**576 × 1024** with generated sound; the VFX/camera set uses the app's **768 px**
+final canvas. These are saved model profiles, not a claim of maximum possible
+model quality. The [gallery review receipt](gallery-review.json) records the
+new jobs, seeds, output hashes, frame checks and visual review limits. A CI
+check compares each bundled video's executed settings with the current graph
+builder so future pipeline changes flag stale previews.
+
 From the repository root:
 
 ```sh
@@ -73,8 +95,9 @@ remain subject to the model terms linked in the main README.
   is implied.
 
 Cached JPEGs are source-frame thumbnails from these same clips. This is a
-small technical demonstration, not a stock-footage collection. Blender-derived
-actor footage used during local research is excluded.
+small technical demonstration, not a stock-footage collection. The separate
+[H3 example](character-h3-high/README.md) includes its licensed *Tears of Steel*
+excerpt and source attribution.
 
 `signal/source.mp4` is an original articulated robot gesture, rendered by
 `scripts/create-motion-study.py` under MIT. Its appearance PNG and frame recipe

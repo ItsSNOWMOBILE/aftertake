@@ -1,8 +1,15 @@
 {
-  "id": "c729f8fb-5919-4152-be2c-8eeb56c3ffcf",
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "945450f2-d43a-488b-9f1d-d257af1537a1",
+  "requestKey": "gallery-refresh-20261019-golden-falls-final-6625",
+  "requestDigest": "acb465eda42f53eb7e966f3056f37518030ec2daeeb44527ded847a6f6a63387",
   "recipe": {
     "format": "aftertake/1",
-    "name": "The golden falls - finish",
+    "name": "The golden falls - finish — current pipeline refresh",
     "clip": {
       "id": "53d9e920-db14-4c04-8c3f-24a3af56a177",
       "name": "Forest falls - Mikhail Nilov.mp4",
@@ -41,8 +48,8 @@
   },
   "state": "succeeded",
   "progress": 1,
-  "createdAt": "2026-10-17T15:28:55.154Z",
-  "updatedAt": "2026-10-17T15:30:24.722Z",
+  "createdAt": "2026-10-19T13:51:14.574Z",
+  "updatedAt": "2026-10-19T13:52:54.379Z",
   "workflow": {
     "1": {
       "class_type": "UnetLoaderGGUF",
@@ -118,10 +125,7 @@
         "frames": 97,
         "fps": 24,
         "trim_start": 0
-      },
-      "is_changed": [
-        "b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57"
-      ]
+      }
     },
     "9": {
       "class_type": "AftertakeCueMask",
@@ -269,7 +273,7 @@
       }
     },
     "19": {
-      "class_type": "VAEDecodeTiled",
+      "class_type": "VAEDecode",
       "inputs": {
         "samples": [
           "18",
@@ -278,11 +282,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "20": {
@@ -299,6 +299,11 @@
         "mask": [
           "9",
           0
+        ],
+        "match_color": false,
+        "spatial_mask": [
+          "9",
+          2
         ]
       }
     },
@@ -311,7 +316,14 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/composite",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The golden falls - finish\",\"clip\":{\"id\":\"53d9e920-db14-4c04-8c3f-24a3af56a177\",\"name\":\"Forest falls - Mikhail Nilov.mp4\",\"sha256\":\"b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4\"},\"prompt\":\"A brilliant waterfall of glowing molten gold cascades downward. Thick shimmering liquid metal flows in a continuous stream, with bright amber highlights, sparkling golden droplets and delicate golden mist. Photorealistic cinematic visual effects, physically plausible flowing motion.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.025,\"strokes\":[{\"points\":[{\"x\":0.54,\"y\":0},{\"x\":0.54,\"y\":0.58}],\"radius\":0.2}]},\"seed\":6625,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\"}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The golden falls - finish — current pipeline refresh\",\"clip\":{\"id\":\"53d9e920-db14-4c04-8c3f-24a3af56a177\",\"name\":\"Forest falls - Mikhail Nilov.mp4\",\"sha256\":\"b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4\"},\"prompt\":\"A brilliant waterfall of glowing molten gold cascades downward. Thick shimmering liquid metal flows in a continuous stream, with bright amber highlights, sparkling golden droplets and delicate golden mist. Photorealistic cinematic visual effects, physically plausible flowing motion.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.025,\"strokes\":[{\"points\":[{\"x\":0.54,\"y\":0},{\"x\":0.54,\"y\":0.58}],\"radius\":0.2}]},\"seed\":6625,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\"}",
+        "source_audio": [
+          "8",
+          1
+        ],
+        "audio_start": 0,
+        "display_width": 768,
+        "display_height": 432
       }
     },
     "22": {
@@ -323,7 +335,7 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/generation",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The golden falls - finish\",\"clip\":{\"id\":\"53d9e920-db14-4c04-8c3f-24a3af56a177\",\"name\":\"Forest falls - Mikhail Nilov.mp4\",\"sha256\":\"b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4\"},\"prompt\":\"A brilliant waterfall of glowing molten gold cascades downward. Thick shimmering liquid metal flows in a continuous stream, with bright amber highlights, sparkling golden droplets and delicate golden mist. Photorealistic cinematic visual effects, physically plausible flowing motion.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.025,\"strokes\":[{\"points\":[{\"x\":0.54,\"y\":0},{\"x\":0.54,\"y\":0.58}],\"radius\":0.2}]},\"seed\":6625,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\"}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The golden falls - finish — current pipeline refresh\",\"clip\":{\"id\":\"53d9e920-db14-4c04-8c3f-24a3af56a177\",\"name\":\"Forest falls - Mikhail Nilov.mp4\",\"sha256\":\"b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4\"},\"prompt\":\"A brilliant waterfall of glowing molten gold cascades downward. Thick shimmering liquid metal flows in a continuous stream, with bright amber highlights, sparkling golden droplets and delicate golden mist. Photorealistic cinematic visual effects, physically plausible flowing motion.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.025,\"strokes\":[{\"points\":[{\"x\":0.54,\"y\":0},{\"x\":0.54,\"y\":0.58}],\"radius\":0.2}]},\"seed\":6625,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\"}"
       }
     },
     "23": {
@@ -414,7 +426,7 @@
       }
     },
     "30": {
-      "class_type": "VAEEncodeTiled",
+      "class_type": "VAEEncode",
       "inputs": {
         "pixels": [
           "29",
@@ -423,11 +435,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "31": {
@@ -475,7 +483,7 @@
       }
     },
     "34": {
-      "class_type": "VAEDecodeTiled",
+      "class_type": "VAEDecode",
       "inputs": {
         "samples": [
           "33",
@@ -484,11 +492,7 @@
         "vae": [
           "3",
           0
-        ],
-        "tile_size": 256,
-        "overlap": 64,
-        "temporal_size": 32,
-        "temporal_overlap": 8
+        ]
       }
     },
     "35": {
@@ -554,13 +558,13 @@
         ],
         "fps": 24,
         "filename_prefix": "aftertake/coarse",
-        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The golden falls - finish\",\"clip\":{\"id\":\"53d9e920-db14-4c04-8c3f-24a3af56a177\",\"name\":\"Forest falls - Mikhail Nilov.mp4\",\"sha256\":\"b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4\"},\"prompt\":\"A brilliant waterfall of glowing molten gold cascades downward. Thick shimmering liquid metal flows in a continuous stream, with bright amber highlights, sparkling golden droplets and delicate golden mist. Photorealistic cinematic visual effects, physically plausible flowing motion.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.025,\"strokes\":[{\"points\":[{\"x\":0.54,\"y\":0},{\"x\":0.54,\"y\":0.58}],\"radius\":0.2}]},\"seed\":6625,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\"}"
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"The golden falls - finish — current pipeline refresh\",\"clip\":{\"id\":\"53d9e920-db14-4c04-8c3f-24a3af56a177\",\"name\":\"Forest falls - Mikhail Nilov.mp4\",\"sha256\":\"b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57\",\"width\":768,\"height\":432,\"duration\":4.208333333333333,\"url\":\"/media/53d9e920-db14-4c04-8c3f-24a3af56a177.mp4\"},\"prompt\":\"A brilliant waterfall of glowing molten gold cascades downward. Thick shimmering liquid metal flows in a continuous stream, with bright amber highlights, sparkling golden droplets and delicate golden mist. Photorealistic cinematic visual effects, physically plausible flowing motion.\",\"cue\":{\"start\":0.35,\"end\":3.8,\"fade\":0.3,\"feather\":0.025,\"strokes\":[{\"points\":[{\"x\":0.54,\"y\":0},{\"x\":0.54,\"y\":0.58}],\"radius\":0.2}]},\"seed\":6625,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"inpaint\"}"
       }
     }
   },
-  "jobId": "1b6e8960-b93d-4348-a5ac-264fc47623ac",
+  "jobId": "6d075774-4df9-4ff6-a17b-bda56aa4f4a1",
   "stage": "Complete",
-  "output": "/outputs/c729f8fb-5919-4152-be2c-8eeb56c3ffcf.mp4",
-  "rawOutput": "/outputs/c729f8fb-5919-4152-be2c-8eeb56c3ffcf-raw.mp4",
-  "coarseOutput": "/outputs/c729f8fb-5919-4152-be2c-8eeb56c3ffcf-coarse.mp4"
+  "output": "/outputs/945450f2-d43a-488b-9f1d-d257af1537a1.mp4",
+  "rawOutput": "/outputs/945450f2-d43a-488b-9f1d-d257af1537a1-raw.mp4",
+  "coarseOutput": "/outputs/945450f2-d43a-488b-9f1d-d257af1537a1-coarse.mp4"
 }

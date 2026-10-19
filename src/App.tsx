@@ -56,6 +56,7 @@ import TakeLibrary from './TakeLibrary';
 import TakeStatus from './take-status';
 import { TakeClient, takeBusy, takeRecoverable } from './take-client';
 import RecipeLibrary from './RecipeLibrary';
+import { recordedFirst, selectRecordedWork, type RecordedWorkKind } from './RecordedHighlights';
 import { applyTemplate, type Template } from './templates';
 import EditReference from './EditReference';
 import FrameEditor from './FrameEditor';
@@ -165,6 +166,8 @@ export default function App() {
   const [filmMediaRevision, setFilmMediaRevision] = useState(0);
   const [characterStudioOpen, setCharacterStudioOpen] = useState(false);
   const [characterJobs, setCharacterJobs] = useState<CharacterJob[]>([]);
+  const [recordedCharacterId, setRecordedCharacterId] = useState('');
+  const [recordedVideoId, setRecordedVideoId] = useState('');
   const [frameEditorSource, setFrameEditorSource] = useState<Recipe | null>(null);
   const [take, setTake] = useState<Render | null>(null);
   const [mode, setMode] = useState<'source' | 'cue' | 'result' | 'compare'>('cue');
@@ -1123,6 +1126,17 @@ export default function App() {
       'Pre-rendered example opened. Every setting is editable; rendering changes uses your local engine.',
     );
   }
+  const recordedWork = browserDemo ? selectRecordedWork(clips, characterJobs, videos) : {};
+  function openRecordedWork(kind: RecordedWorkKind, id: string) {
+    setLibraryOpen(false);
+    if (kind === 'character') {
+      setRecordedCharacterId(id);
+      setCharacterStudioOpen(true);
+    } else {
+      setRecordedVideoId(id);
+      setVideoStudioOpen(true);
+    }
+  }
   const selectedPreset = presets.find((p) => presetPrompt(p, recipe?.pipeline) === recipe?.prompt);
   useEffect(() => {
     if (!mediaError || busy) return;
@@ -1391,19 +1405,30 @@ export default function App() {
         {browserDemo && (
           <section className="browser-demo-banner" aria-label="Browser demo">
             <div>
-              <strong>
-                {exampleCount
-                  ? `Explore ${exampleCount} recorded examples.`
-                  : 'Try the recorded examples.'}
-              </strong>
+              <strong>Explore recorded work.</strong>
               <p>
-                Compare real outputs, adjust cues and save recipes. This demo uses recorded results.
-                New generation and Film export run in the local studio.
+                Watch real outputs, inspect their settings and save recipes. New generation and Film
+                export run in the local studio.
               </p>
             </div>
-            <button className="browser-render-options" onClick={() => setEngineOpen(true)}>
-              Render options <ArrowUpRight size={13} />
-            </button>
+            <div className="browser-demo-actions">
+              {recordedWork.character && (
+                <button
+                  className="browser-demo-primary"
+                  onClick={() => openRecordedWork('character', recordedWork.character!.id)}
+                >
+                  <Play size={13} /> Watch character replacement
+                </button>
+              )}
+              {recordedWork.video && (
+                <button onClick={() => openRecordedWork('video', recordedWork.video!.id)}>
+                  Watch text-to-video <ArrowUpRight size={13} />
+                </button>
+              )}
+              <button className="browser-render-options" onClick={() => setEngineOpen(true)}>
+                Render options <ArrowUpRight size={13} />
+              </button>
+            </div>
           </section>
         )}
         {exampleWorkspace && !browserDemo && (
@@ -2497,7 +2522,7 @@ export default function App() {
         <CharacterStudio
           onFilmAdded={() => setFilmMediaRevision((v) => v + 1)}
           clips={clips}
-          jobs={characterJobs}
+          jobs={recordedFirst(characterJobs, recordedCharacterId)}
           initialSource={recipe?.clip}
           otherBusy={
             rendering ||
@@ -2514,7 +2539,10 @@ export default function App() {
           onImport={(clip) =>
             setClips((all) => (all.some((c) => c.id === clip.id) ? all : [...all, clip]))
           }
-          onClose={() => setCharacterStudioOpen(false)}
+          onClose={() => {
+            setCharacterStudioOpen(false);
+            setRecordedCharacterId('');
+          }}
           onUse={(clip) => {
             video.current?.pause();
             outputVideo.current?.pause();
@@ -2533,7 +2561,7 @@ export default function App() {
       {videoStudioOpen && (
         <VideoStudio
           onFilmAdded={() => setFilmMediaRevision((v) => v + 1)}
-          videos={videos}
+          videos={recordedFirst(videos, recordedVideoId)}
           otherBusy={
             rendering ||
             takeAction ||
@@ -2544,7 +2572,10 @@ export default function App() {
             characterJobs.some(characterBusy)
           }
           onUpdate={(job) => setVideos((all) => [job, ...all.filter((item) => item.id !== job.id)])}
-          onClose={() => setVideoStudioOpen(false)}
+          onClose={() => {
+            setVideoStudioOpen(false);
+            setRecordedVideoId('');
+          }}
           onUse={(clip) => {
             video.current?.pause();
             outputVideo.current?.pause();
@@ -2598,6 +2629,8 @@ export default function App() {
           onClose={() => setLibraryOpen(false)}
           onApply={useTemplate}
           onOpen={openExample}
+          recordedWork={recordedWork}
+          onOpenRecorded={openRecordedWork}
         />
       )}
       {sourceOpen && (

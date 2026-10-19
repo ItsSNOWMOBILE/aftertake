@@ -4,8 +4,11 @@ import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { tsImport } from 'tsx/esm/api';
+import { applyReviewedRefresh, validateRefreshBinding } from './example-refresh.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const { inspectVideoMetadata } = await tsImport('../server/video-metadata.ts', import.meta.url);
 const examples = path.join(root, 'examples');
 const python = path.join(
   root,
@@ -105,7 +108,7 @@ cases.push(
   {
     slug: 'coastal-kingdom',
     title: 'The coast becomes a kingdom',
-    renderId: 'a1bad2db-e904-4e76-a9a3-90d467dffcd9',
+    renderId: '1139ebf1-6af1-475b-9a92-1e7d8f407f13',
     frameEditId: 'b1262e85-c2ba-4334-bc61-8faa573b106d',
     credit: 'Dean Diemert / Pexels; castle appearance edited locally with Qwen-Image-Edit-2511',
     sourceUrl:
@@ -142,9 +145,17 @@ cases.push(
     license: 'Z-Image Turbo Apache-2.0; LTX model terms apply to generated results',
   },
 );
+const argv = process.argv.slice(2);
+const refreshArgs = argv.filter((value) => value.startsWith('--refresh='));
+if (argv.length !== refreshArgs.length || refreshArgs.length > 1 || refreshArgs[0] === '--refresh=')
+  throw Error('Usage: node scripts/package-examples.mjs [--refresh=REVIEWED_JSON]');
+const refresh = refreshArgs.length
+  ? JSON.parse(await readFile(path.resolve(refreshArgs[0].slice(10)), 'utf8'))
+  : undefined;
+const selectedCases = applyReviewedRefresh(cases, refresh);
 const manifest = {
   format: 'aftertake-examples/1',
-  featuredRenderId: cases[1].renderId,
+  featuredRenderId: selectedCases[1].renderId,
   cases: [],
   files: [],
 };
@@ -181,19 +192,37 @@ async function asset(file, target) {
     size: bytes.length,
   });
 }
-for (const item of cases) {
-  const folder = path.join(examples, item.slug);
-  await mkdir(folder, { recursive: true });
-  const data = path.join(root, item.workspace || '.data');
+// Validate every refresh binding before the first existing example is written.
+const refreshRenders = new Map();
+for (const item of selectedCases.filter((item) => item.sourceSha256)) {
+  const data = path.resolve(root, item.workspace);
   const render = JSON.parse(
     await readFile(path.join(data, 'renders', `${item.renderId}.json`), 'utf8'),
   );
-  if (render.state !== 'succeeded' || !render.output)
-    throw new Error(`${item.slug} is not a completed render`);
+  const priorRecipe = JSON.parse(
+    await readFile(path.join(examples, item.slug, 'recipe.json'), 'utf8'),
+  );
+  validateRefreshBinding(item, render, priorRecipe);
+  const source = path.join(data, 'clips', path.basename(render.recipe.clip.url));
+  if (digest(await readFile(source)) !== item.sourceSha256)
+    throw Error(`${item.slug} refresh source hash mismatch`);
+  refreshRenders.set(item.slug, render);
+}
+for (const item of selectedCases) {
+  const folder = path.join(examples, item.slug);
+  const data = path.resolve(root, item.workspace || '.data');
+  const render =
+    refreshRenders.get(item.slug) ||
+    JSON.parse(await readFile(path.join(data, 'renders', `${item.renderId}.json`), 'utf8'));
+  const previousRecipe = item.sourceSha256
+    ? JSON.parse(await readFile(path.join(folder, 'recipe.json'), 'utf8'))
+    : undefined;
+  validateRefreshBinding(item, render, previousRecipe);
   const clip = render.recipe.clip;
   const source = path.join(data, 'clips', path.basename(clip.url));
   if (digest(await readFile(source)) !== clip.sha256)
     throw new Error(`${item.slug} source hash mismatch`);
+  await mkdir(folder, { recursive: true });
   const sourceName = clip.kind === 'image' ? 'source.png' : 'source.mp4';
   await copyFile(source, path.join(folder, sourceName));
   await json(path.join(folder, 'clip.json'), clip);
@@ -299,17 +328,9 @@ for (const item of cases) {
     await asset(destination, `outputs/${render.id}${suffix}.mp4`);
   }
   // Preserve the graph actually recorded by ComfyUI in the generated MP4.
-  const meta = JSON.parse(
-    execFileSync(
-      python,
-      [
-        '-c',
-        'import av,json,sys\nwith av.open(sys.argv[1]) as c: print(c.metadata["comment"])',
-        path.join(folder, 'result.mp4'),
-      ],
-      { encoding: 'utf8', maxBuffer: 2 ** 20 },
-    ),
-  );
+  // Reuse the server's UTF-8 MP4 reader. Container tag APIs may reinterpret
+  // non-ASCII names and silently corrupt the saved executed workflow.
+  const meta = inspectVideoMetadata(await readFile(path.join(folder, 'result.mp4')), render.recipe);
   if (/[A-Za-z]:[\\/]/.test(JSON.stringify(meta)))
     throw new Error('Refusing to package machine-specific paths');
   render.workflow = meta.workflow;
@@ -342,7 +363,7 @@ for (const item of cases) {
         : Math.round(Math.max(0, Math.min(clip.duration - 0.05, requested)) * 24) / 24;
     await thumbnail(clip, time, data);
   }
-  const { workspace, studio, frameEditId, imageGenerationId, ...publicItem } = item;
+  const { workspace, studio, frameEditId, imageGenerationId, sourceSha256, ...publicItem } = item;
   manifest.cases.push({
     ...publicItem,
     source: `${item.slug}/${sourceName}`,
@@ -361,5 +382,5 @@ for (const item of previous.files.filter((item) => item.source.startsWith('text-
   await asset(path.join(examples, ...item.source.split('/')), item.target);
 await json(path.join(examples, 'manifest.json'), manifest);
 console.log(
-  `Packaged ${cases.length} reviewed examples: ${(manifest.files.reduce((sum, f) => sum + f.size, 0) / 2 ** 20).toFixed(1)} MiB.`,
+  `Packaged ${selectedCases.length} reviewed examples: ${(manifest.files.reduce((sum, f) => sum + f.size, 0) / 2 ** 20).toFixed(1)} MiB.`,
 );

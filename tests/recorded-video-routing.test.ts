@@ -28,13 +28,18 @@ test('Pages media and generated aliases use their pinned tracked sources', () =>
     'castle/source.mp4': 'examples/coastal-kingdom/source.mp4',
     'castle/transformation.mp4': 'examples/coastal-kingdom/result.mp4',
     'castle/camera-take.mp4': 'examples/castle-pullback/result.mp4',
-    'examples/crystal-transition/raw.mp4': 'examples/crystal-transition/result.mp4',
-    'examples/castle-pullback/raw.mp4': 'examples/castle-pullback/result.mp4',
   };
   for (const [alias, target] of Object.entries(aliases)) {
     assert.equal(
       resolveRecordedAssetURL(alias + '?v=1#detail', pages),
       raw + target + '?v=1#detail',
+    );
+  }
+  for (const path of ['examples/crystal-transition/raw.mp4', 'examples/castle-pullback/raw.mp4']) {
+    assert.equal(
+      resolveRecordedAssetURL(path + '?v=1#detail', pages),
+      raw + path + '?v=1#detail',
+      'A distinct raw generation must keep its own media path.',
     );
   }
   for (const path of ['', 'index.html']) {
@@ -251,7 +256,7 @@ test('all static showcase HTML includes one helper and its pinned Pages paths ex
     }
   }
   assert.equal(pageCount, 16);
-  assert.equal(rewritten, 135);
+  assert.equal(rewritten, 136);
   assert.equal(
     readFileSync(resolve(root, 'public/recorded-video-preview.js'), 'utf8'),
     readFileSync(resolve(root, 'docs/assets/recorded-video-preview.js'), 'utf8'),
