@@ -38,6 +38,9 @@
   border-radius: 50%;
   flex: 0 0 6px;
 }
+.compute-active-strip.not-ready .compute-status-dot {
+  background: #d4bc91;
+}
 .compute-tabs {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -236,6 +239,34 @@
   margin: 20px 0 0;
   padding: 15px 0 0;
   font-size: 12px;
+}
+.compute-attention {
+  border-left: 2px solid #d4bc91;
+  border-radius: 0 6px 6px 0;
+  background: #29261e;
+  padding: 14px 16px;
+  margin-top: 16px;
+  overflow-wrap: anywhere;
+}
+.compute-attention h3 {
+  margin: 0;
+  color: #e3d4b6;
+  font-size: 12px;
+  font-weight: 650;
+}
+.compute-attention ul {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: #d5cbb8;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.compute-dialog .compute-attention li {
+  margin-bottom: 0;
+  color: inherit;
+}
+.compute-attention li + li {
+  margin-top: 8px;
 }
 .compute-details summary {
   cursor: pointer;

@@ -111,7 +111,7 @@ export default function ComputeSettings({
       if (action !== 'probe') setApiKey('');
       if (action === 'remove') {
         setEndpoint('');
-        setNotice('Saved cloud credentials removed. Local rendering is still available.');
+        setNotice('Saved cloud credentials removed. Your local engine selection is unchanged.');
       } else if (action === 'save') {
         setNotice(
           value.configured?.hasApiKey
@@ -183,9 +183,17 @@ export default function ComputeSettings({
         <p className="compute-intro">
           Use your own GPU today. Prepare a Comfy connection for cloud rendering.
         </p>
-        <div className="compute-active-strip">
-          <span className="compute-status-dot" />
-          <span>{browserDemo ? 'Recorded examples' : 'Local engine is the active renderer'}</span>
+        <div className={`compute-active-strip ${!browserDemo && !engine.ready ? 'not-ready' : ''}`}>
+          <span className="compute-status-dot" aria-hidden="true" />
+          <span>
+            {browserDemo
+              ? 'Recorded examples'
+              : engine.ready
+                ? 'Local engine is ready for this workflow'
+                : engine.connected
+                  ? 'Local engine connected · generation blocked'
+                  : 'Local engine is offline'}
+          </span>
           <span>{browserDemo ? 'No credits used' : 'Cloud generation is not enabled'}</span>
         </div>
         <div className="compute-tabs" role="tablist" aria-label="Render destinations">
@@ -254,7 +262,7 @@ export default function ComputeSettings({
                 </div>
                 {!browserDemo && (
                   <span className={`compute-badge ${engine.ready ? 'ready' : ''}`}>
-                    {engine.ready ? 'Ready' : 'Needs setup'}
+                    {engine.ready ? 'Ready' : 'Not ready'}
                   </span>
                 )}
               </div>
@@ -270,14 +278,17 @@ export default function ComputeSettings({
               ) : (
                 <>
                   {engine.missing.length > 0 && (
-                    <details className="compute-details">
-                      <summary>{engine.missing.length} components needed for this workflow</summary>
+                    <section
+                      className="compute-attention"
+                      aria-labelledby="compute-attention-title"
+                    >
+                      <h3 id="compute-attention-title">Before you can generate</h3>
                       <ul>
                         {engine.missing.map((item) => (
                           <li key={item}>{item}</li>
                         ))}
                       </ul>
-                    </details>
+                    </section>
                   )}
                   <div className="compute-actions">
                     <button
