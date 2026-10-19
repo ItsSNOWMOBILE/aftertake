@@ -45,7 +45,7 @@ behavior has been inspected.
 | Prompt-driven motion design and kinetic typography | Partial: editable entrances plus Follow voice word highlights using Kokoro timing estimates, with manual word adjustment; freeform generative motion graphics remain missing |
 | Full character/avatar audio performance workflows | Missing; narration and mixing do not establish this capability. Separate experimental LivePortrait utilities refine the lower face or reconstruct a head from an aligned portrait and original video motion with SAM contours. One bridge candidate is verified; these CLI passes do not establish general head fidelity or audio-driven dialogue |
 | Agent generation and editing via MCP | Implemented locally: twenty-seven typed tools cover native image/frame/video generation, direct text-to-video with sound, native SAM3/H3 character selection/replacement, optional local script drafts, inspection, measured narration, persistent beat plans and native exports; the product-shot chain is verified live, while broad automated creative direction remains unproven |
-| Managed cloud rendering, accounts, billing, shared projects and public generation API | Missing; current hosted site reviews recorded examples |
+| Managed cloud rendering, accounts, billing, shared projects and public generation API | Connection preparation only: local session-held keys, read-only Cloud account checks and an offline deployment inventory. Cloud generation, verified billing, remote job recovery and hosted user isolation are not enabled; the hosted site reviews recorded examples |
 
 The focused 53.04-second film was cut, titled, voiced and exported through Aftertake. It has 19 cuts, 24 editable title layers and 13 complete outer narration clips. The actual local MCP session receipt and editable project are included. The film is prepared for review and is not a submitted entry or evidence of full suite parity.
 
@@ -162,8 +162,10 @@ Follow-through: Aftertake now has a native Z-Image Turbo text-to-image mode,
 three frame shapes, six prompt styles, seed/history/recipe import and export,
 and an explicit handoff to Cinema. A real 1152 × 768 image and its subsequent
 768 × 512 / 97-frame guided video are packaged as **Above the clouds**. This
-closes the basic image-creation gap for one local model; native text-to-video,
-broader models, integrated automatic matte creation and clean plates remain open.
+closes the basic image-creation gap for one local model. Native text-to-video
+with optional generated sound is also implemented with LTX-2.5, as documented
+in the current inventory above. Broader models, integrated automatic matte
+creation and clean plates remain open.
 An annotated SAM 2.1 helper and exact saved-generation finishing are implemented;
 these require reviewed subject annotations rather than one-click replacement.
 

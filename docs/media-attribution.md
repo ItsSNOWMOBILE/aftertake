@@ -22,7 +22,7 @@ Primary source for the technical-demo use of original footage:
 https://mango.blender.org/production/4-tb-original-4k-footage-available-as-cc-by/
 
 The full research download stays ignored under `.runtime/sources/`. Short silent
-bridge excerpts supply the character examples. The current public character
+bridge excerpts supply the bridge character examples. That public character
 workflow uses native SAM3 tracking and H3 Character Swap V1.5 with an original
 fictional reference generated locally by Z-Image Turbo and an optional crop of
 its actual head. The recorded example under `examples/character-h3/` retains
@@ -213,3 +213,24 @@ SAM matte and protected foreground remain applicable. The optional profile pins
 official MIT LivePortrait code and six public model files; it excludes InsightFace
 detection weights. Model and code revisions are in `models-face-performance.json`.
 No narration is used to animate the actor's mouth, and no endorsement is implied.
+
+## Hotel Lobby demonstration
+
+`examples/hotel-lobby/` uses a short excerpt of
+[Quavo & Takeoff — HOTEL LOBBY | A COLORS SHOW](https://www.youtube.com/watch?v=x9yop0nYR9g),
+published by COLORS on June 17, 2022. The source excerpt is silent in the public
+demonstration. SAM3 tracks the performer on the left; H3 changes that performer,
+and a tracked-mask postpass restores the surrounding source scene. The
+26-second walkthrough adds local generic Kokoro narration and editable type.
+
+The appearance comes from a portrait supplied for this demonstration, rather
+than the fictional generated identity used in the bridge examples. Its face
+crop is visible in the walkthrough's actual UI captures. The original portrait
+file and separate private upload tests are not distributed. The bundled recipe
+explains how to substitute your own reference for regeneration.
+
+The COLORS excerpt is credited third-party footage; it is not identified as
+Pexels or CC BY footage and is not relicensed under MIT. Source rights and model
+terms remain separate. No performer, COLORS or model publisher endorsement is
+implied. See the [example notes](../examples/hotel-lobby/README.md) for the exact
+source range, preparation, compositing graphs and review limits.

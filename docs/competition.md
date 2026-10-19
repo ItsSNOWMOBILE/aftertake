@@ -15,8 +15,8 @@ third-party nodes and example media retain their individual licenses.
 - Z-Image Turbo creates stills; Qwen Image Edit edits reference images.
 - LTX-2.5 powers video transformation, frame animation and text-to-video.
 - Wan Animate 2 transfers a driving performance.
-- SAM3 tracks a selected person; MiniMax H3 replaces that person using an
-  original reference photo and an optional crop of its actual head.
+- SAM3 tracks a selected person; MiniMax H3 replaces that person using a primary
+  reference photo, an optional head crop and up to seven supporting identity views.
 - Optional SAM 2.1 mattes finish saved generations and protect foreground subjects.
 - Kokoro supplies local generic narration; PyAV, Pillow and FFmpeg assemble films.
 
@@ -31,9 +31,14 @@ workflow graphs. The [studio guide](studio-guide.md) documents setup, model
 profiles and commands. The [capability inventory](higgsfield-benchmark.md)
 distinguishes implemented behavior from unimplemented features.
 
-Public demonstrations use licensed source footage and fictional generated
-appearances. Private user-uploaded photos and video tests are excluded. No actor,
-source creator or model publisher endorsement is implied.
+The bridge and stock-footage examples retain their source licenses and credits;
+the bridge replacement uses a fictional generated appearance. The separate
+[Hotel Lobby demonstration](../examples/hotel-lobby/README.md) uses a supplied
+portrait and a credited COLORS performance excerpt. Its walkthrough includes
+the portrait's cropped view in actual UI captures; the original portrait file
+and separate private upload tests are excluded. Source rights and model terms
+remain separate from the MIT app license. No actor, source creator or model
+publisher endorsement is implied.
 
 The tested generation machine uses an RTX 5080 with 16 GB VRAM and 32 GB RAM.
 CPU media tests and browser editing do not require the generation models.
