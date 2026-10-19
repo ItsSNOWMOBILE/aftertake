@@ -64,14 +64,7 @@ def render_export_path(graph, prepared, generated, raw_mask, count):
         if kind == 'ImageFromBatch':
             value = args['image'][args['batch_index']:args['batch_index'] + args['length']]
         elif kind == 'GrowMask':
-            value = args['mask']
-            radius = args['expand']
-            assert not args['tapered_corners']
-            for axis in [1, 2]:
-                padding = [(0, 0)] * 3
-                padding[axis] = (radius, radius)
-                value = np.lib.stride_tricks.sliding_window_view(
-                    np.pad(value, padding), 2 * radius + 1, axis=axis).max(axis=-1)
+            value = square_grow_fixture(args)
         elif kind == 'MaskToImage':
             value = np.repeat(args['mask'][..., None], 3, axis=-1)
         elif kind == 'ImageBlur':
@@ -104,7 +97,57 @@ def render_export_path(graph, prepared, generated, raw_mask, count):
     return resolve(graph['save']['inputs']['images']), values
 
 
+def square_grow_fixture(args):
+    """Native flat square grey erosion/dilation, evaluated with bounded NumPy fixtures."""
+    value = args['mask']
+    radius = abs(args['expand'])
+    assert not args['tapered_corners']
+    reduce = np.min if args['expand'] < 0 else np.max
+    for axis in [1, 2]:
+        padding = [(0, 0)] * 3
+        padding[axis] = (radius, radius)
+        windows = np.lib.stride_tricks.sliding_window_view(
+            np.pad(value, padding, mode='symmetric'), 2 * radius + 1, axis=axis)
+        value = reduce(windows, axis=-1)
+    return value
+
+
 class CharacterWorkflowTests(unittest.TestCase):
+    def test_saved_selection_removes_late_island_before_it_can_expand_over_another_person(self):
+        request = {'clip': {'width': 256, 'height': 192}, 'trimStart': 0,
+                   'duration': 80 / 24, 'positive': [{'x': .75, 'y': .5}],
+                   'negative': [{'x': .2, 'y': .5}], 'resolution': '768'}
+        graph = workflow.build({'kind': 'selection', 'id': 'selection-fixture', 'request': request})
+        tracked = np.zeros((80, 192, 256), dtype=np.float32)
+        tracked[:, 40:176, 150:221] = 1  # Main person.
+        for index in range(80):
+            tracked[index, 90 + index % 5:105 + index % 5, 125:160] = 1  # Connected forearm.
+            tracked[index, 92 + index % 5:97 + index % 5, 120:150] = 1  # Five-pixel finger.
+        tracked[67, 120, 60] = 1  # One late tracking island on the other person's body.
+
+        def evaluate(reference):
+            name, index = reference
+            self.assertEqual(index, 0)
+            if name == 'mask':
+                return tracked
+            entry = graph[name]
+            self.assertEqual(entry['class_type'], 'GrowMask')
+            args = {**entry['inputs'], 'mask': evaluate(entry['inputs']['mask'])}
+            return square_grow_fixture(args)
+
+        saved = evaluate(graph['selection']['inputs']['masks'])
+        self.assertFalse(saved[67, 120, 60], 'An isolated pixel must not reach the saved review mask.')
+        self.assertTrue(saved.any(axis=(1, 2)).all(), 'All 80 person masks must remain nonempty.')
+        expected = tracked.copy()
+        expected[67, 120, 60] = 0
+        np.testing.assert_array_equal(saved, expected, 'Body, forearm and finger coverage must survive.')
+        expanded = square_grow_fixture({'mask': saved[67:68], 'expand': 32, 'tapered_corners': False})
+        unclean = square_grow_fixture({'mask': tracked[67:68], 'expand': 32, 'tapered_corners': False})
+        self.assertTrue(unclean[0, 120, 60], 'The regression must demonstrate the dangerous expansion.')
+        self.assertFalse(expanded[:, 80:150, 30:76].any(), 'The other person must stay outside the edit.')
+        self.assertTrue((expanded[0][expected[67] > 0] == 1).all())
+        self.assertEqual(json.loads(graph['selection']['inputs']['request_json']), request)
+
     def test_cli_preserves_utf8_requests_and_prompts_with_cp1252_stdio(self):
         selection = {
             'format': 'aftertake-character-selection/1',

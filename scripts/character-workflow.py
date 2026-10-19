@@ -26,7 +26,11 @@ def build(value):
             'track':node('SAM3_VideoTrack',images=['frames',0],model=['sam',0],initial_mask=['choose',0],
                 detection_threshold=.5,max_objects=1,detect_interval=1),
             'mask':node('SAM3_TrackToMask',track_data=['track',0],object_indices='0'),
-            'selection':node('AftertakeSaveCharacterSelection',images=['frames',0],masks=['mask',0],
+            # Remove isolated tracking pixels before review/save, so the later
+            # 32px edit expansion cannot turn a speck into an unrelated patch.
+            'mask_erode':node('GrowMask',mask=['mask',0],expand=-1,tapered_corners=False),
+            'mask_open':node('GrowMask',mask=['mask_erode',0],expand=1,tapered_corners=False),
+            'selection':node('AftertakeSaveCharacterSelection',images=['frames',0],masks=['mask_open',0],
                 filename_prefix=f'aftertake/characters/{identity}/selection',request_json=json.dumps(request)),
             'source_save':node('SaveVideo',video=['prepare',8],filename_prefix=f'aftertake/characters/{identity}/source',
                 format='mp4',**{'format.codec':'h264','format.codec.encoding':'re-encode','format.codec.encoding.crf':14}),
