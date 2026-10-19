@@ -11,7 +11,7 @@ import { once } from 'node:events';
 import express from 'express';
 import { ComfyError } from '@comfyorg/sdk';
 import type { Clip } from '../src/domain.js';
-import type { EngineClient } from '../server/sdk-port.js';
+import type { EngineClient, EngineJob } from '../server/sdk-port.js';
 import { createJobTarget } from '../server/job-target.js';
 import { imageRouter } from '../server/images.js';
 import { videoRouter } from '../server/videos.js';
@@ -163,6 +163,402 @@ async function fixture(family: Family) {
       await rm(root, { recursive: true, force: true });
     },
   };
+}
+
+async function siblingService(
+  family: Family,
+  data: Awaited<ReturnType<typeof fixture>>,
+  client: EngineClient,
+) {
+  let admitting = false;
+  const app = express();
+  app.use(express.json());
+  // Character tracker cleanup is real HTTP, confined to this mock control plane.
+  app.get('/queue', (_req, res) => res.json({ queue_running: [], queue_pending: [] }));
+  app.post('/free', (_req, res) => res.json({}));
+  const server = createServer(app).listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  const address = server.address();
+  assert.ok(address && typeof address !== 'string');
+  const origin = `http://127.0.0.1:${address.port}`;
+  try {
+    const context = {
+      root: data.root,
+      data: data.data,
+      python: process.execPath,
+      client,
+      target: createJobTarget({
+        sdkBaseUrl: 'http://127.0.0.1:8189',
+        uiBaseUrl: 'http://127.0.0.1:8188',
+      }),
+      uiUrl: origin,
+      engine: async () => ({ connected: true, ready: true, missing: [], message: '' }),
+      takeBusy: () => admitting,
+      setAdmitting: (value: boolean) => {
+        admitting = value;
+      },
+    };
+    const native =
+      family === 'image'
+        ? await imageRouter(context)
+        : family === 'video'
+          ? await videoRouter(context)
+          : family === 'frame'
+            ? await frameEditorRouter(context)
+            : await characterRouter(context);
+    app.use('/jobs', native.router);
+    const errorHandler: express.ErrorRequestHandler = (error, _req, res, _next) => {
+      res.status(503).json({ code: typeof error.code === 'string' ? error.code : 'fixture-error' });
+    };
+    app.use(errorHandler);
+    const endpoint =
+      family === 'selection' ? '/selections' : family === 'replacement' ? '/replacements' : '';
+    const post = (route: string, key?: string) =>
+      fetch(origin + '/jobs' + route, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(key ? { 'Idempotency-Key': key } : {}),
+        },
+        body: JSON.stringify(data.input),
+        signal: AbortSignal.timeout(5000),
+      });
+    return {
+      native,
+      admitting: () => admitting,
+      create: (key: string) => post(endpoint, key),
+      reconcile: (id: string) => post('/' + id + '/reconcile'),
+      list: () => fetch(origin + '/jobs').then((response) => response.json()),
+      close: async () => {
+        server.closeAllConnections();
+        await new Promise<void>((resolve) => server.close(() => resolve()));
+      },
+    };
+  } catch (error) {
+    server.closeAllConnections();
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+    throw error;
+  }
+}
+
+function responseRecord(body: any) {
+  return body.image || body.video || body.edit || body.character || body;
+}
+
+async function waitForSavedState(folder: string, id: string, state: string) {
+  const deadline = Date.now() + 5000;
+  while (Date.now() < deadline) {
+    const saved = JSON.parse(await readFile(path.join(folder, id + '.json'), 'utf8'));
+    if (saved.state === state) return saved;
+    await new Promise((resolve) => setTimeout(resolve, 10));
+  }
+  assert.fail('The restarted native tracker did not persist its terminal observation');
+}
+
+for (const family of ['image', 'video', 'frame', 'selection', 'replacement'] as const) {
+  for (const fault of ['write', 'rename'] as const) {
+    test(
+      `${family} retains an accepted native job after one ${fault} failure and restart only observes its ID`,
+      { timeout: 15000 },
+      async (t) => {
+        const data = await fixture(family);
+        const requestKey = 'accepted-persistence-' + family + '-' + fault;
+        const nativeId = randomUUID();
+        const submitKeys: string[] = [];
+        const lookupIds: string[] = [];
+        const submittedGraphs = new WeakMap<object, unknown>();
+        let original: any;
+        let failuresRemaining = 0;
+        let failures = 0;
+        const accepted: EngineJob = {
+          id: nativeId,
+          status: 'queued',
+          error: null,
+          refresh: async () => {},
+          cancel: async () => {},
+          async *events() {},
+          getOutputs: () => [],
+        };
+        const observed: EngineJob = {
+          ...accepted,
+          status: 'failed',
+          error: { code: 'execution_error', message: 'Synthetic terminal observation' },
+        };
+        const client: EngineClient = {
+          workflows: {
+            fromJson: (graph) => {
+              const workflow = { setInput: () => {} };
+              submittedGraphs.set(workflow, structuredClone(graph));
+              return workflow;
+            },
+          },
+          assets: { fromFile: (filename) => ({ filename }) },
+          jobs: {
+            get: async (id) => {
+              lookupIds.push(id);
+              assert.equal(id, nativeId);
+              return observed;
+            },
+          },
+          submit: async (workflow, options) => {
+            submitKeys.push(options.idempotencyKey);
+            assert.equal(submitKeys.length, 1, 'Known native IDs must never be resubmitted');
+            original = JSON.parse(
+              await readFile(path.join(data.folder, options.idempotencyKey + '.json'), 'utf8'),
+            );
+            assert.equal(original.state, 'submitting');
+            assert.equal(original.requestKey, requestKey);
+            assert.match(original.requestDigest, /^[a-f0-9]{64}$/);
+            assert.deepEqual(submittedGraphs.get(workflow), original.workflow);
+            assert.equal(original.jobId, undefined);
+            // Admission has succeeded. Only subsequent metadata persistence is faulty.
+            failuresRemaining = 1;
+            return accepted;
+          },
+        };
+        const originalWrite = fs.promises.writeFile;
+        const originalRename = fs.promises.rename;
+        const writeMock = t.mock.method(
+          fs.promises,
+          'writeFile',
+          async (...args: Parameters<typeof writeFile>) => {
+            if (
+              failuresRemaining &&
+              fault === 'write' &&
+              path.dirname(String(args[0])) === data.folder &&
+              temporaryName.test(path.basename(String(args[0])))
+            ) {
+              failuresRemaining--;
+              failures++;
+              throw Object.assign(Error('Synthetic accepted-job metadata write failure'), {
+                code: 'EIO',
+              });
+            }
+            return originalWrite(...args);
+          },
+        );
+        const renameMock = t.mock.method(
+          fs.promises,
+          'rename',
+          async (...args: Parameters<typeof fs.promises.rename>) => {
+            if (
+              failuresRemaining &&
+              fault === 'rename' &&
+              path.dirname(String(args[1])) === data.folder &&
+              metadataName.test(path.basename(String(args[1])))
+            ) {
+              failuresRemaining--;
+              failures++;
+              throw Object.assign(Error('Synthetic accepted-job metadata replacement failure'), {
+                code: 'EACCES',
+              });
+            }
+            return originalRename(...args);
+          },
+        );
+        syncBuiltinESMExports();
+        let service: Awaited<ReturnType<typeof siblingService>> | undefined;
+        try {
+          service = await siblingService(family, data, client);
+          const response = await service.create(requestKey);
+          assert.equal(response.status, 502);
+          const record = responseRecord(await response.json());
+          assert.equal(failures, 1);
+          assert.equal(failuresRemaining, 0);
+          assert.equal(record.state, 'submission_unknown');
+          assert.equal(record.jobId, nativeId);
+          assert.notEqual(record.id, nativeId);
+          assert.equal(record.id, original.id);
+          assert.equal(record.requestKey, original.requestKey);
+          assert.equal(record.requestDigest, original.requestDigest);
+          assert.deepEqual(record.workflow, original.workflow);
+          const saved = JSON.parse(
+            await readFile(path.join(data.folder, record.id + '.json'), 'utf8'),
+          );
+          assert.deepEqual(saved, record);
+          const rejoined = await service.create(requestKey);
+          assert.equal(rejoined.status, 202);
+          assert.equal((await rejoined.json()).jobId, nativeId);
+          assert.deepEqual(submitKeys, [record.id]);
+          assert.deepEqual(lookupIds, []);
+          assert.equal(service.admitting(), false);
+
+          await service.close();
+          service = await siblingService(family, data, client);
+          const recovered = await waitForSavedState(data.folder, record.id, 'failed');
+          assert.equal(recovered.jobId, nativeId);
+          assert.equal(recovered.requestKey, original.requestKey);
+          assert.equal(recovered.requestDigest, original.requestDigest);
+          assert.deepEqual(recovered.workflow, original.workflow);
+          const afterRestart = await service.create(requestKey);
+          assert.equal(afterRestart.status, 200);
+          assert.equal((await afterRestart.json()).id, record.id);
+          assert.deepEqual(submitKeys, [record.id]);
+          assert.deepEqual(lookupIds, [nativeId]);
+          assert.deepEqual(
+            (await readdir(data.folder)).filter((name) => temporaryName.test(name)),
+            [],
+          );
+        } finally {
+          failuresRemaining = 0;
+          writeMock.mock.restore();
+          renameMock.mock.restore();
+          syncBuiltinESMExports();
+          await service?.close();
+          await data.close();
+        }
+      },
+    );
+  }
+
+  test(
+    `${family} stays uncertain after both accepted-job saves fail and duplicate-key rejection on restart`,
+    { timeout: 15000 },
+    async (t) => {
+      const data = await fixture(family);
+      const requestKey = 'accepted-double-failure-' + family;
+      const nativeId = randomUUID();
+      const submitKeys: string[] = [];
+      const admittedKeys = new Set<string>();
+      const submittedGraphs = new WeakMap<object, unknown>();
+      let original: any;
+      let failuresRemaining = 0;
+      let failures = 0;
+      let lookups = 0;
+      const client: EngineClient = {
+        workflows: {
+          fromJson: (graph) => {
+            const workflow = { setInput: () => {} };
+            submittedGraphs.set(workflow, structuredClone(graph));
+            return workflow;
+          },
+        },
+        assets: { fromFile: (filename) => ({ filename }) },
+        jobs: {
+          get: async () => {
+            lookups++;
+            assert.fail('An unknown native ID must not invent a lookup');
+          },
+        },
+        submit: async (workflow, options) => {
+          submitKeys.push(options.idempotencyKey);
+          const saved = JSON.parse(
+            await readFile(path.join(data.folder, options.idempotencyKey + '.json'), 'utf8'),
+          );
+          assert.deepEqual(submittedGraphs.get(workflow), saved.workflow);
+          if (admittedKeys.has(options.idempotencyKey)) {
+            assert.equal(saved.requestKey, original.requestKey);
+            assert.equal(saved.requestDigest, original.requestDigest);
+            assert.deepEqual(saved.workflow, original.workflow);
+            // The SDK documents reject-on-duplicate, not replay of the accepted job.
+            throw new ComfyError('Synthetic duplicate admission key', {
+              code: 'idempotency_key_reuse',
+              httpStatus: 422,
+            });
+          }
+          assert.equal(admittedKeys.size, 0, 'Recovery must not admit a second generation');
+          admittedKeys.add(options.idempotencyKey);
+          original = saved;
+          assert.equal(original.state, 'submitting');
+          assert.equal(original.requestKey, requestKey);
+          assert.match(original.requestDigest, /^[a-f0-9]{64}$/);
+          failuresRemaining = 2;
+          return {
+            id: nativeId,
+            status: 'queued',
+            error: null,
+            refresh: async () => {},
+            cancel: async () => {},
+            async *events() {},
+            getOutputs: () => [],
+          };
+        },
+      };
+      const originalRename = fs.promises.rename;
+      const renameMock = t.mock.method(
+        fs.promises,
+        'rename',
+        async (...args: Parameters<typeof fs.promises.rename>) => {
+          if (
+            failuresRemaining &&
+            path.dirname(String(args[1])) === data.folder &&
+            metadataName.test(path.basename(String(args[1])))
+          ) {
+            failuresRemaining--;
+            failures++;
+            throw Object.assign(Error('Synthetic sustained accepted-job replacement failure'), {
+              code: 'EACCES',
+            });
+          }
+          return originalRename(...args);
+        },
+      );
+      syncBuiltinESMExports();
+      let service: Awaited<ReturnType<typeof siblingService>> | undefined;
+      try {
+        service = await siblingService(family, data, client);
+        const response = await service.create(requestKey);
+        assert.equal(response.status, 503);
+        assert.equal((await response.json()).code, 'EACCES');
+        assert.equal(failures, 2);
+        assert.equal(failuresRemaining, 0);
+        assert.deepEqual(submitKeys, [original.id]);
+        // Restart immediately: a list request could deliberately recover the
+        // still-known in-memory ID, which is not the lost-durable-ID case.
+        assert.deepEqual(
+          JSON.parse(await readFile(path.join(data.folder, original.id + '.json'), 'utf8')),
+          original,
+        );
+
+        await service.close();
+        service = await siblingService(family, data, client);
+        const restored = (await service.list()).find((record: any) => record.id === original.id);
+        assert.equal(restored.state, 'submission_unknown');
+        assert.equal(restored.jobId, undefined);
+        assert.equal(restored.requestKey, original.requestKey);
+        assert.equal(restored.requestDigest, original.requestDigest);
+        assert.deepEqual(restored.workflow, original.workflow);
+        assert.deepEqual(submitKeys, [original.id], 'Startup must not resubmit');
+        assert.equal(lookups, 0);
+        const rejoined = await service.create(requestKey);
+        assert.equal(rejoined.status, 202);
+        assert.equal((await rejoined.json()).id, original.id);
+        assert.equal((await service.create(requestKey + '-different')).status, 409);
+        assert.deepEqual(submitKeys, [original.id]);
+
+        const recovery = await service.reconcile(original.id);
+        assert.equal(recovery.status, 502);
+        const uncertain = responseRecord(await recovery.json());
+        assert.equal(uncertain.id, original.id);
+        assert.equal(uncertain.jobId, undefined);
+        assert.equal(uncertain.state, 'submission_unknown');
+        assert.equal(uncertain.requestKey, original.requestKey);
+        assert.equal(uncertain.requestDigest, original.requestDigest);
+        assert.deepEqual(uncertain.workflow, original.workflow);
+        assert.deepEqual(submitKeys, [original.id, original.id]);
+        assert.equal(admittedKeys.size, 1);
+        assert.equal(lookups, 0);
+        const saved = JSON.parse(
+          await readFile(path.join(data.folder, original.id + '.json'), 'utf8'),
+        );
+        assert.deepEqual(saved, uncertain);
+        assert.equal((await service.create(requestKey)).status, 202);
+        assert.equal((await service.create(requestKey + '-different')).status, 409);
+        assert.deepEqual(submitKeys, [original.id, original.id]);
+        assert.equal(service.admitting(), false);
+        assert.deepEqual(
+          (await readdir(data.folder)).filter((name) => temporaryName.test(name)),
+          [],
+        );
+      } finally {
+        failuresRemaining = 0;
+        renameMock.mock.restore();
+        syncBuiltinESMExports();
+        await service?.close();
+        await data.close();
+      }
+    },
+  );
 }
 
 for (const family of ['image', 'video', 'frame', 'selection', 'replacement'] as const) {
