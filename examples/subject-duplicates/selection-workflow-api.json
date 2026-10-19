@@ -1,0 +1,181 @@
+{
+  "source": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "13090851-c07f-4efd-a9e5-491efcd76fff.mp4"
+    }
+  },
+  "slice": {
+    "class_type": "Video Slice",
+    "inputs": {
+      "video": [
+        "source",
+        0
+      ],
+      "start_time": 0,
+      "duration": 3.0416666666666665,
+      "strict_duration": true
+    }
+  },
+  "prepare": {
+    "class_type": "H3RelayPrepareSource",
+    "inputs": {
+      "video": [
+        "slice",
+        0
+      ],
+      "resolution": "768",
+      "duration_seconds": 0,
+      "missing_audio": "silence"
+    }
+  },
+  "frames": {
+    "class_type": "ImageFromBatch",
+    "inputs": {
+      "image": [
+        "prepare",
+        0
+      ],
+      "batch_index": 0,
+      "length": [
+        "prepare",
+        5
+      ]
+    }
+  },
+  "first": {
+    "class_type": "ImageFromBatch",
+    "inputs": {
+      "image": [
+        "frames",
+        0
+      ],
+      "batch_index": 0,
+      "length": 1
+    }
+  },
+  "points": {
+    "class_type": "AftertakeSubjectPoints",
+    "inputs": {
+      "images": [
+        "first",
+        0
+      ],
+      "source_width": 1536,
+      "source_height": 810,
+      "points_json": "{\"positive\": [{\"x\": 0.455, \"y\": 0.4}, {\"x\": 0.47, \"y\": 0.73}], \"negative\": []}"
+    }
+  },
+  "sam": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "sam3.1_multiplex_fp16.safetensors"
+    }
+  },
+  "people": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "sam",
+        1
+      ],
+      "text": "person:12"
+    }
+  },
+  "detect": {
+    "class_type": "SAM3_Detect",
+    "inputs": {
+      "model": [
+        "sam",
+        0
+      ],
+      "image": [
+        "first",
+        0
+      ],
+      "conditioning": [
+        "people",
+        0
+      ],
+      "threshold": 0.35,
+      "refine_iterations": 2,
+      "individual_masks": true
+    }
+  },
+  "choose": {
+    "class_type": "AftertakeSelectCharacterMask",
+    "inputs": {
+      "masks": [
+        "detect",
+        0
+      ],
+      "positive_coords": [
+        "points",
+        0
+      ],
+      "negative_coords": [
+        "points",
+        1
+      ]
+    }
+  },
+  "track": {
+    "class_type": "SAM3_VideoTrack",
+    "inputs": {
+      "images": [
+        "frames",
+        0
+      ],
+      "model": [
+        "sam",
+        0
+      ],
+      "initial_mask": [
+        "choose",
+        0
+      ],
+      "detection_threshold": 0.5,
+      "max_objects": 1,
+      "detect_interval": 1
+    }
+  },
+  "mask": {
+    "class_type": "SAM3_TrackToMask",
+    "inputs": {
+      "track_data": [
+        "track",
+        0
+      ],
+      "object_indices": "0"
+    }
+  },
+  "selection": {
+    "class_type": "AftertakeSaveCharacterSelection",
+    "inputs": {
+      "images": [
+        "frames",
+        0
+      ],
+      "masks": [
+        "mask",
+        0
+      ],
+      "filename_prefix": "aftertake/characters/31ce5d6a-5833-43db-b6ab-357748d5a1e1/selection",
+      "request_json": "{\"format\": \"aftertake-character-selection/1\", \"clip\": {\"id\": \"13090851-c07f-4efd-a9e5-491efcd76fff\", \"name\": \"Studio dancer - Antoni Shkraba - Pexels.mp4\", \"sha256\": \"52fe4ff0e5eaa85a576f3f26d905b1633e310e99278cc9992e8f4120610bd9f9\", \"width\": 1536, \"height\": 810, \"duration\": 3.0416666666666665, \"url\": \"/media/13090851-c07f-4efd-a9e5-491efcd76fff.mp4\", \"hasAudio\": false}, \"trimStart\": 0, \"duration\": 3.0416666666666665, \"positive\": [{\"x\": 0.455, \"y\": 0.4}, {\"x\": 0.47, \"y\": 0.73}], \"negative\": [], \"resolution\": \"768\"}"
+    }
+  },
+  "source_save": {
+    "class_type": "SaveVideo",
+    "inputs": {
+      "video": [
+        "prepare",
+        8
+      ],
+      "filename_prefix": "aftertake/characters/31ce5d6a-5833-43db-b6ab-357748d5a1e1/source",
+      "format": "mp4",
+      "format.codec": "h264",
+      "format.codec.encoding": "re-encode",
+      "format.codec.encoding.crf": 14
+    }
+  }
+}

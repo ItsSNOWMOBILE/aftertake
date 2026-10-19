@@ -26,7 +26,9 @@ import {
 } from './character';
 import CharacterReferenceEditor, { CharacterReferencePreview } from './CharacterReferenceEditor';
 import PreviewVideo from './PreviewVideo';
+import SubjectEffects, { reviewedSubjectSelection } from './SubjectEffects';
 import './character-studio.css';
+import './subject-effects.css';
 
 async function api<T>(url: string, init?: RequestInit) {
   const response = await apiFetch(url, init),
@@ -52,6 +54,15 @@ type FaceBox = NonNullable<CharacterRequest['faceBox']>;
 function faceNeedsFocus(photo: Clip, box?: FaceBox) {
   const ratio = ((box?.width ?? 1) * photo.width) / ((box?.height ?? 1) * photo.height);
   return ratio < 0.5 || ratio > 2;
+}
+export function restoreTrackedSelection(job: CharacterJob, clips: Clip[]) {
+  const saved = reviewedSubjectSelection(job);
+  if (!saved) return;
+  const request = characterSelectionSchema.safeParse(saved.request);
+  if (!request.success) return;
+  const clip = findImportedClip(clips, request.data.clip);
+  if (!clip || clip.kind === 'image') return;
+  return { ...request.data, clip };
 }
 export default function CharacterStudio({
   clips,
@@ -109,6 +120,7 @@ export default function CharacterStudio({
   const [selectionId, setSelectionId] = useState(''),
     [resultId, setResultId] = useState('');
   const [sourceReviewId, setSourceReviewId] = useState('');
+  const [subjectEffectsOpen, setSubjectEffectsOpen] = useState(false);
   const [name, setName] = useState('A new character, the same moment'),
     [prompt, setPrompt] = useState(''),
     [seed, setSeed] = useState(509101);
@@ -156,6 +168,7 @@ export default function CharacterStudio({
     selection?.state === 'succeeded' &&
     selection.selection &&
     !selection.selection.emptyFrames.length;
+  const savedSelections = jobs.filter((job) => restoreTrackedSelection(job, clips));
   const replacements = jobs.filter(
     (j) =>
       j.kind === 'replacement' &&
@@ -234,6 +247,27 @@ export default function CharacterStudio({
     setResultId('');
     setView('frame');
     setError('');
+  }
+  function useTrackedSelection(job: CharacterJob) {
+    const saved = restoreTrackedSelection(job, clips);
+    if (!saved) {
+      setError('Import the matching source video before reusing this complete tracked selection.');
+      return;
+    }
+    setSourceId(saved.clip.id);
+    setTrimStart(saved.trimStart);
+    setDuration(saved.duration);
+    setPositive(saved.positive);
+    setNegative(saved.negative);
+    setResolution(saved.resolution || '480');
+    setSelectionId(job.id);
+    setSourceReviewId(job.id);
+    setResultId('');
+    setView('selection');
+    setError('');
+    setNotice(
+      'Saved tracking restored, including its range and points. Review the existing mask; no new tracking was started.',
+    );
   }
   function showPreview(next: typeof view) {
     setView(next);
@@ -703,6 +737,27 @@ export default function CharacterStudio({
           Track one person in a continuous shot. Add their replacement’s photos, then generate a new
           take with the source scene and audio.
         </p>
+        <button
+          className="button"
+          onClick={() => setSubjectEffectsOpen((open) => !open)}
+          aria-expanded={subjectEffectsOpen}
+        >
+          <Plus size={14} /> Duplicate a tracked person
+        </button>
+        {subjectEffectsOpen && (
+          <SubjectEffects
+            selection={selection}
+            selections={savedSelections}
+            onSelectionChange={useTrackedSelection}
+            onImport={onImport}
+            onUse={(clip) => {
+              onUse(clip);
+              onClose();
+            }}
+            onFilmAdded={onFilmAdded}
+            onClose={() => setSubjectEffectsOpen(false)}
+          />
+        )}
         {browserDemo && (
           <aside className="character-recorded-intro" aria-label="Recorded character example">
             <div>
@@ -1248,6 +1303,32 @@ export default function CharacterStudio({
                 ))}
               </select>
             </label>
+            {savedSelections.length > 0 && (
+              <label>
+                SAVED TRACKED SELECTION
+                <select
+                  aria-label="Saved tracked selection"
+                  value={selectionReady ? selection.id : ''}
+                  disabled={sending || uploading}
+                  onChange={(event) => {
+                    const saved = savedSelections.find((job) => job.id === event.target.value);
+                    if (saved) useTrackedSelection(saved);
+                  }}
+                >
+                  <option value="">Restore a completed selection</option>
+                  {savedSelections.map((job) => {
+                    const saved = job.request as CharacterSelectionRequest;
+                    return (
+                      <option key={job.id} value={job.id}>
+                        {saved.clip.name} · {saved.trimStart.toFixed(2)}–
+                        {(saved.trimStart + saved.duration).toFixed(2)}s ·{' '}
+                        {saved.resolution === '768' ? 'High' : 'Standard'}
+                      </option>
+                    );
+                  })}
+                </select>
+              </label>
+            )}
             <button
               className="button"
               disabled={locked || browserDemo}
@@ -1334,12 +1415,23 @@ export default function CharacterStudio({
               </button>
             )}
             {selectionReady && (
-              <button
-                className="button character-review-selection"
-                onClick={() => showPreview('selection')}
-              >
-                Review tracked selection <ArrowUpRight size={13} />
-              </button>
+              <>
+                <button
+                  className="button character-review-selection"
+                  onClick={() => showPreview('selection')}
+                >
+                  Review tracked selection <ArrowUpRight size={13} />
+                </button>
+                <button
+                  className="button character-review-selection"
+                  onClick={() => {
+                    setSubjectEffectsOpen(true);
+                    dialog.current?.scrollTo({ top: 0 });
+                  }}
+                >
+                  <Plus size={13} /> Duplicate this person
+                </button>
+              </>
             )}
             <div className="character-step" ref={identityStep} tabIndex={-1}>
               <span>02</span>

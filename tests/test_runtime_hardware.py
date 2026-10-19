@@ -123,18 +123,23 @@ class RuntimeHardwareTests(unittest.TestCase):
                 self.assertEqual(character._runtime_device_policy(config, profile),
                     (management, torch.device('cuda:0')))
             cli.args.cpu_vae = True
-            for profile in character.GENERATION_PROFILES - {'character-selection'}:
+            for profile in character.GENERATION_PROFILES - {'character-selection', 'depth'}:
                 with self.assertRaisesRegex(hardware.HardwareConfigurationError, 'VAE'):
                     character._runtime_device_policy(config, profile)
             self.assertEqual(character._runtime_device_policy(config, 'character-selection'),
                 (management, torch.device('cuda:0')), 'SAM3 selection has no VAE execution stage.')
+            self.assertEqual(character._runtime_device_policy(config, 'depth'),
+                (management, torch.device('cuda:0')), 'DA3 depth has no VAE execution stage.')
             cli.args.cpu_vae = False
             cli.args.novram = True
-            for profile in character.GENERATION_PROFILES - {'character-swap'}:
+            for profile in character.GENERATION_PROFILES - {'character-swap', 'depth'}:
                 with self.assertRaisesRegex(hardware.HardwareConfigurationError, 'text encoder'):
                     character._runtime_device_policy(config, profile)
             self.assertEqual(character._runtime_device_policy(config, 'character-swap'),
                 (management, torch.device('cuda:0')), 'H3 uses its explicit native CUDA CLIP selection.')
+            cli.args.fp32_text_enc = True
+            self.assertEqual(character._runtime_device_policy(config, 'depth'),
+                (management, torch.device('cuda:0')), 'DA3 depth has no text encoder execution stage.')
 
     def test_each_execution_stage_must_match_the_selected_gpu_without_inferred_device_indices(self):
         comfy = types.ModuleType('comfy')

@@ -1,0 +1,11 @@
+[
+  {
+    "repository": "Comfy-Org/Depth-Anything-3",
+    "revision": "1aaeea516f22fb2f4c7fae761c8ed470c6cf9f93",
+    "path": "geometry_estimation/depth_anything_3_small.safetensors",
+    "category": "geometry_estimation",
+    "size": 137254980,
+    "sha256": "9c0a53d157c5b315d4c82908a43d93eeaa3a9ac3de9d15c2b4242ef46b5508ad",
+    "license": "apache-2.0"
+  }
+]

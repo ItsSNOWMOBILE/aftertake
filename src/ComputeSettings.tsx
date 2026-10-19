@@ -30,6 +30,7 @@ const featureNames: Record<string, string> = {
   'text-video': 'Create video',
   'character-selection': 'Track a person',
   'character-swap': 'Replace a character',
+  depth: 'Still-image depth effects',
 };
 
 async function computeRequest(path = '', init?: RequestInit): Promise<ComputeStatus> {

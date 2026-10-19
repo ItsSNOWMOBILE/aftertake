@@ -19,12 +19,20 @@ character transformation with open-weight models through the official Comfy SDK.
 **Agent creation and editing:** the [local MCP interface](mcp.md) generates
 images, edits reference frames, renders native video recipes, inspects actual
 results, and assembles measured narration and editable type through Film.
-Twenty-seven typed tools retain native operation keys across reconnect and restart.
+Thirty-six typed tools cover generation, tracked-person effects, color finishing,
+still-image depth and editing, retaining operation keys across reconnect and restart.
 Editing existing footage works with the small CPU film runtime; new image/video
 generation uses the local Comfy engine. Complete recorded examples are in
 `examples/agent-edit/` and `examples/agent-generation/`.
 [Watch the recorded MCP edit](https://aftertake-studio.right-bard-9761.chatgpt.site/agent/).
 [Review the generated product shot and narrated export](https://aftertake-studio.right-bard-9761.chatgpt.site/agent/generate.html).
+
+**Finish existing footage:** **Color & finish** provides real processed-frame
+comparison, editable film looks and texture controls. **Duplicate a tracked
+person** reuses the original performance and person mask for extra copies or a
+background-focus edit. These pixel operations run on the CPU with the film
+runtime. **Depth & light** adds optional model-estimated depth effects for still
+images; new depth estimation needs the native CUDA BF16 engine.
 
 [Two narrated vertical ads](https://aftertake-studio.right-bard-9761.chatgpt.site/ads/)
 show the short-form workflow using matching licensed coffee footage. Their
@@ -144,6 +152,88 @@ then explore the recorded take or apply its direction to your own source.
 Region effects keep your painted cue and timing. Camera recipes keep your scene
 description. Previews are actual renders; opening an example requires no Python,
 GPU or inference service. Applying a recipe prepares an editable new take.
+
+## Duplicate a tracked person and focus the background
+
+After tracking, inspect the moving whole-person selection, then choose
+**Duplicate this person**. The character workspace also opens
+**Duplicate a tracked person** to reuse an existing complete selection or import
+a portable effect. Add up to four extra copies of the source person. Adjust
+position, scale, opacity, clockwise rotation and horizontal flip; later copies
+draw on top of earlier ones. This copies the actual performance. It does not
+invent independent movement, remove the original person or fill a hidden scene.
+
+Use mask growth and feathering sparingly, then build the actual video preview.
+Review the complete shot for cutout halos, clipped limbs, overlaps and frame
+edges. **Background blur** and **Background exposure** affect the background
+while retaining the selected original person. Remove all extra copies for a
+background-focus edit alone. The prepared selection determines the output
+canvas and 24 fps clock; selected original sound is retained once.
+
+Reusing a saved selection performs no new inference and needs only the CPU film
+runtime. New person tracking still needs the optional SAM3 engine. A finished
+effect can be downloaded, used as a source or added to Film. **Portable recipe
+and original media** downloads the recipe plus its three exact companion files:
+original source, prepared source and lossless tracked mask. Import all three
+matching files with that recipe to restore the edit in another workspace.
+
+## Color and finish
+
+Open **Color & finish** below the main viewer. When a completed take is shown,
+the studio imports that result as the finishing source; otherwise it uses the
+current source. Adjust exposure, contrast, saturation, warmth, tint, sharpness,
+vignette and seeded grain. Warm film, Cool film, Noir and Vintage looks have
+their own strength control. Undo/redo retains recent settings; Reset returns
+to the clean, zero-strength default.
+
+Choose a source time and press **Preview frame**. The before/after slider uses
+an actual PNG processed by the same function as export, rather than a CSS
+approximation. Changing settings clears the old comparison. Still images use
+time zero. Review a few useful moments, then choose **Save finished take** to
+export the complete clip. Finishing changes existing pixels; it does not
+regenerate a face, fix object geometry or automatically repair a poor composite.
+
+Supported media fit the 4K pixel budget. Videos may be up to ten minutes and
+120 fps, with one video and at most one original audio track. Adjusted video
+keeps the source's rational frame timestamps and canvas, uses H.264 encoding
+and retains source sound once as AAC. H.264 finishing requires even dimensions.
+With no adjustments and a clean or zero-strength look, export copies the
+original file byte-for-byte, including its encoded audio and container.
+
+History retains the request, output and source/output hashes. Download the
+result, **Use as source**, or **Add to Film**. **Save recipe** preserves the
+settings and source content hash; import the matching original file before
+restoring it elsewhere. Importing settings starts no export. Reuse settings
+prepares another deliberate edit. An uncertain request can rejoin its original
+operation; cancellation stays busy until the worker closes. If the server
+restarts mid-export, that job becomes interrupted rather than rerunning itself.
+
+## Depth and light for a still image
+
+Choose an imported or generated still, then open **Depth & light**. The optional
+DA3 Small model estimates a depth field. Its settings provide depth-selective
+lens blur, haze and haze color, plus a virtual light's direction, elevation and
+strength. Compare the source, depth preview and finished image before reusing
+the PNG as an editing source, animation reference or Film still.
+
+Install approximately 137 MB of pinned Apache-2.0 weights, then restart ComfyUI:
+
+```sh
+python scripts/download-models.py --depth-effects
+```
+
+For a fresh native runtime, use `python scripts/setup.py --depth-effects`.
+See [the depth manifest](models-depth-effects.json) for the exact checkpoint,
+revision and checksum. Inference runs in BF16 on the selected NVIDIA CUDA GPU.
+The supported input is one still, at least 64 pixels per side, no more than
+4096 per side, and at most 4,194,304 pixels. Video depth, temporal depth tracking
+and NPU execution are not implemented.
+
+The shading derives approximate normals from relative depth; it does not
+recover measured scene lighting or repair generated geometry, seams or identity.
+Inspect occlusion boundaries and blur halos. Download the numeric depth and
+model-bound recipe with a finished result. Reusing settings retains the source
+and controls; submitting a new depth effect still performs native estimation.
 
 ## Create image
 
@@ -546,6 +636,13 @@ moved or deleted. Restart the engine after adding a profile or changing disks.
 Open http://127.0.0.1:4310. Installation and rendering run locally. The included
 room clip is rendered procedurally from original code, with no external media.
 Import a short, steady clip, paint a region, set its cue and render a take.
+
+**Compute settings** stores optional remote configuration for the server session
+and provides read-only preflight checks. Cloud generation remains blocked until
+billing, workflow compatibility and job routing have been verified. Buying
+Comfy credits does not currently move these workflows off the local engine.
+CPU Film editing, existing-mask subject effects and color finishing need no GPU;
+new image/video generation, person tracking and still-depth estimation do.
 
 ### Experimental native inpainting
 

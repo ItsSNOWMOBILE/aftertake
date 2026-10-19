@@ -1,0 +1,134 @@
+.finishing-viewer {
+  min-height: 250px;
+  border: 1px solid #3c4a31;
+  border-radius: 8px;
+  background: #0b1009;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+.finishing-viewer > img,
+.finishing-viewer video {
+  display: block;
+  width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+}
+.finishing-split {
+  position: relative;
+  width: 100%;
+}
+.finishing-split > img {
+  display: block;
+  width: 100%;
+}
+.finishing-split .finishing-after {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+}
+.finishing-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #e3f0ba;
+}
+.finishing-tag {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  padding: 5px 8px;
+  background: #0c120bc9;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: #e0edbf;
+}
+.finishing-tag.source {
+  left: auto;
+  right: 12px;
+}
+.finishing-split-control {
+  display: grid;
+  gap: 8px;
+  color: #a8b89a;
+  font-size: 11px;
+  margin: 14px 0;
+}
+.finishing-preview-time {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  color: #a8b89a;
+}
+.finishing-preview-time input {
+  width: 74px;
+  background: #10180d;
+  border: 1px solid #455735;
+  padding: 8px;
+  border-radius: 4px;
+  color: #e3ebd9;
+}
+.finishing-controls {
+  gap: 12px;
+}
+.finishing-slider > span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.finishing-slider output {
+  color: #cedeb5;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+.finishing-controls input[type='range'],
+.finishing-split-control input {
+  accent-color: #cedf9a;
+  padding: 0;
+}
+.finishing-note {
+  color: #bbcca5;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.finishing-history {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 20px 0;
+}
+.finishing-history button {
+  text-align: left;
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid #35432d;
+  border-radius: 5px;
+}
+.finishing-history button.active {
+  border-color: #c9df92;
+  background: #223019;
+}
+.finishing-history strong {
+  font-size: 12px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.finishing-history span {
+  color: #96a887;
+  font-size: 10px;
+}
+@media (max-width: 760px) {
+  .finishing-studio .image-studio-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .finishing-viewer {
+    min-height: 160px;
+  }
+  .finishing-history {
+    grid-template-columns: 1fr;
+  }
+}

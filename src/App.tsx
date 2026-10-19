@@ -67,6 +67,8 @@ import ImageStudio from './ImageStudio';
 import VideoStudio from './VideoStudio';
 import { videoBusy, type VideoGeneration } from './video-generation';
 import CharacterStudio from './CharacterStudio';
+import FinishingStudio from './FinishingStudio';
+import DepthEffectsStudio from './DepthEffectsStudio';
 import ComputeSettings from './ComputeSettings';
 import AftertakeBrand from './AftertakeBrand';
 import { characterBusy, type CharacterJob } from './character';
@@ -165,6 +167,9 @@ export default function App() {
   const [videoStudioOpen, setVideoStudioOpen] = useState(false);
   const [filmMediaRevision, setFilmMediaRevision] = useState(0);
   const [characterStudioOpen, setCharacterStudioOpen] = useState(false);
+  const [finishingClip, setFinishingClip] = useState<Clip | null>(null);
+  const [openingFinish, setOpeningFinish] = useState(false);
+  const [depthClip, setDepthClip] = useState<Clip | null>(null);
   const [characterJobs, setCharacterJobs] = useState<CharacterJob[]>([]);
   const [recordedCharacterId, setRecordedCharacterId] = useState('');
   const [recordedVideoId, setRecordedVideoId] = useState('');
@@ -558,6 +563,32 @@ export default function App() {
       ...(pipeline !== 'inpaint' ? { editReference: undefined } : {}),
       ...(preset ? { prompt: presetPrompt(preset, pipeline) } : {}),
     });
+  }
+  async function openFinishing() {
+    if (!recipe) return;
+    setOpeningFinish(true);
+    try {
+      if (!browserDemo && take?.state === 'succeeded' && take.output && mode === 'result') {
+        const response = await apiFetch(take.output);
+        if (!response.ok) throw Error('The completed take is unavailable.');
+        const bytes = await response.arrayBuffer();
+        const clip = await api<Clip>(
+          '/api/clips?name=' +
+            encodeURIComponent((take.recipe.name + ' / source.mp4').slice(0, 190)),
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/octet-stream' },
+            body: bytes,
+          },
+        );
+        setClips((all) => (all.some((item) => item.id === clip.id) ? all : [...all, clip]));
+        setFinishingClip(clip);
+      } else setFinishingClip(recipe.clip);
+    } catch (failure) {
+      setToast((failure as Error).message);
+    } finally {
+      setOpeningFinish(false);
+    }
   }
   function changeSourceStart(value: number) {
     if (!recipe || !Number.isFinite(value)) return;
@@ -1524,6 +1555,24 @@ export default function App() {
             <span> · </span>
             {dimensions.fps} FPS
           </span>
+          <button
+            className="button"
+            disabled={!recipe || openingFinish}
+            onClick={() => void openFinishing()}
+          >
+            {openingFinish ? (
+              <LoaderCircle size={13} className="spin" />
+            ) : (
+              <SlidersHorizontal size={13} />
+            )}
+            Color &amp; finish
+          </button>
+          {recipe?.clip.kind === 'image' && (
+            <button className="button" onClick={() => setDepthClip(recipe.clip)}>
+              <Layers2 size={13} />
+              Depth &amp; light
+            </button>
+          )}
         </div>
         <div
           className="viewer"
@@ -2555,6 +2604,58 @@ export default function App() {
             setToast(
               'Your character take is ready as source footage. You can also add it to film media from the character studio.',
             );
+          }}
+        />
+      )}
+      {finishingClip && (
+        <FinishingStudio
+          initialClip={finishingClip}
+          clips={clips}
+          onClose={() => setFinishingClip(null)}
+          onImport={(clip) =>
+            setClips((all) => (all.some((item) => item.id === clip.id) ? all : [...all, clip]))
+          }
+          onFilmAdded={() => setFilmMediaRevision((value) => value + 1)}
+          onUse={(clip) => {
+            video.current?.pause();
+            outputVideo.current?.pause();
+            setPlaying(false);
+            setTake(null);
+            setTime(0);
+            setRecipe({ ...makeRecipe(clip), name: clip.name });
+            setMode('source');
+            setToast('Finished footage is ready as your source.');
+          }}
+        />
+      )}
+      {depthClip && (
+        <DepthEffectsStudio
+          initialClip={depthClip}
+          clips={clips}
+          otherBusy={
+            rendering ||
+            takeAction ||
+            Boolean(takeAdmission) ||
+            Boolean(activeTake) ||
+            frameBusy ||
+            imageGenBusy ||
+            videoGenBusy ||
+            characterJobs.some(characterBusy)
+          }
+          onClose={() => setDepthClip(null)}
+          onImport={(clip) =>
+            setClips((all) => (all.some((item) => item.id === clip.id) ? all : [...all, clip]))
+          }
+          onFilmAdded={() => setFilmMediaRevision((value) => value + 1)}
+          onUse={(clip) => {
+            video.current?.pause();
+            outputVideo.current?.pause();
+            setPlaying(false);
+            setTake(null);
+            setTime(0);
+            setRecipe({ ...makeRecipe(clip), name: clip.name });
+            setMode('source');
+            setToast('Depth-finished still is ready to edit or animate.');
           }}
         />
       )}

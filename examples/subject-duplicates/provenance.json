@@ -1,0 +1,64 @@
+{
+  "format": "aftertake-subject-example-provenance/1",
+  "source": {
+    "title": "Video of a Man Dancing",
+    "creator": "Antoni Shkraba",
+    "creatorUrl": "https://www.pexels.com/@shkrabaanthony/",
+    "page": "https://www.pexels.com/video/video-of-a-man-dancing-7571381/",
+    "license": "Pexels License",
+    "licenseUrl": "https://www.pexels.com/license/",
+    "originalDownloadSha256": "74167f716c7bd5ba7c448f748776199e4837caad1c67bca0ea7884aba2790fa0",
+    "downloadedAt": "2026-10-19"
+  },
+  "sourcePreparation": {
+    "originalRangeSeconds": [
+      21,
+      24.041666666666668
+    ],
+    "excerptDimensions": [
+      1536,
+      810
+    ],
+    "frames": 73,
+    "fps": 24,
+    "hasAudio": false,
+    "changes": "Trimmed, resized, converted25to24fps, removed the silent audio track."
+  },
+  "selection": {
+    "applicationJobId": "31ce5d6a-5833-43db-b6ab-357748d5a1e1",
+    "nativeSdkJobId": "1d4b31bf-4666-468b-ad5e-674ba521c7f6",
+    "preparedDimensions": [
+      1344,
+      736
+    ],
+    "frames": 73,
+    "fps": 24,
+    "emptyFrames": [],
+    "workflow": "selection-workflow-api.json",
+    "checkpoint": "sam3.1_multiplex_fp16.safetensors",
+    "modelRepository": "Comfy-Org/sam3.1",
+    "modelRevision": "7bb8374780a725b4353ed31f3a9395c9742b5621",
+    "modelSha256": "9ba99c92703c2e8b4f47de2d34a539bb8e18923049e238b780d70dbe6368eb03"
+  },
+  "composition": {
+    "renderer": "aftertake-local-subject-compositor/1",
+    "applicationJobId": "2444219c-d064-4796-9727-330f316eb12b",
+    "request": "recipe.json",
+    "originalRetained": true,
+    "usesDiffusion": false,
+    "execution": "CPU composition from completed tracking",
+    "copyOffsetsX": [
+      -0.28,
+      0.28
+    ],
+    "mirroredCopy": 2,
+    "newGroundShadows": false
+  },
+  "review": {
+    "allFramesContactReviewed": 73,
+    "emptyMaskFrames": 0,
+    "maximumCopyOriginalOverlapPixels": 0,
+    "maximumCopyBorderPixels": 0,
+    "scope": "Decoded frames and saved masks; this silent example does not demonstrate audio preservation."
+  }
+}

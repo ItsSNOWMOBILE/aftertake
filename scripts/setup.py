@@ -29,6 +29,7 @@ def main(argv=None):
     profiles.add_argument('--motion-transfer', action='store_true', help='Download the Wan Animate 2 profile instead of the original structural profile')
     profiles.add_argument('--image-gen', action='store_true', help='Download the Z-Image Turbo text-to-image profile instead of the original structural profile')
     profiles.add_argument('--character-swap', action='store_true', help='Install the native H3 character replacement and SAM3 profile')
+    profiles.add_argument('--depth-effects', action='store_true', help='Install the optional native DA3 Small BF16 still-image depth profile')
     parser.add_argument('--models-dir', help='Download to this disk and remember it for the engine and future downloads')
     parser.add_argument('--skip-models', action='store_true', help='Install runtime and sample only; reuse model files from an existing installation')
     parser.add_argument('--gpu-index', type=int, default=0, help='Validate this currently visible CUDA GPU before downloading models')
@@ -81,7 +82,7 @@ def main(argv=None):
         raise SystemExit(f'Hardware configuration error [{error.code}]: {error} No model download has started.')
     shutil.copytree(ROOT / 'custom_nodes/aftertake', RUNTIME / 'ComfyUI/custom_nodes/aftertake', dirs_exist_ok=True)
     if not args.skip_models:
-        profile = ['--character-swap'] if args.character_swap else ['--image-gen'] if args.image_gen else ['--motion-transfer'] if args.motion_transfer else ['--ltx25'] if args.inpaint else []
+        profile = ['--depth-effects'] if args.depth_effects else ['--character-swap'] if args.character_swap else ['--image-gen'] if args.image_gen else ['--motion-transfer'] if args.motion_transfer else ['--ltx25'] if args.inpaint else []
         run(PYTHON, ROOT / 'scripts/download-models.py', *profile, *(['--models-dir', str(models_directory)] if models_directory is not None else []))
     run(PYTHON, ROOT / 'scripts/create-study.py')
     print('Runtime installed. Start it with: python scripts/engine.py')

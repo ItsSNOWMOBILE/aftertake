@@ -5,6 +5,7 @@ import { buildMotionTransferWorkflow, motionTransferRequirements } from './motio
 import { imageRequirements } from './image-workflow.js';
 import { characterRequirements } from './character-profile.js';
 import { videoRequirements } from './video-workflow.js';
+import { depthRequirements } from './depth-workflow.js';
 import { inpaintModelFiles } from './ltx-models.js';
 export { inpaintModelFiles } from './ltx-models.js';
 export const modelFiles = {
@@ -35,8 +36,10 @@ export function requirements(
     | 'image-gen'
     | 'text-video'
     | 'character-selection'
+    | 'depth'
     | 'character-swap' = 'structure',
 ): { nodes: string[]; menus: [string, string, string][] } {
+  if (pipeline === 'depth') return depthRequirements();
   if (pipeline === 'text-video') return videoRequirements();
   if (pipeline === 'character-selection' || pipeline === 'character-swap')
     return characterRequirements(pipeline === 'character-selection');

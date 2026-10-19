@@ -13,8 +13,16 @@ const idempotentWrites = new Set([
   'aftertake_replace_character',
   'aftertake_use_source',
   'aftertake_rejoin_script',
+  'aftertake_duplicate_subject',
+  'aftertake_finish_media',
+  'aftertake_depth_effect',
 ]);
-const destructiveWrites = new Set(['aftertake_generation_action', 'aftertake_character_action']);
+const destructiveWrites = new Set([
+  'aftertake_generation_action',
+  'aftertake_character_action',
+  'aftertake_cancel_finishing',
+  'aftertake_depth_action',
+]);
 
 export function toolAnnotations(name: string, readOnly: boolean) {
   return {

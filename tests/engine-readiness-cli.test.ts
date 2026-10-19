@@ -105,7 +105,11 @@ test('offline report checks all profiles, binds exact input bytes, and exposes n
     assert.equal(result.status, 0, result.stderr);
     const report = JSON.parse(result.stdout);
     assert.equal(report.format, 'aftertake-engine-readiness/1');
-    assert.deepEqual(report.summary, { checked: 10, passed: 10, blocked: 0 });
+    assert.deepEqual(report.summary, {
+      checked: computeFeatures.length,
+      passed: computeFeatures.length,
+      blocked: 0,
+    });
     assert.deepEqual(
       report.results.map((item: { feature: string }) => item.feature),
       computeFeatures,

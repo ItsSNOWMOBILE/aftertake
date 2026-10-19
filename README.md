@@ -48,11 +48,34 @@ assemble it with narration and editable typography.
 | **Images from words** with Z-Image Turbo | **Character replacement** with SAM3 tracking, multiple reference photos and native H3 | **Portrait, square and landscape edits** in Film |
 | **Video with sound** from native LTX-2.5 | **Painted, timed VFX** that composite onto the source | **Kinetic typography** with editable word timing |
 | **Reference-frame edits** with Qwen-Image-Edit | **Camera guidance, first/last frames and motion transfer** | **Local narration**, measured cuts and frame-based dissolves |
+| **Depth-finished stills** with native DA3 Small | **Tracked subject copies** with position, scale, rotation and mask controls | **Color and texture finishing** with exact before/after frame previews |
 
-Use the visual editor or connect an agent through **27 MCP tools**. Both work with
+Use the visual editor or connect an agent through **36 MCP tools**. Both work with
 the same local studio, persisted jobs and editable projects. Generation uses the
 official Comfy SDK and open-weight model workflows; editing existing footage and
 local narration can run on the CPU.
+
+### One performance. Extra copies.
+
+[![Three tracked copies of one studio dancer, made from the original source pixels](examples/subject-duplicates/poster.jpg)](examples/subject-duplicates/result.mp4)
+
+Track a person once, then position up to four extra copies without regenerating
+their face or motion. Adjust scale, rotation, flip, opacity, grow and feather;
+blur or darken the background through the same tracked matte. The original sound
+is retained once. This [reproducible example](examples/subject-duplicates/README.md)
+includes the source, prepared frames, lossless mask and portable recipe, and
+replays on the CPU without a running generation engine.
+
+**Color & finish** adds five adjustable looks, white balance, exposure, contrast,
+saturation, grain, sharpness and vignette. Preview the actual processed frame,
+undo or redo settings, and save a new take while preserving the source clock and
+audio. **Depth & light** adds measured lens blur, haze and directional lighting
+to still images, using an optional 137 MB DA3 Small model on CUDA BF16. Finish
+the still, then use it as an animation reference. Video depth is not supported.
+
+These additions were inspired by [Scumble](https://github.com/DenRakEiw/scumble).
+They are independently implemented for Aftertake's video workflow;
+[the feature audit and attribution](docs/scumble-inspiration.md) explain the scope.
 
 ### See it in action
 
@@ -159,6 +182,7 @@ revisions, file sizes and SHA-256 hashes. Restart the engine after installation.
 | Motion transfer | `python scripts/download-models.py --motion-transfer` | [Motion transfer](docs/studio-guide.md#transfer-motion) |
 | Masked video editing | `python scripts/setup.py --inpaint` | [Adapter access and installation](docs/studio-guide.md#experimental-native-inpainting) |
 | Motion-control adapter | `python scripts/download-models.py --motion` | [Camera and motion guidance](docs/studio-guide.md#animate-a-frame) |
+| Still-image depth effects | `python scripts/setup.py --depth-effects` | [Depth, light and atmosphere](docs/depth-effects.md) |
 
 Some profiles share model files. Sizes, dependencies and model terms are
 documented in the [studio guide](docs/studio-guide.md) and pinned manifests.

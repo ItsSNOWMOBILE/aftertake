@@ -545,6 +545,8 @@ h1 > span {
 }
 .viewer-toolbar {
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 14px;

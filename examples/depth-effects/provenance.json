@@ -1,0 +1,81 @@
+{
+  "format": "aftertake-depth-example/1",
+  "scope": "still-image",
+  "jobId": "39a60614-28ad-439e-ad98-cf6fefc97916",
+  "nativeJobId": "0f9ae23c-41c7-4f7c-992b-567338e8d289",
+  "source": {
+    "sha256": "c4b78b5351b7e22216d08c360747306e4f1c0ebcd5f4e21b71b230fab702d128",
+    "origin": "../castle-pullback/source.png",
+    "originalSha256": "43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa",
+    "normalization": "Canonical Aftertake image import; original provenance remains in castle source example.",
+    "attribution": {
+      "creator": "Dean Diemert",
+      "title": "A lighthouse is seen from above on the coast",
+      "url": "https://www.pexels.com/video/a-lighthouse-is-seen-from-above-on-the-coast-20730898/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "derivative": "Qwen-edited castle appearance frame, then native DA3 depth-based pixel effects."
+    }
+  },
+  "model": {
+    "repository": "Comfy-Org/Depth-Anything-3",
+    "revision": "1aaeea516f22fb2f4c7fae761c8ed470c6cf9f93",
+    "sha256": "9c0a53d157c5b315d4c82908a43d93eeaa3a9ac3de9d15c2b4242ef46b5508ad",
+    "license": "Apache-2.0",
+    "nativeInferenceDtype": "bfloat16",
+    "device": "cuda:0"
+  },
+  "depth": {
+    "rawFloat32Sha256": "9b1a0c02f78da75682fcb55cb8ebc2348b912b11bb8be92615d32d10ae90f2d8",
+    "nativeArtifactSha256": "1e94f43ecd5edca600dc2cb702315bc14e12a88a6605fb7b138f020d6078a59e",
+    "display": "depth.png is a visualization-only PNG extracted from the actual native output; raw-depth.npz retains lossless numerical depth. The embedded-raw native PNG is omitted to avoid duplicating raw data."
+  },
+  "canvas": {
+    "width": 768,
+    "height": 432
+  },
+  "effects": {
+    "focus": 0.05,
+    "blur": 2,
+    "haze": 0.18,
+    "hazeColor": "#cbd7e3",
+    "lightAzimuth": -45,
+    "lightElevation": 35,
+    "lightStrength": 0.25
+  },
+  "limitations": [
+    "Still-image effects only; no temporal video-depth claim.",
+    "Relative monocular depth can be wrong.",
+    "Soft relight uses approximate depth normals and camera intrinsics; no physical shadows."
+  ],
+  "files": {
+    "depth.png": {
+      "size": 44028,
+      "sha256": "16204bd64dc604fde5cbf10d731aa3a6a6ef666a492583f33cf30027e98cfb25"
+    },
+    "raw-depth.npz": {
+      "size": 528108,
+      "sha256": "8561dd90fff15138462be411eabbc5ae9d6f3844dfcb5af720c64195f45685ef"
+    },
+    "README.md": {
+      "size": 2527,
+      "sha256": "857a7df37670a9841f4aaba0f4627a3868aebf204264109b43f928b69d1edd51"
+    },
+    "recipe.json": {
+      "size": 1132,
+      "sha256": "b0a6c6e36352027a116e69b9859b22099031621fc763b494b5da81fbe467f8d0"
+    },
+    "result.png": {
+      "size": 457365,
+      "sha256": "f7aaf007a342d637f4de59734aff16814088037a817abcdd1c95bfbc85fabf46"
+    },
+    "source.png": {
+      "size": 468348,
+      "sha256": "c4b78b5351b7e22216d08c360747306e4f1c0ebcd5f4e21b71b230fab702d128"
+    },
+    "workflow-api.json": {
+      "size": 1042,
+      "sha256": "fed55528fb02b36d4df7a840b8b03ebbec24a0314bbdb96bd3af226eb314e487"
+    }
+  }
+}

@@ -11,6 +11,7 @@ export const computeFeatures = [
   'text-video',
   'character-selection',
   'character-swap',
+  'depth',
 ] as const;
 
 export type ComputeFeature = (typeof computeFeatures)[number];

@@ -565,5 +565,22 @@ export async function characterRouter(context: {
       context.setAdmitting(false);
     }
   });
-  return { router, busy: () => [...jobs.values()].some(characterBusy) };
+  return {
+    router,
+    busy: () => [...jobs.values()].some(characterBusy),
+    async resolveReviewedSelection(id: string) {
+      if (!jobs.has(id)) throw new RequestError('No saved person selection matches this ID.', 404);
+      const record = await resolveSelection(id);
+      const request = characterSelectionSchema.parse(record.request);
+      const original = await resolveClipAsset(request.clip, clips, 'original source video');
+      return {
+        id: record.id,
+        request: { ...request, clip: original },
+        selection: record.selection!,
+        preparedSourcePath: file(id, 'source.mp4'),
+        maskPath: file(id, 'mask.mkv'),
+        originalSourcePath: path.join(clips, path.basename(original.url)),
+      };
+    },
+  };
 }

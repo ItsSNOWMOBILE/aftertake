@@ -4,8 +4,9 @@ Aftertake exposes its real local film workflow through a stdio MCP server.
 An MCP client chooses the edit using the user's brief and selected assets.
 The server supplies media inspection, measured local narration, a persistent
 beat plan, native export and decoded review frames. It contains no LLM and
-requires no hosted inference service. Twenty-seven typed tools cover native image
-creation, reference editing, video generation and narration-first Film editing.
+requires no hosted inference service. Thirty-six typed tools cover native image
+creation, reference editing, video generation, tracked-person effects, color
+finishing, still-image depth effects and narration-first Film editing.
 New generation requires the configured local Comfy engine and its model profile.
 
 ## Start the studio
@@ -24,6 +25,14 @@ The film runtime includes pinned PyAV, Pillow, NumPy and bundled FFmpeg. It
 does not download video models. Narration uses the separately pinned Kokoro
 weights and CPU runtime. ComfyUI is needed to generate new images or video,
 while editing existing media and voicing this workflow run on the CPU.
+Reusing a saved person mask and color finishing also run on the CPU. Estimating
+new depth requires the optional native CUDA BF16 depth profile described below.
+
+Compute settings can store remote configuration for the server session and run
+read-only account checks. Cloud generation remains blocked until billing,
+workflow compatibility and job routing are verified; these tools currently use
+the configured local engine for new inference. Comfy credits do not yet activate
+remote execution.
 
 Start the MCP process separately. It communicates over stdin/stdout and does
 not open a public server:
@@ -84,11 +93,20 @@ root, including resolved symbolic links; remote media URLs are not accepted.
 | `aftertake_rejoin_script` | Rejoins an interrupted native script job using its original request and result cache. |
 | `aftertake_character_workspace` | Lists actual character profiles, source clips/photos, tracked selections and character takes. |
 | `aftertake_track_character` | Starts or rejoins native whole-person SAM3 tracking with a stable `requestId`. |
-| `aftertake_replace_character` | Uses the inspected mask hash, original photo and optional real face crop in native H3 Character Swap V1.5. |
+| `aftertake_replace_character` | Uses the inspected mask hash, primary photo, optional supporting originals and real face crops in native H3 Character Swap V1.5. |
 | `aftertake_character_status` | Rejoins a persisted character selection or take by record ID or original request ID. |
 | `aftertake_character_action` | Cancels or reconciles that same character operation. |
 | `aftertake_inspect_character` | Decodes actual overlay/result frames for identity, limb, occlusion and continuation review. |
 | `aftertake_character_recipe` | Returns source-bound settings, mask provenance, executed graph, native job ID and completed output. |
+| `aftertake_effects_workspace` | Lists saved subject, finishing and depth jobs plus canonical source clips. |
+| `aftertake_duplicate_subject` | Composites up to four extra copies of the reviewed source person, or applies masked background blur/exposure, using original pixels and sound. |
+| `aftertake_finish_media` | Starts or rejoins a CPU color/texture export with source-hash-bound settings and original frame timing/audio. |
+| `aftertake_preview_finish` | Returns one actual processed PNG using the same finishing function as final export; creates no finished clip. |
+| `aftertake_depth_effect` | Estimates one still's depth with pinned DA3 Small BF16 weights, then applies depth blur, haze or directional shading. |
+| `aftertake_effect_status` | Reads a subject, finishing or depth record by ID or stable request ID; observation starts no new generation. |
+| `aftertake_depth_action` | Cancels or reconciles the same accepted depth operation without changing its source or settings. |
+| `aftertake_effect_recipe` | Returns editable effect settings and their source/model/media bindings. |
+| `aftertake_cancel_finishing` | Requests worker cancellation; `canceling` remains busy until the subprocess closes. |
 
 `aftertake_import_media` defaults to Film. Set `destination: "studio"` to import
 a generation source through the native source normalizer. Inspect a canonical
@@ -112,8 +130,11 @@ Pass that selection's `maskSha256` to `aftertake_replace_character`, with a new
 stable `requestId` and the original imported reference photo. An optional
 normalized `faceBox` crops that same photo; `wardrobe: "reference"` uses its
 outfit, while `"source"` retains source clothing. The default is the reference
-outfit. H3 receives identity, source video, source audio, latent mask and
-continuation history. No preliminary Qwen appearance redraw is used.
+outfit. Up to seven supporting `identityReferences` accept separate original
+photos of that person, each with its own optional `faceBox`; the primary photo
+still determines reference clothing. Additional views use more memory and do
+not guarantee better likeness. H3 receives identity, source video, source audio,
+latent mask and continuation history. No preliminary Qwen appearance redraw is used.
 
 Poll the same record, inspect the resulting frames and continuation joins,
 then promote its completed `clipId` and inspected output hash into Film with
@@ -122,6 +143,85 @@ editable typography and export plan. Downloading or reconnecting never creates
 a new take. An uncertain submission retains its stored graph and SDK key.
 This remains generative editing; reliable articulation and perfect likeness
 are not guaranteed by the tool schema.
+
+## Effects using original pixels
+
+For a duplicate-person shot, track and inspect the person first using the
+character tools. Pass that exact `selectionId` and inspected `maskSha256` to
+`aftertake_duplicate_subject`, with a stable `requestId`. A request uses
+`format: "aftertake-subject-effect/1"`, a name and up to four `copies`. Each copy
+has normalized canvas offsets `x`/`y`, `scale` and `opacity`, plus optional
+`rotation` in clockwise degrees and `flipX`. The original person stays in the
+scene; copies reuse that person's actual performance rather than generating
+independent action. Later copies draw over earlier ones. Review collisions,
+cutout edges and frame boundaries in the completed video.
+
+Optional `grow` and `feather` adjust the copy edge. `backgroundBlur` and
+`backgroundExposureEV` affect the background through the reviewed person mask.
+An empty `copies` array makes a background-focus edit without additional people.
+The output retains the selection's prepared canvas, complete 24 fps frame count
+and selected source sound once. This is not a full-resolution source-clock
+replacement for H3. Reusing a complete selection requires the CPU film runtime,
+not another SAM/H3 run. For another workspace, save the subject recipe and all
+three exact companion files: original source, prepared source and lossless mask.
+The browser's import flow validates their hashes before restoring the selection.
+
+Color finishing accepts `format: "aftertake-finishing/1"`, a name, an imported
+`clip` and complete `settings`. Start from `defaultFinishingSettings` in
+`src/finishing.ts`: all adjustments zero, `preset: "clean"`, `lookStrength: 0`
+and `seed: 42`. Available controls are `exposureEV` (−3 to 3), `contrast`,
+`saturation`, `temperature` and `tint` (−1 to 1), plus `sharpen`, `vignette`,
+`grain` and `lookStrength` (0 to 1). Presets are `clean`, `warm-film`, `cool-film`,
+`noir` and `vintage`; the unsigned 32-bit seed fixes grain per source frame.
+The pipeline is linear-light exposure/white balance, contrast/saturation,
+film look, sharpening, vignette, then grain.
+
+Call `aftertake_preview_finish` with the same request and a `time` inside its
+source range; stills use time zero. Preview selects the first source frame at
+or after that time and uses the exact export pixel function. It does not certify
+the rest of the shot. After review, call `aftertake_finish_media` with a stable
+`requestId`; inspect `kind: "finishing"` through `aftertake_effect_status`.
+Successful jobs expose an ordinary `clip` for source reuse and Film import.
+Zero adjustments with a clean or zero-strength look copy the original file
+byte-for-byte. Adjusted videos preserve the original rational frame timestamps,
+encode H.264 and mux the original sound once as AAC. Supported inputs fit the
+4K pixel budget; videos are at most ten minutes/120 fps with one video and at
+most one audio track. Adjusted H.264 exports require even canvas dimensions.
+
+Finishing recipes bind to actual source SHA-256, not a local clip ID alone.
+Import matching original footage before restoring settings. Server restart
+marks unfinished CPU exports `interrupted`; it does not silently rerun them.
+Read the terminal state before deliberately choosing a new operation ID.
+Cancellation likewise remains `canceling` until the worker has stopped.
+
+## Still-image depth and light
+
+Install the optional pinned DA3 Small profile (approximately 137 MB):
+
+```sh
+python scripts/download-models.py --depth-effects
+```
+
+For a fresh native runtime, use `python scripts/setup.py --depth-effects`.
+Restart the engine after adding the profile. The Apache-2.0 checkpoint revision,
+size and SHA-256 are in [the depth manifest](models-depth-effects.json). Native
+DA3 inference uses the selected NVIDIA CUDA GPU in BF16; no CPU/NPU inference
+or video-depth support is implemented.
+
+`aftertake_depth_effect` accepts `format: "aftertake-depth-effect/1"`, a name,
+an image `clip`, and `settings` from `defaultDepthSettings` in
+`src/depth-effects.ts`. Stills must be at least 64 pixels per side, no more than
+4096 per side, and no more than 4,194,304 pixels. Adjust `focus`, `blur`, `haze`,
+`hazeColor`, `lightAzimuth`, `lightElevation` and `lightStrength`. The model
+estimates depth; a CPU pixel pass then applies blur, distance-weighted haze and
+directional shading derived from depth gradients. This is a 2.5D approximation,
+not measured lighting or a repair for generated geometry, seams or identity.
+
+Poll `kind: "depth"` using the original request ID, inspect the actual depth
+preview and finished PNG, and save its model-bound recipe. The UI also downloads
+the numeric depth field. Reuse the completed image as a source or animation
+reference after review. Use `aftertake_depth_action` for uncertain native job
+recovery; a timeout is not permission to submit a duplicate generation.
 
 ## Generate, inspect, then edit
 

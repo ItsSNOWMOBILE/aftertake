@@ -36,7 +36,7 @@ const evaluate = (feature: ComputeFeature, objectInfo: unknown, stats: unknown =
     hardwareInfo: hardwareFixture(feature),
   });
 
-test('declared metadata contracts cover all ten workflows without mutating or returning engine documents', () => {
+test('declared metadata contracts cover every workflow without mutating or returning engine documents', () => {
   for (const feature of computeFeatures) {
     const nodes = fixture(feature);
     nodes.PrivateNode = {

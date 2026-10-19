@@ -33,6 +33,10 @@ import { scriptDraftRouter } from './script-drafts.js';
 import { characterRouter } from './characters.js';
 import { videoRouter } from './videos.js';
 import { computeRouter } from './compute.js';
+import { subjectEffectsRouter } from './subject-effects.js';
+import { finishingRouter } from './finishing.js';
+import { computeFeatures, type ComputeFeature } from '../src/compute.js';
+import { depthEffectsRouter } from './depth-effects.js';
 import {
   assertJobTarget,
   canonicalNativeBaseUrl,
@@ -116,19 +120,7 @@ for (const filename of await readdir(renderDir)) {
   }
 }
 const healthCache = new Map<string, { until: number; value: Engine }>();
-async function engine(
-  pipeline:
-    | 'structure'
-    | 'inpaint'
-    | 'cinema'
-    | 'motion-transfer'
-    | 'motion'
-    | 'frame-edit'
-    | 'image-gen'
-    | 'text-video'
-    | 'character-selection'
-    | 'character-swap' = 'structure',
-): Promise<Engine> {
+async function engine(pipeline: ComputeFeature = 'structure'): Promise<Engine> {
   if (!client.available)
     return {
       connected: false,
@@ -345,19 +337,7 @@ app.get('/previews/:name', (req, res) => {
   res.sendFile(req.params.name, { root: previewDir, dotfiles: 'deny' });
 });
 app.get('/api/engine', async (req, res) => {
-  const pipelines = [
-    'structure',
-    'inpaint',
-    'cinema',
-    'motion-transfer',
-    'motion',
-    'frame-edit',
-    'image-gen',
-    'text-video',
-    'character-selection',
-    'character-swap',
-  ] as const;
-  const pipeline = pipelines.find((value) => value === req.query.pipeline) || 'structure';
+  const pipeline = computeFeatures.find((value) => value === req.query.pipeline) || 'structure';
   res.json(await engine(pipeline));
 });
 app.get('/api/workspace', (_req, res) => {
@@ -542,6 +522,28 @@ const characters = await characterRouter({
 });
 generation.register('characters', characters.busy);
 app.use('/api/characters', characters.router);
+app.use(
+  '/api/subject-effects',
+  await subjectEffectsRouter({
+    root,
+    data,
+    python,
+    resolveSelection: characters.resolveReviewedSelection,
+  }),
+);
+const finishing = await finishingRouter({ root, data, python });
+app.use('/api/finishing', finishing.router);
+const depthEffects = await depthEffectsRouter({
+  target: jobTarget,
+  root,
+  data,
+  python,
+  client,
+  engine: () => engine('depth'),
+  ...generation.forWorker('depthEffects'),
+});
+generation.register('depthEffects', depthEffects.busy);
+app.use('/api/depth-effects', depthEffects.router);
 const videos = await videoRouter({
   target: jobTarget,
   root,
@@ -557,7 +559,7 @@ app.use('/api/videos', videos.router);
 app.use('/api/templates', await templateRouter(root, data, renders));
 app.use('/api/films', await filmRouter(root, data, python, renders));
 app.post('/api/cue-preview', async (req, res) => {
-  if (characters.busy() || videos.busy())
+  if (characters.busy() || videos.busy() || depthEffects.busy())
     return void res.status(409).json({
       error: 'Wait for the character job to finish before computing another motion preview.',
     });

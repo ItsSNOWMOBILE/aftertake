@@ -414,4 +414,6 @@ from .memory_compat import install as install_safe_weight_copies
 install_safe_weight_copies()
 install_runtime_hardware_route()
 NODE_CLASS_MAPPINGS.update(CHARACTER_NODES)
+from .depth_nodes import DEPTH_NODES
+NODE_CLASS_MAPPINGS.update(DEPTH_NODES)
 NODE_DISPLAY_NAME_MAPPINGS = {key: key.replace('Aftertake', 'Aftertake · ') for key in NODE_CLASS_MAPPINGS}

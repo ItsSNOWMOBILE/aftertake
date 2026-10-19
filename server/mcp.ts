@@ -12,6 +12,7 @@ import { narrationSchema, portableVoiceSource, type Film, type FilmAsset } from 
 import { displayDimensions, renderDimensions, type Render, type Clip } from '../src/domain.js';
 import { clipMediaRoute, registerGenerationTools } from './generation-tools.js';
 import { registerCharacterTools } from './character-tools.js';
+import { registerEffectsTools } from './effects-tools.js';
 import { scriptRequestSchema } from '../src/script-draft.js';
 import { toolAnnotations } from './tool-annotations.js';
 
@@ -661,4 +662,5 @@ tool(
 );
 registerGenerationTools({ tool, api, bytes, base });
 registerCharacterTools({ tool, api, bytes, root, python, state });
+registerEffectsTools({ tool, api, base });
 await server.connect(new StdioServerTransport());

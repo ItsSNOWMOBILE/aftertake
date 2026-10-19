@@ -1,0 +1,23 @@
+{
+  "1": {
+    "class_type": "AftertakeLoadClip",
+    "inputs": {
+      "filename": "ff2f0749-662a-49ee-b6bf-eb36ef94e77c.png",
+      "width": 768,
+      "height": 432,
+      "frames": 1,
+      "fps": 1,
+      "trim_start": 0
+    }
+  },
+  "2": {
+    "class_type": "AftertakeEstimateDepth",
+    "inputs": {
+      "images": [
+        "1",
+        0
+      ],
+      "request_json": "{\"format\":\"aftertake-depth-effect/1\",\"name\":\"Castle · soft directional atmosphere\",\"clip\":{\"id\":\"ff2f0749-662a-49ee-b6bf-eb36ef94e77c\",\"name\":\"Castle-depth-source.png\",\"sha256\":\"c4b78b5351b7e22216d08c360747306e4f1c0ebcd5f4e21b71b230fab702d128\",\"originalSha256\":\"43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa\",\"width\":768,\"height\":432,\"duration\":1,\"url\":\"/media/ff2f0749-662a-49ee-b6bf-eb36ef94e77c.png\",\"kind\":\"image\"},\"settings\":{\"focus\":0.05,\"blur\":2,\"haze\":0.18,\"hazeColor\":\"#cbd7e3\",\"lightAzimuth\":-45,\"lightElevation\":35,\"lightStrength\":0.25}}"
+    }
+  }
+}

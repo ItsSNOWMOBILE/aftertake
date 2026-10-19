@@ -13,7 +13,7 @@ from .vram import (host_tensor, resolve_memory_policy, verify_native_residency,
 
 
 GENERATION_PROFILES = frozenset(('structure', 'inpaint', 'cinema', 'motion-transfer',
-    'motion', 'frame-edit', 'image-gen', 'text-video', 'character-selection', 'character-swap'))
+    'motion', 'frame-edit', 'image-gen', 'text-video', 'character-selection', 'character-swap', 'depth'))
 _KITCHEN_PROBES = set()
 _KITCHEN_PROBE_LOCK = threading.RLock()
 
@@ -30,8 +30,8 @@ def _runtime_device_policy(config, profile='structure'):
             raise HardwareConfigurationError('execution_device_mismatch',
                 f'The {stage} stage must execute on the selected NVIDIA CUDA device. '
                 'Remove CPU execution overrides or restart on the matching GPU; CPU storage and offload remain allowed.')
-    selected_cuda('SAM3' if profile == 'character-selection' else 'diffusion', device)
-    uses_vae = profile != 'character-selection'
+    selected_cuda('SAM3' if profile == 'character-selection' else 'depth estimator' if profile == 'depth' else 'diffusion', device)
+    uses_vae = profile not in ('character-selection', 'depth')
     if uses_vae:
         selected_cuda('VAE', management.vae_device())
     if profile == 'character-swap':
@@ -39,10 +39,10 @@ def _runtime_device_policy(config, profile='structure'):
         # Its GPU selection overrides a CPU default caused by --novram; use
         # the same native resolver without changing the graph or its patcher.
         selected_cuda('H3 reference encoder', management.resolve_gpu_device_option('gpu:0'))
-    else:
+    elif profile != 'depth':
         selected_cuda('text encoder', management.text_encoder_device())
-    if any(getattr(args, name, False) for name in
-            ('force_fp32', 'fp32_unet', 'fp32_text_enc')) or (uses_vae and getattr(args, 'fp32_vae', False)):
+    precision_flags = ('force_fp32', 'fp32_unet') if profile == 'depth' else ('force_fp32', 'fp32_unet', 'fp32_text_enc')
+    if any(getattr(args, name, False) for name in precision_flags) or (uses_vae and getattr(args, 'fp32_vae', False)):
         raise HardwareConfigurationError('float32_execution_disabled',
             'Remove forced FP32 execution flags before starting this generation profile. No FP32 fallback is enabled.')
     return management, device
@@ -114,7 +114,7 @@ def runtime_hardware_report(profile):
         ])
         placement = resolve_memory_policy(config.memory_mode, facts.total_vram_bytes)
         residency = verify_native_residency(placement, management)
-        decoder = verify_native_decoder_contract(profile) if placement.effective_mode == 'sequential' else None
+        decoder = verify_native_decoder_contract(profile) if placement.effective_mode == 'sequential' and profile != 'depth' else None
         report['memoryPolicy'] = {**residency.as_dict(),
             'native_decoder_contract': None if decoder is None else decoder.as_dict(),
             'cpu_output_staging': residency.cpu_intermediate_storage,

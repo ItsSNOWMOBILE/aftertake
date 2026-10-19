@@ -1,0 +1,31 @@
+{
+  "format": "aftertake-subject-portability-check/1",
+  "checkedAt": "2026-10-19",
+  "emptyWorkspace": true,
+  "generationEngineConnected": false,
+  "nativeSelectionResolverCalls": 0,
+  "importStartsRender": false,
+  "sourceMediaHashesVerified": true,
+  "selectionIdRebound": true,
+  "replaySucceeded": true,
+  "stableRequestIdRejoinsSameJob": true,
+  "framesCompared": 73,
+  "identicalDecodedRGBFrames": 73,
+  "maximumDecodedChannelDifference": 0,
+  "identicalRationalTimestamps": true,
+  "width": 1344,
+  "height": 736,
+  "fps": 24,
+  "duration": 3.0416666666666665,
+  "sourceHasAudio": false,
+  "outputHasAudio": false,
+  "comparisonEnvironment": {
+    "python": "3.12",
+    "pyav": "19.0.1",
+    "renderer": "aftertake-local-subject-compositor/1"
+  },
+  "notes": [
+    "Replay used the real HTTP router and CPU media worker with all three exported companion files. No original workspace selection or ComfyUI engine was available to the fixture.",
+    "MP4 file hashes differ because embedded editable recipes contain freshly rebound local IDs. Every decoded RGB frame and frame timestamp matched in this runtime. Cross-runtime encoded-byte equality is not guaranteed."
+  ]
+}
