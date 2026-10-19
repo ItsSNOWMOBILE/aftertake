@@ -18,7 +18,8 @@ import {
   type Engine,
   type Render,
 } from '../src/domain.js';
-import { buildWorkflow, requirements } from './workflow.js';
+import { buildWorkflow } from './workflow.js';
+import { evaluateEngineCompatibility } from './engine-compatibility.js';
 import { submissionRejected } from './submission.js';
 import { filmRouter } from './films.js';
 import { templateRouter } from './templates.js';
@@ -114,38 +115,20 @@ async function engine(
       fetch(`${process.env.COMFY_BASE_URL}/api/v2/health`, { signal: AbortSignal.timeout(5000) }),
     ]);
     if (responses.some((r) => !r.ok)) throw new Error('ComfyUI or the v2 proxy is unavailable');
-    const nodes = (await responses[0].json()) as Record<string, any>;
+    const nodes: unknown = await responses[0].json();
     const stats = (await responses[1].json()) as {
       devices?: { name: string }[];
       system?: { os?: string };
     };
-    const needed = requirements(pipeline);
-    const missing = needed.nodes.filter((name) => !nodes[name]).map((name) => `Node: ${name}`);
-    if (nodes.AftertakeLoadClip && nodes.AftertakeLoadClip.output?.length !== 2)
-      missing.push('Update Aftertake nodes and restart the engine for source audio');
-    if (pipeline === 'inpaint' && nodes.AftertakeCueMask?.output?.length < 3)
-      missing.push('Update Aftertake nodes and restart the engine');
-    const menus = needed.menus;
-    for (const [node, input, filename] of menus) {
-      const options = nodes[node]?.input?.required?.[input]?.[0];
-      if (Array.isArray(options) && !options.includes(filename)) missing.push(`Model: ${filename}`);
-    }
-    if (pipeline === 'text-video' && !nodes.AftertakeSaveVideo?.input?.optional?.generated_audio)
-      missing.push('Update Aftertake nodes and restart the engine for generated sound.');
-    if (pipeline === 'character-selection' || pipeline === 'character-swap') {
-      if (!nodes.AftertakeRuntimeInfo?.input?.required?.ffmpeg_tools?.[0]?.includes('ready'))
-        missing.push(
-          'FFmpeg and FFprobe must be on the engine PATH; use python scripts/engine.py --ffmpeg-bin PATH_TO_BIN',
-        );
-      if (
-        ['nt', 'win32'].includes(stats.system?.os || '') &&
-        !nodes.AftertakeRuntimeInfo?.input?.required?.weight_copy_backend?.[0]?.includes('pytorch')
-      )
-        missing.push('Restart the tested Windows character engine with --safe-weight-copies');
-    }
+    const compatibility = evaluateEngineCompatibility({
+      feature: pipeline,
+      objectInfo: nodes,
+      systemStats: stats,
+    });
+    const missing = compatibility.missing;
     result = {
       connected: true,
-      ready: missing.length === 0,
+      ready: compatibility.compatible,
       gpu: stats.devices?.[0]?.name,
       missing,
       message: missing.length

@@ -54,3 +54,17 @@ To report which expected models are present on an existing model disk, optionall
 The inventory contains no `.env` data, API keys, account records, personal reference photos, source media, projects or job records. Source hashes describe the current checkout bytes; regenerate the report after changing code or checking out another revision.
 
 Before translating this report into a provider's documented build format, validate Linux dependency resolution, GPU capacity/kernels, codecs, all required node/model capabilities and real output contracts on the intended worker. Then separately verify account/billing ownership and isolated job recovery. The report always leaves deployment readiness false and performs none of those steps automatically.
+
+## Check saved engine metadata
+
+The local studio and the offline checker share the same declared node, model-menu and native port/runtime checks. Save the intended worker's `object_info` and `system_stats` responses using its documented metadata interfaces. Keep these captures in ignored `.runtime/`: file-picker menus can contain private uploaded filenames. Comfy Cloud's metadata routes are described in its [API overview](https://docs.comfy.org/development/cloud/overview); obtain metadata from the actual execution target when evaluating a dedicated deployment.
+
+```sh
+pnpm exec tsx scripts/check-engine-readiness.mts --feature character-swap --object-info .runtime/cloud/object-info.json --system-stats .runtime/cloud/system-stats.json --output .runtime/cloud/character-swap-check.json
+```
+
+Use `--feature all` to inspect all ten workflow profiles. `--system-stats` is optional; character profiles remain blocked when their operating system cannot be verified. Input limits are 16 MiB for object metadata and 1 MiB for system metadata. Choose a new output path for each report; existing files are preserved. Without `--output`, the command prints the report. Exit status is `0` when the selected profile checks pass, `1` when checks are blocked, and `2` for invalid arguments, files or output paths.
+
+The command reads saved JSON from disk and makes no engine/API requests. URLs, explicit network-share paths and device namespaces are rejected before reading or writing files. It never uploads media, changes connections or starts a job. Reports contain input hashes, contract hashes and fixed expected component names; observed menu values, host paths and account documents are omitted. Missing or malformed model lists block readiness. Both list-style menus and `COMBO` menus with an `options` list are checked.
+
+Every report retains `generationReady: false`. Metadata origin and freshness, full graph validation, model bytes, GPU execution, media transport, output recovery and account billing still need verification. Run the check again against a fresh capture after changing the target worker or profile. The Python inventory above supplies the separate pinned deployment inputs.
