@@ -205,10 +205,12 @@ test('explicit video src wins over nested source and packaged local sources stay
   );
 });
 
-test('all static showcase HTML includes one helper and its Pages assets resolve to pinned Git blobs', () => {
+test('all static showcase HTML includes one helper and its pinned Pages paths exist in the current checkout', () => {
   const root = resolve(import.meta.dirname, '..');
+  // URL assertions retain the fixed asset revision; CI only needs its shallow
+  // checkout's current path inventory, not historical commit objects.
   const tracked = new Set(
-    execFileSync('git', ['ls-tree', '-r', '--name-only', commit], { cwd: root, encoding: 'utf8' })
+    execFileSync('git', ['ls-tree', '-r', '--name-only', 'HEAD'], { cwd: root, encoding: 'utf8' })
       .trim()
       .split('\n'),
   );
