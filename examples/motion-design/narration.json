@@ -1,0 +1,342 @@
+{
+  "format": "aftertake-selected-narration/1",
+  "timingBasis": "Selected authoring-ledger heardWords on the final Film clock; underlying timings are derived from local Kokoro phoneme durations.",
+  "reviewScope": "The bundle preparation verifies hashes and selection windows. It does not perform a new listening review.",
+  "lines": [
+    {
+      "name": "01-one",
+      "path": "examples/motion-design/media/853415d850d4-01-one.wav",
+      "sha256": "853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373",
+      "timelineStart": 0,
+      "sourceStart": 0,
+      "sourceEnd": 0.794,
+      "text": "One.",
+      "heardWords": [
+        {
+          "text": "One.",
+          "start": 0.17266666666666666,
+          "end": 0.6976666666666667
+        }
+      ]
+    },
+    {
+      "name": "01-three",
+      "path": "examples/motion-design/media/b7a9feb69880-01-three.wav",
+      "sha256": "b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5",
+      "timelineStart": 0.8333333333333334,
+      "sourceStart": 0,
+      "sourceEnd": 0.8392916666666667,
+      "text": "Three.",
+      "heardWords": [
+        {
+          "text": "Three.",
+          "start": 0.9810000000000001,
+          "end": 1.6226666666666667
+        }
+      ]
+    },
+    {
+      "name": "03-finish",
+      "path": "examples/motion-design/media/4de45a135132-03-finish.wav",
+      "sha256": "4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92",
+      "timelineStart": 1.6666666666666667,
+      "sourceStart": 0,
+      "sourceEnd": 1.8133333333333332,
+      "text": "Give every frame your look.",
+      "heardWords": [
+        {
+          "text": "Give",
+          "start": 1.768,
+          "end": 1.943
+        },
+        {
+          "text": "every",
+          "start": 2.0180000000000002,
+          "end": 2.293
+        },
+        {
+          "text": "frame",
+          "start": 2.3930000000000002,
+          "end": 2.718
+        },
+        {
+          "text": "your",
+          "start": 2.768,
+          "end": 2.8680000000000003
+        },
+        {
+          "text": "look.",
+          "start": 2.918,
+          "end": 3.468
+        }
+      ]
+    },
+    {
+      "name": "02-character",
+      "path": "examples/motion-design/media/97b8e81bed7f-02-character.wav",
+      "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+      "timelineStart": 7.291666666666667,
+      "sourceStart": 0,
+      "sourceEnd": 1.28,
+      "text": "Keep the performance.",
+      "heardWords": [
+        {
+          "text": "Keep",
+          "start": 7.389333333333334,
+          "end": 7.589333333333333
+        },
+        {
+          "text": "the",
+          "start": 7.614333333333334,
+          "end": 7.664333333333333
+        },
+        {
+          "text": "performance.",
+          "start": 7.714333333333333,
+          "end": 8.489333333333335
+        }
+      ]
+    },
+    {
+      "name": "02-character",
+      "path": "examples/motion-design/media/97b8e81bed7f-02-character.wav",
+      "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+      "timelineStart": 8.625,
+      "sourceStart": 1.34,
+      "sourceEnd": 2.7252916666666667,
+      "text": "Change the character.",
+      "heardWords": [
+        {
+          "text": "Change",
+          "start": 8.712666666666667,
+          "end": 9.062666666666667
+        },
+        {
+          "text": "the",
+          "start": 9.087666666666667,
+          "end": 9.137666666666666
+        },
+        {
+          "text": "character.",
+          "start": 9.187666666666667,
+          "end": 10.010291666666667
+        }
+      ]
+    },
+    {
+      "name": "05-ad",
+      "path": "examples/motion-design/media/305774c38686-05-ad.wav",
+      "sha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac",
+      "timelineStart": 10.333333333333334,
+      "sourceStart": 0,
+      "sourceEnd": 3.2573333333333334,
+      "text": "Cut an ad. Find the words. Make them move.",
+      "heardWords": [
+        {
+          "text": "Cut",
+          "start": 10.477333333333334,
+          "end": 10.627333333333334
+        },
+        {
+          "text": "an",
+          "start": 10.652333333333335,
+          "end": 10.727333333333334
+        },
+        {
+          "text": "ad.",
+          "start": 10.802333333333333,
+          "end": 11.127333333333334
+        },
+        {
+          "text": "Find",
+          "start": 11.442333333333334,
+          "end": 11.692333333333334
+        },
+        {
+          "text": "the",
+          "start": 11.717333333333334,
+          "end": 11.767333333333333
+        },
+        {
+          "text": "words.",
+          "start": 11.817333333333334,
+          "end": 12.192333333333334
+        },
+        {
+          "text": "Make",
+          "start": 12.522333333333334,
+          "end": 12.697333333333333
+        },
+        {
+          "text": "them",
+          "start": 12.722333333333335,
+          "end": 12.872333333333334
+        },
+        {
+          "text": "move.",
+          "start": 12.922333333333334,
+          "end": 13.590666666666667
+        }
+      ]
+    },
+    {
+      "name": "04-create",
+      "path": "examples/motion-design/media/41e8d69f2188-04-create.wav",
+      "sha256": "41e8d69f2188e0f34b4543307e7737c267ae36adf0ce8b982dc1eb27231118df",
+      "timelineStart": 15.583333333333334,
+      "sourceStart": 0,
+      "sourceEnd": 1.7493333333333334,
+      "text": "Turn a thought into a shot.",
+      "heardWords": [
+        {
+          "text": "Turn",
+          "start": 15.706000000000001,
+          "end": 15.906
+        },
+        {
+          "text": "a",
+          "start": 15.931000000000001,
+          "end": 15.981
+        },
+        {
+          "text": "thought",
+          "start": 16.081,
+          "end": 16.306
+        },
+        {
+          "text": "into",
+          "start": 16.331,
+          "end": 16.531
+        },
+        {
+          "text": "a",
+          "start": 16.581,
+          "end": 16.631
+        },
+        {
+          "text": "shot.",
+          "start": 16.731,
+          "end": 17.332666666666668
+        }
+      ]
+    },
+    {
+      "name": "how-built",
+      "path": "examples/motion-design/media/35ee7966a127-how-built-voice.wav",
+      "sha256": "35ee7966a127a1fb3b90a7bad4fb8f674f5ec4b2b69b4873c0c244e448f95cc9",
+      "timelineStart": 20.125,
+      "sourceStart": 0,
+      "sourceEnd": 3.6279166666666667,
+      "text": "Comfy SDK. Open weights. Editable layers.",
+      "heardWords": [
+        {
+          "text": "Comfy",
+          "start": 20.18,
+          "end": 20.555
+        },
+        {
+          "text": "SDK.",
+          "start": 20.605,
+          "end": 21.38
+        },
+        {
+          "text": "Open",
+          "start": 21.555,
+          "end": 21.88
+        },
+        {
+          "text": "weights.",
+          "start": 21.93,
+          "end": 22.355
+        },
+        {
+          "text": "Editable",
+          "start": 22.59,
+          "end": 22.965
+        },
+        {
+          "text": "layers.",
+          "start": 23.015,
+          "end": 23.613
+        }
+      ]
+    },
+    {
+      "name": "08-reveal",
+      "path": "examples/motion-design/media/de91fb08df61-08-reveal.wav",
+      "sha256": "de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf",
+      "timelineStart": 24.625,
+      "sourceStart": 0,
+      "sourceEnd": 2.3553333333333333,
+      "text": "And this edit? Made in Aftertake.",
+      "heardWords": [
+        {
+          "text": "And",
+          "start": 24.772666666666666,
+          "end": 24.872666666666667
+        },
+        {
+          "text": "this",
+          "start": 24.897666666666666,
+          "end": 25.072666666666667
+        },
+        {
+          "text": "edit?",
+          "start": 25.147666666666666,
+          "end": 25.547666666666668
+        },
+        {
+          "text": "Made",
+          "start": 25.727666666666668,
+          "end": 25.952666666666666
+        },
+        {
+          "text": "in",
+          "start": 25.977666666666668,
+          "end": 26.052666666666667
+        },
+        {
+          "text": "Aftertake.",
+          "start": 26.127666666666666,
+          "end": 26.980333333333334
+        }
+      ]
+    },
+    {
+      "name": "09-close",
+      "path": "examples/motion-design/media/12801120013f-09-close.wav",
+      "sha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c",
+      "timelineStart": 28,
+      "sourceStart": 0,
+      "sourceEnd": 1.792,
+      "text": "Your next take starts here.",
+      "heardWords": [
+        {
+          "text": "Your",
+          "start": 28.190333333333335,
+          "end": 28.290333333333333
+        },
+        {
+          "text": "next",
+          "start": 28.340333333333334,
+          "end": 28.565333333333335
+        },
+        {
+          "text": "take",
+          "start": 28.615333333333332,
+          "end": 28.840333333333334
+        },
+        {
+          "text": "starts",
+          "start": 28.890333333333334,
+          "end": 29.215333333333334
+        },
+        {
+          "text": "here.",
+          "start": 29.265333333333334,
+          "end": 29.765333333333334
+        }
+      ]
+    }
+  ]
+}
