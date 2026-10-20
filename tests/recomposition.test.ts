@@ -156,6 +156,7 @@ async function fixture(
     before?: (data: string, renders: Map<string, Render>) => Promise<void>;
     python?: string | (() => Promise<string>);
     resolveClipAsset?: (clip: Recipe['clip']) => Promise<Recipe['clip']>;
+    onRender?: (render: Render) => void | Promise<void>;
     templates?: boolean;
   } = {},
 ) {
@@ -196,8 +197,9 @@ async function fixture(
     renders,
     worker,
     resolveClipAsset: options.resolveClipAsset,
-    onRender: (render) => {
+    onRender: async (render) => {
       notifications.push(render);
+      await options.onRender?.(render);
     },
   });
   app.use('/api/recompositions', backend.router);
@@ -402,6 +404,86 @@ test('CPU refinements retain the earliest raw generation and can reset back to t
   }
 });
 
+test('a terminal CPU blend releases admission before notification and cannot release its successor', async () => {
+  const notificationEntered = deferred(),
+    releaseNotification = deferred(),
+    notificationFinished = deferred(),
+    secondEntered = deferred(),
+    releaseSecond = deferred();
+  let workerCalls = 0,
+    notifications = 0,
+    activeWorkers = 0,
+    maxActiveWorkers = 0;
+  const f = await fixture({
+    worker: async (args) => {
+      if (args.at(-1) === '--check') return;
+      workerCalls++;
+      activeWorkers++;
+      maxActiveWorkers = Math.max(maxActiveWorkers, activeWorkers);
+      try {
+        const work = JSON.parse(await readFile(args.at(-1)!, 'utf8'));
+        if (workerCalls === 2) {
+          secondEntered.resolve();
+          await releaseSecond.promise;
+        }
+        await writeResult(work);
+      } finally {
+        activeWorkers--;
+      }
+    },
+    onRender: async () => {
+      if (++notifications !== 1) return;
+      notificationEntered.resolve();
+      await releaseNotification.promise;
+      notificationFinished.resolve();
+    },
+  });
+  try {
+    const firstResponse = await f.post('', request, 'terminal-first');
+    assert.equal(firstResponse.status, 202);
+    const first = (await firstResponse.json()) as RecompositionJob;
+    await notificationEntered.promise;
+    const done = await terminal(f.url, first.id);
+    assert.equal(f.busy(), false, 'A terminal response must mean admission is released.');
+    assert.deepEqual(await readdir(path.join(f.data, 'recompositions')), [`${first.id}.json`]);
+    const replay = await f.post('', request, 'terminal-first');
+    assert.equal(replay.status, 200);
+    assert.equal(((await replay.json()) as RecompositionJob).id, first.id);
+
+    const secondResponse = await f.post(
+      '',
+      { renderId: done.id, matchSourceColor: false },
+      'terminal-second',
+    );
+    assert.equal(secondResponse.status, 202, await secondResponse.clone().text());
+    const second = (await secondResponse.json()) as RecompositionJob;
+    await secondEntered.promise;
+    assert.equal(workerCalls, 2);
+    assert.equal(activeWorkers, 1);
+    assert.equal(maxActiveWorkers, 1);
+    assert.equal(f.busy(), true);
+
+    releaseNotification.resolve();
+    await notificationFinished.promise;
+    assert.equal(f.busy(), true, 'An earlier completion must not free the new reservation.');
+    assert.equal((await f.post('', request, 'terminal-third')).status, 409);
+    releaseSecond.resolve();
+    await terminal(f.url, second.id);
+    assert.equal(f.busy(), false);
+    assert.equal(maxActiveWorkers, 1);
+    assert.deepEqual(
+      (await readdir(path.join(f.data, 'recompositions'))).sort(),
+      [`${first.id}.json`, `${second.id}.json`].sort(),
+    );
+  } finally {
+    releaseNotification.resolve();
+    releaseSecond.resolve();
+    // Allow a failed assertion to release the deliberately held fixture worker.
+    for (let attempt = 0; f.busy() && attempt < 100; attempt++) await delay(10);
+    await f.close();
+  }
+});
+
 test('freshly opening the actual Golden template rebinds local IDs without losing raw provenance', async () => {
   const f = await fixture({ templates: true });
   try {
@@ -516,6 +598,7 @@ test('worker errors are safe durable failures and never publish a partial take',
     const response = await f.post('', request, 'worker-fail');
     assert.equal(response.status, 202);
     const job = await terminal(f.url, ((await response.json()) as RecompositionJob).id, 'failed');
+    assert.equal(f.busy(), false);
     assert(!JSON.stringify(job).includes('SECRET'));
     assert(!JSON.stringify(job).includes('C:/private'));
     assert.equal(job.renderId, undefined);
@@ -605,7 +688,6 @@ test('cancel waits for worker termination and a late result cannot publish or fr
     release.resolve();
     await terminal(f.url, job.id, 'canceled');
     assert.equal(f.renders.has(job.id), false);
-    for (let attempt = 0; f.busy() && attempt < 100; attempt++) await delay(10);
     assert.equal(f.busy(), false);
     assert.equal((await f.post(`/${job.id}/cancel`, {})).status, 200);
   } finally {
