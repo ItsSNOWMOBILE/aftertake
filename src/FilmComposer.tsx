@@ -49,6 +49,7 @@ import { filmExportKey, exportAttemptKey } from './narrated-cut';
 import { cameraAt, type CameraKeyframe, type FilmFraming } from './film-camera';
 import { audioGain } from './film-audio';
 import { FilmRecorder } from './FilmRecorder';
+import { beatAnalysisSchema, filmBeatGrid, snapCutsToBeats } from './film-beats';
 import {
   transitionDefaults,
   transitionLabels,
@@ -454,6 +455,75 @@ function ShotPicture({
       onWaiting={() => onReadiness(false)}
       onError={() => onReadiness(false, true)}
     />
+  );
+}
+
+function BeatSnap({
+  track,
+  index,
+  draft,
+  setDraft,
+  available,
+}: {
+  track: NonNullable<FilmDraft['audio']>[number];
+  index: number;
+  draft: FilmDraft;
+  setDraft: (draft: FilmDraft) => void;
+  available: (shot: FilmDraft['shots'][number]) => number;
+}) {
+  const [every, setEvery] = useState('1');
+  const [status, setStatus] = useState('');
+  const [busy, setBusy] = useState(false);
+  async function snap() {
+    setBusy(true);
+    setStatus('Finding the beat…');
+    try {
+      const analysis = beatAnalysisSchema.parse(
+        await request(`/api/films/assets/${track.assetId}/beats`, json({})),
+      );
+      const grid = filmBeatGrid(analysis, track, {
+        every: every === 'bar' ? 1 : Number(every),
+        downbeats: every === 'bar',
+      });
+      const result = snapCutsToBeats(draft.shots, grid, (shot) => available(shot));
+      setDraft({ ...draft, shots: result.shots });
+      setStatus(
+        `${Math.round(analysis.tempo)} BPM · ${draft.shots.length - 1 - result.misses.length} cuts on the beat` +
+          (result.misses.length
+            ? ` · cut${result.misses.length > 1 ? 's' : ''} ${result.misses.join(', ')} kept (not enough footage)`
+            : ''),
+      );
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : 'Beat analysis failed.');
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <div className="film-beat-snap">
+      <label>
+        Cut every
+        <select
+          aria-label={`Audio ${index + 1} beat spacing`}
+          value={every}
+          onChange={(event) => setEvery(event.target.value)}
+        >
+          <option value="1">Beat</option>
+          <option value="2">2 beats</option>
+          <option value="4">4 beats</option>
+          <option value="bar">Downbeat</option>
+        </select>
+      </label>
+      <button
+        className="button"
+        disabled={busy || browserDemo || draft.shots.length < 2}
+        onClick={() => void snap()}
+      >
+        {busy ? <LoaderCircle className="spin" size={14} /> : <Clapperboard size={14} />}
+        Snap cuts to beats
+      </button>
+      {status && <small role="status">{status}</small>}
+    </div>
   );
 }
 
@@ -2090,6 +2160,20 @@ export default function FilmComposer({
                   </label>
                 ))}
               </div>
+              {asset && !asset.narration && (
+                <BeatSnap
+                  track={track}
+                  index={index}
+                  draft={draft}
+                  setDraft={setDraft}
+                  available={(shot) => {
+                    const source = assets.find((item) => item.id === shot.assetId);
+                    if (source) return source.kind === 'image' ? 600 : source.duration;
+                    const take = renders.find((item) => item.id === shot.renderId);
+                    return take ? renderDimensions(take.recipe).duration : shot.end;
+                  }}
+                />
+              )}
               {asset?.narration && (
                 <details className="narration-receipt">
                   <summary>Voice script & receipt</summary>

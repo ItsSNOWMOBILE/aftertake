@@ -544,6 +544,14 @@ tool(
 );
 type EditPlanBeat = { visuals: { assetId?: string; renderId?: string }[] };
 tool(
+  'aftertake_detect_beats',
+  'Estimate the tempo, beat and likely downbeat times (source seconds) of an imported music or video asset. Place the track on the film timeline, then end shots on beats: a styled transition switches pictures at the midpoint of its dissolve overlap, so center that overlap on the beat. Results are cached by content hash; review the cut by ear.',
+  z.object({ assetId: uuid }),
+  async ({ assetId }) => ({
+    data: await api(`/api/films/assets/${encodeURIComponent(assetId)}/beats`, {}),
+  }),
+);
+tool(
   'aftertake_save_film_edit',
   'Save a complete editable native Film project with cuts, camera keyframes, animated text, shape/image graphic layers and audio. Format 4 motionScene supports ordered one-level groups of titles and graphics with a shared pivot, editable transforms, perspective depth and bounded shutter samples. Format 5 adds punch title animations (slam, pop, reveal, glitch, scramble), display/condensed/mono fonts, stamp/highlight/underline boxes, tilt, and styled shot transitions (whip, zoom, flash, glitch, slide) played over each shot’s dissolve seconds. Verifies source hashes and timing without rendering. Revise the project to create a new plan ID; export and review through the same plan tools.',
   z.object({ project: filmManifestSchema }),

@@ -22,6 +22,7 @@ import { renderDimensions, type Render } from '../src/domain.js';
 import { contentDigest, type PlanPicture } from './edit-plan.js';
 import { narratedCutSchema, narratedSourcesSchema } from '../src/narrated-cut.js';
 import { prepareNarratedCut } from './narrated-cut.js';
+import { beatAnalysisSchema, type BeatAnalysis } from '../src/film-beats.js';
 
 export async function filmRouter(
   root: string,
@@ -165,6 +166,35 @@ export async function filmRouter(
     const asset = assets.get(req.params.id);
     if (!asset) return void res.sendStatus(404);
     res.sendFile(`${asset.id}${asset.extension}`, { root: assetFolder });
+  });
+  const beatLocks = new Map<string, Promise<BeatAnalysis>>();
+  router.post('/assets/:id/beats', async (req, res) => {
+    const asset = assets.get(req.params.id);
+    if (!asset || asset.kind === 'image')
+      return void res.status(404).json({ error: 'Choose an imported audio or video file.' });
+    const cache = path.join(assetFolder, `${asset.id}.${asset.sha256.slice(0, 16)}.beats.json`);
+    let pending = beatLocks.get(cache);
+    if (!pending) {
+      pending = (async () => {
+        const saved = await readFile(cache, 'utf8').catch(() => '');
+        if (saved) return beatAnalysisSchema.parse(JSON.parse(saved));
+        const { stdout } = await exec(
+          python,
+          [path.join(root, 'scripts/detect-beats.py'), assetPath(asset)],
+          { timeout: 120000, maxBuffer: 4 * 1024 * 1024, windowsHide: true },
+        );
+        const analysis = beatAnalysisSchema.parse(JSON.parse(stdout));
+        await writeFile(cache, JSON.stringify(analysis));
+        return analysis;
+      })().finally(() => beatLocks.delete(cache));
+      beatLocks.set(cache, pending);
+    }
+    try {
+      res.json({ assetId: asset.id, sha256: asset.sha256, ...(await pending) });
+    } catch (error) {
+      console.error('Beat analysis failed:', error);
+      res.status(422).json({ error: 'Could not find a beat in this audio.' });
+    }
   });
   router.post(
     '/assets',

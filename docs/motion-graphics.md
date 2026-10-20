@@ -71,6 +71,22 @@ the export's curves; the export adds the smear, zoom blur and glitch bands.
 Projects using punch typography or a styled transition save as
 **`aftertake-film/5`**; older formats reject them rather than dropping them.
 
+## Cut to the beat
+
+Import a music track, add it under audio, then choose **Cut every** (beat, two
+beats, four beats or downbeat) and **Snap cuts to beats**. Aftertake estimates the
+track's tempo and beats locally, then changes only shot **Out** points so each cut
+lands on the nearest reachable beat. For a styled transition, the midpoint of its
+overlap (where flash, glitch and zoom switch pictures) is placed on the beat. A cut
+stays where it is when its shot lacks the footage to reach a beat, and the status
+line lists it. Move the audio clip first; snapping follows its placement and trim.
+
+Analysis uses spectral-flux onsets, an autocorrelation tempo estimate and a
+dynamic-programming beat tracker on the CPU (`scripts/detect-beats.py`). Results
+are cached by the audio's content hash. Beat times are quantized to about 23 ms and
+the downbeat is a likely bar phase, not a verified one; review the cut by ear.
+Agents use `aftertake_detect_beats` and set shot Out points in the saved project.
+
 ## Presets and keyframes
 
 | Starting point | Movement |

@@ -211,7 +211,7 @@ syncBuiltinESMExports();
   try {
     await client.connect(transport);
     const list = await client.listTools();
-    assert.equal(list.tools.length, 43);
+    assert.equal(list.tools.length, 44);
     for (const name of [
       'aftertake_character_workspace',
       'aftertake_track_character',
@@ -229,6 +229,7 @@ syncBuiltinESMExports();
       'aftertake_preview_layers',
       'aftertake_resolve_layers',
       'aftertake_save_film_edit',
+      'aftertake_detect_beats',
       'aftertake_refine_blend',
       'aftertake_blend_status',
       'aftertake_cancel_blend',
