@@ -1,0 +1,24 @@
+{
+  "letter": "E",
+  "seed": 509052,
+  "id": "2ac4c682-e267-44c1-b79d-96897b9e696b",
+  "jobId": "1187b912-882b-483b-b572-5d9a32b0dbbb",
+  "state": "succeeded",
+  "clip": {
+    "id": "2ac4c682-e267-44c1-b79d-96897b9e696b",
+    "name": "E - Neon depth portrait - seed 509052",
+    "kind": "image",
+    "width": 1280,
+    "height": 720,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b",
+    "url": "/media/2ac4c682-e267-44c1-b79d-96897b9e696b.png"
+  },
+  "path": "source.png",
+  "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b",
+  "elapsedThisRunSeconds": 32.171,
+  "source": "Native Aftertake API, Comfy SDK workflow; local AI-generated fictional footage. No resizing of a lower-resolution sample.",
+  "savedRecordWallSeconds": 28.398,
+  "pathNote": "Portable path relative to this example folder; original machine path omitted."
+}

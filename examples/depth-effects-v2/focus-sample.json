@@ -1,0 +1,39 @@
+{
+  "format": "aftertake-explicit-face-depth-sample/1",
+  "source": "source.png",
+  "depth": "raw-depth.npz",
+  "roiPixels": {
+    "x": 653,
+    "y": 202,
+    "width": 76,
+    "height": 93
+  },
+  "method": "Median raw DA3 depth normalized by full-image2nd/98th percentiles, clipped0..1. Manual visible face rectangle excludes most hair/background.",
+  "nearFarPercentiles": [
+    0.353515625,
+    1.5299315452575684
+  ],
+  "focus": 0.0,
+  "originalSettings": {
+    "focus": 0.05,
+    "blur": 2,
+    "haze": 0.18,
+    "hazeColor": "#cbd7e3",
+    "lightAzimuth": -45,
+    "lightElevation": 35,
+    "lightStrength": 0.25
+  },
+  "alternateSettings": {
+    "focus": 0.0,
+    "blur": 8,
+    "haze": 0.18,
+    "hazeColor": "#cbd7e3",
+    "lightAzimuth": -45,
+    "lightElevation": 35,
+    "lightStrength": 0.25
+  },
+  "rejectedStressTest": {
+    "blur": 24,
+    "reason": "Strong blur exaggerates DA3 depth bands and hair-edge rim; retained privately, excluded from portable example."
+  }
+}

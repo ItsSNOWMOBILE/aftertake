@@ -1,0 +1,17 @@
+{
+  "format": "aftertake-depth-image-verification/1",
+  "checks": {
+    "nativeGeometry": true,
+    "depthGeometry": true,
+    "finitePositiveDepth": true,
+    "rawDepthHash": true,
+    "nativeBf16": true,
+    "nativeCuda": true
+  },
+  "width": 1280,
+  "height": 720,
+  "rawDepthSha256": "c2f4132f81d80012afdfb5bd36e5d00d5978098f292423570268e1a78cb802b0",
+  "inferenceDtype": "bfloat16",
+  "device": "cuda:0",
+  "technicalPass": true
+}

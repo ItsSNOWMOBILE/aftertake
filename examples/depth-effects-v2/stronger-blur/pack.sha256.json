@@ -1,0 +1,91 @@
+{
+  "format": "aftertake-portable-example-pack/1",
+  "pathsRelativeTo": ".",
+  "textEncoding": "UTF-8; LF line endings; no BOM",
+  "excludes": [
+    "files.sha256.json",
+    "pack.sha256.json"
+  ],
+  "files": [
+    {
+      "path": "depth.png",
+      "bytes": 1792714,
+      "sha256": "cdcb9fd60d140b522f3767583baa786aebade11e1cee13e267374603786a4c8a"
+    },
+    {
+      "path": "executed-workflow.json",
+      "bytes": 976,
+      "sha256": "8d03885ef94f5035530caa90e6dc2c4a6bd184e9cd3b01391a80ffca7c3f6a44"
+    },
+    {
+      "path": "image-verification.json",
+      "bytes": 435,
+      "sha256": "eaa93824a8e3755d08b3bcf23f3e5a76c20a1cd7384da9d8d4e0aabbc2bb5ecf"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 2195,
+      "sha256": "5f044afb1b7edb7c6880b87637fe341a9a5d86a4c9f944d0f0c7d42411bc0851"
+    },
+    {
+      "path": "models.json",
+      "bytes": 4121,
+      "sha256": "75f31baafde1a9b92cc30fc636790a2fd098fa2f95dacf1ddbb6bea8ba4f658f"
+    },
+    {
+      "path": "original-recipe.json",
+      "bytes": 1398,
+      "sha256": "5363ac9e5f38b53e7a49c90d9aff04c0dc3a471763a85a7c7d16921239d2bacd"
+    },
+    {
+      "path": "raw-depth.npz",
+      "bytes": 1270016,
+      "sha256": "1cdd4fab9cc4ff44b13dcfb0724f54d523da363589e38c6bed2f80647bc5ddf8"
+    },
+    {
+      "path": "README.md",
+      "bytes": 827,
+      "sha256": "f69e22f7cf66ab8563d5dfb959943d571d6e7a4fa26d6cff4365e21e6eeb5ecc"
+    },
+    {
+      "path": "recipe.json",
+      "bytes": 1372,
+      "sha256": "7e4e4fa43bcd439a844473c55bde0a93725a8aebecded54ef67dede93b7ecafa"
+    },
+    {
+      "path": "render.json",
+      "bytes": 3055,
+      "sha256": "19662e046443ad8bc87c2b7b002f4ef747428c72e70f48e9164adf202b44cda2"
+    },
+    {
+      "path": "request.json",
+      "bytes": 646,
+      "sha256": "f63504db7d98a306d599758a47893ff52d5a690a4df8752b564f4e75804d8f96"
+    },
+    {
+      "path": "result.png",
+      "bytes": 893364,
+      "sha256": "cba2fd16370212ac7e7988e3e02b95df1b338af56b144da05e3c1773bf1abc80"
+    },
+    {
+      "path": "source.clip.json",
+      "bytes": 332,
+      "sha256": "f0a684db17979000934abd7388ebc094ea680004c591e9745531a28905c0517e"
+    },
+    {
+      "path": "source.png",
+      "bytes": 1119303,
+      "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b"
+    },
+    {
+      "path": "timing.json",
+      "bytes": 251,
+      "sha256": "2b9cff3381dc23bc3cc70ceff86ba8c4a6ab2e85b8e134b0be0109169e524ac5"
+    },
+    {
+      "path": "visual-review.json",
+      "bytes": 509,
+      "sha256": "96fbab9c4c68d3da8b140fd3fc0397d4343c0ec45f41fe4feb55941b16e1d729"
+    }
+  ]
+}

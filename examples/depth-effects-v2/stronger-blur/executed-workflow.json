@@ -1,0 +1,23 @@
+{
+  "1": {
+    "class_type": "AftertakeLoadClip",
+    "inputs": {
+      "filename": "2ac4c682-e267-44c1-b79d-96897b9e696b.png",
+      "width": 1280,
+      "height": 720,
+      "frames": 1,
+      "fps": 1,
+      "trim_start": 0
+    }
+  },
+  "2": {
+    "class_type": "AftertakeEstimateDepth",
+    "inputs": {
+      "images": [
+        "1",
+        0
+      ],
+      "request_json": "{\"format\":\"aftertake-depth-effect/1\",\"name\":\"Tokyo portrait · optional stronger lens blur · v2\",\"clip\":{\"id\":\"2ac4c682-e267-44c1-b79d-96897b9e696b\",\"name\":\"E - Neon depth portrait - seed 509052\",\"sha256\":\"d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b\",\"width\":1280,\"height\":720,\"duration\":1,\"url\":\"/media/2ac4c682-e267-44c1-b79d-96897b9e696b.png\",\"kind\":\"image\",\"hasAudio\":false},\"settings\":{\"focus\":0,\"blur\":8,\"haze\":0.18,\"hazeColor\":\"#cbd7e3\",\"lightAzimuth\":-45,\"lightElevation\":35,\"lightStrength\":0.25}}"
+    }
+  }
+}
