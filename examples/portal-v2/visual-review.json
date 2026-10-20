@@ -1,0 +1,29 @@
+{
+  "format": "aftertake-visual-review/1",
+  "status": "accepted-with-documented-limits",
+  "reviewers": [
+    "root native-frame/contact review",
+    "independent lyric_timestamps native-frame/contact review"
+  ],
+  "sampledTimesSeconds": [
+    0,
+    1,
+    2,
+    3,
+    3.5,
+    4
+  ],
+  "evidence": "review-contact.jpg",
+  "heroFrame": "poster.png",
+  "findings": [
+    "Continuous neon city is visible inside the repainted interior.",
+    "The broad retained-source fan/bar halos are removed.",
+    "Outer arch, brick, readers and room are visually stable in reviewed samples.",
+    "CPU receipt verifies all protected pixels exact before video encoding."
+  ],
+  "limitations": [
+    "Internal window divider layout changes intentionally.",
+    "Tiny pale slivers remain along the top inner rim.",
+    "Original source-colored room light beams are protected; the room is not physically relit."
+  ]
+}

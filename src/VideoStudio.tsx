@@ -519,6 +519,20 @@ export default function VideoStudio({
               </label>
             </div>
             <label>
+              OUTPUT SIZE
+              <select
+                aria-label="Video output size"
+                value={request.resolution || 'standard'}
+                disabled={locked}
+                onChange={(e) =>
+                  change({ resolution: e.target.value === '720p' ? '720p' : undefined })
+                }
+              >
+                <option value="standard">Standard · follows quality</option>
+                <option value="720p">HD · 720p</option>
+              </select>
+            </label>
+            <label>
               SHOT LENGTH
               <select
                 aria-label="Video shot length"

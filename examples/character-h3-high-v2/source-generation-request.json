@@ -1,0 +1,17 @@
+{
+  "format": "aftertake-text-video/1",
+  "name": "A - Hero walk - clean-lens quality variant - seed 508023",
+  "prompt": "Full-frame photorealistic medium shot of a fictional adult woman in a black bomber jacket walking straight toward the camera across a wet rooftop at blue hour. Her face is clearly visible, sharply focused and lit by a steady soft warm practical light. Her facial structure and jacket remain consistent. The camera dollies backward at exactly her walking pace, keeping her face at the same scale and the same focus distance. Natural relaxed gait and subtle hair movement. A second fictional adult leans on the railing far behind her; a city skyline recedes in the distance. Clean natural 35 mm lens, moderate depth of field, realistic clear detail. The image fills the entire rectangular frame. No vignette, no black borders, no rounded frame, no fisheye, no lens bloom, no added grain, no focus pulling, no focus breathing, no slow motion. No text, subtitles, labels or logos. Quiet rooftop ambience only, no speech or music. One continuous 24 fps shot.",
+  "seed": 508023,
+  "aspect": "landscape",
+  "quality": "final",
+  "resolution": "720p",
+  "seconds": 5,
+  "sound": true,
+  "cinema": {
+    "movement": "pull",
+    "lens": "natural",
+    "lighting": "source",
+    "palette": "source"
+  }
+}

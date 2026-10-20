@@ -1,0 +1,257 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "9d36ccb7-20c3-491c-9b9d-05d5720c541d",
+  "kind": "selection",
+  "request": {
+    "format": "aftertake-character-selection/1",
+    "clip": {
+      "id": "fa39831b-2f47-44e2-8136-a39d59e08f09",
+      "name": "B - Dancer - seed 508021",
+      "sha256": "5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3",
+      "width": 1280,
+      "height": 720,
+      "duration": 5.041666666666667,
+      "url": "/media/fa39831b-2f47-44e2-8136-a39d59e08f09.mp4",
+      "kind": "video",
+      "hasAudio": true
+    },
+    "trimStart": 0,
+    "duration": 3.0416666666666665,
+    "positive": [
+      {
+        "x": 0.47,
+        "y": 0.45
+      },
+      {
+        "x": 0.44,
+        "y": 0.7
+      }
+    ],
+    "negative": [],
+    "resolution": "768"
+  },
+  "workflow": {
+    "source": {
+      "class_type": "LoadVideo",
+      "inputs": {
+        "file": "fa39831b-2f47-44e2-8136-a39d59e08f09.mp4"
+      }
+    },
+    "slice": {
+      "class_type": "Video Slice",
+      "inputs": {
+        "video": [
+          "source",
+          0
+        ],
+        "start_time": 0,
+        "duration": 3.0416666666666665,
+        "strict_duration": true
+      }
+    },
+    "prepare": {
+      "class_type": "H3RelayPrepareSource",
+      "inputs": {
+        "video": [
+          "slice",
+          0
+        ],
+        "resolution": "768",
+        "duration_seconds": 0,
+        "missing_audio": "silence"
+      }
+    },
+    "frames": {
+      "class_type": "ImageFromBatch",
+      "inputs": {
+        "image": [
+          "prepare",
+          0
+        ],
+        "batch_index": 0,
+        "length": [
+          "prepare",
+          5
+        ]
+      }
+    },
+    "first": {
+      "class_type": "ImageFromBatch",
+      "inputs": {
+        "image": [
+          "frames",
+          0
+        ],
+        "batch_index": 0,
+        "length": 1
+      }
+    },
+    "points": {
+      "class_type": "AftertakeSubjectPoints",
+      "inputs": {
+        "images": [
+          "first",
+          0
+        ],
+        "source_width": 1280,
+        "source_height": 720,
+        "points_json": "{\"positive\": [{\"x\": 0.47, \"y\": 0.45}, {\"x\": 0.44, \"y\": 0.7}], \"negative\": []}"
+      }
+    },
+    "sam": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "sam3.1_multiplex_fp16.safetensors"
+      }
+    },
+    "people": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "sam",
+          1
+        ],
+        "text": "person:12"
+      }
+    },
+    "detect": {
+      "class_type": "SAM3_Detect",
+      "inputs": {
+        "model": [
+          "sam",
+          0
+        ],
+        "image": [
+          "first",
+          0
+        ],
+        "conditioning": [
+          "people",
+          0
+        ],
+        "threshold": 0.35,
+        "refine_iterations": 2,
+        "individual_masks": true
+      }
+    },
+    "choose": {
+      "class_type": "AftertakeSelectCharacterMask",
+      "inputs": {
+        "masks": [
+          "detect",
+          0
+        ],
+        "positive_coords": [
+          "points",
+          0
+        ],
+        "negative_coords": [
+          "points",
+          1
+        ]
+      }
+    },
+    "track": {
+      "class_type": "SAM3_VideoTrack",
+      "inputs": {
+        "images": [
+          "frames",
+          0
+        ],
+        "model": [
+          "sam",
+          0
+        ],
+        "initial_mask": [
+          "choose",
+          0
+        ],
+        "detection_threshold": 0.5,
+        "max_objects": 1,
+        "detect_interval": 1
+      }
+    },
+    "mask": {
+      "class_type": "SAM3_TrackToMask",
+      "inputs": {
+        "track_data": [
+          "track",
+          0
+        ],
+        "object_indices": "0"
+      }
+    },
+    "mask_erode": {
+      "class_type": "GrowMask",
+      "inputs": {
+        "mask": [
+          "mask",
+          0
+        ],
+        "expand": -1,
+        "tapered_corners": false
+      }
+    },
+    "mask_open": {
+      "class_type": "GrowMask",
+      "inputs": {
+        "mask": [
+          "mask_erode",
+          0
+        ],
+        "expand": 1,
+        "tapered_corners": false
+      }
+    },
+    "selection": {
+      "class_type": "AftertakeSaveCharacterSelection",
+      "inputs": {
+        "images": [
+          "frames",
+          0
+        ],
+        "masks": [
+          "mask_open",
+          0
+        ],
+        "filename_prefix": "aftertake/characters/9d36ccb7-20c3-491c-9b9d-05d5720c541d/selection",
+        "request_json": "{\"format\": \"aftertake-character-selection/1\", \"clip\": {\"id\": \"fa39831b-2f47-44e2-8136-a39d59e08f09\", \"name\": \"B - Dancer - seed 508021\", \"sha256\": \"5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3\", \"width\": 1280, \"height\": 720, \"duration\": 5.041666666666667, \"url\": \"/media/fa39831b-2f47-44e2-8136-a39d59e08f09.mp4\", \"kind\": \"video\", \"hasAudio\": true}, \"trimStart\": 0, \"duration\": 3.0416666666666665, \"positive\": [{\"x\": 0.47, \"y\": 0.45}, {\"x\": 0.44, \"y\": 0.7}], \"negative\": [], \"resolution\": \"768\"}"
+      }
+    },
+    "source_save": {
+      "class_type": "SaveVideo",
+      "inputs": {
+        "video": [
+          "prepare",
+          8
+        ],
+        "filename_prefix": "aftertake/characters/9d36ccb7-20c3-491c-9b9d-05d5720c541d/source",
+        "format": "mp4",
+        "format.codec": "h264",
+        "format.codec.encoding": "re-encode",
+        "format.codec.encoding.crf": 14
+      }
+    }
+  },
+  "requestKey": "source-upgrade-job3-subject-duplicates-v2-0ecfabf551dfaeb83a91e4bc",
+  "requestDigest": "f5e5dc51bb5abce5c5d935ab6452b1be5a4a6b8cbd9556139380913b6fb57137",
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-20T20:17:16.297Z",
+  "updatedAt": "2026-10-20T20:17:30.792Z",
+  "jobId": "f8112bdb-1409-4275-815d-c481d6b13fcb",
+  "stage": "Selection ready to review",
+  "selection": {
+    "width": 1344,
+    "height": 736,
+    "frames": 73,
+    "fps": 24,
+    "emptyFrames": [],
+    "maskSha256": "37f286a94548cc1a624eb7eb3ea1117bdb266a86710a4fd8ee457cf5f10a8c34",
+    "sourceSha256": "c248db0aab4945b49a522b409a14584c16294bb0077a731fd16770236c158f95"
+  }
+}

@@ -1,5 +1,6 @@
 import { displayDimensions, renderDimensions, usesCue, type Recipe } from '../src/domain.js';
 import { motionFocusGeometry } from '../src/motion-focus.js';
+import { applyRenderResolution } from './render-resolution.js';
 
 export const transferModelFiles = {
   diffusion: 'wan_animate_2_distill_int8_convrot.safetensors',
@@ -37,6 +38,8 @@ export function motionTransferRequirements(): {
       'AftertakeRestoreRegion',
       'ImageToMask',
       'MaskComposite',
+      'ImageCrop',
+      'ImagePadForOutpaint',
     ],
     menus: [
       ['UNETLoader', 'unet_name', transferModelFiles.diffusion],
@@ -231,5 +234,5 @@ export function buildMotionTransferWorkflow(recipe: Recipe): Record<string, unkn
       graph['20'].inputs.mask = ['51', 0];
     }
   }
-  return graph;
+  return applyRenderResolution(graph, recipe);
 }

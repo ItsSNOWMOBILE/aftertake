@@ -1,0 +1,62 @@
+{
+  "format": "aftertake-example-upgrade/1",
+  "name": "subject-duplicates-v2",
+  "apiBase": "http://127.0.0.1:4394",
+  "request": {
+    "format": "aftertake-subject-effect/1",
+    "name": "Garage ensemble · tracked source · v2",
+    "selectionId": "9d36ccb7-20c3-491c-9b9d-05d5720c541d",
+    "maskSha256": "37f286a94548cc1a624eb7eb3ea1117bdb266a86710a4fd8ee457cf5f10a8c34",
+    "copies": [
+      {
+        "x": -0.28,
+        "y": 0,
+        "scale": 1,
+        "opacity": 1,
+        "flipX": false,
+        "rotation": 0
+      },
+      {
+        "x": 0.28,
+        "y": 0,
+        "scale": 1,
+        "opacity": 1,
+        "flipX": true,
+        "rotation": 0
+      }
+    ],
+    "feather": 1,
+    "grow": 0,
+    "backgroundBlur": 0,
+    "backgroundExposureEV": 0
+  },
+  "codeBranch": "source-upgrade",
+  "codeCommit": "ff617363f40390969ea847ecbbffb1b17b571a27",
+  "originalRecipe": "original-recipe.json",
+  "render": "render.json",
+  "output": {
+    "path": "result.mp4",
+    "sha256": "2bfb355ca68b0e3dc6f3e0f674939fde0477ba89d03ce369c772d6029dba83d3",
+    "bytes": 959597
+  },
+  "nativeOutput": {
+    "path": "native-result.mp4",
+    "sha256": "85c9e5fc3fcb56290424a8425960a9405951d1841d04af3eb6e3816d55b44ea7",
+    "bytes": 1569589
+  },
+  "delivery": "Aftertake Film cover crop/downscale to720p; native generated video retained separately.",
+  "sourceAudioSettings": {
+    "sourceVolume": 1,
+    "normalizeAudio": false
+  },
+  "matchedBefore": {
+    "path": "before-720p.mp4",
+    "sha256": "b5c5ed5500a172d598cc56773e96262047c15d5402488f59a069348f7bea0fe3",
+    "bytes": 643780
+  },
+  "comparisonBinding": "comparison-binding.json",
+  "modelFiles": [],
+  "sourceOrigin": "AI-generated fictional footage and references from job2; no phone capture is claimed.",
+  "deliveryDescription": "Tracked native source/mask plus native compositor result, app Film crop1280x720 if required",
+  "note": null
+}

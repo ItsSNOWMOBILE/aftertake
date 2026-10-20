@@ -1,0 +1,56 @@
+{
+  "format": "aftertake-example-upgrade/1",
+  "name": "depth-effects-v2",
+  "apiBase": "http://127.0.0.1:4394",
+  "request": {
+    "format": "aftertake-depth-effect/1",
+    "name": "Tokyo portrait \u00b7 preserved depth recipe \u00b7 v2",
+    "clip": {
+      "id": "2ac4c682-e267-44c1-b79d-96897b9e696b",
+      "name": "E - Neon depth portrait - seed 509052",
+      "kind": "image",
+      "width": 1280,
+      "height": 720,
+      "duration": 1,
+      "hasAudio": false,
+      "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b",
+      "url": "/media/2ac4c682-e267-44c1-b79d-96897b9e696b.png"
+    },
+    "settings": {
+      "focus": 0.05,
+      "blur": 2,
+      "haze": 0.18,
+      "hazeColor": "#cbd7e3",
+      "lightAzimuth": -45,
+      "lightElevation": 35,
+      "lightStrength": 0.25
+    }
+  },
+  "codeBranch": "source-upgrade",
+  "codeCommit": "4af8331df15730658b9d0c44b60adf18d3935374",
+  "originalRecipe": "original-recipe.json",
+  "render": "render.json",
+  "output": {
+    "path": "result.png",
+    "sha256": "069eb869fd16f2369b3c435b28bb64f7c742118766fb8b63de405ed57d031d36",
+    "bytes": 1024306
+  },
+  "modelFiles": [],
+  "sourceOrigin": "AI-generated fictional footage and references from job2; no phone capture is claimed.",
+  "deliveryDescription": "Native Aftertake result at requested 1280x720.",
+  "note": "Original focus0.05 blur2 is subtle atmosphere; preserve as requested and do not pretend this is a strong lens-blur showcase",
+  "runtimeCodeCommit": "06ca946c5e0db28a8199c2337a0c14d748aa3289",
+  "modelProvenance": "models.json",
+  "observedTiming": {
+    "format": "aftertake-observed-operation-timing/1",
+    "nativeOperationId": "d9a8a708-4e32-4ea4-b9b9-863c72d7e2ca",
+    "createdAt": "2026-10-20T21:41:42.704Z",
+    "updatedAt": "2026-10-20T21:41:46.605Z",
+    "nativeOperationWallSeconds": 3.901,
+    "note": "Observed API operation wall time includes preparation and finishing; engine execution time, if separately recorded, is not the same measurement.",
+    "engineExecutionSeconds": 1.194,
+    "engineTimingMethod": "ComfyUI execution_start/execution_success status timestamps"
+  },
+  "portability": "Stored clip, reference, selection and Film asset IDs are local execution evidence. Import the included files on the target app and rebind them before replaying the ordinary API requests.",
+  "imageVerification": "image-verification.json"
+}

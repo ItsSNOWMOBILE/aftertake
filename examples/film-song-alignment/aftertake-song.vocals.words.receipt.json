@@ -1,0 +1,35 @@
+{
+  "input": "separated/htdemucs/aftertake-song.timeline-source/vocals.wav",
+  "input_sha256": "392336427fea0a296ad5e82c530dd88773b9d5f82921cb7f99981d002b37c045",
+  "output": "aftertake-song.vocals.words.json",
+  "output_sha256": "5b94fbee13d8532ecc6e3328cfec5a71b35107e94f308873fa3a4cf1be646f66",
+  "model": "large-v3",
+  "model_repository": "Systran/faster-whisper-large-v3",
+  "cached_model_revisions": [
+    "edaa852ec7e145841d8ffdb056a99866b5f0a478"
+  ],
+  "device": "cuda",
+  "compute_type": "float16",
+  "gpu": "NVIDIA GeForce RTX 5080",
+  "settings": {
+    "language": "en",
+    "word_timestamps": true,
+    "vad_filter": false,
+    "beam_size": 5,
+    "condition_on_previous_text": false,
+    "initial_prompt": "Every shot ends... Then comes the... Aftertake! Paint it, change it, make it\nnew. Same scene, a different view. Open weights on your own machine. Make the\nnext take, run the scene. Recast the lead, keep the move. Five more dancers in\nthe groove. Words to video, still to light. Pull the camera, cut it right. An\nagent cuts it, frame by frame. Forty-four tools, still the same. On the\nbeat... on the beat... Cut to the beat. Your clip! Your models! Your call!\nPaint it, change it, make it new. Make the next take, run the scene.\nAftertake."
+  },
+  "versions": {
+    "faster-whisper": "1.2.1",
+    "ctranslate2": "4.8.3",
+    "torch": "2.11.0+cu130",
+    "demucs": "4.1.0"
+  },
+  "audio_duration_seconds": 96.0,
+  "segment_count": 18,
+  "word_count": 101,
+  "elapsed_seconds": 5.469,
+  "words_manually_corrected": false,
+  "raw_windows_output_sha256": "85bf8c8f31068cec6bfffa84bb00aae85835b38c11d361e3833826b6f3d1eabb",
+  "publication_newlines": "LF; recognized words, timestamps and probabilities unchanged"
+}

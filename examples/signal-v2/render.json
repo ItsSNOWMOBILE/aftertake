@@ -1,0 +1,416 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "cff84b27-f685-462a-968c-cea6ca00707c",
+  "requestKey": "source-upgrade-job3-signal-v2-a0e632647ccc9261571498bf",
+  "requestDigest": "05e214011a59d0bacf195427816b7d09e98524d4f54430e4fc7d7f88863e5cb1",
+  "recipe": {
+    "format": "aftertake/1",
+    "name": "signal-v2",
+    "clip": {
+      "id": "fa39831b-2f47-44e2-8136-a39d59e08f09",
+      "name": "B - Dancer - seed 508021",
+      "sha256": "5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3",
+      "width": 1280,
+      "height": 720,
+      "duration": 5.041666666666667,
+      "url": "/media/fa39831b-2f47-44e2-8136-a39d59e08f09.mp4",
+      "kind": "video",
+      "hasAudio": true
+    },
+    "prompt": "A friendly mint-green knitted teddy bear mascot standing upright against a plain light-gray studio background. The bear performs the gesture from the driving video. Soft yarn texture and cream-colored belly remain consistent. One full-body shot, fixed camera.",
+    "cue": {
+      "start": 0.4,
+      "end": 2.9,
+      "fade": 0.4,
+      "feather": 0.055,
+      "anchor": 0,
+      "strokes": []
+    },
+    "seed": 2026,
+    "quality": "final",
+    "resolution": "720p",
+    "trimStart": 0,
+    "pipeline": "motion-transfer",
+    "cinema": {
+      "movement": "locked",
+      "lens": "natural",
+      "lighting": "source",
+      "palette": "source"
+    },
+    "transfer": {
+      "reference": {
+        "id": "ed8d9a72-4784-4dff-a29e-901a00e28a6c",
+        "name": "Mint knitted teddy motion reference",
+        "sha256": "95f7b079dd08a9b0a25a1c66a0645a102cef60eaad746199dd5f627cfae6f99c",
+        "width": 1280,
+        "height": 720,
+        "duration": 1,
+        "url": "/media/ed8d9a72-4784-4dff-a29e-901a00e28a6c.png",
+        "kind": "image",
+        "hasAudio": false
+      },
+      "motionCaption": "A street dancer in a bright orange hoodie and white sneakers performs sharp popping and locking moves in an empty concrete parking garage. The full body stays in frame and the camera remains locked off.",
+      "scope": "frame"
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-20T20:30:09.126Z",
+  "updatedAt": "2026-10-20T21:22:30.760Z",
+  "workflow": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "wan_animate_2_distill_int8_convrot.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        "type": "wan",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "Wan2_1_VAE_bf16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "CLIPVisionLoader",
+      "inputs": {
+        "clip_name": "clip_vision_h.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "A friendly mint-green knitted teddy bear mascot standing upright against a plain light-gray studio background. The bear performs the gesture from the driving video. Soft yarn texture and cream-colored belly remain consistent. One full-body shot, fixed camera."
+      }
+    },
+    "6": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "frozen motion, blurred hands, malformed limbs, extra arms, text, logos"
+      }
+    },
+    "7": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "A street dancer in a bright orange hoodie and white sneakers performs sharp popping and locking moves in an empty concrete parking garage. The full body stays in frame and the camera remains locked off."
+      }
+    },
+    "8": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "fa39831b-2f47-44e2-8136-a39d59e08f09.mp4",
+        "width": 1280,
+        "height": 720,
+        "frames": 97,
+        "fps": 24,
+        "trim_start": 0
+      }
+    },
+    "10": {
+      "class_type": "ImageFromBatch",
+      "inputs": {
+        "image": [
+          "hd_pad_8",
+          0
+        ],
+        "batch_index": 0,
+        "length": 1
+      }
+    },
+    "11": {
+      "class_type": "CLIPVisionEncode",
+      "inputs": {
+        "clip_vision": [
+          "4",
+          0
+        ],
+        "image": [
+          "hd_pad_46",
+          0
+        ],
+        "crop": "none"
+      }
+    },
+    "12": {
+      "class_type": "CLIPVisionEncode",
+      "inputs": {
+        "clip_vision": [
+          "4",
+          0
+        ],
+        "image": [
+          "10",
+          0
+        ],
+        "crop": "none"
+      }
+    },
+    "13": {
+      "class_type": "WanAnimate2ToVideo",
+      "inputs": {
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ],
+        "width": 1280,
+        "height": 736,
+        "length": 97,
+        "batch_size": 1,
+        "reference_image": [
+          "hd_pad_46",
+          0
+        ],
+        "pose_video": [
+          "hd_pad_8",
+          0
+        ],
+        "clip_vision_output": [
+          "11",
+          0
+        ],
+        "positive_pose": [
+          "7",
+          0
+        ],
+        "clip_vision_output_pose": [
+          "12",
+          0
+        ],
+        "video_frame_offset": 0,
+        "pose_strength": 1,
+        "pose_start_percent": 0,
+        "pose_end_percent": 1,
+        "reference_image_strength": 1
+      }
+    },
+    "14": {
+      "class_type": "WanAnimate2Cache",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "device": "cpu",
+        "dtype": "int4"
+      }
+    },
+    "15": {
+      "class_type": "ModelSamplingSD3",
+      "inputs": {
+        "model": [
+          "14",
+          0
+        ],
+        "shift": 5
+      }
+    },
+    "16": {
+      "class_type": "BasicScheduler",
+      "inputs": {
+        "model": [
+          "14",
+          0
+        ],
+        "scheduler": "simple",
+        "steps": 10,
+        "denoise": 1
+      }
+    },
+    "17": {
+      "class_type": "SamplerCustom",
+      "inputs": {
+        "model": [
+          "15",
+          0
+        ],
+        "add_noise": true,
+        "noise_seed": 2026,
+        "cfg": 1,
+        "positive": [
+          "13",
+          0
+        ],
+        "negative": [
+          "13",
+          1
+        ],
+        "sampler": [
+          "23",
+          0
+        ],
+        "sigmas": [
+          "16",
+          0
+        ],
+        "latent_image": [
+          "13",
+          2
+        ]
+      }
+    },
+    "18": {
+      "class_type": "TrimVideoLatent",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "trim_amount": [
+          "13",
+          3
+        ]
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "18",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "21": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "hd_crop_21",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/motion-transfer",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"signal-v2\",\"clip\":{\"id\":\"fa39831b-2f47-44e2-8136-a39d59e08f09\",\"name\":\"B - Dancer - seed 508021\",\"sha256\":\"5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3\",\"width\":1280,\"height\":720,\"duration\":5.041666666666667,\"url\":\"/media/fa39831b-2f47-44e2-8136-a39d59e08f09.mp4\",\"kind\":\"video\",\"hasAudio\":true},\"prompt\":\"A friendly mint-green knitted teddy bear mascot standing upright against a plain light-gray studio background. The bear performs the gesture from the driving video. Soft yarn texture and cream-colored belly remain consistent. One full-body shot, fixed camera.\",\"cue\":{\"start\":0.4,\"end\":2.9,\"fade\":0.4,\"feather\":0.055,\"anchor\":0,\"strokes\":[]},\"seed\":2026,\"quality\":\"final\",\"resolution\":\"720p\",\"trimStart\":0,\"pipeline\":\"motion-transfer\",\"cinema\":{\"movement\":\"locked\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\"},\"transfer\":{\"reference\":{\"id\":\"ed8d9a72-4784-4dff-a29e-901a00e28a6c\",\"name\":\"Mint knitted teddy motion reference\",\"sha256\":\"95f7b079dd08a9b0a25a1c66a0645a102cef60eaad746199dd5f627cfae6f99c\",\"width\":1280,\"height\":720,\"duration\":1,\"url\":\"/media/ed8d9a72-4784-4dff-a29e-901a00e28a6c.png\",\"kind\":\"image\",\"hasAudio\":false},\"motionCaption\":\"A street dancer in a bright orange hoodie and white sneakers performs sharp popping and locking moves in an empty concrete parking garage. The full body stays in frame and the camera remains locked off.\",\"scope\":\"frame\"}}",
+        "source_audio": [
+          "8",
+          1
+        ],
+        "audio_start": 0,
+        "display_width": 1280,
+        "display_height": 720
+      }
+    },
+    "22": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/generation",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"signal-v2\",\"clip\":{\"id\":\"fa39831b-2f47-44e2-8136-a39d59e08f09\",\"name\":\"B - Dancer - seed 508021\",\"sha256\":\"5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3\",\"width\":1280,\"height\":720,\"duration\":5.041666666666667,\"url\":\"/media/fa39831b-2f47-44e2-8136-a39d59e08f09.mp4\",\"kind\":\"video\",\"hasAudio\":true},\"prompt\":\"A friendly mint-green knitted teddy bear mascot standing upright against a plain light-gray studio background. The bear performs the gesture from the driving video. Soft yarn texture and cream-colored belly remain consistent. One full-body shot, fixed camera.\",\"cue\":{\"start\":0.4,\"end\":2.9,\"fade\":0.4,\"feather\":0.055,\"anchor\":0,\"strokes\":[]},\"seed\":2026,\"quality\":\"final\",\"resolution\":\"720p\",\"trimStart\":0,\"pipeline\":\"motion-transfer\",\"cinema\":{\"movement\":\"locked\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\"},\"transfer\":{\"reference\":{\"id\":\"ed8d9a72-4784-4dff-a29e-901a00e28a6c\",\"name\":\"Mint knitted teddy motion reference\",\"sha256\":\"95f7b079dd08a9b0a25a1c66a0645a102cef60eaad746199dd5f627cfae6f99c\",\"width\":1280,\"height\":720,\"duration\":1,\"url\":\"/media/ed8d9a72-4784-4dff-a29e-901a00e28a6c.png\",\"kind\":\"image\",\"hasAudio\":false},\"motionCaption\":\"A street dancer in a bright orange hoodie and white sneakers performs sharp popping and locking moves in an empty concrete parking garage. The full body stays in frame and the camera remains locked off.\",\"scope\":\"frame\"}}"
+      }
+    },
+    "23": {
+      "class_type": "KSamplerSelect",
+      "inputs": {
+        "sampler_name": "lcm"
+      }
+    },
+    "45": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "ed8d9a72-4784-4dff-a29e-901a00e28a6c.png",
+        "width": 1280,
+        "height": 720,
+        "frames": 1,
+        "fps": 24,
+        "trim_start": 0
+      }
+    },
+    "46": {
+      "class_type": "ImageScale",
+      "inputs": {
+        "image": [
+          "45",
+          0
+        ],
+        "upscale_method": "lanczos",
+        "width": 1280,
+        "height": 720,
+        "crop": "disabled"
+      }
+    },
+    "hd_pad_8": {
+      "class_type": "ImagePadForOutpaint",
+      "inputs": {
+        "image": [
+          "8",
+          0
+        ],
+        "left": 0,
+        "top": 8,
+        "right": 0,
+        "bottom": 8,
+        "feathering": 0
+      }
+    },
+    "hd_pad_46": {
+      "class_type": "ImagePadForOutpaint",
+      "inputs": {
+        "image": [
+          "46",
+          0
+        ],
+        "left": 0,
+        "top": 8,
+        "right": 0,
+        "bottom": 8,
+        "feathering": 0
+      }
+    },
+    "hd_crop_21": {
+      "class_type": "ImageCrop",
+      "inputs": {
+        "image": [
+          "19",
+          0
+        ],
+        "width": 1280,
+        "height": 720,
+        "x": 0,
+        "y": 8
+      }
+    }
+  },
+  "jobId": "1641acbe-5ae1-4581-9266-942173d9b46c",
+  "stage": "Complete",
+  "output": "/outputs/cff84b27-f685-462a-968c-cea6ca00707c.mp4",
+  "rawOutput": "/outputs/cff84b27-f685-462a-968c-cea6ca00707c-raw.mp4"
+}

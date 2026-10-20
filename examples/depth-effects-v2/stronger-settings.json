@@ -1,0 +1,9 @@
+{
+  "focus": 0.0,
+  "blur": 8,
+  "haze": 0.18,
+  "hazeColor": "#cbd7e3",
+  "lightAzimuth": -45,
+  "lightElevation": 35,
+  "lightStrength": 0.25
+}

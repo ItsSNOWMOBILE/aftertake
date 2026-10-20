@@ -1,0 +1,24 @@
+{
+  "format": "aftertake-depth-effect/1",
+  "name": "Tokyo portrait · optional stronger lens blur · v2",
+  "clip": {
+    "id": "2ac4c682-e267-44c1-b79d-96897b9e696b",
+    "name": "E - Neon depth portrait - seed 509052",
+    "kind": "image",
+    "width": 1280,
+    "height": 720,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b",
+    "url": "/media/2ac4c682-e267-44c1-b79d-96897b9e696b.png"
+  },
+  "settings": {
+    "focus": 0,
+    "blur": 8,
+    "haze": 0.18,
+    "hazeColor": "#cbd7e3",
+    "lightAzimuth": -45,
+    "lightElevation": 35,
+    "lightStrength": 0.25
+  }
+}

@@ -1,0 +1,36 @@
+MIX — timestamps from original song start
+
+0.000–1.520  Every shot ends...
+4.960–8.100  Then comes the...
+21.200–27.700  Paint it, change it, make it new. Same scene, a different view.
+30.200–37.160  Open weights on your own machine Make the next take run the scene
+41.800–46.460  Recast the lead, keep the move Five more dancers in the groove
+47.040–51.040  Words to video, steal the light Pull the camera, cut it right
+51.600–55.900  An agent cuts it, frame by frame 44 tools, still the same
+55.900–59.960  On the beat, on the beat, cut to the beat
+59.960–65.460  Your clip, your clip, your models, your core
+70.180–72.420  Paint it, change it, make it new
+74.760–77.180  Make the next take, run the scene
+80.780–81.860  After take
+89.860–95.700  Thanks for watching!
+
+VOCALS ONLY — same original song timeline
+
+0.000–27.680  Every shot ends... Then comes the... Paint it, change it, make it new. Same scene, a different view.
+30.100–33.500  Open weights on your own machine
+34.680–37.140  Make the next take run the same
+41.800–44.080  Recast the lead, keep the move
+44.080–46.460  Five more dancers in the groove
+46.460–48.820  Words to video, still the light
+48.820–51.100  Pull the camera, cut it right
+51.100–53.620  An agent cuts it, frame by frame
+53.620–55.880  44 tools, still the same
+55.880–57.160  On the beat
+57.160–59.960  On the beat, cut to the beat
+59.960–60.720  Your clip
+61.840–63.060  Your clip
+63.060–65.400  Your models, your core
+69.980–72.020  Ain't a change in making
+72.020–77.160  Make the next take run the scene
+80.560–81.800  After take
+91.420–91.480  Thank you.

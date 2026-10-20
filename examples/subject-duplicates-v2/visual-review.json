@@ -1,0 +1,8 @@
+{
+  "format": "aftertake-visual-review/1",
+  "status": "accepted-with-documented-limitations",
+  "reviewed": ["seven-time matched before/after contact", "tracked mask sampled frames"],
+  "reviewers": ["render agent", "parent agent (selection)"],
+  "strengths": ["three full bodies stay inside frame", "hands and shoes retained", "copies follow tracked source motion"],
+  "limitations": ["two added copies, three people total", "no independently generated floor shadows", "matched-before extra audio encode fails strict gain tolerance; primary outputs pass"]
+}

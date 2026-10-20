@@ -1,0 +1,25 @@
+{
+  "format": "aftertake-character/1",
+  "name": "Rooftop recast · H3 · v2",
+  "selectionId": "7fdf4060-3ce9-4c4b-93cc-8b22dd398bfc",
+  "reference": {
+    "id": "f3339a35-fb39-4264-bdbd-fd01384a5417",
+    "name": "Fictional rooftop recast reference",
+    "kind": "image",
+    "width": 1280,
+    "height": 720,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "5e55499d75eaf69928d94fb436e5487f9dc7e15617b607b0c5ae0eccc32a8296",
+    "url": "/media/f3339a35-fb39-4264-bdbd-fd01384a5417.png"
+  },
+  "prompt": "Replace only the woman walking toward the camera with the fictional woman from Picture 1. She wears the matte rust-orange field jacket over a plain cream knit top and charcoal trousers from Picture 1. Preserve the second person by the railing, rooftop, skyline, wet ground reflections, original warm practical light and blue-hour scene. Follow the original walking performance, body pose, gaze and head movement naturally. No studio background from the reference photo.",
+  "wardrobe": "reference",
+  "seed": 509103,
+  "faceBox": {
+    "height": 0.31,
+    "width": 0.17,
+    "y": 0.025,
+    "x": 0.45
+  }
+}

@@ -147,6 +147,21 @@ test('text-only generation uses an empty latent, the chosen format/style and the
     assert.equal(imageRequestSchema.safeParse({ ...request, ...change }).success, false);
 });
 
+test('optional 720p stills keep native sample geometry and survive recipe sharing without changing older sizes', () => {
+  const hd = imageRequestSchema.parse({ ...request, resolution: '720p' });
+  assert.deepEqual(imageRequestSchema.parse(JSON.parse(JSON.stringify(hd))), hd);
+  assert.deepEqual(imageDimensions(hd.aspect, hd.resolution), [1280, 720]);
+  assert.deepEqual(imageDimensions('portrait', '720p'), [720, 1280]);
+  assert.deepEqual(imageDimensions('square', '720p'), [720, 720]);
+  const graph = buildImageWorkflow(hd);
+  assert.equal(graph['7'].inputs.width, 1280);
+  assert.equal(graph['7'].inputs.height, 720);
+  assert.ok(Object.values(graph).every((node) => !/Scale|Resize/.test(node.class_type)));
+  assert.deepEqual(imageDimensions(request.aspect), [1152, 768]);
+  assert.equal(imageRequestSchema.parse(request).resolution, undefined);
+  assert.equal(imageRequestSchema.safeParse({ ...request, resolution: '1080p' }).success, false);
+});
+
 test('image shot direction survives sharing and reaches the executed prompt without changing older recipes', () => {
   const directed = imageRequestSchema.parse({
     ...request,

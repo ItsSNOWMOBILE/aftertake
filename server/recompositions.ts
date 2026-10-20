@@ -270,12 +270,15 @@ export async function recompositionRouter(context: {
         originalRecipe: job.originalRecipe,
         newRecipe: job.newRecipe,
         dimensions: {
-          width: d.width,
-          height: d.height,
+          width: job.originalRecipe.resolution === '720p' ? display.width : d.width,
+          height: job.originalRecipe.resolution === '720p' ? display.height : d.height,
           frames: d.frames,
           fps: d.fps,
           displayWidth: display.width,
           displayHeight: display.height,
+          ...(job.originalRecipe.resolution === '720p'
+            ? { rawWidth: d.width, rawHeight: d.height }
+            : {}),
         },
         originalGenerationWorkflow: job.originalGenerationWorkflow,
       });

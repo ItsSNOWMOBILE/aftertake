@@ -1,0 +1,28 @@
+{
+  "format": "aftertake-subject-effect/1",
+  "name": "Garage ensemble · tracked source · v2",
+  "selectionId": "9d36ccb7-20c3-491c-9b9d-05d5720c541d",
+  "maskSha256": "37f286a94548cc1a624eb7eb3ea1117bdb266a86710a4fd8ee457cf5f10a8c34",
+  "copies": [
+    {
+      "x": -0.28,
+      "y": 0,
+      "scale": 1,
+      "opacity": 1,
+      "flipX": false,
+      "rotation": 0
+    },
+    {
+      "x": 0.28,
+      "y": 0,
+      "scale": 1,
+      "opacity": 1,
+      "flipX": true,
+      "rotation": 0
+    }
+  ],
+  "feather": 1,
+  "grow": 0,
+  "backgroundBlur": 0,
+  "backgroundExposureEV": 0
+}

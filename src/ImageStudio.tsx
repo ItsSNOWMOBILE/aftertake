@@ -92,7 +92,7 @@ export default function ImageStudio({
   const viewed = images.find((image) => image.id === selected) || images[0],
     pending = images.find(imageBusy);
   const busy = sending || !!pending || otherBusy,
-    dimensions = imageDimensions(request.aspect);
+    dimensions = imageDimensions(request.aspect, request.resolution);
   useEffect(() => {
     try {
       localStorage.setItem('aftertake-image-draft', JSON.stringify(request));
@@ -361,9 +361,11 @@ export default function ImageStudio({
                     change({ aspect: event.target.value as ImageRequest['aspect'] })
                   }
                 >
-                  <option value="landscape">Landscape · 3:2</option>
+                  <option value="landscape">
+                    Landscape · {request.resolution ? '16:9' : '3:2'}
+                  </option>
                   <option value="square">Square · 1:1</option>
-                  <option value="portrait">Portrait · 2:3</option>
+                  <option value="portrait">Portrait · {request.resolution ? '9:16' : '2:3'}</option>
                 </select>
               </label>
               <label>
@@ -385,6 +387,20 @@ export default function ImageStudio({
                 </select>
               </label>
             </div>
+            <label>
+              OUTPUT SIZE
+              <select
+                aria-label="Image output size"
+                value={request.resolution || 'standard'}
+                disabled={busy}
+                onChange={(e) =>
+                  change({ resolution: e.target.value === '720p' ? '720p' : undefined })
+                }
+              >
+                <option value="standard">Standard</option>
+                <option value="720p">HD · 720p</option>
+              </select>
+            </label>
             <fieldset className="image-direction">
               <legend>Compose the shot</legend>
               {(['shot', 'lens', 'lighting'] as const).map((key) => (

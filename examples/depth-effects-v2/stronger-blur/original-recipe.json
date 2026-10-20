@@ -1,0 +1,44 @@
+{
+  "format": "aftertake-depth-effect-recipe/1",
+  "request": {
+    "format": "aftertake-depth-effect/1",
+    "name": "Castle · soft directional atmosphere",
+    "clip": {
+      "id": "ff2f0749-662a-49ee-b6bf-eb36ef94e77c",
+      "name": "Castle-depth-source.png",
+      "sha256": "c4b78b5351b7e22216d08c360747306e4f1c0ebcd5f4e21b71b230fab702d128",
+      "originalSha256": "43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa",
+      "width": 768,
+      "height": 432,
+      "duration": 1,
+      "url": "/media/ff2f0749-662a-49ee-b6bf-eb36ef94e77c.png",
+      "kind": "image"
+    },
+    "settings": {
+      "focus": 0.05,
+      "blur": 2,
+      "haze": 0.18,
+      "hazeColor": "#cbd7e3",
+      "lightAzimuth": -45,
+      "lightElevation": 35,
+      "lightStrength": 0.25
+    }
+  },
+  "model": {
+    "repository": "Comfy-Org/Depth-Anything-3",
+    "revision": "1aaeea516f22fb2f4c7fae761c8ed470c6cf9f93",
+    "sha256": "9c0a53d157c5b315d4c82908a43d93eeaa3a9ac3de9d15c2b4242ef46b5508ad",
+    "license": "Apache-2.0"
+  },
+  "output": {
+    "id": "39a60614-28ad-439e-ad98-cf6fefc97916",
+    "name": "Castle · soft directional atmosphere",
+    "kind": "image",
+    "width": 768,
+    "height": 432,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "f7aaf007a342d637f4de59734aff16814088037a817abcdd1c95bfbc85fabf46",
+    "url": "/media/39a60614-28ad-439e-ad98-cf6fefc97916.png"
+  }
+}

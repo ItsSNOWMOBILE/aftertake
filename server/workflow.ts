@@ -12,6 +12,7 @@ import { characterRequirements } from './character-profile.js';
 import { videoRequirements } from './video-workflow.js';
 import { depthRequirements } from './depth-workflow.js';
 import { inpaintModelFiles } from './ltx-models.js';
+import { applyRenderResolution } from './render-resolution.js';
 export { inpaintModelFiles } from './ltx-models.js';
 export const modelFiles = {
   diffusion: 'ltx-2-19b-distilled_Q4_K_M.gguf',
@@ -31,6 +32,8 @@ export const requiredNodes = [
   'AftertakeCueMask',
   'AftertakeComposite',
   'AftertakeSaveVideo',
+  'ImageCrop',
+  'ImagePadForOutpaint',
 ];
 export const motionModelFile = 'ltx-2.3-22b-ic-lora-motion-track-control-ref0.5.safetensors';
 export function requirements(
@@ -80,6 +83,8 @@ export function requirements(
         'LTXVImgToVideoInplace',
         'LTXVAddGuide',
         'LTXVCropGuides',
+        'ImageCrop',
+        'ImagePadForOutpaint',
       ],
       menus: [
         ['UnetLoaderGGUF', 'unet_name', inpaintModelFiles.diffusion],
@@ -270,7 +275,7 @@ export function buildWorkflow(recipe: Recipe): Record<string, unknown> {
         recipe_json: JSON.stringify(recipe),
       });
     }
-    return graph;
+    return applyRenderResolution(graph, recipe);
   }
   const graph: Record<string, { class_type: string; inputs: Record<string, unknown> }> = {
     '1': n('UnetLoaderGGUF', { unet_name: modelFiles.diffusion }),
@@ -532,5 +537,5 @@ export function buildWorkflow(recipe: Recipe): Record<string, unknown> {
       }
     }
   }
-  return graph;
+  return applyRenderResolution(graph, recipe);
 }

@@ -1,0 +1,247 @@
+{
+  "updated_at_utc": "2026-10-20T20:09:06.545464+00:00",
+  "method": {
+    "execution": "CPU only, OpenCV one thread, OpenCL disabled, PyAV decode one thread; no Torch imported.",
+    "working_geometry": "640-pixel grayscale long edge, two frames retained at a time.",
+    "duplicate_detection": "SHA256 of active native-resolution decoded YUV420p pixels, excluding stride padding; hashes only retained. Additional grayscale checks also provided.",
+    "background_region": "outer22percent left/right sides plus top12percent; five-pixel border excluded.",
+    "tracking": "Shi-Tomasi corners, pyramidal Lucas-Kanade, one-pixel forward/backward check.",
+    "transform": "2D partial affine/similarity fit using RANSAC1.5working-pixel threshold; at least12inliers and50percentinlier fraction.",
+    "ransac_random_seed": 0,
+    "motion_units": "estimated background-center displacement scaled to native source pixels per frame.",
+    "jerk_units": "difference of consecutive center-displacement vectors in native pixels; no synthetic quality score.",
+    "cumulative_scale": "Product of the signed similarity-scale factors over valid consecutive pairs; reports estimated overall zoom, not camera pose."
+  },
+  "limits": [
+    "Metrics estimate global background motion, not overall visual quality or dance quality.",
+    "Generated background deformation, reflections, lighting changes, or a performer entering outer bands can bias tracking.",
+    "Low texture can invalidate affine fits. Invalid pairs are excluded and their fraction reported.",
+    "Native duplicate checks compare decoded YUV420p8-bit pixels; the separate downscaled grayscale checks can also group visually near-identical frames.",
+    "A hero walk intentionally includes a dolly; its motion metrics should not be ranked as a locked-off dancer.",
+    "No generated video was stabilized or modified."
+  ],
+  "clips": [
+    {
+      "sha256": "1205ad3a083b487552c42409abcc086503dec4793e34760a88b67b82fbf3ea35",
+      "width": 1280,
+      "height": 720,
+      "frames": 121,
+      "fps_reported": 24.0,
+      "duration_from_frame_count_seconds": 5.041666666666667,
+      "missing_timestamps": 0,
+      "largest_frame_interval_error_seconds": 5.898059818321144e-16,
+      "exact_consecutive_duplicate_frame_indices_at_640px": [],
+      "exact_consecutive_duplicate_frame_indices_native_yuv420p": [],
+      "exact_consecutive_duplicate_frame_count_native_yuv420p": 0,
+      "nonunique_frame_count_native_yuv420p": 0,
+      "all_unique_native_yuv420p_hash_count": 121,
+      "all_unique_gray_hash_count_at_640px": 121,
+      "near_identical_consecutive_frame_indices_gray_mad_under_0_15": [],
+      "background_valid_affine_fraction": 1.0,
+      "background_center_step_source_pixels_per_frame": {
+        "median": 0.012196,
+        "p95": 0.046468,
+        "maximum": 0.068468,
+        "rms": 0.020843
+      },
+      "background_center_step_change_source_pixels": {
+        "median": 0.023913,
+        "p95": 0.06715,
+        "maximum": 0.078373,
+        "rms": 0.032944
+      },
+      "background_rotation_abs_degrees_per_frame": {
+        "median": 0.000491,
+        "p95": 0.002425,
+        "maximum": 0.005214,
+        "rms": 0.001185
+      },
+      "background_scale_change_abs_percent_per_frame": {
+        "median": 0.000724,
+        "p95": 0.002859,
+        "maximum": 0.006028,
+        "rms": 0.001454
+      },
+      "estimated_cumulative_background_scale_change_percent": -0.022422,
+      "background_nonrigid_residual_p95_source_pixels": {
+        "median": 0.116021,
+        "p95": 0.277994,
+        "maximum": 0.411549,
+        "rms": 0.14148
+      },
+      "candidate": "B/508020",
+      "fullMediaIncluded": false
+    },
+    {
+      "sha256": "5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3",
+      "width": 1280,
+      "height": 720,
+      "frames": 121,
+      "fps_reported": 24.0,
+      "duration_from_frame_count_seconds": 5.041666666666667,
+      "missing_timestamps": 0,
+      "largest_frame_interval_error_seconds": 5.898059818321144e-16,
+      "exact_consecutive_duplicate_frame_indices_at_640px": [],
+      "exact_consecutive_duplicate_frame_indices_native_yuv420p": [],
+      "exact_consecutive_duplicate_frame_count_native_yuv420p": 0,
+      "nonunique_frame_count_native_yuv420p": 0,
+      "all_unique_native_yuv420p_hash_count": 121,
+      "all_unique_gray_hash_count_at_640px": 121,
+      "near_identical_consecutive_frame_indices_gray_mad_under_0_15": [],
+      "background_valid_affine_fraction": 1.0,
+      "background_center_step_source_pixels_per_frame": {
+        "median": 0.013497,
+        "p95": 0.048079,
+        "maximum": 0.067837,
+        "rms": 0.021133
+      },
+      "background_center_step_change_source_pixels": {
+        "median": 0.02515,
+        "p95": 0.060894,
+        "maximum": 0.080427,
+        "rms": 0.033768
+      },
+      "background_rotation_abs_degrees_per_frame": {
+        "median": 0.000441,
+        "p95": 0.00181,
+        "maximum": 0.003061,
+        "rms": 0.000855
+      },
+      "background_scale_change_abs_percent_per_frame": {
+        "median": 0.001086,
+        "p95": 0.004517,
+        "maximum": 0.005947,
+        "rms": 0.002026
+      },
+      "estimated_cumulative_background_scale_change_percent": -0.020624,
+      "background_nonrigid_residual_p95_source_pixels": {
+        "median": 0.135636,
+        "p95": 0.269466,
+        "maximum": 0.523677,
+        "rms": 0.167725
+      },
+      "candidate": "B/508021",
+      "fullMediaIncluded": true,
+      "path": "../dancer/source.mp4"
+    },
+    {
+      "sha256": "ed4347e7edb1060863dccf724359cd40b4bda4dd113ec7f5699b0ba57b90d3ee",
+      "width": 1280,
+      "height": 720,
+      "frames": 121,
+      "fps_reported": 24.0,
+      "duration_from_frame_count_seconds": 5.041666666666667,
+      "missing_timestamps": 0,
+      "largest_frame_interval_error_seconds": 5.898059818321144e-16,
+      "exact_consecutive_duplicate_frame_indices_at_640px": [],
+      "exact_consecutive_duplicate_frame_indices_native_yuv420p": [],
+      "exact_consecutive_duplicate_frame_count_native_yuv420p": 0,
+      "nonunique_frame_count_native_yuv420p": 0,
+      "all_unique_native_yuv420p_hash_count": 121,
+      "all_unique_gray_hash_count_at_640px": 121,
+      "near_identical_consecutive_frame_indices_gray_mad_under_0_15": [],
+      "background_valid_affine_fraction": 1.0,
+      "background_center_step_source_pixels_per_frame": {
+        "median": 0.211806,
+        "p95": 0.544723,
+        "maximum": 0.67598,
+        "rms": 0.299858
+      },
+      "background_center_step_change_source_pixels": {
+        "median": 0.044329,
+        "p95": 0.152053,
+        "maximum": 0.262749,
+        "rms": 0.075223
+      },
+      "background_rotation_abs_degrees_per_frame": {
+        "median": 0.003567,
+        "p95": 0.013528,
+        "maximum": 0.021676,
+        "rms": 0.00639
+      },
+      "background_scale_change_abs_percent_per_frame": {
+        "median": 0.076737,
+        "p95": 0.346339,
+        "maximum": 0.390455,
+        "rms": 0.175781
+      },
+      "estimated_cumulative_background_scale_change_percent": 8.048743,
+      "background_nonrigid_residual_p95_source_pixels": {
+        "median": 0.640597,
+        "p95": 1.499078,
+        "maximum": 1.825697,
+        "rms": 0.805557
+      },
+      "candidate": "B/508022",
+      "fullMediaIncluded": false
+    }
+  ],
+  "visual_contact_review": {
+    "review_type": "Decoded contact-sheet inspection, not continuous real-time playback",
+    "sample_frames": [
+      0,
+      12,
+      24,
+      36,
+      48,
+      60,
+      72,
+      84,
+      96,
+      108,
+      120
+    ],
+    "observations": [
+      {
+        "candidate": "A/508020",
+        "finding": "Strong circular dark vignette remains visible throughout. Face is relatively small and visibly soft in several sampled middle frames. Subject becomes smaller as the camera retreats.",
+        "implication": "Less suitable for clean full-frame hero identity proof than a natural-lens variant."
+      },
+      {
+        "candidate": "A/508021",
+        "finding": "Strong circular dark vignette throughout. Warm practical light makes the face easier to read than seed508020, especially early. Subject becomes smaller by the final sampled frames.",
+        "implication": "Best-looking facial lighting of the three original hero contact sheets, pending natural-lens seed508023."
+      },
+      {
+        "candidate": "A/508022",
+        "finding": "Strong circular vignette. Starts with a much closer face and retreats to a smaller medium framing; facial detail is soft in several later sampled frames.",
+        "implication": "Pronounced framing change may distract from demonstrating a consistent character replacement."
+      },
+      {
+        "candidate": "A/508023",
+        "finding": "Full rectangular image without the original circular vignette. The face remains clearly lit, unobstructed and at a broadly consistent medium-close scale across all eleven sampled frames; natural blinks and head micro-motion are visible.",
+        "implication": "Strongest hero source of the four contact sheets for clear character-replacement proof; keeps the scene and second person readable."
+      },
+      {
+        "candidate": "B/508020",
+        "finding": "Dancer remains completely in frame across all eleven samples, with broad empty background on both sides, distinct orange clothing, and clearly separated limbs in most samples. Background composition appears stable in the contact sheet.",
+        "implication": "Useful source for duplication, colored echoes and motion transfer; contact-sheet evidence agrees with the very small measured background displacement."
+      },
+      {
+        "candidate": "B/508021",
+        "finding": "Dancer is larger and clearer in frame than seed508020, while remaining completely visible throughout all eleven sampled frames. Strong orange/grey separation and varied arm and leg poses. Background composition appears stable.",
+        "implication": "Clearer performer for mobile demonstration or pose transfer; seed508020 offers more room for multiple side-by-side copies. Their measured background motion is effectively comparable and very small."
+      },
+      {
+        "candidate": "B/508022",
+        "finding": "Full body remains visible and the dancer has room on either side. Background framing changes across the contact sequence, agreeing with an estimated8.05percent cumulative background scale increase and more background residual motion than the other two seeds.",
+        "implication": "Least suitable of the three for the requested locked-off source; use508021or508020instead."
+      }
+    ],
+    "limits": [
+      "Contact sheets sample every0.5seconds and can miss brief limb or facial defects.",
+      "These are visual observations and suitability judgments, not automatic quality scores.",
+      "Do not infer perfect motion, identity or temporal stability from these still samples."
+    ],
+    "selection": {
+      "recommended_dancer": "B/508021",
+      "reason": "Larger readable performer and clear poses, with effectively tied low background motion versus508020.",
+      "alternate_for_many_subject_copies": "B/508020",
+      "alternate_reason": "More empty lateral space for five copies and similarly stable background.",
+      "not_selected": "B/508022",
+      "not_selected_reason": "Estimated8.05percent cumulative background zoom despite the locked-off brief.",
+      "hero": "A/508023",
+      "hero_reason": "Natural-lens variant removes the original circular vignette and maintains readable face framing."
+    }
+  }
+}

@@ -510,9 +510,9 @@ export default function App() {
         next.transfer = { ...next.transfer, finish: undefined };
       return next;
     });
-  function changeQuality(quality: Recipe['quality']) {
+  function changeQuality(quality: Recipe['quality'], resolution?: Recipe['resolution']) {
     if (!recipe) return;
-    const next = { ...recipe, quality },
+    const next = { ...recipe, quality, resolution },
       d = renderDimensions(next);
     if (next.transfer?.finish) next.transfer = { ...next.transfer, finish: undefined };
     const end = Math.min(next.cue.end, d.duration);
@@ -653,8 +653,9 @@ export default function App() {
   const envelope = recipe ? cueEnvelope(time, recipe.cue) : 0;
   const paintCue = recipe ? paintedCue(recipe, paintTarget) : null;
   const editingComposite = Boolean(recipe?.compositeRegion && paintTarget === 'composite');
-  const paintWidth = editingComposite ? presentation.width : dimensions.width;
-  const paintHeight = editingComposite ? presentation.height : dimensions.height;
+  const visiblePaint = editingComposite || recipe?.resolution === '720p';
+  const paintWidth = visiblePaint ? presentation.width : dimensions.width;
+  const paintHeight = visiblePaint ? presentation.height : dimensions.height;
   useEffect(() => {
     setPaintTarget(recipe?.compositeRegion ? 'composite' : 'generation');
     setRedo([]);
@@ -679,6 +680,7 @@ export default function App() {
     paintTarget,
     recipe?.trimStart,
     recipe?.quality,
+    recipe?.resolution,
   ]);
   useEffect(() => {
     previewSerial.current++;
@@ -2527,11 +2529,30 @@ export default function App() {
             </button>
             <button
               disabled={!recipe || busy}
-              className={recipe?.quality === 'final' ? 'active' : ''}
+              className={recipe?.quality === 'final' && !recipe.resolution ? 'active' : ''}
               onClick={() => changeQuality('final')}
             >
               <strong>Finish</strong>
               <span>768 px · 24 fps</span>
+            </button>
+            <button
+              disabled={
+                !recipe ||
+                busy ||
+                Math.abs(
+                  Math.log(
+                    Math.max(recipe.clip.width, recipe.clip.height) /
+                      Math.min(recipe.clip.width, recipe.clip.height) /
+                      (16 / 9),
+                  ),
+                ) >= 0.01
+              }
+              className={recipe?.resolution === '720p' ? 'active' : ''}
+              onClick={() => changeQuality('final', '720p')}
+              title="Generate at 720p on a compatible 16:9 canvas. Uses more GPU memory."
+            >
+              <strong>HD finish</strong>
+              <span>720p · 24 fps</span>
             </button>
           </div>
           <div className="seed-row">

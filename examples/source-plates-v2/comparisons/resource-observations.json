@@ -1,0 +1,170 @@
+{
+  "format": "aftertake-source-resource-observations/1",
+  "samplingSeconds": 5,
+  "notUniversalFitGuarantee": true,
+  "measurementsIncludePollingAndFinalization": true,
+  "results": [
+    {
+      "letter": "A",
+      "seed": 508020,
+      "savedRecordWallSeconds": 126.206,
+      "minimumSampledPhysicalAvailableGiB": 0.157,
+      "maximumSampledComfyWorkingSetGiB": 17.768,
+      "maximumSampledGpuUsedMiB": 15453,
+      "samples": 21
+    },
+    {
+      "letter": "A",
+      "seed": 508021,
+      "savedRecordWallSeconds": 122.999,
+      "minimumSampledPhysicalAvailableGiB": 0.151,
+      "maximumSampledComfyWorkingSetGiB": 23.49,
+      "maximumSampledGpuUsedMiB": 15680,
+      "samples": 22
+    },
+    {
+      "letter": "A",
+      "seed": 508022,
+      "savedRecordWallSeconds": 119.785,
+      "minimumSampledPhysicalAvailableGiB": 0.222,
+      "maximumSampledComfyWorkingSetGiB": 21.374,
+      "maximumSampledGpuUsedMiB": 15449,
+      "samples": 21
+    },
+    {
+      "letter": "A",
+      "seed": 508023,
+      "savedRecordWallSeconds": 122.753,
+      "minimumSampledPhysicalAvailableGiB": 0.433,
+      "maximumSampledComfyWorkingSetGiB": 21.427,
+      "maximumSampledGpuUsedMiB": 15107,
+      "samples": 21
+    },
+    {
+      "letter": "B",
+      "seed": 508020,
+      "savedRecordWallSeconds": 124.86,
+      "minimumSampledPhysicalAvailableGiB": 0.046,
+      "maximumSampledComfyWorkingSetGiB": 23.56,
+      "maximumSampledGpuUsedMiB": 15243,
+      "samples": 21
+    },
+    {
+      "letter": "B",
+      "seed": 508021,
+      "savedRecordWallSeconds": 124.747,
+      "minimumSampledPhysicalAvailableGiB": 0.433,
+      "maximumSampledComfyWorkingSetGiB": 22.968,
+      "maximumSampledGpuUsedMiB": 15611,
+      "samples": 21
+    },
+    {
+      "letter": "B",
+      "seed": 508022,
+      "savedRecordWallSeconds": 122.486,
+      "minimumSampledPhysicalAvailableGiB": 0.433,
+      "maximumSampledComfyWorkingSetGiB": 22.02,
+      "maximumSampledGpuUsedMiB": 15374,
+      "samples": 22
+    },
+    {
+      "letter": "C",
+      "seed": 508020,
+      "savedRecordWallSeconds": 117.247,
+      "minimumSampledPhysicalAvailableGiB": 0.296,
+      "maximumSampledComfyWorkingSetGiB": 22.064,
+      "maximumSampledGpuUsedMiB": 15293,
+      "samples": 21
+    },
+    {
+      "letter": "C",
+      "seed": 508021,
+      "savedRecordWallSeconds": 119.778,
+      "minimumSampledPhysicalAvailableGiB": 0.359,
+      "maximumSampledComfyWorkingSetGiB": 20.655,
+      "maximumSampledGpuUsedMiB": 13459,
+      "samples": 21
+    },
+    {
+      "letter": "C",
+      "seed": 508022,
+      "savedRecordWallSeconds": 118.683,
+      "minimumSampledPhysicalAvailableGiB": 0.431,
+      "maximumSampledComfyWorkingSetGiB": 21.657,
+      "maximumSampledGpuUsedMiB": 13553,
+      "samples": 21
+    },
+    {
+      "letter": "D",
+      "seed": 509040,
+      "savedRecordWallSeconds": 44.568,
+      "minimumSampledPhysicalAvailableGiB": 0.65,
+      "maximumSampledComfyWorkingSetGiB": 13.51,
+      "maximumSampledGpuUsedMiB": 14933,
+      "samples": 5
+    },
+    {
+      "letter": "D",
+      "seed": 509041,
+      "savedRecordWallSeconds": 28.379,
+      "minimumSampledPhysicalAvailableGiB": 2.109,
+      "maximumSampledComfyWorkingSetGiB": 12.921,
+      "maximumSampledGpuUsedMiB": 14711,
+      "samples": 5
+    },
+    {
+      "letter": "D",
+      "seed": 509042,
+      "savedRecordWallSeconds": 28.434,
+      "minimumSampledPhysicalAvailableGiB": 1.969,
+      "maximumSampledComfyWorkingSetGiB": 13.013,
+      "maximumSampledGpuUsedMiB": 14962,
+      "samples": 5
+    },
+    {
+      "letter": "E",
+      "seed": 509050,
+      "savedRecordWallSeconds": 30.401,
+      "minimumSampledPhysicalAvailableGiB": 0.316,
+      "maximumSampledComfyWorkingSetGiB": 12.303,
+      "maximumSampledGpuUsedMiB": 15002,
+      "samples": 4
+    },
+    {
+      "letter": "E",
+      "seed": 509051,
+      "savedRecordWallSeconds": 28.388,
+      "minimumSampledPhysicalAvailableGiB": 2.125,
+      "maximumSampledComfyWorkingSetGiB": 13.336,
+      "maximumSampledGpuUsedMiB": 14682,
+      "samples": 5
+    },
+    {
+      "letter": "E",
+      "seed": 509052,
+      "savedRecordWallSeconds": 28.398,
+      "minimumSampledPhysicalAvailableGiB": 2.06,
+      "maximumSampledComfyWorkingSetGiB": 13.5,
+      "maximumSampledGpuUsedMiB": 14717,
+      "samples": 5
+    },
+    {
+      "letter": "R",
+      "seed": 509104,
+      "savedRecordWallSeconds": 28.395,
+      "minimumSampledPhysicalAvailableGiB": 2.059,
+      "maximumSampledComfyWorkingSetGiB": 12.817,
+      "maximumSampledGpuUsedMiB": 15076,
+      "samples": 5
+    },
+    {
+      "letter": "T",
+      "seed": 2026,
+      "savedRecordWallSeconds": 28.397,
+      "minimumSampledPhysicalAvailableGiB": 2.054,
+      "maximumSampledComfyWorkingSetGiB": 12.672,
+      "maximumSampledGpuUsedMiB": 14828,
+      "samples": 5
+    }
+  ]
+}
