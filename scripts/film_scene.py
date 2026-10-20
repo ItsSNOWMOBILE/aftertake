@@ -349,6 +349,10 @@ class SceneRenderer:
             raise ValueError('Scene output needs a nonnegative absolute integer frame.')
         picture = Image.new('RGBA', self.size)
         for root in self.scene['order']:
+            source = (self.groups[root['id']] if root['kind'] == 'group'
+                      else self.layers[root['kind'], root['id']])
+            if not active(source, frame):
+                continue
             layer = (self.group(self.groups[root['id']], frame) if root['kind'] == 'group'
                      else self.child(root['kind'], root['id'], frame))
             picture.alpha_composite(layer)
