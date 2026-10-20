@@ -11,39 +11,38 @@ An open-source creative studio for short-form video, product stories and visual 
 [![Status: Experimental](https://img.shields.io/badge/status-experimental-c3d4a6?labelColor=182015)](#project-status)
 
 **[Try the browser editor](https://aftertake-studio.right-bard-9761.chatgpt.site/studio/)** ·
-**[Watch the 96-second film](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/product-film-preview-2026-10-19/aftertake-make-the-next-take.mp4)** ·
+**[Watch the 20-second preview](https://github.com/ItsSNOWMOBILE/aftertake/releases/tag/native-motion-preview-2026-10-19)** ·
 **[Read the studio guide](docs/studio-guide.md)**
 
 </div>
 
 <br>
 
-## Make the next take.
+## SECOND SELF
 
-https://github.com/user-attachments/assets/9ecc806c-34ab-44eb-9549-6bdb5fde9acb
+https://github.com/user-attachments/assets/089d071c-7a8b-4d4c-ae44-0e464e3ae5df
 
-**[Watch the narrated 96-second film →](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/product-film-preview-2026-10-19/aftertake-make-the-next-take.mp4)**
+**[Watch the 20-second preview →](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/native-motion-preview-2026-10-19/aftertake-second-self-native-groups.mp4)** ·
+**[Download the editable project and inputs →](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/native-motion-preview-2026-10-19/aftertake-second-self-v4-inputs.zip)**
 
-Three dance takes become **MOVE YOUR WAY**, a short-form concept campaign. Follow
-the source selection, local SAM3 tracking, graphic echoes, color, editable type,
-motion graphics and narration. Adapt the campaign for portrait, square and
-landscape, then see the actual Aftertake project behind the film itself.
+A scene gets a different lead. Follow the real H3 before/after, designed source
+and reference cards, actual text editing and moving playback in the app, then
+editable kinetic typography. Cards, images and captions move together through
+native groups with restrained perspective and shutter blur.
 
-The film was authored and exported through Aftertake's own MCP at **1080p and
-24 fps**. Its cuts, titles, graphics, narration and music mix remain editable.
-The [project and reproduction guide](examples/make-the-next-take/README.md) and
-[companion media](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/product-film-preview-2026-10-19/aftertake-product-film-inputs.zip)
-let you reopen the edit without a diffusion GPU.
-A [fresh-workspace replay](examples/make-the-next-take/replay-proof.json) matched
-all 2,304 decoded frames and every decoded soundtrack sample.
+Authored and exported through Aftertake's own MCP at **1080p and 24 fps**. The
+format-4 project, nine exact companion files, checksums and credits reopen through
+ordinary Film import. Replaying the edit needs the small CPU Film runtime;
+generation models and a CUDA GPU are not required.
 
-This is a review preview. UI sequences use actual captured app states with fixed
-framing; processing waits are omitted. Footage: RDNE Stock project / Pexels.
-Music: “Galactic Rap” by Kevin MacLeod, CC BY 4.0.
-[Credits and source details →](examples/make-the-next-take/README.md)
+This preview uses a soundtrack trial; the full narrated film is in production.
+Generation completed earlier, and the saved-take animation opens an existing
+result. UI passages are two actual recordings with fixed framing. Footage:
+*Tears of Steel*, Blender Foundation / Mango, CC BY 3.0. Music: “Set It Up” by
+Shane Ivers — [silvermansound.com](https://www.silvermansound.com), CC BY 4.0.
 
-The earlier [motion graphics study](examples/motion-design/README.md) remains
-available with its editable source.
+The [earlier 96-second campaign film and reproduction guide](examples/make-the-next-take/README.md)
+and [motion graphics study](examples/motion-design/README.md) remain available.
 
 ## Hotel Lobby, recast
 
