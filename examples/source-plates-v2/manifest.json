@@ -1,0 +1,440 @@
+{
+  "format": "aftertake-source-upgrade/1",
+  "codeBranch": "source-upgrade",
+  "baseCommit": "d2f961e",
+  "codeCommit": "06ca946c5e0db28a8199c2337a0c14d748aa3289",
+  "sourceOrigin": "AI-generated with local open-weight models; no phone capture is claimed.",
+  "precision": "Existing native execution was preserved. LTX uses the mixed-quantization Q4_K_M GGUF backbone; runtime logs report BF16 diffusion weight dtype and BF16 video VAE, FP16 text encoder and the upstream FP32 audio VAE. Z-Image logs report BF16 diffusion/VAE and FP16 text encoder. Weight filenames containing BF16 do not mean every runtime component executes in BF16. No precision override or fallback was introduced.",
+  "requestedCanvas": [
+    1280,
+    720
+  ],
+  "requestedFrameRate": 24,
+  "sources": {
+    "A": {
+      "name": "Hero walk",
+      "model": "LTX-2.5 distilled 22B Q4_K_M (unsloth GGUF)",
+      "selected": {
+        "seed": 508023,
+        "prompt": "Full-frame photorealistic medium shot of a fictional adult woman in a black bomber jacket walking straight toward the camera across a wet rooftop at blue hour. Her face is clearly visible, sharply focused and lit by a steady soft warm practical light. Her facial structure and jacket remain consistent. The camera dollies backward at exactly her walking pace, keeping her face at the same scale and the same focus distance. Natural relaxed gait and subtle hair movement. A second fictional adult leans on the railing far behind her; a city skyline recedes in the distance. Clean natural 35 mm lens, moderate depth of field, realistic clear detail. The image fills the entire rectangular frame. No vignette, no black borders, no rounded frame, no fisheye, no lens bloom, no added grain, no focus pulling, no focus breathing, no slow motion. No text, subtitles, labels or logos. Quiet rooftop ambience only, no speech or music. One continuous 24 fps shot.",
+        "model": "LTX-2.5 distilled 22B Q4_K_M (unsloth GGUF)",
+        "actualModelFiles": {
+          "1": {
+            "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+          },
+          "2": {
+            "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+            "type": "ltxv",
+            "device": "default"
+          },
+          "3": {
+            "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+          },
+          "4": {
+            "vae_name": "ltx-2.5-audio-vae-bf16.safetensors"
+          }
+        },
+        "nativeDimensions": [
+          1280,
+          736
+        ],
+        "deliveredDimensions": [
+          1280,
+          720
+        ],
+        "fps": 24.0,
+        "frames": 121,
+        "duration": 5.041666666666667,
+        "sha256": "ec8ecb736b250eea4c8236c549c901bddf9931576e70deb29a17c03b50e2111b",
+        "nativeClipId": "e63dec49-6bde-4af4-aed2-0ec3421e02d8",
+        "nativeJobId": "601bf1ec-88dd-457f-88db-6d903dc8455f",
+        "review": "Compared three literal anamorphic seeds, all with heavy black corner vignetting and some focus drift, against the one authorized clean-lens variant. Chosen for its full rectangular frame, clearer steady face, consistent warm practical light and useful medium framing. Natural35mm lens/steady-focus wording differs from the original brief and is fully retained in request.json plus variant.json. Root independently reviewed and approved this selection. Native121frames24fps with generated source ambience.",
+        "origin": "AI-generated fictional source; no real-person reference or phone capture.",
+        "path": "hero-walk/source.mp4",
+        "requestPath": "hero-walk/request.json",
+        "recipePath": "hero-walk/recipe.json",
+        "generationPath": "hero-walk/generation.json",
+        "workflowPath": "hero-walk/workflow-api.json",
+        "frame0Path": "hero-walk/frame0.png"
+      },
+      "candidates": [
+        {
+          "seed": 508020,
+          "state": "succeeded",
+          "sha256": "d79b682362d571cb090b8db63e0345f9208d2df0045ef92438dbbd93a4d72859",
+          "id": "08fdd910-64a7-48ee-8361-69873f148208",
+          "jobId": "a6b1d36b-e95c-421b-9e55-8dbe7617c37e",
+          "savedRecordWallSeconds": 126.206,
+          "requestPath": "comparisons/A/508020/request.json",
+          "fullMediaIncluded": false
+        },
+        {
+          "seed": 508021,
+          "state": "succeeded",
+          "sha256": "163305d308e11d035a28b1485d685be4967b9b80085b4dc13cbd5d92fd0076cc",
+          "id": "40413ed4-e24e-4620-9064-7e73e8429e65",
+          "jobId": "b6b60248-903a-400a-b294-12912d090bb4",
+          "savedRecordWallSeconds": 122.999,
+          "requestPath": "comparisons/A/508021/request.json",
+          "fullMediaIncluded": false
+        },
+        {
+          "seed": 508022,
+          "state": "succeeded",
+          "sha256": "d7fec497a78132c526a7eeebee0f068c2780be8634a76932abc105c4feb915d2",
+          "id": "7f4ce9ab-882f-4bda-9eb2-e80e9542845c",
+          "jobId": "54e28910-0174-4c0e-9687-258423126868",
+          "savedRecordWallSeconds": 119.785,
+          "requestPath": "comparisons/A/508022/request.json",
+          "fullMediaIncluded": false
+        },
+        {
+          "seed": 508023,
+          "state": "succeeded",
+          "variant": "Clean natural lens and stable focus, after all three original anamorphic candidates retained a heavy black vignette.",
+          "sha256": "ec8ecb736b250eea4c8236c549c901bddf9931576e70deb29a17c03b50e2111b",
+          "id": "e63dec49-6bde-4af4-aed2-0ec3421e02d8",
+          "jobId": "601bf1ec-88dd-457f-88db-6d903dc8455f",
+          "savedRecordWallSeconds": 122.753,
+          "requestPath": "comparisons/A/508023/request.json",
+          "fullMediaIncluded": true
+        }
+      ]
+    },
+    "B": {
+      "name": "Dancer",
+      "model": "LTX-2.5 distilled 22B Q4_K_M (unsloth GGUF)",
+      "selected": {
+        "seed": 508021,
+        "prompt": "Locked-off wide shot, a street dancer in a bright orange hoodie and white sneakers performs sharp popping and locking moves in an empty concrete parking garage, full body in frame with space on both sides, never leaves frame, hard overhead light, clean grey background that contrasts with the dancer, no camera movement, photoreal, 24 fps. All people are fictional, not based on any real person. No text, subtitles, labels or logos. Natural scene ambience only, no speech or music.",
+        "model": "LTX-2.5 distilled 22B Q4_K_M (unsloth GGUF)",
+        "actualModelFiles": {
+          "1": {
+            "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+          },
+          "2": {
+            "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+            "type": "ltxv",
+            "device": "default"
+          },
+          "3": {
+            "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+          },
+          "4": {
+            "vae_name": "ltx-2.5-audio-vae-bf16.safetensors"
+          }
+        },
+        "nativeDimensions": [
+          1280,
+          736
+        ],
+        "deliveredDimensions": [
+          1280,
+          720
+        ],
+        "fps": 24.0,
+        "frames": 121,
+        "duration": 5.041666666666667,
+        "sha256": "5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3",
+        "nativeClipId": "fa39831b-2f47-44e2-8136-a39d59e08f09",
+        "nativeJobId": "e3e04cbd-9968-4d98-8198-cae6fc9d01cf",
+        "review": "Compared all three native candidates. Chosen for its larger mobile-readable performer, clear full-body silhouette and useful arm gestures; enough lateral space remains for the original two copies at plus/minus0.28. Independent CPU background LK/RANSAC analysis found an effectively locked camera (about minus0.02percent cumulative scale), with121 unique frames and exact24fps clock. Seed508020 is a stable smaller alternate; seed508022 has about8percent background zoom and fails the locked-camera direction. Root approved. See camera-audit-summary.json for method limits; this is camera/timing QA, not proof of perfect anatomy.",
+        "origin": "AI-generated fictional source; no real-person reference or phone capture.",
+        "path": "dancer/source.mp4",
+        "requestPath": "dancer/request.json",
+        "recipePath": "dancer/recipe.json",
+        "generationPath": "dancer/generation.json",
+        "workflowPath": "dancer/workflow-api.json",
+        "frame0Path": "dancer/frame0.png"
+      },
+      "candidates": [
+        {
+          "seed": 508020,
+          "state": "succeeded",
+          "sha256": "1205ad3a083b487552c42409abcc086503dec4793e34760a88b67b82fbf3ea35",
+          "id": "f7883112-7e58-4a38-977a-affbefe67a71",
+          "jobId": "1d9f023d-9525-4d99-a716-8e14626f9140",
+          "savedRecordWallSeconds": 124.86,
+          "requestPath": "comparisons/B/508020/request.json",
+          "fullMediaIncluded": false
+        },
+        {
+          "seed": 508021,
+          "state": "succeeded",
+          "sha256": "5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3",
+          "id": "fa39831b-2f47-44e2-8136-a39d59e08f09",
+          "jobId": "e3e04cbd-9968-4d98-8198-cae6fc9d01cf",
+          "savedRecordWallSeconds": 124.747,
+          "requestPath": "comparisons/B/508021/request.json",
+          "fullMediaIncluded": true
+        },
+        {
+          "seed": 508022,
+          "state": "succeeded",
+          "sha256": "ed4347e7edb1060863dccf724359cd40b4bda4dd113ec7f5699b0ba57b90d3ee",
+          "id": "2ee2a5e8-1bf3-467e-bea3-dcc6c0839568",
+          "jobId": "8cb64b0d-3632-40e1-83fe-63262602c02b",
+          "savedRecordWallSeconds": 122.486,
+          "requestPath": "comparisons/B/508022/request.json",
+          "fullMediaIncluded": false
+        }
+      ]
+    },
+    "C": {
+      "name": "Repaint plate",
+      "model": "LTX-2.5 distilled 22B Q4_K_M (unsloth GGUF)",
+      "selected": {
+        "seed": 508020,
+        "prompt": "Slow push-in on a dim industrial loft with one huge arched window, dust drifting in the window light, a person sits reading on a sofa in the foreground left, the window shows a plain overcast sky, moody, photoreal, 24 fps. All people are fictional, not based on any real person. No text, subtitles, labels or logos. Natural scene ambience only, no speech or music.",
+        "model": "LTX-2.5 distilled 22B Q4_K_M (unsloth GGUF)",
+        "actualModelFiles": {
+          "1": {
+            "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+          },
+          "2": {
+            "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+            "type": "ltxv",
+            "device": "default"
+          },
+          "3": {
+            "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+          },
+          "4": {
+            "vae_name": "ltx-2.5-audio-vae-bf16.safetensors"
+          }
+        },
+        "nativeDimensions": [
+          1280,
+          736
+        ],
+        "deliveredDimensions": [
+          1280,
+          720
+        ],
+        "fps": 24.0,
+        "frames": 121,
+        "duration": 5.041666666666667,
+        "sha256": "ab694e2d3f5f542b8cf0abf099bf3e8d7fd7b172718012a696bb381499ef2d86",
+        "nativeClipId": "417aacc8-e41a-4e38-a21a-5fbb807f1199",
+        "nativeJobId": "07311f52-26cf-4b7b-a90f-e463f5ec3419",
+        "review": "Compared all three native candidates. Chosen because the complete arched window and the foreground-left reader remain visible through the shot, with restrained push-in motion. Seed508021 loses most of the reader at the left edge, while seed508022 pushes the window beyond the top edge late. The source supports a window edit while preserving the surrounding room; actual generative VFX output still requires separate visual review. Root independently reviewed and approved this choice.",
+        "origin": "AI-generated fictional source; no real-person reference or phone capture.",
+        "path": "repaint-plate/source.mp4",
+        "requestPath": "repaint-plate/request.json",
+        "recipePath": "repaint-plate/recipe.json",
+        "generationPath": "repaint-plate/generation.json",
+        "workflowPath": "repaint-plate/workflow-api.json",
+        "frame0Path": "repaint-plate/frame0.png"
+      },
+      "candidates": [
+        {
+          "seed": 508020,
+          "state": "succeeded",
+          "sha256": "ab694e2d3f5f542b8cf0abf099bf3e8d7fd7b172718012a696bb381499ef2d86",
+          "id": "417aacc8-e41a-4e38-a21a-5fbb807f1199",
+          "jobId": "07311f52-26cf-4b7b-a90f-e463f5ec3419",
+          "savedRecordWallSeconds": 117.247,
+          "requestPath": "comparisons/C/508020/request.json",
+          "fullMediaIncluded": true
+        },
+        {
+          "seed": 508021,
+          "state": "succeeded",
+          "sha256": "e3fc9b310f84e1c040531cb66fd3c2a3cb6b540a68c4aa3180e6a88f32c89f53",
+          "id": "db774647-f547-466d-8c2e-9321f1f2897c",
+          "jobId": "e5b80463-0ce7-455d-bd99-a28a4c67a8e4",
+          "savedRecordWallSeconds": 119.778,
+          "requestPath": "comparisons/C/508021/request.json",
+          "fullMediaIncluded": false
+        },
+        {
+          "seed": 508022,
+          "state": "succeeded",
+          "sha256": "7b11d849952c0cc7e5542977f477cbaf098a9acf854efc88cb3b7a34edc32917",
+          "id": "52d2aa69-c8b3-4602-a580-144825085de4",
+          "jobId": "38622228-8fed-441c-90ec-6cbfb24278ab",
+          "savedRecordWallSeconds": 118.683,
+          "requestPath": "comparisons/C/508022/request.json",
+          "fullMediaIncluded": false
+        }
+      ]
+    },
+    "D": {
+      "name": "Storm lighthouse",
+      "model": "Z-Image Turbo BF16",
+      "selected": {
+        "seed": 509042,
+        "prompt": "A lone lighthouse on a black basalt sea stack in a violent storm, enormous waves exploding against the rock, a lightning bolt splitting the clouds, the beam cutting through rain, epic wide shot, cinematic, ultra detailed. No readable text, letters, subtitles, labels or logos.",
+        "model": "Z-Image Turbo BF16",
+        "actualModelFiles": {
+          "1": {
+            "unet_name": "z_image_turbo_bf16.safetensors",
+            "weight_dtype": "default"
+          },
+          "2": {
+            "clip_name": "qwen_3_4b.safetensors",
+            "type": "lumina2",
+            "device": "default"
+          },
+          "3": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "nativeDimensions": [
+          1280,
+          720
+        ],
+        "deliveredDimensions": [
+          1280,
+          720
+        ],
+        "fps": null,
+        "frames": null,
+        "duration": null,
+        "sha256": "9e11d43f6c628458eef2e2e5dcfd124ab41e930e059ced4a9a95c5140f56a085",
+        "nativeClipId": "50af43c4-d029-4116-858d-64a98a139cc9",
+        "nativeJobId": "3a269fc2-c4a2-4d66-a1db-369715badf1d",
+        "review": "Compared all three native 1280x720 candidates; chosen for its large clear lighthouse on the left third, separated lightning, and useful framing for a pull-back. Seed509041 made the lighthouse too small. Seed509040 is also usable. Root independently approved the contact comparison.",
+        "origin": "AI-generated fictional source; no real-person reference or phone capture.",
+        "path": "camera-move-still/source.png",
+        "requestPath": "camera-move-still/request.json",
+        "recipePath": "camera-move-still/recipe.json",
+        "generationPath": "camera-move-still/generation.json",
+        "workflowPath": "camera-move-still/workflow-api.json",
+        "frame0Path": "camera-move-still/frame0.png"
+      },
+      "candidates": [
+        {
+          "seed": 509040,
+          "state": "succeeded",
+          "sha256": "5ff1cad3341bb6abdea743bc5a5f1fdd07305ef39d199c851728ac4c6e4026cd",
+          "id": "883c21a6-1a23-4348-865e-ee8a5b3c4aef",
+          "jobId": "1f12350b-6c41-4d31-b4ac-fd7dc65a5885",
+          "savedRecordWallSeconds": 44.568,
+          "requestPath": "comparisons/D/509040/request.json",
+          "fullMediaIncluded": false
+        },
+        {
+          "seed": 509041,
+          "state": "succeeded",
+          "sha256": "4b84a80ea6670070933c6c9d07ee59f71ec54f5feef762be03dcf948b536dd5f",
+          "id": "94bab11a-77e3-460b-89ef-f3455bddd616",
+          "jobId": "95463839-4503-44f7-ac3a-4e8b46abe9ea",
+          "savedRecordWallSeconds": 28.379,
+          "requestPath": "comparisons/D/509041/request.json",
+          "fullMediaIncluded": false
+        },
+        {
+          "seed": 509042,
+          "state": "succeeded",
+          "sha256": "9e11d43f6c628458eef2e2e5dcfd124ab41e930e059ced4a9a95c5140f56a085",
+          "id": "50af43c4-d029-4116-858d-64a98a139cc9",
+          "jobId": "3a269fc2-c4a2-4d66-a1db-369715badf1d",
+          "savedRecordWallSeconds": 28.434,
+          "requestPath": "comparisons/D/509042/request.json",
+          "fullMediaIncluded": true
+        }
+      ]
+    },
+    "E": {
+      "name": "Neon depth portrait",
+      "model": "Z-Image Turbo BF16",
+      "selected": {
+        "seed": 509052,
+        "prompt": "Portrait of a fictional woman with silver hair in a rain-soaked Tokyo alley at night, neon signs receding far behind her, puddle reflections, 50 mm, photoreal. No readable text, letters, subtitles, labels or logos.",
+        "model": "Z-Image Turbo BF16",
+        "actualModelFiles": {
+          "1": {
+            "unet_name": "z_image_turbo_bf16.safetensors",
+            "weight_dtype": "default"
+          },
+          "2": {
+            "clip_name": "qwen_3_4b.safetensors",
+            "type": "lumina2",
+            "device": "default"
+          },
+          "3": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "nativeDimensions": [
+          1280,
+          720
+        ],
+        "deliveredDimensions": [
+          1280,
+          720
+        ],
+        "fps": null,
+        "frames": null,
+        "duration": null,
+        "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b",
+        "nativeClipId": "2ac4c682-e267-44c1-b79d-96897b9e696b",
+        "nativeJobId": "1187b912-882b-483b-b572-5d9a32b0dbbb",
+        "review": "Compared all three native 1280x720 candidates and face crops; chosen for the clean three-quarter face and alley depth. All three candidates already contain lens bokeh, and the exact night prompt yielded a dusk/daylight appearance; retain these limitations, do not claim true midnight or a dramatic extra-blur payoff. Root independently approved this choice.",
+        "origin": "AI-generated fictional source; no real-person reference or phone capture.",
+        "path": "depth-still/source.png",
+        "requestPath": "depth-still/request.json",
+        "recipePath": "depth-still/recipe.json",
+        "generationPath": "depth-still/generation.json",
+        "workflowPath": "depth-still/workflow-api.json",
+        "frame0Path": "depth-still/frame0.png"
+      },
+      "candidates": [
+        {
+          "seed": 509050,
+          "state": "succeeded",
+          "sha256": "a06510a5f30754d7e713e55fbb959c0fbe2c006b9a804d8c18f708bc2f2d03f1",
+          "id": "0f730c86-5fae-49eb-899f-b4e78fc7c1cc",
+          "jobId": "411644f4-74d7-47fb-a981-0f1175c2d7dc",
+          "savedRecordWallSeconds": 30.401,
+          "requestPath": "comparisons/E/509050/request.json",
+          "fullMediaIncluded": false
+        },
+        {
+          "seed": 509051,
+          "state": "succeeded",
+          "sha256": "9b568e094fb61313ce35712c67baea406d97233a1f5fe29c60425aa1645f73c3",
+          "id": "9c0cce47-1643-478b-a830-28c1470a837b",
+          "jobId": "9dfe5839-0a5c-483b-90a4-81657d5b928d",
+          "savedRecordWallSeconds": 28.388,
+          "requestPath": "comparisons/E/509051/request.json",
+          "fullMediaIncluded": false
+        },
+        {
+          "seed": 509052,
+          "state": "succeeded",
+          "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b",
+          "id": "2ac4c682-e267-44c1-b79d-96897b9e696b",
+          "jobId": "1187b912-882b-483b-b572-5d9a32b0dbbb",
+          "savedRecordWallSeconds": 28.398,
+          "requestPath": "comparisons/E/509052/request.json",
+          "fullMediaIncluded": true
+        }
+      ]
+    }
+  },
+  "references": {
+    "R": {
+      "path": "references/recast-woman/source.png",
+      "requestPath": "references/recast-woman/request.json",
+      "seed": 509104,
+      "prompt": "Photorealistic character reference of one fictional adult woman, age 28, warm medium-brown skin, an oval face with dark brown eyes and a straight nose, short dark curly bob hairstyle. She wears a matte rust-orange field jacket over a plain cream knit top and charcoal trousers. Medium-full portrait from head to below knees, facing camera with a relaxed neutral expression, both hands visible at her sides, centered with clear space around her silhouette. Plain seamless light-gray studio background, soft neutral photographic lighting, crisp natural skin texture and clear facial detail. A completely fictional person. No phone, no accessories, no text, no logo, no other people.",
+      "model": "Z-Image Turbo BF16",
+      "sha256": "5e55499d75eaf69928d94fb436e5487f9dc7e15617b607b0c5ae0eccc32a8296",
+      "nativeClipId": "f3339a35-fb39-4264-bdbd-fd01384a5417",
+      "nativeJobId": "38ac45c7-d661-4d63-8d50-39ec7247f5b0"
+    },
+    "T": {
+      "path": "references/mint-teddy/source.png",
+      "requestPath": "references/mint-teddy/request.json",
+      "seed": 2026,
+      "prompt": "A friendly mint-green knitted teddy bear mascot standing upright, full body from rounded ears to feet completely in frame, centered against a plain light-gray seamless studio background with generous space to the left and right. Cream-colored knitted belly and muzzle, small glossy black button eyes, simple soft round paws, proportionate arms hanging relaxed beside the body, realistic delicate yarn and stitching texture. Front view at eye level, soft even studio light, warm approachable expression. One single teddy bear, photorealistic toy product photography. No other objects, no text, no logos.",
+      "model": "Z-Image Turbo BF16",
+      "sha256": "95f7b079dd08a9b0a25a1c66a0645a102cef60eaad746199dd5f627cfae6f99c",
+      "nativeClipId": "ed8d9a72-4784-4dff-a29e-901a00e28a6c",
+      "nativeJobId": "92cd19c3-143d-494b-9d19-073452b93669"
+    }
+  },
+  "comparisonMediaPolicy": "All candidate requests and preview comparisons are retained; only selected full media are included."
+}

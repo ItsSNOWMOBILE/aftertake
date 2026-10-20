@@ -1,0 +1,17 @@
+{
+  "format": "aftertake-text-video/1",
+  "name": "B - Dancer - seed 508022",
+  "prompt": "Locked-off wide shot, a street dancer in a bright orange hoodie and white sneakers performs sharp popping and locking moves in an empty concrete parking garage, full body in frame with space on both sides, never leaves frame, hard overhead light, clean grey background that contrasts with the dancer, no camera movement, photoreal, 24 fps. All people are fictional, not based on any real person. No text, subtitles, labels or logos. Natural scene ambience only, no speech or music.",
+  "seed": 508022,
+  "aspect": "landscape",
+  "quality": "final",
+  "resolution": "720p",
+  "seconds": 5,
+  "sound": true,
+  "cinema": {
+    "movement": "locked",
+    "lens": "natural",
+    "lighting": "source",
+    "palette": "source"
+  }
+}

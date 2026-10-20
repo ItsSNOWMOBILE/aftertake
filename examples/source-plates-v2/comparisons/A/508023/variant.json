@@ -1,0 +1,5 @@
+{
+  "reason": "Optional quality variant only if the three literal-prompt seeds all retain heavy vignette or soft focus.",
+  "briefPromptRequest": "../508020/request.json",
+  "changes": "Natural lens replaces anamorphic direction; explicit steady focus and full rectangular image; no added grain or lens bloom."
+}
