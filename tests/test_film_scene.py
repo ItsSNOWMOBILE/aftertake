@@ -78,6 +78,44 @@ class FilmSceneTest(unittest.TestCase):
         value = world(parent)
         self.assertEqual(scene.validate_scene(value, [child], [], 160, 90, motion), value)
 
+    def test_inactive_roots_do_not_materialize_blank_children_or_groups(self):
+        hidden = graphic(start=.1, end=.35)
+        visible = graphic(identifier=GREEN, color='#20ff10', start=0, end=1)
+        parent = group(start=.1, end=.35)
+        value = world(parent, [{'kind': 'graphic', 'id': GREEN}])
+        layouts = {
+            layer['id']: motion.graphic_layout(layer, 160, 90)
+            for layer in [hidden, visible]
+        }
+        rendered = scene.SceneRenderer(
+            value, [hidden, visible], [], 160, 90, motion,
+            lambda kind, layer, frame: scene.graphic_sample(
+                layouts[layer['id']], frame, motion),
+        )
+        with (
+            patch.object(rendered, 'group', wraps=rendered.group) as groups,
+            patch.object(rendered, 'child', wraps=rendered.child) as children,
+        ):
+            at_start = rendered.frame(0)
+            groups.assert_not_called()
+            children.assert_called_once_with('graphic', GREEN, 0)
+            np.testing.assert_array_equal(at_start, scene.graphic_sample(layouts[GREEN], 0, motion))
+            groups.reset_mock()
+            children.reset_mock()
+            self.assertIsNone(rendered.frame(24).getbbox())
+            groups.assert_not_called()
+            children.assert_not_called()
+            # The existing fractional visibility predicate still owns the exact
+            # first/last frames; skipping a root must not round its interval.
+            rendered.frame(3)
+            groups.assert_called_once()
+            groups.reset_mock()
+            rendered.frame(8)
+            groups.assert_called_once()
+            groups.reset_mock()
+            rendered.frame(9)
+            groups.assert_not_called()
+
     def test_unsafe_intermediate_projection_is_rejected_before_starting_an_encoder(self):
         unsafe = group(pivot={'x': 0, 'y': 0}, depth={'perspective': 1.5, 'keys': [
             {'at': 0, 'yaw': 35, 'pitch': 35, 'z': .2}, {'at': 1, 'yaw': -35, 'pitch': -35, 'z': .2}]})
