@@ -31,7 +31,7 @@ export function imageRequirements() {
 export function buildImageWorkflow(
   request: ImageRequest,
 ): Record<string, { class_type: string; inputs: Record<string, unknown> }> {
-  const [width, height] = imageDimensions(request.aspect);
+  const [width, height] = imageDimensions(request.aspect, request.resolution);
   const n = (class_type: string, inputs: Record<string, unknown>) => ({ class_type, inputs });
   return {
     '1': n('UNETLoader', { unet_name: imageModels.diffusion, weight_dtype: 'default' }),

@@ -41,6 +41,7 @@ export const imageRequestSchema = z.object({
     .min(0)
     .max(2 ** 32 - 1),
   aspect: z.enum(['square', 'landscape', 'portrait']),
+  resolution: z.literal('720p').optional(),
   style: z.enum(['none', 'cinematic', 'photo', 'illustration', 'product', 'anime']),
   direction: directionSchema.optional(),
 });
@@ -69,8 +70,13 @@ export const imageTerminal = new Set([
   'output_error',
 ]);
 export const imageBusy = (image: ImageGeneration) => !imageTerminal.has(image.state);
-export const imageDimensions = (aspect: ImageRequest['aspect']) =>
-  (({ square: [1024, 1024], landscape: [1152, 768], portrait: [768, 1152] }) as const)[aspect];
+export const imageDimensions = (
+  aspect: ImageRequest['aspect'],
+  resolution?: ImageRequest['resolution'],
+) =>
+  resolution === '720p'
+    ? ({ square: [720, 720], landscape: [1280, 720], portrait: [720, 1280] } as const)[aspect]
+    : ({ square: [1024, 1024], landscape: [1152, 768], portrait: [768, 1152] } as const)[aspect];
 const styles: Record<ImageRequest['style'], string> = {
   none: '',
   cinematic:

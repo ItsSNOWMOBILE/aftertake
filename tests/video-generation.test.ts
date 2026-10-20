@@ -15,12 +15,14 @@ import type { EngineClient } from '../server/sdk-port.js';
 import {
   videoRequestSchema,
   videoDimensions,
+  videoModelDimensions,
   videoPrompt,
   type VideoRequest,
   type VideoGeneration,
 } from '../src/video-generation.js';
 import { buildVideoWorkflow } from '../server/video-workflow.js';
 import { videoRouter } from '../server/videos.js';
+import { verifyGeneratedVideo } from '../server/video-output.js';
 import { registerGenerationTools } from '../server/generation-tools.js';
 
 const request: VideoRequest = {
@@ -115,6 +117,78 @@ test('text video has a native source-free AV graph, shared frame grid and effect
   );
   for (const bad of [{ seconds: 2.5 }, { seconds: 20 }, { seed: -1 }, { prompt: '   ' }])
     assert.equal(videoRequestSchema.safeParse({ ...request, ...bad }).success, false);
+});
+
+test('720p video generates native surrounding pixels, crops without resizing, and validates the delivered canvas', async () => {
+  for (const aspect of ['landscape', 'portrait', 'square'] as const) {
+    const hd = videoRequestSchema.parse({ ...request, aspect, resolution: '720p' });
+    const output = videoDimensions(hd),
+      model = videoModelDimensions(hd);
+    const graph = buildVideoWorkflow(hd);
+    assert.deepEqual(JSON.parse(JSON.stringify(hd)), hd);
+    assert.equal(graph['8'].inputs.width, model.width);
+    assert.equal(graph['8'].inputs.height, model.height);
+    assert.equal(model.width % 32, 0);
+    assert.equal(model.height % 32, 0);
+    assert.ok(model.width >= output.width && model.height >= output.height);
+    assert.ok(model.width - output.width < 32 && model.height - output.height < 32);
+    assert.equal(
+      graph['21'].inputs.display_width,
+      undefined,
+      'No export resize may stand in for native generation.',
+    );
+    {
+      assert.deepEqual(graph['23'], {
+        class_type: 'ImageCrop',
+        inputs: {
+          image: ['19', 0],
+          width: output.width,
+          height: output.height,
+          x: (model.width - output.width) / 2,
+          y: (model.height - output.height) / 2,
+        },
+      });
+      assert.deepEqual(graph['20'].inputs.images, ['23', 0]);
+    }
+    const media = {
+      ...output,
+      hasAudio: true,
+      regularTimestamps: true,
+      firstTimestamp: 0,
+      audio: {
+        sampleRate: 24000,
+        channels: 2,
+        samples: 49000,
+        duration: output.duration,
+        firstTimestamp: 0,
+        regularTimestamps: true,
+      },
+    };
+    await verifyGeneratedVideo(movie(graph, hd), hd, 'unused', async () => media, {
+      root: '',
+      python: '',
+    });
+    await assert.rejects(
+      verifyGeneratedVideo(
+        movie(graph, hd),
+        hd,
+        'unused',
+        async () => ({ ...media, width: model.width, height: model.height }),
+        { root: '', python: '' },
+      ),
+      /decoded video/,
+    );
+  }
+  assert.deepEqual(videoDimensions({ ...request, resolution: '720p' }), {
+    width: 1280,
+    height: 720,
+    frames: 49,
+    fps: 24,
+    duration: 49 / 24,
+  });
+  assert.equal(videoRequestSchema.parse(request).resolution, undefined);
+  assert.equal(buildVideoWorkflow(request)['23'], undefined);
+  assert.equal(videoRequestSchema.safeParse({ ...request, resolution: '1080p' }).success, false);
 });
 
 test('native video admission rejoins its key and rejects mismatched workflow or decoded media before source publication', async (t) => {

@@ -106,7 +106,7 @@ export async function imageRouter(context: {
             await output.toFile(temporary);
             const bytes = await readFile(temporary),
               png = inspectFramePng(bytes),
-              [width, height] = imageDimensions(image.request.aspect);
+              [width, height] = imageDimensions(image.request.aspect, image.request.resolution);
             if (png.width !== width || png.height !== height)
               throw Error('The generated image has unexpected dimensions.');
             const expected = buildImageWorkflow(image.request);
