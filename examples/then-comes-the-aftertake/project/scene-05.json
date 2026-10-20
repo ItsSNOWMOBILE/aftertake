@@ -1,6 +1,6 @@
 {
   "format": "aftertake-film/5",
-  "id": "dd89a73f-c5a7-4241-9284-61d23a3a5239",
+  "id": "fc70b1ba-32fe-4737-9c89-cac4b1ff8062",
   "name": "05 Change",
   "aspect": "landscape",
   "resolution": "1080p",
@@ -61,7 +61,7 @@
         "fit": "cover"
       },
       "start": 0.20833333333333334,
-      "end": 2.6666666666666665,
+      "end": 2.7083333333333335,
       "title": "bridge.mp4",
       "sha256": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe",
       "asset": {
@@ -83,7 +83,7 @@
         "fit": "cover"
       },
       "start": 2,
-      "end": 2.75,
+      "end": 2.7083333333333335,
       "title": "bridgeSrc.mp4",
       "sha256": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92",
       "asset": {
@@ -107,7 +107,7 @@
         "fit": "cover"
       },
       "start": 0.20833333333333334,
-      "end": 1.4583333333333333,
+      "end": 1.5,
       "title": "dancer.mp4",
       "sha256": "c29b4e28631fe52c3cdbb2d4401672ee5837077e941588a33eb49a4e42e3c1d3",
       "asset": {
@@ -129,7 +129,7 @@
         "fit": "cover"
       },
       "start": 0.5833333333333334,
-      "end": 2.4583333333333335,
+      "end": 2.5,
       "title": "ensemble.mp4",
       "sha256": "c914e90401d1495569fab086a1988ec433c9bc671920ff523816d7fcdb38c436",
       "asset": {
@@ -153,7 +153,7 @@
         "fit": "cover"
       },
       "start": 0.5833333333333334,
-      "end": 2.5,
+      "end": 2.4583333333333335,
       "title": "echoes.mp4",
       "sha256": "0a263f3dacd4f96b691b4ce0ae22eb74e56817340bb59ed215e141728af61f49",
       "asset": {
@@ -185,7 +185,7 @@
       "dissolve": 0.25,
       "transition": "zoom",
       "start": 0.5833333333333334,
-      "end": 3.0416666666666665,
+      "end": 3.0833333333333335,
       "title": "teddy.mp4",
       "sha256": "750aaa4a8fd0c56a4c2d1181bf642f3042fb904f29d5de7234a365a2dfe79204",
       "asset": {
@@ -229,7 +229,7 @@
         "fit": "cover"
       },
       "start": 1.4166666666666667,
-      "end": 2,
+      "end": 1.9583333333333333,
       "title": "cool.mp4",
       "sha256": "b22efd0270a7886c4b74d09c9162168190a1f7998075cff57f94ba51a4aac713",
       "asset": {
@@ -251,7 +251,7 @@
         "fit": "cover"
       },
       "start": 1.7916666666666667,
-      "end": 2.375,
+      "end": 2.4166666666666665,
       "title": "noir.mp4",
       "sha256": "40cceacbc91af72858db9bc166991770820804dc856334b2fdc2d0e851d39a2a",
       "asset": {
@@ -340,7 +340,7 @@
         "fit": "cover"
       },
       "start": 0,
-      "end": 0.5833333333333334,
+      "end": 0.625,
       "title": "depthMap.png",
       "sha256": "16204bd64dc604fde5cbf10d731aa3a6a6ef666a492583f33cf30027e98cfb25",
       "asset": {
@@ -397,14 +397,14 @@
       }
     }
   ],
-  "requestKey": "05-Change-1792515750714",
-  "requestDigest": "fff36af6f7ebb4755169fd3a8eaa874c39498e819f85b32a77cc0b05ddfd7281",
+  "requestKey": "05-Change-1792521891744",
+  "requestDigest": "61191201a81228d595bf871533674f71ee05655437cd81ee595221c76645a091",
   "titles": [
     {
-      "id": "51d5ac78-6ead-4054-9cd0-cfb88e112f88",
+      "id": "a623502b-4d92-4fec-8ebc-3fb872a51f8c",
       "text": "TRACK ONE PERSON.",
       "start": 0,
-      "end": 1.184199999999997,
+      "end": 1.1842000000000041,
       "style": "kicker",
       "position": "top",
       "animation": "scramble",
@@ -415,9 +415,9 @@
       "color": "#d5eb94"
     },
     {
-      "id": "11bfa945-6f1a-4412-bbbb-cba0d717d89a",
+      "id": "c9e5fb95-5988-4ac1-b86d-8dfb233eb85d",
       "text": "SAM 3 \u00b7 EVERY FRAME",
-      "start": 1.184199999999997,
+      "start": 1.1842000000000041,
       "end": 2.3451999999999984,
       "style": "kicker",
       "position": "top",
@@ -429,10 +429,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "7647a240-3bba-4d6d-9fe5-12e49e7dc851",
+      "id": "bb299d8b-e40c-4a86-aa81-52d784a74e7d",
       "text": "RECAST ANYONE.",
       "start": 2.3451999999999984,
-      "end": 4.617200000000001,
+      "end": 4.663700000000003,
       "style": "headline",
       "position": "center",
       "animation": "slam",
@@ -443,10 +443,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "b8560915-d86c-4165-be7f-697ac82f1e30",
+      "id": "684ddab0-1755-409b-98ed-82de433274b7",
       "text": "MINIMAX H3 \u00b7 LOCAL \u00b7 SAME PERFORMANCE",
-      "start": 2.4613000000000014,
-      "end": 4.609150000000007,
+      "start": 2.4659600000000026,
+      "end": 4.6556500000000085,
       "style": "kicker",
       "position": "bottom",
       "animation": "scramble",
@@ -457,10 +457,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "f07f06c1-f50b-4377-965d-796b18371d62",
+      "id": "706c9665-11d5-4e26-8619-c619d5a3b240",
       "text": "BEFORE",
-      "start": 4.667200000000001,
-      "end": 5.250899999999998,
+      "start": 4.713700000000003,
+      "end": 5.274200000000004,
       "style": "kicker",
       "position": "top",
       "animation": "scramble",
@@ -471,10 +471,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "bdc6c59b-47d8-427d-8902-31aba1ee7c41",
+      "id": "d2b3f938-34ba-4b3d-a332-ae187ec74283",
       "text": "ONE PERFORMANCE.",
-      "start": 5.2708999999999975,
-      "end": 6.381899999999999,
+      "start": 5.294200000000004,
+      "end": 6.405199999999998,
       "style": "headline",
       "position": "top",
       "animation": "reveal",
@@ -484,10 +484,10 @@
       "color": "#121713"
     },
     {
-      "id": "16300af6-1e0f-42f6-b52a-b333c3e06481",
+      "id": "31fc063c-2cdc-4132-a04e-469527f9f39e",
       "text": "FIVE DANCERS.",
-      "start": 6.431899999999999,
-      "end": 8.1234,
+      "start": 6.455199999999998,
+      "end": 8.193099999999998,
       "style": "headline",
       "position": "top",
       "animation": "slam",
@@ -497,10 +497,10 @@
       "color": "#121713"
     },
     {
-      "id": "b5de9391-ba8b-48ab-8af6-8b3ce7e817d2",
+      "id": "3f5f58b7-b9c5-4682-b451-2c82c0eecdea",
       "text": "OR ECHOES.",
-      "start": 8.1734,
-      "end": 9.888099999999998,
+      "start": 8.243099999999998,
+      "end": 9.957800000000002,
       "style": "headline",
       "position": "top",
       "animation": "glitch",
@@ -509,10 +509,10 @@
       "color": "#ff4fa3"
     },
     {
-      "id": "4ddcd73b-b550-4ffe-92c9-8a9669479027",
+      "id": "b82275a3-3166-4a07-8f2f-a674aa0fcd05",
       "text": "NO REGENERATION \u00b7 ORIGINAL PIXELS \u00b7 CPU",
-      "start": 6.548000000000002,
-      "end": 9.880050000000004,
+      "start": 6.575940000000003,
+      "end": 9.947430000000004,
       "style": "kicker",
       "position": "bottom",
       "animation": "scramble",
@@ -523,10 +523,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "05134496-a45a-485f-b7e9-67be8d473a83",
+      "id": "4ac9f516-b4bf-4c3a-acf5-6854edadaa52",
       "text": "THEIR\nGESTURE.",
-      "start": 9.938099999999999,
-      "end": 11.072300000000002,
+      "start": 10.007800000000003,
+      "end": 11.142,
       "style": "headline",
       "position": "center",
       "animation": "reveal",
@@ -536,10 +536,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "c2abd024-032d-4daa-aab5-6741974c53e4",
+      "id": "6c8b18a3-f97b-4c01-b8a8-b7d296ee7b6c",
       "text": "YOUR\nCHARACTER.",
-      "start": 11.222300000000002,
-      "end": 13.4175,
+      "start": 11.292,
+      "end": 13.487300000000001,
       "style": "headline",
       "position": "center",
       "animation": "slam",
@@ -549,10 +549,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "6107c511-6a8f-406d-9c65-1c322066e52a",
+      "id": "9fa84a1d-72c8-4044-a81e-9145f0b8ca98",
       "text": "WAN ANIMATE 2 \u00b7 MOTION TRANSFER",
-      "start": 11.238400000000006,
-      "end": 13.407130000000002,
+      "start": 11.308100000000003,
+      "end": 13.479250000000008,
       "style": "kicker",
       "position": "bottom",
       "animation": "scramble",
@@ -563,10 +563,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "8ffdca2f-5581-4ec5-9dc6-65b94b9adcf8",
+      "id": "3643b774-45cf-4b69-bebb-6592f8a80e3f",
       "text": "WARM",
-      "start": 13.467500000000001,
-      "end": 14.028000000000002,
+      "start": 13.537300000000002,
+      "end": 14.097800000000003,
       "style": "headline",
       "position": "center",
       "animation": "slam",
@@ -575,10 +575,10 @@
       "color": "#ff6b3d"
     },
     {
-      "id": "b0a0a1ed-1be8-436a-a9ae-543a25f6dd43",
+      "id": "8dfc7f60-6326-402b-83e5-ef99fe0dddef",
       "text": "COOL",
-      "start": 14.048000000000002,
-      "end": 14.608499999999996,
+      "start": 14.117800000000003,
+      "end": 14.678300000000004,
       "style": "headline",
       "position": "center",
       "animation": "glitch",
@@ -587,10 +587,10 @@
       "color": "#7cc7ff"
     },
     {
-      "id": "faa67057-bd0a-4d4c-8c13-b6eee7b798d9",
+      "id": "1252f47b-9979-4db1-ad6e-a6ff9c019a1b",
       "text": "NOIR",
-      "start": 14.628499999999995,
-      "end": 15.188999999999997,
+      "start": 14.698300000000003,
+      "end": 15.282000000000007,
       "style": "headline",
       "position": "center",
       "animation": "slam",
@@ -599,10 +599,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "8cb18b0c-238b-47d8-b509-9983fb1af531",
+      "id": "a2e25127-8b00-45b8-9068-b29fd65cad47",
       "text": "VINTAGE",
-      "start": 15.208999999999996,
-      "end": 15.769499999999997,
+      "start": 15.302000000000007,
+      "end": 15.862500000000008,
       "style": "headline",
       "position": "center",
       "animation": "glitch",
@@ -611,10 +611,10 @@
       "color": "#121713"
     },
     {
-      "id": "c3a60f15-dd30-4cf5-951b-1b6ac73a4e2a",
+      "id": "fa55088a-b4c2-450b-a94b-934db1001fbc",
       "text": "COLOR & FINISH \u00b7 LOOKS \u00b7 CURVES \u00b7 LUTS",
-      "start": 13.525549999999996,
-      "end": 15.760474999999992,
+      "start": 13.595349999999996,
+      "end": 15.853475000000003,
       "style": "kicker",
       "position": "bottom",
       "animation": "scramble",
@@ -625,10 +625,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "0a80e1f2-2d8e-470d-b2e3-00ff95443c94",
+      "id": "2b5418c1-60b1-48c6-b6be-27b43a3bc537",
       "text": "DEPTH \u2192 LENS BLUR",
-      "start": 16.950499999999998,
-      "end": 18.685200000000002,
+      "start": 17.043499999999995,
+      "end": 18.8014,
       "style": "headline",
       "position": "bottom",
       "animation": "pop",
@@ -638,10 +638,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "b2930adf-c579-47ee-a033-57f23f57b34e",
+      "id": "4fbee2bc-684e-457d-b186-987fba86c973",
       "text": "LAYERS & MASKS",
-      "start": 18.715200000000003,
-      "end": 19.265700000000002,
+      "start": 18.831400000000002,
+      "end": 19.3819,
       "style": "headline",
       "position": "bottom",
       "animation": "slam",
@@ -656,7 +656,7 @@
   "sourceVolume": 0,
   "normalizeAudio": false,
   "state": "ready",
-  "duration": 19.291666666666668,
-  "createdAt": "2026-10-20T17:02:30.780Z",
-  "output": "/api/films/dd89a73f-c5a7-4241-9284-61d23a3a5239/video"
+  "duration": 19.416666666666668,
+  "createdAt": "2026-10-20T18:44:53.313Z",
+  "output": "/api/films/fc70b1ba-32fe-4737-9c89-cac4b1ff8062/video"
 }

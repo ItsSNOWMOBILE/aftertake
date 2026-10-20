@@ -2,8 +2,8 @@
 
 ## Then comes the Aftertake
 
-The [90-second beat-cut film](then-comes-the-aftertake/README.md) is seven native
-Film projects on one 103 BPM grid. It uses punch typography, styled transitions,
+The [93-second beat-cut film](then-comes-the-aftertake/README.md) is seven native
+Film projects on the beat grid of its original ACE-Step song. It uses punch typography, styled transitions,
 animated graphics and real studio recordings around this folder's generated takes.
 Its build scripts re-export every scene through the studio's Film API.
 

@@ -1,6 +1,6 @@
 {
   "format": "aftertake-film/5",
-  "id": "d3b4f24c-bace-494e-b8d1-2cb5661a10f6",
+  "id": "bc39cadc-38f3-4381-ae80-abe50772699f",
   "name": "07 Your call",
   "aspect": "landscape",
   "resolution": "1080p",
@@ -15,7 +15,7 @@
         "fit": "cover"
       },
       "start": 1.4166666666666667,
-      "end": 2.0416666666666665,
+      "end": 2,
       "title": "portal-result.mp4",
       "sha256": "94b28bd400836117f9f5be650a4ff1a0727d9f6aeaa7a4322acc3f5ac93998a3",
       "asset": {
@@ -83,7 +83,7 @@
         "fit": "cover"
       },
       "start": 1.7916666666666667,
-      "end": 2.4583333333333335,
+      "end": 2.5416666666666665,
       "title": "crystal-result.mp4",
       "sha256": "58466390b52c27ef59f6d71d86be7e308b93db65f016bcdf60d93a696caae830",
       "asset": {
@@ -129,7 +129,7 @@
         "fit": "cover"
       },
       "start": 1.5833333333333333,
-      "end": 2.3333333333333335,
+      "end": 2.2916666666666665,
       "title": "teddy.mp4",
       "sha256": "750aaa4a8fd0c56a4c2d1181bf642f3042fb904f29d5de7234a365a2dfe79204",
       "asset": {
@@ -153,7 +153,7 @@
         "fit": "cover"
       },
       "start": 1.7916666666666667,
-      "end": 2.5,
+      "end": 2.5833333333333335,
       "title": "falls.mp4",
       "sha256": "363739a46445bc504f8042277bd8cff90aae7db7c6641371f9016a318e88fd98",
       "asset": {
@@ -166,33 +166,11 @@
       }
     },
     {
-      "assetId": "648b85d8-bc65-4e68-8a38-9bbeb4fc3e8c",
-      "framing": {
-        "zoom": 1.03,
-        "endZoom": 1.1,
-        "x": 0.5,
-        "y": 0.5,
-        "fit": "cover"
-      },
-      "start": 2.2083333333333335,
-      "end": 2.9166666666666665,
-      "title": "winter.mp4",
-      "sha256": "9d0db3cb65051affc025d6880b4c85c65723a5142de373803e3892d06d39d22d",
-      "asset": {
-        "name": "winter.mp4",
-        "kind": "video",
-        "sha256": "9d0db3cb65051affc025d6880b4c85c65723a5142de373803e3892d06d39d22d",
-        "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
-      }
-    },
-    {
       "assetId": "0269e4d8-de25-4e43-98e6-7dd4211d78d3",
       "dissolve": 0.25,
       "transition": "flash",
       "start": 0,
-      "end": 7.125,
+      "end": 10.708333333333334,
       "title": "black.png",
       "sha256": "bf6b00e8405598251effbcbac63a6db08ff831425d7c3327e97583264d521818",
       "asset": {
@@ -205,14 +183,14 @@
       }
     }
   ],
-  "requestKey": "07-Your-call-1792516141977",
-  "requestDigest": "f2bb818230ef17a996226ae8a4423194297c7c9d8904510b2c08a2dc5d406ae7",
+  "requestKey": "07-Your-call-1792522229165",
+  "requestDigest": "7cf6db1b1d4cb85243039cbb19b03b9b4777542baf9007b766836267af20a0d0",
   "titles": [
     {
-      "id": "a4a2fd79-55d5-4af4-b3b6-5f06175d350e",
+      "id": "c431d6a7-46c7-40ef-afc7-597f3d41c280",
       "text": "YOUR CLIP.",
       "start": 0,
-      "end": 1.1642000000000041,
+      "end": 1.1410000000000013,
       "style": "headline",
       "position": "center",
       "animation": "slam",
@@ -221,10 +199,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "9c0dea0e-1710-4b89-b2fc-343861bf42cd",
+      "id": "466a754c-2702-4822-b69a-839a1f63291c",
       "text": "YOUR MODELS.",
-      "start": 1.1842000000000041,
-      "end": 2.3252000000000055,
+      "start": 1.1610000000000014,
+      "end": 2.348399999999994,
       "style": "headline",
       "position": "center",
       "animation": "glitch",
@@ -233,10 +211,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "b43617fc-bc71-45f8-9826-f78b436dd85b",
+      "id": "f28c944f-e4c4-4733-bee1-8e72b6121ece",
       "text": "YOUR CALL.",
-      "start": 2.3452000000000055,
-      "end": 4.650400000000011,
+      "start": 2.368399999999994,
+      "end": 4.069899999999996,
       "style": "headline",
       "position": "center",
       "animation": "slam",
@@ -247,10 +225,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "3146abd2-b6f8-480c-a9d9-e7fac817f201",
+      "id": "b326c4e4-37f7-4dfc-a097-aa5198b2b26c",
       "text": "OPEN SOURCE \u00b7 MIT",
-      "start": 5.561149999999998,
-      "end": 11.55280000000001,
+      "start": 4.9923,
+      "end": 14.524999999999997,
       "style": "headline",
       "position": "center",
       "animation": "slam",
@@ -282,10 +260,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "82aad9ca-31a6-4e26-884d-23fce9d4c37f",
+      "id": "994e8a5a-14df-4066-8a7d-f9b04e35971b",
       "text": "BUILT ON THE COMFY SDK \u00b7 OPEN WEIGHTS \u00b7 YOUR GPU",
-      "start": 6.1416499999999985,
-      "end": 11.55280000000001,
+      "start": 5.58444999999999,
+      "end": 14.524999999999997,
       "style": "kicker",
       "position": "center",
       "animation": "scramble",
@@ -315,10 +293,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "6c5c68fe-22f3-4c7b-9e3e-2a9e434f6406",
+      "id": "1b200808-4a02-4b11-9071-f93ea2151ade",
       "text": "github.com/ItsSNOWMOBILE/aftertake",
-      "start": 6.733750000000001,
-      "end": 11.55280000000001,
+      "start": 6.16494999999999,
+      "end": 14.524999999999997,
       "style": "caption",
       "position": "center",
       "animation": "typewriter",
@@ -348,10 +326,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "24f7b967-4cd0-433e-baa7-11ee694b81c9",
-      "text": "Music: \u201cBig Boi Pants\u201d by Shane Ivers \u00b7 silvermansound.com \u00b7 CC BY 4.0",
-      "start": 8.196600000000004,
-      "end": 11.55280000000001,
+      "id": "e5e1ff67-f59d-4c39-9f2c-2847b6a000da",
+      "text": "Song: \u201cAftertake\u201d, written for this film and generated with",
+      "start": 10.007799999999989,
+      "end": 14.524999999999997,
       "style": "kicker",
       "position": "bottom",
       "animation": "fade",
@@ -360,7 +338,7 @@
           {
             "at": 0,
             "x": 0,
-            "y": -0.05,
+            "y": -0.16,
             "scale": 1,
             "rotation": 0,
             "opacity": 1
@@ -368,7 +346,7 @@
           {
             "at": 1,
             "x": 0,
-            "y": -0.05,
+            "y": -0.16,
             "scale": 1,
             "rotation": 0,
             "opacity": 1
@@ -381,10 +359,43 @@
       "color": "#9aa58d"
     },
     {
-      "id": "1462fe66-02a7-4b50-927b-4cbbe2ad2e8a",
+      "id": "567d2b08-5098-4edc-ba15-5737cc5b7b59",
+      "text": "ACE-Step 1.5 XL Turbo (open weights) on Comfy Cloud \u00b7 aftertake-song-ace-step.json",
+      "start": 10.007799999999989,
+      "end": 14.524999999999997,
+      "style": "kicker",
+      "position": "bottom",
+      "animation": "fade",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": -0.134,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.134,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 16,
+      "stroke": false,
+      "font": "mono",
+      "color": "#9aa58d"
+    },
+    {
+      "id": "b19d4b19-25f1-45ed-be91-7a10d0d49212",
       "text": "Footage: Curtis Adams, Mikhail Nilov, Dean Diemert, Florian Del\u00e9e,",
-      "start": 8.196600000000004,
-      "end": 11.55280000000001,
+      "start": 10.007799999999989,
+      "end": 14.524999999999997,
       "style": "kicker",
       "position": "bottom",
       "animation": "fade",
@@ -393,7 +404,7 @@
           {
             "at": 0,
             "x": 0,
-            "y": -0.024000000000000004,
+            "y": -0.108,
             "scale": 1,
             "rotation": 0,
             "opacity": 1
@@ -401,7 +412,7 @@
           {
             "at": 1,
             "x": 0,
-            "y": -0.024000000000000004,
+            "y": -0.108,
             "scale": 1,
             "rotation": 0,
             "opacity": 1
@@ -414,10 +425,10 @@
       "color": "#9aa58d"
     },
     {
-      "id": "3334d191-0c32-442f-bdbb-a05587fbe5f9",
+      "id": "27787b30-9ee2-4d0f-bf32-c8837b91d3aa",
       "text": "Antoni Shkraba, Michael Burrows / Pexels \u00b7 Tears of Steel \u00a9 Blender Foundation, CC BY 3.0",
-      "start": 8.196600000000004,
-      "end": 11.55280000000001,
+      "start": 10.007799999999989,
+      "end": 14.524999999999997,
       "style": "kicker",
       "position": "bottom",
       "animation": "fade",
@@ -426,7 +437,7 @@
           {
             "at": 0,
             "x": 0,
-            "y": 0.001999999999999995,
+            "y": -0.08199999999999999,
             "scale": 1,
             "rotation": 0,
             "opacity": 1
@@ -434,7 +445,7 @@
           {
             "at": 1,
             "x": 0,
-            "y": 0.001999999999999995,
+            "y": -0.08199999999999999,
             "scale": 1,
             "rotation": 0,
             "opacity": 1
@@ -447,10 +458,10 @@
       "color": "#9aa58d"
     },
     {
-      "id": "65ddfbc8-ae51-4fc8-8b38-72735bf17d3d",
-      "text": "Every effect rendered locally in Aftertake with open-weight models.",
-      "start": 8.196600000000004,
-      "end": 11.55280000000001,
+      "id": "daccdd49-8011-490f-a863-27864473012d",
+      "text": "Every effect rendered in Aftertake with open-weight models.",
+      "start": 10.007799999999989,
+      "end": 14.524999999999997,
       "style": "kicker",
       "position": "bottom",
       "animation": "fade",
@@ -459,7 +470,7 @@
           {
             "at": 0,
             "x": 0,
-            "y": 0.027999999999999997,
+            "y": -0.055999999999999994,
             "scale": 1,
             "rotation": 0,
             "opacity": 1
@@ -467,7 +478,7 @@
           {
             "at": 1,
             "x": 0,
-            "y": 0.027999999999999997,
+            "y": -0.055999999999999994,
             "scale": 1,
             "rotation": 0,
             "opacity": 1
@@ -480,10 +491,10 @@
       "color": "#9aa58d"
     },
     {
-      "id": "66f7203f-cb5d-460a-ba39-721c793da961",
+      "id": "572cfa86-a254-4fbd-a847-7a1efa3c3c8b",
       "text": "Edited, titled and cut to the beat in Aftertake Film.",
-      "start": 8.196600000000004,
-      "end": 11.55280000000001,
+      "start": 10.007799999999989,
+      "end": 14.524999999999997,
       "style": "kicker",
       "position": "bottom",
       "animation": "fade",
@@ -492,7 +503,7 @@
           {
             "at": 0,
             "x": 0,
-            "y": 0.05399999999999999,
+            "y": -0.03,
             "scale": 1,
             "rotation": 0,
             "opacity": 1
@@ -500,7 +511,7 @@
           {
             "at": 1,
             "x": 0,
-            "y": 0.05399999999999999,
+            "y": -0.03,
             "scale": 1,
             "rotation": 0,
             "opacity": 1
@@ -515,11 +526,11 @@
   ],
   "graphics": [
     {
-      "id": "af630390-ad6b-4d0b-9293-edf102e87696",
+      "id": "49d3fecf-e3ec-4a51-af1a-4cdfc21cf2e6",
       "name": "logo",
       "kind": "image",
-      "start": 4.690400000000011,
-      "end": 11.70280000000001,
+      "start": 4.109899999999996,
+      "end": 14.666666666666666,
       "x": 0.5,
       "y": 0.27,
       "width": 0.56,
@@ -539,7 +550,7 @@
             "opacity": 0
           },
           {
-            "at": 0.04,
+            "at": 0.03,
             "x": 0,
             "y": 0,
             "scale": 1,
@@ -548,7 +559,7 @@
             "easing": "ease-in"
           },
           {
-            "at": 0.94,
+            "at": 0.96,
             "x": 0,
             "y": 0,
             "scale": 1.04,
@@ -572,7 +583,7 @@
   "sourceVolume": 0,
   "normalizeAudio": false,
   "state": "ready",
-  "duration": 11.708333333333334,
-  "createdAt": "2026-10-20T17:09:02.036Z",
-  "output": "/api/films/d3b4f24c-bace-494e-b8d1-2cb5661a10f6/video"
+  "duration": 14.666666666666666,
+  "createdAt": "2026-10-20T18:50:29.188Z",
+  "output": "/api/films/bc39cadc-38f3-4381-ae80-abe50772699f/video"
 }

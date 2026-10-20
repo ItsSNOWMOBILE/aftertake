@@ -1,6 +1,6 @@
 {
   "format": "aftertake-film/5",
-  "id": "24693d36-7d77-4789-ae8c-1f5e7258d4b5",
+  "id": "8b07d511-c115-48cc-97ef-727ad53721cf",
   "name": "06 Agents and Film",
   "aspect": "landscape",
   "resolution": "1080p",
@@ -25,7 +25,7 @@
       "dissolve": 0.25,
       "transition": "flash",
       "start": 2.2083333333333335,
-      "end": 4.208333333333333,
+      "end": 4.25,
       "title": "agentAd.mp4",
       "sha256": "69d709f353879959a0ba6c3183e3d1b69ab08d2237584c0dc0ab7c069369a4f1",
       "asset": {
@@ -38,7 +38,7 @@
       }
     },
     {
-      "assetId": "727c0709-6116-485a-a044-348cdc7a4363",
+      "assetId": "8df11a73-8216-407d-8e8c-f1fec3d67bb9",
       "dissolve": 0.25,
       "transition": "zoom",
       "framing": {
@@ -50,18 +50,18 @@
       "start": 1.2083333333333333,
       "end": 3.7916666666666665,
       "title": "uiFilm.mp4",
-      "sha256": "7804abbcc409db10efbe02a3208b9e8fcbb70a8ea78489951660a9421c772494",
+      "sha256": "d7254e108cb91bebfe034d513b3266b651d730710ef372e9efa3ed56e52f3a6d",
       "asset": {
         "name": "uiFilm.mp4",
         "kind": "video",
-        "sha256": "7804abbcc409db10efbe02a3208b9e8fcbb70a8ea78489951660a9421c772494",
-        "duration": 16.5,
+        "sha256": "d7254e108cb91bebfe034d513b3266b651d730710ef372e9efa3ed56e52f3a6d",
+        "duration": 12.958333333333334,
         "width": 1920,
         "height": 1080
       }
     },
     {
-      "assetId": "727c0709-6116-485a-a044-348cdc7a4363",
+      "assetId": "8df11a73-8216-407d-8e8c-f1fec3d67bb9",
       "dissolve": 0.25,
       "transition": "whip",
       "framing": {
@@ -70,21 +70,21 @@
         "x": 0.36,
         "y": 0.56
       },
-      "start": 9.5,
-      "end": 10.916666666666666,
+      "start": 7.583333333333333,
+      "end": 9,
       "title": "uiFilm.mp4",
-      "sha256": "7804abbcc409db10efbe02a3208b9e8fcbb70a8ea78489951660a9421c772494",
+      "sha256": "d7254e108cb91bebfe034d513b3266b651d730710ef372e9efa3ed56e52f3a6d",
       "asset": {
         "name": "uiFilm.mp4",
         "kind": "video",
-        "sha256": "7804abbcc409db10efbe02a3208b9e8fcbb70a8ea78489951660a9421c772494",
-        "duration": 16.5,
+        "sha256": "d7254e108cb91bebfe034d513b3266b651d730710ef372e9efa3ed56e52f3a6d",
+        "duration": 12.958333333333334,
         "width": 1920,
         "height": 1080
       }
     },
     {
-      "assetId": "727c0709-6116-485a-a044-348cdc7a4363",
+      "assetId": "8df11a73-8216-407d-8e8c-f1fec3d67bb9",
       "dissolve": 0.25,
       "transition": "glitch",
       "framing": {
@@ -93,28 +93,28 @@
         "x": 0.46,
         "y": 0.5
       },
-      "start": 13.416666666666666,
-      "end": 15.291666666666666,
+      "start": 10.208333333333334,
+      "end": 12.125,
       "title": "uiFilm.mp4",
-      "sha256": "7804abbcc409db10efbe02a3208b9e8fcbb70a8ea78489951660a9421c772494",
+      "sha256": "d7254e108cb91bebfe034d513b3266b651d730710ef372e9efa3ed56e52f3a6d",
       "asset": {
         "name": "uiFilm.mp4",
         "kind": "video",
-        "sha256": "7804abbcc409db10efbe02a3208b9e8fcbb70a8ea78489951660a9421c772494",
-        "duration": 16.5,
+        "sha256": "d7254e108cb91bebfe034d513b3266b651d730710ef372e9efa3ed56e52f3a6d",
+        "duration": 12.958333333333334,
         "width": 1920,
         "height": 1080
       }
     }
   ],
-  "requestKey": "06-Agents-and-Film-1792515239891",
-  "requestDigest": "7e07323a1b84bbbb5fb6bfb56a7b6b21bc19efc563fcbd7dd1cbf66b695f345f",
+  "requestKey": "06-Agents-and-Film-1792522935344",
+  "requestDigest": "903b832c842098faf1c10bad401c75ddad840a877871167e745c94c5374d2cbd",
   "titles": [
     {
-      "id": "beb7d097-a70e-40ad-91bd-9c40e47384c3",
+      "id": "bccd7490-21f3-438b-a292-dbeb943e7e46",
       "text": "AN AGENT CAN CUT IT TOO.",
       "start": 0,
-      "end": 2.272000000000003,
+      "end": 2.3183999999999942,
       "style": "headline",
       "position": "top",
       "animation": "reveal",
@@ -123,10 +123,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "0f0a6dc0-97f0-46e1-ba28-d72873b23db5",
-      "text": "\u203a aftertake_detect_beats      103 BPM in 1.2 s",
-      "start": 0.29025000000000034,
-      "end": 2.272000000000003,
+      "id": "e6b6e798-359f-46af-b7f4-b19827da1aa3",
+      "text": "\u203a aftertake_detect_beats      102 BPM in 0.9 s",
+      "start": 0.30185000000000173,
+      "end": 2.3183999999999942,
       "style": "caption",
       "position": "center",
       "animation": "typewriter",
@@ -158,10 +158,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "91b26bf9-fad2-4881-90b5-b2bdad4a918d",
+      "id": "219ae200-aa0b-41e8-b968-2d6c25595dcd",
       "text": "\u203a aftertake_save_film_edit    aftertake-film/5",
-      "start": 0.754649999999998,
-      "end": 2.272000000000003,
+      "start": 0.7778500000000008,
+      "end": 2.3183999999999942,
       "style": "caption",
       "position": "center",
       "animation": "typewriter",
@@ -193,10 +193,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "3f1149d3-d04d-40ff-ba61-0b8672978267",
+      "id": "a5885828-efd5-44e0-b64e-a4801df89efe",
       "text": "\u203a aftertake_export_plan       native render",
-      "start": 1.2190499999999957,
-      "end": 2.272000000000003,
+      "start": 1.2422499999999985,
+      "end": 2.3183999999999942,
       "style": "caption",
       "position": "center",
       "animation": "typewriter",
@@ -228,10 +228,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "52a4a8f4-4a05-41de-b2c8-80dceb4e356b",
+      "id": "3bcef138-4226-4c8d-b0a6-e934db79c136",
       "text": "\u203a aftertake_review_film       decoded frames",
-      "start": 1.6834500000000077,
-      "end": 2.272000000000003,
+      "start": 1.7066500000000104,
+      "end": 2.3183999999999942,
       "style": "caption",
       "position": "center",
       "animation": "typewriter",
@@ -263,10 +263,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "1165967c-7c13-4024-9a11-585d46da7ffd",
+      "id": "9b9e6721-4f8c-470a-b35b-b9f7627de03e",
       "text": "44 MCP TOOLS \u00b7 SAME LOCAL STUDIO",
-      "start": 0.11610000000000298,
-      "end": 2.2929749999999984,
+      "start": 0.12073999999999785,
+      "end": 2.338214999999991,
       "style": "kicker",
       "position": "bottom",
       "animation": "scramble",
@@ -277,10 +277,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "1c52ffe3-88a5-4fe3-af62-6294f14d1430",
+      "id": "39439adf-e8ff-4b34-80bb-6497c5ecd8b6",
       "text": "44 MCP\nTOOLS.",
-      "start": 2.3220000000000027,
-      "end": 4.036799999999997,
+      "start": 2.368399999999994,
+      "end": 4.083200000000002,
       "style": "headline",
       "position": "center",
       "animation": "slam",
@@ -290,10 +290,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "c0f80ef7-1ea2-4cc8-9423-d189ade6b2e2",
+      "id": "0f214592-20d3-480e-9b65-60d4b42f36b6",
       "text": "THIS AD WAS\nASSEMBLED\nTHROUGH MCP",
-      "start": 2.442760000000007,
-      "end": 4.057774999999992,
+      "start": 2.484499999999997,
+      "end": 4.103009999999998,
       "style": "kicker",
       "position": "bottom",
       "animation": "scramble",
@@ -304,10 +304,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "8ed58441-4096-4ce2-8c27-fee8b823466c",
+      "id": "7e2170ba-b2c3-4eae-9fc8-c3df4cbb913a",
       "text": "SLAM.",
-      "start": 4.086799999999997,
-      "end": 4.647299999999998,
+      "start": 4.133200000000002,
+      "end": 4.693700000000003,
       "style": "headline",
       "position": "top",
       "animation": "slam",
@@ -317,10 +317,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "fc6180d2-771c-46c3-807c-d2612646fc37",
+      "id": "470d492c-f6b3-4b6d-8bab-57527741a4aa",
       "text": "GLITCH.",
-      "start": 4.667299999999997,
-      "end": 5.2277999999999984,
+      "start": 4.713700000000003,
+      "end": 5.274200000000004,
       "style": "headline",
       "position": "top",
       "animation": "glitch",
@@ -330,10 +330,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "fe74cc62-3fd5-4252-9945-fe985f1501d9",
+      "id": "d92fc3bd-974e-4d8f-8fff-9cbdc211d991",
       "text": "SCRAMBLE.",
-      "start": 5.247799999999998,
-      "end": 5.808299999999999,
+      "start": 5.294200000000004,
+      "end": 5.877899999999993,
       "style": "headline",
       "position": "top",
       "animation": "scramble",
@@ -343,10 +343,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "e109bf7a-3066-4131-8a23-ca18dbf82a03",
+      "id": "8cb59c01-e544-4687-8410-be68dc633d31",
       "text": "POP.",
-      "start": 5.828299999999999,
-      "end": 6.3888,
+      "start": 5.897899999999993,
+      "end": 6.458399999999994,
       "style": "headline",
       "position": "top",
       "animation": "pop",
@@ -356,10 +356,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "c5cf9afa-f52f-45b2-8f80-1d160bb8d69a",
+      "id": "b66cad2c-8764-44d0-af02-d5a7e39e7e9d",
       "text": "WHIP \u00b7 ZOOM \u00b7 FLASH",
-      "start": 6.469169999999991,
-      "end": 7.57299999999999,
+      "start": 6.536449999999988,
+      "end": 7.642599999999998,
       "style": "headline",
       "position": "top",
       "animation": "pop",
@@ -369,10 +369,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "9d9c22fd-b62d-4457-a110-f925be27bcee",
+      "id": "f29bf9e0-85b9-4a74-a6fc-846375d865a1",
       "text": "CUT TO THE BEAT.",
-      "start": 7.592999999999989,
-      "end": 9.294499999999992,
+      "start": 7.662599999999998,
+      "end": 9.387300000000003,
       "style": "headline",
       "position": "top",
       "animation": "slam",
@@ -383,10 +383,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "5e8c428a-d87a-4fd0-95f4-f8d1326ea182",
+      "id": "4b2dc53a-be3f-4fcd-94ad-6ff128ece28e",
       "text": "THIS FILM WAS CUT IN AFTERTAKE",
-      "start": 7.709099999999992,
-      "end": 9.305474999999987,
+      "start": 7.778700000000001,
+      "end": 9.398274999999998,
       "style": "kicker",
       "position": "bottom",
       "animation": "scramble",
@@ -401,7 +401,7 @@
   "sourceVolume": 0,
   "normalizeAudio": false,
   "state": "ready",
-  "duration": 9.333333333333334,
-  "createdAt": "2026-10-20T16:53:59.903Z",
-  "output": "/api/films/24693d36-7d77-4789-ae8c-1f5e7258d4b5/video"
+  "duration": 9.416666666666666,
+  "createdAt": "2026-10-20T19:02:15.364Z",
+  "output": "/api/films/8b07d511-c115-48cc-97ef-727ad53721cf/video"
 }

@@ -1,6 +1,6 @@
 import { execFileSync } from 'node:child_process';
 import { asset, render } from './api.mjs';
-import { scenes, files, T } from './edit.mjs';
+import { scenes, files, T, music as track, placement } from './edit.mjs';
 const OUT = process.argv[2];
 const shots = [];
 for (const sc of scenes) {
@@ -16,7 +16,11 @@ const music = await asset(files.music, 'music.mp3');
 const draft = {
   name: 'Then comes the Aftertake', aspect: 'landscape', resolution: '1080p',
   shots, sourceVolume: 0, normalizeAudio: false,
-  audio: [{ assetId: music.id, start: 0, sourceStart: 0, sourceEnd: total, volume: 0.75, fadeOut: 1.6 }],
+  audio: [{
+    assetId: music.id, start: placement.start, sourceStart: placement.sourceStart,
+    sourceEnd: Math.min(track.duration, placement.sourceStart + total - placement.start),
+    volume: track.volume, ...(track.fadeOut ? { fadeOut: track.fadeOut } : {}),
+  }],
 };
 console.log(`master: ${shots.length} scenes, ${total.toFixed(3)}s`);
 await render(draft, `master-${Date.now()}`, `${OUT}/then-comes-the-aftertake.mp4`);

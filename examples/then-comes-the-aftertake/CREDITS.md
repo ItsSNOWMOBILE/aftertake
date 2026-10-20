@@ -1,8 +1,10 @@
 # Credits
 
-**Music** — “Big Boi Pants” by Shane Ivers, https://www.silvermansound.com,
-licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
-The first 90.208 s are used, at −2.5 dB, with a 1.6 s fade-out.
+**Music** — “Aftertake”, an original song with lyrics written for this film
+(`build/song.json`). ACE-Step 1.5 XL Turbo, an open-weight model, generated it
+on Comfy Cloud from Comfy's MIT-licensed workflow template
+(`build/aftertake-song-ace-step.json`). It is used from its start, at
+−4.2 dB, offset 1.742 s into the film so that its drop meets the logo.
 
 **Footage** (the [Pexels License](https://www.pexels.com/license/); excerpts and
 generated derivatives are documented in [media-attribution](../../docs/media-attribution.md)):

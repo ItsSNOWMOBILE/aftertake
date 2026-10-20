@@ -1,6 +1,6 @@
 {
   "format": "aftertake-film/5",
-  "id": "c2d182c9-21d6-4ede-a998-174c0fde6507",
+  "id": "6a0a7cb8-ce36-4f17-a005-89095a002d16",
   "name": "01 Every shot ends",
   "aspect": "landscape",
   "resolution": "1080p",
@@ -8,7 +8,7 @@
     {
       "assetId": "0269e4d8-de25-4e43-98e6-7dd4211d78d3",
       "start": 0,
-      "end": 3.25,
+      "end": 3.0416666666666665,
       "title": "black.png",
       "sha256": "bf6b00e8405598251effbcbac63a6db08ff831425d7c3327e97583264d521818",
       "asset": {
@@ -31,7 +31,7 @@
         "fit": "cover"
       },
       "start": 0.20833333333333334,
-      "end": 2.8333333333333335,
+      "end": 2.75,
       "title": "roomSrc.mp4",
       "sha256": "f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2",
       "asset": {
@@ -54,7 +54,7 @@
         "fit": "cover"
       },
       "start": 0,
-      "end": 2.5416666666666665,
+      "end": 2.625,
       "title": "fallsSrc.mp4",
       "sha256": "b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57",
       "asset": {
@@ -92,7 +92,7 @@
     {
       "assetId": "0269e4d8-de25-4e43-98e6-7dd4211d78d3",
       "start": 0,
-      "end": 2.875,
+      "end": 2.9166666666666665,
       "title": "black.png",
       "sha256": "bf6b00e8405598251effbcbac63a6db08ff831425d7c3327e97583264d521818",
       "asset": {
@@ -105,14 +105,14 @@
       }
     }
   ],
-  "requestKey": "01-Every-shot-ends-1792513796648",
-  "requestDigest": "b833b4d920b6d1233b871dd02e48130477026507c008b662be997f5ee3f4ed1d",
+  "requestKey": "01-Every-shot-ends-1792521220748",
+  "requestDigest": "702f8af83f85a6fef1ae4374f834c3773186606958b336f637fb76485ac549dc",
   "titles": [
     {
-      "id": "8208f96f-a8d2-4cd2-a9d9-8f86d97c3d13",
+      "id": "bf7d10c9-42cd-4c89-97bc-8e6ce0d4145b",
       "text": "EVERY SHOT",
-      "start": 0.8127,
-      "end": 3.0847,
+      "start": 0.5805000000000007,
+      "end": 2.8525000000000027,
       "style": "headline",
       "position": "center",
       "animation": "reveal",
@@ -121,24 +121,24 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "d576099f-ce85-4f0f-bc0a-1fb5c781e0e9",
+      "id": "e36c29b4-5afc-4a7b-abe9-3a7c9ce8cac4",
       "text": "YOUR FOOTAGE \u00b7 SHOT ONCE",
-      "start": 3.3669000000000002,
-      "end": 9.4505,
+      "start": 3.1347000000000027,
+      "end": 9.241500000000004,
       "style": "kicker",
       "position": "bottom",
       "animation": "scramble",
-      "fontSize": 26,
+      "fontSize": 32,
       "stroke": false,
       "align": "left",
       "font": "mono",
       "color": "#d5eb94"
     },
     {
-      "id": "7670b759-7451-47a8-9c5b-501a98158f7b",
+      "id": "239ef083-a4e1-481e-8d23-71a3b6e28d58",
       "text": "ENDS.",
-      "start": 4.9262,
-      "end": 7.2214,
+      "start": 4.694000000000003,
+      "end": 6.989200000000003,
       "style": "headline",
       "position": "center",
       "animation": "glitch",
@@ -147,10 +147,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "3531bfc5-53f5-427f-85cf-c4ba706d057c",
+      "id": "8d86c7fe-2113-4702-bf9e-c26c4aa68505",
       "text": "THEN COMES THE",
-      "start": 10.1471,
-      "end": 12.4291,
+      "start": 9.938100000000002,
+      "end": 12.243400000000003,
       "style": "headline",
       "position": "center",
       "animation": "pop",
@@ -164,7 +164,7 @@
   "sourceVolume": 0,
   "normalizeAudio": false,
   "state": "ready",
-  "duration": 12.458333333333334,
-  "createdAt": "2026-10-20T16:29:56.671Z",
-  "output": "/api/films/c2d182c9-21d6-4ede-a998-174c0fde6507/video"
+  "duration": 12.291666666666666,
+  "createdAt": "2026-10-20T18:33:41.405Z",
+  "output": "/api/films/6a0a7cb8-ce36-4f17-a005-89095a002d16/video"
 }

@@ -1,7 +1,10 @@
 """Prepare the film's work folder: beats, plates and the new CPU effect renders.
 
 Run from the repository root with the Film media runtime:
-    python examples/then-comes-the-aftertake/build/prepare.py path/to/big-boi-pants.mp3
+    python examples/then-comes-the-aftertake/build/prepare.py path/to/aftertake-song.mp3
+
+The soundtrack is described by music.json (file name, checksum, drop and end-card
+beats); render it from aftertake-song-ace-step.json first.
 Nothing here runs a generation model; every input is an existing example output.
 """
 import hashlib
@@ -16,7 +19,6 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parent
 WORK = HERE.parent / 'work'
-MUSIC_SHA256 = 'f8f00834dc7ac244595220f69f4c69d726dddea5b4c2719f25ca14b8553f7763'
 
 
 def run(*args):
@@ -25,10 +27,12 @@ def run(*args):
 
 def main(music):
     WORK.mkdir(exist_ok=True)
-    if hashlib.sha256(Path(music).read_bytes()).hexdigest() != MUSIC_SHA256:
-        raise SystemExit('Use the original big-boi-pants.mp3 from silvermansound.com.')
-    shutil.copyfile(music, WORK / 'big-boi-pants.mp3')
-    (WORK / 'big-boi-pants.beats.json').write_text(run(ROOT / 'scripts/detect-beats.py', WORK / 'big-boi-pants.mp3'))
+    track = json.loads((HERE / 'music.json').read_text(encoding='utf-8'))
+    if hashlib.sha256(Path(music).read_bytes()).hexdigest() != track['sha256']:
+        raise SystemExit('This audio differs from the soundtrack described in music.json.')
+    shutil.copyfile(music, WORK / track['file'])
+    (WORK / track['beats']).write_text(run(ROOT / 'scripts/detect-beats.py', WORK / track['file']))
+    shutil.copyfile(HERE / 'music.json', WORK / 'music.json')
     for name, colour in [('plate-black', (8, 10, 9)), ('plate-dark', (18, 23, 19))]:
         Image.new('RGB', (1920, 1080), colour).save(WORK / f'{name}.png')
     shutil.copyfile(HERE.parent / 'assets/logo-dark.png', WORK / 'logo-dark.png')

@@ -20,17 +20,18 @@ An open-source creative studio for short-form video, product stories and visual 
 
 ## THEN COMES THE AFTERTAKE
 
-[![Then comes the Aftertake — a 90-second beat-cut film made in Aftertake](examples/then-comes-the-aftertake/poster.jpg)](examples/then-comes-the-aftertake/film.mp4)
+[![Then comes the Aftertake — a 93-second beat-cut film made in Aftertake](examples/then-comes-the-aftertake/poster.jpg)](examples/then-comes-the-aftertake/film.mp4)
 
-**[Watch the 90-second film →](examples/then-comes-the-aftertake/film.mp4)** ·
+**[Watch the 93-second film →](examples/then-comes-the-aftertake/film.mp4)** ·
 **[Open its editable projects →](examples/then-comes-the-aftertake/README.md)**
 
-Every shot ends. Then comes the aftertake. A 103 BPM cut through generated
+Every shot ends. Then comes the aftertake. The film cuts through generated
 portals, crystals, castles, recast characters, echoes and finishing looks, with
-the real UI that made them. Its 59 shots, 79 punch titles and 23 whip, zoom, flash
-and glitch transitions are native Film layers. Every cut lands on the beat that
-`aftertake_detect_beats` found. The closing shots show this same film being cut
-in Aftertake's editor.
+the real UI that made them. It runs on an original song written for it, made
+with open-weight ACE-Step 1.5 on Comfy Cloud. Its 58 shots, 80 punch titles and
+23 whip, zoom, flash and glitch transitions are native Film layers, cut to the
+song's beats as measured by `aftertake_detect_beats`. The closing shots show
+this film being cut in Aftertake's own editor.
 
 ## TAKE THE LEAD
 

@@ -10,22 +10,34 @@ const R = path.resolve(FILM, '..');
 // prepare.py writes the music, its beats, plates and the new CPU renders here.
 const WORK = process.env.AFTERTAKE_FILM_WORK || path.join(FILM, 'work');
 const RECORDINGS = path.join(FILM, 'recordings');
-const beatsFile = JSON.parse(readFileSync(`${WORK}/big-boi-pants.beats.json`, 'utf8'));
-const allBeats = beatsFile.beats;
-const drop = allBeats.findIndex((time) => Math.abs(time - 12.4691) < 0.02);
-/** Master seconds of beat k, counted from the drop (k = 0). */
-const beatAt = (index) => (index < 0 ? 0 : allBeats[index]);
+// music.json names the soundtrack, its beat analysis and the downbeat the logo
+// lands on; the edit counts beats from that drop, so any steady track can drive it.
+export const music = JSON.parse(readFileSync(`${WORK}/music.json`, 'utf8'));
+const allBeats = JSON.parse(readFileSync(`${WORK}/${music.beats}`, 'utf8')).beats;
+const drop = allBeats.reduce((best, time, index) =>
+  Math.abs(time - music.dropTime) < Math.abs(allBeats[best] - music.dropTime) ? index : best, 0);
+const period = allBeats.slice(1).map((time, index) => time - allBeats[index]).sort((a, b) => a - b)[Math.floor((allBeats.length - 1) / 2)];
+/** Song seconds of any beat index, extrapolated before the first and after the last. */
+const songBeat = (index) =>
+  index < 0 ? allBeats[0] + index * period
+    : index >= allBeats.length ? allBeats.at(-1) + (index - allBeats.length + 1) * period : allBeats[index];
+/** The film opens 21 beats before the drop; the song is shifted to match. */
+const INTRO = 21;
+const shift = -songBeat(drop - INTRO);
+/** Where the music sits on the film clock (start / source trim), for the master. */
+export const placement = { start: Math.max(0, shift), sourceStart: Math.max(0, -shift) };
+/** Film seconds of beat k, counted from the drop (k = 0). */
 export const T = (k) => {
   const whole = Math.floor(k), part = k - whole;
-  const a = beatAt(drop + whole);
-  return part ? a + (beatAt(drop + whole + 1) - a) * part : a;
+  const a = songBeat(drop + whole) + shift;
+  return part ? a + (songBeat(drop + whole + 1) + shift - a) * part : a;
 };
 export const F = (seconds) => Math.round(seconds * 24);
 
 export const LIME = '#d5eb94', CREAM = '#f3f1e9', INK = '#121713', HOT = '#ff6b3d', PINK = '#ff4fa3';
 
 export const files = {
-  music: `${WORK}/big-boi-pants.mp3`,
+  music: `${WORK}/${music.file}`,
   black: `${WORK}/plate-black.png`,
   dark: `${WORK}/plate-dark.png`,
   logo: `${WORK}/logo-dark.png`,
@@ -264,7 +276,7 @@ scenes.push(
     shot('dark', 97, 101);
     title('AN AGENT CAN CUT IT TOO.', 97, 101, big({ position: 'top', fontSize: 58, animation: 'reveal', early: 0.05 }));
     const lines = [
-      ['› aftertake_detect_beats      103 BPM in 1.2 s', 97.5],
+      ['› aftertake_detect_beats      102 BPM in 0.9 s', 97.5],
       ['› aftertake_save_film_edit    aftertake-film/5', 98.3],
       ['› aftertake_export_plan       native render', 99.1],
       ['› aftertake_review_film       decoded frames', 99.9],
@@ -278,34 +290,36 @@ scenes.push(
     shot('uiFilm', 104, 108, { in: 1.2, framing: ui(0.38, 0.5, 2.1, 2.2), dissolve: D, transition: 'zoom' });
     [['SLAM.', 'slam'], ['GLITCH.', 'glitch'], ['SCRAMBLE.', 'scramble'], ['POP.', 'pop']].forEach(([text, animation], index) =>
       title(text, 104 + index, 105 + index, big({ position: 'top', fontSize: 110, animation, color: index % 2 ? LIME : CREAM, motionDuration: 0.45, early: 0.02 })));
-    shot('uiFilm', 108, 110, { in: 9.5, framing: ui(0.36, 0.56, 2.2, 2.3), dissolve: D, transition: 'whip' });
+    shot('uiFilm', 108, 110, { in: 7.6, framing: ui(0.36, 0.56, 2.2, 2.3), dissolve: D, transition: 'whip' });
     title('WHIP · ZOOM · FLASH', 108.1, 110, big({ position: 'top', fontSize: 92, animation: 'pop', motionDuration: 0.5, early: 0.02 }));
-    shot('uiFilm', 110, 113, { in: 13.4, framing: ui(0.46, 0.5, 2.2, 2.35), dissolve: D, transition: 'glitch' });
+    shot('uiFilm', 110, 113, { in: 10.2, framing: ui(0.46, 0.5, 2.2, 2.35), dissolve: D, transition: 'glitch' });
     title('CUT TO THE BEAT.', 110, 113, big({ position: 'top', fontSize: 100, box: 'highlight', color: LIME, tilt: -3, early: 0.04 }));
     title('THIS FILM WAS CUT IN AFTERTAKE', 110.2, 112.95, kicker({ color: CREAM }));
   }),
   // 7 · Finale and credits.
-  scene('07 Your call', 113, 133, ({ shot, title, graphic }) => {
-    const finale = [['portal', 1.4], ['bridge', 0.6], ['echoes', 1.0], ['crystal', 1.8], ['noir', 1.6], ['teddy', 1.6], ['falls', 1.8], ['winter', 2.2]];
+  scene('07 Your call', 113, music.endBeat, ({ shot, title, graphic }) => {
+    // The end card lands where the song re-enters after its last break.
+    const card = music.cardBeat, end = music.endBeat;
+    const finale = [['portal', 1.4], ['bridge', 0.6], ['echoes', 1.0], ['crystal', 1.8], ['noir', 1.6], ['teddy', 1.6], ['falls', 1.8], ['winter', 2.2]].slice(0, card - 113);
     finale.forEach(([key, start], index) => shot(key, 113 + index, 114 + index, { in: start, framing: key === 'teddy' ? push(1.2, 1.28, 0.5, 0.4) : push(1.03, 1.1),
       ...(index && index % 2 === 0 ? { dissolve: D, transition: index % 4 ? 'glitch' : 'flash' } : {}) }));
     title('YOUR CLIP.', 113, 115, big({ fontSize: 140, early: 0.02 }));
     title('YOUR MODELS.', 115, 117, big({ fontSize: 140, color: LIME, animation: 'glitch', early: 0.02 }));
-    title('YOUR CALL.', 117, 121, big({ fontSize: 150, box: 'highlight', tilt: -4, color: CREAM, early: 0.04 }));
-    shot('black', 121, 133, { dissolve: D, transition: 'flash' });
+    title('YOUR CALL.', 117, card, big({ fontSize: 150, box: 'highlight', tilt: -4, color: CREAM, early: 0.04 }));
+    shot('black', card, end, { dissolve: D, transition: 'flash' });
     graphic({ kind: 'image', assetKey: 'logo', x: 0.5, y: 0.27, width: 0.56, height: 0.17, fit: 'contain', opacity: 1,
-      motion: { keys: [{ at: 0, x: 0, y: 0, scale: 2.2, opacity: 0 }, { at: 0.04, x: 0, y: 0, scale: 1, opacity: 1, easing: 'ease-in' },
-        { at: 0.94, x: 0, y: 0, scale: 1.04, opacity: 1 }, { at: 1, x: 0, y: 0, scale: 1.04, opacity: 0 }] } }, 121, 133);
-    title('OPEN SOURCE · MIT', 122.5, 133, big({ fontSize: 52, box: 'stamp', tilt: -4, color: LIME, stroke: false, motion: still(0, -0.04), early: 0.15 }));
-    title('BUILT ON THE COMFY SDK · OPEN WEIGHTS · YOUR GPU', 123.5, 133, { style: 'kicker', font: 'mono', animation: 'scramble', fontSize: 26, color: CREAM, stroke: false, motion: still(0, 0.06), early: 0.15 });
-    title('github.com/ItsSNOWMOBILE/aftertake', 124.5, 133, { style: 'caption', font: 'mono', animation: 'typewriter', fontSize: 34, color: LIME, stroke: false, motion: still(0, 0.14), early: 0.15 });
+      motion: { keys: [{ at: 0, x: 0, y: 0, scale: 2.2, opacity: 0 }, { at: 0.03, x: 0, y: 0, scale: 1, opacity: 1, easing: 'ease-in' },
+        { at: 0.96, x: 0, y: 0, scale: 1.04, opacity: 1 }, { at: 1, x: 0, y: 0, scale: 1.04, opacity: 0 }] } }, card, end);
+    title('OPEN SOURCE · MIT', card + 1.5, end, big({ fontSize: 52, box: 'stamp', tilt: -4, color: LIME, stroke: false, motion: still(0, -0.04), early: 0.15 }));
+    title('BUILT ON THE COMFY SDK · OPEN WEIGHTS · YOUR GPU', card + 2.5, end, { style: 'kicker', font: 'mono', animation: 'scramble', fontSize: 26, color: CREAM, stroke: false, motion: still(0, 0.06), early: 0.15 });
+    title('github.com/ItsSNOWMOBILE/aftertake', card + 3.5, end, { style: 'caption', font: 'mono', animation: 'typewriter', fontSize: 34, color: LIME, stroke: false, motion: still(0, 0.14), early: 0.15 });
     [
-      'Music: “Big Boi Pants” by Shane Ivers · silvermansound.com · CC BY 4.0',
+      ...music.credit,
       'Footage: Curtis Adams, Mikhail Nilov, Dean Diemert, Florian Delée,',
       'Antoni Shkraba, Michael Burrows / Pexels · Tears of Steel © Blender Foundation, CC BY 3.0',
-      'Every effect rendered locally in Aftertake with open-weight models.',
+      'Every effect rendered in Aftertake with open-weight models.',
       'Edited, titled and cut to the beat in Aftertake Film.',
-    ].forEach((line, index) => title(line, 127, 133, { style: 'kicker', position: 'bottom', font: 'mono', animation: 'fade', fontSize: 16, color: '#9aa58d',
-      stroke: false, motion: still(0, -0.05 + index * 0.026), early: 0.15 }));
+    ].forEach((line, index, lines) => title(line, Math.max(card + 6, end - 8), end, { style: 'kicker', position: 'bottom', font: 'mono', animation: 'fade', fontSize: 16, color: '#9aa58d',
+      stroke: false, motion: still(0, -0.03 - (lines.length - 1 - index) * 0.026), early: 0.15 }));
   }),
 );
