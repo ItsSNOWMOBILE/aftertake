@@ -3,3 +3,5 @@
 *.jpg binary
 *.ttf binary
 *.png binary
+# Preserve the checked release package's exact bytes on every platform.
+examples/make-the-next-take/** -text
