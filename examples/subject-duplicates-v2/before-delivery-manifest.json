@@ -1,0 +1,47 @@
+{
+  "format": "aftertake-film/3",
+  "id": "fdc57ce3-12e7-4d44-b747-7aacf4d3bec3",
+  "name": "subject-duplicates-v2 · matched before · 720p",
+  "aspect": "landscape",
+  "resolution": "720p",
+  "shots": [
+    {
+      "assetId": "e6b55dae-1777-47c2-a62d-08f3cdd2743e",
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 3.0416666666666665,
+      "title": "subject-duplicates-v2-prepared-before.mp4",
+      "sha256": "c248db0aab4945b49a522b409a14584c16294bb0077a731fd16770236c158f95",
+      "asset": {
+        "kind": "video",
+        "duration": 3.0416666666666665,
+        "width": 1344,
+        "height": 736,
+        "id": "e6b55dae-1777-47c2-a62d-08f3cdd2743e",
+        "name": "subject-duplicates-v2-prepared-before.mp4",
+        "extension": ".mp4",
+        "sha256": "c248db0aab4945b49a522b409a14584c16294bb0077a731fd16770236c158f95",
+        "url": "/api/films/assets/e6b55dae-1777-47c2-a62d-08f3cdd2743e/media",
+        "createdAt": "2026-10-20T20:28:30.439Z"
+      }
+    }
+  ],
+  "requestKey": "source-upgrade-job3-subject-duplicates-v2-4a8fc72835e47cc041d8db4b",
+  "requestDigest": "880ccfb6b10044bf2e1e707c08124d941ed0e637b8660fc354c31845ea345bf5",
+  "titles": [],
+  "graphics": [],
+  "audio": [],
+  "sourceVolume": 1,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 3.0416666666666665,
+  "createdAt": "2026-10-20T20:28:30.461Z",
+  "output": "/api/films/fdc57ce3-12e7-4d44-b747-7aacf4d3bec3/video"
+}

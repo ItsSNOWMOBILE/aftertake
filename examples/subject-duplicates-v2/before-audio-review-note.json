@@ -1,0 +1,7 @@
+{
+  "status": "needs-review",
+  "verification": "before-media-verification.json",
+  "technicalPass": true,
+  "sourceAudioPreservationPass": false,
+  "note": "The prepared-source comparison has an extra audio encode and fails the strict gain tolerance. The primary native and delivered results are verified separately; no preservation claim is made for this comparison audio."
+}

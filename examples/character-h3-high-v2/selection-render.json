@@ -1,0 +1,262 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "7fdf4060-3ce9-4c4b-93cc-8b22dd398bfc",
+  "kind": "selection",
+  "request": {
+    "format": "aftertake-character-selection/1",
+    "clip": {
+      "id": "e63dec49-6bde-4af4-aed2-0ec3421e02d8",
+      "name": "A - Hero walk - clean-lens quality variant - seed 508023",
+      "sha256": "ec8ecb736b250eea4c8236c549c901bddf9931576e70deb29a17c03b50e2111b",
+      "width": 1280,
+      "height": 720,
+      "duration": 5.041666666666667,
+      "url": "/media/e63dec49-6bde-4af4-aed2-0ec3421e02d8.mp4",
+      "kind": "video",
+      "hasAudio": true
+    },
+    "trimStart": 0,
+    "duration": 3.0416666666666665,
+    "positive": [
+      {
+        "x": 0.5,
+        "y": 0.36
+      },
+      {
+        "x": 0.52,
+        "y": 0.76
+      }
+    ],
+    "negative": [
+      {
+        "x": 0.235,
+        "y": 0.43
+      }
+    ],
+    "resolution": "768"
+  },
+  "workflow": {
+    "source": {
+      "class_type": "LoadVideo",
+      "inputs": {
+        "file": "e63dec49-6bde-4af4-aed2-0ec3421e02d8.mp4"
+      }
+    },
+    "slice": {
+      "class_type": "Video Slice",
+      "inputs": {
+        "video": [
+          "source",
+          0
+        ],
+        "start_time": 0,
+        "duration": 3.0416666666666665,
+        "strict_duration": true
+      }
+    },
+    "prepare": {
+      "class_type": "H3RelayPrepareSource",
+      "inputs": {
+        "video": [
+          "slice",
+          0
+        ],
+        "resolution": "768",
+        "duration_seconds": 0,
+        "missing_audio": "silence"
+      }
+    },
+    "frames": {
+      "class_type": "ImageFromBatch",
+      "inputs": {
+        "image": [
+          "prepare",
+          0
+        ],
+        "batch_index": 0,
+        "length": [
+          "prepare",
+          5
+        ]
+      }
+    },
+    "first": {
+      "class_type": "ImageFromBatch",
+      "inputs": {
+        "image": [
+          "frames",
+          0
+        ],
+        "batch_index": 0,
+        "length": 1
+      }
+    },
+    "points": {
+      "class_type": "AftertakeSubjectPoints",
+      "inputs": {
+        "images": [
+          "first",
+          0
+        ],
+        "source_width": 1280,
+        "source_height": 720,
+        "points_json": "{\"positive\": [{\"x\": 0.5, \"y\": 0.36}, {\"x\": 0.52, \"y\": 0.76}], \"negative\": [{\"x\": 0.235, \"y\": 0.43}]}"
+      }
+    },
+    "sam": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "sam3.1_multiplex_fp16.safetensors"
+      }
+    },
+    "people": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "sam",
+          1
+        ],
+        "text": "person:12"
+      }
+    },
+    "detect": {
+      "class_type": "SAM3_Detect",
+      "inputs": {
+        "model": [
+          "sam",
+          0
+        ],
+        "image": [
+          "first",
+          0
+        ],
+        "conditioning": [
+          "people",
+          0
+        ],
+        "threshold": 0.35,
+        "refine_iterations": 2,
+        "individual_masks": true
+      }
+    },
+    "choose": {
+      "class_type": "AftertakeSelectCharacterMask",
+      "inputs": {
+        "masks": [
+          "detect",
+          0
+        ],
+        "positive_coords": [
+          "points",
+          0
+        ],
+        "negative_coords": [
+          "points",
+          1
+        ]
+      }
+    },
+    "track": {
+      "class_type": "SAM3_VideoTrack",
+      "inputs": {
+        "images": [
+          "frames",
+          0
+        ],
+        "model": [
+          "sam",
+          0
+        ],
+        "initial_mask": [
+          "choose",
+          0
+        ],
+        "detection_threshold": 0.5,
+        "max_objects": 1,
+        "detect_interval": 1
+      }
+    },
+    "mask": {
+      "class_type": "SAM3_TrackToMask",
+      "inputs": {
+        "track_data": [
+          "track",
+          0
+        ],
+        "object_indices": "0"
+      }
+    },
+    "mask_erode": {
+      "class_type": "GrowMask",
+      "inputs": {
+        "mask": [
+          "mask",
+          0
+        ],
+        "expand": -1,
+        "tapered_corners": false
+      }
+    },
+    "mask_open": {
+      "class_type": "GrowMask",
+      "inputs": {
+        "mask": [
+          "mask_erode",
+          0
+        ],
+        "expand": 1,
+        "tapered_corners": false
+      }
+    },
+    "selection": {
+      "class_type": "AftertakeSaveCharacterSelection",
+      "inputs": {
+        "images": [
+          "frames",
+          0
+        ],
+        "masks": [
+          "mask_open",
+          0
+        ],
+        "filename_prefix": "aftertake/characters/7fdf4060-3ce9-4c4b-93cc-8b22dd398bfc/selection",
+        "request_json": "{\"format\": \"aftertake-character-selection/1\", \"clip\": {\"id\": \"e63dec49-6bde-4af4-aed2-0ec3421e02d8\", \"name\": \"A - Hero walk - clean-lens quality variant - seed 508023\", \"sha256\": \"ec8ecb736b250eea4c8236c549c901bddf9931576e70deb29a17c03b50e2111b\", \"width\": 1280, \"height\": 720, \"duration\": 5.041666666666667, \"url\": \"/media/e63dec49-6bde-4af4-aed2-0ec3421e02d8.mp4\", \"kind\": \"video\", \"hasAudio\": true}, \"trimStart\": 0, \"duration\": 3.0416666666666665, \"positive\": [{\"x\": 0.5, \"y\": 0.36}, {\"x\": 0.52, \"y\": 0.76}], \"negative\": [{\"x\": 0.235, \"y\": 0.43}], \"resolution\": \"768\"}"
+      }
+    },
+    "source_save": {
+      "class_type": "SaveVideo",
+      "inputs": {
+        "video": [
+          "prepare",
+          8
+        ],
+        "filename_prefix": "aftertake/characters/7fdf4060-3ce9-4c4b-93cc-8b22dd398bfc/source",
+        "format": "mp4",
+        "format.codec": "h264",
+        "format.codec.encoding": "re-encode",
+        "format.codec.encoding.crf": 14
+      }
+    }
+  },
+  "requestKey": "source-upgrade-job3-character-h3-high-v2-4f1bc3ae06f5636a434d5a47",
+  "requestDigest": "c8e176e65cee51f0d053fc1455b8e5d8549f244d16a29cabad57f79ad368ec2f",
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-20T20:15:56.197Z",
+  "updatedAt": "2026-10-20T20:16:16.887Z",
+  "jobId": "ea2fc0b6-5168-41b1-a3c0-2b7a2e1cf78e",
+  "stage": "Selection ready to review",
+  "selection": {
+    "width": 1344,
+    "height": 736,
+    "frames": 73,
+    "fps": 24,
+    "emptyFrames": [],
+    "maskSha256": "d2435f58c48e0dca2af9b0da77dfe0c32a390cf8aa3198f9900249735c23513d",
+    "sourceSha256": "51df852ea83513fe7d5d09a973687402d7fac46245f62968790fc557bba91ab0"
+  }
+}

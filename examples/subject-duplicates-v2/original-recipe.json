@@ -1,0 +1,95 @@
+{
+  "format": "aftertake-subject-effect-recipe/1",
+  "renderer": "aftertake-local-subject-compositor/1",
+  "request": {
+    "format": "aftertake-subject-effect/1",
+    "name": "Studio ensemble - tracked original pixels",
+    "selectionId": "31ce5d6a-5833-43db-b6ab-357748d5a1e1",
+    "maskSha256": "1fe8deeb309ce1e61708ca31bffba0881504e72ea5d209d7abd2a230f51309be",
+    "copies": [
+      {
+        "x": -0.28,
+        "y": 0,
+        "scale": 1,
+        "opacity": 1,
+        "flipX": false,
+        "rotation": 0
+      },
+      {
+        "x": 0.28,
+        "y": 0,
+        "scale": 1,
+        "opacity": 1,
+        "flipX": true,
+        "rotation": 0
+      }
+    ],
+    "feather": 1,
+    "grow": 0,
+    "backgroundBlur": 0,
+    "backgroundExposureEV": 0
+  },
+  "selection": {
+    "request": {
+      "format": "aftertake-character-selection/1",
+      "clip": {
+        "id": "13090851-c07f-4efd-a9e5-491efcd76fff",
+        "name": "Studio dancer - Antoni Shkraba - Pexels.mp4",
+        "sha256": "52fe4ff0e5eaa85a576f3f26d905b1633e310e99278cc9992e8f4120610bd9f9",
+        "width": 1536,
+        "height": 810,
+        "duration": 3.0416666666666665,
+        "url": "/media/13090851-c07f-4efd-a9e5-491efcd76fff.mp4",
+        "hasAudio": false
+      },
+      "trimStart": 0,
+      "duration": 3.0416666666666665,
+      "positive": [
+        {
+          "x": 0.455,
+          "y": 0.4
+        },
+        {
+          "x": 0.47,
+          "y": 0.73
+        }
+      ],
+      "negative": [],
+      "resolution": "768"
+    },
+    "info": {
+      "width": 1344,
+      "height": 736,
+      "frames": 73,
+      "fps": 24,
+      "emptyFrames": [],
+      "maskSha256": "1fe8deeb309ce1e61708ca31bffba0881504e72ea5d209d7abd2a230f51309be",
+      "sourceSha256": "c29b4e28631fe52c3cdbb2d4401672ee5837077e941588a33eb49a4e42e3c1d3"
+    }
+  },
+  "media": {
+    "source": {
+      "sha256": "52fe4ff0e5eaa85a576f3f26d905b1633e310e99278cc9992e8f4120610bd9f9",
+      "filename": "source-original.mp4"
+    },
+    "prepared": {
+      "sha256": "c29b4e28631fe52c3cdbb2d4401672ee5837077e941588a33eb49a4e42e3c1d3",
+      "filename": "prepared-source.mp4"
+    },
+    "mask": {
+      "sha256": "1fe8deeb309ce1e61708ca31bffba0881504e72ea5d209d7abd2a230f51309be",
+      "filename": "person-mask.mkv"
+    }
+  },
+  "output": {
+    "id": "2444219c-d064-4796-9727-330f316eb12b",
+    "name": "Studio ensemble - tracked original pixels",
+    "sha256": "3a0dd291c52d3b56090bea1e05f01c1ae6cb67bbdafed0ceb37f081038b21558",
+    "width": 1344,
+    "height": 736,
+    "duration": 3.0416666666666665,
+    "url": "/media/2444219c-d064-4796-9727-330f316eb12b.mp4",
+    "kind": "video",
+    "hasAudio": false
+  }
+}

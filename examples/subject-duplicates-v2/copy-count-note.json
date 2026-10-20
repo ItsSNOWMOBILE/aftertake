@@ -1,0 +1,14 @@
+{
+  "primaryRecipe": "Original subject-duplicates settings preserved",
+  "appMaximumAdditionalCopies": 4,
+  "appMaximumTotalDancers": 5,
+  "lyric": "Five more dancers would mean six total; the primary preset does not demonstrate that claim. Re-cut/reword the lyric, or use a clearly documented separate multi-pass variant.",
+  "format": "aftertake-copy-count-note/1",
+  "state": "Selection prepared; mask not yet generated or reviewed.",
+  "additionalCopies": 2,
+  "totalDancers": 3,
+  "offsets": [
+    -0.28,
+    0.28
+  ]
+}

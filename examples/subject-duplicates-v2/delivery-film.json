@@ -1,0 +1,25 @@
+{
+  "name": "subject-duplicates-v2 · 720p delivery",
+  "aspect": "landscape",
+  "resolution": "720p",
+  "shots": [
+    {
+      "assetId": "6d02f1f6-0253-4ea3-a70e-a1a3d1745dac",
+      "start": 0,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    }
+  ],
+  "titles": [],
+  "graphics": [],
+  "audio": [],
+  "sourceVolume": 1,
+  "normalizeAudio": false
+}

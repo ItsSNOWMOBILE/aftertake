@@ -1,0 +1,87 @@
+{
+  "id": "5ff548d7-e0fe-4ed0-a25e-a45a5d0efeed",
+  "kind": "subject-effect",
+  "state": "succeeded",
+  "request": {
+    "format": "aftertake-subject-effect/1",
+    "name": "Garage ensemble · tracked source · v2",
+    "selectionId": "9d36ccb7-20c3-491c-9b9d-05d5720c541d",
+    "maskSha256": "37f286a94548cc1a624eb7eb3ea1117bdb266a86710a4fd8ee457cf5f10a8c34",
+    "copies": [
+      {
+        "x": -0.28,
+        "y": 0,
+        "scale": 1,
+        "opacity": 1,
+        "flipX": false,
+        "rotation": 0
+      },
+      {
+        "x": 0.28,
+        "y": 0,
+        "scale": 1,
+        "opacity": 1,
+        "flipX": true,
+        "rotation": 0
+      }
+    ],
+    "feather": 1,
+    "grow": 0,
+    "backgroundBlur": 0,
+    "backgroundExposureEV": 0
+  },
+  "selection": {
+    "request": {
+      "format": "aftertake-character-selection/1",
+      "clip": {
+        "id": "fa39831b-2f47-44e2-8136-a39d59e08f09",
+        "name": "B - Dancer - seed 508021",
+        "sha256": "5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3",
+        "width": 1280,
+        "height": 720,
+        "duration": 5.041666666666667,
+        "url": "/media/fa39831b-2f47-44e2-8136-a39d59e08f09.mp4",
+        "kind": "video",
+        "hasAudio": true
+      },
+      "trimStart": 0,
+      "duration": 3.0416666666666665,
+      "positive": [
+        {
+          "x": 0.47,
+          "y": 0.45
+        },
+        {
+          "x": 0.44,
+          "y": 0.7
+        }
+      ],
+      "negative": [],
+      "resolution": "768"
+    },
+    "info": {
+      "width": 1344,
+      "height": 736,
+      "frames": 73,
+      "fps": 24,
+      "emptyFrames": [],
+      "maskSha256": "37f286a94548cc1a624eb7eb3ea1117bdb266a86710a4fd8ee457cf5f10a8c34",
+      "sourceSha256": "c248db0aab4945b49a522b409a14584c16294bb0077a731fd16770236c158f95"
+    }
+  },
+  "createdAt": "2026-10-20T20:28:21.920Z",
+  "updatedAt": "2026-10-20T20:28:25.574Z",
+  "requestKey": "source-upgrade-job3-subject-duplicates-v2-483129e16c45b41e45ead247",
+  "requestDigest": "2b06d6332e327281836198716eb27b11ae8ea717efcd90f2349fa977f92ee861",
+  "clip": {
+    "id": "5ff548d7-e0fe-4ed0-a25e-a45a5d0efeed",
+    "name": "Garage ensemble · tracked source · v2",
+    "kind": "video",
+    "sha256": "85c9e5fc3fcb56290424a8425960a9405951d1841d04af3eb6e3816d55b44ea7",
+    "width": 1344,
+    "height": 736,
+    "duration": 3.0416666666666665,
+    "hasAudio": true,
+    "url": "/media/5ff548d7-e0fe-4ed0-a25e-a45a5d0efeed.mp4"
+  }
+}

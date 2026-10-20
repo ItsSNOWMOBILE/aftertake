@@ -1,0 +1,84 @@
+{
+  "format": "aftertake-example-upgrade/1",
+  "name": "character-h3-high-v2",
+  "apiBase": "http://127.0.0.1:4394",
+  "request": {
+    "format": "aftertake-character/1",
+    "name": "Rooftop recast · H3 · v2",
+    "selectionId": "7fdf4060-3ce9-4c4b-93cc-8b22dd398bfc",
+    "reference": {
+      "id": "f3339a35-fb39-4264-bdbd-fd01384a5417",
+      "name": "Fictional rooftop recast reference",
+      "kind": "image",
+      "width": 1280,
+      "height": 720,
+      "duration": 1,
+      "hasAudio": false,
+      "sha256": "5e55499d75eaf69928d94fb436e5487f9dc7e15617b607b0c5ae0eccc32a8296",
+      "url": "/media/f3339a35-fb39-4264-bdbd-fd01384a5417.png"
+    },
+    "prompt": "Replace only the woman walking toward the camera with the fictional woman from Picture 1. She wears the matte rust-orange field jacket over a plain cream knit top and charcoal trousers from Picture 1. Preserve the second person by the railing, rooftop, skyline, wet ground reflections, original warm practical light and blue-hour scene. Follow the original walking performance, body pose, gaze and head movement naturally. No studio background from the reference photo.",
+    "wardrobe": "reference",
+    "seed": 509103,
+    "faceBox": {
+      "height": 0.31,
+      "width": 0.17,
+      "y": 0.025,
+      "x": 0.45
+    }
+  },
+  "codeBranch": "source-upgrade",
+  "codeCommit": "ff617363f40390969ea847ecbbffb1b17b571a27",
+  "originalRecipe": "original-recipe.json",
+  "render": "render.json",
+  "output": {
+    "path": "result.mp4",
+    "sha256": "70707ba40ff1b4324c5e2875fedab8853a56910625d3b36d61c7de296126266e",
+    "bytes": 928539
+  },
+  "nativeOutput": {
+    "path": "native-result.mp4",
+    "sha256": "b47c2faa8dafc83f9d78a90bfda866b075a7ab1268abc5a8d923ff5d49eaf03c",
+    "bytes": 1611859
+  },
+  "delivery": "Aftertake Film cover crop/downscale to720p; native generated video retained separately.",
+  "sourceAudioSettings": {
+    "sourceVolume": 1,
+    "normalizeAudio": false
+  },
+  "matchedBefore": {
+    "path": "before-720p.mp4",
+    "sha256": "eb64929622b5fa1041273007a2d47df29487e802488c66c36dedae134b124c16",
+    "bytes": 841270
+  },
+  "comparisonBinding": "comparison-binding.json",
+  "modelFiles": [
+    {
+      "kind": "unet_name",
+      "file": "minimax_h3_ref2va_pruned_int8_convrot.safetensors"
+    },
+    {
+      "kind": "clip_name",
+      "file": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+    },
+    {
+      "kind": "vae_name",
+      "file": "minimax_h3_video_vae_int8_convrot.safetensors"
+    },
+    {
+      "kind": "vae_name",
+      "file": "minimax_h3_audio_vae_fp32.safetensors"
+    },
+    {
+      "kind": "lora_name",
+      "file": "minimax_h3_fl2v_turbo_8step_v1.0_768p_comfyui_bf16.safetensors"
+    },
+    {
+      "kind": "lora_name",
+      "file": "h3_character_swap_v1.5.safetensors"
+    }
+  ],
+  "sourceOrigin": "AI-generated fictional footage and references from job2; no phone capture is claimed.",
+  "deliveryDescription": "Keep native H3 output (expected ~1344x736) and app Film crop to 1280x720; save both, do not call it native1280 generation",
+  "note": null
+}
