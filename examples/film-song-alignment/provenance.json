@@ -1,0 +1,34 @@
+{
+  "format": "aftertake-song-alignment/1",
+  "song": {
+    "name": "aftertake-song.mp3",
+    "sha256": "d97f1946f10846dafb2d0cbb89fde70df4930dbcd796babadf1c4f5abb5d0949",
+    "duration": 96.0
+  },
+  "timeline": "Seconds from decoded song start, rounded to 3 decimals; no film offset applied.",
+  "recognition": "Raw large-v3 recognizer output, not manually corrected or forced to supplied lyrics. Includes suspected instrumental hallucinations.",
+  "vocalSeparation": {
+    "model": "htdemucs",
+    "device": "cuda",
+    "input": "Lossless WAV predecoded from MP3 to remove MP3 decoder encoder-delay disagreement",
+    "sourceDuration": 96.0,
+    "vocalsDuration": 96.0,
+    "avoidedDecoderStartPaddingSeconds": 0.023020833333333334
+  },
+  "observedEarlierFilmAudioOffset": 1.7415,
+  "filmOffsetNote": "Observed in Desktop/film.mp4 reviewed before this batch; confirm current edit before adding this to song times.",
+  "validation": [
+    {
+      "file": "aftertake-song.words.json",
+      "sha256": "e34f713f7188a9a9ef221baa6254dd51dae3a53a3a73601980e985eb32708be5",
+      "segments": 13,
+      "words": 104
+    },
+    {
+      "file": "aftertake-song.vocals.words.json",
+      "sha256": "85bf8c8f31068cec6bfffa84bb00aae85835b38c11d361e3833826b6f3d1eabb",
+      "segments": 18,
+      "words": 101
+    }
+  ]
+}

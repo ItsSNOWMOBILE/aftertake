@@ -1,0 +1,33 @@
+{
+  "input": "aftertake-song.mp3",
+  "input_sha256": "d97f1946f10846dafb2d0cbb89fde70df4930dbcd796babadf1c4f5abb5d0949",
+  "output": "aftertake-song.words.json",
+  "output_sha256": "e34f713f7188a9a9ef221baa6254dd51dae3a53a3a73601980e985eb32708be5",
+  "model": "large-v3",
+  "model_repository": "Systran/faster-whisper-large-v3",
+  "cached_model_revisions": [
+    "edaa852ec7e145841d8ffdb056a99866b5f0a478"
+  ],
+  "device": "cuda",
+  "compute_type": "float16",
+  "gpu": "NVIDIA GeForce RTX 5080",
+  "settings": {
+    "language": "en",
+    "word_timestamps": true,
+    "vad_filter": false,
+    "beam_size": 5,
+    "condition_on_previous_text": false,
+    "initial_prompt": "Every shot ends... Then comes the... Aftertake! Paint it, change it, make it\nnew. Same scene, a different view. Open weights on your own machine. Make the\nnext take, run the scene. Recast the lead, keep the move. Five more dancers in\nthe groove. Words to video, still to light. Pull the camera, cut it right. An\nagent cuts it, frame by frame. Forty-four tools, still the same. On the\nbeat... on the beat... Cut to the beat. Your clip! Your models! Your call!\nPaint it, change it, make it new. Make the next take, run the scene.\nAftertake."
+  },
+  "versions": {
+    "faster-whisper": "1.2.1",
+    "ctranslate2": "4.8.3",
+    "torch": "2.11.0+cu130",
+    "demucs": "4.1.0"
+  },
+  "audio_duration_seconds": 96.0,
+  "segment_count": 13,
+  "word_count": 104,
+  "elapsed_seconds": 16.248,
+  "words_manually_corrected": false
+}
