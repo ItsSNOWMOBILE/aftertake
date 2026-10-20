@@ -82,7 +82,10 @@ local narration can run on the CPU.
 **Film motion graphics** adds timed shapes, image overlays and title transforms
 with editable easing, independent scale axes and 720p, 1080p or 4K export canvases.
 The native CPU renderer keeps these layers on the film's 24 fps clock.
-See [the motion graphics guide](docs/motion-graphics.md).
+See [the motion graphics guide](docs/motion-graphics.md). **Shared groups & depth**
+keeps cards, images and captions attached through one editable transform, with
+perspective tilt and optional shutter blur in the export.
+[Author a motion scene →](docs/motion-scenes.md)
 
 ### One performance. Extra copies.
 

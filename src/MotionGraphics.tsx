@@ -439,7 +439,8 @@ export function MotionGraphicsEditor({
       </div>
       <p className="motion-hint">
         Build panels, accents and image overlays on their own clocks. Back layers draw first; front
-        layers draw above them. All graphics sit above footage and below titles.
+        layers draw above them. Graphics sit above footage and below titles unless Shared groups
+        &amp; depth defines a combined overlay order.
       </p>
       <div className="motion-add-tools">
         <button type="button" className="button" disabled={!canAdd} onClick={() => add('rect')}>
