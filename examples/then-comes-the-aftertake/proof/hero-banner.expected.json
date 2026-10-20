@@ -1,0 +1,11 @@
+{
+  "sourceCommit": "317114f",
+  "sourceFile": "src/creative-recipes.ts",
+  "id": "hero-banner",
+  "label": "Hero banner",
+  "settings": {
+    "prompt": "A wide cinematic campaign image: one unbranded white running shoe resting on a wet black stone ledge in the right third of the frame, lit by a cool rim light, with fine mist and soft dawn light over a blurred mountain lake behind it. The left two thirds stay calm and uncluttered, a smooth gradient of sky and water ready for a headline. Premium, minimal and crisp. No text, logos or watermarks.",
+    "style": "cinematic",
+    "direction": { "shot": "wide", "lens": "wide", "lighting": "blue" }
+  }
+}
