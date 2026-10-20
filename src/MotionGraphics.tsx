@@ -342,6 +342,7 @@ export function MotionGraphicsEditor({
   onChange,
   onSeek,
   disabled = false,
+  orderingManagedByScene = false,
 }: {
   graphics: FilmGraphic[];
   assets: FilmAsset[];
@@ -350,6 +351,7 @@ export function MotionGraphicsEditor({
   onChange: (graphics: FilmGraphic[]) => void;
   onSeek: (time: number) => void;
   disabled?: boolean;
+  orderingManagedByScene?: boolean;
 }) {
   const [selectedImage, setSelectedImage] = useState('');
   const [jsonDraft, setJsonDraft] = useState(() => JSON.stringify(graphics, null, 2));
@@ -422,7 +424,7 @@ export function MotionGraphicsEditor({
   }
   function move(index: number, delta: number) {
     const target = index + delta;
-    if (disabled || target < 0 || target >= graphics.length) return;
+    if (disabled || orderingManagedByScene || target < 0 || target >= graphics.length) return;
     const next = [...graphics];
     [next[index], next[target]] = [next[target], next[index]];
     onChange(next);
@@ -439,8 +441,14 @@ export function MotionGraphicsEditor({
       </div>
       <p className="motion-hint">
         Build panels, accents and image overlays on their own clocks. Back layers draw first; front
-        layers draw above them. All graphics sit above footage and below titles.
+        layers draw above them. Graphics sit above footage and below titles unless Shared groups
+        &amp; depth defines a combined overlay order.
       </p>
+      {orderingManagedByScene && (
+        <p className="motion-hint">
+          Change stacking in Shared groups &amp; depth, including the order inside each group.
+        </p>
+      )}
       <div className="motion-add-tools">
         <button type="button" className="button" disabled={!canAdd} onClick={() => add('rect')}>
           <Square size={13} /> Rectangle
@@ -498,7 +506,10 @@ export function MotionGraphicsEditor({
         <p className="motion-hint">Add a picture to your film before placing timed graphics.</p>
       )}
       {graphics.length ? (
-        <ol className="motion-layer-list" aria-label="Graphics from back to front">
+        <ol
+          className="motion-layer-list"
+          aria-label={orderingManagedByScene ? 'Graphic layers' : 'Graphics from back to front'}
+        >
           {graphics.map((graphic, index) => (
             <li key={graphic.id}>
               <GraphicEditor
@@ -509,6 +520,7 @@ export function MotionGraphicsEditor({
                 duration={duration}
                 time={time}
                 disabled={disabled}
+                orderingManagedByScene={orderingManagedByScene}
                 onChange={(next) => replace(index, next)}
                 onSeek={onSeek}
                 onMove={(delta) => move(index, delta)}
@@ -677,6 +689,7 @@ function GraphicEditor({
   duration,
   time,
   disabled,
+  orderingManagedByScene,
   canDuplicate,
   onChange,
   onSeek,
@@ -691,6 +704,7 @@ function GraphicEditor({
   duration: number;
   time: number;
   disabled: boolean;
+  orderingManagedByScene: boolean;
   canDuplicate: boolean;
   onChange: (graphic: FilmGraphic) => void;
   onSeek: (time: number) => void;
@@ -729,8 +743,14 @@ function GraphicEditor({
             <strong>{graphic.name}</strong>
             <small>
               Layer {index + 1}
-              {index === 0 ? ' · back' : index === count - 1 ? ' · front' : ''} ·{' '}
-              {display(graphic.start)}–{display(graphic.end)}s
+              {orderingManagedByScene
+                ? ''
+                : index === 0
+                  ? ' · back'
+                  : index === count - 1
+                    ? ' · front'
+                    : ''}{' '}
+              · {display(graphic.start)}–{display(graphic.end)}s
             </small>
           </span>
         </span>
@@ -748,7 +768,7 @@ function GraphicEditor({
           </button>
           <button
             type="button"
-            disabled={disabled || index === 0}
+            disabled={disabled || orderingManagedByScene || index === 0}
             onClick={() => onMove(-1)}
             aria-label={`Move ${label.toLowerCase()} backward`}
           >
@@ -756,7 +776,7 @@ function GraphicEditor({
           </button>
           <button
             type="button"
-            disabled={disabled || index === count - 1}
+            disabled={disabled || orderingManagedByScene || index === count - 1}
             onClick={() => onMove(1)}
             aria-label={`Move ${label.toLowerCase()} forward`}
           >

@@ -407,12 +407,32 @@ syncBuiltinESMExports();
     const changedGraphic = await review(alteredGraphic);
     assert.equal(changedGraphic.isError, true);
     assert.match((changedGraphic.content as any)[0].text, /differs.*graphics/);
+    reviewFilm.motionScene = {
+      groups: [],
+      order: [
+        { kind: 'graphic', id: motionProject.graphics[0].id },
+        { kind: 'title', id: motionProject.titles[0].id },
+      ],
+    };
+    const sceneMatch = await review(reviewFilm);
+    assert.ok(!sceneMatch.isError);
+    const missingScene = structuredClone(reviewFilm);
+    delete missingScene.motionScene;
+    const lostScene = await review(missingScene);
+    assert.equal(lostScene.isError, true);
+    assert.match((lostScene.content as any)[0].text, /differs.*motionScene/);
+    const changedOrder = structuredClone(reviewFilm);
+    changedOrder.motionScene.order.reverse();
+    const alteredScene = await review(changedOrder);
+    assert.equal(alteredScene.isError, true);
+    assert.match((alteredScene.content as any)[0].text, /differs.*motionScene/);
     const wrongResolution = { ...reviewFilm, resolution: '720p' };
     const lostResolution = await review(wrongResolution);
     assert.equal(lostResolution.isError, true);
     assert.match((lostResolution.content as any)[0].text, /differs.*resolution/);
     delete reviewFilm.graphics;
     delete reviewFilm.resolution;
+    delete reviewFilm.motionScene;
     const legacyMatch = await review(reviewFilm);
     assert.ok(!legacyMatch.isError, 'Absent optional fields must not crash legacy review.');
     assert.equal((legacyMatch.structuredContent as any).embeddedProjectMatches, true);

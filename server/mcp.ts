@@ -545,7 +545,7 @@ tool(
 type EditPlanBeat = { visuals: { assetId?: string; renderId?: string }[] };
 tool(
   'aftertake_save_film_edit',
-  'Save a complete editable native Film project with cuts, camera keyframes, animated text, shape/image graphic layers and audio. Graphics and titles support editable transform keyframes and easing. Verifies source hashes and timing without rendering. Revise the project to create a new plan ID; export and review through the same plan tools.',
+  'Save a complete editable native Film project with cuts, camera keyframes, animated text, shape/image graphic layers and audio. Format 4 motionScene supports ordered one-level groups of titles and graphics with a shared pivot, editable transforms, perspective depth and bounded shutter samples. Verifies source hashes and timing without rendering. Revise the project to create a new plan ID; export and review through the same plan tools.',
   z.object({ project: filmManifestSchema }),
   async ({ project }) => {
     const draft = retainedFilmDraft(project, await api('/api/films/resolve', project));
@@ -703,6 +703,7 @@ tool(
       'shots',
       'titles',
       'graphics',
+      'motionScene',
       'audio',
       'sourceVolume',
       'normalizeAudio',

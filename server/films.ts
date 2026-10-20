@@ -466,6 +466,7 @@ export async function filmRouter(
       shots,
       ...(manifest.titles ? { titles: manifest.titles } : {}),
       ...(manifest.graphics ? { graphics } : {}),
+      ...(manifest.motionScene ? { motionScene: manifest.motionScene } : {}),
       ...(manifest.audio ? { audio } : {}),
       ...(manifest.sourceVolume !== undefined ? { sourceVolume: manifest.sourceVolume } : {}),
       ...(manifest.normalizeAudio !== undefined ? { normalizeAudio: manifest.normalizeAudio } : {}),
@@ -480,7 +481,8 @@ export async function filmRouter(
     const film = films.get(req.params.id);
     if (!film) return void res.sendStatus(404);
     let format = 'aftertake-film/1';
-    if (hasMotionFeatures(film)) format = 'aftertake-film/3';
+    if (film.motionScene) format = 'aftertake-film/4';
+    else if (hasMotionFeatures(film)) format = 'aftertake-film/3';
     else if (film.titles?.length || film.audio?.length || film.shots.some((shot) => shot.assetId))
       format = 'aftertake-film/2';
     res.attachment('aftertake-film.json').json({
@@ -602,6 +604,7 @@ export async function filmRouter(
         ...(requestKey ? { requestKey, requestDigest } : {}),
         titles: draft.titles || [],
         ...(draft.graphics ? { graphics } : {}),
+        ...(draft.motionScene ? { motionScene: draft.motionScene } : {}),
         audio,
         sourceVolume: draft.sourceVolume ?? 1,
         normalizeAudio: draft.normalizeAudio ?? false,
@@ -622,6 +625,7 @@ export async function filmRouter(
           shots: inputs,
           titles: film.titles,
           ...(film.graphics ? { graphics: graphicInputs } : {}),
+          ...(film.motionScene ? { motionScene: film.motionScene } : {}),
           audio: audioInputs,
           sourceVolume: film.sourceVolume,
           normalizeAudio: film.normalizeAudio,
@@ -634,6 +638,7 @@ export async function filmRouter(
             shots: film.shots,
             titles: film.titles,
             ...(film.graphics ? { graphics: film.graphics } : {}),
+            ...(film.motionScene ? { motionScene: film.motionScene } : {}),
             audio: film.audio,
             sourceVolume: film.sourceVolume,
             normalizeAudio: film.normalizeAudio,

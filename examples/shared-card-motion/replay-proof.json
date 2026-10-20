@@ -1,0 +1,16 @@
+{
+  "format": "aftertake-scene-replay-proof/1",
+  "filmId": "d7cd8603-abce-47a8-b2f3-8e6d94fb300e",
+  "replayFilmId": "5d6e79e2-ec74-423e-b410-5cbddc285bad",
+  "videoFrames": 144,
+  "decodedFramesAndTimestampsMatch": true,
+  "decodedAudioMatch": true,
+  "decodedAudioSamples": 288000,
+  "embeddedProjectMatches": true,
+  "verificationSeconds": 1.641,
+  "originalSha256": "b4f15bba0a0a6ff93222356d93a37501ceea723d68a3450a7c3a473ce595ad14",
+  "replaySha256": "b4f15bba0a0a6ff93222356d93a37501ceea723d68a3450a7c3a473ce595ad14",
+  "rendererSha256": "bbdd5451222942ef90c844ed729ab8c6d1912fcb68e15c621eb5205f7d33c810",
+  "sceneRendererSha256": "26e105307d75c6688ec8e5ef7de698228e95d57f46a8f9f6610773c046392478",
+  "scope": "Portable manifest re-resolved by the real studio, then exported through its native Film API with a new durable key. Same CPU runtime; no model generation."
+}

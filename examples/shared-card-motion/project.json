@@ -1,0 +1,471 @@
+{
+  "name": "One card, one object — refined motion study",
+  "aspect": "landscape",
+  "resolution": "1080p",
+  "shots": [
+    {
+      "assetId": "ffa68a43-351c-4621-878f-42406b86a73d",
+      "start": 0,
+      "end": 6,
+      "sha256": "c098e667b7944ce0191df9ede9f9a666c442bb74e556e3db6c12a872c30152bc"
+    }
+  ],
+  "titles": [
+    {
+      "id": "ab70d97f-40dc-58fe-8aa0-5acab5701868",
+      "text": "SOURCE TAKE",
+      "start": 0,
+      "end": 6,
+      "style": "headline",
+      "position": "center",
+      "animation": "none",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": -0.2,
+            "y": 0.15000000000000002,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": -0.2,
+            "y": 0.15000000000000002,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 25.3333,
+      "fontWeight": 600,
+      "stroke": false,
+      "align": "center",
+      "color": "#A3ADB9"
+    },
+    {
+      "id": "d9a703b7-c1e2-5182-80f5-23b9d87ae6ae",
+      "text": "FICTIONAL\nREFERENCE",
+      "start": 0,
+      "end": 6,
+      "style": "headline",
+      "position": "center",
+      "animation": "none",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0.25,
+            "y": 0.21999999999999997,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0.25,
+            "y": 0.21999999999999997,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 21.3333,
+      "fontWeight": 600,
+      "stroke": false,
+      "align": "center",
+      "color": "#A3ADB9"
+    }
+  ],
+  "graphics": [
+    {
+      "id": "afd32ecb-ddfc-5362-8195-c30f785c28e6",
+      "name": "Source card",
+      "kind": "rect",
+      "start": 0,
+      "end": 6,
+      "x": 0.3,
+      "y": 0.49,
+      "width": 0.46,
+      "height": 0.46,
+      "color": "#18202C",
+      "opacity": 1,
+      "radius": 0.055,
+      "strokeColor": "#34445C",
+      "strokeWidth": 1
+    },
+    {
+      "id": "cea3728d-579e-594d-8dac-3cc18d9a24ee",
+      "name": "Matched source",
+      "kind": "image",
+      "start": 0,
+      "end": 6,
+      "x": 0.3,
+      "y": 0.435,
+      "width": 0.42,
+      "height": 0.312,
+      "color": "#ffffff",
+      "opacity": 1,
+      "fit": "contain",
+      "assetId": "46480c94-2007-4f94-b0a6-a97566632826",
+      "sha256": "1255aa44e6a2d90bc4ef98e6683742a3c3275f0ffd8aa28377cbd78be2dfd3d8"
+    },
+    {
+      "id": "7a963075-8852-5710-8b37-413b53af2338",
+      "name": "Reference card",
+      "kind": "rect",
+      "start": 0,
+      "end": 6,
+      "x": 0.75,
+      "y": 0.49,
+      "width": 0.2,
+      "height": 0.58,
+      "color": "#18202C",
+      "opacity": 1,
+      "radius": 0.055,
+      "strokeColor": "#34445C",
+      "strokeWidth": 1
+    },
+    {
+      "id": "74e9ecfd-66ec-5d0a-8a63-d531fb23a6c2",
+      "name": "Fictional reference",
+      "kind": "image",
+      "start": 0,
+      "end": 6,
+      "x": 0.75,
+      "y": 0.455,
+      "width": 0.16,
+      "height": 0.427,
+      "color": "#ffffff",
+      "opacity": 1,
+      "fit": "contain",
+      "assetId": "adc7087c-ad3a-4ee1-bcbc-b5612fc24f36",
+      "sha256": "2246e339a602bd225113795eefa3a5603ea840f138eb4dcf0e8ff01122832052"
+    }
+  ],
+  "audio": [],
+  "sourceVolume": 0,
+  "motionScene": {
+    "groups": [
+      {
+        "id": "7b0f2774-3ffc-5e41-807b-992672745cf2",
+        "name": "Source card and caption",
+        "start": 0,
+        "end": 6,
+        "pivot": {
+          "x": 0.3,
+          "y": 0.49
+        },
+        "children": [
+          {
+            "kind": "graphic",
+            "id": "afd32ecb-ddfc-5362-8195-c30f785c28e6"
+          },
+          {
+            "kind": "graphic",
+            "id": "cea3728d-579e-594d-8dac-3cc18d9a24ee"
+          },
+          {
+            "kind": "title",
+            "id": "ab70d97f-40dc-58fe-8aa0-5acab5701868"
+          }
+        ],
+        "motion": {
+          "keys": [
+            {
+              "at": 0,
+              "x": 0,
+              "y": 0,
+              "scale": 1,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.20279720279720279,
+              "x": 0,
+              "y": 0,
+              "scale": 1,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.26573426573426573,
+              "x": 0.015,
+              "y": -0.012,
+              "scale": 1.02,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.32867132867132864,
+              "x": 0,
+              "y": 0,
+              "scale": 1,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.4965034965034965,
+              "x": 0,
+              "y": 0,
+              "scale": 1,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.5664335664335665,
+              "x": -0.58,
+              "y": 0,
+              "scale": 0.85,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 1,
+              "x": -0.58,
+              "y": 0,
+              "scale": 0.85,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            }
+          ]
+        },
+        "depth": {
+          "perspective": 3,
+          "keys": [
+            {
+              "at": 0,
+              "yaw": 0,
+              "pitch": 0,
+              "z": 0,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.20279720279720279,
+              "yaw": 0,
+              "pitch": 0,
+              "z": 0,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.26573426573426573,
+              "yaw": 8,
+              "pitch": -4,
+              "z": 0,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.32867132867132864,
+              "yaw": 0,
+              "pitch": 0,
+              "z": 0,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.4965034965034965,
+              "yaw": 0,
+              "pitch": 0,
+              "z": 0,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.5664335664335665,
+              "yaw": 0,
+              "pitch": 0,
+              "z": 0,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 1,
+              "yaw": 0,
+              "pitch": 0,
+              "z": 0,
+              "easing": "ease-in-out"
+            }
+          ]
+        },
+        "shutter": {
+          "samples": 5,
+          "exposure": 0.12
+        }
+      },
+      {
+        "id": "ce88df6a-e3dc-5ca2-8c78-d1deeffc31c7",
+        "name": "Reference card and caption",
+        "start": 0,
+        "end": 6,
+        "pivot": {
+          "x": 0.75,
+          "y": 0.49
+        },
+        "children": [
+          {
+            "kind": "graphic",
+            "id": "7a963075-8852-5710-8b37-413b53af2338"
+          },
+          {
+            "kind": "graphic",
+            "id": "74e9ecfd-66ec-5d0a-8a63-d531fb23a6c2"
+          },
+          {
+            "kind": "title",
+            "id": "d9a703b7-c1e2-5182-80f5-23b9d87ae6ae"
+          }
+        ],
+        "motion": {
+          "keys": [
+            {
+              "at": 0,
+              "x": 0,
+              "y": 0,
+              "scale": 1,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.20279720279720279,
+              "x": 0,
+              "y": 0,
+              "scale": 1,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.27972027972027974,
+              "x": -0.01,
+              "y": 0.008,
+              "scale": 1.02,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.32867132867132864,
+              "x": 0,
+              "y": 0,
+              "scale": 1,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.4965034965034965,
+              "x": 0,
+              "y": 0,
+              "scale": 1,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.5664335664335665,
+              "x": -0.25,
+              "y": 0.01,
+              "scale": 1.35,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 1,
+              "x": -0.25,
+              "y": 0.01,
+              "scale": 1.35,
+              "rotation": 0,
+              "opacity": 1,
+              "easing": "ease-in-out"
+            }
+          ]
+        },
+        "depth": {
+          "perspective": 3,
+          "keys": [
+            {
+              "at": 0,
+              "yaw": 0,
+              "pitch": 0,
+              "z": 0,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.20279720279720279,
+              "yaw": 0,
+              "pitch": 0,
+              "z": 0,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.27972027972027974,
+              "yaw": -6,
+              "pitch": 3,
+              "z": 0,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.32867132867132864,
+              "yaw": 0,
+              "pitch": 0,
+              "z": 0,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.4965034965034965,
+              "yaw": 0,
+              "pitch": 0,
+              "z": 0,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.5314685314685315,
+              "yaw": -7,
+              "pitch": 2,
+              "z": 0,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 0.5664335664335665,
+              "yaw": 0,
+              "pitch": 0,
+              "z": 0,
+              "easing": "ease-in-out"
+            },
+            {
+              "at": 1,
+              "yaw": 0,
+              "pitch": 0,
+              "z": 0,
+              "easing": "ease-in-out"
+            }
+          ]
+        },
+        "shutter": {
+          "samples": 5,
+          "exposure": 0.12
+        }
+      }
+    ],
+    "order": [
+      {
+        "kind": "group",
+        "id": "7b0f2774-3ffc-5e41-807b-992672745cf2"
+      },
+      {
+        "kind": "group",
+        "id": "ce88df6a-e3dc-5ca2-8c78-d1deeffc31c7"
+      }
+    ]
+  },
+  "format": "aftertake-film/4"
+}
