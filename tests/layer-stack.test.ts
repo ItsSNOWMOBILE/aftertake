@@ -19,9 +19,10 @@ const png = Buffer.from(
   'base64',
 );
 const hash = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
-async function fixture(t: any) {
+async function fixture(t: any, dataSubdirectory = '') {
   const directory = await mkdtemp(path.join(tmpdir(), 'aftertake-layers-')),
-    assetFolder = path.join(directory, 'films', 'assets');
+    data = path.join(directory, dataSubdirectory),
+    assetFolder = path.join(data, 'films', 'assets');
   await mkdir(assetFolder, { recursive: true });
   const assetId = randomUUID(),
     source = { assetId, sha256: hash(png) };
@@ -63,7 +64,7 @@ async function fixture(t: any) {
     );
     return { stdout: '{}' };
   };
-  const context = { root: directory, data: directory, python: 'not-spawned', worker };
+  const context = { root: directory, data, python: 'not-spawned', worker };
   const app = express();
   app.use(express.json());
   app.use('/layers', (await layerStackRouter(context)).router);
@@ -99,6 +100,7 @@ async function fixture(t: any) {
   }
   return {
     directory,
+    data,
     assetFolder,
     assetId,
     metadata,
@@ -201,6 +203,26 @@ test('actual layer routes create a durable content-bound job, authoritative PNG 
   assert.equal(recipe.media[0].sha256, f.source.sha256);
   assert.deepEqual(Buffer.from(await (await f.call('/' + job.id + '/media')).arrayBuffer()), png);
   await writeFile(path.join(f.directory, 'clips', job.id + '.png'), 'changed');
+  assert.equal((await f.call('/' + job.id + '/media')).status, 409);
+});
+
+test('completed layer media downloads from a hidden workspace without widening file access', async (t) => {
+  const f = await fixture(t, path.join('.runtime', 'data'));
+  const admitted = await (await f.call('', f.request, 'hidden-workspace')).json();
+  const job = await f.completed(admitted.id);
+  assert.equal(job.state, 'succeeded');
+  const response = await f.call('/' + job.id + '/media');
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get('content-type') || '', /^image\/png/);
+  const bytes = Buffer.from(await response.arrayBuffer());
+  assert.deepEqual(bytes, png);
+  assert.equal(hash(bytes), job.clip.sha256);
+
+  for (const id of [randomUUID(), '..%2f' + job.id, '..%5c' + job.id]) {
+    assert.equal((await f.call('/' + id + '/media')).status, 404);
+  }
+  assert.equal(f.renders(), 1);
+  await writeFile(path.join(f.data, 'clips', job.id + '.png'), 'changed');
   assert.equal((await f.call('/' + job.id + '/media')).status, 409);
 });
 

@@ -516,7 +516,7 @@ export async function layerStackRouter(context: {
     const file = path.join(clips, job.id + '.png');
     if ((await hash(file)) !== job.clip.sha256)
       throw new RequestError('The saved layer image changed.', 409);
-    res.type('png').sendFile(file);
+    res.type('png').sendFile(job.id + '.png', { root: clips, dotfiles: 'deny' });
   });
   router.get('/:id', (req, res) => res.json(getJob(req.params.id)));
   return { router, busy: () => !!operation };
