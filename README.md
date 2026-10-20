@@ -83,6 +83,11 @@ the same local studio, persisted jobs and editable projects. Generation uses the
 official Comfy SDK and open-weight model workflows; editing existing footage and
 local narration can run on the CPU.
 
+**Punch typography and transitions** add slam, word-pop, line-reveal, glitch and
+scramble titles with display, condensed and mono fonts, stamp/highlight/underline
+boxes and tilt, plus whip, zoom-punch, flash, glitch and push transitions between
+shots. See [punch typography](docs/motion-graphics.md#punch-typography).
+
 **Film motion graphics** adds timed shapes, image overlays and title transforms
 with editable easing, independent scale axes and 720p, 1080p or 4K export canvases.
 The native CPU renderer keeps these layers on the film's 24 fps clock.

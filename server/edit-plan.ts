@@ -37,9 +37,7 @@ export const editPlanSchema = z.object({
         voiceLead: z.number().min(0).max(5).default(0.12),
         tail: z.number().min(0.08).max(5).default(0.12),
         caption: z.string().trim().max(240).optional(),
-        animation: z
-          .enum(['fade', 'rise', 'none', 'build', 'typewriter', 'impact', 'wipe', 'spoken'])
-          .default('fade'),
+        animation: filmTitleSchema.shape.animation.default('fade'),
         style: z.enum(['headline', 'caption', 'kicker']).optional(),
         position: z.enum(['top', 'center', 'bottom']).optional(),
         captionTail: z.number().min(0).max(5).optional(),
@@ -47,6 +45,9 @@ export const editPlanSchema = z.object({
         fontWeight: filmTitleSchema.shape.fontWeight,
         stroke: filmTitleSchema.shape.stroke,
         align: filmTitleSchema.shape.align,
+        font: filmTitleSchema.shape.font,
+        box: filmTitleSchema.shape.box,
+        tilt: filmTitleSchema.shape.tilt,
         color: z
           .string()
           .regex(/^#[a-fA-F0-9]{6}$/)
@@ -149,6 +150,9 @@ export function compileEditPlan(
         ...(beat.fontWeight === undefined ? {} : { fontWeight: beat.fontWeight }),
         ...(beat.stroke === undefined ? {} : { stroke: beat.stroke }),
         ...(beat.align === undefined ? {} : { align: beat.align }),
+        ...(beat.font === undefined ? {} : { font: beat.font }),
+        ...(beat.box === undefined ? {} : { box: beat.box }),
+        ...(beat.tilt === undefined ? {} : { tilt: beat.tilt }),
         color: beat.color,
         ...(words ? { words } : {}),
       });

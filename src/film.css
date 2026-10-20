@@ -619,6 +619,17 @@
   background: currentColor;
   margin-left: 0.04em;
 }
+.draft-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #ffffff;
+  pointer-events: none;
+}
+.draft-title .reveal-word {
+  overflow: hidden;
+  vertical-align: bottom;
+}
 .draft-title.motion-build .title-content {
   white-space: pre-line;
 }

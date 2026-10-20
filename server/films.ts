@@ -8,6 +8,7 @@ import { promisify } from 'node:util';
 import {
   filmDimensions,
   hasMotionFeatures,
+  hasPunchFeatures,
   filmFormat,
   filmTimeline,
   filmRequestSchema,
@@ -481,7 +482,8 @@ export async function filmRouter(
     const film = films.get(req.params.id);
     if (!film) return void res.sendStatus(404);
     let format = 'aftertake-film/1';
-    if (film.motionScene) format = 'aftertake-film/4';
+    if (hasPunchFeatures(film)) format = 'aftertake-film/5';
+    else if (film.motionScene) format = 'aftertake-film/4';
     else if (hasMotionFeatures(film)) format = 'aftertake-film/3';
     else if (film.titles?.length || film.audio?.length || film.shots.some((shot) => shot.assetId))
       format = 'aftertake-film/2';
@@ -534,6 +536,7 @@ export async function filmRouter(
             end,
             framing: shot.framing,
             dissolve: shot.dissolve,
+            ...(shot.transition ? { transition: shot.transition } : {}),
           });
           continue;
         }
@@ -561,7 +564,14 @@ export async function filmRouter(
           recipe: take.recipe,
           workflow: take.workflow,
         });
-        inputs.push({ source, start, end, framing: shot.framing, dissolve: shot.dissolve });
+        inputs.push({
+          source,
+          start,
+          end,
+          framing: shot.framing,
+          dissolve: shot.dissolve,
+          ...(shot.transition ? { transition: shot.transition } : {}),
+        });
       }
       const duration = filmTimeline(shots).at(-1)!.end;
       if (draft.titles?.some((title) => title.end > duration + 0.001))

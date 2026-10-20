@@ -27,6 +27,50 @@ top or bottom title also changes its position relative to that center.
 **Edit motion JSON** accepts the graphics array with schema validation. Import
 matching stills first. Applying invalid JSON preserves the current layers.
 
+## Punch typography
+
+Titles have five additional entrances for fast promos and launch films. Each
+uses the title's **Entrance seconds** and fades out over its last quarter second.
+
+| Motion | Movement |
+| --- | --- |
+| Slam | Drops from 2.6× scale into place, then a short damped shake |
+| Word pop | Words scale up in turn with a slight overshoot |
+| Line reveal | Words rise into place from behind their own line |
+| Glitch | Red/cyan separation, jitter and sliced bands settle to a clean title |
+| Scramble | Characters appear as random glyphs, then settle left to right |
+
+**Font** replaces the style's family with **Display** (Archivo Black),
+**Condensed** (Anton) or **Mono** (JetBrains Mono); display and condensed have a
+single weight. **Box** draws a **Stamp** outline, a solid **Highlight** with dark
+text, or an **Underline** bar in the title color. **Tilt** rotates the finished
+title by −20° to 20° around its own center. Combine Slam, Display, Stamp and a
+small tilt for a rubber-stamp callout.
+
+Glitch and scramble use deterministic per-frame noise, so the browser preview and
+export choose the same glyphs and offsets. The preview approximates the glitch with
+colored text shadows; sliced bands appear in the exported MP4.
+
+## Shot transitions
+
+Choose a shot's **Transition** to style the overlap with the previous shot. Its
+length is the shot's **Dissolve in** seconds; choosing a transition on a hard cut
+fills in a suggested length.
+
+| Transition | Behavior |
+| --- | --- |
+| Dissolve | Crossfade (the default) |
+| Whip pan | Both pictures travel left with a horizontal motion smear |
+| Zoom punch | The outgoing picture accelerates into a zoom; the incoming one lands from it |
+| Flash | A white flash hides the cut at its midpoint |
+| Glitch cut | RGB separation and displaced bands around the switch |
+| Push up | The incoming picture pushes the outgoing one upward |
+
+Audio still crossfades over the same overlap. The preview poses each picture with
+the export's curves; the export adds the smear, zoom blur and glitch bands.
+Projects using punch typography or a styled transition save as
+**`aftertake-film/5`**; older formats reject them rather than dropping them.
+
 ## Presets and keyframes
 
 | Starting point | Movement |

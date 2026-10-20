@@ -12,6 +12,27 @@
   font-display: swap;
   src: url('/fonts/manrope.ttf') format('truetype');
 }
+@font-face {
+  font-family: 'Archivo Black';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/archivo-black.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Anton';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/anton.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono.ttf') format('truetype');
+}
 :root {
   font-family: 'DM Sans', sans-serif;
   color: var(--text-primary);

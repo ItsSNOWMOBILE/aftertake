@@ -33,6 +33,13 @@ import {
   wordMotion,
   spokenTitleState,
   retimeSpokenWord,
+  slamMotion,
+  popWord,
+  revealWord,
+  glitchMotion,
+  scrambleCharacters,
+  titleFontFamilies,
+  kineticAnimations,
 } from './title-motion';
 import { apiFetch, browserDemo, mediaUrl } from './transport';
 import PreviewVideo from './PreviewVideo';
@@ -42,6 +49,13 @@ import { filmExportKey, exportAttemptKey } from './narrated-cut';
 import { cameraAt, type CameraKeyframe, type FilmFraming } from './film-camera';
 import { audioGain } from './film-audio';
 import { FilmRecorder } from './FilmRecorder';
+import {
+  transitionDefaults,
+  transitionLabels,
+  transitionPose,
+  type ShotTransition,
+  type TransitionPose,
+} from './film-transitions';
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await apiFetch(url, init),
@@ -341,6 +355,7 @@ function ShotPicture({
   elapsed,
   duration,
   opacity,
+  pose,
   playing,
   volume,
   onReadiness,
@@ -351,6 +366,7 @@ function ShotPicture({
   elapsed: number;
   duration: number;
   opacity: number;
+  pose?: TransitionPose;
   playing: boolean;
   volume: number;
   onReadiness: (ready: boolean, failed?: boolean) => void;
@@ -362,15 +378,21 @@ function ShotPicture({
   const progress = Math.max(0, Math.min(1, elapsed / Math.max(1 / 24, duration - 1 / 24)));
   const framing = shot.framing;
   const camera = framing ? cameraAt(framing, progress) : undefined;
+  const moved = pose && (pose.x || pose.y || pose.scale !== 1);
   const style = {
-    opacity,
+    opacity: pose ? (pose.visible ? pose.opacity : 0) : opacity,
     ...(framing?.fit === 'cover' ? { objectFit: 'cover' as const, objectPosition: 'center' } : {}),
-    ...(camera
+    ...(camera || moved
       ? {
-          transform: `scale(${camera.zoom})`,
-          transformOrigin: `${camera.x * 100}% ${camera.y * 100}%`,
+          // The transition moves the framed picture; its own camera stays inside.
+          transform: [
+            moved ? `translate(${pose.x * 100}%, ${pose.y * 100}%) scale(${pose.scale})` : '',
+            camera ? `scale(${camera.zoom})` : '',
+          ].join(' '),
+          transformOrigin: camera ? `${camera.x * 100}% ${camera.y * 100}%` : '50% 50%',
         }
       : {}),
+    ...(pose?.blur ? { filter: `blur(${pose.blur * 30}cqw)` } : {}),
   };
   useEffect(() => {
     onReadiness(false);
@@ -483,6 +505,45 @@ function TitlePreview({ title, time: visualTime }: { title: Title; time: number 
           </span>
         );
       })
+    ) : title.animation === 'pop' || title.animation === 'reveal' ? (
+      title.text.split(/(\s+)/).map((word, index) => {
+        if (/^\s+$/.test(word) || !word) return word;
+        const at = wordIndex++,
+          elapsed = visualTime - title.start;
+        if (title.animation === 'pop') {
+          const part = popWord(at, words.length, elapsed, motion.duration);
+          return (
+            <span className="kinetic-word" key={index}>
+              <i style={{ opacity: part.opacity, transform: `scale(${part.scale})` }}>{word}</i>
+            </span>
+          );
+        }
+        const part = revealWord(at, words.length, elapsed, motion.duration);
+        return (
+          <span className="kinetic-word reveal-word" key={index}>
+            <i
+              style={{
+                visibility: part.visible ? 'visible' : 'hidden',
+                transform: `translateY(${part.offset * 110}%)`,
+              }}
+            >
+              {word}
+            </i>
+          </span>
+        );
+      })
+    ) : title.animation === 'scramble' ? (
+      scrambleCharacters(title.text, visualTime - title.start, motion.duration).map(
+        (character, index) => (
+          <span
+            className="type-letter"
+            key={index}
+            style={{ visibility: character === null ? 'hidden' : 'visible' }}
+          >
+            {character ?? Array.from(title.text)[index]}
+          </span>
+        ),
+      )
     ) : title.animation === 'typewriter' ? (
       title.text.split(/(\s+)/).map((word, index) => {
         if (/^\s+$/.test(word) || !word) {
@@ -514,6 +575,30 @@ function TitlePreview({ title, time: visualTime }: { title: Title; time: number 
     ) : (
       title.text
     );
+  const elapsed = visualTime - title.start,
+    slam = title.animation === 'slam' ? slamMotion(elapsed, motion.duration) : undefined,
+    glitch = title.animation === 'glitch' ? glitchMotion(elapsed, motion.duration) : undefined,
+    highlight = title.box === 'highlight';
+  const contentTransform = [
+    slam ? `translate(${slam.x * 100}cqw, ${slam.y * 100}cqw) scale(${slam.scale})` : '',
+    glitch ? `translateX(${glitch.jitter * 100}cqw)` : '',
+    title.animation === 'impact' ? `scale(${motion.scale})` : '',
+    title.tilt ? `rotate(${title.tilt}deg)` : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+  const boxStyle =
+    title.box === 'stamp'
+      ? { background: 'none', border: `0.07em solid ${title.color}`, padding: '0.18em 0.3em' }
+      : title.box === 'highlight'
+        ? { background: title.color, borderRadius: 0, padding: '0.18em 0.3em' }
+        : title.box === 'underline'
+          ? {
+              background: `linear-gradient(${title.color}, ${title.color}) bottom / 100% 0.09em no-repeat`,
+              borderRadius: 0,
+              padding: '0 0 0.21em',
+            }
+          : {};
   return (
     <div
       key={title.id}
@@ -532,12 +617,18 @@ function TitlePreview({ title, time: visualTime }: { title: Title; time: number 
       <div
         className={`draft-title ${title.style} ${title.position} motion-${title.animation}`}
         style={{
-          color: title.color,
+          color: highlight ? '#0b0f0a' : title.color,
           opacity: motion.opacity,
           fontSize: title.fontSize ? `${title.fontSize / 12.8}cqw` : undefined,
-          fontWeight: typography.fontWeight,
+          fontFamily: title.font ? titleFontFamilies[title.font] : undefined,
+          fontWeight:
+            title.font === 'display' || title.font === 'condensed' ? 400 : typography.fontWeight,
           textAlign: typography.align,
-          WebkitTextStroke: typography.stroke ? `${2 / 12.8}cqw #080c09be` : '0 transparent',
+          WebkitTextStroke:
+            typography.stroke && !highlight ? `${2 / 12.8}cqw #080c09be` : '0 transparent',
+          textShadow: glitch?.split
+            ? `${-glitch.split * 100}cqw 0 #ff2a55, ${glitch.split * 100}cqw 0 #22e3ff`
+            : undefined,
           paintOrder: 'stroke fill',
           translate:
             title.animation === 'rise'
@@ -548,7 +639,8 @@ function TitlePreview({ title, time: visualTime }: { title: Title; time: number 
         <span
           className="title-content"
           style={{
-            transform: title.animation === 'impact' ? `scale(${motion.scale})` : undefined,
+            ...boxStyle,
+            transform: contentTransform || undefined,
             clipPath:
               title.animation === 'wipe' ? `inset(0 ${(1 - motion.ease) * 100}% 0 0)` : undefined,
           }}
@@ -591,6 +683,12 @@ function DraftPlayer({
   const incoming = timeline[current];
   const dissolve = incoming?.overlap && time < incoming.start + incoming.overlap;
   const opacity = dissolve ? Math.max(0, (time - incoming.start) / incoming.overlap) : 1;
+  const transition = dissolve ? draft.shots[current]?.transition : undefined;
+  const poseFor = (index: number) =>
+    transition && transition !== 'dissolve' && (index === current || index === current - 1)
+      ? transitionPose(transition, opacity, index === current ? 'incoming' : 'outgoing')
+      : undefined;
+  const flash = transition ? (poseFor(current)?.flash ?? 0) : 0;
   const visible = draft.shots.length ? (dissolve ? [current - 1, current] : [current]) : [];
   const mounted = [...visible, ...(current + 1 < draft.shots.length ? [current + 1] : [])];
   const pictureKey = (index: number) => {
@@ -646,6 +744,7 @@ function DraftPlayer({
             elapsed={time - timeline[index].start}
             duration={timeline[index].duration}
             opacity={index === current ? opacity : index < current ? 1 : 0}
+            pose={poseFor(index)}
             playing={playing && ready && visible.includes(index)}
             volume={
               visible.includes(index)
@@ -662,6 +761,7 @@ function DraftPlayer({
             }}
           />
         ))}
+        {flash > 0 && <i className="draft-flash" style={{ opacity: flash }} />}
         {!visible.length && <span>Your film starts here.</span>}
         {draft.motionScene ? (
           <MotionScenePreview
@@ -1313,6 +1413,39 @@ export default function FilmComposer({
                       <span>seconds · overlaps trims; 0 = cut</span>
                     </label>
                   )}
+                  {index > 0 && (
+                    <label className="film-dissolve">
+                      Transition
+                      <select
+                        aria-label={`Shot ${index + 1} transition`}
+                        value={shot.transition ?? 'dissolve'}
+                        onChange={(event) => {
+                          const transition = event.target.value as ShotTransition;
+                          setDraft({
+                            ...draft,
+                            shots: draft.shots.map((item, i) => {
+                              if (i !== index) return item;
+                              const { transition: _previous, ...rest } = item;
+                              return {
+                                ...rest,
+                                ...(transition === 'dissolve' ? {} : { transition }),
+                                // A styled transition needs overlap frames to play in.
+                                dissolve: item.dissolve
+                                  ? item.dissolve
+                                  : rounded(transitionDefaults[transition]),
+                              };
+                            }),
+                          });
+                        }}
+                      >
+                        {Object.entries(transitionLabels).map(([value, label]) => (
+                          <option key={value} value={value}>
+                            {label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  )}
                   <ShotCameraEditor
                     framing={shot.framing}
                     duration={cuts[index].duration}
@@ -1499,13 +1632,18 @@ export default function FilmComposer({
                   <option value="build">Word build</option>
                   <option value="typewriter">Typewriter</option>
                   <option value="impact">Impact</option>
+                  <option value="slam">Slam</option>
+                  <option value="pop">Word pop</option>
+                  <option value="reveal">Line reveal</option>
+                  <option value="glitch">Glitch</option>
+                  <option value="scramble">Scramble</option>
                   <option value="wipe">Wipe</option>
                   <option value="rise">Rise</option>
                   <option value="fade">Fade</option>
                   <option value="none">Still</option>
                 </select>
               </label>
-              {['build', 'typewriter', 'impact', 'wipe'].includes(title.animation) && (
+              {kineticAnimations.has(title.animation) && (
                 <label>
                   Entrance seconds
                   <input
@@ -1565,6 +1703,61 @@ export default function FilmComposer({
                   <option value="center">Center</option>
                   <option value="right">Right</option>
                 </select>
+              </label>
+              <label>
+                Font
+                <select
+                  aria-label={`Title ${index + 1} font`}
+                  value={title.font ?? 'style'}
+                  onChange={(event) =>
+                    titleChange(title.id, {
+                      font:
+                        event.target.value === 'style'
+                          ? undefined
+                          : (event.target.value as Title['font']),
+                    })
+                  }
+                >
+                  <option value="style">From style</option>
+                  <option value="display">Display</option>
+                  <option value="condensed">Condensed</option>
+                  <option value="mono">Mono</option>
+                </select>
+              </label>
+              <label>
+                Box
+                <select
+                  aria-label={`Title ${index + 1} box`}
+                  value={title.box ?? 'none'}
+                  onChange={(event) =>
+                    titleChange(title.id, {
+                      box:
+                        event.target.value === 'none'
+                          ? undefined
+                          : (event.target.value as Title['box']),
+                    })
+                  }
+                >
+                  <option value="none">None</option>
+                  <option value="stamp">Stamp</option>
+                  <option value="highlight">Highlight</option>
+                  <option value="underline">Underline</option>
+                </select>
+              </label>
+              <label>
+                Tilt °
+                <input
+                  aria-label={`Title ${index + 1} tilt`}
+                  type="number"
+                  min={-20}
+                  max={20}
+                  step={1}
+                  value={title.tilt ?? 0}
+                  onChange={(event) => {
+                    const tilt = Math.max(-20, Math.min(20, Number(event.target.value) || 0));
+                    titleChange(title.id, { tilt: tilt || undefined });
+                  }}
+                />
               </label>
               <label>
                 Outline

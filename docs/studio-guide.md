@@ -515,7 +515,10 @@ orientation in the browser, cue preview and render.
 
 The film desk joins up to 48 finished takes, imported videos or stills. Trim and
 reorder cuts, add timed headline/caption/kicker layers with word builds,
-typewriter reveals, impact entrances, wipes, fades or rises,
+typewriter reveals, impact entrances, slams, word pops, line reveals, glitch
+and scramble entrances, wipes, fades or rises, styled with stamp/highlight boxes,
+display fonts and tilt; style each cut as a dissolve, whip, zoom punch, flash,
+glitch or push,
 then mix voiceover clips against the original sound. The draft player previews
 cuts, titles and audio. Export a 720p landscape, portrait or square MP4 and an
 editable `aftertake-film/2` project containing media hashes, source recipes,

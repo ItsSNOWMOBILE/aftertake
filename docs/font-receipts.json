@@ -26,5 +26,47 @@
     "gitBlob": "e271172a9ed0cddc895aabb6509f1c7d880b492d",
     "sha256": "58172e0c0fac2cda8a37b348164bb55e44b0e69051e557e92b1d3f6910141f7b",
     "size": 4387
+  },
+  {
+    "file": "public/fonts/archivo-black.ttf",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/archivoblack/ArchivoBlack-Regular.ttf",
+    "gitBlob": "82d07de3b84ed4428f6a302b70f4b555148dfeb0",
+    "sha256": "dd9a89a019b4849f66ab75455fe7bdf931311042cbb0f0f97acc061539703180",
+    "size": 90988
+  },
+  {
+    "file": "public/fonts/archivoblack-OFL.txt",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/archivoblack/OFL.txt",
+    "gitBlob": "8894736938f94c6c7a81f27501f26151c412fcbc",
+    "sha256": "3173acd82f8c6159b5b1037b539fcbd4edff68e65c2ea8b9412b5a5ca97b08ff",
+    "size": 4492
+  },
+  {
+    "file": "public/fonts/anton.ttf",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/anton/Anton-Regular.ttf",
+    "gitBlob": "4d65707db9d8663ccfa99cd28cd3a4e0025be178",
+    "sha256": "a4ba3a92350ebb031da0cb47630ac49eb265082ca1bc0450442f4a83ab947cab",
+    "size": 170812
+  },
+  {
+    "file": "public/fonts/anton-OFL.txt",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/anton/OFL.txt",
+    "gitBlob": "93feddee37145696e123ea65a6772cab09663f9e",
+    "sha256": "ee67e6ee22790b7929f1a3769ca2801d565c64b5a9096942c1adf5596de9c9e4",
+    "size": 4484
+  },
+  {
+    "file": "public/fonts/jetbrains-mono.ttf",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/JetBrainsMono%5Bwght%5D.ttf",
+    "gitBlob": "aa310be8b717fe3774f9444dd89d5f4101cc6d10",
+    "sha256": "48715a42ec242c21e9f02692891e147d022299a52e48d5e413e1a942193ffeda",
+    "size": 187208
+  },
+  {
+    "file": "public/fonts/jetbrainsmono-OFL.txt",
+    "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/jetbrainsmono/OFL.txt",
+    "gitBlob": "821a3dac22aff15a1f1c9689a1d79c45bb58ca39",
+    "sha256": "b2fe5e8987594e9ffd1d2ca52a2f5d73eb8335243893c5d6254b5ad69269591d",
+    "size": 4399
   }
 ]
