@@ -124,7 +124,7 @@ export const scenes = [
     shot('roomSrc', -16, -12, { in: 0.2, framing: push(1, 1.08), dissolve: D });
     shot('fallsSrc', -12, -8, { in: 0, framing: push(1.04, 1.12), dissolve: D });
     shot('bridgeSrc', -8, -5, { in: 0.2, framing: push(1.1, 1.18, 0.5, 0.45), dissolve: D });
-    title('YOUR FOOTAGE · SHOT ONCE', -15.6, -5.2, { style: 'kicker', position: 'bottom', align: 'left', font: 'mono', animation: 'scramble', fontSize: 32, color: LIME, stroke: false });
+    title('YOUR FOOTAGE · SHOT ONCE', -15.6, -5.2, { style: 'caption', position: 'bottom', align: 'left', font: 'mono', animation: 'scramble', fontSize: 32, color: LIME });
     title('ENDS.', -13, -9, { animation: 'glitch', font: 'display', fontSize: 150, delay: 0.05 });
     shot('black', -5, 0);
     title('THEN COMES THE', -4, 0, { animation: 'pop', font: 'display', fontSize: 104, motionDuration: 1.1, early: 0.04 });
@@ -140,7 +140,7 @@ export const scenes = [
     const rapid = [['crystal', 1.4], ['falls', 1.2], ['castle', 1.0], ['winter', 1.6], ['reclaimed', 1.4], ['observatory', 0.8], ['perfume', 0.5], ['teddy', 0.8]];
     rapid.forEach(([key, start], index) => shot(key, 4 + index, 5 + index, { in: start, framing: key === 'teddy' ? push(1.2, 1.3, 0.5, 0.4) : push(1.02, 1.1),
       ...(index % 3 === 1 ? { dissolve: D, transition: index % 2 ? 'whip' : 'glitch' } : {}) }));
-    title('EVERY FRAME HERE WAS MADE IN AFTERTAKE', 4.1, 11.9, { style: 'kicker', position: 'bottom', align: 'left', font: 'mono', animation: 'scramble', fontSize: 30, color: LIME, stroke: false });
+    title('EVERY FRAME HERE WAS MADE IN AFTERTAKE', 4.1, 11.9, { style: 'caption', position: 'bottom', align: 'left', font: 'mono', animation: 'scramble', fontSize: 30, color: LIME });
     shot('ensemble', 12, 16, { in: 0.4, framing: push(1.0, 1.06), dissolve: D, transition: 'flash' });
     title('ANY SCENE.', 12, 13, { font: 'display', fontSize: 120, color: CREAM, box: 'highlight', tilt: -2, early: 0.02 });
     title('ANY CAST.', 13, 14, { font: 'display', fontSize: 120, color: LIME, box: 'highlight', tilt: 3, early: 0.02 });
@@ -186,7 +186,8 @@ function popTitle(x, y) {
     { at: 0.09, x, y, scale: 1, opacity: 1, easing: 'ease-in-out' }, { at: 1, x, y, scale: 1, opacity: 1 }] };
 }
 
-const kicker = (options = {}) => ({ style: 'kicker', position: 'bottom', align: 'left', font: 'mono', animation: 'scramble', fontSize: 28, color: LIME, stroke: false, ...options });
+// Captions over footage sit on Film's dark caption panel so they read over bright shots.
+const kicker = (options = {}) => ({ style: 'caption', position: 'bottom', align: 'left', font: 'mono', animation: 'scramble', fontSize: 28, color: LIME, ...options });
 const big = (options = {}) => ({ font: 'display', fontSize: 120, ...options });
 
 scenes.push(
