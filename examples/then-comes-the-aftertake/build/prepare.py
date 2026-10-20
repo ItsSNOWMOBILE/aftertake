@@ -36,6 +36,8 @@ def main(music):
     for name, colour in [('plate-black', (8, 10, 9)), ('plate-dark', (18, 23, 19))]:
         Image.new('RGB', (1920, 1080), colour).save(WORK / f'{name}.png')
     shutil.copyfile(HERE.parent / 'assets/logo-dark.png', WORK / 'logo-dark.png')
+    # The portal take's real ComfyUI graph, drawn for the How it's built scene.
+    run(HERE / 'workflow-graph.py', ROOT / 'examples/portal/workflow-api.json', WORK / 'graph-portal.png')
 
     # Subject copies and colour echoes from the example's saved SAM 3 tracking.
     example = ROOT / 'examples/subject-duplicates'
