@@ -2,9 +2,10 @@ import { z } from 'zod';
 import { filmFramingSchema } from './film-camera';
 import { audioFadeFields, audioFadesFitTrack } from './film-audio';
 import { filmGraphicSchema, motionTrackSchema } from './film-motion';
+import { filmSceneSchema, sceneBindingErrors, sceneProjectionClearance } from './film-scene';
 
 // Include this revision in new export identities when renderer behavior changes.
-export const filmRenderRevision = 10;
+export const filmRenderRevision = 11;
 import type { Recipe } from './domain';
 
 export const spokenWordSchema = z
@@ -103,26 +104,48 @@ export const filmAudioSchema = z
   .refine(audioFadesFitTrack, 'Audio fades must each fit within the trimmed clip.');
 const uniqueGraphicIds = (graphics: { id: string }[]) =>
   new Set(graphics.map((graphic) => graphic.id)).size === graphics.length;
-export const filmDraftSchema = z.object({
-  name: z.string().trim().min(1).max(100),
-  aspect: z.enum(['landscape', 'portrait', 'square']),
-  resolution: z.enum(['720p', '1080p', '2160p']).optional(),
-  shots: z.array(filmShotSchema).max(48),
-  titles: z.array(filmTitleSchema).max(80).optional(),
-  graphics: z
-    .array(filmGraphicSchema)
-    .max(24)
-    .refine(uniqueGraphicIds, 'Every graphic needs a unique ID.')
-    .optional(),
-  audio: z.array(filmAudioSchema).max(32).optional(),
-  sourceVolume: z.number().min(0).max(1).optional(),
-  normalizeAudio: z.boolean().optional(),
-});
+export const filmDraftSchema = z
+  .object({
+    name: z.string().trim().min(1).max(100),
+    aspect: z.enum(['landscape', 'portrait', 'square']),
+    resolution: z.enum(['720p', '1080p', '2160p']).optional(),
+    shots: z.array(filmShotSchema).max(48),
+    titles: z.array(filmTitleSchema).max(80).optional(),
+    graphics: z
+      .array(filmGraphicSchema)
+      .max(24)
+      .refine(uniqueGraphicIds, 'Every graphic needs a unique ID.')
+      .optional(),
+    audio: z.array(filmAudioSchema).max(32).optional(),
+    sourceVolume: z.number().min(0).max(1).optional(),
+    normalizeAudio: z.boolean().optional(),
+    motionScene: filmSceneSchema.optional(),
+  })
+  .superRefine((film, context) => {
+    if (film.motionScene)
+      for (const message of sceneBindingErrors(film.motionScene, film.graphics, film.titles))
+        context.addIssue({ code: 'custom', path: ['motionScene'], message });
+    const [width, height] = filmDimensions(film);
+    for (const group of film.motionScene?.groups ?? [])
+      if (sceneProjectionClearance(group, width, height) <= 0.05 * width)
+        context.addIssue({
+          code: 'custom',
+          path: ['motionScene'],
+          message: `“${group.name}” approaches the camera plane. Increase its perspective distance or reduce its tilt.`,
+        });
+  });
 export const filmRequestSchema = filmDraftSchema
   .refine((film) => film.shots.length > 0, 'Add footage to your film.')
   .refine(
     (film) => film.shots.reduce((sum, shot) => sum + shot.end - shot.start, 0) <= 600,
     'Keep films under ten minutes.',
+  )
+  .refine(
+    (film) =>
+      !film.motionScene?.groups.some(
+        (group) => group.end > (filmTimeline(film.shots).at(-1)?.end ?? 0) + 0.001,
+      ),
+    'A motion group ends after the film.',
   );
 const sha256 = z.string().regex(/^[a-f0-9]{64}$/);
 export const narrationSchema = z.object({
@@ -171,7 +194,12 @@ export const filmVoiceSourceSchema = z
   );
 export const filmManifestSchema = filmDraftSchema
   .safeExtend({
-    format: z.enum(['aftertake-film/1', 'aftertake-film/2', 'aftertake-film/3']),
+    format: z.enum([
+      'aftertake-film/1',
+      'aftertake-film/2',
+      'aftertake-film/3',
+      'aftertake-film/4',
+    ]),
     shots: z.array(filmShotSchema.safeExtend({ sha256 })).min(1).max(48),
     graphics: z
       .array(
@@ -196,8 +224,22 @@ export const filmManifestSchema = filmDraftSchema
       .optional(),
   })
   .refine(
-    (film) => film.format === 'aftertake-film/3' || !hasMotionFeatures(film),
+    (film) =>
+      film.format === 'aftertake-film/3' ||
+      film.format === 'aftertake-film/4' ||
+      !hasMotionFeatures(film),
     'Motion graphics and explicit export sizes require an aftertake-film/3 project.',
+  )
+  .refine(
+    (film) => film.format === 'aftertake-film/4' || !film.motionScene,
+    'Grouped depth and shutter motion require an aftertake-film/4 project.',
+  )
+  .refine(
+    (film) =>
+      !film.motionScene?.groups.some(
+        (group) => group.end > (filmTimeline(film.shots).at(-1)?.end ?? 0) + 0.001,
+      ),
+    'A motion group ends after the film.',
   );
 export type FilmAsset = {
   id: string;
@@ -267,6 +309,7 @@ export type Film = {
   })[];
   titles?: FilmDraft['titles'];
   graphics?: FilmDraft['graphics'];
+  motionScene?: FilmDraft['motionScene'];
   sourceVolume?: number;
   normalizeAudio?: boolean;
   audio?: (NonNullable<FilmDraft['audio']>[number] & { sha256: string; asset: FilmAsset })[];
@@ -284,12 +327,20 @@ export function filmDimensions(film: Pick<FilmDraft, 'aspect' | 'resolution'>): 
   return [width * scale, height * scale];
 }
 
-export function hasMotionFeatures(film: Pick<FilmDraft, 'graphics' | 'titles' | 'resolution'>) {
+export function hasMotionFeatures(
+  film: Pick<FilmDraft, 'graphics' | 'titles' | 'resolution' | 'motionScene'>,
+) {
   return (
-    !!film.graphics?.length || !!film.resolution || !!film.titles?.some((title) => title.motion)
+    !!film.motionScene ||
+    !!film.graphics?.length ||
+    !!film.resolution ||
+    !!film.titles?.some((title) => title.motion)
   );
 }
 
-export function filmFormat(film: Pick<FilmDraft, 'graphics' | 'titles' | 'resolution'>) {
+export function filmFormat(
+  film: Pick<FilmDraft, 'graphics' | 'titles' | 'resolution' | 'motionScene'>,
+) {
+  if (film.motionScene) return 'aftertake-film/4' as const;
   return hasMotionFeatures(film) ? ('aftertake-film/3' as const) : ('aftertake-film/2' as const);
 }

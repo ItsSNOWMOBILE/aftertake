@@ -18,7 +18,8 @@ REQUIRED_SOURCES = (
     'scripts/character-workflow.py', 'server/character-profile.ts',
     'docs/models-character-swap.json', 'requirements-runtime.txt',
     *(f'{PACKAGE}/{name}' for name in (
-        '__init__.py', 'character_nodes.py', 'media_utils.py', 'memory_compat.py',
+        '__init__.py', 'character_nodes.py', 'composite_math.py', 'depth_nodes.py',
+        'media_utils.py', 'memory_compat.py',
         'hardware.py', 'vram.py', 'requirements.txt',
     )),
 )

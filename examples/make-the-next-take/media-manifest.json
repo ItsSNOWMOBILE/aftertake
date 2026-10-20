@@ -1,0 +1,401 @@
+{
+  "format": "aftertake-portable-media/1",
+  "codeRevision": "5ae0854f3869c97f9bfe58766085997796a563d9",
+  "projects": [
+    {
+      "path": "examples/make-the-next-take/project.json",
+      "sourceBindings": 50,
+      "authoredProjectSha256": "94234b60aa14e182b9fac7bada931bed0c5b364e18bf91179b5c311c6fbff491",
+      "portableProjectSha256": "e37416afaa0bf6875b436397aed539d5e9394e24cf4ea7082f544802e56b02ce"
+    },
+    {
+      "path": "examples/make-the-next-take/campaign-landscape.json",
+      "sourceBindings": 6,
+      "authoredProjectSha256": "b32cd09ae5d4beec4f211a903c799c888a5d64b8e71c0b13563b8ea72060fc7b",
+      "portableProjectSha256": "866f22f3a5673c0c03eecbc5563630d5bad051402e99d4a88844dbd159dba99f"
+    },
+    {
+      "path": "examples/make-the-next-take/campaign-portrait.json",
+      "sourceBindings": 5,
+      "authoredProjectSha256": "851714244a21e6ecc6cf3cc0fd03aaa0e65d8b80e011bb98cd8c5432fe093a77",
+      "portableProjectSha256": "8a71bfa0f0845904040383fe5813e0eceef8bdf89e4fbccce8b2ddc9937637b2"
+    },
+    {
+      "path": "examples/make-the-next-take/campaign-square.json",
+      "sourceBindings": 5,
+      "authoredProjectSha256": "0de287ca0dd68de049fbe4361871c4f24b88fa9206cd365626b548234aacdd98",
+      "portableProjectSha256": "763c72de44dcac2e0013b2574ed3424bcc773b2c009249c81e91352ef81b4044"
+    }
+  ],
+  "media": [
+    {
+      "path": "examples/make-the-next-take/media/005d99f096a6-ui-06a-finish-settings.png",
+      "sha256": "005d99f096a6da18f564fd40a47f9a82add1e0536f05e7e6573c9fa82e837b2d",
+      "bytes": 254109,
+      "role": "ui:06a-finish-settings"
+    },
+    {
+      "path": "examples/make-the-next-take/media/08cd7fbf451a-VO05.wav",
+      "sha256": "08cd7fbf451a9026a171e8777f9d168d5f1d1d5a79cdac2379593330eae1a889",
+      "bytes": 200460,
+      "role": "VO05"
+    },
+    {
+      "path": "examples/make-the-next-take/media/195fc50776ed-ui-12a-portrait-canvas.png",
+      "sha256": "195fc50776edbb36ac547418473c98f155e00046dfbc3985926ca1264fb26081",
+      "bytes": 342939,
+      "role": "ui:12a-portrait-canvas"
+    },
+    {
+      "path": "examples/make-the-next-take/media/19b4e69d938a-ui-04-review-selection.png",
+      "sha256": "19b4e69d938a718f95145da044ac4a219d73ea14dd1cde3e4f4fc52ccb6c8f28",
+      "bytes": 787425,
+      "role": "ui:04-review-selection"
+    },
+    {
+      "path": "examples/make-the-next-take/media/19fa7b1c2e94-VO09.wav",
+      "sha256": "19fa7b1c2e9457325a75a31d89101df13c89d1228711f7ee4a53bd994529312e",
+      "bytes": 276042,
+      "role": "VO09"
+    },
+    {
+      "path": "examples/make-the-next-take/media/1f3ab1dc6bb8-poster-hero-before-graded.png",
+      "sha256": "1f3ab1dc6bb82484fbcf55acd9dd6220b29a17835a720123898f87a3f4d7f9a6",
+      "bytes": 1380933,
+      "role": "poster:hero_before_graded"
+    },
+    {
+      "path": "examples/make-the-next-take/media/217105b1adea-VO01.wav",
+      "sha256": "217105b1adeacbba3ae047ac4effec307c0a10fb9e942afd1e5c53d65694878d",
+      "bytes": 208170,
+      "role": "VO01"
+    },
+    {
+      "path": "examples/make-the-next-take/media/230ce107107e-native-paper-card.png",
+      "sha256": "230ce107107eca42a2d3bdeb57b2bb79dee654104f03d12d7602a1657c0ec90b",
+      "bytes": 8593,
+      "role": "native-paper-card"
+    },
+    {
+      "path": "examples/make-the-next-take/media/26f05e5c3ed0-VO10.wav",
+      "sha256": "26f05e5c3ed0ebca005044ea9a50ecf1afd9eb2811231e9eb68e4fb742c638c3",
+      "bytes": 120044,
+      "role": "VO10"
+    },
+    {
+      "path": "examples/make-the-next-take/media/388561e2e8bd-actual-native-SAM3-moving-review.mp4",
+      "sha256": "388561e2e8bd4cbce1e94ab9df40e8a59766065a262b11172c6775f1fbd3d9e0",
+      "bytes": 2254247,
+      "role": "actual-native-SAM3-moving-review"
+    },
+    {
+      "path": "examples/make-the-next-take/media/3c5231f24cf3-ui-10c-voice-receipt.png",
+      "sha256": "3c5231f24cf361fbe6808fcebcfeee70e18d5f9fe58ab7c8a968bf8e75505a49",
+      "bytes": 480511,
+      "role": "ui:10c-voice-receipt"
+    },
+    {
+      "path": "examples/make-the-next-take/media/3e855766cafa-prepared-before.mp4",
+      "sha256": "3e855766cafafedbd9c51d3c722536626f12021c45953a2deb088a6639a2d412",
+      "bytes": 3439103,
+      "role": "prepared-before"
+    },
+    {
+      "path": "examples/make-the-next-take/media/3e8a70991f40-format-landscape.png",
+      "sha256": "3e8a70991f40c56c8fa980309d3af51bab5a42b1888329dbf2f0117e8f29f0e3",
+      "bytes": 924452,
+      "role": "format:landscape"
+    },
+    {
+      "path": "examples/make-the-next-take/media/40db4e5c60e6-ui-10a-voice-script.png",
+      "sha256": "40db4e5c60e6b4a323d724799549e4d0b51d9740090f43d77f3af5abe2be48a4",
+      "bytes": 222029,
+      "role": "ui:10a-voice-script"
+    },
+    {
+      "path": "examples/make-the-next-take/media/42abd42981ef-one-echo-graded.mp4",
+      "sha256": "42abd42981efec48734752026df1c5cb2dadf57d2d75a1db0199faf900c74485",
+      "bytes": 3277935,
+      "role": "one-echo-graded"
+    },
+    {
+      "path": "examples/make-the-next-take/media/4363dcef8a99-VO03.wav",
+      "sha256": "4363dcef8a996a69fac3e447e2154ec9c048eba673cebf0c9836ca4b17cc9b8c",
+      "bytes": 278538,
+      "role": "VO03"
+    },
+    {
+      "path": "examples/make-the-next-take/media/4426ced1909b-VO06.wav",
+      "sha256": "4426ced1909b15b0d0a95aadac3251e287c8013b5e62b3d7c0b7a60a16a1320a",
+      "bytes": 327498,
+      "role": "VO06"
+    },
+    {
+      "path": "examples/make-the-next-take/media/44d25b01b97a-ui-05b-two-echo-controls.png",
+      "sha256": "44d25b01b97a98fbb9d49742fb31cc1aa8a49c6081d7c0b474676463c393eca2",
+      "bytes": 63959,
+      "role": "ui:05b-two-echo-controls"
+    },
+    {
+      "path": "examples/make-the-next-take/media/4a8390e2f002-VO02.wav",
+      "sha256": "4a8390e2f002d75f04e0cbe06dbce12272a38214513c107d56fb292c417c76b3",
+      "bytes": 225290,
+      "role": "VO02"
+    },
+    {
+      "path": "examples/make-the-next-take/media/55ac274add00-two-echo-original.mp4",
+      "sha256": "55ac274add005a3fd7475d5031f946b2e5c617379641277ffe62c20833dde815",
+      "bytes": 2552226,
+      "role": "two-echo-original"
+    },
+    {
+      "path": "examples/make-the-next-take/media/55e741bbdb72-source-8928240.mp4",
+      "sha256": "55e741bbdb72cbd4c37167eaff9d627b23566c1323cf10c8417d80d8db297214",
+      "bytes": 5202052,
+      "role": "source-8928240"
+    },
+    {
+      "path": "examples/make-the-next-take/media/5f3b872e8eb3-ui-09b-motion-settled-key.png",
+      "sha256": "5f3b872e8eb33001554e9ae6c87ca630d45d4b14ce2de63093ace85170a316ed",
+      "bytes": 362788,
+      "role": "ui:09b-motion-settled-key"
+    },
+    {
+      "path": "examples/make-the-next-take/media/609604743d4c-VO07.wav",
+      "sha256": "609604743d4c524737bc656b0e575762ff73c5aec9cbbaecd51acc63e92c7370",
+      "bytes": 228908,
+      "role": "VO07"
+    },
+    {
+      "path": "examples/make-the-next-take/media/650facb2eff1-source-8928246.mp4",
+      "sha256": "650facb2eff1b4e33e114ed6e9b4ca116f984bee0b729794155f7231a69a40e6",
+      "bytes": 9249197,
+      "role": "source-8928246"
+    },
+    {
+      "path": "examples/make-the-next-take/media/6f5bd8ecea36-two-echo-graded.mp4",
+      "sha256": "6f5bd8ecea3633d7dc9e795e97a1ab2a5bcb7a852fb14a1aca6808d10e7aaa4e",
+      "bytes": 3393666,
+      "role": "two-echo-graded"
+    },
+    {
+      "path": "examples/make-the-next-take/media/74208bc95853-source-8928299.mp4",
+      "sha256": "74208bc95853d39fb019e348a4830de120a0258cae70a75dbd9a11b365b9bd52",
+      "bytes": 11642393,
+      "role": "source-8928299"
+    },
+    {
+      "path": "examples/make-the-next-take/media/76185cf44702-actual-native-eight-second-landscape-campaign.mp4",
+      "sha256": "76185cf447029ff0521e68eca8e495a6f1032b17acfe7258e2f6abe5244001c3",
+      "bytes": 4896953,
+      "role": "actual-native-eight-second-landscape-campaign"
+    },
+    {
+      "path": "examples/make-the-next-take/media/76efcb1bc880-ui-02b-range-controls.png",
+      "sha256": "76efcb1bc880d5aa57cdf7b1b18593d80ede9c3b9e28956a3f3a2e47e88a8df9",
+      "bytes": 805303,
+      "role": "ui:02b-range-controls"
+    },
+    {
+      "path": "examples/make-the-next-take/media/82a4d81dc58b-ui-11-music-level.png",
+      "sha256": "82a4d81dc58b1974d08073fe1737214213e9769e1842745975dd8eda09d782fe",
+      "bytes": 354518,
+      "role": "ui:11-music-level"
+    },
+    {
+      "path": "examples/make-the-next-take/media/8da6d72b8a66-ui-07a-film-overview.png",
+      "sha256": "8da6d72b8a66ed600a0c1cba494ffa8b4fbf5b487e8d0b0f41ce02b1fe934780",
+      "bytes": 505965,
+      "role": "ui:07a-film-overview"
+    },
+    {
+      "path": "examples/make-the-next-take/media/8e9c2971dd96-ui-03a-tracking-running.png",
+      "sha256": "8e9c2971dd96c0cc91b75909234f249dd586af3d4f9e36a76f0654562d7fa4f2",
+      "bytes": 231231,
+      "role": "ui:03a-tracking-running"
+    },
+    {
+      "path": "examples/make-the-next-take/media/9c0942de7dbf-ui-08a-title-typing.png",
+      "sha256": "9c0942de7dbfba3e5abfd59c7ea2603c3ef9847a43630fe52d7128022c5deb6b",
+      "bytes": 443812,
+      "role": "ui:08a-title-typing"
+    },
+    {
+      "path": "examples/make-the-next-take/media/9eeebb73774a-VO08.wav",
+      "sha256": "9eeebb73774afbfb839313cd543ba69b662c2260eb7eb58955e0501df61695a5",
+      "bytes": 183244,
+      "role": "VO08"
+    },
+    {
+      "path": "examples/make-the-next-take/media/a05157efd5ed-ui-08b-title-complete.png",
+      "sha256": "a05157efd5ed8fa0857e10264587e331abfd1587bff3160e316627ccbcbfe630",
+      "bytes": 450638,
+      "role": "ui:08b-title-complete"
+    },
+    {
+      "path": "examples/make-the-next-take/media/a3d9ccafd7d1-ui-13a-this-film-overview.png",
+      "sha256": "a3d9ccafd7d160eb6dd05d620f0fa15cedb6efa42251e043d15cd88abe57904c",
+      "bytes": 371662,
+      "role": "ui:13a-this-film-overview"
+    },
+    {
+      "path": "examples/make-the-next-take/media/a70e1fa71ff2-poster-duo-graded.png",
+      "sha256": "a70e1fa71ff2bc6c2779a13213b196f884c1f2da5f15e58431a3d8fd23c5263e",
+      "bytes": 1700357,
+      "role": "poster:duo_graded"
+    },
+    {
+      "path": "examples/make-the-next-take/media/ab7db338ccfd-ui-13b-this-film-title.png",
+      "sha256": "ab7db338ccfdb9b5e0a81fc172f5fd6f5ce3103c748a8a3e938757d7eb7a8700",
+      "bytes": 355330,
+      "role": "ui:13b-this-film-title"
+    },
+    {
+      "path": "examples/make-the-next-take/media/aed1cf14082c-ui-10b-completed-voice.png",
+      "sha256": "aed1cf14082c69f3b5cf99bb7d25df1e05e802c11691ac6e9faa04eb9c579e2e",
+      "bytes": 493709,
+      "role": "ui:10b-completed-voice"
+    },
+    {
+      "path": "examples/make-the-next-take/media/b14d3015ef2e-ui-06b-finish-comparison.png",
+      "sha256": "b14d3015ef2e4a1229690619e3c6de52d8ed75169994863b1d9e25848a5c99c9",
+      "bytes": 580575,
+      "role": "ui:06b-finish-comparison"
+    },
+    {
+      "path": "examples/make-the-next-take/media/b3600f761434-origin-format-square.mp4",
+      "sha256": "b3600f76143414514151e84edd11a84bddfacb919e01fb7fc44089e63e47b4cc",
+      "bytes": 2394923,
+      "role": "origin-format:square"
+    },
+    {
+      "path": "examples/make-the-next-take/media/b6fc77b6b6df-ui-09a-motion-first-key.png",
+      "sha256": "b6fc77b6b6df5716aaebffb69063fc94119c68f4f3426126a3f08ea7789de941",
+      "bytes": 339272,
+      "role": "ui:09a-motion-first-key"
+    },
+    {
+      "path": "examples/make-the-next-take/media/ba39fba86ad1-portrait-graded.mp4",
+      "sha256": "ba39fba86ad15d2ae1a8c78c3c74c133061d91bd33f294f5765755dcebfa1e98",
+      "bytes": 27387716,
+      "role": "portrait_graded"
+    },
+    {
+      "path": "examples/make-the-next-take/media/ba791607eafc-actual-native-eight-second-portrait-campaign.mp4",
+      "sha256": "ba791607eafc80cb004782c7f5f72b94b6ac7f86da66b5930b48d43c0793eb72",
+      "bytes": 3520637,
+      "role": "actual-native-eight-second-portrait-campaign"
+    },
+    {
+      "path": "examples/make-the-next-take/media/bc8ce01372c3-ui-02-range-and-point.png",
+      "sha256": "bc8ce01372c3ccf042c2a5a4aaebd436e0db15efac448f12fd6d8e796ddbe4d7",
+      "bytes": 660884,
+      "role": "ui:02-range-and-point"
+    },
+    {
+      "path": "examples/make-the-next-take/media/c44bff273ba6-format-square.png",
+      "sha256": "c44bff273ba60dad57abdb94bb4806d8f6724da4347a83e63c78066ad1d41424",
+      "bytes": 691938,
+      "role": "format:square"
+    },
+    {
+      "path": "examples/make-the-next-take/media/c54350f88707-format-portrait.png",
+      "sha256": "c54350f887079b4dc64151420d0841e7152f279f0e38ccd8df747a1e55037de9",
+      "bytes": 1713837,
+      "role": "format:portrait"
+    },
+    {
+      "path": "examples/make-the-next-take/media/cae3fa39fe0d-VO04.wav",
+      "sha256": "cae3fa39fe0dd807dc894f02872ce74386b0ba33bc13f3a1e3c2194843104858",
+      "bytes": 238058,
+      "role": "VO04"
+    },
+    {
+      "path": "examples/make-the-next-take/media/dbf1de02e2a1-Galactic-Rap-Kevin-MacLeod-CC-BY4-0.mp3",
+      "sha256": "dbf1de02e2a109c551eb9df55c79c7c6118fb297411a02eb07abca654b571863",
+      "bytes": 4549821,
+      "role": "Galactic Rap — Kevin MacLeod, CC BY4.0"
+    },
+    {
+      "path": "examples/make-the-next-take/media/def811202896-hero-before-graded.mp4",
+      "sha256": "def8112028962262ab23ba0f83c3da33662c8cedb4b409c3ed40c4ee2bbdb4b0",
+      "bytes": 3203217,
+      "role": "hero_before_graded"
+    },
+    {
+      "path": "examples/make-the-next-take/media/e0b50ace16f1-poster-portrait-graded.png",
+      "sha256": "e0b50ace16f1597a1966bdc9dabfe4967da18b4a147acbff7fce4cb412e28849",
+      "bytes": 2023879,
+      "role": "poster:portrait_graded"
+    },
+    {
+      "path": "examples/make-the-next-take/media/e6386aa1ae7a-ui-05a-one-echo-controls.png",
+      "sha256": "e6386aa1ae7ad406af1cca8ed4b2faede596029fcdc19e545216b45729e9864a",
+      "bytes": 490651,
+      "role": "ui:05a-one-echo-controls"
+    },
+    {
+      "path": "examples/make-the-next-take/media/ec5c21ee3fdf-one-echo-original.mp4",
+      "sha256": "ec5c21ee3fdf67bc81270388c936ca23cded9c83e07b6489c568bef7d46144c4",
+      "bytes": 2415609,
+      "role": "one-echo-original"
+    },
+    {
+      "path": "examples/make-the-next-take/media/f347bd2a41ae-ui-01-source-workspace.png",
+      "sha256": "f347bd2a41ae18fe72c5ec6b32b0aa76e5b0c01b5739d177fa50333ccef02098",
+      "bytes": 747043,
+      "role": "ui:01-source-workspace"
+    },
+    {
+      "path": "examples/make-the-next-take/media/f486846811fe-ui-07c-trim-final.png",
+      "sha256": "f486846811fef5022f11513be4ca883d121905fc9c58f00883d068643d6f4d9a",
+      "bytes": 498602,
+      "role": "ui:07c-trim-final"
+    },
+    {
+      "path": "examples/make-the-next-take/media/f6a654ae265a-duo-graded.mp4",
+      "sha256": "f6a654ae265a31cc7028c9393dae6b31e291c0e7d59b987face856933be34f90",
+      "bytes": 18184912,
+      "role": "duo_graded"
+    },
+    {
+      "path": "examples/make-the-next-take/media/fa0a22d28bfe-ui-13c-this-film-narration.png",
+      "sha256": "fa0a22d28bfec6f155e820136d410c908b3aa8e2172f82fb6c344b19ca92b847",
+      "bytes": 378298,
+      "role": "ui:13c-this-film-narration"
+    },
+    {
+      "path": "examples/make-the-next-take/media/fca349805c35-ui-07b-trim-shorter.png",
+      "sha256": "fca349805c357af5aa54d59a30943014e12caa846c801a85cacb55ee0b91749f",
+      "bytes": 479844,
+      "role": "ui:07b-trim-shorter"
+    }
+  ],
+  "rawUiCaptures": [
+    "examples/make-the-next-take/provenance/ui/01-source-workspace.jpg",
+    "examples/make-the-next-take/provenance/ui/02-range-and-point.jpg",
+    "examples/make-the-next-take/provenance/ui/02b-range-controls.jpg",
+    "examples/make-the-next-take/provenance/ui/03a-tracking-running.jpg",
+    "examples/make-the-next-take/provenance/ui/04-review-selection.jpg",
+    "examples/make-the-next-take/provenance/ui/05a-one-echo-controls.jpg",
+    "examples/make-the-next-take/provenance/ui/05b-two-echo-controls.jpg",
+    "examples/make-the-next-take/provenance/ui/06a-finish-settings.jpg",
+    "examples/make-the-next-take/provenance/ui/06b-finish-comparison.jpg",
+    "examples/make-the-next-take/provenance/ui/07a-film-overview.jpg",
+    "examples/make-the-next-take/provenance/ui/07b-trim-shorter.jpg",
+    "examples/make-the-next-take/provenance/ui/07c-trim-final.jpg",
+    "examples/make-the-next-take/provenance/ui/08a-title-typing.jpg",
+    "examples/make-the-next-take/provenance/ui/08b-title-complete.jpg",
+    "examples/make-the-next-take/provenance/ui/09a-motion-first-key.jpg",
+    "examples/make-the-next-take/provenance/ui/09b-motion-settled-key.jpg",
+    "examples/make-the-next-take/provenance/ui/10a-voice-script.jpg",
+    "examples/make-the-next-take/provenance/ui/10b-completed-voice.jpg",
+    "examples/make-the-next-take/provenance/ui/10c-voice-receipt.jpg",
+    "examples/make-the-next-take/provenance/ui/11-music-level.jpg",
+    "examples/make-the-next-take/provenance/ui/12a-portrait-canvas.jpg",
+    "examples/make-the-next-take/provenance/ui/13a-this-film-overview.jpg",
+    "examples/make-the-next-take/provenance/ui/13b-this-film-title.jpg",
+    "examples/make-the-next-take/provenance/ui/13c-this-film-narration.jpg"
+  ],
+  "scope": "Exact original media bytes and recorded stage receipts; no inference or model weight bundle."
+}

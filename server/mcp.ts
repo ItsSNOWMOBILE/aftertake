@@ -22,6 +22,7 @@ import { displayDimensions, renderDimensions, type Render, type Clip } from '../
 import { clipMediaRoute, registerGenerationTools } from './generation-tools.js';
 import { registerCharacterTools } from './character-tools.js';
 import { registerEffectsTools } from './effects-tools.js';
+import { registerRecompositionTools } from './recomposition-tools.js';
 import { registerRouterTools } from './router-tools.js';
 import { scriptRequestSchema } from '../src/script-draft.js';
 import { toolAnnotations } from './tool-annotations.js';
@@ -236,6 +237,7 @@ const guide = {
     'Keep a stable requestId for each deliberate image, frame edit or video generation. Status rejoins native records after reconnection.',
     'A timeout is not failure. Reconcile a recorded uncertain admission with aftertake_generation_action using that same requestId.',
     'Inspect the actual generated image with clipId, or finished video with renderId. The user reviews the result before final delivery.',
+    'For a completed native region edit with saved raw video, use aftertake_refine_blend to change only its final spatial area or color matching without generating again. Keep its CPU receipt separate from the original executed Comfy graph.',
   ],
   textVideo: {
     setup: 'python scripts/download-models.py --text-video',
@@ -544,7 +546,7 @@ tool(
 type EditPlanBeat = { visuals: { assetId?: string; renderId?: string }[] };
 tool(
   'aftertake_save_film_edit',
-  'Save a complete editable native Film project with cuts, camera keyframes, animated text, shape/image graphic layers and audio. Graphics and titles support editable transform keyframes and easing. Verifies source hashes and timing without rendering. Revise the project to create a new plan ID; export and review through the same plan tools.',
+  'Save a complete editable native Film project with cuts, camera keyframes, animated text, shape/image graphic layers and audio. Format 4 motionScene supports ordered one-level groups of titles and graphics with a shared pivot, editable transforms, perspective depth and bounded shutter samples. Verifies source hashes and timing without rendering. Revise the project to create a new plan ID; export and review through the same plan tools.',
   z.object({ project: filmManifestSchema }),
   async ({ project }) => {
     const draft = retainedFilmDraft(project, await api('/api/films/resolve', project));
@@ -702,6 +704,7 @@ tool(
       'shots',
       'titles',
       'graphics',
+      'motionScene',
       'audio',
       'sourceVolume',
       'normalizeAudio',
@@ -758,5 +761,6 @@ tool(
 registerGenerationTools({ tool, api, bytes, base });
 registerCharacterTools({ tool, api, bytes, root, python, state });
 registerEffectsTools({ tool, api, base });
+registerRecompositionTools({ tool, api });
 registerRouterTools({ tool, base, state });
 await server.connect(new StdioServerTransport());

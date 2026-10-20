@@ -28,7 +28,7 @@ import { evaluateEngineCompatibility } from './engine-compatibility.js';
 import { submissionRejected } from './submission.js';
 import { filmRouter } from './films.js';
 import { templateRouter } from './templates.js';
-import { resolveRecipeAssets, RecipeAssetError } from './assets.js';
+import { resolveClipAsset, resolveRecipeAssets, RecipeAssetError } from './assets.js';
 import { frameEditorRouter } from './frame-edits.js';
 import { imageRouter } from './images.js';
 import { inspectVideoMetadata } from './video-metadata.js';
@@ -40,6 +40,7 @@ import { routerVideoRouter } from './router-videos.js';
 import { computeRouter } from './compute.js';
 import { subjectEffectsRouter } from './subject-effects.js';
 import { finishingRouter } from './finishing.js';
+import { recompositionRouter } from './recompositions.js';
 import { resolveFinishingLutSettings } from './finishing-luts.js';
 import { layerStackRouter } from './layer-stack.js';
 import { computeFeatures, type ComputeFeature } from '../src/compute.js';
@@ -542,6 +543,15 @@ app.use(
 );
 const finishing = await finishingRouter({ root, data, python });
 app.use('/api/finishing', finishing.router);
+const recompositions = await recompositionRouter({
+  root,
+  data,
+  python: () => cueRuntime.ready(),
+  renders,
+  resolveClipAsset: (clip) => resolveClipAsset(clip, clipDir, 'source'),
+  onRender: persist,
+});
+app.use('/api/recompositions', recompositions.router);
 const layerStacks = await layerStackRouter({
   root,
   data,

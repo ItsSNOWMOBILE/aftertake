@@ -44,9 +44,9 @@ class CloudProfileTests(unittest.TestCase):
             for item in result['sourceFiles']:
                 self.assertEqual(item['sha256'], hashlib.sha256((root / item['path']).read_bytes()).hexdigest())
             self.assertIn('scripts/hardware-check.py', {item['path'] for item in result['sourceFiles']})
-            self.assertEqual(len(result['customNodeFiles']), 7)
+            self.assertEqual(len(result['customNodeFiles']), 9)
             custom_files = {item['path']: item for item in result['customNodeFiles']}
-            for name in ('hardware.py', 'vram.py'):
+            for name in ('hardware.py', 'vram.py', 'composite_math.py', 'depth_nodes.py'):
                 filename = 'custom_nodes/aftertake/' + name
                 self.assertIn(filename, custom_files)
                 self.assertEqual(custom_files[filename]['sha256'], hashlib.sha256((root / filename).read_bytes()).hexdigest())
@@ -88,6 +88,29 @@ class CloudProfileTests(unittest.TestCase):
             self.assertNotIn(str(models), json.dumps(result))
             target.write_bytes(b'wrong size')
             self.assertEqual(profile.prepare_inventory(root, models)['models'][0]['local']['state'], 'size-mismatch')
+
+    def test_missing_required_runtime_modules_block_source_completeness(self):
+        modules = ('composite_math.py', 'depth_nodes.py')
+        for missing in modules:
+            with self.subTest(module=missing), tempfile.TemporaryDirectory(prefix='aftertake-cloud-inventory-') as directory:
+                root = Path(directory)
+                self.fixture(root)
+                # Copy these imports explicitly: discovering only files still
+                # present cannot establish that the package is complete.
+                for name in modules:
+                    relative = 'custom_nodes/aftertake/' + name
+                    shutil.copyfile(ROOT / relative, root / relative)
+                complete = profile.prepare_inventory(root)
+                self.assertTrue(complete['validation']['sourceFilesComplete'])
+                relative = 'custom_nodes/aftertake/' + missing
+                (root / relative).unlink()
+                result = profile.prepare_inventory(root)
+                self.assertFalse(result['validation']['sourceFilesComplete'])
+                self.assertEqual(result['validation']['missingSourceFiles'], [relative])
+                expected = {'path': relative, 'state': 'missing', 'sha256': None, 'size': None}
+                self.assertIn(expected, result['sourceFiles'])
+                self.assertIn(expected, result['customNodeFiles'])
+                self.assertFalse(result['deployment']['ready'])
 
     def test_unpinned_corrupt_or_path_escaping_manifests_are_rejected(self):
         manifest = json.loads((ROOT / 'docs/models-character-swap.json').read_text())

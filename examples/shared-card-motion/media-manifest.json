@@ -1,0 +1,21 @@
+{
+  "format": "aftertake-film-media/1",
+  "project": "examples/shared-card-motion/project.json",
+  "bindings": [
+    {
+      "assetId": "ffa68a43-351c-4621-878f-42406b86a73d",
+      "path": "examples/shared-card-motion/background.png",
+      "sha256": "c098e667b7944ce0191df9ede9f9a666c442bb74e556e3db6c12a872c30152bc"
+    },
+    {
+      "assetId": "46480c94-2007-4f94-b0a6-a97566632826",
+      "path": "examples/character-h3-high/source-frame-048.jpg",
+      "sha256": "1255aa44e6a2d90bc4ef98e6683742a3c3275f0ffd8aa28377cbd78be2dfd3d8"
+    },
+    {
+      "assetId": "adc7087c-ad3a-4ee1-bcbc-b5612fc24f36",
+      "path": "examples/character-h3/reference.png",
+      "sha256": "2246e339a602bd225113795eefa3a5603ea840f138eb4dcf0e8ff01122832052"
+    }
+  ]
+}

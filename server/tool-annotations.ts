@@ -18,6 +18,7 @@ const idempotentWrites = new Set([
   'aftertake_finish_media',
   'aftertake_depth_effect',
   'aftertake_compose_layers',
+  'aftertake_refine_blend',
   'aftertake_generate_hosted_video',
   'aftertake_recover_hosted_video',
 ]);
@@ -26,6 +27,7 @@ const destructiveWrites = new Set([
   'aftertake_character_action',
   'aftertake_cancel_finishing',
   'aftertake_depth_action',
+  'aftertake_cancel_blend',
   'aftertake_cancel_hosted_video',
 ]);
 const remoteTools = new Set([

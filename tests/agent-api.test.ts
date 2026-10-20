@@ -211,7 +211,7 @@ syncBuiltinESMExports();
   try {
     await client.connect(transport);
     const list = await client.listTools();
-    assert.equal(list.tools.length, 47);
+    assert.equal(list.tools.length, 50);
     for (const name of [
       'aftertake_character_workspace',
       'aftertake_track_character',
@@ -229,6 +229,16 @@ syncBuiltinESMExports();
       'aftertake_preview_layers',
       'aftertake_resolve_layers',
       'aftertake_save_film_edit',
+      'aftertake_refine_blend',
+      'aftertake_blend_status',
+      'aftertake_cancel_blend',
+      'aftertake_hosted_video_connection',
+      'aftertake_estimate_hosted_video',
+      'aftertake_generate_hosted_video',
+      'aftertake_hosted_video_status',
+      'aftertake_recover_hosted_video',
+      'aftertake_cancel_hosted_video',
+      'aftertake_export_hosted_video_request',
     ])
       assert.ok(
         list.tools.some((tool) => tool.name === name),
@@ -252,11 +262,14 @@ syncBuiltinESMExports();
     }
     assert.equal(annotations('aftertake_cancel_hosted_video').destructiveHint, true);
     assert.equal(annotations('aftertake_cancel_hosted_video').openWorldHint, true);
-    assert.equal(annotations('aftertake_hosted_video_connection').readOnlyHint, true);
-    assert.equal(annotations('aftertake_hosted_video_connection').openWorldHint, true);
-    assert.equal(annotations('aftertake_estimate_hosted_video').readOnlyHint, true);
-    assert.equal(annotations('aftertake_estimate_hosted_video').openWorldHint, true);
+    for (const name of ['aftertake_hosted_video_connection', 'aftertake_estimate_hosted_video']) {
+      assert.equal(annotations(name).readOnlyHint, true);
+      assert.equal(annotations(name).openWorldHint, true);
+    }
     assert.equal(annotations('aftertake_hosted_video_status').openWorldHint, false);
+    assert.equal(annotations('aftertake_refine_blend').idempotentHint, true);
+    assert.equal(annotations('aftertake_refine_blend').openWorldHint, false);
+    assert.equal(annotations('aftertake_cancel_blend').destructiveHint, true);
     for (const name of ['aftertake_character_action', 'aftertake_generation_action']) {
       assert.equal(annotations(name).readOnlyHint, false);
       assert.equal(annotations(name).destructiveHint, true);
@@ -416,12 +429,32 @@ syncBuiltinESMExports();
     const changedGraphic = await review(alteredGraphic);
     assert.equal(changedGraphic.isError, true);
     assert.match((changedGraphic.content as any)[0].text, /differs.*graphics/);
+    reviewFilm.motionScene = {
+      groups: [],
+      order: [
+        { kind: 'graphic', id: motionProject.graphics[0].id },
+        { kind: 'title', id: motionProject.titles[0].id },
+      ],
+    };
+    const sceneMatch = await review(reviewFilm);
+    assert.ok(!sceneMatch.isError);
+    const missingScene = structuredClone(reviewFilm);
+    delete missingScene.motionScene;
+    const lostScene = await review(missingScene);
+    assert.equal(lostScene.isError, true);
+    assert.match((lostScene.content as any)[0].text, /differs.*motionScene/);
+    const changedOrder = structuredClone(reviewFilm);
+    changedOrder.motionScene.order.reverse();
+    const alteredScene = await review(changedOrder);
+    assert.equal(alteredScene.isError, true);
+    assert.match((alteredScene.content as any)[0].text, /differs.*motionScene/);
     const wrongResolution = { ...reviewFilm, resolution: '720p' };
     const lostResolution = await review(wrongResolution);
     assert.equal(lostResolution.isError, true);
     assert.match((lostResolution.content as any)[0].text, /differs.*resolution/);
     delete reviewFilm.graphics;
     delete reviewFilm.resolution;
+    delete reviewFilm.motionScene;
     const legacyMatch = await review(reviewFilm);
     assert.ok(!legacyMatch.isError, 'Absent optional fields must not crash legacy review.');
     assert.equal((legacyMatch.structuredContent as any).embeddedProjectMatches, true);

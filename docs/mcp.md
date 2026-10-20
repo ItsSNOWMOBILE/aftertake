@@ -4,11 +4,12 @@ Aftertake exposes its real local film workflow through a stdio MCP server.
 An MCP client chooses the edit using the user's brief and selected assets.
 The server supplies media inspection, measured local narration, a persistent
 beat plan, native export and decoded review frames. It contains no LLM and
-requires no hosted inference service for local editing. Forty-seven typed tools cover native image
+requires no hosted inference service for local editing. Forty-three native tools cover image
 creation, reference editing, video generation, tracked-person effects, color
 finishing, still-image depth effects and narration-first Film editing.
 Native generation requires the configured local Comfy engine and its model profile.
-Seven optional hosted LTX tools use Comfy Router and workspace credits instead.
+Seven optional hosted LTX tools use Comfy Router and workspace credits instead,
+bringing this branch to fifty tools.
 
 ## Start the studio
 
@@ -120,6 +121,12 @@ root, including resolved symbolic links; remote media URLs are not accepted.
 | `aftertake_recover_hosted_video` | Recovers the original handle/output or explicitly replays its unchanged uncertain admission. |
 | `aftertake_cancel_hosted_video` | Requests cancellation and retains the original job until the provider confirms its outcome. |
 | `aftertake_export_hosted_video_request` | Reads the credential-free model request and measured output receipt. |
+| `aftertake_refine_blend` | Re-composites a saved native region edit with a different final painted area or source color match, using its original raw video and preserving the original take. No model is invoked. |
+| `aftertake_blend_status` | Reads that CPU job by record ID or original request ID, including its processing receipt and completed take. |
+| `aftertake_cancel_blend` | Cancels the CPU worker without deleting the original take or starting another generation. |
+
+For saved regional takes, [Refine a saved take’s blend](refining-a-take.md)
+explains the supported final-area controls, CPU dependencies and provenance.
 
 `aftertake_import_media` defaults to Film. Set `destination: "studio"` to import
 a generation source through the native source normalizer. Inspect a canonical

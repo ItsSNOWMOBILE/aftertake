@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import importlib.util
+from collections import OrderedDict
 from fractions import Fraction
 import av
 import imageio_ffmpeg
@@ -15,6 +16,9 @@ from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
 _motion_spec = importlib.util.spec_from_file_location('aftertake_film_motion', Path(__file__).with_name('film_motion.py'))
 film_motion = importlib.util.module_from_spec(_motion_spec)
 _motion_spec.loader.exec_module(film_motion)
+_scene_spec = importlib.util.spec_from_file_location('aftertake_film_scene', Path(__file__).with_name('film_scene.py'))
+film_scene = importlib.util.module_from_spec(_scene_spec)
+_scene_spec.loader.exec_module(film_scene)
 
 KINETIC = {'build', 'typewriter', 'impact', 'wipe', 'spoken'}
 
@@ -231,6 +235,100 @@ def animate_graphic(graphic, width, height, output, binary):
         process.kill();process.wait();raise
 
 
+def scene_renderer(scene, graphics, titles, width, height, fonts):
+    # A bounded LRU avoids retaining three full-canvas title bitmaps for every
+    # title or every spoken phrase. At 4K a single layout can approach 100 MiB.
+    cache = OrderedDict()
+    cache_bytes = 0
+    def image_bytes(value):
+        if isinstance(value, Image.Image):
+            return value.width * value.height * len(value.getbands())
+        if isinstance(value, dict):
+            return sum(image_bytes(item) for item in value.values())
+        return 0
+    def render_child(kind, layer, frame):
+        nonlocal cache_bytes
+        elapsed = frame / 24 - layer['start']
+        phrase = 0
+        if kind == 'title' and layer['animation'] == 'spoken':
+            for word in layer['words']:
+                if elapsed >= word['start']:
+                    phrase = word['phrase']
+        key = kind, layer['id'], phrase
+        if key not in cache:
+            if kind == 'graphic':
+                layout = film_motion.graphic_layout(layer, width, height)
+            elif layer['animation'] == 'spoken':
+                words = [word for word in layer['words'] if word['phrase'] == phrase]
+                layout = {'image': Image.new('RGBA', (width, height)), 'phrases': {phrase: {
+                    'timings': words, 'layout': title_image({**layer, 'text': ' '.join(word['text'] for word in words),
+                        'color': '#ffffff'}, width, height, fonts, layout=True)}}}
+            else:
+                layout = title_image(layer, width, height, fonts, layout=layer['animation'] in KINETIC)
+            size = image_bytes(layout)
+            while cache and (len(cache) >= 8 or cache_bytes + size > 128 * 1024 * 1024):
+                _, (_, removed) = cache.popitem(last=False)
+                cache_bytes -= removed
+            cache[key] = layout, size
+            cache_bytes += size
+        cache.move_to_end(key)
+        layout = cache[key][0]
+        if kind == 'graphic':
+            return film_scene.graphic_sample(layout, frame, film_motion)
+        if layer['animation'] in KINETIC:
+            picture = title_motion_frame(layer, layout, elapsed)
+        else:
+            picture = layout
+            if layer['animation'] != 'none':
+                length = layer['end'] - layer['start']
+                fade = min(.25, length / 3)
+                picture = film_motion.opacity(picture, max(0, min(1, elapsed / fade)) * max(0, min(1, (length - elapsed) / fade)))
+            if layer['animation'] == 'rise':
+                picture = film_motion.transform_title(picture, {**film_motion.IDENTITY,
+                    'y': -18 / height * (1 - max(0, min(1, elapsed / .35)))})
+        if 'motion' in layer:
+            picture = film_motion.transform_title(picture, film_motion.motion_at(layer['motion'], film_scene.phase(layer, frame)))
+        return picture
+    return film_scene.SceneRenderer(scene, graphics, titles, width, height, film_motion, render_child)
+
+
+def animate_scene(scene, graphics, titles, width, height, fonts, count, output, binary):
+    renderer = scene_renderer(scene, graphics, titles, width, height, fonts)
+    process = subprocess.Popen([binary, '-v', 'error', '-y', '-f', 'rawvideo', '-pix_fmt', 'rgba',
+        '-s', f'{width}x{height}', '-r', '24', '-i', 'pipe:0', '-an', '-c:v', 'qtrle', '-pix_fmt', 'argb',
+        '-threads', '2', str(output)], stdin=subprocess.PIPE, stderr=subprocess.PIPE,
+        creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+    try:
+        for frame in range(count):
+            process.stdin.write(renderer.frame(frame).tobytes())
+        process.stdin.close();process.stdin=None
+        _, error = process.communicate(timeout=120)
+        if process.returncode:
+            raise RuntimeError(error.decode('utf-8', errors='replace')[-3000:])
+    except BaseException:
+        process.kill();process.wait();raise
+
+
+def film_frame_count(shots):
+    if not isinstance(shots, list) or not 1 <= len(shots) <= 48:
+        raise ValueError('A scene film needs between one and 48 shots.')
+    total = previous = 0
+    for index, shot in enumerate(shots):
+        for field in ('start', 'end'):
+            film_motion.number(shot.get(field), 0, 600, 'shot ' + field)
+        if shot['end'] < shot['start'] + .25:
+            raise ValueError('A scene shot needs at least a quarter second.')
+        dissolve = shot.get('dissolve', 0) or 0
+        film_motion.number(dissolve, 0, 1, 'shot dissolve')
+        count = round(shot['end'] * 24) - round(shot['start'] * 24)
+        overlap = min(round(dissolve * 24), count // 2, previous // 2) if index else 0
+        total += count - overlap
+        previous = count
+    if total > 600 * 24:
+        raise ValueError('A scene film must stay within ten minutes.')
+    return total
+
+
 def join_picture(segments, output, width, height):
     """Blend integer frame indices without an EOF-dependent framesync clock."""
     held=[];written=0
@@ -391,7 +489,13 @@ def assemble(settings):
         raise ValueError('Every graphic needs a unique ID.')
     titles = [{**title,'motion':film_motion.validate_motion(title['motion'])} if 'motion' in title else title
               for title in settings.get('titles', [])]
-    if graphics or any('motion' in title for title in titles):
+    scene = settings.get('motionScene')
+    if scene is not None:
+        scene = film_scene.validate_scene(scene, graphics, titles, width, height, film_motion)
+        scene_count = film_frame_count(settings['shots'])
+        if any(group['end'] > scene_count / 24 + .001 for group in scene['groups']):
+            raise ValueError('Motion groups must fit within the film timeline.')
+    if graphics or any('motion' in title for title in titles) or scene is not None:
         film_motion.canvas_size(width,height)
     # Reject malformed standalone fade settings before encoding any footage.
     for audio in settings.get('audio', []):
@@ -406,7 +510,12 @@ def assemble(settings):
     with tempfile.TemporaryDirectory(prefix='aftertake-film-', dir=output.parent) as temporary:
         folder = Path(temporary)
         title_files = []
-        for graphic_index, graphic in enumerate(graphics):
+        if scene is not None:
+            count = scene_count
+            image = folder / 'scene.mov'
+            animate_scene(scene, graphics, titles, width, height, settings['fonts'], count, image, binary)
+            title_files.append(({'start': 0, 'end': count / 24, 'animation': 'none'}, image, True))
+        for graphic_index, graphic in enumerate(graphics if scene is None else []):
             animated = 'motion' in graphic
             image = folder / f'graphic-{graphic_index}{".mov" if animated else ".png"}'
             if animated:
@@ -415,7 +524,7 @@ def assemble(settings):
                 layout = film_motion.graphic_layout(graphic,width,height)
                 film_motion.graphic_frame(layout,math.ceil(graphic['start']*24-1e-7)).save(image)
             title_files.append(({**graphic,'animation':'none'}, image, animated))
-        for title_index, title in enumerate(titles):
+        for title_index, title in enumerate(titles if scene is None else []):
             animated=title['animation'] in KINETIC or 'motion' in title
             image = folder / f'title-{title_index}{".mov" if animated else ".png"}'
             if animated:
@@ -522,7 +631,7 @@ def assemble(settings):
             # keeps each cut sample-exact; encode AAC only in the final movie.
             segment = folder / f'shot-{index:03d}.mov'
             graph_arguments = ['-filter_complex', ';'.join(filters)]
-            if keyed_cameras[index] is not None or graphics or any('motion' in title for title in titles):
+            if keyed_cameras[index] is not None or graphics or any('motion' in title for title in titles) or scene is not None:
                 # Eight independently eased points can exceed Windows' command
                 # length after perspective expands all four corner expressions.
                 graph_file = folder / f'camera-filters-{index:03d}.txt'
