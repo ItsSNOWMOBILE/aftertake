@@ -564,6 +564,7 @@ function DraftPlayer({
   draft,
   assets,
   renders,
+  titles,
   time,
   setTime,
   playRequest,
@@ -572,6 +573,7 @@ function DraftPlayer({
   draft: FilmDraft;
   assets: FilmAsset[];
   renders: Render[];
+  titles: Record<string, string>;
   time: number;
   setTime: (time: number) => void;
   playRequest: number;
@@ -748,20 +750,50 @@ function DraftPlayer({
       </div>
       <div className="film-mini-timeline" aria-label="Film shot timeline">
         {draft.shots.map((shot, index) => {
-          const cut = timeline[index];
+          const cut = timeline[index],
+            asset = assets.find((asset) => asset.id === shot.assetId),
+            take = renders.find((take) => take.id === shot.renderId),
+            name =
+              asset?.name || (take && (titles[take.id] || take.recipe.name)) || `Shot ${index + 1}`;
           return (
             <button
+              type="button"
               key={index}
               className={index === current ? 'active' : ''}
-              style={{ flexGrow: cut.duration - cut.overlap }}
+              style={{ width: Math.min(180, 144 + Math.sqrt(cut.duration) * 8) }}
               onClick={() => {
                 setPlaying(false);
                 setTime(cut.start);
               }}
               aria-label={`Preview shot ${index + 1}`}
-              title={`Shot ${index + 1} · ${cut.duration.toFixed(2)}s${cut.overlap ? ` · ${cut.overlap.toFixed(2)}s dissolve` : ''}`}
+              aria-current={index === current ? 'true' : undefined}
+              title={`Shot ${index + 1} · ${name} · ${cut.duration.toFixed(2)}s${cut.overlap ? ` · ${cut.overlap.toFixed(2)}s dissolve` : ''}`}
             >
-              {String(index + 1).padStart(2, '0')}
+              <span className="film-mini-thumbnail" aria-hidden="true">
+                <Clapperboard size={18} />
+                {asset?.kind === 'image' && (
+                  <img
+                    key={asset.id}
+                    src={mediaUrl(asset.url)}
+                    alt=""
+                    width={42}
+                    height={42}
+                    loading="lazy"
+                    decoding="async"
+                    draggable={false}
+                    onError={(event) => {
+                      event.currentTarget.hidden = true;
+                    }}
+                  />
+                )}
+              </span>
+              <span className="film-mini-shot-info">
+                <span className="film-mini-shot-meta">
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <span>{cut.duration.toFixed(2)}s</span>
+                </span>
+                <span className="film-mini-shot-name">{name}</span>
+              </span>
             </button>
           );
         })}
@@ -1185,6 +1217,7 @@ export default function FilmComposer({
         draft={viewing}
         assets={assets}
         renders={renders}
+        titles={titles}
         time={time}
         setTime={setTime}
         playRequest={playRequest}
