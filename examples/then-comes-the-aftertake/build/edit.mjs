@@ -257,7 +257,7 @@ export const scenes = [
     title('BEFORE', 56, 57, kicker({ position: 'top', fontSize: 30, color: CREAM, early: 0.02 }));
     shot('dancer', 57, 58, { in: 0.2, framing: push(1.0, 1.04), dissolve: D, transition: 'flash' });
     shot('ensemble', 58, 61, { in: 0.8, framing: push(1.0, 1.04) });
-    title('FIVE MORE DANCERS', 57, 59.5, big({ position: 'top', fontSize: 96, color: INK, stroke: false, early: 0.02 }));
+    title('FIVE MORE DANCERS', 57, 59.5, big({ position: 'top', fontSize: 88, box: 'highlight', color: LIME, tilt: -2, early: 0.02 }));
     title('IN THE GROOVE.', 59.5, 61, big({ position: 'top', fontSize: 104, animation: 'glitch', color: PINK, early: 0.02 }));
     title('SUBJECT COPIES · ORIGINAL PIXELS · CPU', 57.2, 60.9, kicker());
     shot('uiVideo', 61, 62, { in: 0.9, framing: ui(0.82, 0.42, 1.45, 1.52), dissolve: D, transition: 'flash' });
@@ -322,10 +322,10 @@ export const scenes = [
     title('YOUR CALL.', 92, 94, big({ fontSize: 150, box: 'highlight', tilt: -4, color: CREAM, early: 0.04 }));
     title('COLOR & FINISH · LOOKS · CURVES · LUTS', 92.1, 95.95, kicker());
     shot('robot', 96, 98, { in: 0.6 });
-    title('THEIR\nGESTURE.', 96, 98, big({ align: 'left', fontSize: 72, animation: 'reveal', early: 0.05 }));
+    title('THEIR GESTURE.', 96, 98, big({ position: 'bottom', align: 'left', fontSize: 96, box: 'highlight', color: CREAM, tilt: -2, early: 0.05 }));
     shot('teddy', 98, 101, { in: 1.8, dissolve: D, transition: 'zoom' });
-    title('YOUR\nCHARACTER.', 98, 101, big({ align: 'left', fontSize: 72, color: LIME, delay: 0.1, early: 0.05 }));
-    title('WAN ANIMATE 2 · MOTION TRANSFER', 98.2, 100.9, kicker());
+    title('YOUR CHARACTER.', 98, 101, big({ position: 'bottom', align: 'left', fontSize: 96, box: 'highlight', color: LIME, tilt: -2, delay: 0.1, early: 0.05 }));
+    title('WAN ANIMATE 2 · MOTION TRANSFER', 98.2, 100.9, kicker({ position: 'top' }));
     shot('refPortal', 101, 102, { in: 1.0, framing: push(1.02, 1.08) });
     shot('falls', 102, 103, { in: 2.0, framing: push(1.02, 1.08) });
     shot('crystal', 103, 105, { in: 0.6, framing: push(1.02, 1.1), dissolve: D, transition: 'flash' });
