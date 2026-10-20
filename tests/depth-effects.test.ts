@@ -178,3 +178,89 @@ test('depth admission honors GPU readiness/global lock and preserves ambiguous S
     'Corrupt records stay recoverable without preventing startup.',
   );
 });
+
+test('saved depth artifacts are readable inside hidden workspace data directories without invoking the engine', async (t) => {
+  const temporary = await mkdtemp(path.join(tmpdir(), 'aftertake-depth-media-'));
+  t.after(() => rm(temporary, { recursive: true, force: true }));
+  const data = path.join(temporary, '.runtime', '.data');
+  const folder = path.join(data, 'depth-effects');
+  await mkdir(folder, { recursive: true });
+  const id = randomUUID();
+  const preview = Buffer.from('verified depth preview fixture');
+  const raw = Buffer.from('verified lossless depth fixture');
+  const request = depthEffectRequestSchema.parse({
+    format: 'aftertake-depth-effect/1',
+    name: 'Saved depth',
+    clip: {
+      id: randomUUID(),
+      name: 'Source',
+      kind: 'image',
+      sha256: 'a'.repeat(64),
+      width: 96,
+      height: 64,
+      duration: 1,
+      url: '/media/source.png',
+    },
+    settings: defaultDepthSettings,
+  });
+  await Promise.all([
+    writeFile(path.join(folder, id + '.depth.png'), preview),
+    writeFile(path.join(folder, id + '.depth.npz'), raw),
+    writeFile(
+      path.join(folder, id + '.json'),
+      JSON.stringify({
+        id,
+        request,
+        state: 'succeeded',
+        createdAt: '2026-10-20T00:00:00Z',
+        depth: {
+          sha256: createHash('sha256').update(preview).digest('hex'),
+          rawSha256: createHash('sha256').update(raw).digest('hex'),
+          width: 96,
+          height: 64,
+          modelSha256: depthModel.sha256,
+        },
+      }),
+    ),
+  ]);
+  const unexpected = () => {
+    throw Error('Serving saved media must not invoke generation.');
+  };
+  const worker = await depthEffectsRouter({
+    root: temporary,
+    data,
+    python: process.execPath,
+    client: {
+      assets: { fromFile: unexpected },
+      workflows: { fromJson: unexpected },
+      jobs: { get: unexpected },
+      submit: unexpected,
+    },
+    target: createJobTarget({
+      sdkBaseUrl: 'http://127.0.0.1:8189',
+      uiBaseUrl: 'http://127.0.0.1:8188',
+    }),
+    engine: unexpected,
+    takeBusy: () => false,
+    setAdmitting: unexpected,
+  });
+  const app = express();
+  app.use('/depth', worker.router);
+  app.use(handleRequestError);
+  const server = app.listen(0, '127.0.0.1');
+  await new Promise<void>((resolve) => server.once('listening', resolve));
+  t.after(() => new Promise<void>((resolve) => server.close(() => resolve())));
+  const base = `http://127.0.0.1:${(server.address() as { port: number }).port}/depth`;
+  const imageResponse = await fetch(`${base}/${id}/depth-preview`);
+  assert.equal(imageResponse.status, 200);
+  assert.match(imageResponse.headers.get('content-type') || '', /^image\/png/);
+  assert.deepEqual(Buffer.from(await imageResponse.arrayBuffer()), preview);
+  const depthResponse = await fetch(`${base}/${id}/depth`);
+  assert.equal(depthResponse.status, 200);
+  assert.match(
+    depthResponse.headers.get('content-disposition') || '',
+    /attachment;.*aftertake-model-depth\.npz/,
+  );
+  assert.deepEqual(Buffer.from(await depthResponse.arrayBuffer()), raw);
+  assert.equal((await fetch(`${base}/${randomUUID()}/depth-preview`)).status, 404);
+});
