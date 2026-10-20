@@ -1,5 +1,12 @@
 import { z } from 'zod';
-import { motionAt, motionEasings, motionTrackSchema } from './film-motion';
+import {
+  curveMatchesEasing,
+  curveMismatch,
+  motionAt,
+  motionCurveSchema,
+  motionEasings,
+  motionTrackSchema,
+} from './film-motion';
 
 const childSchema = z
   .object({ kind: z.enum(['graphic', 'title']), id: z.string().uuid() })
@@ -12,8 +19,10 @@ const depthKeySchema = z
     // Positive Z approaches the camera; distances use the full canvas width.
     z: z.number().min(-0.2).max(0.2),
     easing: z.enum(motionEasings).optional(),
+    bezier: motionCurveSchema.optional(),
   })
-  .strict();
+  .strict()
+  .refine(curveMatchesEasing, curveMismatch);
 
 export const filmMotionGroupSchema = z
   .object({
@@ -162,6 +171,7 @@ export function sceneDepthAt(depth: FilmMotionGroup['depth'], progress: number) 
       rotation: key.z,
       opacity: 1,
       easing: key.easing,
+      bezier: key.bezier,
     })),
   };
   const value = motionAt(track, progress);

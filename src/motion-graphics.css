@@ -380,9 +380,95 @@
   pointer-events: none;
   overflow: visible;
 }
+.motion-curve-editor {
+  display: grid;
+  grid-template-columns: minmax(120px, 160px) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 11px;
+  border: 1px solid #3f5233;
+  border-radius: 6px;
+  background: #0c130a;
+}
+.motion-curve-graph {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: visible;
+  touch-action: none;
+}
+.motion-curve-graph line,
+.motion-curve-graph rect,
+.motion-curve-graph path,
+.motion-curve-handle circle {
+  vector-effect: non-scaling-stroke;
+}
+.motion-curve-frame {
+  fill: #121b0f;
+  stroke: #52673e;
+}
+.motion-curve-grid line {
+  stroke: #2b3923;
+}
+.motion-curve-linear {
+  stroke: #5d6f4c;
+  stroke-dasharray: 3 4;
+}
+.motion-curve-arm {
+  stroke: #a6b994;
+  pointer-events: none;
+}
+.motion-curve-path {
+  fill: none;
+  stroke: #d5e991;
+  stroke-width: 2.5;
+  pointer-events: none;
+}
+.motion-curve-sample {
+  fill: #eaf0e2;
+  pointer-events: none;
+}
+.motion-curve-handle {
+  cursor: grab;
+}
+.motion-curve-graph.dragging .motion-curve-handle {
+  cursor: grabbing;
+}
+.motion-curve-handle circle {
+  fill: #10180d;
+  stroke: #d5e991;
+  stroke-width: 2;
+}
+.motion-curve-handle .motion-curve-target {
+  fill: transparent;
+  stroke: none;
+}
+.motion-track-editor fieldset:disabled .motion-curve-handle {
+  cursor: not-allowed;
+}
+.motion-curve-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+}
+.motion-curve-css {
+  display: block;
+  color: #d7e5c9;
+  font:
+    12px/1.6 ui-monospace,
+    monospace;
+  overflow-wrap: anywhere;
+}
 @media (max-width: 600px) {
   .motion-field-grid.wide {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .motion-curve-editor {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .motion-curve-graph {
+    max-width: 220px;
   }
   .motion-image-add {
     flex-basis: 100%;

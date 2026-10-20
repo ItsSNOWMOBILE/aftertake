@@ -367,6 +367,64 @@ test('invalid scene references, duplicate ownership and child timing reject both
   );
 });
 
+test('custom curves survive restore, the native workfile, the exported manifest and export identity', async (t) => {
+  const f = await fixture(t);
+  const curve = (index: number) => ({ x1: 0.16, y1: 1, x2: 0.3 + index / 100, y2: 1 });
+  const shape = (keys: any[]) =>
+    keys.map((key, index) => (index ? { ...key, easing: 'custom', bezier: curve(index) } : key));
+  const project: any = structuredClone(f.project);
+  project.graphics[1].motion.keys = shape(project.graphics[1].motion.keys);
+  project.titles[1].motion = {
+    keys: shape([
+      { at: 0, x: -0.1, y: 0, scale: 1, rotation: 0, opacity: 0 },
+      { at: 1, x: 0.1, y: 0, scale: 1, rotation: -30, opacity: 1 },
+    ]),
+  };
+  const group = project.motionScene.groups[0];
+  group.motion.keys = shape(group.motion.keys);
+  group.depth.keys = shape(group.depth.keys);
+  assert.equal(filmManifestSchema.safeParse(project).success, true);
+  const curved = (value: any) => ({
+    graphic: value.graphics[1].motion,
+    title: value.titles[1].motion,
+    scene: value.motionScene,
+  });
+  const restored = await f.post('/resolve', project);
+  assert.equal(restored.status, 200);
+  assert.deepEqual(curved(filmRequestSchema.parse(await restored.json())), curved(project));
+
+  const draft = filmRequestSchema.parse({
+    ...project,
+    shots: [{ assetId: f.assetId, start: 0, end: 4 }],
+    graphics: project.graphics.map((graphic: any) =>
+      graphic.kind === 'image' ? { ...graphic, assetId: f.assetId } : graphic,
+    ),
+  });
+  const created = await f.post('', draft, 'curve-export');
+  assert.equal(created.status, 202);
+  const admitted = await created.json();
+  await f.ready(admitted.id);
+  const [workfile] = (await readFile(path.join(f.directory, 'renderer-calls.jsonl'), 'utf8'))
+    .trim()
+    .split('\n')
+    .map((line) => JSON.parse(line));
+  assert.deepEqual(curved(workfile), curved(project));
+  assert.deepEqual(curved(workfile.manifest), curved(project));
+  const exported = filmManifestSchema.parse(await (await f.get(`/${admitted.id}/manifest`)).json());
+  assert.deepEqual(curved(exported), curved(project));
+  const again = await f.post('/resolve', exported);
+  assert.equal(again.status, 200);
+  assert.deepEqual(curved(filmRequestSchema.parse(await again.json())), curved(project));
+  // One control point belongs to the export identity.
+  const changed: any = structuredClone(draft);
+  changed.motionScene.groups[0].depth.keys[1].bezier.y1 = 0.9;
+  assert.equal((await f.post('', changed, 'curve-export')).status, 409);
+  const uncurved: any = structuredClone(draft);
+  delete uncurved.titles[1].motion.keys[1].bezier;
+  assert.equal(filmRequestSchema.safeParse(uncurved).success, false);
+  assert.equal((await f.post('', uncurved)).status, 400);
+});
+
 test('scene projects require format four while legacy project labels retain their original settings', async (t) => {
   const f = await fixture(t);
   for (const format of ['aftertake-film/1', 'aftertake-film/2', 'aftertake-film/3']) {

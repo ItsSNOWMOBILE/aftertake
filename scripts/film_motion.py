@@ -7,7 +7,8 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageOps
 
-EASINGS = {'linear', 'ease-in', 'ease-out', 'ease-in-out', 'hold'}
+EASINGS = {'linear', 'ease-in', 'ease-out', 'ease-in-out', 'hold', 'custom'}
+CURVE_FIELDS = ('x1', 'y1', 'x2', 'y2')
 POSE_FIELDS = ('x', 'y', 'scale', 'scaleX', 'scaleY', 'rotation', 'opacity')
 IDENTITY = {'x': 0.0, 'y': 0.0, 'scale': 1.0, 'scaleX': 1.0, 'scaleY': 1.0,
             'rotation': 0.0, 'opacity': 1.0}
@@ -26,6 +27,22 @@ def canvas_size(width, height):
     return width, height
 
 
+def validate_easing(value):
+    """Destination easing and its curve; a curve exists exactly for custom easing."""
+    easing = value.get('easing', 'linear')
+    if not isinstance(easing, str) or easing not in EASINGS:
+        raise ValueError('Choose a supported motion easing.')
+    if (easing == 'custom') != ('bezier' in value):
+        raise ValueError('Custom easing needs its bezier curve; other easings cannot carry one.')
+    if easing != 'custom':
+        return easing, None
+    curve = value['bezier']
+    if not isinstance(curve, dict) or set(curve) != set(CURVE_FIELDS):
+        raise ValueError('A motion curve needs only x1, y1, x2 and y2.')
+    # Bounded handles keep x(u) monotonic and every eased pose between its keys.
+    return easing, {name: number(curve[name], 0, 1, 'curve ' + name) for name in CURVE_FIELDS}
+
+
 def validate_motion(value):
     if not isinstance(value, dict) or set(value) != {'keys'}:
         raise ValueError('Motion needs only a keys array.')
@@ -36,14 +53,15 @@ def validate_motion(value):
     limits = {'at': (0, 1), 'x': (-2, 2), 'y': (-2, 2), 'scale': (.02, 4),
               'rotation': (-360, 360), 'opacity': (0, 1)}
     for value in values:
-        if not isinstance(value, dict) or set(value) - {*limits, 'easing', 'scaleX', 'scaleY'} or set(limits) - set(value):
+        if (not isinstance(value, dict) or set(value) - {*limits, 'easing', 'bezier', 'scaleX', 'scaleY'}
+                or set(limits) - set(value)):
             raise ValueError('Each motion key needs its time and complete transform.')
         key = {name: number(value[name], *bounds, name) for name, bounds in limits.items()}
         for name in ('scaleX', 'scaleY'):
             key[name] = number(value.get(name, 1), .02, 4, name)
-        key['easing'] = value.get('easing', 'linear')
-        if not isinstance(key['easing'], str) or key['easing'] not in EASINGS:
-            raise ValueError('Choose a supported motion easing.')
+        key['easing'], curve = validate_easing(value)
+        if curve is not None:
+            key['bezier'] = curve
         if keys and key['at'] <= keys[-1]['at']:
             raise ValueError('Motion key times must increase strictly.')
         keys.append(key)
@@ -65,7 +83,35 @@ def motion_progress(start, end, frame):
     return max(0, min(span, frame - first)) / max(1, span)
 
 
-def eased(progress, easing):
+def curve_amount(progress, curve):
+    """Solve x(u) = progress by fixed bisection, then return y(u).
+
+    Mirrors motionCurveAmount in src/film-motion.ts operation for operation, so
+    the browser preview and native export compute identical IEEE doubles.
+    """
+    if not progress > 0:
+        return 0.0
+    if progress >= 1:
+        return 1.0
+    x1, y1, x2, y2 = (float(curve[name]) for name in CURVE_FIELDS)
+    cx = 3 * x1
+    bx = 3 * (x2 - x1) - cx
+    ax = 1 - cx - bx
+    low, high = 0.0, 1.0
+    for _ in range(52):
+        middle = (low + high) / 2
+        if ((ax * middle + bx) * middle + cx) * middle < progress:
+            low = middle
+        else:
+            high = middle
+    u = (low + high) / 2
+    cy = 3 * y1
+    by = 3 * (y2 - y1) - cy
+    ay = 1 - cy - by
+    return min(1.0, max(0.0, ((ay * u + by) * u + cy) * u))
+
+
+def eased(progress, easing, curve=None):
     if easing == 'ease-in':
         return progress ** 3
     if easing == 'ease-out':
@@ -74,6 +120,10 @@ def eased(progress, easing):
         return progress * progress * (3 - 2 * progress)
     if easing == 'hold':
         return 0 if progress < 1 else 1
+    if easing == 'custom':
+        if curve is None:
+            raise ValueError('Custom easing needs its bezier curve.')
+        return curve_amount(progress, curve)
     return progress
 
 
@@ -86,7 +136,7 @@ def motion_at(motion, progress):
         return {field: keys[0][field] for field in POSE_FIELDS}
     for left, right in zip(keys, keys[1:]):
         if progress <= right['at']:
-            amount = eased((progress - left['at']) / (right['at'] - left['at']), right['easing'])
+            amount = eased((progress - left['at']) / (right['at'] - left['at']), right['easing'], right.get('bezier'))
             return {field: left[field] + (right[field] - left[field]) * amount for field in POSE_FIELDS}
     return {field: keys[-1][field] for field in POSE_FIELDS}
 

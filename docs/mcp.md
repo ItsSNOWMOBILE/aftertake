@@ -78,7 +78,7 @@ root, including resolved symbolic links; remote media URLs are not accepted.
 | `aftertake_inspect_picture` | Returns decoded source or take frames at requested times before choosing trims. |
 | `aftertake_voice` | Generates local Kokoro narration or rejoins an exact cached script, voice and speed. |
 | `aftertake_save_plan` | Checks source hashes, measured speech and picture coverage; saves a portable editable project and timing ledger. |
-| `aftertake_save_film_edit` | Saves a complete native Film project with authored camera keyframes, independently timed typography and music; verifies sources and timing without rendering. |
+| `aftertake_save_film_edit` | Saves a complete native Film project with authored camera keyframes, independently timed typography, motion layers with optional per-key custom cubic-Bézier easing, and music; verifies sources and timing without rendering. |
 | `aftertake_export_plan` | Exports through the native Film renderer using a persistent idempotency key. |
 | `aftertake_plan_status` | Rejoins the recorded plan and reads actual native export states after client reconnection. |
 | `aftertake_review_film` | Returns decoded export frames, timestamps, sample audio diagnostics and embedded-project verification. |

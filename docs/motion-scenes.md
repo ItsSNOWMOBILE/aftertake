@@ -36,7 +36,9 @@ it does not independently fade the children and change their overlap.
 
 `depth.keys` contains ordered poses from `at: 0` to `at: 1`. Each pose has `yaw`
 and `pitch` in degrees, `z` as a shallow depth offset, and optional destination
-`easing` using the existing motion easing names. Yaw and pitch range from −35°
+`easing` using the existing motion easing names, including `custom` with a
+bounded `bezier` curve (see [custom curves](motion-graphics.md#custom-curves)).
+Edit depth curves in **Advanced depth keys**. Yaw and pitch range from −35°
 to 35°, `z` from −0.2 to 0.2, and `perspective` from 1.5 to 6. The pivot remains
 the anchor for the group's tilt and motion.
 
