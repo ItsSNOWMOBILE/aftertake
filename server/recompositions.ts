@@ -235,7 +235,25 @@ export async function recompositionRouter(context: {
       work = path.join(folder, `${job.id}.${token}.work.json`),
       receipt = path.join(folder, `${job.id}.${token}.receipt.json`),
       target = path.join(outputs, `${job.id}.mp4`);
-    let committed = false;
+    let committed = false,
+      settled = false;
+    async function cleanup() {
+      for (const file of [output, work, receipt]) await unlink(file).catch(() => {});
+    }
+    function release() {
+      controllers.delete(job.id);
+      if (operation === job.id) operation = undefined;
+    }
+    // Called inside exclusive: cancellation, durable publication and cleanup
+    // finish before a terminal response can expose an occupied admission slot.
+    async function settle(terminal: RecompositionJob) {
+      await cleanup();
+      release();
+      Object.assign(job, terminal);
+      for (const field of ['error', 'renderId', 'receipt'] as const)
+        if (!(field in terminal)) delete job[field];
+      settled = true;
+    }
     try {
       if (controller.signal.aborted) throw new Error('Canceled.');
       job.state = 'running';
@@ -322,9 +340,8 @@ export async function recompositionRouter(context: {
         };
         delete completed.error;
         await persist(completed);
+        await settle(completed);
         context.renders.set(render.id, render);
-        Object.assign(job, completed);
-        delete job.error;
         committed = true;
       });
       if (context.onRender) {
@@ -338,21 +355,28 @@ export async function recompositionRouter(context: {
       }
     } catch {
       if (!committed) {
-        await removePartial(job.id);
-        delete job.renderId;
-        delete job.receipt;
-        job.state = controller.signal.aborted ? 'canceled' : 'failed';
-        job.error = controller.signal.aborted
-          ? 'The CPU blend was canceled.'
-          : 'CPU blend could not complete. Check the original source and raw take, then review the blend settings before trying again.';
-        await persist(job).catch(() =>
-          console.warn('Could not persist the terminal CPU blend state.'),
-        );
+        await exclusive(async () => {
+          await removePartial(job.id);
+          const terminal: RecompositionJob = {
+            ...job,
+            state: controller.signal.aborted ? 'canceled' : 'failed',
+            error: controller.signal.aborted
+              ? 'The CPU blend was canceled.'
+              : 'CPU blend could not complete. Check the original source and raw take, then review the blend settings before trying again.',
+          };
+          delete terminal.renderId;
+          delete terminal.receipt;
+          await persist(terminal).catch(() =>
+            console.warn('Could not persist the terminal CPU blend state.'),
+          );
+          await settle(terminal);
+        });
       }
     } finally {
-      for (const file of [output, work, receipt]) await unlink(file).catch(() => {});
-      controllers.delete(job.id);
-      if (operation === job.id) operation = undefined;
+      if (!settled) {
+        await cleanup();
+        release();
+      }
     }
   }
 
