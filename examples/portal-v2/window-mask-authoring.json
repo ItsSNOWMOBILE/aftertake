@@ -1,0 +1,33 @@
+{
+  "format": "aftertake-window-interior-authoring/1",
+  "anchorSeconds": 2,
+  "anchorFrame": 48,
+  "sourceFrame": "source-anchor-2s.png",
+  "ellipse": {
+    "center": [
+      646,
+      211
+    ],
+    "radii": [
+      207,
+      155
+    ]
+  },
+  "rectangle": {
+    "topLeft": [
+      440,
+      210
+    ],
+    "bottomRight": [
+      852,
+      523
+    ]
+  },
+  "strokeRadius": 0.008,
+  "strokePoints": 152,
+  "feather": 0.003,
+  "tracking": "flow",
+  "policy": "Repaint the continuous window interior including original internal dividers. Protect outer arch, brick, readers and room. Normal app CPU recompose; generation guide, seed and temporal cue unchanged.",
+  "maskPreview": "window-final-mask.png",
+  "maskRasterizer": "Aftertake src/mask.ts spatialMask from serialized normalized paint strokes"
+}

@@ -1,0 +1,18 @@
+{
+  "format": "aftertake-frame-edit/1",
+  "clip": {
+    "id": "417aacc8-e41a-4e38-a21a-5fbb807f1199",
+    "name": "C - Repaint plate - seed 508020",
+    "kind": "video",
+    "width": 1280,
+    "height": 720,
+    "duration": 5.041666666666667,
+    "hasAudio": true,
+    "sha256": "ab694e2d3f5f542b8cf0abf099bf3e8d7fd7b172718012a696bb381499ef2d86",
+    "url": "/media/417aacc8-e41a-4e38-a21a-5fbb807f1199.mp4"
+  },
+  "trimStart": 0,
+  "seed": 9841,
+  "mode": "detail",
+  "prompt": "Edit only the exterior scenery visible through the existing glass panes: a vast futuristic city at deep night, vivid magenta and cyan neon skyscrapers, distant flying vehicles with tiny headlights, and rain. Keep the exact original arched window outline and every existing horizontal, vertical and fan-shaped metal divider in the exact same position. Preserve the loft, both readers, sofa, furniture, composition, camera viewpoint, and room lighting. The glass contains clear detailed nighttime city scenery, not a flat colored surface. Do not add a second window or additional frame structure."
+}
