@@ -359,7 +359,12 @@ def main():
     work = json.loads(path.read_text(encoding='utf-8'))
     torch.set_num_threads(2)
     with torch.inference_mode(), torch.device('cpu'):
-        print(json.dumps(run(work), allow_nan=False))
+        result = run(work)
+        # The complete, content-bound receipt is persisted and validated by the
+        # parent. Keep process diagnostics bounded even for large saved graphs.
+        print(json.dumps({key: result[key] for key in (
+            'processor', 'outputSha256', 'width', 'height', 'frames', 'fps',
+            'hasAudio', 'noModelInvocation', 'noComfyGraphExecution')}, allow_nan=False))
 
 
 if __name__ == '__main__':

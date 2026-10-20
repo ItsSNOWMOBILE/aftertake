@@ -7,6 +7,7 @@ import json
 import math
 import os
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -87,6 +88,30 @@ class RecompositionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         torch.set_num_threads(2)
+
+    def test_large_graph_receipt_is_complete_while_subprocess_output_stays_bounded(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            work = fixture(folder, with_audio=False)
+            # Saved native graphs can readily exceed the finishing worker's
+            # 64KiB diagnostic budget. They belong in the receipt, not stdout.
+            graph = work['originalGenerationWorkflow']
+            graph['large-evidence'] = {'class_type': 'RecordedOnly',
+                'inputs': {'saved_graph_data': 'x' * (96 * 1024)}}
+            request = folder / 'work.json'
+            request.write_text(json.dumps(work), encoding='utf-8')
+            completed = subprocess.run([sys.executable, str(ROOT / 'scripts/recompose-take.py'), str(request)],
+                capture_output=True, timeout=60, check=True)
+            self.assertLess(len(completed.stdout) + len(completed.stderr), 64 * 1024)
+            result = json.loads(completed.stdout)
+            receipt = json.loads(Path(work['receipt']).read_text(encoding='utf-8'))
+            self.assertEqual(receipt['originalGenerationWorkflow'], graph)
+            self.assertGreater(Path(work['receipt']).stat().st_size, 64 * 1024)
+            self.assertEqual(result['outputSha256'], worker.file_hash(work['output']))
+            self.assertEqual(result['outputSha256'], receipt['outputSha256'])
+            self.assertTrue(result['noModelInvocation'])
+            self.assertTrue(result['noComfyGraphExecution'])
+            self.assertNotIn('originalGenerationWorkflow', result)
 
     def test_hd_recompose_crops_native_padding_without_resizing_raw_or_source_pixels(self):
         with tempfile.TemporaryDirectory() as temporary:
