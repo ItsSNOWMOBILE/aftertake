@@ -334,12 +334,15 @@ export async function depthEffectsRouter(context: {
   router.get('/:id/depth', (req, res) => {
     const job = jobFor(req.params.id);
     if (!job.depth) throw new RequestError('Depth is not available yet.', 409);
-    res.download(path.join(folder, job.id + '.depth.npz'), 'aftertake-model-depth.npz');
+    res.download(job.id + '.depth.npz', 'aftertake-model-depth.npz', {
+      root: folder,
+      dotfiles: 'deny',
+    });
   });
   router.get('/:id/depth-preview', (req, res) => {
     const job = jobFor(req.params.id);
     if (!job.depth) throw new RequestError('Depth is not available yet.', 409);
-    res.sendFile(path.join(folder, job.id + '.depth.png'));
+    res.sendFile(job.id + '.depth.png', { root: folder, dotfiles: 'deny' });
   });
   return { router, busy: () => [...jobs.values()].some(depthEffectBusy) };
 }
