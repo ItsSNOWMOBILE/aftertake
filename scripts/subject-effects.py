@@ -7,6 +7,7 @@ import importlib.util
 import json
 import math
 import os
+import re
 
 import av
 import numpy as np
@@ -80,6 +81,10 @@ def validate_settings(request):
         angle = copy.get('rotation', 0)
         if isinstance(angle, bool) or not isinstance(angle, (int, float)) or not math.isfinite(angle) or not -180 <= angle <= 180:
             raise ValueError('Rotation must be between minus180 and180 degrees.')
+        if 'color' in copy and (not isinstance(copy['color'], str) or not re.fullmatch(r'#[a-fA-F0-9]{6}', copy['color'])):
+            raise ValueError('Silhouette color must be a six-digit hex color.')
+        if not isinstance(copy.get('behindSubject', False), bool):
+            raise ValueError('Behind-original placement must be a boolean.')
     feather, grow = request.get('feather', 0), request.get('grow', 0)
     if isinstance(feather, bool) or not isinstance(feather, (int, float)) or not math.isfinite(feather) or not 0 <= feather <= 12:
         raise ValueError('Feather must be zero to twelve pixels.')
@@ -140,11 +145,16 @@ def composite_frame(source, matte, copies, feather=0, grow=0, *, anchor=None, ba
     cutout = cutout.crop(box)
     for copy in copies:
         angle = copy.get('rotation', 0)
-        if copy['opacity'] == 0 or (background_blur == 0 and background_exposure == 0 and copy['x'] == 0 and copy['y'] == 0 and copy['scale'] == 1 and angle == 0 and not copy.get('flipX', False)):
+        if copy['opacity'] == 0 or (not copy.get('color') and background_blur == 0 and background_exposure == 0 and copy['x'] == 0 and copy['y'] == 0 and copy['scale'] == 1 and angle == 0 and not copy.get('flipX', False)):
             continue
         scaled_width = max(1, round((right - left) * copy['scale']))
         scaled_height = max(1, round((bottom - top) * copy['scale']))
-        layer = cutout.convert('RGBa')
+        if copy.get('color'):
+            layer = Image.new('RGBA', cutout.size, copy['color'])
+            layer.putalpha(cutout.getchannel('A'))
+        else:
+            layer = cutout
+        layer = layer.convert('RGBa')
         layer = ImageOps.mirror(layer) if copy.get('flipX', False) else layer
         layer = layer.resize((scaled_width, scaled_height), Image.Resampling.LANCZOS)
         if angle:
@@ -161,6 +171,10 @@ def composite_frame(source, matte, copies, feather=0, grow=0, *, anchor=None, ba
             continue
         pixels = np.asarray(layer.crop((x0 - x, y0 - y, x1 - x, y1 - y)))
         alpha = pixels[..., 3:4].astype(np.float32) / 255 * copy['opacity']
+        if copy.get('behindSubject', False):
+            # The current-frame original person occludes every silhouette,
+            # including overlapping limbs; no translated box or prior mask.
+            alpha *= 1 - matte[y0:y1, x0:x1, None].astype(np.float32) / 255
         destination = output[y0:y1, x0:x1]
         output[y0:y1, x0:x1] = np.rint(destination + alpha * (pixels[..., :3].astype(np.float32) - destination)).clip(0, 255).astype(np.uint8)
     return output

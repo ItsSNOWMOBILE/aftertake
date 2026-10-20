@@ -83,7 +83,7 @@ export function registerEffectsTools({
   );
   tool(
     'aftertake_duplicate_subject',
-    'Copy the reviewed person from the original video into up to four offset, scaled, rotated or flipped positions, retaining original sound once. Optional blur/exposure affects the background through the tracked mask. No diffusion or identity regeneration. Review cutout edges and occlusion in the actual output.',
+    'Copy the reviewed person into up to four offset, scaled, rotated or flipped positions, retaining source sound once. Optional copy.color makes a solid hex-color silhouette; copy.behindSubject keeps the current tracked person in front, for colored mask echoes. Optional blur/exposure affects the background. No diffusion or identity regeneration. Review cutout edges and occlusion in the output.',
     z.object({ requestId, request: subjectEffectRequestSchema }),
     async (input) => ({
       data: await api('/api/subject-effects/duplicates', input.request, input.requestId),

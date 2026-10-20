@@ -73,6 +73,21 @@ export const subjectEffectPresets = Object.freeze([
     settings: { ...subjectDefaults, copies: [copy(-0.18, 0.35), copy(0.18, 0.35)] },
   }),
   subjectPreset({
+    id: 'silhouette-echo',
+    label: 'Color silhouette echoes',
+    description:
+      'Three pink, coral and orange silhouettes follow the same tracked frame, offset behind the original person. Edit each color, spacing and opacity.',
+    settings: {
+      ...subjectDefaults,
+      feather: 0.5,
+      copies: [
+        { ...copy(0.12), color: '#ff783e', behindSubject: true },
+        { ...copy(0.08), color: '#ff9189', behindSubject: true },
+        { ...copy(0.04), color: '#ff2a96', behindSubject: true },
+      ],
+    },
+  }),
+  subjectPreset({
     id: 'background-focus',
     label: 'Background focus',
     description:
@@ -142,9 +157,21 @@ export function matchingSubjectEffectPreset(request?: SubjectEffectRequest) {
     backgroundBlur: request.backgroundBlur ?? 0,
     backgroundExposureEV: request.backgroundExposureEV ?? 0,
   });
-  return subjectEffectPresets.find(
-    (item) => JSON.stringify(item.settings) === JSON.stringify(settings),
-  );
+  const signature = (value: SubjectEffectPreset['settings']) =>
+    JSON.stringify({
+      ...value,
+      copies: value.copies.map((item) => ({
+        x: item.x,
+        y: item.y,
+        scale: item.scale,
+        opacity: item.opacity,
+        flipX: item.flipX ?? false,
+        rotation: item.rotation ?? 0,
+        color: item.color?.toLowerCase() ?? null,
+        behindSubject: item.behindSubject ?? false,
+      })),
+    });
+  return subjectEffectPresets.find((item) => signature(item.settings) === signature(settings));
 }
 export function matchingDepthEffectPreset(settings: DepthEffectRequest['settings']) {
   const normalized = depthSettingsSchema.parse(settings);

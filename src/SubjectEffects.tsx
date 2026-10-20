@@ -67,6 +67,8 @@ export function subjectEffectSettingsKey(request: SubjectEffectRequest) {
       opacity: copy.opacity,
       flipX: copy.flipX ?? false,
       rotation: copy.rotation ?? 0,
+      color: copy.color?.toLowerCase() ?? null,
+      behindSubject: copy.behindSubject ?? false,
     })),
   });
 }
@@ -388,7 +390,7 @@ export default function SubjectEffects({
       </header>
       <p className="subject-effects-intro">
         Place copies of the tracked person in the same shot. The original stays in place; no new
-        face or motion is generated.
+        face or motion is generated. Use colored silhouettes behind the original for a graphic echo.
       </p>
       {browserDemo ? (
         <p className="subject-effects-note">
@@ -657,6 +659,32 @@ export default function SubjectEffects({
                 {copies.map((copy, index) => (
                   <fieldset className="subject-copy" key={index} disabled={busy}>
                     <legend>Copy {index + 1}</legend>
+                    <label className="subject-copy-appearance">
+                      Appearance
+                      <select
+                        aria-label={`Copy ${index + 1} appearance`}
+                        value={copy.color ? 'silhouette' : 'pixels'}
+                        onChange={(event) =>
+                          updateCopy(index, {
+                            color: event.target.value === 'silhouette' ? '#ff2a96' : undefined,
+                          })
+                        }
+                      >
+                        <option value="pixels">Original pixels</option>
+                        <option value="silhouette">Solid silhouette</option>
+                      </select>
+                    </label>
+                    {copy.color && (
+                      <label className="subject-copy-appearance">
+                        Silhouette color
+                        <input
+                          type="color"
+                          aria-label={`Copy ${index + 1} silhouette color`}
+                          value={copy.color}
+                          onChange={(event) => updateCopy(index, { color: event.target.value })}
+                        />
+                      </label>
+                    )}
                     <div className="subject-copy-sliders">
                       <Range
                         label="Horizontal"
@@ -705,6 +733,16 @@ export default function SubjectEffects({
                       />
                     </div>
                     <div className="subject-copy-actions">
+                      <label>
+                        <input
+                          type="checkbox"
+                          checked={copy.behindSubject ?? false}
+                          onChange={(event) =>
+                            updateCopy(index, { behindSubject: event.target.checked })
+                          }
+                        />{' '}
+                        Behind original person
+                      </label>
                       <label>
                         <input
                           type="checkbox"

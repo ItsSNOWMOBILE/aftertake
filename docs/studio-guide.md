@@ -165,6 +165,12 @@ position, scale, opacity, clockwise rotation and horizontal flip; later copies
 draw on top of earlier ones. This copies the actual performance. It does not
 invent independent movement, remove the original person or fill a hidden scene.
 
+**Color silhouette echoes** makes three offset pink, coral and orange masks
+behind the original performer. Each copy has an **Appearance** selector, editable
+silhouette color and **Behind original person** control. Adjust its horizontal
+offset and opacity to change the spacing and strength. The echoes follow the
+current tracked frame; they are spatial copies, not delayed motion trails.
+
 Use mask growth and feathering sparingly, then build the actual video preview.
 Review the complete shot for cutout halos, clipped limbs, overlaps and frame
 edges. **Background blur** and **Background exposure** affect the background

@@ -107,6 +107,7 @@
   overflow-wrap: anywhere;
 }
 .subject-effects-controls > label,
+.subject-copy-appearance,
 .subject-effects-import > label {
   display: grid;
   gap: 8px;
@@ -114,6 +115,9 @@
   line-height: 1.5;
   letter-spacing: 0.025em;
   color: var(--text-label, #c7ccd2);
+}
+.subject-copy-appearance {
+  margin-bottom: 12px;
 }
 .subject-effects-controls input:not([type='range']):not([type='checkbox']),
 .subject-effects-controls select,

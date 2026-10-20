@@ -36,7 +36,7 @@ const depth = depthEffectRequestSchema.parse({
 });
 
 test('the small preset catalog validates against actual requests and cannot contain source overrides', () => {
-  assert.equal(subjectEffectPresets.length, 5);
+  assert.equal(subjectEffectPresets.length, 6);
   assert.equal(depthEffectPresets.length, 3);
   for (const [catalog, schema] of [
     [subjectEffectPresets, subjectEffectPresetSchema],

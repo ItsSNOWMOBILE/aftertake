@@ -10,6 +10,12 @@ export const subjectEffectCopySchema = z
     opacity: z.number().min(0).max(1),
     flipX: z.boolean().optional(),
     rotation: z.number().min(-180).max(180).optional(),
+    color: z
+      .string()
+      .regex(/^#[a-fA-F0-9]{6}$/)
+      .toLowerCase()
+      .optional(),
+    behindSubject: z.boolean().optional(),
   })
   .strict();
 export const subjectEffectRequestSchema = z
