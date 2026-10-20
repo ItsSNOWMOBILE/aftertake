@@ -2,7 +2,7 @@
   "input": "aftertake-song.mp3",
   "input_sha256": "d97f1946f10846dafb2d0cbb89fde70df4930dbcd796babadf1c4f5abb5d0949",
   "output": "aftertake-song.words.json",
-  "output_sha256": "e34f713f7188a9a9ef221baa6254dd51dae3a53a3a73601980e985eb32708be5",
+  "output_sha256": "2c90e95577e2b86317c237714d517714b0618e153726ac25616266af4dedbdf7",
   "model": "large-v3",
   "model_repository": "Systran/faster-whisper-large-v3",
   "cached_model_revisions": [
@@ -29,5 +29,7 @@
   "segment_count": 13,
   "word_count": 104,
   "elapsed_seconds": 16.248,
-  "words_manually_corrected": false
+  "words_manually_corrected": false,
+  "raw_windows_output_sha256": "e34f713f7188a9a9ef221baa6254dd51dae3a53a3a73601980e985eb32708be5",
+  "publication_newlines": "LF; recognized words, timestamps and probabilities unchanged"
 }

@@ -20,15 +20,30 @@
   "validation": [
     {
       "file": "aftertake-song.words.json",
-      "sha256": "e34f713f7188a9a9ef221baa6254dd51dae3a53a3a73601980e985eb32708be5",
+      "sha256": "2c90e95577e2b86317c237714d517714b0618e153726ac25616266af4dedbdf7",
       "segments": 13,
-      "words": 104
+      "words": 104,
+      "rawWindowsOutputSha256": "e34f713f7188a9a9ef221baa6254dd51dae3a53a3a73601980e985eb32708be5"
     },
     {
       "file": "aftertake-song.vocals.words.json",
-      "sha256": "85bf8c8f31068cec6bfffa84bb00aae85835b38c11d361e3833826b6f3d1eabb",
+      "sha256": "5b94fbee13d8532ecc6e3328cfec5a71b35107e94f308873fa3a4cf1be646f66",
       "segments": 18,
-      "words": 101
+      "words": 101,
+      "rawWindowsOutputSha256": "85bf8c8f31068cec6bfffa84bb00aae85835b38c11d361e3833826b6f3d1eabb"
     }
-  ]
+  ],
+  "separationModel": {
+    "version": "4.1.0",
+    "model_repository": "adefossez/HTDemucs",
+    "model_revision": "cbc8a9b1a87023b7fd74e7b3412e6321c0eab003",
+    "model_filename": "955717e8.safetensors",
+    "model_sha256": "d9fa14133cfcc034a6758923bb3a8ca9f8dfd0b582134643bbf83f72c17576dd",
+    "shifts": 1,
+    "overlap": 0.25,
+    "random_seed": 0,
+    "vocals_sha256": "392336427fea0a296ad5e82c530dd88773b9d5f82921cb7f99981d002b37c045",
+    "decoded_input_sha256": "0737a585a941cf4c26ab16c6642ea3263678dd84774b8080556c50ad787f8eb2"
+  },
+  "publicationNewlines": "LF; raw Windows outputs have CRLF. Only publication newlines differ."
 }
