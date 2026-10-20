@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type SetStateAction } from 'react';
 import {
   ArrowDown,
   ArrowUp,
@@ -26,6 +26,7 @@ import {
 } from './film';
 import { motionAt, motionProgress } from './film-motion';
 import { GraphicPreview, MotionGraphicsEditor, MotionTrackEditor } from './MotionGraphics';
+import { MotionSceneEditor, MotionScenePreview, reconcileMotionScene } from './MotionScene';
 import {
   titleMotion,
   titleTypography,
@@ -434,6 +435,131 @@ function ShotPicture({
   );
 }
 
+function TitlePreview({ title, time: visualTime }: { title: Title; time: number }) {
+  if (visualTime < title.start || visualTime >= title.end) return null;
+  const motion = titleMotion(title, visualTime),
+    typography = titleTypography(title),
+    words = title.text.trim().split(/\s+/);
+  let wordIndex = 0,
+    characterIndex = 0;
+  const spoken = spokenTitleState(title, visualTime);
+  const transform = motionAt(title.motion, motionProgress(title.start, title.end, visualTime));
+  const content =
+    title.animation === 'spoken' ? (
+      <span className="spoken-words">
+        {spoken.words.map((word, index) => {
+          const active = title.words!.indexOf(word) === spoken.active;
+          return (
+            <span key={index}>
+              {index > 0 ? ' ' : ''}
+              <span
+                className="spoken-word"
+                style={{
+                  color: active ? '#17210f' : '#ffffff',
+                  backgroundColor: active ? title.color : 'transparent',
+                  boxShadow: active ? `0 0 0 .08em ${title.color}` : undefined,
+                  textShadow: active ? 'none' : undefined,
+                  WebkitTextStroke: active ? '0 transparent' : undefined,
+                }}
+              >
+                {word.text}
+              </span>
+            </span>
+          );
+        })}
+      </span>
+    ) : title.animation === 'build' ? (
+      title.text.split(/(\s+)/).map((word, index) => {
+        if (/^\s+$/.test(word) || !word) return word;
+        const part = wordMotion(
+          wordIndex++,
+          words.length,
+          visualTime - title.start,
+          motion.duration,
+        );
+        return (
+          <span className="kinetic-word" key={index}>
+            <i style={{ opacity: part.opacity, transform: `translateY(${part.y}em)` }}>{word}</i>
+          </span>
+        );
+      })
+    ) : title.animation === 'typewriter' ? (
+      title.text.split(/(\s+)/).map((word, index) => {
+        if (/^\s+$/.test(word) || !word) {
+          characterIndex += Array.from(word).length;
+          return word;
+        }
+        return (
+          <span className="type-word" key={index}>
+            {Array.from(word).map((character) => {
+              const at = characterIndex++;
+              return (
+                <span
+                  className="type-letter"
+                  key={at}
+                  style={{
+                    visibility: at < motion.visibleCharacters ? 'visible' : 'hidden',
+                  }}
+                >
+                  {character}
+                  {motion.caret && at === motion.visibleCharacters - 1 && (
+                    <i className="type-caret" />
+                  )}
+                </span>
+              );
+            })}
+          </span>
+        );
+      })
+    ) : (
+      title.text
+    );
+  return (
+    <div
+      key={title.id}
+      className="draft-title-transform"
+      style={{
+        position: 'absolute',
+        inset: 0,
+        pointerEvents: 'none',
+        opacity: transform.opacity,
+        transform: title.motion
+          ? `translate(${transform.x * 100}%, ${transform.y * 100}%) rotate(${transform.rotation}deg) scale(${transform.scale * transform.scaleX}, ${transform.scale * transform.scaleY})`
+          : undefined,
+        transformOrigin: '50% 50%',
+      }}
+    >
+      <div
+        className={`draft-title ${title.style} ${title.position} motion-${title.animation}`}
+        style={{
+          color: title.color,
+          opacity: motion.opacity,
+          fontSize: title.fontSize ? `${title.fontSize / 12.8}cqw` : undefined,
+          fontWeight: typography.fontWeight,
+          textAlign: typography.align,
+          WebkitTextStroke: typography.stroke ? `${2 / 12.8}cqw #080c09be` : '0 transparent',
+          paintOrder: 'stroke fill',
+          translate:
+            title.animation === 'rise'
+              ? `0 ${-18 * (1 - Math.min(1, (visualTime - title.start) / 0.35))}px`
+              : undefined,
+        }}
+      >
+        <span
+          className="title-content"
+          style={{
+            transform: title.animation === 'impact' ? `scale(${motion.scale})` : undefined,
+            clipPath:
+              title.animation === 'wipe' ? `inset(0 ${(1 - motion.ease) * 100}% 0 0)` : undefined,
+          }}
+        >
+          {content}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function DraftPlayer({
   draft,
   assets,
@@ -537,149 +663,47 @@ function DraftPlayer({
           />
         ))}
         {!visible.length && <span>Your film starts here.</span>}
-        <GraphicPreview
-          graphics={draft.graphics || []}
-          assets={assets}
-          time={visualTime}
-          width={filmDimensions(draft)[0]}
-          height={filmDimensions(draft)[1]}
-        />
-        {(draft.titles || [])
-          .filter((title) => visualTime >= title.start && visualTime < title.end)
-          .map((title) => {
-            const motion = titleMotion(title, visualTime),
-              typography = titleTypography(title),
-              words = title.text.trim().split(/\s+/);
-            let wordIndex = 0,
-              characterIndex = 0;
-            const spoken = spokenTitleState(title, visualTime);
-            const transform = motionAt(
-              title.motion,
-              motionProgress(title.start, title.end, visualTime),
-            );
-            const content =
-              title.animation === 'spoken' ? (
-                <span className="spoken-words">
-                  {spoken.words.map((word, index) => {
-                    const active = title.words!.indexOf(word) === spoken.active;
-                    return (
-                      <span key={index}>
-                        {index > 0 ? ' ' : ''}
-                        <span
-                          className="spoken-word"
-                          style={{
-                            color: active ? '#17210f' : '#ffffff',
-                            backgroundColor: active ? title.color : 'transparent',
-                            boxShadow: active ? `0 0 0 .08em ${title.color}` : undefined,
-                            textShadow: active ? 'none' : undefined,
-                            WebkitTextStroke: active ? '0 transparent' : undefined,
-                          }}
-                        >
-                          {word.text}
-                        </span>
-                      </span>
-                    );
-                  })}
-                </span>
-              ) : title.animation === 'build' ? (
-                title.text.split(/(\s+)/).map((word, index) => {
-                  if (/^\s+$/.test(word) || !word) return word;
-                  const part = wordMotion(
-                    wordIndex++,
-                    words.length,
-                    visualTime - title.start,
-                    motion.duration,
-                  );
-                  return (
-                    <span className="kinetic-word" key={index}>
-                      <i style={{ opacity: part.opacity, transform: `translateY(${part.y}em)` }}>
-                        {word}
-                      </i>
-                    </span>
-                  );
-                })
-              ) : title.animation === 'typewriter' ? (
-                title.text.split(/(\s+)/).map((word, index) => {
-                  if (/^\s+$/.test(word) || !word) {
-                    characterIndex += Array.from(word).length;
-                    return word;
-                  }
-                  return (
-                    <span className="type-word" key={index}>
-                      {Array.from(word).map((character) => {
-                        const at = characterIndex++;
-                        return (
-                          <span
-                            className="type-letter"
-                            key={at}
-                            style={{
-                              visibility: at < motion.visibleCharacters ? 'visible' : 'hidden',
-                            }}
-                          >
-                            {character}
-                            {motion.caret && at === motion.visibleCharacters - 1 && (
-                              <i className="type-caret" />
-                            )}
-                          </span>
-                        );
-                      })}
-                    </span>
-                  );
-                })
-              ) : (
-                title.text
-              );
-            return (
-              <div
-                key={title.id}
-                className="draft-title-transform"
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  pointerEvents: 'none',
-                  opacity: transform.opacity,
-                  transform: title.motion
-                    ? `translate(${transform.x * 100}%, ${transform.y * 100}%) rotate(${transform.rotation}deg) scale(${transform.scale * transform.scaleX}, ${transform.scale * transform.scaleY})`
-                    : undefined,
-                  transformOrigin: '50% 50%',
-                }}
-              >
-                <div
-                  className={`draft-title ${title.style} ${title.position} motion-${title.animation}`}
-                  style={{
-                    color: title.color,
-                    opacity: motion.opacity,
-                    fontSize: title.fontSize ? `${title.fontSize / 12.8}cqw` : undefined,
-                    fontWeight: typography.fontWeight,
-                    textAlign: typography.align,
-                    WebkitTextStroke: typography.stroke
-                      ? `${2 / 12.8}cqw #080c09be`
-                      : '0 transparent',
-                    paintOrder: 'stroke fill',
-                    translate:
-                      title.animation === 'rise'
-                        ? `0 ${-18 * (1 - Math.min(1, (visualTime - title.start) / 0.35))}px`
-                        : undefined,
-                  }}
-                >
-                  <span
-                    className="title-content"
-                    style={{
-                      transform:
-                        title.animation === 'impact' ? `scale(${motion.scale})` : undefined,
-                      clipPath:
-                        title.animation === 'wipe'
-                          ? `inset(0 ${(1 - motion.ease) * 100}% 0 0)`
-                          : undefined,
-                    }}
-                  >
-                    {content}
-                  </span>
-                </div>
-              </div>
-            );
-          })}
+        {draft.motionScene ? (
+          <MotionScenePreview
+            scene={draft.motionScene}
+            time={visualTime}
+            renderLayer={(layer, frameTime) => {
+              if (layer.kind === 'title') {
+                const title = draft.titles?.find((item) => item.id === layer.id);
+                return title ? <TitlePreview title={title} time={frameTime} /> : null;
+              }
+              const graphic = draft.graphics?.find((item) => item.id === layer.id);
+              return graphic ? (
+                <GraphicPreview
+                  graphics={[graphic]}
+                  assets={assets}
+                  time={frameTime}
+                  width={filmDimensions(draft)[0]}
+                  height={filmDimensions(draft)[1]}
+                />
+              ) : null;
+            }}
+          />
+        ) : (
+          <>
+            <GraphicPreview
+              graphics={draft.graphics || []}
+              assets={assets}
+              time={visualTime}
+              width={filmDimensions(draft)[0]}
+              height={filmDimensions(draft)[1]}
+            />
+            {(draft.titles || []).map((title) => (
+              <TitlePreview key={title.id} title={title} time={visualTime} />
+            ))}
+          </>
+        )}
       </div>
+      {draft.motionScene?.groups.some((group) => (group.shutter?.exposure || 0) > 0) && (
+        <p className="motion-scene-preview-note">
+          Shutter blur appears in the exported video. Preview shows the central pose.
+        </p>
+      )}
       {(draft.audio || []).map((track, index) => {
         const asset = assets.find((asset) => asset.id === track.assetId);
         return (
@@ -764,7 +788,7 @@ export default function FilmComposer({
   titles: Record<string, string>;
   mediaRevision?: number;
 }) {
-  const [draft, setDraft] = useState<FilmDraft>(() => {
+  const [draft, setDraftState] = useState<FilmDraft>(() => {
     try {
       return filmDraftSchema.parse(
         JSON.parse(localStorage.getItem('aftertake-film-draft') || 'null'),
@@ -781,6 +805,11 @@ export default function FilmComposer({
       };
     }
   });
+  function setDraft(next: SetStateAction<FilmDraft>) {
+    setDraftState((current) =>
+      reconcileMotionScene(typeof next === 'function' ? next(current) : next),
+    );
+  }
   const [films, setFilms] = useState<Film[]>([]),
     [assets, setAssets] = useState<FilmAsset[]>([]);
   const [error, setError] = useState(''),
@@ -1621,6 +1650,7 @@ export default function FilmComposer({
       </details>
       <MotionGraphicsEditor
         graphics={draft.graphics || []}
+        orderingManagedByScene={!!draft.motionScene}
         assets={assets}
         duration={duration}
         time={time}
@@ -1628,6 +1658,20 @@ export default function FilmComposer({
         onSeek={(value) => {
           setPauseRequest((request) => request + 1);
           setTime(value);
+        }}
+      />
+      <MotionSceneEditor
+        draft={draft}
+        duration={duration}
+        disabled={!!busy || pending}
+        onChange={(motionScene) => setDraft({ ...draft, motionScene })}
+        onSeek={(value) => {
+          setPauseRequest((request) => request + 1);
+          setTime(value);
+        }}
+        onReplay={(value) => {
+          setTime(value);
+          setPlayRequest((request) => request + 1);
         }}
       />
       <details className="film-editor-section" open>

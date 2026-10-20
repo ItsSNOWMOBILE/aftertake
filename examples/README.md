@@ -1,9 +1,19 @@
 # Remixable examples
 
-## The focused editable Film
-One 53.04-second [editable Film](judges-film/README.md) develops a shared cue, tracked character replacement, product video and an ad revision. Its 19 cuts, 24 titles, 13 complete outer voices and genuine editor captures remain inspectable. `submission-film/` is a compatibility copy of this same final project.
+## Make the next take
 
-These are actual local Comfy SDK renders, captured on an RTX 5080 with 16 GB
+The [96-second campaign film](make-the-next-take/README.md) follows three dance
+takes into a finished short-form campaign. Its native Film project retains the
+cuts, typography, motion graphics, narration and music mix, including the closing
+reveal of that same project. The three original eight-second campaign projects
+remain independently editable. Reassembling the supplied media uses the CPU Film
+runtime; fresh SAM3 tracking uses the local generation engine.
+
+## Earlier focused Film
+
+An earlier 53.04-second [editable Film](judges-film/README.md) develops a shared cue, tracked character replacement, product video and an ad revision. Its 19 cuts, 24 titles, 13 complete outer voices and genuine editor captures remain inspectable. `submission-film/` is a compatibility archive of that project.
+
+The model-generation examples below are actual local Comfy SDK renders, captured on an RTX 5080 with 16 GB
 VRAM. The videos are pre-rendered examples; editing a recipe does not alter a
 past render. A connected local engine is needed to generate a new take.
 

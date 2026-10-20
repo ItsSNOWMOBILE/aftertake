@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { cinemaSchema, defaultCinema } from './cinema.js';
 import type { JobTargetBinding } from './job-target.js';
+import type { RecompositionProvenance } from './recomposition.js';
 
 export const pointSchema = z.object({ x: z.number().min(0).max(1), y: z.number().min(0).max(1) });
 export const strokeSchema = z.object({
@@ -211,6 +212,8 @@ export type Render = {
   output?: string;
   rawOutput?: string;
   workflow?: Record<string, unknown>;
+  /** CPU finishing is recorded separately from the graph that generated the raw take. */
+  recomposition?: RecompositionProvenance;
   coarseOutput?: string;
   guideOutput?: string;
   focusOutput?: string;

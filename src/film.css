@@ -175,11 +175,16 @@
   display: flex;
   gap: 3px;
   margin-top: 10px;
-  height: 42px;
+  height: 48px;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
 }
 .film-mini-timeline button {
   flex-basis: 0;
-  min-width: 14px;
+  min-width: 28px;
   overflow: hidden;
   padding: 0;
   border: 1px solid #53643e;

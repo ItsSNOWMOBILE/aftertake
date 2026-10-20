@@ -11,33 +11,39 @@ An open-source creative studio for short-form video, product stories and visual 
 [![Status: Experimental](https://img.shields.io/badge/status-experimental-c3d4a6?labelColor=182015)](#project-status)
 
 **[Try the browser editor](https://aftertake-studio.right-bard-9761.chatgpt.site/studio/)** ·
-**[Watch the new demo](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/motion-design-preview-2026-10-19/aftertake-motion-design.mp4)** ·
+**[Watch the 96-second film](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/product-film-preview-2026-10-19/aftertake-make-the-next-take.mp4)** ·
 **[Read the studio guide](docs/studio-guide.md)**
 
 </div>
 
 <br>
 
-[![Aftertake's real text-to-video studio showing a generated amber fragrance bottle, its prompt, and editable settings](examples/text-video/studio.jpg)](https://aftertake-studio.right-bard-9761.chatgpt.site/create/)
+## Make the next take.
 
-<p align="center"><sub>A real local LTX-2.5 render, with generated ambience. <a href="https://aftertake-studio.right-bard-9761.chatgpt.site/create/">Watch the shot and inspect its workflow →</a></sub></p>
+https://github.com/user-attachments/assets/9ecc806c-34ab-44eb-9549-6bdb5fde9acb
 
-## One take. Your next take.
+**[Watch the narrated 96-second film →](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/product-film-preview-2026-10-19/aftertake-make-the-next-take.mp4)**
 
-[![Editable moving cards, typography and shapes in Aftertake's native motion graphics demo](examples/motion-design/poster.jpg)](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/motion-design-preview-2026-10-19/aftertake-motion-design.mp4)
+Three dance takes become **MOVE YOUR WAY**, a short-form concept campaign. Follow
+the source selection, local SAM3 tracking, graphic echoes, color, editable type,
+motion graphics and narration. Adapt the campaign for portrait, square and
+landscape, then see the actual Aftertake project behind the film itself.
 
-**[Watch the narrated 30.6-second preview →](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/motion-design-preview-2026-10-19/aftertake-motion-design.mp4)**
+The film was authored and exported through Aftertake's own MCP at **1080p and
+24 fps**. Its cuts, titles, graphics, narration and music mix remain editable.
+The [project and reproduction guide](examples/make-the-next-take/README.md) and
+[companion media](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/product-film-preview-2026-10-19/aftertake-product-film-inputs.zip)
+let you reopen the edit without a diffusion GPU.
+A [fresh-workspace replay](examples/make-the-next-take/replay-proof.json) matched
+all 2,304 decoded frames and every decoded soundtrack sample.
 
-One performance becomes three. Change the character, revise an ad, animate a
-reference, then build the story with **19 editable graphic layers**. The closing
-reveal shows this film inside the actual editor. It was authored and exported
-through Aftertake's own MCP at 1080p and 24 fps.
+This is a review preview. UI sequences use actual captured app states with fixed
+framing; processing waits are omitted. Footage: RDNE Stock project / Pexels.
+Music: “Galactic Rap” by Kevin MacLeod, CC BY 4.0.
+[Credits and source details →](examples/make-the-next-take/README.md)
 
-The [editable project and reproduction guide](examples/motion-design/README.md)
-and [exact media package](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/motion-design-preview-2026-10-19/aftertake-motion-inputs.zip)
-let you replay the edit without a diffusion GPU.
-This is a review preview; the UI sequences use genuine held captures and native
-camera moves.
+The earlier [motion graphics study](examples/motion-design/README.md) remains
+available with its editable source.
 
 ## Hotel Lobby, recast
 
@@ -68,12 +74,12 @@ assemble it with narration and editable typography.
 | **Depth-finished stills** with native DA3 Small | **Tracked subject copies** with position, scale, rotation and mask controls | **Color and texture finishing** with exact before/after frame previews |
 | **Layered still compositions** from imported transparent images | **Shape and image masks**, clipping and 27 blend modes | **Selective HSL, master/RGB curves and 3D LUTs** shared with adjustment layers |
 
-Use the visual editor or connect an agent through **47 MCP tools**. Both work with
-the same local studio, persisted jobs and editable projects. Native generation uses
-the official Comfy SDK and open-weight model workflows; editing existing footage
-and local narration can run on the CPU.
+Use the visual editor or connect an agent through **50 MCP tools**. Both work with
+the same local studio, persisted jobs and editable projects. Native generation uses the
+official Comfy SDK and open-weight model workflows; editing existing footage and
+local narration can run on the CPU.
 
-This branch also includes **[generation with Comfy credits](docs/hosted-generation.md)**:
+This optional branch also includes **[generation with Comfy credits](docs/hosted-generation.md)**:
 short 720p LTX-2.5 Fast videos with optional sound through Comfy Router, without a
 local GPU. It has its own explicit paid queue and memory-only credential connection.
 Native character swaps and painted edits retain their existing workflows. The hosted
@@ -83,7 +89,10 @@ for this optional backend has not been established**.
 **Film motion graphics** adds timed shapes, image overlays and title transforms
 with editable easing, independent scale axes and 720p, 1080p or 4K export canvases.
 The native CPU renderer keeps these layers on the film's 24 fps clock.
-See [the motion graphics guide](docs/motion-graphics.md).
+See [the motion graphics guide](docs/motion-graphics.md). **Shared groups & depth**
+keeps cards, images and captions attached through one editable transform, with
+perspective tilt and optional shutter blur in the export.
+[Author a motion scene →](docs/motion-scenes.md)
 
 ### One performance. Extra copies.
 
@@ -182,23 +191,18 @@ on Windows). An explicit selection is never replaced by another runtime.
 Optional local narration is installed separately with
 `python scripts/setup-narration.py`. These Python setup paths use **Python 3.12**.
 
-### Use hosted generation or prepare a workflow deployment
-
-Choose **Generate with Comfy credits** from **Create video** or **Render setup**
-for supported hosted LTX text-to-video. See the [hosted generation guide](docs/hosted-generation.md)
-for key setup, billing, saved outputs and recovery. This path needs only the CPU
-Film runtime, with no local generation GPU or model download.
+### Prepare cloud rendering
 
 Open **Render setup** to prepare a Comfy Cloud connection or a compatible managed
 deployment. You can save the setup before adding an API key. Credentials stay in
 the local server memory; an explicit account check never starts a generation.
 
-**Deployment of native editing workflows is not enabled yet.** Workflow compatibility
-and provider-specific recovery still need verification. The recorded browser editor does
+**Cloud generation is not enabled yet.** Billing ownership, workflow compatibility
+and remote job recovery still need verification. The recorded browser editor does
 not collect keys. See the [cloud connection guide](docs/cloud-setup.md) for the
 current framework and an offline character-workflow deployment inventory.
 
-### Generate new footage on your own GPU
+### Generate new footage
 
 Requires **Python 3.12**, an **NVIDIA CUDA GPU**, and space for the selected
 model profile. The tested development host is Windows with an RTX 5080
@@ -293,8 +297,8 @@ feature parity is still a work in progress.
 
 Character likeness, speaking faces, hands, occlusions and camera adherence need
 visual review. A successful render or passing media check does not establish
-visual quality. The browser trial reviews recorded results; fresh native inference
-uses your configured local engine. Hosted LTX has its separate explicit credits queue.
+visual quality. The browser trial reviews recorded results; fresh inference
+uses your configured local engine.
 
 ## Development
 
