@@ -5,6 +5,11 @@ import { imageRequestSchema } from '../src/image-generation.js';
 import { videoRequestSchema } from '../src/video-generation.js';
 import { frameEditRequestSchema } from '../src/frame-edit.js';
 import type { FilmAsset } from '../src/film.js';
+import {
+  frameCreativeRecipes,
+  imageCreativeRecipes,
+  videoCreativeRecipes,
+} from '../src/creative-recipes.js';
 
 type Result = { data: any; images?: { data: string; mimeType: string }[] };
 type Register = (
@@ -130,7 +135,7 @@ export function registerGenerationTools(context: {
   }
   tool(
     'aftertake_generation_workspace',
-    'List generation source clips and actual image, frame-edit and video jobs. Optionally check one local model profile. This reads native state and starts no generation.',
+    'List generation source clips and actual image, frame-edit and video jobs, plus the editable starter recipes for each kind. Optionally check one local model profile. This reads native state and starts no generation.',
     z.object({
       query: z.string().max(200).default(''),
       limit: z.number().int().min(1).max(50).default(25),
@@ -180,7 +185,24 @@ export function registerGenerationTools(context: {
               .map((r) => summary(type, r)),
           ),
           engine: profile ? await api<Engine>('/api/engine?pipeline=' + profile) : undefined,
-          note: 'A completed take can be used by renderId in a film plan. Text-to-video returns a source clipId; use aftertake_use_source to bring it, another source or a generated still into Film.',
+          // The same starters as the studio pickers. Merge one's settings into a
+          // request; the agent still chooses the name, frame, seed and media.
+          starters: Object.fromEntries(
+            (
+              [
+                ['image', imageCreativeRecipes],
+                ['video', videoCreativeRecipes],
+                ['frame', frameCreativeRecipes],
+              ] as const
+            ).map(([type, recipes]) => [
+              type,
+              recipes.map(({ sources, ...recipe }) => ({
+                ...recipe,
+                sources: sources.map((source) => source.url),
+              })),
+            ]),
+          ),
+          note: 'Starters hold editable prompt and look settings: merge one into a request and supply your own name, aspect, seed and media. A completed take can be used by renderId in a film plan. Text-to-video returns a source clipId; use aftertake_use_source to bring it, another source or a generated still into Film.',
         },
       };
     },

@@ -111,13 +111,18 @@ keeps cards, images and captions attached through one editable transform, with
 perspective tilt and optional shutter blur in the export.
 [Author a motion scene →](docs/motion-scenes.md)
 
-**Editable recipe starters** help you begin a fashion editorial, product still,
-warm relight, product replacement or monochrome frame edit. Choose a starter in
-Create image or the frame editor, load it, then adjust the prompt before generating.
-Your source, references and seed stay attached. These original Aftertake prompts
-adapt production ideas from [Higgsfield's public cookbook](https://github.com/higgsfield-ai/skills/blob/f83af0bc1d937c8119099a11f8ebbf5e6fb99819/COOKBOOK.md)
-and [Comfy's workflow templates](https://github.com/Comfy-Org/workflow_templates/tree/86ce86e92ec77e3c3c6d4a754e69cfce37886542/templates);
-they run through Aftertake's existing Z-Image and Qwen workflows.
+**Editable recipe starters** give you 18 places to begin. Create image has seven
+product and campaign shots (studio still, lifestyle scene, hands close-up,
+moodboard pin, hero banner, conceptual splash, fashion editorial). Create video
+has six ad formats with matching camera looks (product showcase, TV spot,
+phone-filmed UGC, unboxing, how-to and neon teaser). The frame editor has five
+edits (relight, product replacement, outfit try-on, seasonal restyle and
+monochrome). Load a starter, then adjust the prompt before generating; your
+name, frame, source, references and seed stay as they were. Agents get the
+same starters from `aftertake_generation_workspace`. These original Aftertake
+prompts adapt production ideas from [Higgsfield's public skills](https://github.com/higgsfield-ai/skills/tree/f83af0bc1d937c8119099a11f8ebbf5e6fb99819)
+(MIT) and [Comfy's workflow templates](https://github.com/Comfy-Org/workflow_templates/tree/86ce86e92ec77e3c3c6d4a754e69cfce37886542/templates);
+they run through Aftertake's existing Z-Image, LTX-2.5 and Qwen workflows.
 
 ### One performance. Extra copies.
 

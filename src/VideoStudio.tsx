@@ -22,6 +22,8 @@ import {
 } from './video-generation';
 import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
 import PreviewVideo from './PreviewVideo';
+import CreativeRecipePicker from './CreativeRecipePicker';
+import { applyVideoCreativeRecipe } from './creative-recipes';
 import './image-studio.css';
 import './video-studio.css';
 
@@ -451,6 +453,15 @@ export default function VideoStudio({
             )}
           </div>
           <div className="image-controls">
+            <CreativeRecipePicker
+              kind="video"
+              disabled={locked}
+              onLoad={(id) => {
+                setRequest((current) => applyVideoCreativeRecipe(current, id));
+                setError('');
+                setNotice('Starter loaded. Edit the prompt and camera, then create the video.');
+              }}
+            />
             <button
               className="image-recipe-import"
               disabled={locked}

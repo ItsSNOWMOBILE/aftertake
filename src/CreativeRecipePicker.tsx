@@ -1,5 +1,9 @@
 import { useId, useState } from 'react';
-import { frameCreativeRecipes, imageCreativeRecipes } from './creative-recipes';
+import {
+  frameCreativeRecipes,
+  imageCreativeRecipes,
+  videoCreativeRecipes,
+} from './creative-recipes';
 import './creative-recipes.css';
 
 export default function CreativeRecipePicker({
@@ -8,14 +12,18 @@ export default function CreativeRecipePicker({
   disabled = false,
   onLoad,
 }: {
-  kind: 'image' | 'frame';
+  kind: 'image' | 'video' | 'frame';
   hasSubject?: boolean;
   disabled?: boolean;
   onLoad: (id: string) => void;
 }) {
   const id = useId();
   const [selected, setSelected] = useState('');
-  const recipes = kind === 'image' ? imageCreativeRecipes : frameCreativeRecipes;
+  const recipes = {
+    image: imageCreativeRecipes,
+    video: videoCreativeRecipes,
+    frame: frameCreativeRecipes,
+  }[kind];
   const recipe = recipes.find((item) => item.id === selected);
   const needsSubject =
     recipe && 'requiresSubject' in recipe && recipe.requiresSubject && !hasSubject;
@@ -54,9 +62,13 @@ export default function CreativeRecipePicker({
           'Load an editable prompt and look. Review the settings, then generate when ready.'}
       </p>
       <small>
-        {kind === 'image'
-          ? 'Keeps your image name, frame and seed.'
-          : 'Keeps your source, starting frame, subject reference and seed.'}
+        {
+          {
+            image: 'Keeps your image name, frame and seed.',
+            video: 'Keeps your video name, frame, quality and seed.',
+            frame: 'Keeps your source, starting frame, subject reference and seed.',
+          }[kind]
+        }
       </small>
     </div>
   );

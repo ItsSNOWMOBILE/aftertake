@@ -7,9 +7,13 @@ import {
   frameCreativeRecipes,
   imageCreativeRecipeSchema,
   imageCreativeRecipes,
+  applyVideoCreativeRecipe,
+  videoCreativeRecipeSchema,
+  videoCreativeRecipes,
 } from '../src/creative-recipes.js';
 import { frameEditRequestSchema } from '../src/frame-edit.js';
 import { imageRequestSchema } from '../src/image-generation.js';
+import { videoRequestSchema } from '../src/video-generation.js';
 
 const image = imageRequestSchema.parse({
   format: 'aftertake-image/1',
@@ -18,6 +22,16 @@ const image = imageRequestSchema.parse({
   seed: 83742,
   aspect: 'portrait',
   style: 'none',
+});
+const video = videoRequestSchema.parse({
+  format: 'aftertake-text-video/1',
+  name: 'My teaser',
+  prompt: 'My original motion direction.',
+  seed: 51234,
+  aspect: 'portrait',
+  quality: 'draft',
+  seconds: 3,
+  sound: false,
 });
 const frame = frameEditRequestSchema.parse({
   format: 'aftertake-frame-edit/1',
@@ -48,9 +62,11 @@ const frame = frameEditRequestSchema.parse({
 });
 
 test('starter settings fit native contracts and cannot override media, seed or frame bindings', () => {
-  const ids = [...imageCreativeRecipes, ...frameCreativeRecipes].map((recipe) => recipe.id);
+  const ids = [...imageCreativeRecipes, ...videoCreativeRecipes, ...frameCreativeRecipes].map(
+    (recipe) => recipe.id,
+  );
   assert.equal(new Set(ids).size, ids.length);
-  assert.equal(ids.length, 5);
+  assert.equal(ids.length, 18);
   for (const recipe of imageCreativeRecipes) {
     assert.equal(imageCreativeRecipeSchema.safeParse(recipe).success, true);
     assert.equal(
@@ -70,6 +86,33 @@ test('starter settings fit native contracts and cannot override media, seed or f
         }).success,
         false,
       );
+  }
+  for (const recipe of videoCreativeRecipes) {
+    assert.equal(videoCreativeRecipeSchema.safeParse(recipe).success, true);
+    assert.equal(
+      videoRequestSchema.safeParse(applyVideoCreativeRecipe(video, recipe.id)).success,
+      true,
+    );
+    for (const extra of [
+      { seed: 1 },
+      { aspect: 'square' },
+      { quality: 'final' },
+      { name: 'Overridden' },
+    ])
+      assert.equal(
+        videoCreativeRecipeSchema.safeParse({
+          ...recipe,
+          settings: { ...recipe.settings, ...extra },
+        }).success,
+        false,
+      );
+    assert.equal(
+      videoCreativeRecipeSchema.safeParse({
+        ...recipe,
+        settings: { ...recipe.settings, cinema: { ...recipe.settings.cinema, guidance: 'tracks' } },
+      }).success,
+      false,
+    );
   }
   for (const recipe of frameCreativeRecipes) {
     assert.equal(frameCreativeRecipeSchema.safeParse(recipe).success, true);
@@ -102,12 +145,34 @@ test('loading image starters preserves the draft name, aspect and seed, with iso
     assert.equal(applied.name, image.name);
     assert.equal(applied.format, image.format);
     assert.equal(applied.prompt, recipe.settings.prompt);
-    applied.direction!.shot = 'overhead';
-    assert.notEqual(applyImageCreativeRecipe(image, recipe.id).direction!.shot, 'overhead');
-    assert.notEqual(recipe.settings.direction!.shot, 'overhead');
+    const shot = recipe.settings.direction!.shot,
+      other = shot === 'overhead' ? 'low' : 'overhead';
+    applied.direction!.shot = other;
+    assert.equal(applyImageCreativeRecipe(image, recipe.id).direction!.shot, shot);
+    assert.equal(recipe.settings.direction!.shot, shot);
   }
   assert.deepEqual(image, before);
   assert.throws(() => applyImageCreativeRecipe(image, 'missing'), /Unknown image starter/);
+});
+
+test('loading video starters preserves the draft name, aspect, quality and seed', () => {
+  const before = structuredClone(video);
+  for (const recipe of videoCreativeRecipes) {
+    const applied = applyVideoCreativeRecipe(video, recipe.id);
+    assert.equal(applied.seed, video.seed);
+    assert.equal(applied.aspect, video.aspect);
+    assert.equal(applied.quality, video.quality);
+    assert.equal(applied.name, video.name);
+    assert.equal(applied.prompt, recipe.settings.prompt);
+    assert.equal(applied.seconds, recipe.settings.seconds);
+    applied.cinema!.movement = 'locked';
+    assert.equal(
+      applyVideoCreativeRecipe(video, recipe.id).cinema!.movement,
+      recipe.settings.cinema.movement,
+    );
+  }
+  assert.deepEqual(video, before);
+  assert.throws(() => applyVideoCreativeRecipe(video, 'missing'), /Unknown video starter/);
 });
 
 test('frame starters retain the actual uploaded source, subject, trim and seed without mutating a prior job', () => {
@@ -128,7 +193,11 @@ test('frame starters retain the actual uploaded source, subject, trim and seed w
   const withoutSubject = { ...frame, subject: undefined };
   assert.throws(
     () => applyFrameCreativeRecipe(withoutSubject, 'product-replacement'),
-    /Choose a subject reference/,
+    /Choose a subject reference before loading Product replacement/,
+  );
+  assert.throws(
+    () => applyFrameCreativeRecipe(withoutSubject, 'outfit-try-on'),
+    /before loading Outfit try-on/,
   );
   assert.equal(
     applyFrameCreativeRecipe(withoutSubject, 'warm-practical-relight').subject,
