@@ -1,0 +1,67 @@
+{
+  "format": "aftertake-log-progress-observations/1",
+  "operationId": "cff84b27-f685-462a-968c-cea6ca00707c",
+  "note": "Read-only log observer; milestone times have up to three seconds observation latency and first-step elapsed includes all API preparation.",
+  "events": [
+    {
+      "completed": 1,
+      "total": 10,
+      "observedAt": "2026-10-20T20:41:10.590017+00:00",
+      "elapsedFromApiCreationSeconds": 661.464
+    },
+    {
+      "completed": 2,
+      "total": 10,
+      "observedAt": "2026-10-20T20:49:37.689929+00:00",
+      "elapsedFromApiCreationSeconds": 1168.564
+    },
+    {
+      "completed": 3,
+      "total": 10,
+      "observedAt": "2026-10-20T20:53:46.750135+00:00",
+      "elapsedFromApiCreationSeconds": 1417.624
+    },
+    {
+      "completed": 4,
+      "total": 10,
+      "observedAt": "2026-10-20T20:58:37.809453+00:00",
+      "elapsedFromApiCreationSeconds": 1708.683
+    },
+    {
+      "completed": 5,
+      "total": 10,
+      "observedAt": "2026-10-20T21:02:22.856109+00:00",
+      "elapsedFromApiCreationSeconds": 1933.73
+    },
+    {
+      "completed": 6,
+      "total": 10,
+      "observedAt": "2026-10-20T21:06:19.904727+00:00",
+      "elapsedFromApiCreationSeconds": 2170.779
+    },
+    {
+      "completed": 7,
+      "total": 10,
+      "observedAt": "2026-10-20T21:09:46.948365+00:00",
+      "elapsedFromApiCreationSeconds": 2377.822
+    },
+    {
+      "completed": 8,
+      "total": 10,
+      "observedAt": "2026-10-20T21:13:35.018106+00:00",
+      "elapsedFromApiCreationSeconds": 2605.892
+    },
+    {
+      "completed": 9,
+      "total": 10,
+      "observedAt": "2026-10-20T21:17:17.063390+00:00",
+      "elapsedFromApiCreationSeconds": 2827.937
+    },
+    {
+      "completed": 10,
+      "total": 10,
+      "observedAt": "2026-10-20T21:22:08.123085+00:00",
+      "elapsedFromApiCreationSeconds": 3118.997
+    }
+  ]
+}

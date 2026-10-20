@@ -1,0 +1,24 @@
+{
+  "format": "aftertake-visual-review/1",
+  "status": "reviewed-with-documented-limitations",
+  "reviewers": [
+    "render agent",
+    "parent agent",
+    "independent reviewer"
+  ],
+  "reviewed": [
+    "nine driver/result samples from frame0 through96",
+    "native frame48"
+  ],
+  "strengths": [
+    "mint knit appearance retained",
+    "stable full-body teddy with no obvious limb collapse in sampled frames",
+    "head and arm gestures track the driver qualitatively"
+  ],
+  "limitations": [
+    "pose and leg-motion amplitude differ with teddy body proportions",
+    "full-frame reference background, not a garage character replacement",
+    "native720p local execution took about52minutes on this16GB GPU and32GB host",
+    "Sampled head/arm gestures transfer clearly; source hops, crouches and lateral footwork are substantially reduced. Present as gesture transfer, not exact full-dance reproduction."
+  ]
+}
