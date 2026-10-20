@@ -93,6 +93,14 @@ keeps cards, images and captions attached through one editable transform, with
 perspective tilt and optional shutter blur in the export.
 [Author a motion scene →](docs/motion-scenes.md)
 
+**Editable recipe starters** help you begin a fashion editorial, product still,
+warm relight, product replacement or monochrome frame edit. Choose a starter in
+Create image or the frame editor, load it, then adjust the prompt before generating.
+Your source, references and seed stay attached. These original Aftertake prompts
+adapt production ideas from [Higgsfield's public cookbook](https://github.com/higgsfield-ai/skills/blob/f83af0bc1d937c8119099a11f8ebbf5e6fb99819/COOKBOOK.md)
+and [Comfy's workflow templates](https://github.com/Comfy-Org/workflow_templates/tree/86ce86e92ec77e3c3c6d4a754e69cfce37886542/templates);
+they run through Aftertake's existing Z-Image and Qwen workflows.
+
 ### One performance. Extra copies.
 
 [![Three tracked copies of one studio dancer, made from the original source pixels](examples/subject-duplicates/poster.jpg)](examples/subject-duplicates/result.mp4)

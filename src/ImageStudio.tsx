@@ -20,6 +20,8 @@ import {
   type ImageRequest,
 } from './image-generation';
 import { apiFetch, browserDemo, mediaUrl } from './transport';
+import CreativeRecipePicker from './CreativeRecipePicker';
+import { applyImageCreativeRecipe } from './creative-recipes';
 import './image-studio.css';
 
 async function api<T>(url: string, body?: unknown): Promise<T> {
@@ -83,6 +85,7 @@ export default function ImageStudio({
   const [selected, setSelected] = useState(''),
     [engine, setEngine] = useState<Engine | null>(null),
     [error, setError] = useState(''),
+    [notice, setNotice] = useState(''),
     [sending, setSending] = useState(false);
   const input = useRef<HTMLInputElement>(null),
     dialog = useRef<HTMLElement>(null);
@@ -308,6 +311,16 @@ export default function ImageStudio({
             )}
           </div>
           <div className="image-controls">
+            <CreativeRecipePicker
+              kind="image"
+              disabled={busy}
+              onLoad={(id) => {
+                setRequest((current) => applyImageCreativeRecipe(current, id));
+                setError('');
+                setNotice('Starter loaded. Edit the prompt and look, then choose Create image.');
+              }}
+            />
+            {notice && <p role="status">{notice}</p>}
             <button
               className="image-recipe-import"
               disabled={busy}
