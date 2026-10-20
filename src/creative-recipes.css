@@ -1,0 +1,57 @@
+.creative-recipe-picker {
+  border: 1px solid #4a5056;
+  border-radius: 6px;
+  padding: 14px;
+  background: #191c1f;
+}
+.image-controls .creative-recipe-picker > label,
+.frame-editor-controls .creative-recipe-picker > label {
+  display: block;
+  color: #e6e8eb;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0;
+  margin-bottom: 9px;
+}
+.creative-recipe-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.creative-recipe-row > select {
+  flex: 1 1 160px;
+  min-width: 0;
+  width: 100%;
+  min-height: 40px;
+  padding: 9px;
+  border: 1px solid #636c75;
+  border-radius: 4px;
+  background: #202326;
+  color: #f1f3f5;
+  font: inherit;
+  font-size: 14px;
+}
+.creative-recipe-row > button {
+  min-height: 40px;
+  padding: 9px 12px;
+  color: #e6e8eb;
+  font-size: 13px;
+}
+.creative-recipe-row > :focus-visible {
+  outline: 2px solid #d5e991;
+  outline-offset: 3px;
+}
+.creative-recipe-picker > p,
+.creative-recipe-picker > small {
+  display: block;
+  color: #bdc5cd;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 9px 0 0;
+}
+.creative-recipe-picker > small {
+  color: #aab4bd;
+}
+.frame-editor-controls > .creative-recipe-picker {
+  margin-bottom: 16px;
+}

@@ -8,6 +8,8 @@ import {
   type FrameEdit,
   type FrameEditRequest,
 } from './frame-edit';
+import CreativeRecipePicker from './CreativeRecipePicker';
+import { applyFrameCreativeRecipe } from './creative-recipes';
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
   const response = await apiFetch(url, init),
@@ -416,6 +418,29 @@ export default function FrameEditor({
             )}
           </div>
           <div className="frame-editor-controls">
+            <CreativeRecipePicker
+              kind="frame"
+              hasSubject={Boolean(subject)}
+              disabled={busy}
+              onLoad={(id) => {
+                const next = applyFrameCreativeRecipe(
+                  {
+                    format: 'aftertake-frame-edit/1',
+                    clip: recipe.clip,
+                    trimStart: recipe.trimStart,
+                    subject: subject ? { ...subject, kind: 'image' } : undefined,
+                    prompt,
+                    seed,
+                    mode,
+                  },
+                  id,
+                );
+                setPrompt(next.prompt);
+                setMode(next.mode);
+                setError('');
+                setNotice('Starter loaded. Review the prompt, then choose Create edited frame.');
+              }}
+            />
             <button
               className="frame-recipe-import"
               disabled={busy}
