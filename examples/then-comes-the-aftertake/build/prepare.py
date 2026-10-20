@@ -36,14 +36,14 @@ def main(music):
     for name, colour in [('plate-black', (8, 10, 9)), ('plate-dark', (18, 23, 19))]:
         Image.new('RGB', (1920, 1080), colour).save(WORK / f'{name}.png')
     shutil.copyfile(HERE.parent / 'assets/logo-dark.png', WORK / 'logo-dark.png')
-    # The portal take's real ComfyUI graph, drawn for the How it's built scene.
-    run(HERE / 'workflow-graph.py', ROOT / 'examples/portal/workflow-api.json', WORK / 'graph-portal.png')
+    # The HD window repaint's executed ComfyUI graph, drawn for the How it's built scene.
+    run(HERE / 'workflow-graph.py', ROOT / 'examples/portal-v2/executed-workflow.json', WORK / 'graph-portal.png')
 
     # Subject copies and colour echoes from the example's saved SAM 3 tracking.
-    example = ROOT / 'examples/subject-duplicates'
+    example = ROOT / 'examples/subject-duplicates-v2'
     inspect = lambda path, role: json.loads(run(ROOT / 'scripts/subject-effects.py', '--inspect', path, '--role', role))
     source, prepared, mask = (inspect(example / name, role) for name, role in
-        [('source-original.mp4', 'source'), ('prepared-source.mp4', 'prepared'), ('person-mask.mkv', 'mask')])
+        [('source.mp4', 'source'), ('prepared-source.mp4', 'prepared'), ('person-mask.mkv', 'mask')])
     base = {'y': 0, 'scale': 1, 'opacity': 1, 'flipX': False, 'rotation': 0}
     copies = {
         'echoes': [{**base, 'x': x, 'color': colour, 'behindSubject': True}
@@ -52,15 +52,15 @@ def main(music):
     }
     for name, effect in copies.items():
         settings = {'request': {'copies': effect, 'feather': 1, 'grow': 0, 'backgroundBlur': 0, 'backgroundExposureEV': 0},
-            'source': str(example / 'source-original.mp4'), 'prepared': str(example / 'prepared-source.mp4'),
+            'source': str(example / 'source.mp4'), 'prepared': str(example / 'prepared-source.mp4'),
             'mask': str(example / 'person-mask.mkv'), 'selection': mask, 'trimStart': 0, 'recipe': {'preset': name},
             'hashes': {'source': source['sha256'], 'prepared': prepared['sha256'], 'mask': mask['sha256']},
             'output': str(WORK / f'{name}.mp4')}
         (WORK / f'{name}.json').write_text(json.dumps(settings))
         run(ROOT / 'scripts/subject-effects.py', WORK / f'{name}.json')
 
-    # Four looks from Color & finish on the castle pull-back take.
-    castle = ROOT / 'examples/castle-pullback/result.mp4'
+    # Four looks from Color & finish on the HD lighthouse pull-back take.
+    castle = ROOT / 'examples/castle-pullback-v2/result.mp4'
     probe = json.loads(subprocess.check_output(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries',
         'stream=width,height:format=duration', '-of', 'json', str(castle)]))
     clip = {'width': probe['streams'][0]['width'], 'height': probe['streams'][0]['height'],

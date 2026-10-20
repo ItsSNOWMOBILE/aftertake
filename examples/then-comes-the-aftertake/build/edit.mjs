@@ -42,21 +42,23 @@ export const files = {
   graph: `${WORK}/graph-portal.png`,
   dark: `${WORK}/plate-dark.png`,
   logo: `${WORK}/logo-dark.png`,
-  roomSrc: `${R}/portal/source.mp4`, portal: `${R}/portal/result.mp4`, refPortal: `${R}/reference-portal/result.mp4`,
+  // HD source plates and their 720p examples (examples/hd-examples-v2.md).
+  heroSrc: `${R}/source-plates-v2/hero-walk/source.mp4`, dancerSrc: `${R}/source-plates-v2/dancer/source.mp4`,
+  loftSrc: `${R}/portal-v2/source.mp4`, portal: `${R}/portal-v2/result.mp4`, refPortal: `${R}/reference-portal/result.mp4`,
   fallsSrc: `${R}/golden-falls/source.mp4`, falls: `${R}/golden-falls/result.mp4`, crystal: `${R}/crystal-forest/result.mp4`,
   crystalMove: `${R}/crystal-transition/result.mp4`,
-  castle: `${R}/castle-pullback/result.mp4`, coastalSrc: `${R}/coastal-kingdom/source.mp4`, coastal: `${R}/coastal-kingdom/result.mp4`,
+  castle: `${R}/castle-pullback-v2/result.mp4`, coastalSrc: `${R}/coastal-kingdom/source.mp4`, coastal: `${R}/coastal-kingdom/result.mp4`,
   observatory: `${R}/observatory/result.mp4`, observatoryStill: `${R}/observatory/source.png`,
   reclaimed: `${R}/reclaimed/result.mp4`, winterSrc: `${R}/winter-valley/source.mp4`, winter: `${R}/winter-valley/result.mp4`,
-  robot: `${R}/signal/source.mp4`, teddy: `${R}/signal/result.mp4`,
+  robot: `${R}/signal-v2/source.mp4`, teddy: `${R}/signal-v2/result.mp4`,
   perfume: `${R}/text-video/square/result.mp4`, perfumeTall: `${R}/text-video/portrait/result.mp4`,
   headphones: `${R}/agent-generation/take.mp4`,
-  bridgeSrc: `${R}/character-h3-high/prepared-source.mp4`, bridgeMask: `${R}/character-h3-high/selection-preview.mp4`,
-  bridge: `${R}/character-h3-high/result.mp4`,
-  dancer: `${R}/subject-duplicates/prepared-source.mp4`, ensemble: `${WORK}/ensemble.mp4`, echoes: `${WORK}/echoes.mp4`,
+  bridgeSrc: `${R}/character-h3-high-v2/before-720p.mp4`, bridgeMask: `${R}/character-h3-high-v2/selection-preview.mp4`,
+  bridge: `${R}/character-h3-high-v2/result.mp4`,
+  dancer: `${R}/subject-duplicates-v2/before-720p.mp4`, ensemble: `${WORK}/ensemble.mp4`, echoes: `${WORK}/echoes.mp4`,
   warm: `${WORK}/castle-warm.mp4`, cool: `${WORK}/castle-cool.mp4`, noir: `${WORK}/castle-noir.mp4`,
   vintage: `${WORK}/castle-vintage.mp4`,
-  depthSrc: `${R}/depth-effects/source.png`, depthMap: `${R}/depth-effects/depth.png`, depth: `${R}/depth-effects/result.png`,
+  depthSrc: `${R}/depth-effects-v2/source.png`, depthMap: `${R}/depth-effects-v2/depth.png`, depth: `${R}/depth-effects-v2/result.png`,
   layers: `${R}/layer-stack/result.png`,
   guided: `${R}/guided-pullback/result.mp4`, quiet: `${R}/quiet-approach/result.mp4`,
   agentAd: `${R}/agent-edit/result.mp4`,
@@ -159,10 +161,10 @@ export const scenes = [
     shot('black', -21, -16);
     title('EVERY SHOT', -18.2, -17.1, { animation: 'pop', font: 'display', fontSize: 120, motionDuration: 0.35, early: 0.02 });
     title('ENDS.', -17.1, -13, { animation: 'glitch', font: 'display', fontSize: 150 });
-    shot('roomSrc', -16, -13, { in: 0.2, framing: push(1, 1.08), dissolve: D });
-    shot('fallsSrc', -13, -10, { in: 0, framing: push(1.04, 1.12), dissolve: D });
-    shot('bridgeSrc', -10, -6, { in: 0.2, framing: push(1.1, 1.18, 0.5, 0.45), dissolve: D });
-    title('YOUR FOOTAGE · SHOT ONCE', -15.6, -9.8, { style: 'caption', position: 'bottom', align: 'left', font: 'mono', animation: 'scramble', fontSize: 32, color: LIME });
+    shot('heroSrc', -16, -13, { in: 0.5, framing: push(1, 1.08), dissolve: D });
+    shot('dancerSrc', -13, -10, { in: 1.0, framing: push(1.04, 1.12), dissolve: D });
+    shot('loftSrc', -10, -6, { in: 0.5, framing: push(1.06, 1.14, 0.5, 0.45), dissolve: D });
+    title('YOUR FOOTAGE · ONE TAKE', -15.6, -9.8, { style: 'caption', position: 'bottom', align: 'left', font: 'mono', animation: 'scramble', fontSize: 32, color: LIME });
     shot('black', -6, 0);
     title('THEN COMES THE', -9.5, 0, { animation: 'pop', font: 'display', fontSize: 104, motionDuration: 1.1, early: 0.04 });
   }),
@@ -175,7 +177,7 @@ export const scenes = [
     title('make the next take.', 0.4, 2, { style: 'kicker', position: 'bottom', font: 'mono', animation: 'scramble', fontSize: 34, color: LIME, stroke: false, early: 0.02 });
     shot('portal', 2, 4, { in: 1.4, framing: push(1.08, 1.0), dissolve: D, transition: 'flash' });
     const rapid = [['crystal', 1.4], ['falls', 1.2], ['castle', 1.0], ['winter', 1.6], ['reclaimed', 1.4], ['observatory', 0.8], ['perfume', 0.5], ['teddy', 0.8]];
-    rapid.forEach(([key, start], index) => shot(key, 4 + index, 5 + index, { in: start, framing: key === 'teddy' ? push(1.2, 1.3, 0.5, 0.4) : push(1.02, 1.1),
+    rapid.forEach(([key, start], index) => shot(key, 4 + index, 5 + index, { in: start, framing: push(1.02, 1.1),
       ...(index % 3 === 1 ? { dissolve: D, transition: index % 2 ? 'whip' : 'glitch' } : {}) }));
     title('EVERY FRAME HERE WAS MADE IN AFTERTAKE', 4.1, 11.9, { style: 'caption', position: 'bottom', align: 'left', font: 'mono', animation: 'scramble', fontSize: 30, color: LIME });
     shot('ensemble', 12, 16, { in: 0.4, framing: push(1.0, 1.06), dissolve: D, transition: 'flash' });
@@ -191,9 +193,9 @@ export const scenes = [
     title('MAKE IT NEW.', 19.7, 22, big({ position: 'top', fontSize: 96, box: 'highlight', tilt: -3, color: LIME, early: 0.05 }));
     shot('uiCompare', 20, 24, { in: 2.1, framing: ui(0.47, 0.52, 1.55, 1.62) });
     title('LOCAL LTX-2.5 · ONLY THE PAINTED REGION CHANGES', 20.2, 23.9, kicker());
-    shot('roomSrc', 24, 27, { in: 1.0, framing: push(1.0, 1.06) });
+    shot('loftSrc', 24, 27, { in: 0.4, framing: push(1.0, 1.04) });
     title('SAME SCENE.', 24.9, 27.3, big({ fontSize: 124, early: 0.02 }));
-    shot('portal', 27, 29, { in: 1.4, framing: push(1.06, 1.0), dissolve: D, transition: 'flash' });
+    shot('portal', 27, 29, { in: 2.16, framing: push(1.04, 1.06), dissolve: D, transition: 'flash' });
     title('A DIFFERENT VIEW.', 27.4, 29.6, big({ fontSize: 104, box: 'highlight', tilt: -3, early: 0.04 }));
     shot('fallsSrc', 29, 30, { in: 1.0, framing: push(1.02, 1.06) });
     shot('falls', 30, 32, { in: 1.2, framing: push(1.02, 1.1), dissolve: D, transition: 'whip' });
@@ -204,7 +206,7 @@ export const scenes = [
   scene('04 How it is built', 32, 48, ({ shot, title, graphic }) => {
     shot('graph', 32, 38, { framing: push(1.0, 1.1, 0.42, 0.5) });
     title('HOW IT’S BUILT', 32, 38, { position: 'top', font: 'display', fontSize: 84, animation: 'reveal', early: 0.05 });
-    title('THE PORTAL TAKE’S REAL GRAPH · 40 NODES · 6 AFTERTAKE NODES', 32.2, 35.4, kicker({ fontSize: 24 }));
+    title('THE WINDOW REPAINT’S EXECUTED GRAPH · 50 NODES · 10 AFTERTAKE NODES', 32.2, 35.4, kicker({ fontSize: 24 }));
     title('LTX-2.5 · OPEN WEIGHTS · ON YOUR OWN MACHINE', 35.5, 37.9, kicker({ fontSize: 24 }));
     shot('dark', 38, 44);
     title('POWERED BY THE COMFY SDK', 38, 44, big({ position: 'top', fontSize: 52, animation: 'reveal', early: 0.05 }));
@@ -214,7 +216,7 @@ export const scenes = [
       ['client = new Comfy({ timeoutMs })', 39.5, CREAM],
       ['workflow = client.workflows.fromJson(graph)', 40.2, CREAM],
       ['job = await client.submit(workflow, { idempotencyKey })', 41.2, CREAM],
-      ['→ job f2cdf338 · 40 nodes · succeeded in 96 s', 42.4, LIME],
+      ['→ job f402b3b2 · 50 nodes · ComfyUI ran it in 203 s', 42.4, LIME],
     ];
     code.forEach(([text, from, color], index) => title(text, from, 44, { style: 'caption', font: 'mono', fontSize: 30, animation: 'typewriter', motionDuration: 0.5,
       align: 'left', color, stroke: false, motion: still(0, -0.16 + index * 0.075), early: 0.05 }));
@@ -254,7 +256,7 @@ export const scenes = [
     title('KEEP THE MOVE.', 55.3, 57, big({ fontSize: 112, color: LIME, animation: 'pop', motionDuration: 0.35, early: 0.02 }));
     title('BEFORE', 56, 57, kicker({ position: 'top', fontSize: 30, color: CREAM, early: 0.02 }));
     shot('dancer', 57, 58, { in: 0.2, framing: push(1.0, 1.04), dissolve: D, transition: 'flash' });
-    shot('ensemble', 58, 61, { in: 0.6, framing: push(1.0, 1.04) });
+    shot('ensemble', 58, 61, { in: 0.8, framing: push(1.0, 1.04) });
     title('FIVE MORE DANCERS', 57, 59.5, big({ position: 'top', fontSize: 96, color: INK, stroke: false, early: 0.02 }));
     title('IN THE GROOVE.', 59.5, 61, big({ position: 'top', fontSize: 104, animation: 'glitch', color: PINK, early: 0.02 }));
     title('SUBJECT COPIES · ORIGINAL PIXELS · CPU', 57.2, 60.9, kicker());
@@ -320,9 +322,9 @@ export const scenes = [
     title('YOUR CALL.', 92, 94, big({ fontSize: 150, box: 'highlight', tilt: -4, color: CREAM, early: 0.04 }));
     title('COLOR & FINISH · LOOKS · CURVES · LUTS', 92.1, 95.95, kicker());
     shot('robot', 96, 98, { in: 0.6 });
-    title('THEIR\nGESTURE.', 96, 98, big({ align: 'left', fontSize: 44, animation: 'reveal', early: 0.05 }));
-    shot('teddy', 98, 101, { in: 0.6, dissolve: D, transition: 'zoom' });
-    title('YOUR\nCHARACTER.', 98, 101, big({ align: 'left', fontSize: 44, color: LIME, delay: 0.1, early: 0.05 }));
+    title('THEIR\nGESTURE.', 96, 98, big({ align: 'left', fontSize: 72, animation: 'reveal', early: 0.05 }));
+    shot('teddy', 98, 101, { in: 1.8, dissolve: D, transition: 'zoom' });
+    title('YOUR\nCHARACTER.', 98, 101, big({ align: 'left', fontSize: 72, color: LIME, delay: 0.1, early: 0.05 }));
     title('WAN ANIMATE 2 · MOTION TRANSFER', 98.2, 100.9, kicker());
     shot('refPortal', 101, 102, { in: 1.0, framing: push(1.02, 1.08) });
     shot('falls', 102, 103, { in: 2.0, framing: push(1.02, 1.08) });
@@ -338,7 +340,7 @@ export const scenes = [
     title('LAYERS & MASKS', 108, 109, big({ position: 'bottom', align: 'left', fontSize: 80, color: INK, stroke: false, early: 0.03 }));
     const montage = [['portal', 1.4], ['bridge', 0.6], ['echoes', 1.0], ['crystalMove', 1.8], ['noir', 1.6], ['teddy', 1.6], ['falls', 1.8], ['winter', 2.2], ['ensemble', 1.6]];
     montage.slice(0, 118 - 109).forEach(([key, start], index) => shot(key, 109 + index, 110 + index, { in: start,
-      framing: key === 'teddy' ? push(1.2, 1.28, 0.5, 0.4) : push(1.03, 1.1),
+      framing: push(1.03, 1.1),
       ...(index && index % 2 === 0 ? { dissolve: D, transition: index % 4 ? 'glitch' : 'flash' } : {}) }));
     title('MAKE THE NEXT TAKE.', 109.5, 111.7, big({ fontSize: 120, early: 0.02 }));
     title('RUN THE SCENE.', 111.7, 114, big({ fontSize: 132, color: LIME, animation: 'glitch', early: 0.02 }));
@@ -355,8 +357,8 @@ export const scenes = [
     title('github.com/ItsSNOWMOBILE/aftertake', card + 3.5, end, { style: 'caption', font: 'mono', animation: 'typewriter', fontSize: 34, color: LIME, stroke: false, motion: still(0, 0.14), early: 0.15 });
     [
       ...music.credit,
-      'Footage: Curtis Adams, Mikhail Nilov, Dean Diemert, Florian Delée,',
-      'Antoni Shkraba, Michael Burrows / Pexels · Tears of Steel © Blender Foundation, CC BY 3.0',
+      'Source plates generated with LTX-2.5 and Z-Image Turbo in Aftertake · every person shown is fictional',
+      'Footage: Curtis Adams, Mikhail Nilov, Dean Diemert, Florian Delée, Michael Burrows / Pexels',
       'Every effect rendered in Aftertake with open-weight models.',
       'Edited, titled and cut to the beat in Aftertake Film.',
     ].forEach((line, index, lines) => title(line, Math.max(card + 6, end - 8), end, { style: 'kicker', position: 'bottom', font: 'mono', animation: 'fade', fontSize: 16, color: '#9aa58d',

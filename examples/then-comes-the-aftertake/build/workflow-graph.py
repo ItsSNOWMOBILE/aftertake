@@ -40,7 +40,7 @@ def layout(graph):
     for key in graph:
         walk(key)
     columns = {}
-    for key in sorted(graph, key=int):
+    for key in sorted(graph, key=lambda key: (not key.isdigit(), int(key) if key.isdigit() else key)):
         columns.setdefault(depth[key], []).append(key)
     return links, columns
 
@@ -93,7 +93,9 @@ def main(source, output):
         draw.rectangle((x1 + 1, y1 + 1, x1 + 6, y2 - 1), fill=colour)
         # Crowded columns get one line per node.
         tight = y2 - y1 < 40
-        room = x2 - x1 - 20 - draw.textlength(f' #{key}', font=small)
+        # Named helper nodes (such as the 720p padding) get a short tag.
+        tag = f'#{key}' if key.isdigit() else '+'
+        room = x2 - x1 - 20 - draw.textlength(f' {tag}', font=small)
         words = re.findall(r'[A-Z]+(?![a-z])|[A-Z][a-z0-9]*|[a-z0-9]+', kind)
         lines, line = [], ''
         for word in words:
@@ -106,10 +108,10 @@ def main(source, output):
         if len(lines) > 2:
             lines = [lines[0], ''.join(lines[1:])]
         for index, text in enumerate(lines):
-            while draw.textlength(text, font=font) > room:
+            while len(text) > 2 and draw.textlength(text, font=font) > room:
                 text = text[:-2] + '…'
             draw.text((x1 + 13, y1 + (y2 - y1 - 16) / 2 if tight else y1 + 4 + index * 16), text, font=font, fill=TEXT)
-        draw.text((x2 - 8, y1 + (y2 - y1 - 13) / 2 if tight else y1 + 5), f'#{key}', font=small, fill=colour if custom else DIM, anchor='ra')
+        draw.text((x2 - 8, y1 + (y2 - y1 - 13) / 2 if tight else y1 + 5), tag, font=small, fill=colour if custom else DIM, anchor='ra')
     image.save(output)
 
 

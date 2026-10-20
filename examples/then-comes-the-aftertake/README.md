@@ -9,15 +9,15 @@ seven native Film projects, rendered by Aftertake's own CPU Film renderer.
 
 **[Watch the film](film.mp4)** · [Editable projects](project/) · [Build scripts](build/)
 
-| | |
-| :--- | :--- |
-| Length | 93.458 s, 1920 × 1080, 24 fps |
-| Edit | 71 shots in 7 scene projects, 1.3 s average shot, each section under its sung line |
-| Typography | 96 titles: slam, pop, line reveal, glitch, scramble, typewriter |
-| Transitions | 25 styled: whip pan, zoom punch, flash, glitch cut |
-| Graphics | 15 animated Film graphics (the architecture diagram and logo) |
-| Music | “Aftertake”, an original song made with open-weight ACE-Step 1.5 on Comfy Cloud, 102.3 BPM |
-| Audio | −16.1 LUFS integrated, −1.5 dBTP |
+|             |                                                                                            |
+| :---------- | :----------------------------------------------------------------------------------------- |
+| Length      | 93.458 s, 1920 × 1080, 24 fps                                                              |
+| Edit        | 71 shots in 7 scene projects, 1.3 s average shot, each section under its sung line         |
+| Typography  | 96 titles: slam, pop, line reveal, glitch, scramble, typewriter                            |
+| Transitions | 25 styled: whip pan, zoom punch, flash, glitch cut                                         |
+| Graphics    | 15 animated Film graphics (the architecture diagram and logo)                              |
+| Music       | “Aftertake”, an original song made with open-weight ACE-Step 1.5 on Comfy Cloud, 102.3 BPM |
+| Audio       | −16.1 LUFS integrated, −1.5 dBTP                                                           |
 
 ## How it was cut
 
@@ -50,15 +50,15 @@ seven native Film projects, rendered by Aftertake's own CPU Film renderer.
 
 ## What is on screen
 
-| Time | Scene | Sung | Real Aftertake work shown |
-| :--- | :--- | :--- | :--- |
-| 0–12.3 s | Every shot ends | “Every shot ends… then comes the…” | Source excerpts: empty room, forest falls, Tears of Steel bridge |
-| 12.3–21.7 s | The drop | (drop) | Generated results on every beat: portal, crystal, golden falls, castle, winter, Reclaimed, observatory, text-to-video, Wan motion transfer, five tracked dancers |
-| 21.7–31.1 s | Paint it | “Paint it, change it, make it new. Same scene, a different view.” | Recorded cue painting and before/after reveal (LTX-2.5), the room before and after |
-| 31.1–40.5 s | How it's built | “Open weights on your own machine. Make the next take, run the scene.” | The portal take's real 40-node ComfyUI graph, the `@comfyorg/sdk` calls that submit it, its recorded job, and the stack with eight open-weight models |
-| 40.5–52.9 s | Change | “Recast the lead… Five more dancers… Words to video… Pull the camera…” | SAM 3 tracking and MiniMax H3 recast, subject copies, text-to-video, Z-Image still to LTX motion, camera pull-backs |
-| 52.9–61.7 s | Agents and Film | “An agent cuts it, frame by frame. Forty-four tools… Cut to the beat.” | Real MCP results, an ad assembled through MCP, the Film editor snapping this film's cuts to beats |
-| 61.7–93.5 s | Your call | “Your clip! Your models! Your call!”, second chorus, “Aftertake.” | Finishing looks, Wan Animate 2 motion transfer, repainted takes, depth lens blur, layers, montage, end card, credits |
+| Time        | Scene           | Sung                                                                   | Real Aftertake work shown                                                                                                                                                  |
+| :---------- | :-------------- | :--------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0–12.3 s    | Every shot ends | “Every shot ends… then comes the…”                                     | The HD source plates: rooftop walk, orange-hoodie dancer, loft window                                                                                                      |
+| 12.3–21.7 s | The drop        | (drop)                                                                 | Generated results on every beat: portal, crystal, golden falls, castle, winter, Reclaimed, observatory, text-to-video, Wan motion transfer, five tracked dancers           |
+| 21.7–31.1 s | Paint it        | “Paint it, change it, make it new. Same scene, a different view.”      | Recorded cue painting and before/after reveal (LTX-2.5), the room before and after                                                                                         |
+| 31.1–40.5 s | How it's built  | “Open weights on your own machine. Make the next take, run the scene.” | The HD window repaint's executed 50-node ComfyUI graph, the `@comfyorg/sdk` calls that submit it, ComfyUI's recorded run time, and the stack with eight open-weight models |
+| 40.5–52.9 s | Change          | “Recast the lead… Five more dancers… Words to video… Pull the camera…” | SAM 3 tracking and MiniMax H3 recast, subject copies, text-to-video, Z-Image still to LTX motion, camera pull-backs                                                        |
+| 52.9–61.7 s | Agents and Film | “An agent cuts it, frame by frame. Forty-four tools… Cut to the beat.” | Real MCP results, an ad assembled through MCP, the Film editor snapping this film's cuts to beats                                                                          |
+| 61.7–93.5 s | Your call       | “Your clip! Your models! Your call!”, second chorus, “Aftertake.”      | Finishing looks, Wan Animate 2 motion transfer, repainted takes, depth lens blur, layers, montage, end card, credits                                                       |
 
 The UI shots in `recordings/` were captured from the running studio's example
 workspace in Chromium at 1920 × 1080, with a drawn cursor. The film crops into
@@ -70,15 +70,16 @@ snap are real interactions with the app.
 Four kinds of picture were made new for this film, all on the CPU and with no
 model:
 
-- `echoes` and `ensemble` reuse `examples/subject-duplicates`' saved SAM 3 mask
-  in the subject compositor (Color silhouette echoes, and four copies).
+- `echoes` and `ensemble` reuse `examples/subject-duplicates-v2`' saved SAM 3
+  mask in the subject compositor (Color silhouette echoes, and four copies).
 - `castle-warm`, `-cool`, `-noir` and `-vintage` are Color & finish exports of
-  the castle pull-back take.
+  the HD lighthouse pull-back take.
 - `graph-portal.png` is drawn by `build/workflow-graph.py` from
-  `examples/portal/workflow-api.json`, the graph Aftertake submitted for that
-  take. Every node and link is from the file; Aftertake's custom nodes are in
-  lime. The code lines are quoted from `server/sdk-worker.mjs`, and the job
-  line (`f2cdf338`, succeeded in 96 s) is from `examples/portal/render.json`.
+  `examples/portal-v2/executed-workflow.json`, the graph ComfyUI executed for
+  the window repaint. Every node and link is from the file; Aftertake's custom
+  nodes are in lime. The code lines are quoted from `server/sdk-worker.mjs`.
+  The job line (`f402b3b2`, 203 s) is ComfyUI's own `execution_start` to
+  `execution_success` time, from `examples/portal-v2/native-engine-timing.json`.
 - The MCP lines quote a real `aftertake_detect_beats` call (102 BPM in 0.9 s)
   through the official MCP SDK; the client listed 44 tools. The other three
   lines name tools without quoting results.
@@ -114,8 +115,12 @@ not media. The master project references the seven scene renders by hash.
 ## Boundaries
 
 This is a promotional cut, not a benchmark. Generated takes come from the
-reviewed examples in this repository at their native resolutions (mostly
-768 × 432). The 1080p canvas enlarges them; it does not add detail. The
+reviewed examples in this repository at their native resolutions. The HD
+examples (recast, copies, echoes, gesture transfer, window repaint, lighthouse,
+depth) are 1280 × 720; the older takes in the drop, the second chorus and the
+montage are mostly 768 × 432. The 1080p canvas enlarges them; it does not add
+detail. The HD source plates are generated, not filmed, and every person in
+them is fictional. The
 dancer copies and colour echoes reuse source pixels. Lighting, depth and
 occlusion are not re-inferred. Transition smears, zoom blur and glitch bands
 are export effects; the browser preview shows the poses.
