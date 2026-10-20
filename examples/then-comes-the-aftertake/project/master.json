@@ -1,0 +1,140 @@
+{
+  "format": "aftertake-film/3",
+  "id": "057d60c6-993e-4cbb-a819-a3f4e9cedf09",
+  "name": "Then comes the Aftertake",
+  "aspect": "landscape",
+  "resolution": "1080p",
+  "shots": [
+    {
+      "assetId": "33075de4-d9c6-450c-bd4f-173dd1c6bc21",
+      "start": 0,
+      "end": 12.458333333333334,
+      "title": "scene-01.mp4",
+      "sha256": "c0c477f21a7758f2c2159aa6e150e266a6d020be66dfd0416fbc5276682d1574",
+      "asset": {
+        "name": "scene-01.mp4",
+        "kind": "video",
+        "sha256": "c0c477f21a7758f2c2159aa6e150e266a6d020be66dfd0416fbc5276682d1574",
+        "duration": 12.458333333333334,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "e1f42ebb-5922-4e9f-a707-9806015b792c",
+      "start": 0,
+      "end": 9.375,
+      "title": "scene-02.mp4",
+      "sha256": "50b9cf35624584a17c0723574392c5b8c38320471e1598010b00a037204c9f26",
+      "asset": {
+        "name": "scene-02.mp4",
+        "kind": "video",
+        "sha256": "50b9cf35624584a17c0723574392c5b8c38320471e1598010b00a037204c9f26",
+        "duration": 9.375,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "1b90bc8f-421a-4388-be25-75ee2d15b6bd",
+      "start": 0,
+      "end": 9.333333333333334,
+      "title": "scene-03.mp4",
+      "sha256": "98a87f122da1a9a9c9a447a185c7402e721681c89f39b355a8c9d9ed2d64c017",
+      "asset": {
+        "name": "scene-03.mp4",
+        "kind": "video",
+        "sha256": "98a87f122da1a9a9c9a447a185c7402e721681c89f39b355a8c9d9ed2d64c017",
+        "duration": 9.333333333333334,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "f51161d4-7f2c-47b5-a3b7-9c0bb01cb7fb",
+      "start": 0,
+      "end": 18.708333333333332,
+      "title": "scene-04.mp4",
+      "sha256": "59dc58253e4f83cba11aa449388e90fa6c40577d5df7e0164af6af8625074268",
+      "asset": {
+        "name": "scene-04.mp4",
+        "kind": "video",
+        "sha256": "59dc58253e4f83cba11aa449388e90fa6c40577d5df7e0164af6af8625074268",
+        "duration": 18.708333333333332,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "7606413f-ac7e-43dc-9327-c18027365d04",
+      "start": 0,
+      "end": 19.291666666666668,
+      "title": "scene-05.mp4",
+      "sha256": "06849b0c6c80994d5697f3fd331a498b758af19543e408466a5cceace12c0268",
+      "asset": {
+        "name": "scene-05.mp4",
+        "kind": "video",
+        "sha256": "06849b0c6c80994d5697f3fd331a498b758af19543e408466a5cceace12c0268",
+        "duration": 19.291666666666668,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "dd294553-462e-4ca6-a7af-8907ed695024",
+      "start": 0,
+      "end": 9.333333333333334,
+      "title": "scene-06.mp4",
+      "sha256": "ad64b72369273dfd8a405692c46bab7489b87c677926cf644374ecffc379b4b8",
+      "asset": {
+        "name": "scene-06.mp4",
+        "kind": "video",
+        "sha256": "ad64b72369273dfd8a405692c46bab7489b87c677926cf644374ecffc379b4b8",
+        "duration": 9.333333333333334,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "9b5dedee-ab15-4aae-9eec-72a95003a11d",
+      "start": 0,
+      "end": 11.708333333333334,
+      "title": "scene-07.mp4",
+      "sha256": "6208be1e35779f21ebc24fe2225a135739316d80821369b0cbf9f4ed461ffd56",
+      "asset": {
+        "name": "scene-07.mp4",
+        "kind": "video",
+        "sha256": "6208be1e35779f21ebc24fe2225a135739316d80821369b0cbf9f4ed461ffd56",
+        "duration": 11.708333333333334,
+        "width": 1920,
+        "height": 1080
+      }
+    }
+  ],
+  "requestKey": "master-1792516353904",
+  "requestDigest": "c38d4ba55f8023d4ac39a7aec97b9e2d2b4d2960b734d7ec432ad843f95636c0",
+  "titles": [],
+  "audio": [
+    {
+      "assetId": "7c78946d-1c76-45d5-aa90-eb8bc1d5b6fd",
+      "start": 0,
+      "sourceStart": 0,
+      "sourceEnd": 90.20833333333333,
+      "volume": 0.75,
+      "fadeOut": 1.6,
+      "sha256": "f8f00834dc7ac244595220f69f4c69d726dddea5b4c2719f25ca14b8553f7763",
+      "asset": {
+        "name": "music.mp3",
+        "kind": "audio",
+        "sha256": "f8f00834dc7ac244595220f69f4c69d726dddea5b4c2719f25ca14b8553f7763",
+        "duration": 215.118375
+      }
+    }
+  ],
+  "sourceVolume": 0,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 90.20833333333333,
+  "createdAt": "2026-10-20T17:12:34.027Z",
+  "output": "/api/films/057d60c6-993e-4cbb-a819-a3f4e9cedf09/video"
+}

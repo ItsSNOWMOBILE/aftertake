@@ -1,5 +1,12 @@
 # Remixable examples
 
+## Then comes the Aftertake
+
+The [90-second beat-cut film](then-comes-the-aftertake/README.md) is seven native
+Film projects on one 103 BPM grid. It uses punch typography, styled transitions,
+animated graphics and real studio recordings around this folder's generated takes.
+Its build scripts re-export every scene through the studio's Film API.
+
 ## Make the next take
 
 The [96-second campaign film](make-the-next-take/README.md) follows three dance

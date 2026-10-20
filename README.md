@@ -18,6 +18,20 @@ An open-source creative studio for short-form video, product stories and visual 
 
 <br>
 
+## THEN COMES THE AFTERTAKE
+
+[![Then comes the Aftertake — a 90-second beat-cut film made in Aftertake](examples/then-comes-the-aftertake/poster.jpg)](examples/then-comes-the-aftertake/film.mp4)
+
+**[Watch the 90-second film →](examples/then-comes-the-aftertake/film.mp4)** ·
+**[Open its editable projects →](examples/then-comes-the-aftertake/README.md)**
+
+Every shot ends. Then comes the aftertake. A 103 BPM cut through generated
+portals, crystals, castles, recast characters, echoes and finishing looks, with
+the real UI that made them. Its 59 shots, 79 punch titles and 23 whip, zoom, flash
+and glitch transitions are native Film layers. Every cut lands on the beat that
+`aftertake_detect_beats` found. The closing shots show this same film being cut
+in Aftertake's editor.
+
 ## TAKE THE LEAD
 
 https://github.com/user-attachments/assets/4a8e1829-a46f-42c5-b04a-dde0e607dd7d
