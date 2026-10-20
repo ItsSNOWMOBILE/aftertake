@@ -1,6 +1,6 @@
 {
   "format": "aftertake-film/5",
-  "id": "e88be1e0-e0cb-4ab5-b53b-8438952288f6",
+  "id": "2720ff64-3911-4b7d-a0de-d12735fe9328",
   "name": "02 Aftertake",
   "aspect": "landscape",
   "resolution": "1080p",
@@ -251,11 +251,11 @@
       }
     }
   ],
-  "requestKey": "02-Aftertake-1792521304660",
-  "requestDigest": "0de2a0e66aa98c751f4866e27973180dd4bc66c43118a32e49a9a2332eccda10",
+  "requestKey": "02-Aftertake-1792526329048",
+  "requestDigest": "88f6f80bcd2d75b7edcfaa2d38f3ade3f80ca0ebe0ee8936b7a8ec0c5f6543eb",
   "titles": [
     {
-      "id": "dc89b807-707d-48a6-82fd-efd832d29ddc",
+      "id": "13cb1711-50a6-4b8b-ae89-cd2e64aa20b2",
       "text": "make the next take.",
       "start": 0.24147999999999925,
       "end": 1.1873999999999998,
@@ -268,21 +268,20 @@
       "color": "#d5eb94"
     },
     {
-      "id": "fb09d1f3-a66b-4ac7-9597-3152759a8fa0",
+      "id": "013d9c02-7f8f-43f0-8c59-4de8686610bf",
       "text": "EVERY FRAME HERE WAS MADE IN AFTERTAKE",
       "start": 2.426449999999999,
       "end": 7.0239499999999975,
-      "style": "kicker",
+      "style": "caption",
       "position": "bottom",
       "animation": "scramble",
       "fontSize": 30,
-      "stroke": false,
       "align": "left",
       "font": "mono",
       "color": "#d5eb94"
     },
     {
-      "id": "d9f15aae-890e-4f80-b1bb-adbd03330411",
+      "id": "d5e3fbf9-314c-403f-842f-d44fbe77aca4",
       "text": "ANY SCENE.",
       "start": 7.081999999999999,
       "end": 7.6425,
@@ -296,7 +295,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "998a6aeb-4560-442a-a9ac-f4945a7a6cfd",
+      "id": "bf0d908d-7b59-48a7-9f3d-2c0d9c8dcee3",
       "text": "ANY CAST.",
       "start": 7.6625,
       "end": 8.2463,
@@ -310,7 +309,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "10cfe463-cc52-4422-8f24-02adc9e95f4a",
+      "id": "b8d79cfc-e95c-4ad9-8581-88ebfc8e1227",
       "text": "ANY CUT.",
       "start": 8.2663,
       "end": 9.416666666666666,
@@ -327,7 +326,7 @@
   ],
   "graphics": [
     {
-      "id": "3558cd1d-9c26-4e46-99da-d40f786e8c3b",
+      "id": "5dc4c317-f700-4805-a434-104c97f4c64b",
       "name": "logo",
       "kind": "image",
       "start": 0,
@@ -393,6 +392,6 @@
   "normalizeAudio": false,
   "state": "ready",
   "duration": 9.416666666666666,
-  "createdAt": "2026-10-20T18:35:06.308Z",
-  "output": "/api/films/e88be1e0-e0cb-4ab5-b53b-8438952288f6/video"
+  "createdAt": "2026-10-20T19:58:49.088Z",
+  "output": "/api/films/2720ff64-3911-4b7d-a0de-d12735fe9328/video"
 }

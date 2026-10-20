@@ -207,14 +207,14 @@ export const scenes = [
     title('THE PORTAL TAKE’S REAL GRAPH · 40 NODES · 6 AFTERTAKE NODES', 32.2, 35.4, kicker({ fontSize: 24 }));
     title('LTX-2.5 · OPEN WEIGHTS · ON YOUR OWN MACHINE', 35.5, 37.9, kicker({ fontSize: 24 }));
     shot('dark', 38, 44);
-    title('POWERED BY THE COMFY SDK', 38, 44, big({ position: 'top', fontSize: 64, animation: 'reveal', early: 0.05 }));
+    title('POWERED BY THE COMFY SDK', 38, 44, big({ position: 'top', fontSize: 52, animation: 'reveal', early: 0.05 }));
     const code = [
       ['server/sdk-worker.mjs', 38.3, DIM],
       ["import { Comfy } from '@comfyorg/sdk'", 38.8, CREAM],
       ['client = new Comfy({ timeoutMs })', 39.5, CREAM],
       ['workflow = client.workflows.fromJson(graph)', 40.2, CREAM],
       ['job = await client.submit(workflow, { idempotencyKey })', 41.2, CREAM],
-      ['✓ job f2cdf338 · 40 nodes · succeeded in 96 s', 42.4, LIME],
+      ['→ job f2cdf338 · 40 nodes · succeeded in 96 s', 42.4, LIME],
     ];
     code.forEach(([text, from, color], index) => title(text, from, 44, { style: 'caption', font: 'mono', fontSize: 30, animation: 'typewriter', motionDuration: 0.5,
       align: 'left', color, stroke: false, motion: still(0, -0.16 + index * 0.075), early: 0.05 }));

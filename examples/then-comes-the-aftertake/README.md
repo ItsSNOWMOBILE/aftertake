@@ -12,9 +12,9 @@ seven native Film projects, rendered by Aftertake's own CPU Film renderer.
 | | |
 | :--- | :--- |
 | Length | 93.458 s, 1920 × 1080, 24 fps |
-| Edit | 58 shots in 7 scene projects, 1.9 s average shot |
-| Typography | 80 titles: slam, pop, line reveal, glitch, scramble, typewriter |
-| Transitions | 23 styled: whip pan, zoom punch, flash, glitch cut |
+| Edit | 71 shots in 7 scene projects, 1.3 s average shot, each section under its sung line |
+| Typography | 96 titles: slam, pop, line reveal, glitch, scramble, typewriter |
+| Transitions | 25 styled: whip pan, zoom punch, flash, glitch cut |
 | Graphics | 15 animated Film graphics (the architecture diagram and logo) |
 | Music | “Aftertake”, an original song made with open-weight ACE-Step 1.5 on Comfy Cloud, 102.3 BPM |
 | Audio | −16.1 LUFS integrated, −1.5 dBTP |
@@ -26,33 +26,39 @@ seven native Film projects, rendered by Aftertake's own CPU Film renderer.
    on Comfy Cloud from `build/aftertake-song-ace-step.json`.
    `aftertake_detect_beats` measured 102.3 BPM, and the drums enter on the
    downbeat at 10.542 s. `build/music.json` records that drop, and the
-   Aftertake logo lands on it. The song's two near-silent breaks fall under
-   “ONE IMAGE.” and “YOUR CALL.”. The music re-enters on “A MOVING SHOT.”, and
-   again as the end-card logo slams in.
-2. Each scene is a native Film project authored on that beat grid
+   Aftertake logo lands on it.
+2. Whisper large-v3 transcribed the song with word timestamps, once on the
+   mix and once on the vocal isolated by Demucs
+   (`build/aftertake-song.words.json`, `build/aftertake-song.vocals.words.json`).
+   The scenes follow the sung lines: each big title quotes the line being sung
+   on the beat it is sung, and each feature appears under its own line, from
+   “Paint it, change it, make it new” over region painting to “Cut to the
+   beat” over Film's beat snap. The song's last break brings back the intro's
+   “THEN COMES THE”, so the logo lands on the sung “Aftertake”.
+3. Each scene is a native Film project authored on that beat grid
    (`build/edit.mjs`). A styled transition is centred on its beat, so flash,
    glitch and zoom punches switch pictures exactly on the hit. Measured on the
    export, every hard cut is within one frame of a beat.
-3. `build/run.mjs` exported each scene through the studio's `/api/films`
+4. `build/run.mjs` exported each scene through the studio's `/api/films`
    endpoint, the same path the editor and MCP use. Each produced an
    `aftertake-film/5` project. `build/master.mjs` joined the seven scene renders
    with the music. Scene boundaries fall on downbeats, and every scene's frame
    count is checked against the grid.
-4. The Film-editor shots near the end are a real recording of this film's
+5. The Film-editor shots near the end are a real recording of this film's
    second scene, open in the editor. **Snap cuts to beats** reports
    “102 BPM · 10 cuts on the beat” for the film's song.
 
 ## What is on screen
 
-| Time | Scene | Real Aftertake work shown |
-| :--- | :--- | :--- |
-| 0–12.3 s | Every shot ends | Source excerpts: empty room, forest falls, Tears of Steel bridge |
-| 12.3–21.7 s | The drop | Generated results on every beat: portal, crystal, golden falls, castle, winter, Reclaimed, observatory, text-to-video, Wan motion transfer, five tracked dancers |
-| 21.7–31.1 s | How it's built | Architecture diagram drawn with Film graphics: Aftertake → Comfy SDK → your ComfyUI, eight open-weight models |
-| 31.1–49.9 s | Create | Recorded cue painting and before/after reveal (LTX-2.5), text-to-video, Z-Image still to LTX motion, camera pull-backs |
-| 49.9–69.3 s | Change | SAM 3 tracking and MiniMax H3 recast, subject copies and colour echoes, Wan Animate 2 motion transfer, four finishing looks, depth lens blur, layers |
-| 69.3–78.8 s | Agents and Film | Real MCP results, an ad assembled through MCP, the Film editor cutting this film |
-| 78.8–93.5 s | Your call | Finale montage, end card on the song's last re-entry, credits |
+| Time | Scene | Sung | Real Aftertake work shown |
+| :--- | :--- | :--- | :--- |
+| 0–12.3 s | Every shot ends | “Every shot ends… then comes the…” | Source excerpts: empty room, forest falls, Tears of Steel bridge |
+| 12.3–21.7 s | The drop | (drop) | Generated results on every beat: portal, crystal, golden falls, castle, winter, Reclaimed, observatory, text-to-video, Wan motion transfer, five tracked dancers |
+| 21.7–31.1 s | Paint it | “Paint it, change it, make it new. Same scene, a different view.” | Recorded cue painting and before/after reveal (LTX-2.5), the room before and after |
+| 31.1–40.5 s | How it's built | “Open weights on your own machine. Make the next take, run the scene.” | The portal take's real 40-node ComfyUI graph, the `@comfyorg/sdk` calls that submit it, its recorded job, and the stack with eight open-weight models |
+| 40.5–52.9 s | Change | “Recast the lead… Five more dancers… Words to video… Pull the camera…” | SAM 3 tracking and MiniMax H3 recast, subject copies, text-to-video, Z-Image still to LTX motion, camera pull-backs |
+| 52.9–61.7 s | Agents and Film | “An agent cuts it, frame by frame. Forty-four tools… Cut to the beat.” | Real MCP results, an ad assembled through MCP, the Film editor snapping this film's cuts to beats |
+| 61.7–93.5 s | Your call | “Your clip! Your models! Your call!”, second chorus, “Aftertake.” | Finishing looks, Wan Animate 2 motion transfer, repainted takes, depth lens blur, layers, montage, end card, credits |
 
 The UI shots in `recordings/` were captured from the running studio's example
 workspace in Chromium at 1920 × 1080, with a drawn cursor. The film crops into
@@ -61,13 +67,18 @@ the takes shown are the repository's recorded example outputs. Paint strokes,
 compare sweeps, typing, look changes, title and transition menus, and the beat
 snap are real interactions with the app.
 
-Three kinds of footage were made new for this film, all on the CPU and with no
+Four kinds of picture were made new for this film, all on the CPU and with no
 model:
 
 - `echoes` and `ensemble` reuse `examples/subject-duplicates`' saved SAM 3 mask
   in the subject compositor (Color silhouette echoes, and four copies).
 - `castle-warm`, `-cool`, `-noir` and `-vintage` are Color & finish exports of
   the castle pull-back take.
+- `graph-portal.png` is drawn by `build/workflow-graph.py` from
+  `examples/portal/workflow-api.json`, the graph Aftertake submitted for that
+  take. Every node and link is from the file; Aftertake's custom nodes are in
+  lime. The code lines are quoted from `server/sdk-worker.mjs`, and the job
+  line (`f2cdf338`, succeeded in 96 s) is from `examples/portal/render.json`.
 - The MCP lines quote a real `aftertake_detect_beats` call (102 BPM in 0.9 s)
   through the official MCP SDK; the client listed 44 tools. The other three
   lines name tools without quoting results.

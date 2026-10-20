@@ -1,6 +1,6 @@
 {
   "format": "aftertake-film/5",
-  "id": "fc70b1ba-32fe-4737-9c89-cac4b1ff8062",
+  "id": "677bac28-dcf3-4577-8eb7-de86d5134954",
   "name": "05 Change",
   "aspect": "landscape",
   "resolution": "1080p",
@@ -107,7 +107,7 @@
         "fit": "cover"
       },
       "start": 0.20833333333333334,
-      "end": 1.5,
+      "end": 0.9166666666666666,
       "title": "dancer.mp4",
       "sha256": "c29b4e28631fe52c3cdbb2d4401672ee5837077e941588a33eb49a4e42e3c1d3",
       "asset": {
@@ -142,9 +142,74 @@
       }
     },
     {
-      "assetId": "34dbd7c6-ffb2-4c34-b9a8-d86eaa4b25f2",
+      "assetId": "0ab03761-7a26-4806-897c-4ca4f93d8149",
       "dissolve": 0.25,
-      "transition": "glitch",
+      "transition": "flash",
+      "framing": {
+        "zoom": 1.45,
+        "endZoom": 1.52,
+        "x": 0.82,
+        "y": 0.42
+      },
+      "start": 0.9166666666666666,
+      "end": 1.625,
+      "title": "uiVideo.mp4",
+      "sha256": "c5912d877c1019ceb69841e374dbff116e121de5f897400ba1905a721cf4b3d5",
+      "asset": {
+        "name": "uiVideo.mp4",
+        "kind": "video",
+        "sha256": "c5912d877c1019ceb69841e374dbff116e121de5f897400ba1905a721cf4b3d5",
+        "duration": 9.625,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "3caf612f-3cc2-4819-9ac0-1f7413b158a0",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.06,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0.4166666666666667,
+      "end": 1,
+      "title": "perfumeTall.mp4",
+      "sha256": "4e2b3059ad5b22ff84fbe01335526fcf87d78d1d52c6b50f557b0c30aae4111a",
+      "asset": {
+        "name": "perfumeTall.mp4",
+        "kind": "video",
+        "sha256": "4e2b3059ad5b22ff84fbe01335526fcf87d78d1d52c6b50f557b0c30aae4111a",
+        "duration": 3.0416666666666665,
+        "width": 576,
+        "height": 1024
+      }
+    },
+    {
+      "assetId": "225f153d-d79c-4511-a236-64317074a75e",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.02,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 0.5833333333333334,
+      "title": "observatoryStill.png",
+      "sha256": "d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5",
+      "asset": {
+        "name": "observatoryStill.png",
+        "kind": "image",
+        "sha256": "d84ec8cc2db8a9589ce4e5247d4f7dcdc040fc248d1bec3144b4f4aebb73e4d5",
+        "duration": 30,
+        "width": 1152,
+        "height": 768
+      }
+    },
+    {
+      "assetId": "a7344a12-c6bf-4c58-bbcf-f3a9e46442be",
       "framing": {
         "zoom": 1,
         "endZoom": 1.04,
@@ -152,186 +217,47 @@
         "y": 0.5,
         "fit": "cover"
       },
-      "start": 0.5833333333333334,
-      "end": 2.4583333333333335,
-      "title": "echoes.mp4",
-      "sha256": "0a263f3dacd4f96b691b4ce0ae22eb74e56817340bb59ed215e141728af61f49",
+      "start": 0,
+      "end": 0.7083333333333334,
+      "title": "observatory.mp4",
+      "sha256": "213a657b5fc69de4fe54deb1962de42e64d93ac03bb751a0e8c614a85fac01b2",
       "asset": {
-        "name": "echoes.mp4",
+        "name": "observatory.mp4",
         "kind": "video",
-        "sha256": "0a263f3dacd4f96b691b4ce0ae22eb74e56817340bb59ed215e141728af61f49",
-        "duration": 3.0416666666666665,
-        "width": 1344,
-        "height": 736
-      }
-    },
-    {
-      "assetId": "7d301c19-589c-4b27-9876-9d3ccb068a40",
-      "start": 0.5833333333333334,
-      "end": 1.875,
-      "title": "robot.mp4",
-      "sha256": "f857a4da415aa7e860e2ae742f51ac40b1d62e5e854056f74c69960c92623647",
-      "asset": {
-        "name": "robot.mp4",
-        "kind": "video",
-        "sha256": "f857a4da415aa7e860e2ae742f51ac40b1d62e5e854056f74c69960c92623647",
-        "duration": 4.041666666666667,
-        "width": 576,
-        "height": 768
-      }
-    },
-    {
-      "assetId": "e6f96405-786f-43a7-949d-fb81cade7ae7",
-      "dissolve": 0.25,
-      "transition": "zoom",
-      "start": 0.5833333333333334,
-      "end": 3.0833333333333335,
-      "title": "teddy.mp4",
-      "sha256": "750aaa4a8fd0c56a4c2d1181bf642f3042fb904f29d5de7234a365a2dfe79204",
-      "asset": {
-        "name": "teddy.mp4",
-        "kind": "video",
-        "sha256": "750aaa4a8fd0c56a4c2d1181bf642f3042fb904f29d5de7234a365a2dfe79204",
-        "duration": 4.041666666666667,
-        "width": 576,
-        "height": 768
-      }
-    },
-    {
-      "assetId": "9461537c-3f14-4771-b893-e937f65c337b",
-      "framing": {
-        "zoom": 1,
-        "endZoom": 1.03,
-        "x": 0.5,
-        "y": 0.5,
-        "fit": "cover"
-      },
-      "start": 1,
-      "end": 1.5833333333333333,
-      "title": "warm.mp4",
-      "sha256": "6ec2b47e458cdaecffaf8696b3e1c94426ad073d289291fdfaa4867ebfdbe98c",
-      "asset": {
-        "name": "warm.mp4",
-        "kind": "video",
-        "sha256": "6ec2b47e458cdaecffaf8696b3e1c94426ad073d289291fdfaa4867ebfdbe98c",
+        "sha256": "213a657b5fc69de4fe54deb1962de42e64d93ac03bb751a0e8c614a85fac01b2",
         "duration": 4.041666666666667,
         "width": 768,
-        "height": 432
+        "height": 512
       }
     },
     {
-      "assetId": "2f10e95c-04a4-48ff-ad95-4b691dd4019e",
-      "framing": {
-        "zoom": 1,
-        "endZoom": 1.03,
-        "x": 0.5,
-        "y": 0.5,
-        "fit": "cover"
-      },
-      "start": 1.4166666666666667,
-      "end": 1.9583333333333333,
-      "title": "cool.mp4",
-      "sha256": "b22efd0270a7886c4b74d09c9162168190a1f7998075cff57f94ba51a4aac713",
-      "asset": {
-        "name": "cool.mp4",
-        "kind": "video",
-        "sha256": "b22efd0270a7886c4b74d09c9162168190a1f7998075cff57f94ba51a4aac713",
-        "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
-      }
-    },
-    {
-      "assetId": "f5cd5a68-ef6d-43f2-acd5-c89d026e0549",
-      "framing": {
-        "zoom": 1,
-        "endZoom": 1.03,
-        "x": 0.5,
-        "y": 0.5,
-        "fit": "cover"
-      },
-      "start": 1.7916666666666667,
-      "end": 2.4166666666666665,
-      "title": "noir.mp4",
-      "sha256": "40cceacbc91af72858db9bc166991770820804dc856334b2fdc2d0e851d39a2a",
-      "asset": {
-        "name": "noir.mp4",
-        "kind": "video",
-        "sha256": "40cceacbc91af72858db9bc166991770820804dc856334b2fdc2d0e851d39a2a",
-        "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
-      }
-    },
-    {
-      "assetId": "6e971e69-a043-441e-bc13-f2d8c33d3565",
-      "framing": {
-        "zoom": 1,
-        "endZoom": 1.03,
-        "x": 0.5,
-        "y": 0.5,
-        "fit": "cover"
-      },
-      "start": 2.2083333333333335,
-      "end": 2.9166666666666665,
-      "title": "vintage.mp4",
-      "sha256": "3ddbcef5dcf1a384f63b52b2f5e46668a29e6e565926ccb9e0584d9a1ec508d0",
-      "asset": {
-        "name": "vintage.mp4",
-        "kind": "video",
-        "sha256": "3ddbcef5dcf1a384f63b52b2f5e46668a29e6e565926ccb9e0584d9a1ec508d0",
-        "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
-      }
-    },
-    {
-      "assetId": "cd2a41a3-2f01-40ae-b6ec-9438e4fa9e24",
+      "assetId": "6700c25f-bdd4-449b-8499-5164e7b0528e",
       "dissolve": 0.25,
       "transition": "flash",
       "framing": {
-        "zoom": 1.25,
-        "endZoom": 1.32,
+        "zoom": 1,
+        "endZoom": 1,
         "x": 0.5,
-        "y": 0.42
+        "y": 0.5,
+        "fit": "cover"
       },
-      "start": 2,
-      "end": 3.2916666666666665,
-      "title": "uiFinish.mp4",
-      "sha256": "67dc83892e43646dd1ee54cf85e90e8a5ffb7bcf5429f0374b8500dcb32974b6",
+      "start": 1.2083333333333333,
+      "end": 2.625,
+      "title": "castle.mp4",
+      "sha256": "beec6978e441b013b29b5450298846693f95fb4ee84d58cc5e282a3cac9e0905",
       "asset": {
-        "name": "uiFinish.mp4",
+        "name": "castle.mp4",
         "kind": "video",
-        "sha256": "67dc83892e43646dd1ee54cf85e90e8a5ffb7bcf5429f0374b8500dcb32974b6",
-        "duration": 13.666666666666666,
-        "width": 1920,
-        "height": 1080
-      }
-    },
-    {
-      "assetId": "469af5d4-3ac1-407f-b8d4-8edbf18ab538",
-      "framing": {
-        "zoom": 1,
-        "endZoom": 1,
-        "x": 0.5,
-        "y": 0.5,
-        "fit": "cover"
-      },
-      "start": 0,
-      "end": 0.5833333333333334,
-      "title": "depthSrc.png",
-      "sha256": "c4b78b5351b7e22216d08c360747306e4f1c0ebcd5f4e21b71b230fab702d128",
-      "asset": {
-        "name": "depthSrc.png",
-        "kind": "image",
-        "sha256": "c4b78b5351b7e22216d08c360747306e4f1c0ebcd5f4e21b71b230fab702d128",
-        "duration": 30,
+        "sha256": "beec6978e441b013b29b5450298846693f95fb4ee84d58cc5e282a3cac9e0905",
+        "duration": 4.041666666666667,
         "width": 768,
         "height": 432
       }
     },
     {
-      "assetId": "88368e4d-449a-433c-88aa-201a34fb5b4a",
+      "assetId": "e20f8671-818a-4047-baf4-f7228cf2eb75",
+      "dissolve": 0.25,
+      "transition": "whip",
       "framing": {
         "zoom": 1,
         "endZoom": 1,
@@ -339,168 +265,120 @@
         "y": 0.5,
         "fit": "cover"
       },
-      "start": 0,
-      "end": 0.625,
-      "title": "depthMap.png",
-      "sha256": "16204bd64dc604fde5cbf10d731aa3a6a6ef666a492583f33cf30027e98cfb25",
+      "start": 1.5833333333333333,
+      "end": 2.875,
+      "title": "guided.mp4",
+      "sha256": "3fb2a043f2b9d450d4aede98b78004158357292ee1d7b8fbf0a288e92943abd4",
       "asset": {
-        "name": "depthMap.png",
-        "kind": "image",
-        "sha256": "16204bd64dc604fde5cbf10d731aa3a6a6ef666a492583f33cf30027e98cfb25",
-        "duration": 30,
-        "width": 768,
-        "height": 432
-      }
-    },
-    {
-      "assetId": "69bb7180-5099-4a4d-8283-6aac468b83f8",
-      "framing": {
-        "zoom": 1,
-        "endZoom": 1,
-        "x": 0.5,
-        "y": 0.5,
-        "fit": "cover"
-      },
-      "start": 0,
-      "end": 0.5833333333333334,
-      "title": "depth.png",
-      "sha256": "f7aaf007a342d637f4de59734aff16814088037a817abcdd1c95bfbc85fabf46",
-      "asset": {
-        "name": "depth.png",
-        "kind": "image",
-        "sha256": "f7aaf007a342d637f4de59734aff16814088037a817abcdd1c95bfbc85fabf46",
-        "duration": 30,
-        "width": 768,
-        "height": 432
-      }
-    },
-    {
-      "assetId": "e69d74be-0640-4928-a711-967e8675dfb4",
-      "framing": {
-        "zoom": 1,
-        "endZoom": 1,
-        "x": 0.5,
-        "y": 0.5,
-        "fit": "cover"
-      },
-      "start": 0,
-      "end": 0.5833333333333334,
-      "title": "layers.png",
-      "sha256": "a3893fe6a5f56e282416501115029f4776d7f3c55706ed5d0bc4a3f17292e876",
-      "asset": {
-        "name": "layers.png",
-        "kind": "image",
-        "sha256": "a3893fe6a5f56e282416501115029f4776d7f3c55706ed5d0bc4a3f17292e876",
-        "duration": 30,
+        "name": "guided.mp4",
+        "kind": "video",
+        "sha256": "3fb2a043f2b9d450d4aede98b78004158357292ee1d7b8fbf0a288e92943abd4",
+        "duration": 4.041666666666667,
         "width": 768,
         "height": 432
       }
     }
   ],
-  "requestKey": "05-Change-1792521891744",
-  "requestDigest": "61191201a81228d595bf871533674f71ee05655437cd81ee595221c76645a091",
+  "requestKey": "05-Change-1792526689787",
+  "requestDigest": "12b4eaa6f89ffee2cb977b8a581ce3aa3a9859c9c7be0af05125b2b220fce261",
   "titles": [
     {
-      "id": "a623502b-4d92-4fec-8ebc-3fb872a51f8c",
+      "id": "c048eeff-8a69-427f-9d1c-b09ccd8457e2",
       "text": "TRACK ONE PERSON.",
       "start": 0,
-      "end": 1.1842000000000041,
-      "style": "kicker",
+      "end": 1.1610000000000014,
+      "style": "caption",
       "position": "top",
       "animation": "scramble",
       "fontSize": 30,
-      "stroke": false,
       "align": "left",
       "font": "mono",
       "color": "#d5eb94"
     },
     {
-      "id": "c9e5fb95-5988-4ac1-b86d-8dfb233eb85d",
+      "id": "b5b51d2b-45b7-491f-a2cc-67dd1a31fe76",
       "text": "SAM 3 \u00b7 EVERY FRAME",
-      "start": 1.1842000000000041,
-      "end": 2.3451999999999984,
-      "style": "kicker",
+      "start": 1.1610000000000014,
+      "end": 2.3220000000000027,
+      "style": "caption",
       "position": "top",
       "animation": "scramble",
       "fontSize": 30,
-      "stroke": false,
       "align": "left",
       "font": "mono",
       "color": "#d5eb94"
     },
     {
-      "id": "bb299d8b-e40c-4a86-aa81-52d784a74e7d",
-      "text": "RECAST ANYONE.",
-      "start": 2.3451999999999984,
-      "end": 4.663700000000003,
+      "id": "4d0d36b3-6866-4a6a-ac4a-46be17bbabe1",
+      "text": "RECAST THE LEAD.",
+      "start": 3.0186000000000064,
+      "end": 4.247910000000001,
       "style": "headline",
       "position": "center",
       "animation": "slam",
-      "fontSize": 120,
+      "fontSize": 112,
       "font": "display",
       "box": "highlight",
       "tilt": -3,
       "color": "#f3f1e9"
     },
     {
-      "id": "684ddab0-1755-409b-98ed-82de433274b7",
+      "id": "af82be4d-82e3-4b04-a722-93662c2d6486",
       "text": "MINIMAX H3 \u00b7 LOCAL \u00b7 SAME PERFORMANCE",
-      "start": 2.4659600000000026,
-      "end": 4.6556500000000085,
-      "style": "kicker",
+      "start": 2.4381000000000057,
+      "end": 4.630130000000001,
+      "style": "caption",
       "position": "bottom",
       "animation": "scramble",
       "fontSize": 28,
-      "stroke": false,
       "align": "left",
       "font": "mono",
       "color": "#d5eb94"
     },
     {
-      "id": "706c9665-11d5-4e26-8619-c619d5a3b240",
-      "text": "BEFORE",
-      "start": 4.713700000000003,
+      "id": "6e055c56-dbc9-45bf-91a3-8bf65fe8df61",
+      "text": "KEEP THE MOVE.",
+      "start": 4.2679100000000005,
       "end": 5.274200000000004,
-      "style": "kicker",
+      "style": "headline",
+      "position": "center",
+      "animation": "pop",
+      "motionDuration": 0.35,
+      "fontSize": 112,
+      "font": "display",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "e7340bb1-d5cb-4cc4-ad1b-cd54ad26bebd",
+      "text": "BEFORE",
+      "start": 4.6905,
+      "end": 5.274200000000004,
+      "style": "caption",
       "position": "top",
       "animation": "scramble",
       "fontSize": 30,
-      "stroke": false,
       "align": "left",
       "font": "mono",
       "color": "#f3f1e9"
     },
     {
-      "id": "d2b3f938-34ba-4b3d-a332-ae187ec74283",
-      "text": "ONE PERFORMANCE.",
+      "id": "bc95c72d-01b4-40d4-8b69-e65c6a4c1d70",
+      "text": "FIVE MORE DANCERS",
       "start": 5.294200000000004,
-      "end": 6.405199999999998,
-      "style": "headline",
-      "position": "top",
-      "animation": "reveal",
-      "fontSize": 92,
-      "stroke": false,
-      "font": "display",
-      "color": "#121713"
-    },
-    {
-      "id": "31fc063c-2cdc-4132-a04e-469527f9f39e",
-      "text": "FIVE DANCERS.",
-      "start": 6.455199999999998,
-      "end": 8.193099999999998,
+      "end": 6.748650000000001,
       "style": "headline",
       "position": "top",
       "animation": "slam",
-      "fontSize": 104,
+      "fontSize": 96,
       "stroke": false,
       "font": "display",
       "color": "#121713"
     },
     {
-      "id": "3f5f58b7-b9c5-4682-b451-2c82c0eecdea",
-      "text": "OR ECHOES.",
-      "start": 8.243099999999998,
-      "end": 9.957800000000002,
+      "id": "36fda4a8-36a6-47f6-ba2b-45a501404139",
+      "text": "IN THE GROOVE.",
+      "start": 6.768650000000001,
+      "end": 7.642599999999998,
       "style": "headline",
       "position": "top",
       "animation": "glitch",
@@ -509,154 +387,103 @@
       "color": "#ff4fa3"
     },
     {
-      "id": "b82275a3-3166-4a07-8f2f-a674aa0fcd05",
-      "text": "NO REGENERATION \u00b7 ORIGINAL PIXELS \u00b7 CPU",
-      "start": 6.575940000000003,
-      "end": 9.947430000000004,
-      "style": "kicker",
+      "id": "63f0b388-4002-46b4-9568-6f3dfadfb841",
+      "text": "SUBJECT COPIES \u00b7 ORIGINAL PIXELS \u00b7 CPU",
+      "start": 5.4103000000000065,
+      "end": 7.602229999999999,
+      "style": "caption",
       "position": "bottom",
       "animation": "scramble",
       "fontSize": 28,
-      "stroke": false,
       "align": "left",
       "font": "mono",
       "color": "#d5eb94"
     },
     {
-      "id": "4ac9f516-b4bf-4c3a-acf5-6854edadaa52",
-      "text": "THEIR\nGESTURE.",
-      "start": 10.007800000000003,
-      "end": 11.142,
+      "id": "214586ed-9469-49bb-a5bc-24307556cd0a",
+      "text": "WORDS TO VIDEO.",
+      "start": 7.952849999999998,
+      "end": 9.09385,
       "style": "headline",
-      "position": "center",
+      "position": "bottom",
       "animation": "reveal",
-      "fontSize": 44,
+      "fontSize": 96,
       "align": "left",
       "font": "display",
       "color": "#f3f1e9"
     },
     {
-      "id": "6c8b18a3-f97b-4c01-b8a8-b7d296ee7b6c",
-      "text": "YOUR\nCHARACTER.",
-      "start": 11.292,
-      "end": 13.487300000000001,
+      "id": "65088844-9f83-4463-9cff-60a0bcdf7aa1",
+      "text": "STILL TO LIGHT.",
+      "start": 9.11385,
+      "end": 9.987800000000004,
       "style": "headline",
-      "position": "center",
+      "position": "bottom",
       "animation": "slam",
-      "fontSize": 44,
+      "fontSize": 96,
       "align": "left",
       "font": "display",
       "color": "#d5eb94"
     },
     {
-      "id": "9fa84a1d-72c8-4044-a81e-9145f0b8ca98",
-      "text": "WAN ANIMATE 2 \u00b7 MOTION TRANSFER",
-      "start": 11.308100000000003,
-      "end": 13.479250000000008,
-      "style": "kicker",
-      "position": "bottom",
+      "id": "b0a3cd5c-9775-4dcc-98b4-fc152b46b80b",
+      "text": "LTX-2.5 \u00b7 TEXT \u2192 VIDEO \u00b7 IMAGE \u2192 VIDEO",
+      "start": 7.778700000000001,
+      "end": 9.947430000000004,
+      "style": "caption",
+      "position": "top",
       "animation": "scramble",
       "fontSize": 28,
-      "stroke": false,
       "align": "left",
       "font": "mono",
       "color": "#d5eb94"
     },
     {
-      "id": "3643b774-45cf-4b69-bebb-6592f8a80e3f",
-      "text": "WARM",
-      "start": 13.537300000000002,
-      "end": 14.097800000000003,
+      "id": "a969f94f-1844-45f6-95d8-865ae3eb0976",
+      "text": "PULL THE CAMERA.",
+      "start": 10.065849999999998,
+      "end": 11.439049999999998,
       "style": "headline",
       "position": "center",
       "animation": "slam",
-      "fontSize": 150,
+      "fontSize": 104,
       "font": "display",
-      "color": "#ff6b3d"
-    },
-    {
-      "id": "8dfc7f60-6326-402b-83e5-ef99fe0dddef",
-      "text": "COOL",
-      "start": 14.117800000000003,
-      "end": 14.678300000000004,
-      "style": "headline",
-      "position": "center",
-      "animation": "glitch",
-      "fontSize": 150,
-      "font": "display",
-      "color": "#7cc7ff"
-    },
-    {
-      "id": "1252f47b-9979-4db1-ad6e-a6ff9c019a1b",
-      "text": "NOIR",
-      "start": 14.698300000000003,
-      "end": 15.282000000000007,
-      "style": "headline",
-      "position": "center",
-      "animation": "slam",
-      "fontSize": 150,
-      "font": "display",
+      "box": "highlight",
+      "tilt": -3,
       "color": "#f3f1e9"
     },
     {
-      "id": "a2e25127-8b00-45b8-9068-b29fd65cad47",
-      "text": "VINTAGE",
-      "start": 15.302000000000007,
-      "end": 15.862500000000008,
+      "id": "9999c469-a4db-4b8e-94f2-3223d2ec40c9",
+      "text": "CUT IT RIGHT.",
+      "start": 11.459049999999998,
+      "end": 12.333099999999998,
       "style": "headline",
       "position": "center",
-      "animation": "glitch",
-      "fontSize": 150,
-      "font": "display",
-      "color": "#121713"
-    },
-    {
-      "id": "fa55088a-b4c2-450b-a94b-934db1001fbc",
-      "text": "COLOR & FINISH \u00b7 LOOKS \u00b7 CURVES \u00b7 LUTS",
-      "start": 13.595349999999996,
-      "end": 15.853475000000003,
-      "style": "kicker",
-      "position": "bottom",
-      "animation": "scramble",
-      "fontSize": 28,
-      "stroke": false,
-      "align": "left",
-      "font": "mono",
-      "color": "#d5eb94"
-    },
-    {
-      "id": "2b5418c1-60b1-48c6-b6be-27b43a3bc537",
-      "text": "DEPTH \u2192 LENS BLUR",
-      "start": 17.043499999999995,
-      "end": 18.8014,
-      "style": "headline",
-      "position": "bottom",
       "animation": "pop",
-      "fontSize": 80,
-      "align": "left",
+      "motionDuration": 0.35,
+      "fontSize": 112,
       "font": "display",
-      "color": "#f3f1e9"
+      "color": "#d5eb94"
     },
     {
-      "id": "4fbee2bc-684e-457d-b186-987fba86c973",
-      "text": "LAYERS & MASKS",
-      "start": 18.831400000000002,
-      "end": 19.3819,
-      "style": "headline",
+      "id": "9a624ad5-05ab-43ef-aeee-99036e89e48c",
+      "text": "ONE STILL \u00b7 PULL BACK \u00b7 PUSH IN \u00b7 ORBIT",
+      "start": 10.123900000000006,
+      "end": 12.292720000000003,
+      "style": "caption",
       "position": "bottom",
-      "animation": "slam",
-      "fontSize": 80,
-      "stroke": false,
+      "animation": "scramble",
+      "fontSize": 28,
       "align": "left",
-      "font": "display",
-      "color": "#121713"
+      "font": "mono",
+      "color": "#d5eb94"
     }
   ],
   "audio": [],
   "sourceVolume": 0,
   "normalizeAudio": false,
   "state": "ready",
-  "duration": 19.416666666666668,
-  "createdAt": "2026-10-20T18:44:53.313Z",
-  "output": "/api/films/fc70b1ba-32fe-4737-9c89-cac4b1ff8062/video"
+  "duration": 12.333333333333334,
+  "createdAt": "2026-10-20T20:04:49.911Z",
+  "output": "/api/films/677bac28-dcf3-4577-8eb7-de86d5134954/video"
 }
