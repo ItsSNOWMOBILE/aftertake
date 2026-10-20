@@ -11,38 +11,43 @@ An open-source creative studio for short-form video, product stories and visual 
 [![Status: Experimental](https://img.shields.io/badge/status-experimental-c3d4a6?labelColor=182015)](#project-status)
 
 **[Try the browser editor](https://aftertake-studio.right-bard-9761.chatgpt.site/studio/)** ·
-**[Watch the 20-second preview](https://github.com/ItsSNOWMOBILE/aftertake/releases/tag/native-motion-preview-2026-10-19)** ·
+**[Watch the product film](https://github.com/ItsSNOWMOBILE/aftertake/releases/tag/take-the-lead-review-2026-10-20)** ·
 **[Read the studio guide](docs/studio-guide.md)**
 
 </div>
 
 <br>
 
-## SECOND SELF
+## TAKE THE LEAD
 
-https://github.com/user-attachments/assets/089d071c-7a8b-4d4c-ae44-0e464e3ae5df
+https://github.com/user-attachments/assets/4a8e1829-a46f-42c5-b04a-dde0e607dd7d
 
-**[Watch the 20-second preview →](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/native-motion-preview-2026-10-19/aftertake-second-self-native-groups.mp4)** ·
-**[Download the editable project and inputs →](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/native-motion-preview-2026-10-19/aftertake-second-self-v4-inputs.zip)**
+**[Watch the narrated 94-second film →](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/take-the-lead-review-2026-10-20/aftertake-take-the-lead.mp4)** ·
+**[Open the editable project and inputs →](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/take-the-lead-review-2026-10-20/aftertake-take-the-lead-inputs.zip)**
 
-A scene gets a different lead. Follow the real H3 before/after, designed source
-and reference cards, actual text editing and moving playback in the app, then
-editable kinetic typography. Cards, images and captions move together through
-native groups with restrained perspective and shutter blur.
+One shot becomes a campaign. Bring in a character, review a real H3 replacement,
+pull the tracked subject into a design, animate the headline and shape the sound.
+Carry the same idea into a portrait layout, then open the film in the editor
+that made it.
 
-Authored and exported through Aftertake's own MCP at **1080p and 24 fps**. The
-format-4 project, nine exact companion files, checksums and credits reopen through
-ordinary Film import. Replaying the edit needs the small CPU Film runtime;
-generation models and a CUDA GPU are not required.
+Made through Aftertake's native Film editor and MCP at **1080p and 24 fps**.
+Designed UI animation sits alongside real recordings of the completed take,
+title editing and the full project. Cards, typography, sound lanes and scene
+projects stay editable. [See how the film was made →](examples/take-the-lead/README.md)
 
-This preview uses a soundtrack trial; the full narrated film is in production.
-Generation completed earlier, and the saved-take animation opens an existing
-result. UI passages are two actual recordings with fixed framing. Footage:
-*Tears of Steel*, Blender Foundation / Mango, CC BY 3.0. Music: “Set It Up” by
-Shane Ivers — [silvermansound.com](https://www.silvermansound.com), CC BY 4.0.
+The download includes the master, scene projects, exact media, checksums and a
+restore helper. Reassembling the finished inputs uses the small CPU Film runtime;
+the separate character-generation recipe uses the local H3 profile. This is a
+review cut, with generic Kokoro narration and a review soundtrack.
+
+Footage: [Theo Decker / Pexels](https://www.pexels.com/video/young-man-walking-towards-camera-5321139/).
+Music: [“Holy Moly” by Shane Ivers](https://www.silvermansound.com/free-music/holy-moly),
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). UI click:
+[Kenney](https://kenney.nl/assets/interface-sounds), CC0.
 
 The [earlier 96-second campaign film and reproduction guide](examples/make-the-next-take/README.md)
-and [motion graphics study](examples/motion-design/README.md) remain available.
+and [20-second native motion study](https://github.com/ItsSNOWMOBILE/aftertake/releases/tag/native-motion-preview-2026-10-19)
+remain available.
 
 ## Hotel Lobby, recast
 
