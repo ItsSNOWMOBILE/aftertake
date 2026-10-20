@@ -1,0 +1,32 @@
+{
+  "format": "aftertake-source-audio-verification/1",
+  "sourceFile": "source.png",
+  "resultFile": "result.mp4",
+  "video": {
+    "width": 1280,
+    "height": 720,
+    "frames": 97,
+    "fps": 24.0,
+    "duration": 4.041666666666667,
+    "firstTimestamp": 0.0,
+    "lastTimestamp": 4.0,
+    "regular24FpsTimestamps": true,
+    "sha256": "34825e59be74dc16ef3db45f6caa01aa86809eefc4403ca07528ae1b0d159682"
+  },
+  "checks": {
+    "regular24FpsTimestamps": true,
+    "expectedDuration": true,
+    "expectedGeometry": true
+  },
+  "audio": {
+    "sourceHasAudio": false,
+    "resultHasAudio": false,
+    "source": null,
+    "result": null,
+    "sourceTrimSeconds": 0.0,
+    "status": "not-applicable-no-source-audio",
+    "pass": true
+  },
+  "technicalPass": true,
+  "sourceAudioPreservationPass": true
+}

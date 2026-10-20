@@ -1,0 +1,35 @@
+{
+  "format": "aftertake/1",
+  "name": "castle-pullback-v2",
+  "clip": {
+    "id": "50af43c4-d029-4116-858d-64a98a139cc9",
+    "name": "D - Storm lighthouse - seed 509042",
+    "kind": "image",
+    "width": 1280,
+    "height": 720,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "9e11d43f6c628458eef2e2e5dcfd124ab41e930e059ced4a9a95c5140f56a085",
+    "url": "/media/50af43c4-d029-4116-858d-64a98a139cc9.png"
+  },
+  "prompt": "A lone lighthouse stands solid and stable on a black basalt sea stack in a violent storm. Enormous waves explode against the rock, rain sweeps across the scene, a distant lightning bolt illuminates the clouds, and the lighthouse beam cuts through the rain. The lighthouse architecture remains consistent as the camera pulls back slowly to reveal more of the surrounding ocean. Epic wide shot, photorealistic cinematic detail.",
+  "cue": {
+    "start": 0,
+    "end": 4,
+    "fade": 0.2,
+    "feather": 0.03,
+    "strokes": []
+  },
+  "seed": 2960,
+  "quality": "final",
+  "trimStart": 0,
+  "pipeline": "cinema",
+  "cinema": {
+    "movement": "pull",
+    "lens": "wide",
+    "lighting": "source",
+    "palette": "source",
+    "guidance": "tracks"
+  },
+  "resolution": "720p"
+}

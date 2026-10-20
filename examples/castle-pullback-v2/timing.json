@@ -1,0 +1,10 @@
+{
+  "format": "aftertake-observed-operation-timing/1",
+  "nativeOperationId": "2b82a337-93de-43e2-8afa-b34ab699d373",
+  "createdAt": "2026-10-20T21:27:47.333Z",
+  "updatedAt": "2026-10-20T21:36:50.672Z",
+  "nativeOperationWallSeconds": 543.339,
+  "note": "Observed API operation wall time includes preparation and finishing; engine execution time, if separately recorded, is not the same measurement.",
+  "engineExecutionSeconds": 541.202,
+  "engineTimingMethod": "ComfyUI execution_start/execution_success status timestamps"
+}
