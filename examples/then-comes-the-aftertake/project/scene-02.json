@@ -1,6 +1,6 @@
 {
   "format": "aftertake-film/5",
-  "id": "2720ff64-3911-4b7d-a0de-d12735fe9328",
+  "id": "e27e4a5f-0f23-4cb1-8195-a0f0bbd5f874",
   "name": "02 Aftertake",
   "aspect": "landscape",
   "resolution": "1080p",
@@ -21,7 +21,7 @@
       }
     },
     {
-      "assetId": "f4427d0e-a401-424b-9f3b-72dc18120bc9",
+      "assetId": "ce45c8c3-1743-4999-a287-d03d4ca267c6",
       "dissolve": 0.25,
       "transition": "flash",
       "framing": {
@@ -33,15 +33,15 @@
       },
       "start": 1.4166666666666667,
       "end": 2.7083333333333335,
-      "title": "portal-result.mp4",
-      "sha256": "94b28bd400836117f9f5be650a4ff1a0727d9f6aeaa7a4322acc3f5ac93998a3",
+      "title": "portal.mp4",
+      "sha256": "ae783430aafebd577dda2f20add72ebfa11fddcf338d188a61628a1649be73a2",
       "asset": {
-        "name": "portal-result.mp4",
+        "name": "portal.mp4",
         "kind": "video",
-        "sha256": "94b28bd400836117f9f5be650a4ff1a0727d9f6aeaa7a4322acc3f5ac93998a3",
+        "sha256": "ae783430aafebd577dda2f20add72ebfa11fddcf338d188a61628a1649be73a2",
         "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
+        "width": 1280,
+        "height": 720
       }
     },
     {
@@ -91,7 +91,7 @@
       }
     },
     {
-      "assetId": "6700c25f-bdd4-449b-8499-5164e7b0528e",
+      "assetId": "b5bf3e08-8ca9-4b88-8104-ce98b14f640d",
       "framing": {
         "zoom": 1.02,
         "endZoom": 1.1,
@@ -102,14 +102,14 @@
       "start": 1,
       "end": 1.625,
       "title": "castle.mp4",
-      "sha256": "beec6978e441b013b29b5450298846693f95fb4ee84d58cc5e282a3cac9e0905",
+      "sha256": "34825e59be74dc16ef3db45f6caa01aa86809eefc4403ca07528ae1b0d159682",
       "asset": {
         "name": "castle.mp4",
         "kind": "video",
-        "sha256": "beec6978e441b013b29b5450298846693f95fb4ee84d58cc5e282a3cac9e0905",
+        "sha256": "34825e59be74dc16ef3db45f6caa01aa86809eefc4403ca07528ae1b0d159682",
         "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
+        "width": 1280,
+        "height": 720
       }
     },
     {
@@ -203,31 +203,31 @@
       }
     },
     {
-      "assetId": "e6f96405-786f-43a7-949d-fb81cade7ae7",
+      "assetId": "56f9e311-d17a-4f96-8638-185782a6b4af",
       "dissolve": 0.25,
       "transition": "whip",
       "framing": {
-        "zoom": 1.2,
-        "endZoom": 1.3,
+        "zoom": 1.02,
+        "endZoom": 1.1,
         "x": 0.5,
-        "y": 0.4,
+        "y": 0.5,
         "fit": "cover"
       },
       "start": 0.7916666666666666,
       "end": 1.625,
       "title": "teddy.mp4",
-      "sha256": "750aaa4a8fd0c56a4c2d1181bf642f3042fb904f29d5de7234a365a2dfe79204",
+      "sha256": "b319a5bbb40f5f6021fcd94d430fe3e6f43a8654a4a64b5f2d8cb545647350a9",
       "asset": {
         "name": "teddy.mp4",
         "kind": "video",
-        "sha256": "750aaa4a8fd0c56a4c2d1181bf642f3042fb904f29d5de7234a365a2dfe79204",
+        "sha256": "b319a5bbb40f5f6021fcd94d430fe3e6f43a8654a4a64b5f2d8cb545647350a9",
         "duration": 4.041666666666667,
-        "width": 576,
-        "height": 768
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "15950b16-cb15-4783-914c-15c9d806a19c",
+      "assetId": "ae700f40-8b1d-42fe-a739-2132c953d8d9",
       "dissolve": 0.25,
       "transition": "flash",
       "framing": {
@@ -240,22 +240,22 @@
       "start": 0.4166666666666667,
       "end": 2.875,
       "title": "ensemble.mp4",
-      "sha256": "c914e90401d1495569fab086a1988ec433c9bc671920ff523816d7fcdb38c436",
+      "sha256": "6cc58aebe97f2720e5937cf0754334ae21ca10bcb0061eebe23642e28c5b1660",
       "asset": {
         "name": "ensemble.mp4",
         "kind": "video",
-        "sha256": "c914e90401d1495569fab086a1988ec433c9bc671920ff523816d7fcdb38c436",
+        "sha256": "6cc58aebe97f2720e5937cf0754334ae21ca10bcb0061eebe23642e28c5b1660",
         "duration": 3.0416666666666665,
         "width": 1344,
         "height": 736
       }
     }
   ],
-  "requestKey": "02-Aftertake-1792526329048",
-  "requestDigest": "88f6f80bcd2d75b7edcfaa2d38f3ade3f80ca0ebe0ee8936b7a8ec0c5f6543eb",
+  "requestKey": "02-Aftertake-1792535766906",
+  "requestDigest": "71ff1d4a9f5cfb751f077a2d2500e49ac95ca4ce0470cbc77ec5b3d276df24d6",
   "titles": [
     {
-      "id": "13cb1711-50a6-4b8b-ae89-cd2e64aa20b2",
+      "id": "0549b8c0-c103-4c0d-b71f-676ad025ef29",
       "text": "make the next take.",
       "start": 0.24147999999999925,
       "end": 1.1873999999999998,
@@ -268,7 +268,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "013d9c02-7f8f-43f0-8c59-4de8686610bf",
+      "id": "9f7bac37-d7bc-4e87-9fb9-09fbd0b3ffba",
       "text": "EVERY FRAME HERE WAS MADE IN AFTERTAKE",
       "start": 2.426449999999999,
       "end": 7.0239499999999975,
@@ -281,7 +281,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "d5e3fbf9-314c-403f-842f-d44fbe77aca4",
+      "id": "076ba6d9-f793-4c85-93c1-8e1adc7359ab",
       "text": "ANY SCENE.",
       "start": 7.081999999999999,
       "end": 7.6425,
@@ -295,7 +295,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "bf0d908d-7b59-48a7-9f3d-2c0d9c8dcee3",
+      "id": "7c839091-2c50-47ab-ab86-8d0db07253ba",
       "text": "ANY CAST.",
       "start": 7.6625,
       "end": 8.2463,
@@ -309,7 +309,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "b8d79cfc-e95c-4ad9-8581-88ebfc8e1227",
+      "id": "a2188049-af26-4d31-a44b-4e55358186f0",
       "text": "ANY CUT.",
       "start": 8.2663,
       "end": 9.416666666666666,
@@ -326,7 +326,7 @@
   ],
   "graphics": [
     {
-      "id": "5dc4c317-f700-4805-a434-104c97f4c64b",
+      "id": "0f189705-70b7-418b-9720-5dec0ff410d2",
       "name": "logo",
       "kind": "image",
       "start": 0,
@@ -392,6 +392,6 @@
   "normalizeAudio": false,
   "state": "ready",
   "duration": 9.416666666666666,
-  "createdAt": "2026-10-20T19:58:49.088Z",
-  "output": "/api/films/2720ff64-3911-4b7d-a0de-d12735fe9328/video"
+  "createdAt": "2026-10-20T22:36:08.048Z",
+  "output": "/api/films/e27e4a5f-0f23-4cb1-8195-a0f0bbd5f874/video"
 }

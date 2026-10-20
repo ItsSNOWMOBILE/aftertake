@@ -1,12 +1,12 @@
 {
   "format": "aftertake-film/5",
-  "id": "2ce4c886-bf9a-44f4-99dd-80cd6746bf96",
+  "id": "b91e1b3d-5e22-4cdd-aaad-690f90dc5672",
   "name": "04 How it is built",
   "aspect": "landscape",
   "resolution": "1080p",
   "shots": [
     {
-      "assetId": "2e430aff-ee0e-4a23-8594-027f037d371f",
+      "assetId": "f02b973c-a3da-46c9-89e9-43b91835b777",
       "framing": {
         "zoom": 1,
         "endZoom": 1.1,
@@ -17,11 +17,11 @@
       "start": 0,
       "end": 3.5416666666666665,
       "title": "graph.png",
-      "sha256": "2d8d552018ec36d9bb8eeb1c63ac947f32b879feba2f90019459842e55aa6099",
+      "sha256": "f8c7757e756f6afe7f7d76163693a2dd7c91f3c9ea83d77a7e11f43013babcd3",
       "asset": {
         "name": "graph.png",
         "kind": "image",
-        "sha256": "2d8d552018ec36d9bb8eeb1c63ac947f32b879feba2f90019459842e55aa6099",
+        "sha256": "f8c7757e756f6afe7f7d76163693a2dd7c91f3c9ea83d77a7e11f43013babcd3",
         "duration": 30,
         "width": 1920,
         "height": 1080
@@ -58,11 +58,11 @@
       }
     }
   ],
-  "requestKey": "04-How-it-is-built-1792527707466",
-  "requestDigest": "ecccc4799e09bed52c9154478497a7d39516193f180a1beee019aee287b610a9",
+  "requestKey": "04-How-it-is-built-1792535961725",
+  "requestDigest": "81b3417e73c362a1485fc20f202cb17159ad3abaa26dad56add9361e82c653b5",
   "titles": [
     {
-      "id": "0497ca48-62cd-428c-b20f-fcd368ca87c2",
+      "id": "dcdc81ac-c02a-4c91-992f-83aee0a528da",
       "text": "HOW IT\u2019S BUILT",
       "start": 0,
       "end": 3.479399999999999,
@@ -74,8 +74,8 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "4923394c-010a-46c5-8c9b-bb8268ccfc06",
-      "text": "THE PORTAL TAKE\u2019S REAL GRAPH \u00b7 40 NODES \u00b7 6 AFTERTAKE NODES",
+      "id": "c399334e-22b3-4dcb-b035-f134496cf1f5",
+      "text": "THE WINDOW REPAINT\u2019S EXECUTED GRAPH \u00b7 50 NODES \u00b7 10 AFTERTAKE NODES",
       "start": 0.11610000000000298,
       "end": 1.9969000000000001,
       "style": "caption",
@@ -87,7 +87,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "e2c8e4ab-df80-45ae-a1a9-20fbd46119d2",
+      "id": "7293bdda-5964-4eb4-9c03-0583483df4aa",
       "text": "LTX-2.5 \u00b7 OPEN WEIGHTS \u00b7 ON YOUR OWN MACHINE",
       "start": 2.0549500000000016,
       "end": 3.4713499999999975,
@@ -100,7 +100,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "e15e4158-45c6-48d8-bc5f-75298e92ab82",
+      "id": "53bb2be1-0ca9-4c14-86cd-e2bf8b7ccd2e",
       "text": "POWERED BY THE COMFY SDK",
       "start": 3.529399999999999,
       "end": 7.008800000000002,
@@ -112,7 +112,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "d3774eba-2de8-4f08-b53e-3bc56e677310",
+      "id": "814bf75b-0d64-4b63-9caa-87a8e7aa878c",
       "text": "server/sdk-worker.mjs",
       "start": 3.7035499999999963,
       "end": 7.008800000000002,
@@ -147,7 +147,7 @@
       "color": "#8c9a88"
     },
     {
-      "id": "1e80646c-bad0-4bf5-a178-1e2b2c0ae339",
+      "id": "3504d12c-ccc8-495c-b0a3-768910a37643",
       "text": "import { Comfy } from '@comfyorg/sdk'",
       "start": 3.9937999999999967,
       "end": 7.008800000000002,
@@ -182,7 +182,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "6007322f-442e-4977-b4df-a7186c5e1708",
+      "id": "c367ad6f-c1c3-4bf5-975e-00d28bb84113",
       "text": "client = new Comfy({ timeoutMs })",
       "start": 4.40015,
       "end": 7.008800000000002,
@@ -217,7 +217,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "e51b2f5e-f624-4941-997e-a1d4a0fc1561",
+      "id": "39dc2fb7-c7e1-418a-be6d-28f71e8f06d9",
       "text": "workflow = client.workflows.fromJson(graph)",
       "start": 4.811140000000005,
       "end": 7.008800000000002,
@@ -252,7 +252,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "bc4984c5-7b52-4cde-9348-56b213febfb5",
+      "id": "a53277a2-c517-462d-baa8-3cd5d21f346a",
       "text": "job = await client.submit(workflow, { idempotencyKey })",
       "start": 5.410200000000007,
       "end": 7.008800000000002,
@@ -287,8 +287,8 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "eb4ba545-8449-4878-bfe7-088a89cff2ef",
-      "text": "\u2192 job f2cdf338 \u00b7 40 nodes \u00b7 succeeded in 96 s",
+      "id": "d32e56e0-effa-43d4-80eb-abf16d44859b",
+      "text": "\u2192 job f402b3b2 \u00b7 50 nodes \u00b7 ComfyUI ran it in 203 s",
       "start": 6.106799999999996,
       "end": 7.008800000000002,
       "style": "caption",
@@ -322,7 +322,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "b702038a-85e4-4889-967c-1ccd5447f8e1",
+      "id": "cb3e1079-9a86-40e6-bb23-fab2f404067a",
       "text": "OPEN WEIGHTS \u00b7 YOUR GPU \u00b7 MIT",
       "start": 7.0588000000000015,
       "end": 9.304,
@@ -355,7 +355,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "9b86e69f-46f1-424c-99c9-fb489639c5e6",
+      "id": "56e5b4ee-ddeb-43c4-92b5-73e30fcd4915",
       "text": "AFTERTAKE\nstudio + agents",
       "start": 7.0588000000000015,
       "end": 9.304,
@@ -389,7 +389,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "7fb17622-f8e1-48c6-bc61-29f0df7fe32f",
+      "id": "536d3ef3-a986-4075-bf0b-799484eecd55",
       "text": "COMFY SDK\n@comfyorg/sdk",
       "start": 7.349050000000002,
       "end": 9.304,
@@ -423,7 +423,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "b427426b-53b6-4cce-bb20-e6276befeafd",
+      "id": "49651f0b-8b93-4e68-81aa-3370a102c8ec",
       "text": "YOUR COMFYUI\nlocal GPU",
       "start": 7.639300000000002,
       "end": 9.304,
@@ -457,7 +457,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "0b5022ad-e77f-42ba-b945-7dfda56ec4a5",
+      "id": "2a7adf8c-15a2-4b68-943d-9d78efd0e573",
       "text": "Z-IMAGE",
       "start": 7.9295500000000025,
       "end": 9.304,
@@ -509,7 +509,7 @@
       "color": "#121713"
     },
     {
-      "id": "e2fd2761-e3c7-438e-9ece-9a021b592470",
+      "id": "948db021-7636-41c8-a439-600175c73432",
       "text": "QWEN EDIT",
       "start": 8.074675000000003,
       "end": 9.304,
@@ -561,7 +561,7 @@
       "color": "#121713"
     },
     {
-      "id": "5faf01d1-e96d-4203-b782-03268d716aa9",
+      "id": "2e07c2f1-4767-4c89-b202-ad7e75d88a49",
       "text": "LTX-2.5",
       "start": 8.219800000000003,
       "end": 9.304,
@@ -613,7 +613,7 @@
       "color": "#121713"
     },
     {
-      "id": "b3530f8f-8bb1-41dc-833d-f696f4c27563",
+      "id": "1ff70f98-3f5f-4bac-9992-4d8d6a8d59fc",
       "text": "WAN 2",
       "start": 8.370725000000004,
       "end": 9.304,
@@ -665,7 +665,7 @@
       "color": "#121713"
     },
     {
-      "id": "2ab714d0-f860-4287-9fdd-33e5379d5440",
+      "id": "84ec0e9e-dda3-4272-b3b1-85d51af21102",
       "text": "MINIMAX H3",
       "start": 8.521649999999998,
       "end": 9.304,
@@ -717,7 +717,7 @@
       "color": "#121713"
     },
     {
-      "id": "974fb05b-efa0-4f17-85ad-8bd7164d3a14",
+      "id": "a6de9dd7-2088-4362-bf5d-725e7be8daa1",
       "text": "SAM 3",
       "start": 8.672574999999998,
       "end": 9.304,
@@ -769,7 +769,7 @@
       "color": "#121713"
     },
     {
-      "id": "88b883fe-e5f6-402c-b0f2-46357ed0d644",
+      "id": "17720771-83a8-4d0c-9bfa-10b8237cf809",
       "text": "DA3",
       "start": 8.8235,
       "end": 9.304,
@@ -821,7 +821,7 @@
       "color": "#121713"
     },
     {
-      "id": "36e42d3c-3a8a-4e85-922d-6aafb7edd729",
+      "id": "b1279a05-c16a-48cc-892d-93cddabdd594",
       "text": "KOKORO",
       "start": 8.968625,
       "end": 9.304,
@@ -875,7 +875,7 @@
   ],
   "graphics": [
     {
-      "id": "0fc6c0c6-9933-4a93-8f5c-070be4e618c6",
+      "id": "a3392557-8a39-452c-9fec-69c075479310",
       "name": "rectangle",
       "kind": "rect",
       "start": 7.0588000000000015,
@@ -930,7 +930,7 @@
       }
     },
     {
-      "id": "d924baca-7410-4f86-805a-9fd28c0eaf85",
+      "id": "2caba16d-9624-4bb7-b60d-2a71f27cde39",
       "name": "rectangle",
       "kind": "rect",
       "start": 7.349050000000002,
@@ -985,7 +985,7 @@
       }
     },
     {
-      "id": "04f2d687-de76-4573-ae1d-2b7f2eb64b89",
+      "id": "0e06b627-0368-42bf-9927-4fc2f814d5b3",
       "name": "rectangle",
       "kind": "rect",
       "start": 7.639300000000002,
@@ -1040,7 +1040,7 @@
       }
     },
     {
-      "id": "c17da656-d286-4e58-a164-402b1225b8f5",
+      "id": "14d785d8-84d2-481d-8569-dabfe305293e",
       "name": "rectangle",
       "kind": "rect",
       "start": 7.232949999999999,
@@ -1087,7 +1087,7 @@
       }
     },
     {
-      "id": "416e5b55-6f6b-4335-82fd-0da8aa62f9f4",
+      "id": "835786a5-eb34-45e5-ab15-4549ae423f7e",
       "name": "rectangle",
       "kind": "rect",
       "start": 7.523199999999999,
@@ -1134,7 +1134,7 @@
       }
     },
     {
-      "id": "8966f79c-6293-4f7f-9c23-fc685e083cc1",
+      "id": "c5096c5f-782f-4e21-ac0b-209c335f2acc",
       "name": "rectangle",
       "kind": "rect",
       "start": 7.9295500000000025,
@@ -1188,7 +1188,7 @@
       }
     },
     {
-      "id": "6c7d1a12-077a-4cbc-baf3-d308bfcc4931",
+      "id": "4bd4a279-5918-4e65-93a1-a7c6adc2c069",
       "name": "rectangle",
       "kind": "rect",
       "start": 8.074675000000003,
@@ -1242,7 +1242,7 @@
       }
     },
     {
-      "id": "d8bf05c3-c56e-4b7e-a064-d4ec2fe39d8d",
+      "id": "bb7dc46a-f60c-4a83-915c-c35db6867243",
       "name": "rectangle",
       "kind": "rect",
       "start": 8.219800000000003,
@@ -1296,7 +1296,7 @@
       }
     },
     {
-      "id": "c07a591b-34d5-4f80-92c2-d38d14e92695",
+      "id": "a334ba0a-cb14-472f-a0bb-6dcf51bc5e97",
       "name": "rectangle",
       "kind": "rect",
       "start": 8.370725000000004,
@@ -1350,7 +1350,7 @@
       }
     },
     {
-      "id": "62a2b18e-6c29-4b6b-a02f-c620cf27011c",
+      "id": "eb44720b-c7eb-481f-8702-b23e5325150a",
       "name": "rectangle",
       "kind": "rect",
       "start": 8.521649999999998,
@@ -1404,7 +1404,7 @@
       }
     },
     {
-      "id": "5e64a156-0ed1-449e-8d55-ce89341b1cc0",
+      "id": "bcb7b7e3-2bad-4c0b-bb43-71d37c6d3785",
       "name": "rectangle",
       "kind": "rect",
       "start": 8.672574999999998,
@@ -1458,7 +1458,7 @@
       }
     },
     {
-      "id": "b686d7b3-589a-4d13-b31a-83c17fa0af9d",
+      "id": "dd0bd455-eeec-4391-835e-2a002026fcf6",
       "name": "rectangle",
       "kind": "rect",
       "start": 8.8235,
@@ -1512,7 +1512,7 @@
       }
     },
     {
-      "id": "ffd95b9f-73a5-4bf1-9e76-c2fc714abf65",
+      "id": "836936d1-aafe-437d-9527-c5b000de6e2f",
       "name": "rectangle",
       "kind": "rect",
       "start": 8.968625,
@@ -1571,6 +1571,6 @@
   "normalizeAudio": false,
   "state": "ready",
   "duration": 9.416666666666666,
-  "createdAt": "2026-10-20T20:21:47.489Z",
-  "output": "/api/films/2ce4c886-bf9a-44f4-99dd-80cd6746bf96/video"
+  "createdAt": "2026-10-20T22:39:21.739Z",
+  "output": "/api/films/b91e1b3d-5e22-4cdd-aaad-690f90dc5672/video"
 }

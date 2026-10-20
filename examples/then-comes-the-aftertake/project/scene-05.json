@@ -1,12 +1,12 @@
 {
   "format": "aftertake-film/5",
-  "id": "677bac28-dcf3-4577-8eb7-de86d5134954",
+  "id": "7626c33e-4a59-4f4f-b049-e33a8254dd52",
   "name": "05 Change",
   "aspect": "landscape",
   "resolution": "1080p",
   "shots": [
     {
-      "assetId": "46f83e34-56d2-4e02-b420-8d963cd264eb",
+      "assetId": "01f48331-1127-4abc-a6cc-64b50564c28b",
       "framing": {
         "zoom": 1,
         "endZoom": 1,
@@ -17,18 +17,18 @@
       "start": 0.2916666666666667,
       "end": 1.4583333333333333,
       "title": "bridgeSrc.mp4",
-      "sha256": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92",
+      "sha256": "eb64929622b5fa1041273007a2d47df29487e802488c66c36dedae134b124c16",
       "asset": {
         "name": "bridgeSrc.mp4",
         "kind": "video",
-        "sha256": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92",
+        "sha256": "eb64929622b5fa1041273007a2d47df29487e802488c66c36dedae134b124c16",
         "duration": 3.0416666666666665,
-        "width": 1536,
-        "height": 640
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "f22f28b5-04e2-46c8-a5d6-590d13e36025",
+      "assetId": "34d6c80d-70b3-4d4f-a207-fea5864103db",
       "framing": {
         "zoom": 1,
         "endZoom": 1,
@@ -39,18 +39,18 @@
       "start": 0.2916666666666667,
       "end": 1.5833333333333333,
       "title": "bridgeMask.mp4",
-      "sha256": "4a5859ddf5e3c4f72fd48d6ceb1be98041fd43166f7c354ade61883d704f07d6",
+      "sha256": "d4b5b5c5f9e265562a100a426214fbaef86db778148bd16a775a0024d13bae7a",
       "asset": {
         "name": "bridgeMask.mp4",
         "kind": "video",
-        "sha256": "4a5859ddf5e3c4f72fd48d6ceb1be98041fd43166f7c354ade61883d704f07d6",
+        "sha256": "d4b5b5c5f9e265562a100a426214fbaef86db778148bd16a775a0024d13bae7a",
         "duration": 3.0416666666666665,
-        "width": 1536,
-        "height": 640
+        "width": 1344,
+        "height": 736
       }
     },
     {
-      "assetId": "bbfb58cd-69a6-4c60-85c2-fe549806a21e",
+      "assetId": "a325ae3b-cad4-4bf2-acdf-ef3af51aad92",
       "dissolve": 0.25,
       "transition": "glitch",
       "framing": {
@@ -63,18 +63,18 @@
       "start": 0.20833333333333334,
       "end": 2.7083333333333335,
       "title": "bridge.mp4",
-      "sha256": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe",
+      "sha256": "70707ba40ff1b4324c5e2875fedab8853a56910625d3b36d61c7de296126266e",
       "asset": {
         "name": "bridge.mp4",
         "kind": "video",
-        "sha256": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe",
+        "sha256": "70707ba40ff1b4324c5e2875fedab8853a56910625d3b36d61c7de296126266e",
         "duration": 3.0416666666666665,
-        "width": 1536,
-        "height": 640
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "46f83e34-56d2-4e02-b420-8d963cd264eb",
+      "assetId": "01f48331-1127-4abc-a6cc-64b50564c28b",
       "framing": {
         "zoom": 1,
         "endZoom": 1,
@@ -85,18 +85,18 @@
       "start": 2,
       "end": 2.7083333333333335,
       "title": "bridgeSrc.mp4",
-      "sha256": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92",
+      "sha256": "eb64929622b5fa1041273007a2d47df29487e802488c66c36dedae134b124c16",
       "asset": {
         "name": "bridgeSrc.mp4",
         "kind": "video",
-        "sha256": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92",
+        "sha256": "eb64929622b5fa1041273007a2d47df29487e802488c66c36dedae134b124c16",
         "duration": 3.0416666666666665,
-        "width": 1536,
-        "height": 640
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "37a43ebe-b919-495b-b8fc-e1eb009638ef",
+      "assetId": "d530c4c5-ea3f-42fe-afe2-d4a6fb96f1a8",
       "dissolve": 0.25,
       "transition": "flash",
       "framing": {
@@ -109,18 +109,18 @@
       "start": 0.20833333333333334,
       "end": 0.9166666666666666,
       "title": "dancer.mp4",
-      "sha256": "c29b4e28631fe52c3cdbb2d4401672ee5837077e941588a33eb49a4e42e3c1d3",
+      "sha256": "b5c5ed5500a172d598cc56773e96262047c15d5402488f59a069348f7bea0fe3",
       "asset": {
         "name": "dancer.mp4",
         "kind": "video",
-        "sha256": "c29b4e28631fe52c3cdbb2d4401672ee5837077e941588a33eb49a4e42e3c1d3",
+        "sha256": "b5c5ed5500a172d598cc56773e96262047c15d5402488f59a069348f7bea0fe3",
         "duration": 3.0416666666666665,
-        "width": 1344,
-        "height": 736
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "15950b16-cb15-4783-914c-15c9d806a19c",
+      "assetId": "ae700f40-8b1d-42fe-a739-2132c953d8d9",
       "framing": {
         "zoom": 1,
         "endZoom": 1.04,
@@ -128,14 +128,14 @@
         "y": 0.5,
         "fit": "cover"
       },
-      "start": 0.5833333333333334,
-      "end": 2.5,
+      "start": 0.7916666666666666,
+      "end": 2.7083333333333335,
       "title": "ensemble.mp4",
-      "sha256": "c914e90401d1495569fab086a1988ec433c9bc671920ff523816d7fcdb38c436",
+      "sha256": "6cc58aebe97f2720e5937cf0754334ae21ca10bcb0061eebe23642e28c5b1660",
       "asset": {
         "name": "ensemble.mp4",
         "kind": "video",
-        "sha256": "c914e90401d1495569fab086a1988ec433c9bc671920ff523816d7fcdb38c436",
+        "sha256": "6cc58aebe97f2720e5937cf0754334ae21ca10bcb0061eebe23642e28c5b1660",
         "duration": 3.0416666666666665,
         "width": 1344,
         "height": 736
@@ -231,7 +231,7 @@
       }
     },
     {
-      "assetId": "6700c25f-bdd4-449b-8499-5164e7b0528e",
+      "assetId": "b5bf3e08-8ca9-4b88-8104-ce98b14f640d",
       "dissolve": 0.25,
       "transition": "flash",
       "framing": {
@@ -244,14 +244,14 @@
       "start": 1.2083333333333333,
       "end": 2.625,
       "title": "castle.mp4",
-      "sha256": "beec6978e441b013b29b5450298846693f95fb4ee84d58cc5e282a3cac9e0905",
+      "sha256": "34825e59be74dc16ef3db45f6caa01aa86809eefc4403ca07528ae1b0d159682",
       "asset": {
         "name": "castle.mp4",
         "kind": "video",
-        "sha256": "beec6978e441b013b29b5450298846693f95fb4ee84d58cc5e282a3cac9e0905",
+        "sha256": "34825e59be74dc16ef3db45f6caa01aa86809eefc4403ca07528ae1b0d159682",
         "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
+        "width": 1280,
+        "height": 720
       }
     },
     {
@@ -279,11 +279,11 @@
       }
     }
   ],
-  "requestKey": "05-Change-1792526689787",
-  "requestDigest": "12b4eaa6f89ffee2cb977b8a581ce3aa3a9859c9c7be0af05125b2b220fce261",
+  "requestKey": "05-Change-1792536887652",
+  "requestDigest": "e4410a2ca8e92fcf30665c42cbeea8dc02710819a9366f14ac9589711c52d2f7",
   "titles": [
     {
-      "id": "c048eeff-8a69-427f-9d1c-b09ccd8457e2",
+      "id": "5dfee7ea-1b51-468b-9932-72dd9935063b",
       "text": "TRACK ONE PERSON.",
       "start": 0,
       "end": 1.1610000000000014,
@@ -296,7 +296,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "b5b51d2b-45b7-491f-a2cc-67dd1a31fe76",
+      "id": "dbd86966-476b-424e-a6c2-683dc2023748",
       "text": "SAM 3 \u00b7 EVERY FRAME",
       "start": 1.1610000000000014,
       "end": 2.3220000000000027,
@@ -309,7 +309,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "4d0d36b3-6866-4a6a-ac4a-46be17bbabe1",
+      "id": "001fee34-fafd-4846-9ffe-a3acd8550d16",
       "text": "RECAST THE LEAD.",
       "start": 3.0186000000000064,
       "end": 4.247910000000001,
@@ -323,7 +323,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "af82be4d-82e3-4b04-a722-93662c2d6486",
+      "id": "44bba15f-6c16-4c9c-8038-9d3f084a9ed4",
       "text": "MINIMAX H3 \u00b7 LOCAL \u00b7 SAME PERFORMANCE",
       "start": 2.4381000000000057,
       "end": 4.630130000000001,
@@ -336,7 +336,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "6e055c56-dbc9-45bf-91a3-8bf65fe8df61",
+      "id": "d06199ed-a820-41ea-afc1-7c851e0847b3",
       "text": "KEEP THE MOVE.",
       "start": 4.2679100000000005,
       "end": 5.274200000000004,
@@ -349,7 +349,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "e7340bb1-d5cb-4cc4-ad1b-cd54ad26bebd",
+      "id": "66dbc532-e71e-4f33-a756-5770ae082045",
       "text": "BEFORE",
       "start": 4.6905,
       "end": 5.274200000000004,
@@ -362,20 +362,21 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "bc95c72d-01b4-40d4-8b69-e65c6a4c1d70",
+      "id": "01e83cb7-a85d-4d0e-8c4e-15f0d44bd926",
       "text": "FIVE MORE DANCERS",
       "start": 5.294200000000004,
       "end": 6.748650000000001,
       "style": "headline",
       "position": "top",
       "animation": "slam",
-      "fontSize": 96,
-      "stroke": false,
+      "fontSize": 88,
       "font": "display",
-      "color": "#121713"
+      "box": "highlight",
+      "tilt": -2,
+      "color": "#d5eb94"
     },
     {
-      "id": "36fda4a8-36a6-47f6-ba2b-45a501404139",
+      "id": "82134bba-716c-408f-bf6b-dfb38fe3655a",
       "text": "IN THE GROOVE.",
       "start": 6.768650000000001,
       "end": 7.642599999999998,
@@ -387,7 +388,7 @@
       "color": "#ff4fa3"
     },
     {
-      "id": "63f0b388-4002-46b4-9568-6f3dfadfb841",
+      "id": "d1c4e334-1788-440e-9d45-0b45c409896d",
       "text": "SUBJECT COPIES \u00b7 ORIGINAL PIXELS \u00b7 CPU",
       "start": 5.4103000000000065,
       "end": 7.602229999999999,
@@ -400,7 +401,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "214586ed-9469-49bb-a5bc-24307556cd0a",
+      "id": "50c47378-be43-4fc4-84e9-bdae981d5d4e",
       "text": "WORDS TO VIDEO.",
       "start": 7.952849999999998,
       "end": 9.09385,
@@ -413,7 +414,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "65088844-9f83-4463-9cff-60a0bcdf7aa1",
+      "id": "b4f4f8fe-8931-429d-8c85-30c378a79b17",
       "text": "STILL TO LIGHT.",
       "start": 9.11385,
       "end": 9.987800000000004,
@@ -426,7 +427,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "b0a3cd5c-9775-4dcc-98b4-fc152b46b80b",
+      "id": "ad1f9c05-e4df-449c-8298-eefa16626149",
       "text": "LTX-2.5 \u00b7 TEXT \u2192 VIDEO \u00b7 IMAGE \u2192 VIDEO",
       "start": 7.778700000000001,
       "end": 9.947430000000004,
@@ -439,7 +440,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "a969f94f-1844-45f6-95d8-865ae3eb0976",
+      "id": "25730e67-7257-44cd-b96e-8cb165590d45",
       "text": "PULL THE CAMERA.",
       "start": 10.065849999999998,
       "end": 11.439049999999998,
@@ -453,7 +454,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "9999c469-a4db-4b8e-94f2-3223d2ec40c9",
+      "id": "a5b4622e-7c2b-4668-b235-6943c25eb96b",
       "text": "CUT IT RIGHT.",
       "start": 11.459049999999998,
       "end": 12.333099999999998,
@@ -466,7 +467,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "9a624ad5-05ab-43ef-aeee-99036e89e48c",
+      "id": "594a2ba7-f770-4d5d-9080-b6682761ffed",
       "text": "ONE STILL \u00b7 PULL BACK \u00b7 PUSH IN \u00b7 ORBIT",
       "start": 10.123900000000006,
       "end": 12.292720000000003,
@@ -484,6 +485,6 @@
   "normalizeAudio": false,
   "state": "ready",
   "duration": 12.333333333333334,
-  "createdAt": "2026-10-20T20:04:49.911Z",
-  "output": "/api/films/677bac28-dcf3-4577-8eb7-de86d5134954/video"
+  "createdAt": "2026-10-20T22:54:47.688Z",
+  "output": "/api/films/7626c33e-4a59-4f4f-b049-e33a8254dd52/video"
 }

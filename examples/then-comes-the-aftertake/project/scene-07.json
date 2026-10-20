@@ -1,6 +1,6 @@
 {
   "format": "aftertake-film/5",
-  "id": "b380aca6-270c-4b59-acfa-bc6fa5ef1996",
+  "id": "a5808819-d31e-489c-aa6c-f53e18bd823a",
   "name": "07 Your call",
   "aspect": "landscape",
   "resolution": "1080p",
@@ -120,7 +120,7 @@
       }
     },
     {
-      "assetId": "9461537c-3f14-4771-b893-e937f65c337b",
+      "assetId": "ac1f7756-577f-4910-8097-4672ef71a945",
       "framing": {
         "zoom": 1,
         "endZoom": 1.03,
@@ -131,18 +131,18 @@
       "start": 1,
       "end": 1.5833333333333333,
       "title": "warm.mp4",
-      "sha256": "6ec2b47e458cdaecffaf8696b3e1c94426ad073d289291fdfaa4867ebfdbe98c",
+      "sha256": "fae28b4083ed32d650d63432696810ee80f970ad4c2476577cc5d9d37a60e7fe",
       "asset": {
         "name": "warm.mp4",
         "kind": "video",
-        "sha256": "6ec2b47e458cdaecffaf8696b3e1c94426ad073d289291fdfaa4867ebfdbe98c",
+        "sha256": "fae28b4083ed32d650d63432696810ee80f970ad4c2476577cc5d9d37a60e7fe",
         "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "2f10e95c-04a4-48ff-ad95-4b691dd4019e",
+      "assetId": "60ba4345-1119-452f-8d8d-b516425659ff",
       "framing": {
         "zoom": 1,
         "endZoom": 1.03,
@@ -153,18 +153,18 @@
       "start": 1.4166666666666667,
       "end": 2,
       "title": "cool.mp4",
-      "sha256": "b22efd0270a7886c4b74d09c9162168190a1f7998075cff57f94ba51a4aac713",
+      "sha256": "cdb864701cc8fd5a3a64798f7f58eb3eae1528ee69e5a104cfc645c16a2b5c60",
       "asset": {
         "name": "cool.mp4",
         "kind": "video",
-        "sha256": "b22efd0270a7886c4b74d09c9162168190a1f7998075cff57f94ba51a4aac713",
+        "sha256": "cdb864701cc8fd5a3a64798f7f58eb3eae1528ee69e5a104cfc645c16a2b5c60",
         "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "f5cd5a68-ef6d-43f2-acd5-c89d026e0549",
+      "assetId": "6e8e1c91-9fa0-4bf2-936d-188c86135781",
       "framing": {
         "zoom": 1,
         "endZoom": 1.03,
@@ -175,18 +175,18 @@
       "start": 1.7916666666666667,
       "end": 2.4166666666666665,
       "title": "noir.mp4",
-      "sha256": "40cceacbc91af72858db9bc166991770820804dc856334b2fdc2d0e851d39a2a",
+      "sha256": "b0bd4047ea292f4c2149ede7f7cb89438f0b5e3acd46d79b7076d85e93044fad",
       "asset": {
         "name": "noir.mp4",
         "kind": "video",
-        "sha256": "40cceacbc91af72858db9bc166991770820804dc856334b2fdc2d0e851d39a2a",
+        "sha256": "b0bd4047ea292f4c2149ede7f7cb89438f0b5e3acd46d79b7076d85e93044fad",
         "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "6e971e69-a043-441e-bc13-f2d8c33d3565",
+      "assetId": "312063f7-370d-4cb8-8820-57b28680ea6e",
       "framing": {
         "zoom": 1,
         "endZoom": 1.03,
@@ -197,46 +197,46 @@
       "start": 2.2083333333333335,
       "end": 2.7916666666666665,
       "title": "vintage.mp4",
-      "sha256": "3ddbcef5dcf1a384f63b52b2f5e46668a29e6e565926ccb9e0584d9a1ec508d0",
+      "sha256": "33ee40135ac05e6fa1da5b41dd4c0a889c132e385912cd355605a0904934460d",
       "asset": {
         "name": "vintage.mp4",
         "kind": "video",
-        "sha256": "3ddbcef5dcf1a384f63b52b2f5e46668a29e6e565926ccb9e0584d9a1ec508d0",
+        "sha256": "33ee40135ac05e6fa1da5b41dd4c0a889c132e385912cd355605a0904934460d",
         "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "7d301c19-589c-4b27-9876-9d3ccb068a40",
+      "assetId": "6682caa8-77f5-4bfb-aeba-8bd8cef4d49f",
       "start": 0.5833333333333334,
       "end": 1.875,
-      "title": "robot.mp4",
-      "sha256": "f857a4da415aa7e860e2ae742f51ac40b1d62e5e854056f74c69960c92623647",
+      "title": "dancerSrc.mp4",
+      "sha256": "5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3",
       "asset": {
-        "name": "robot.mp4",
+        "name": "dancerSrc.mp4",
         "kind": "video",
-        "sha256": "f857a4da415aa7e860e2ae742f51ac40b1d62e5e854056f74c69960c92623647",
-        "duration": 4.041666666666667,
-        "width": 576,
-        "height": 768
+        "sha256": "5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3",
+        "duration": 5.041666666666667,
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "e6f96405-786f-43a7-949d-fb81cade7ae7",
+      "assetId": "56f9e311-d17a-4f96-8638-185782a6b4af",
       "dissolve": 0.25,
       "transition": "zoom",
-      "start": 0.5833333333333334,
-      "end": 2.4583333333333335,
+      "start": 1.7916666666666667,
+      "end": 3.6666666666666665,
       "title": "teddy.mp4",
-      "sha256": "750aaa4a8fd0c56a4c2d1181bf642f3042fb904f29d5de7234a365a2dfe79204",
+      "sha256": "b319a5bbb40f5f6021fcd94d430fe3e6f43a8654a4a64b5f2d8cb545647350a9",
       "asset": {
         "name": "teddy.mp4",
         "kind": "video",
-        "sha256": "750aaa4a8fd0c56a4c2d1181bf642f3042fb904f29d5de7234a365a2dfe79204",
+        "sha256": "b319a5bbb40f5f6021fcd94d430fe3e6f43a8654a4a64b5f2d8cb545647350a9",
         "duration": 4.041666666666667,
-        "width": 576,
-        "height": 768
+        "width": 1280,
+        "height": 720
       }
     },
     {
@@ -308,7 +308,7 @@
       }
     },
     {
-      "assetId": "469af5d4-3ac1-407f-b8d4-8edbf18ab538",
+      "assetId": "68584aff-6f0f-4b95-aea5-fce58c0dc0f4",
       "framing": {
         "zoom": 1,
         "endZoom": 1,
@@ -319,18 +319,18 @@
       "start": 0,
       "end": 0.5833333333333334,
       "title": "depthSrc.png",
-      "sha256": "c4b78b5351b7e22216d08c360747306e4f1c0ebcd5f4e21b71b230fab702d128",
+      "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b",
       "asset": {
         "name": "depthSrc.png",
         "kind": "image",
-        "sha256": "c4b78b5351b7e22216d08c360747306e4f1c0ebcd5f4e21b71b230fab702d128",
+        "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b",
         "duration": 30,
-        "width": 768,
-        "height": 432
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "88368e4d-449a-433c-88aa-201a34fb5b4a",
+      "assetId": "ed2df21b-e52a-4965-a60e-d246393e9d74",
       "framing": {
         "zoom": 1,
         "endZoom": 1,
@@ -341,18 +341,18 @@
       "start": 0,
       "end": 0.5833333333333334,
       "title": "depthMap.png",
-      "sha256": "16204bd64dc604fde5cbf10d731aa3a6a6ef666a492583f33cf30027e98cfb25",
+      "sha256": "3a413b5a55325e8787017081f1f2ce1a97fcc383be239f8bf732bd69de2d1661",
       "asset": {
         "name": "depthMap.png",
         "kind": "image",
-        "sha256": "16204bd64dc604fde5cbf10d731aa3a6a6ef666a492583f33cf30027e98cfb25",
+        "sha256": "3a413b5a55325e8787017081f1f2ce1a97fcc383be239f8bf732bd69de2d1661",
         "duration": 30,
-        "width": 768,
-        "height": 432
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "69bb7180-5099-4a4d-8283-6aac468b83f8",
+      "assetId": "1412efb6-d100-482a-9b8d-45241b476449",
       "framing": {
         "zoom": 1,
         "endZoom": 1,
@@ -363,14 +363,14 @@
       "start": 0,
       "end": 0.5833333333333334,
       "title": "depth.png",
-      "sha256": "f7aaf007a342d637f4de59734aff16814088037a817abcdd1c95bfbc85fabf46",
+      "sha256": "069eb869fd16f2369b3c435b28bb64f7c742118766fb8b63de405ed57d031d36",
       "asset": {
         "name": "depth.png",
         "kind": "image",
-        "sha256": "f7aaf007a342d637f4de59734aff16814088037a817abcdd1c95bfbc85fabf46",
+        "sha256": "069eb869fd16f2369b3c435b28bb64f7c742118766fb8b63de405ed57d031d36",
         "duration": 30,
-        "width": 768,
-        "height": 432
+        "width": 1280,
+        "height": 720
       }
     },
     {
@@ -396,7 +396,7 @@
       }
     },
     {
-      "assetId": "f4427d0e-a401-424b-9f3b-72dc18120bc9",
+      "assetId": "ce45c8c3-1743-4999-a287-d03d4ca267c6",
       "framing": {
         "zoom": 1.03,
         "endZoom": 1.1,
@@ -406,19 +406,19 @@
       },
       "start": 1.4166666666666667,
       "end": 2,
-      "title": "portal-result.mp4",
-      "sha256": "94b28bd400836117f9f5be650a4ff1a0727d9f6aeaa7a4322acc3f5ac93998a3",
+      "title": "portal.mp4",
+      "sha256": "ae783430aafebd577dda2f20add72ebfa11fddcf338d188a61628a1649be73a2",
       "asset": {
-        "name": "portal-result.mp4",
+        "name": "portal.mp4",
         "kind": "video",
-        "sha256": "94b28bd400836117f9f5be650a4ff1a0727d9f6aeaa7a4322acc3f5ac93998a3",
+        "sha256": "ae783430aafebd577dda2f20add72ebfa11fddcf338d188a61628a1649be73a2",
         "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "bbfb58cd-69a6-4c60-85c2-fe549806a21e",
+      "assetId": "a325ae3b-cad4-4bf2-acdf-ef3af51aad92",
       "framing": {
         "zoom": 1.03,
         "endZoom": 1.1,
@@ -429,18 +429,18 @@
       "start": 0.5833333333333334,
       "end": 1.2916666666666667,
       "title": "bridge.mp4",
-      "sha256": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe",
+      "sha256": "70707ba40ff1b4324c5e2875fedab8853a56910625d3b36d61c7de296126266e",
       "asset": {
         "name": "bridge.mp4",
         "kind": "video",
-        "sha256": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe",
+        "sha256": "70707ba40ff1b4324c5e2875fedab8853a56910625d3b36d61c7de296126266e",
         "duration": 3.0416666666666665,
-        "width": 1536,
-        "height": 640
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "34dbd7c6-ffb2-4c34-b9a8-d86eaa4b25f2",
+      "assetId": "36cd31c9-fcb5-44e1-85af-ede133ee468f",
       "dissolve": 0.25,
       "transition": "glitch",
       "framing": {
@@ -453,11 +453,11 @@
       "start": 1,
       "end": 1.75,
       "title": "echoes.mp4",
-      "sha256": "0a263f3dacd4f96b691b4ce0ae22eb74e56817340bb59ed215e141728af61f49",
+      "sha256": "88d47b87d59122c2c3cec89bb2d046b5144fa231b56183a59d7aea761250480a",
       "asset": {
         "name": "echoes.mp4",
         "kind": "video",
-        "sha256": "0a263f3dacd4f96b691b4ce0ae22eb74e56817340bb59ed215e141728af61f49",
+        "sha256": "88d47b87d59122c2c3cec89bb2d046b5144fa231b56183a59d7aea761250480a",
         "duration": 3.0416666666666665,
         "width": 1344,
         "height": 736
@@ -486,7 +486,7 @@
       }
     },
     {
-      "assetId": "f5cd5a68-ef6d-43f2-acd5-c89d026e0549",
+      "assetId": "6e8e1c91-9fa0-4bf2-936d-188c86135781",
       "dissolve": 0.25,
       "transition": "flash",
       "framing": {
@@ -499,36 +499,36 @@
       "start": 1.5833333333333333,
       "end": 2.2916666666666665,
       "title": "noir.mp4",
-      "sha256": "40cceacbc91af72858db9bc166991770820804dc856334b2fdc2d0e851d39a2a",
+      "sha256": "b0bd4047ea292f4c2149ede7f7cb89438f0b5e3acd46d79b7076d85e93044fad",
       "asset": {
         "name": "noir.mp4",
         "kind": "video",
-        "sha256": "40cceacbc91af72858db9bc166991770820804dc856334b2fdc2d0e851d39a2a",
+        "sha256": "b0bd4047ea292f4c2149ede7f7cb89438f0b5e3acd46d79b7076d85e93044fad",
         "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
+        "width": 1280,
+        "height": 720
       }
     },
     {
-      "assetId": "e6f96405-786f-43a7-949d-fb81cade7ae7",
+      "assetId": "56f9e311-d17a-4f96-8638-185782a6b4af",
       "framing": {
-        "zoom": 1.2,
-        "endZoom": 1.28,
+        "zoom": 1.03,
+        "endZoom": 1.1,
         "x": 0.5,
-        "y": 0.4,
+        "y": 0.5,
         "fit": "cover"
       },
       "start": 1.5833333333333333,
       "end": 2.2916666666666665,
       "title": "teddy.mp4",
-      "sha256": "750aaa4a8fd0c56a4c2d1181bf642f3042fb904f29d5de7234a365a2dfe79204",
+      "sha256": "b319a5bbb40f5f6021fcd94d430fe3e6f43a8654a4a64b5f2d8cb545647350a9",
       "asset": {
         "name": "teddy.mp4",
         "kind": "video",
-        "sha256": "750aaa4a8fd0c56a4c2d1181bf642f3042fb904f29d5de7234a365a2dfe79204",
+        "sha256": "b319a5bbb40f5f6021fcd94d430fe3e6f43a8654a4a64b5f2d8cb545647350a9",
         "duration": 4.041666666666667,
-        "width": 576,
-        "height": 768
+        "width": 1280,
+        "height": 720
       }
     },
     {
@@ -578,7 +578,7 @@
       }
     },
     {
-      "assetId": "15950b16-cb15-4783-914c-15c9d806a19c",
+      "assetId": "ae700f40-8b1d-42fe-a739-2132c953d8d9",
       "dissolve": 0.25,
       "transition": "flash",
       "framing": {
@@ -591,11 +591,11 @@
       "start": 1.5833333333333333,
       "end": 2.2916666666666665,
       "title": "ensemble.mp4",
-      "sha256": "c914e90401d1495569fab086a1988ec433c9bc671920ff523816d7fcdb38c436",
+      "sha256": "6cc58aebe97f2720e5937cf0754334ae21ca10bcb0061eebe23642e28c5b1660",
       "asset": {
         "name": "ensemble.mp4",
         "kind": "video",
-        "sha256": "c914e90401d1495569fab086a1988ec433c9bc671920ff523816d7fcdb38c436",
+        "sha256": "6cc58aebe97f2720e5937cf0754334ae21ca10bcb0061eebe23642e28c5b1660",
         "duration": 3.0416666666666665,
         "width": 1344,
         "height": 736
@@ -634,11 +634,11 @@
       }
     }
   ],
-  "requestKey": "07-Your-call-1792526959107",
-  "requestDigest": "548550041f2465ede35ec07c89bb3d1a6d9353ab5e8b8af389b0f89087cac5ad",
+  "requestKey": "07-Your-call-1792537022703",
+  "requestDigest": "eba3abf7b996439b872b5186dcea301de89a0b74828f0d2c47116a881be1b1b2",
   "titles": [
     {
-      "id": "204dbd50-14ff-4825-ba7b-b84bd27c6d30",
+      "id": "e7d317b2-a796-4cb4-bde5-b00336bf2847",
       "text": "YOUR CLIP.",
       "start": 0,
       "end": 1.977000000000007,
@@ -650,7 +650,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "a79f4d93-32ef-41b2-a375-1c9e4fbc966f",
+      "id": "6dcac294-7287-43b6-b36d-eefe2fda785e",
       "text": "YOUR CLIP.",
       "start": 2.0550500000000014,
       "end": 3.0869100000000063,
@@ -662,7 +662,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "64d70587-484e-46ac-a8e5-6324f1afb45f",
+      "id": "1f1e819b-afa5-4b79-ab6e-4372b366a59a",
       "text": "YOUR MODELS.",
       "start": 3.1069100000000063,
       "end": 4.670499999999993,
@@ -674,7 +674,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "37f35fa8-93b7-450d-8c3d-c96211ee6e00",
+      "id": "b28632e5-4943-433c-a541-a2f14c63d935",
       "text": "NOIR",
       "start": 5.874699999999997,
       "end": 6.458400000000001,
@@ -686,7 +686,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "f3b441f8-6fc6-4a30-9680-c1d93dc4cd8a",
+      "id": "367cf858-da72-41d5-9d6a-d9ae117592a9",
       "text": "VINTAGE",
       "start": 6.478400000000001,
       "end": 7.038900000000002,
@@ -698,7 +698,7 @@
       "color": "#121713"
     },
     {
-      "id": "dcc5fd4b-1d70-48b3-81c6-1f088ff4f50e",
+      "id": "999e4c66-b6bd-493b-94b6-ff867a50e5f6",
       "text": "YOUR CALL.",
       "start": 4.690499999999993,
       "end": 5.834699999999997,
@@ -712,7 +712,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "286cfdbf-b429-4075-9cc5-37972f2e61a5",
+      "id": "b3c8cab1-b64c-4cf9-99b3-40ba4ab67d93",
       "text": "COLOR & FINISH \u00b7 LOOKS \u00b7 CURVES \u00b7 LUTS",
       "start": 4.748549999999987,
       "end": 7.029874999999997,
@@ -725,38 +725,42 @@
       "color": "#d5eb94"
     },
     {
-      "id": "5129df76-1238-45db-a216-ab8a16b070fa",
-      "text": "THEIR\nGESTURE.",
+      "id": "49c3c449-d18b-4ff6-b276-949aef1511b9",
+      "text": "THEIR GESTURE.",
       "start": 7.058900000000001,
       "end": 8.193100000000005,
       "style": "headline",
-      "position": "center",
-      "animation": "reveal",
-      "fontSize": 44,
+      "position": "bottom",
+      "animation": "slam",
+      "fontSize": 96,
       "align": "left",
       "font": "display",
+      "box": "highlight",
+      "tilt": -2,
       "color": "#f3f1e9"
     },
     {
-      "id": "e4cc5ebd-d494-42b8-ae32-e48740b78970",
-      "text": "YOUR\nCHARACTER.",
+      "id": "3be831bf-5f38-45f2-85f0-8dcf0c55a5d1",
+      "text": "YOUR CHARACTER.",
       "start": 8.343100000000005,
       "end": 9.957799999999995,
       "style": "headline",
-      "position": "center",
+      "position": "bottom",
       "animation": "slam",
-      "fontSize": 44,
+      "fontSize": 96,
       "align": "left",
       "font": "display",
+      "box": "highlight",
+      "tilt": -2,
       "color": "#d5eb94"
     },
     {
-      "id": "e75068a7-adf3-4401-9cd1-c6337cc95306",
+      "id": "447a8fb9-b29b-4ae9-82ca-fbdf9dba55ca",
       "text": "WAN ANIMATE 2 \u00b7 MOTION TRANSFER",
       "start": 8.359200000000008,
       "end": 9.947430000000004,
       "style": "caption",
-      "position": "bottom",
+      "position": "top",
       "animation": "scramble",
       "fontSize": 28,
       "align": "left",
@@ -764,7 +768,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "3ab98274-bc91-4706-be4f-70517a4bcc7b",
+      "id": "79cc7a5d-8a7a-4fbe-bc85-73b2380c9a3f",
       "text": "PAINT IT.",
       "start": 10.298049999999996,
       "end": 10.97465,
@@ -778,7 +782,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "96cbbb92-d89f-4378-a0a0-39e8293d78d9",
+      "id": "e7be85c0-6010-43c9-a9f9-d9e3e24d58f0",
       "text": "CHANGE IT.",
       "start": 10.99465,
       "end": 11.571460000000005,
@@ -791,7 +795,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "16cd0147-071f-4716-8f7c-dc31e332bc3b",
+      "id": "3478368c-b329-4e8f-bac7-892a882befd7",
       "text": "MAKE IT NEW.",
       "start": 11.591460000000005,
       "end": 12.545300000000012,
@@ -805,7 +809,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "a57987dd-a268-40dc-bde6-ecbf6e6ddedc",
+      "id": "946af5cc-f070-4347-9647-b7299d0331dd",
       "text": "DEPTH \u2192 LENS BLUR",
       "start": 12.58530000000001,
       "end": 14.087799999999996,
@@ -818,7 +822,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "748a93bb-6f74-4fc7-b9e5-55f871f37ed2",
+      "id": "2535c14e-f7cd-444d-a074-00135479afc1",
       "text": "LAYERS & MASKS",
       "start": 14.117799999999995,
       "end": 14.668299999999997,
@@ -832,7 +836,7 @@
       "color": "#121713"
     },
     {
-      "id": "c6f36c52-80d3-4a4f-a6b9-046907635ef6",
+      "id": "a297ecac-5e8e-4998-a6c5-625a07c56ffb",
       "text": "MAKE THE NEXT TAKE.",
       "start": 15.000149999999998,
       "end": 16.28509,
@@ -844,7 +848,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "1ba83491-1672-44bd-b144-63d0a91ea597",
+      "id": "513e10ef-d571-4ed2-a4a9-cf3881fa8fe8",
       "text": "RUN THE SCENE.",
       "start": 16.30509,
       "end": 17.627200000000006,
@@ -856,7 +860,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "98bb60f1-f652-4d30-97cb-27d5c251bdfe",
+      "id": "94f6c4ea-e0e2-43ab-89bb-df6160bc4dfe",
       "text": "EVERY EFFECT \u00b7 OPEN WEIGHTS \u00b7 YOUR GPU",
       "start": 17.763300000000008,
       "end": 19.957550000000005,
@@ -869,7 +873,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "2063ddd6-b280-405d-bdec-005a6c4318cb",
+      "id": "887a3d20-4ccc-46f7-ab2d-32f5f404cfdc",
       "text": "THEN COMES THE",
       "start": 20.0156,
       "end": 21.1366,
@@ -882,7 +886,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "a6466cb6-b141-4e88-8927-d27fa1fd630d",
+      "id": "cf037ca2-eca1-47f7-a31b-b10b219a4e1f",
       "text": "OPEN SOURCE \u00b7 MIT",
       "start": 22.059000000000005,
       "end": 31.591700000000003,
@@ -917,7 +921,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "fb4030db-7bc6-4799-b1c0-fcd5d3ee29e6",
+      "id": "99d90542-5398-41f8-8522-4e07ac2bd440",
       "text": "BUILT ON THE COMFY SDK \u00b7 OPEN WEIGHTS \u00b7 YOUR GPU",
       "start": 22.651149999999994,
       "end": 31.591700000000003,
@@ -950,7 +954,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "6486fd0f-6bc8-4206-b123-a415408ea46f",
+      "id": "367090a5-4a0c-4eb1-a9ad-4b4cf1d7428d",
       "text": "github.com/ItsSNOWMOBILE/aftertake",
       "start": 23.231649999999995,
       "end": 31.591700000000003,
@@ -983,7 +987,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "96e821af-37d4-425b-9133-4c1595c9ebc3",
+      "id": "d139d768-d0c5-49e7-9f16-c3314d9d434e",
       "text": "Song: \u201cAftertake\u201d, written for this film and generated with",
       "start": 27.074499999999993,
       "end": 31.591700000000003,
@@ -1016,7 +1020,7 @@
       "color": "#9aa58d"
     },
     {
-      "id": "e7ca118a-ef25-4414-8797-863e310d6eaf",
+      "id": "41b5dc23-b44d-4806-823b-af2fc1e709b3",
       "text": "ACE-Step 1.5 XL Turbo (open weights) on Comfy Cloud \u00b7 aftertake-song-ace-step.json",
       "start": 27.074499999999993,
       "end": 31.591700000000003,
@@ -1049,8 +1053,8 @@
       "color": "#9aa58d"
     },
     {
-      "id": "72adc8e2-8cc6-4a3a-befb-0f80cf2427ad",
-      "text": "Footage: Curtis Adams, Mikhail Nilov, Dean Diemert, Florian Del\u00e9e,",
+      "id": "94b59724-ac91-480f-a4f9-a6f7b7f6e2da",
+      "text": "Source plates generated with LTX-2.5 and Z-Image Turbo in Aftertake \u00b7 every person shown is fictional",
       "start": 27.074499999999993,
       "end": 31.591700000000003,
       "style": "kicker",
@@ -1082,8 +1086,8 @@
       "color": "#9aa58d"
     },
     {
-      "id": "bbc483f0-3a03-4ca7-be3d-37a7f1e7b970",
-      "text": "Antoni Shkraba, Michael Burrows / Pexels \u00b7 Tears of Steel \u00a9 Blender Foundation, CC BY 3.0",
+      "id": "1f30398a-a8e0-40d6-814b-57f86ae07eee",
+      "text": "Footage: Curtis Adams, Mikhail Nilov, Dean Diemert, Florian Del\u00e9e, Michael Burrows / Pexels",
       "start": 27.074499999999993,
       "end": 31.591700000000003,
       "style": "kicker",
@@ -1115,7 +1119,7 @@
       "color": "#9aa58d"
     },
     {
-      "id": "f0a8dec9-89f4-461c-b7dc-94a41ed9619d",
+      "id": "149b1a87-bed7-4fae-94b2-5a0c3bd1aba9",
       "text": "Every effect rendered in Aftertake with open-weight models.",
       "start": 27.074499999999993,
       "end": 31.591700000000003,
@@ -1148,7 +1152,7 @@
       "color": "#9aa58d"
     },
     {
-      "id": "a4999592-366d-44e5-adb5-9df0728f3418",
+      "id": "b0ed6da2-62b1-4595-ab8b-37ef70b26a1e",
       "text": "Edited, titled and cut to the beat in Aftertake Film.",
       "start": 27.074499999999993,
       "end": 31.591700000000003,
@@ -1183,7 +1187,7 @@
   ],
   "graphics": [
     {
-      "id": "3a75e553-f0e3-4839-b76e-b2e5814e754f",
+      "id": "f281b6b8-506a-457d-acc5-2a905b0ff4a7",
       "name": "logo",
       "kind": "image",
       "start": 21.1766,
@@ -1241,6 +1245,6 @@
   "normalizeAudio": false,
   "state": "ready",
   "duration": 31.75,
-  "createdAt": "2026-10-20T20:09:19.231Z",
-  "output": "/api/films/b380aca6-270c-4b59-acfa-bc6fa5ef1996/video"
+  "createdAt": "2026-10-20T22:57:02.859Z",
+  "output": "/api/films/a5808819-d31e-489c-aa6c-f53e18bd823a/video"
 }

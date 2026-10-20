@@ -1,6 +1,6 @@
 {
   "format": "aftertake-film/5",
-  "id": "d70afa6f-6f2b-4934-8649-45c3425be8d2",
+  "id": "ef73ff7f-fe48-4fb4-a1b3-351433286bdb",
   "name": "03 Paint it",
   "aspect": "landscape",
   "resolution": "1080p",
@@ -48,49 +48,49 @@
       }
     },
     {
-      "assetId": "3aa0e349-38f2-4d7b-9495-1b89a6e49402",
+      "assetId": "34ffa659-00fc-4f3b-bc2a-388fb6ff374d",
       "framing": {
         "zoom": 1,
+        "endZoom": 1.04,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0.4166666666666667,
+      "end": 2.3333333333333335,
+      "title": "loftSrc.mp4",
+      "sha256": "ab694e2d3f5f542b8cf0abf099bf3e8d7fd7b172718012a696bb381499ef2d86",
+      "asset": {
+        "name": "loftSrc.mp4",
+        "kind": "video",
+        "sha256": "ab694e2d3f5f542b8cf0abf099bf3e8d7fd7b172718012a696bb381499ef2d86",
+        "duration": 5.041666666666667,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "ce45c8c3-1743-4999-a287-d03d4ca267c6",
+      "dissolve": 0.25,
+      "transition": "flash",
+      "framing": {
+        "zoom": 1.04,
         "endZoom": 1.06,
         "x": 0.5,
         "y": 0.5,
         "fit": "cover"
       },
-      "start": 1,
-      "end": 2.9166666666666665,
-      "title": "roomSrc.mp4",
-      "sha256": "f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2",
+      "start": 2.1666666666666665,
+      "end": 3.4166666666666665,
+      "title": "portal.mp4",
+      "sha256": "ae783430aafebd577dda2f20add72ebfa11fddcf338d188a61628a1649be73a2",
       "asset": {
-        "name": "roomSrc.mp4",
+        "name": "portal.mp4",
         "kind": "video",
-        "sha256": "f734904d279124904dcacb17a9879f3467302fd35a1df41ca9fa9303ce74bad2",
-        "duration": 4.208333333333333,
-        "width": 768,
-        "height": 432
-      }
-    },
-    {
-      "assetId": "f4427d0e-a401-424b-9f3b-72dc18120bc9",
-      "dissolve": 0.25,
-      "transition": "flash",
-      "framing": {
-        "zoom": 1.06,
-        "endZoom": 1,
-        "x": 0.5,
-        "y": 0.5,
-        "fit": "cover"
-      },
-      "start": 1.4166666666666667,
-      "end": 2.6666666666666665,
-      "title": "portal-result.mp4",
-      "sha256": "94b28bd400836117f9f5be650a4ff1a0727d9f6aeaa7a4322acc3f5ac93998a3",
-      "asset": {
-        "name": "portal-result.mp4",
-        "kind": "video",
-        "sha256": "94b28bd400836117f9f5be650a4ff1a0727d9f6aeaa7a4322acc3f5ac93998a3",
+        "sha256": "ae783430aafebd577dda2f20add72ebfa11fddcf338d188a61628a1649be73a2",
         "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
+        "width": 1280,
+        "height": 720
       }
     },
     {
@@ -140,11 +140,11 @@
       }
     }
   ],
-  "requestKey": "03-Paint-it-1792526433778",
-  "requestDigest": "c7fe75754cb1eadaff7906493a182a8984ce3d3c0241183aff370993c120be85",
+  "requestKey": "03-Paint-it-1792535854339",
+  "requestDigest": "1ff34c95e74766360c051060abec40ab274a6c0985038b855bd6ab3394c4b428",
   "titles": [
     {
-      "id": "4efdf9d9-b884-463d-9cd6-a1db4763f7c7",
+      "id": "fa6df905-9a55-426b-942f-d429972f14d3",
       "text": "PAINT IT.",
       "start": 1.0100499999999997,
       "end": 1.5867900000000001,
@@ -158,7 +158,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "bb5b3d01-3778-4ccc-b33a-f3b75b173796",
+      "id": "9e52bc8c-b6ec-43ad-b576-5b4821f22edc",
       "text": "CHANGE IT.",
       "start": 1.6067900000000002,
       "end": 2.1742499999999967,
@@ -171,7 +171,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "d7337ee9-20ad-41b1-a1c4-3b03d7033567",
+      "id": "8d95aa99-3f3d-4c3d-9404-5192aafee2f4",
       "text": "MAKE IT NEW.",
       "start": 2.1942499999999967,
       "end": 3.479399999999999,
@@ -185,7 +185,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "4652697e-68ad-4a4c-afff-5fcfc7a9fc0f",
+      "id": "514b7587-8f98-49ba-921d-2cb6001be70b",
       "text": "LOCAL LTX-2.5 \u00b7 ONLY THE PAINTED REGION CHANGES",
       "start": 2.484499999999997,
       "end": 4.655549999999998,
@@ -198,7 +198,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "14e41f64-3cce-4922-86cb-df18b2eeb81f",
+      "id": "cfc1eb55-5111-413b-9056-91a7b09a8135",
       "text": "SAME SCENE.",
       "start": 5.236049999999999,
       "end": 6.632450000000002,
@@ -210,7 +210,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "7161eceb-7de9-4caa-a762-99ba3b1a252f",
+      "id": "48994b11-a3dd-4beb-8bf2-42756f01de8a",
       "text": "A DIFFERENT VIEW.",
       "start": 6.7105,
       "end": 7.961519999999999,
@@ -224,7 +224,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "7a1ecf8f-7c2c-495f-a143-89f1444aeb77",
+      "id": "ac70ce04-dbf5-4987-b1af-6c063dbb9d5c",
       "text": "SAME SOURCE \u00b7 A NEW TAKE",
       "start": 8.12226,
       "end": 9.366919999999997,
@@ -242,6 +242,6 @@
   "normalizeAudio": false,
   "state": "ready",
   "duration": 9.416666666666666,
-  "createdAt": "2026-10-20T20:00:33.802Z",
-  "output": "/api/films/d70afa6f-6f2b-4934-8649-45c3425be8d2/video"
+  "createdAt": "2026-10-20T22:37:34.497Z",
+  "output": "/api/films/ef73ff7f-fe48-4fb4-a1b3-351433286bdb/video"
 }
