@@ -1650,6 +1650,7 @@ export default function FilmComposer({
       </details>
       <MotionGraphicsEditor
         graphics={draft.graphics || []}
+        orderingManagedByScene={!!draft.motionScene}
         assets={assets}
         duration={duration}
         time={time}
