@@ -11,33 +11,39 @@ An open-source creative studio for short-form video, product stories and visual 
 [![Status: Experimental](https://img.shields.io/badge/status-experimental-c3d4a6?labelColor=182015)](#project-status)
 
 **[Try the browser editor](https://aftertake-studio.right-bard-9761.chatgpt.site/studio/)** ·
-**[Watch the new demo](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/motion-design-preview-2026-10-19/aftertake-motion-design.mp4)** ·
+**[Watch the 96-second film](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/product-film-preview-2026-10-19/aftertake-make-the-next-take.mp4)** ·
 **[Read the studio guide](docs/studio-guide.md)**
 
 </div>
 
 <br>
 
-[![Aftertake's real text-to-video studio showing a generated amber fragrance bottle, its prompt, and editable settings](examples/text-video/studio.jpg)](https://aftertake-studio.right-bard-9761.chatgpt.site/create/)
+## Make the next take.
 
-<p align="center"><sub>A real local LTX-2.5 render, with generated ambience. <a href="https://aftertake-studio.right-bard-9761.chatgpt.site/create/">Watch the shot and inspect its workflow →</a></sub></p>
+https://github.com/user-attachments/assets/9ecc806c-34ab-44eb-9549-6bdb5fde9acb
 
-## One take. Your next take.
+**[Watch the narrated 96-second film →](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/product-film-preview-2026-10-19/aftertake-make-the-next-take.mp4)**
 
-[![Editable moving cards, typography and shapes in Aftertake's native motion graphics demo](examples/motion-design/poster.jpg)](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/motion-design-preview-2026-10-19/aftertake-motion-design.mp4)
+Three dance takes become **MOVE YOUR WAY**, a short-form concept campaign. Follow
+the source selection, local SAM3 tracking, graphic echoes, color, editable type,
+motion graphics and narration. Adapt the campaign for portrait, square and
+landscape, then see the actual Aftertake project behind the film itself.
 
-**[Watch the narrated 30.6-second preview →](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/motion-design-preview-2026-10-19/aftertake-motion-design.mp4)**
+The film was authored and exported through Aftertake's own MCP at **1080p and
+24 fps**. Its cuts, titles, graphics, narration and music mix remain editable.
+The [project and reproduction guide](examples/make-the-next-take/README.md) and
+[companion media](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/product-film-preview-2026-10-19/aftertake-product-film-inputs.zip)
+let you reopen the edit without a diffusion GPU.
+A [fresh-workspace replay](examples/make-the-next-take/replay-proof.json) matched
+all 2,304 decoded frames and every decoded soundtrack sample.
 
-One performance becomes three. Change the character, revise an ad, animate a
-reference, then build the story with **19 editable graphic layers**. The closing
-reveal shows this film inside the actual editor. It was authored and exported
-through Aftertake's own MCP at 1080p and 24 fps.
+This is a review preview. UI sequences use actual captured app states with fixed
+framing; processing waits are omitted. Footage: RDNE Stock project / Pexels.
+Music: “Galactic Rap” by Kevin MacLeod, CC BY 4.0.
+[Credits and source details →](examples/make-the-next-take/README.md)
 
-The [editable project and reproduction guide](examples/motion-design/README.md)
-and [exact media package](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/motion-design-preview-2026-10-19/aftertake-motion-inputs.zip)
-let you replay the edit without a diffusion GPU.
-This is a review preview; the UI sequences use genuine held captures and native
-camera moves.
+The earlier [motion graphics study](examples/motion-design/README.md) remains
+available with its editable source.
 
 ## Hotel Lobby, recast
 
