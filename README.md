@@ -106,7 +106,9 @@ they run through Aftertake's existing Z-Image and Qwen workflows.
 Track a person once, then position up to four extra copies without regenerating
 their face or motion. Adjust scale, rotation, flip, opacity, grow and feather;
 blur or darken the background through the same tracked matte. The original sound
-is retained once. This [reproducible example](examples/subject-duplicates/README.md)
+is retained once. The **Color silhouette echoes** preset adds editable pink,
+coral and orange masks behind the original performer, with individual color,
+offset and opacity controls. This [reproducible example](examples/subject-duplicates/README.md)
 includes the source, prepared frames, lossless mask and portable recipe, and
 replays on the CPU without a running generation engine.
 

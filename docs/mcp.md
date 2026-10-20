@@ -167,6 +167,13 @@ scene; copies reuse that person's actual performance rather than generating
 independent action. Later copies draw over earlier ones. Review collisions,
 cutout edges and frame boundaries in the completed video.
 
+Set a copy's optional `color` to a six-digit hex value such as `"#ff2a96"`
+for a solid silhouette. Set `behindSubject: true` to protect the original
+current-frame person from overlapping copies. Three colored copies with offsets
+`0.12`, `0.08` and `0.04` produce editable silhouette echoes; no extra tracking,
+diffusion or motion interpolation is required. Omitting these fields preserves
+the ordinary source-pixel copy behavior.
+
 Optional `grow` and `feather` adjust the copy edge. `backgroundBlur` and
 `backgroundExposureEV` affect the background through the reviewed person mask.
 An empty `copies` array makes a background-focus edit without additional people.

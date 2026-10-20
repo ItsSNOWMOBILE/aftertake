@@ -176,7 +176,11 @@ test('local subject jobs retain request identity, source audio metadata and a po
 
 test('portable media rebinds to new workspace IDs without retracking or starting an export on import', async (t) => {
   const original = await fixture(t);
-  const started = await original.call('/duplicates', original.request, 'portable-source');
+  const coloredRequest = {
+    ...original.request,
+    copies: [{ ...original.request.copies[0], color: '#FF2A96', behindSubject: true }],
+  };
+  const started = await original.call('/duplicates', coloredRequest, 'portable-source');
   const done = await original.complete(started.body.id);
   const recipe = (await original.call('/' + done.id + '/recipe')).body;
   const fresh = await fixture(t, async () => {
@@ -198,6 +202,8 @@ test('portable media rebinds to new workspace IDs without retracking or starting
   const imported = await fresh.call('/imports', { recipe, media: ids });
   assert.equal(imported.status, 201);
   assert.notEqual(imported.body.request.selectionId, original.selectionId);
+  assert.equal(imported.body.request.copies[0].color, '#ff2a96');
+  assert.equal(imported.body.request.copies[0].behindSubject, true);
   assert.deepEqual((await fresh.call('/')).body, [], 'Importing a recipe does not render it.');
   const startedFresh = await fresh.call(
     '/duplicates',
@@ -227,6 +233,8 @@ test('transform schema rejects unbounded copies and allows focus-only edits', ()
     { backgroundExposureEV: -3 },
     { copies: [{ x: 0, y: 0, scale: 4, opacity: 1 }] },
     { copies: [{ x: 0, y: 0, scale: 1, opacity: 1, rotation: 181 }] },
+    { copies: [{ x: 0, y: 0, scale: 1, opacity: 1, color: 'red' }] },
+    { copies: [{ x: 0, y: 0, scale: 1, opacity: 1, behindSubject: 1 }] },
   ])
     assert.equal(subjectEffectRequestSchema.safeParse({ ...request, ...change }).success, false);
 });

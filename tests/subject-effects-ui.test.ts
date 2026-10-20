@@ -101,11 +101,15 @@ test('subject effects require a complete saved selection, independent of generat
     'Three-person ensemble',
     'Mirror partner',
     'Translucent copies',
+    'Color silhouette echoes',
     'Background focus',
     'Subtle focus',
   ])
     assert.ok(markup.includes(label));
   assert.match(markup, /Applying a preset does not render/);
+  assert.match(markup, /Copy 1 appearance/);
+  assert.match(markup, /Solid silhouette/);
+  assert.match(markup, /Behind original person/);
   for (const label of [
     'Horizontal',
     'Vertical',
@@ -154,6 +158,8 @@ test('subject-effect identity includes matte and all editable transforms while n
     { copies: [{ ...base.copies[0], opacity: 0.5 }] },
     { copies: [{ ...base.copies[0], rotation: 30 }] },
     { copies: [{ ...base.copies[0], flipX: true }] },
+    { copies: [{ ...base.copies[0], color: '#ff2a96' }] },
+    { copies: [{ ...base.copies[0], behindSubject: true }] },
     { copies: [] },
   ])
     assert.notEqual(key, subjectEffectSettingsKey({ ...base, ...patch }));
