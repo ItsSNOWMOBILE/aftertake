@@ -57,6 +57,7 @@ export const projectSchema = z
       .min(0)
       .max(2 ** 32 - 1),
     quality: z.enum(['draft', 'final']),
+    resolution: z.literal('720p').optional(),
     trimStart: z.number().min(0).max(3600),
     pipeline: z.enum(['structure', 'inpaint', 'cinema', 'motion-transfer']).optional(),
     cinema: cinemaSchema.optional(),
@@ -96,6 +97,22 @@ export const projectSchema = z
       )
       .optional(),
   })
+  .refine((recipe) => !recipe.resolution || recipe.quality === 'final', {
+    message: 'Choose Finish quality for a 720p generation.',
+    path: ['resolution'],
+  })
+  .refine(
+    (recipe) =>
+      !recipe.resolution ||
+      Math.abs(
+        Math.log(
+          Math.max(recipe.clip.width, recipe.clip.height) /
+            Math.min(recipe.clip.width, recipe.clip.height) /
+            (16 / 9),
+        ),
+      ) < 0.01,
+    { message: 'The 720p finish uses a landscape or portrait 16:9 source.', path: ['resolution'] },
+  )
   .refine((recipe) => !recipe.compositeRegion || supportsCompositeRegion(recipe), {
     message: 'A separate final region is available for region VFX and masked edits.',
     path: ['compositeRegion'],
@@ -298,6 +315,7 @@ export function renderSettingsKey(r: Recipe) {
       r.transfer?.motionCaption?.trim() || '',
       r.transfer?.scope || 'frame',
       r.transfer?.poseStrength ?? 1,
+      ...(r.resolution ? [['resolution', r.resolution]] : []),
       usesCue(r)
         ? [
             cueSettingsKey(r.cue),
@@ -333,6 +351,7 @@ export function renderSettingsKey(r: Recipe) {
       look.palette,
       look.guidance || 'prompt',
       r.endFrame?.sha256 || '',
+      ...(r.resolution ? [['resolution', r.resolution]] : []),
     ]);
   }
   const c = r.cue;
@@ -354,6 +373,7 @@ export function renderSettingsKey(r: Recipe) {
     r.pipeline === 'inpaint' ? r.editReference?.sha256 || null : null,
     r.matchSourceColor || false,
     ...(r.compositeRegion ? [['composite-region', cueSettingsKey(finalCompositeCue(r))]] : []),
+    ...(r.resolution ? [['resolution', r.resolution]] : []),
   ]);
 }
 
@@ -367,6 +387,7 @@ export function motionGenerationKey(r: Recipe) {
     r.transfer?.reference?.sha256 || '',
     r.transfer?.motionCaption?.trim() || '',
     r.transfer?.poseStrength ?? 1,
+    ...(r.resolution ? [['resolution', r.resolution]] : []),
     ...(r.transfer?.focus
       ? [[r.transfer.focus.x, r.transfer.focus.y, r.transfer.focus.width, r.transfer.focus.height]]
       : []),
@@ -405,6 +426,13 @@ export function renderDimensions(recipe: Recipe) {
     recipe.pipeline === 'cinema'
       ? maxFrames
       : Math.min(maxFrames, Math.floor((remaining * fps - 1) / 8) * 8 + 1);
+  if (recipe.resolution === '720p') {
+    const portrait = recipe.clip.width < recipe.clip.height;
+    const grid = recipe.pipeline === 'cinema' && recipe.cinema?.guidance === 'tracks' ? 64 : 32;
+    const width = Math.ceil((portrait ? 720 : 1280) / grid) * grid;
+    const height = Math.ceil((portrait ? 1280 : 720) / grid) * grid;
+    return { width, height, frames, fps, duration: frames / fps };
+  }
   const longEdge = recipe.quality === 'draft' ? 512 : 768;
   const ratio = recipe.clip.width / recipe.clip.height;
   let width = Math.max(64, Math.round((ratio >= 1 ? longEdge : longEdge * ratio) / 32) * 32);
@@ -432,6 +460,10 @@ export function renderDimensions(recipe: Recipe) {
 }
 
 export function displayDimensions(recipe: Recipe) {
+  if (recipe.resolution === '720p')
+    return recipe.clip.width < recipe.clip.height
+      ? { width: 720, height: 1280 }
+      : { width: 1280, height: 720 };
   const d = renderDimensions(recipe),
     ratio = recipe.clip.width / recipe.clip.height;
   return {

@@ -115,6 +115,13 @@ def expected_dimensions(recipe):
     fps, maximum, edge = (16, 49, 512) if quality == 'draft' else (24, 97, 768)
     frames = min(maximum, math.floor(((duration - trim) * fps - 1) / 8) * 8 + 1)
     ratio = width / height
+    if recipe.get('resolution') == '720p':
+        if quality != 'final' or abs(math.log(max(ratio, 1 / ratio) / (16 / 9))) >= .01:
+            raise ValueError('The 720p finish needs final quality and a 16:9 source.')
+        w, h = (1280, 720) if ratio >= 1 else (720, 1280)
+        return dict(width=w, height=h, frames=frames, fps=fps,
+            displayWidth=w, displayHeight=h,
+            rawWidth=math.ceil(w / 32) * 32, rawHeight=math.ceil(h / 32) * 32)
     rounded = lambda value: math.floor(value + .5)
     w = max(64, rounded((edge if ratio >= 1 else edge * ratio) / 32) * 32)
     h = max(64, rounded((edge / ratio if ratio >= 1 else edge) / 32) * 32)
@@ -208,14 +215,22 @@ def checked_raw_frames(path, dimensions):
         if len(movie.streams.video) != 1:
             raise ValueError('The raw generation needs exactly one video stream.')
         stream = movie.streams.video[0]
-        if (stream.width, stream.height) != (dimensions['width'], dimensions['height']):
+        raw_width = dimensions.get('rawWidth', dimensions['width'])
+        raw_height = dimensions.get('rawHeight', dimensions['height'])
+        if (stream.width, stream.height) != (raw_width, raw_height):
             raise ValueError('The raw generation dimensions differ from its recipe.')
         count = 0
         for frame in movie.decode(video=0):
             if count >= dimensions['frames'] or frame.pts is None or abs(float(frame.pts * frame.time_base) - count / dimensions['fps']) > 1e-6:
                 raise ValueError('The raw generation frame clock differs from its recipe.')
             count += 1
-            yield torch.from_numpy(frame.to_ndarray(format='rgb24').copy()).float() / 255
+            pixels = frame.to_ndarray(format='rgb24')
+            # HD raw takes retain the model's padded latent canvas. Remove
+            # only that padding; no resize of the original or generated pixels.
+            left = (raw_width - dimensions['width']) // 2
+            top = (raw_height - dimensions['height']) // 2
+            pixels = pixels[top:top + dimensions['height'], left:left + dimensions['width']]
+            yield torch.from_numpy(pixels.copy()).float() / 255
         if count != dimensions['frames']:
             raise ValueError('The raw generation is incomplete; refusing to hold or drop raw frames.')
 

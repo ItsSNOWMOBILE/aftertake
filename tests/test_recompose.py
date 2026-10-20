@@ -44,11 +44,12 @@ def write_video(path, frames, width, height, fps, metadata=None):
             movie.mux(packet)
 
 
-def fixture(folder, quality='draft', pipeline='structure', with_audio=True):
+def fixture(folder, quality='draft', pipeline='structure', with_audio=True, resolution=None):
     fps = 16 if quality == 'draft' else 24
     source = folder / 'source.mp4'
     trim = 4 / fps
-    write_video(source, 21, 128, 72, fps)
+    source_width, source_height = (1280, 720) if resolution == '720p' else (128, 72)
+    write_video(source, 21, source_width, source_height, fps)
     if with_audio:
         # A ramped tone makes the selected trim distinguishable from time zero.
         count = round(21 / fps * 48000)
@@ -61,17 +62,19 @@ def fixture(folder, quality='draft', pipeline='structure', with_audio=True):
         'strokes': [{'radius': .25, 'points': [{'x': .5, 'y': .5}]}]}
     original = {'format': 'aftertake/1', 'name': 'Verified native take',
         'clip': {'id': '11111111-2222-4333-8444-555555555555', 'name': 'Source',
-            'sha256': digest, 'width': 128, 'height': 72, 'duration': 21 / fps,
+            'sha256': digest, 'width': source_width, 'height': source_height, 'duration': 21 / fps,
             'url': '/media/source.mp4', 'kind': 'video'},
         'prompt': 'A restrained test effect', 'cue': cue, 'seed': 5090,
         'quality': quality, 'trimStart': trim, 'pipeline': pipeline}
+    if resolution:
+        original['resolution'] = resolution
     revised = deepcopy(original)
     revised['compositeRegion'] = {'feather': .01,
         'strokes': [{'radius': .10, 'points': [{'x': .5, 'y': .5}]}]}
     dimensions = worker.expected_dimensions(original)
     graph = {'1': {'class_type': 'AftertakeSaveVideo', 'inputs': {'fps': fps}}}
     raw = folder / 'raw.mp4'
-    write_video(raw, dimensions['frames'], dimensions['width'], dimensions['height'], fps,
+    write_video(raw, dimensions['frames'], dimensions.get('rawWidth', dimensions['width']), dimensions.get('rawHeight', dimensions['height']), fps,
         {'recipe': original, 'workflow': graph})
     return {'format': 'aftertake-recompose-work/1', 'source': str(source), 'raw': str(raw),
         'output': str(folder / 'result.mp4'), 'receipt': str(folder / 'receipt.json'),
@@ -84,6 +87,27 @@ class RecompositionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         torch.set_num_threads(2)
+
+    def test_hd_recompose_crops_native_padding_without_resizing_raw_or_source_pixels(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            work = fixture(Path(temporary), quality='final', with_audio=False, resolution='720p')
+            self.assertEqual(work['dimensions'], dict(width=1280, height=720, frames=17, fps=24,
+                displayWidth=1280, displayHeight=720, rawWidth=1280, rawHeight=736))
+            with av.open(work['raw']) as movie:
+                decoded = next(movie.decode(video=0)).to_ndarray(format='rgb24')
+            cropped = next(worker.checked_raw_frames(work['raw'], work['dimensions']))
+            self.assertTrue(torch.equal(cropped, torch.from_numpy(decoded[8:728].copy()).float() / 255))
+            with patch.object(torch.cuda, 'init', side_effect=AssertionError('HD CPU blend initialized CUDA')):
+                result = worker.run(work)
+            self.assertEqual((result['width'], result['height'], result['frames'], result['fps']), (1280, 720, 17, 24))
+            self.assertTrue(result['allProtectedPixelsExactBeforeEncoding'])
+            self.assertNotIn('display-bicubic', result['stages'])
+            with av.open(work['output']) as movie:
+                frames = list(movie.decode(video=0))
+            self.assertEqual(len(frames), 17)
+            self.assertEqual((frames[0].width, frames[0].height), (1280, 720))
+            for index, frame in enumerate(frames):
+                self.assertEqual(frame.pts * frame.time_base, Fraction(index, 24))
 
     def test_only_final_controls_can_change_and_bad_inputs_fail_before_encoding(self):
         with tempfile.TemporaryDirectory() as temporary:

@@ -357,6 +357,42 @@ test('CPU blend creates a new hash-bound take, preserving original bytes, clock,
   }
 });
 
+test('HD CPU blending passes visible geometry and keeps native raw padding in a separate bound canvas', async () => {
+  const original: Recipe = {
+    ...recipe,
+    resolution: '720p',
+    clip: { ...recipe.clip, width: 1280, height: 720 },
+  };
+  const f = await fixture({
+    before: async (data, renders) => {
+      renders.set(parentId, { ...parent(), recipe: original });
+      await writeFile(path.join(data, 'clips', `${sourceId}.json`), JSON.stringify(original.clip));
+      await writeFile(path.join(data, 'outputs', `${parentId}-raw.mp4`), rawVideo(original));
+    },
+  });
+  try {
+    const submitted = await f.post('', request, 'hd-visible-blend');
+    assert.equal(submitted.status, 202);
+    const job = await terminal(f.url, ((await submitted.json()) as RecompositionJob).id);
+    assert.deepEqual(f.calls[0].dimensions, {
+      width: 1280,
+      height: 720,
+      frames: 97,
+      fps: 24,
+      displayWidth: 1280,
+      displayHeight: 720,
+      rawWidth: 1280,
+      rawHeight: 736,
+    });
+    assert.equal(job.receipt?.width, 1280);
+    assert.equal(job.receipt?.height, 720);
+    assert.equal(f.calls[0].newRecipe.resolution, '720p');
+    assert.deepEqual(f.calls[0].newRecipe.cue, original.cue);
+  } finally {
+    await f.close();
+  }
+});
+
 test('same-key recovery survives lost responses, conflicts reject changes and no POST is resubmitted to a model', async () => {
   const f = await fixture();
   try {
