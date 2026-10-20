@@ -34,6 +34,8 @@ The film was authored and exported through Aftertake's own MCP at **1080p and
 The [project and reproduction guide](examples/make-the-next-take/README.md) and
 [companion media](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/product-film-preview-2026-10-19/aftertake-product-film-inputs.zip)
 let you reopen the edit without a diffusion GPU.
+A [fresh-workspace replay](examples/make-the-next-take/replay-proof.json) matched
+all 2,304 decoded frames and every decoded soundtrack sample.
 
 This is a review preview. UI sequences use actual captured app states with fixed
 framing; processing waits are omitted. Footage: RDNE Stock project / Pexels.

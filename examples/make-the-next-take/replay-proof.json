@@ -1,0 +1,67 @@
+{
+  "format": "aftertake-product-film-replay-proof/1",
+  "status": "technical-replay-passed-owner-review-pending",
+  "codeRevision": "5ae0854f3869c97f9bfe58766085997796a563d9",
+  "sameApplicationTreeMergedAt": "990c7ef73c771d309534ecc1577430f783426017",
+  "projectFormat": "aftertake-film/3",
+  "authoredProjectSha256": "94234b60aa14e182b9fac7bada931bed0c5b364e18bf91179b5c311c6fbff491",
+  "portableProjectSha256": "e37416afaa0bf6875b436397aed539d5e9394e24cf4ea7082f544802e56b02ce",
+  "referenceExport": {
+    "name": "aftertake-make-the-next-take.mp4",
+    "sha256": "117399c365f4798e0471534d51081dd1e836356c5f2740be660673a56b95260c",
+    "bytes": 36022476,
+    "durationSeconds": 96,
+    "frames": 2304,
+    "fps": 24,
+    "width": 1920,
+    "height": 1080
+  },
+  "freshWorkspaceReplay": {
+    "initialAssetCount": 0,
+    "initialFilmCount": 0,
+    "dataDirectoryExistedBeforeStart": false,
+    "importedUniqueFilmCompanions": 50,
+    "savedEditableProjects": 4,
+    "verifiedSourceBindings": 66,
+    "allLocalAssetIdsRebound": true,
+    "filmId": "90853b15-a8d7-47ad-a5f7-ccbf643b1aad",
+    "state": "ready",
+    "encodedSha256": "2d204a7cd4e2aeba299a2c00cde290005e87a50fe96ac00804436ddabb340d41",
+    "cpuFilmAssemblyOnly": true,
+    "modelInferenceJobs": 0,
+    "paidGenerationCalls": 0
+  },
+  "videoComparison": {
+    "allDecodedRgbFramesEqual": true,
+    "decodedFramesPerExport": 2304,
+    "decodedRgbSha256": "3d0cbcdb3d300704a94add1e0fea0fb2219f5fba4eb522192a8de4decc8a9b69",
+    "mismatchedFrameCount": 0,
+    "maximumPixelDifference": 0,
+    "frameTimestampsEqual": true,
+    "maximumTimestampDeviationSeconds": 0
+  },
+  "audioComparison": {
+    "floatPcmEqual": true,
+    "s16PcmEqual": true,
+    "sampleRate": 48000,
+    "channels": 2,
+    "samplesPerChannel": 4607760,
+    "floatInterleavedSha256": "63e3c939958fda9273bd6ea5a47a667907beeb9154fc0bb5665d326712790324",
+    "s16InterleavedSha256": "d51eb5a273a4559ceae2672312cfeb7adeca96ed7eba506e5a6c78ca631b3cbf",
+    "audioTimestampsEqual": true,
+    "timestampsSha256": "a8bcb22cf3cd514e07ac73804f377e2fad4222c5296ff87fbc25a24f6b561ac6"
+  },
+  "unpackSafety": {
+    "differentExistingFileRefusedBeforeAnyWrite": true,
+    "existingSentinelUnchanged": true,
+    "traversalRefused": true,
+    "outsideTargetCreated": false,
+    "aliasRejectedBeforeWrite": true,
+    "caseRejectedBeforeWrite": true,
+    "differentExistingFilesOverwritten": 0,
+    "testedHelperSha256": "a2ffa556029522e3667b53e3ab320d17a37aa62c69128ea5e70fb1c194a1863b"
+  },
+  "continuousPlaybackReviewed": false,
+  "audioListenedEndToEnd": false,
+  "scope": "Exact completed-media native Film reassembly in a fresh workspace on the pinned application and runtime. All decoded RGB frames, video timestamps and canonical audio PCM were streamed and compared. Encoded files differ because workspace identifiers and metadata differ. This does not certify creative approval, continuous viewing/listening, identical output across codec versions or fresh model inference. The owner reviews and submits the competition entry."
+}

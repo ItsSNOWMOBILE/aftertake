@@ -1,0 +1,568 @@
+{
+  "format": "aftertake-film/3",
+  "name": "MOVE YOUR WAY — landscape concept campaign",
+  "aspect": "landscape",
+  "resolution": "1080p",
+  "shots": [
+    {
+      "assetId": "7ee06d23-00c5-4d6a-ba15-9505e7514acd",
+      "sha256": "def8112028962262ab23ba0f83c3da33662c8cedb4b409c3ed40c4ee2bbdb4b0",
+      "start": 0,
+      "end": 1,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "f735577a-a8fb-437f-8699-14062cef0dc0",
+      "sha256": "42abd42981efec48734752026df1c5cb2dadf57d2d75a1db0199faf900c74485",
+      "start": 1,
+      "end": 1.5,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "a17a92fa-4f62-433a-8660-58914b7fa95c",
+      "sha256": "6f5bd8ecea3633d7dc9e795e97a1ab2a5bcb7a852fb14a1aca6808d10e7aaa4e",
+      "start": 1.5,
+      "end": 2.5,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "2ebecae4-6f4f-4c02-a133-73d1e6718fcf",
+      "sha256": "ba39fba86ad15d2ae1a8c78c3c74c133061d91bd33f294f5765755dcebfa1e98",
+      "start": 0,
+      "end": 2.5,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "1c18c0e0-05bb-4392-866d-e52d72628404",
+      "sha256": "f6a654ae265a31cc7028c9393dae6b31e291c0e7d59b987face856933be34f90",
+      "start": 7.8,
+      "end": 10.3,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "808c00be-6da5-4a14-86d9-dd3f3089b03d",
+      "sha256": "230ce107107eca42a2d3bdeb57b2bb79dee654104f03d12d7602a1657c0ec90b",
+      "start": 0,
+      "end": 0.5,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    }
+  ],
+  "titles": [
+    {
+      "id": "32a88ea6-3f10-5336-8ee2-99628c25e33e",
+      "text": "MOVE",
+      "start": 0,
+      "end": 2.5,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 112,
+      "color": "#111a14",
+      "stroke": false,
+      "fontWeight": 700,
+      "align": "center",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": -0.3,
+            "y": -0.015,
+            "scale": 0.96,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.10169491525423728,
+            "x": -0.3,
+            "y": -0.05,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 1,
+            "x": -0.3,
+            "y": -0.05,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "c642514e-95b6-518e-81b3-827f378e6836",
+      "text": "YOUR",
+      "start": 1,
+      "end": 2.5,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 112,
+      "color": "#111a14",
+      "stroke": false,
+      "fontWeight": 700,
+      "align": "center",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": -0.015,
+            "scale": 0.96,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.17142857142857143,
+            "x": 0,
+            "y": -0.05,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.05,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "09b031b0-e9af-5b9e-8416-5e254b1b8aa1",
+      "text": "WAY",
+      "start": 1.5,
+      "end": 2.5,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 112,
+      "color": "#111a14",
+      "stroke": false,
+      "fontWeight": 700,
+      "align": "center",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0.3,
+            "y": -0.015,
+            "scale": 0.96,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.2608695652173913,
+            "x": 0.3,
+            "y": -0.05,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 1,
+            "x": 0.3,
+            "y": -0.05,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "7a3ede3a-d7c0-55ed-87f6-5c09d0b04eba",
+      "text": "MOVE\nYOUR\nWAY",
+      "start": 2.5,
+      "end": 5,
+      "style": "headline",
+      "position": "center",
+      "animation": "none",
+      "fontSize": 92,
+      "color": "#111a14",
+      "stroke": false,
+      "fontWeight": 700,
+      "align": "left",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.035,
+            "scale": 0.96,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.10169491525423728,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "f05900d5-bc2b-5a9d-866b-3498eb0e5fb3",
+      "text": "STREET\nDANCE",
+      "start": 2.5,
+      "end": 5,
+      "style": "headline",
+      "position": "center",
+      "animation": "none",
+      "fontSize": 64,
+      "color": "#111a14",
+      "stroke": false,
+      "fontWeight": 700,
+      "align": "right",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.035,
+            "scale": 0.96,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.10169491525423728,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "52c83ba5-d519-5d79-8883-3df097c37199",
+      "text": "CONCEPT CAMPAIGN",
+      "start": 2.5,
+      "end": 5,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 20,
+      "color": "#111a14",
+      "stroke": false,
+      "fontWeight": 500,
+      "align": "right",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.015,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0.015,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "8e41319e-6025-538c-8e99-e05e980fa7f8",
+      "text": "MOVE\nYOUR\nWAY",
+      "start": 5,
+      "end": 7.5,
+      "style": "headline",
+      "position": "center",
+      "animation": "none",
+      "fontSize": 64,
+      "color": "#111a14",
+      "stroke": false,
+      "fontWeight": 700,
+      "align": "center",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0.3541666666666667,
+            "y": 0.035,
+            "scale": 0.96,
+            "rotation": 0,
+            "opacity": 0,
+            "easing": "linear"
+          },
+          {
+            "at": 0.10169491525423728,
+            "x": 0.3541666666666667,
+            "y": 0,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-out"
+          },
+          {
+            "at": 1,
+            "x": 0.3541666666666667,
+            "y": 0,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "51526113-4096-5c00-8726-daac64ca7e24",
+      "text": "MOVE YOUR WAY",
+      "start": 7.5,
+      "end": 8,
+      "style": "headline",
+      "position": "center",
+      "animation": "none",
+      "fontSize": 100,
+      "color": "#111a14",
+      "stroke": false,
+      "fontWeight": 700,
+      "align": "center",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2d0a6eb9-67cd-55d8-8d95-547b6e5eda2a",
+      "text": "STREET DANCE / CONCEPT CAMPAIGN",
+      "start": 7.5,
+      "end": 8,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 23,
+      "color": "#111a14",
+      "stroke": false,
+      "fontWeight": 500,
+      "align": "center",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": -0.09,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.09,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    }
+  ],
+  "graphics": [
+    {
+      "id": "145da656-fa0e-5126-8072-37fabda6f6c0",
+      "name": "hero-lime-masthead",
+      "kind": "rect",
+      "start": 0,
+      "end": 2.5,
+      "x": 0.5,
+      "y": 0.11,
+      "width": 1,
+      "height": 0.22,
+      "color": "#d5e991",
+      "opacity": 1
+    },
+    {
+      "id": "b63d7926-9705-5bb2-86f9-57502666ec65",
+      "name": "paper-left-2.5",
+      "kind": "rect",
+      "start": 2.5,
+      "end": 5,
+      "x": 0.1708984375,
+      "y": 0.5,
+      "width": 0.342296875,
+      "height": 1,
+      "color": "#f6f7ed",
+      "opacity": 1
+    },
+    {
+      "id": "091a560b-565c-5c3c-8c3d-ac408ef2245e",
+      "name": "paper-right-2.5",
+      "kind": "rect",
+      "start": 2.5,
+      "end": 5,
+      "x": 0.8291015625,
+      "y": 0.5,
+      "width": 0.342296875,
+      "height": 1,
+      "color": "#d5e991",
+      "opacity": 1
+    },
+    {
+      "id": "0ce8e76e-afbb-5ea8-830e-b5f4a964d60d",
+      "name": "duo-lime-column",
+      "kind": "rect",
+      "start": 5,
+      "end": 7.5,
+      "x": 0.875,
+      "y": 0.5,
+      "width": 0.25,
+      "height": 1,
+      "color": "#d5e991",
+      "opacity": 1
+    },
+    {
+      "id": "16f68eda-5e9b-54d1-8712-71ed09bd67f2",
+      "name": "resolve-lime-rule",
+      "kind": "rect",
+      "start": 7.5,
+      "end": 8,
+      "x": 0.5,
+      "y": 0.65,
+      "width": 0.18,
+      "height": 0.008,
+      "color": "#d5e991",
+      "opacity": 1
+    }
+  ],
+  "audio": [],
+  "sourceVolume": 0,
+  "normalizeAudio": false,
+  "sourceFiles": {
+    "1c18c0e0-05bb-4392-866d-e52d72628404": {
+      "path": "examples/make-the-next-take/media/f6a654ae265a-duo-graded.mp4",
+      "sha256": "f6a654ae265a31cc7028c9393dae6b31e291c0e7d59b987face856933be34f90"
+    },
+    "2ebecae4-6f4f-4c02-a133-73d1e6718fcf": {
+      "path": "examples/make-the-next-take/media/ba39fba86ad1-portrait-graded.mp4",
+      "sha256": "ba39fba86ad15d2ae1a8c78c3c74c133061d91bd33f294f5765755dcebfa1e98"
+    },
+    "7ee06d23-00c5-4d6a-ba15-9505e7514acd": {
+      "path": "examples/make-the-next-take/media/def811202896-hero-before-graded.mp4",
+      "sha256": "def8112028962262ab23ba0f83c3da33662c8cedb4b409c3ed40c4ee2bbdb4b0"
+    },
+    "808c00be-6da5-4a14-86d9-dd3f3089b03d": {
+      "path": "examples/make-the-next-take/media/230ce107107e-native-paper-card.png",
+      "sha256": "230ce107107eca42a2d3bdeb57b2bb79dee654104f03d12d7602a1657c0ec90b"
+    },
+    "a17a92fa-4f62-433a-8660-58914b7fa95c": {
+      "path": "examples/make-the-next-take/media/6f5bd8ecea36-two-echo-graded.mp4",
+      "sha256": "6f5bd8ecea3633d7dc9e795e97a1ab2a5bcb7a852fb14a1aca6808d10e7aaa4e"
+    },
+    "f735577a-a8fb-437f-8699-14062cef0dc0": {
+      "path": "examples/make-the-next-take/media/42abd42981ef-one-echo-graded.mp4",
+      "sha256": "42abd42981efec48734752026df1c5cb2dadf57d2d75a1db0199faf900c74485"
+    }
+  }
+}

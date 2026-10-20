@@ -1,0 +1,768 @@
+{
+  "format": "aftertake-film-narration/1",
+  "clips": [
+    {
+      "path": "examples/make-the-next-take/media/217105b1adea-VO01.wav",
+      "sha256": "217105b1adeacbba3ae047ac4effec307c0a10fb9e942afd1e5c53d65694878d",
+      "start": 8.5,
+      "sourceStart": 0,
+      "sourceEnd": 4.335958333333333,
+      "receipt": {
+        "text": "A few good takes. One clear idea. Let's turn them into a campaign.",
+        "voice": "af_sarah",
+        "speed": 1,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "A",
+              "start": 0.09833333333333333,
+              "end": 0.14833333333333334
+            },
+            {
+              "text": "few",
+              "start": 0.22333333333333333,
+              "end": 0.37333333333333335
+            },
+            {
+              "text": "good",
+              "start": 0.42333333333333334,
+              "end": 0.5983333333333334
+            },
+            {
+              "text": "takes.",
+              "start": 0.6483333333333333,
+              "end": 1.2483333333333333
+            },
+            {
+              "text": "One",
+              "start": 1.4233333333333333,
+              "end": 1.5983333333333334
+            },
+            {
+              "text": "clear",
+              "start": 1.6483333333333334,
+              "end": 1.8733333333333333
+            },
+            {
+              "text": "idea.",
+              "start": 1.9233333333333333,
+              "end": 2.4483333333333333
+            },
+            {
+              "text": "Let's",
+              "start": 2.668333333333333,
+              "end": 2.893333333333333
+            },
+            {
+              "text": "turn",
+              "start": 2.9433333333333334,
+              "end": 3.0933333333333333
+            },
+            {
+              "text": "them",
+              "start": 3.118333333333333,
+              "end": 3.2183333333333333
+            },
+            {
+              "text": "into",
+              "start": 3.243333333333333,
+              "end": 3.418333333333333
+            },
+            {
+              "text": "a",
+              "start": 3.4433333333333334,
+              "end": 3.4683333333333333
+            },
+            {
+              "text": "campaign.",
+              "start": 3.518333333333333,
+              "end": 4.166
+            }
+          ]
+        },
+        "wordTimingMapper": "phoneme-boundaries/2"
+      }
+    },
+    {
+      "path": "examples/make-the-next-take/media/4a8390e2f002-VO02.wav",
+      "sha256": "4a8390e2f002d75f04e0cbe06dbce12272a38214513c107d56fb292c417c76b3",
+      "start": 16,
+      "sourceStart": 0,
+      "sourceEnd": 4.692625,
+      "receipt": {
+        "text": "Bring your footage into Aftertake. Pick the moment, and start shaping the story.",
+        "voice": "af_sarah",
+        "speed": 1,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Bring",
+              "start": 0.05566666666666667,
+              "end": 0.23066666666666666
+            },
+            {
+              "text": "your",
+              "start": 0.25566666666666665,
+              "end": 0.3556666666666667
+            },
+            {
+              "text": "footage",
+              "start": 0.43066666666666664,
+              "end": 0.7306666666666667
+            },
+            {
+              "text": "into",
+              "start": 0.7556666666666667,
+              "end": 0.9556666666666667
+            },
+            {
+              "text": "Aftertake.",
+              "start": 1.0306666666666666,
+              "end": 1.9556666666666667
+            },
+            {
+              "text": "Pick",
+              "start": 2.155666666666667,
+              "end": 2.3306666666666667
+            },
+            {
+              "text": "the",
+              "start": 2.3806666666666665,
+              "end": 2.4306666666666668
+            },
+            {
+              "text": "moment,",
+              "start": 2.4806666666666666,
+              "end": 2.9806666666666666
+            },
+            {
+              "text": "and",
+              "start": 3.1056666666666666,
+              "end": 3.1806666666666668
+            },
+            {
+              "text": "start",
+              "start": 3.2306666666666666,
+              "end": 3.5056666666666665
+            },
+            {
+              "text": "shaping",
+              "start": 3.5806666666666667,
+              "end": 3.8806666666666665
+            },
+            {
+              "text": "the",
+              "start": 3.905666666666667,
+              "end": 3.9556666666666667
+            },
+            {
+              "text": "story.",
+              "start": 4.0056666666666665,
+              "end": 4.522666666666667
+            }
+          ]
+        },
+        "wordTimingMapper": "phoneme-boundaries/2"
+      }
+    },
+    {
+      "path": "examples/make-the-next-take/media/4363dcef8a99-VO03.wav",
+      "sha256": "4363dcef8a996a69fac3e447e2154ec9c048eba673cebf0c9836ca4b17cc9b8c",
+      "start": 25.666666666666668,
+      "sourceStart": 0,
+      "sourceEnd": 5.801958333333333,
+      "receipt": {
+        "text": "Track the dancer with SAM three. Review the mask in motion. The performance stays yours.",
+        "voice": "af_sarah",
+        "speed": 1,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Track",
+              "start": 0.07333333333333333,
+              "end": 0.3233333333333333
+            },
+            {
+              "text": "the",
+              "start": 0.34833333333333333,
+              "end": 0.3983333333333333
+            },
+            {
+              "text": "dancer",
+              "start": 0.4483333333333333,
+              "end": 0.8483333333333334
+            },
+            {
+              "text": "with",
+              "start": 0.8983333333333333,
+              "end": 1.0233333333333334
+            },
+            {
+              "text": "SAM",
+              "start": 1.0983333333333334,
+              "end": 1.5983333333333334
+            },
+            {
+              "text": "three.",
+              "start": 1.6733333333333333,
+              "end": 2.1983333333333333
+            },
+            {
+              "text": "Review",
+              "start": 2.348333333333333,
+              "end": 2.6233333333333335
+            },
+            {
+              "text": "the",
+              "start": 2.6483333333333334,
+              "end": 2.6983333333333333
+            },
+            {
+              "text": "mask",
+              "start": 2.7483333333333335,
+              "end": 3.0733333333333333
+            },
+            {
+              "text": "in",
+              "start": 3.098333333333333,
+              "end": 3.1483333333333334
+            },
+            {
+              "text": "motion.",
+              "start": 3.1983333333333333,
+              "end": 3.973333333333333
+            },
+            {
+              "text": "The",
+              "start": 4.123333333333333,
+              "end": 4.173333333333333
+            },
+            {
+              "text": "performance",
+              "start": 4.223333333333334,
+              "end": 4.748333333333333
+            },
+            {
+              "text": "stays",
+              "start": 4.798333333333333,
+              "end": 5.073333333333333
+            },
+            {
+              "text": "yours.",
+              "start": 5.123333333333333,
+              "end": 5.632
+            }
+          ]
+        },
+        "wordTimingMapper": "phoneme-boundaries/2"
+      }
+    },
+    {
+      "path": "examples/make-the-next-take/media/cae3fa39fe0d-VO04.wav",
+      "sha256": "cae3fa39fe0dd807dc894f02872ce74386b0ba33bc13f3a1e3c2194843104858",
+      "start": 32,
+      "sourceStart": 0,
+      "sourceEnd": 4.958625,
+      "receipt": {
+        "text": "Then turn that movement into a hook. Two echoes. Three beats. Move. Your. Way.",
+        "voice": "af_sarah",
+        "speed": 1,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Then",
+              "start": 0.052,
+              "end": 0.177
+            },
+            {
+              "text": "turn",
+              "start": 0.227,
+              "end": 0.402
+            },
+            {
+              "text": "that",
+              "start": 0.427,
+              "end": 0.552
+            },
+            {
+              "text": "movement",
+              "start": 0.602,
+              "end": 0.902
+            },
+            {
+              "text": "into",
+              "start": 0.927,
+              "end": 1.127
+            },
+            {
+              "text": "a",
+              "start": 1.177,
+              "end": 1.202
+            },
+            {
+              "text": "hook.",
+              "start": 1.252,
+              "end": 1.877
+            },
+            {
+              "text": "Two",
+              "start": 2.077,
+              "end": 2.202
+            },
+            {
+              "text": "echoes.",
+              "start": 2.252,
+              "end": 2.727
+            },
+            {
+              "text": "Three",
+              "start": 3.002,
+              "end": 3.177
+            },
+            {
+              "text": "beats.",
+              "start": 3.227,
+              "end": 3.577
+            },
+            {
+              "text": "Move.",
+              "start": 3.872,
+              "end": 4.147
+            },
+            {
+              "text": "Your.",
+              "start": 4.222,
+              "end": 4.347
+            },
+            {
+              "text": "Way.",
+              "start": 4.422000000000001,
+              "end": 4.778666666666667
+            }
+          ]
+        },
+        "wordTimingMapper": "phoneme-boundaries/2"
+      }
+    },
+    {
+      "path": "examples/make-the-next-take/media/08cd7fbf451a-VO05.wav",
+      "sha256": "08cd7fbf451a9026a171e8777f9d168d5f1d1d5a79cdac2379593330eae1a889",
+      "start": 40,
+      "sourceStart": 0,
+      "sourceEnd": 4.175333333333334,
+      "receipt": {
+        "text": "Give the footage a look. Keep skin natural. Bring the whole cut together.",
+        "voice": "af_sarah",
+        "speed": 1,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Give",
+              "start": 0.05566666666666667,
+              "end": 0.18066666666666667
+            },
+            {
+              "text": "the",
+              "start": 0.20566666666666666,
+              "end": 0.25566666666666665
+            },
+            {
+              "text": "footage",
+              "start": 0.33066666666666666,
+              "end": 0.6306666666666667
+            },
+            {
+              "text": "a",
+              "start": 0.6556666666666666,
+              "end": 0.6806666666666666
+            },
+            {
+              "text": "look.",
+              "start": 0.7306666666666667,
+              "end": 1.0806666666666667
+            },
+            {
+              "text": "Keep",
+              "start": 1.2756666666666667,
+              "end": 1.4756666666666667
+            },
+            {
+              "text": "skin",
+              "start": 1.5256666666666667,
+              "end": 1.7756666666666667
+            },
+            {
+              "text": "natural.",
+              "start": 1.8256666666666668,
+              "end": 2.5506666666666664
+            },
+            {
+              "text": "Bring",
+              "start": 2.7006666666666663,
+              "end": 2.8756666666666666
+            },
+            {
+              "text": "the",
+              "start": 2.9006666666666665,
+              "end": 2.9506666666666663
+            },
+            {
+              "text": "whole",
+              "start": 3.0006666666666666,
+              "end": 3.2256666666666667
+            },
+            {
+              "text": "cut",
+              "start": 3.2756666666666665,
+              "end": 3.4756666666666667
+            },
+            {
+              "text": "together.",
+              "start": 3.5256666666666665,
+              "end": 3.995333333333333
+            }
+          ]
+        },
+        "wordTimingMapper": "phoneme-boundaries/2"
+      }
+    },
+    {
+      "path": "examples/make-the-next-take/media/4426ced1909b-VO06.wav",
+      "sha256": "4426ced1909b15b0d0a95aadac3251e287c8013b5e62b3d7c0b7a60a16a1320a",
+      "start": 50.25,
+      "sourceStart": 0,
+      "sourceEnd": 6.821958333333333,
+      "receipt": {
+        "text": "Now set the rhythm. Trim the shots. Add words, shapes, and motion. Keep your titles and graphics editable.",
+        "voice": "af_sarah",
+        "speed": 1,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Now",
+              "start": 0.102,
+              "end": 0.302
+            },
+            {
+              "text": "set",
+              "start": 0.352,
+              "end": 0.477
+            },
+            {
+              "text": "the",
+              "start": 0.502,
+              "end": 0.552
+            },
+            {
+              "text": "rhythm.",
+              "start": 0.602,
+              "end": 1.052
+            },
+            {
+              "text": "Trim",
+              "start": 1.252,
+              "end": 1.452
+            },
+            {
+              "text": "the",
+              "start": 1.477,
+              "end": 1.5270000000000001
+            },
+            {
+              "text": "shots.",
+              "start": 1.602,
+              "end": 2.452
+            },
+            {
+              "text": "Add",
+              "start": 2.6519999999999997,
+              "end": 2.827
+            },
+            {
+              "text": "words,",
+              "start": 2.877,
+              "end": 3.227
+            },
+            {
+              "text": "shapes,",
+              "start": 3.327,
+              "end": 3.6769999999999996
+            },
+            {
+              "text": "and",
+              "start": 3.727,
+              "end": 3.8019999999999996
+            },
+            {
+              "text": "motion.",
+              "start": 3.852,
+              "end": 4.527
+            },
+            {
+              "text": "Keep",
+              "start": 4.652,
+              "end": 4.827
+            },
+            {
+              "text": "your",
+              "start": 4.851999999999999,
+              "end": 4.927
+            },
+            {
+              "text": "titles",
+              "start": 4.976999999999999,
+              "end": 5.427
+            },
+            {
+              "text": "and",
+              "start": 5.476999999999999,
+              "end": 5.552
+            },
+            {
+              "text": "graphics",
+              "start": 5.601999999999999,
+              "end": 6.052
+            },
+            {
+              "text": "editable.",
+              "start": 6.101999999999999,
+              "end": 6.6419999999999995
+            }
+          ]
+        },
+        "wordTimingMapper": "phoneme-boundaries/2"
+      }
+    },
+    {
+      "path": "examples/make-the-next-take/media/609604743d4c-VO07.wav",
+      "sha256": "609604743d4c524737bc656b0e575762ff73c5aec9cbbaecd51acc63e92c7370",
+      "start": 60,
+      "sourceStart": 0,
+      "sourceEnd": 4.768,
+      "receipt": {
+        "text": "Write the voiceover. Hear it in the edit. Let the music make room for every word.",
+        "voice": "af_sarah",
+        "speed": 1,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTimingError": "Written words do not map reliably to the spoken phoneme groups. Use clean captions or simplify punctuation.",
+        "wordTimingMapper": "phoneme-boundaries/2"
+      }
+    },
+    {
+      "path": "examples/make-the-next-take/media/9eeebb73774a-VO08.wav",
+      "sha256": "9eeebb73774afbfb839313cd543ba69b662c2260eb7eb58955e0501df61695a5",
+      "start": 68,
+      "sourceStart": 0,
+      "sourceEnd": 3.816666666666667,
+      "receipt": {
+        "text": "Frame it for a vertical ad, a square post, or a full-width film.",
+        "voice": "af_sarah",
+        "speed": 1,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTimingError": "Written words do not map reliably to the spoken phoneme groups. Use clean captions or simplify punctuation.",
+        "wordTimingMapper": "phoneme-boundaries/2"
+      }
+    },
+    {
+      "path": "examples/make-the-next-take/media/19fa7b1c2e94-VO09.wav",
+      "sha256": "19fa7b1c2e9457325a75a31d89101df13c89d1228711f7ee4a53bd994529312e",
+      "start": 84,
+      "sourceStart": 0,
+      "sourceEnd": 5.749958333333334,
+      "receipt": {
+        "text": "And the film you've just watched? The cuts, the graphics, the narration. Edited here, in Aftertake.",
+        "voice": "af_sarah",
+        "speed": 1,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "And",
+              "start": 0.09833333333333333,
+              "end": 0.17333333333333334
+            },
+            {
+              "text": "the",
+              "start": 0.19833333333333333,
+              "end": 0.24833333333333332
+            },
+            {
+              "text": "film",
+              "start": 0.29833333333333334,
+              "end": 0.49833333333333335
+            },
+            {
+              "text": "you've",
+              "start": 0.5483333333333333,
+              "end": 0.6483333333333333
+            },
+            {
+              "text": "just",
+              "start": 0.6733333333333333,
+              "end": 0.8733333333333333
+            },
+            {
+              "text": "watched?",
+              "start": 0.9233333333333333,
+              "end": 1.5983333333333334
+            },
+            {
+              "text": "The",
+              "start": 1.7483333333333333,
+              "end": 1.8233333333333333
+            },
+            {
+              "text": "cuts,",
+              "start": 1.8983333333333334,
+              "end": 2.223333333333333
+            },
+            {
+              "text": "the",
+              "start": 2.3433333333333333,
+              "end": 2.393333333333333
+            },
+            {
+              "text": "graphics,",
+              "start": 2.4433333333333334,
+              "end": 2.918333333333333
+            },
+            {
+              "text": "the",
+              "start": 3.0383333333333336,
+              "end": 3.0883333333333334
+            },
+            {
+              "text": "narration.",
+              "start": 3.1133333333333333,
+              "end": 3.8883333333333336
+            },
+            {
+              "text": "Edited",
+              "start": 4.0633333333333335,
+              "end": 4.413333333333333
+            },
+            {
+              "text": "here,",
+              "start": 4.463333333333333,
+              "end": 4.713333333333333
+            },
+            {
+              "text": "in",
+              "start": 4.788333333333333,
+              "end": 4.863333333333333
+            },
+            {
+              "text": "Aftertake.",
+              "start": 4.938333333333333,
+              "end": 5.58
+            }
+          ]
+        },
+        "wordTimingMapper": "phoneme-boundaries/2"
+      }
+    },
+    {
+      "path": "examples/make-the-next-take/media/26f05e5c3ed0-VO10.wav",
+      "sha256": "26f05e5c3ed0ebca005044ea9a50ecf1afd9eb2811231e9eb68e4fb742c638c3",
+      "start": 92.25,
+      "sourceStart": 0,
+      "sourceEnd": 2.5,
+      "receipt": {
+        "text": "Aftertake Studio. Make the next take.",
+        "voice": "af_sarah",
+        "speed": 1,
+        "timedWords": true,
+        "model": "Kokoro-82M v1.0 (Apache-2.0)",
+        "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+        "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+        "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+        "wordTiming": {
+          "method": "kokoro-phoneme-durations/1",
+          "words": [
+            {
+              "text": "Aftertake",
+              "start": 0.11966666666666667,
+              "end": 0.5946666666666667
+            },
+            {
+              "text": "Studio.",
+              "start": 0.6446666666666667,
+              "end": 1.1946666666666668
+            },
+            {
+              "text": "Make",
+              "start": 1.4446666666666668,
+              "end": 1.5946666666666667
+            },
+            {
+              "text": "the",
+              "start": 1.6196666666666668,
+              "end": 1.6696666666666669
+            },
+            {
+              "text": "next",
+              "start": 1.6946666666666668,
+              "end": 1.9196666666666669
+            },
+            {
+              "text": "take.",
+              "start": 1.9696666666666667,
+              "end": 2.3400000000000003
+            }
+          ]
+        },
+        "wordTimingMapper": "phoneme-boundaries/2"
+      }
+    }
+  ],
+  "scope": "Original WAVs, scripts and actual native receipts. Two clips retain explicit word-timing mapping limitations; no invented word timings or listening certificate."
+}
