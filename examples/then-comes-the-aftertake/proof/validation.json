@@ -1,0 +1,86 @@
+{
+  "proof-render": {
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "10480000/349333",
+          "nb_frames": "10480"
+        }
+      ],
+      "format": {
+        "duration": "349.333000",
+        "size": "29905400"
+      }
+    },
+    "decodedWithoutErrors": true,
+    "encodedStreamUnchangedByRemux": true,
+    "encodedStreamSha256": "SHA256=dc7748c5d7240b0abbcdd2070699a01f4d4f7a7211dd1d027ae44a0932210abc",
+    "packetCount": 10480,
+    "presentationTimestampStepSeconds": {
+      "min": 0.03299999999995862,
+      "max": 0.034000000000020236
+    }
+  },
+  "proof-mcp": {
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "959500/31983",
+          "nb_frames": "1919"
+        }
+      ],
+      "format": {
+        "duration": "63.966000",
+        "size": "9982700"
+      }
+    },
+    "decodedWithoutErrors": true,
+    "encodedStreamUnchangedByRemux": true,
+    "encodedStreamSha256": "SHA256=a6a88696d0ad6426a4b949a6f0af4a17703523a4bf0c6d993eaffd84cfb837cd",
+    "packetCount": 1919,
+    "presentationTimestampStepSeconds": {
+      "min": 0.032999999999994145,
+      "max": 0.034000000000006025
+    }
+  },
+  "proof-workflow": {
+    "probe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1920,
+          "height": 1080,
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "751000/25033",
+          "nb_frames": "1502"
+        }
+      ],
+      "format": {
+        "duration": "50.066000",
+        "size": "4411119"
+      }
+    },
+    "decodedWithoutErrors": true,
+    "encodedStreamUnchangedByRemux": true,
+    "encodedStreamSha256": "SHA256=58171b681e31788268eb461d410fd821889fe496758778cd676deded418edb78",
+    "packetCount": 1502,
+    "presentationTimestampStepSeconds": {
+      "min": 0.032999999999994145,
+      "max": 0.034000000000006025
+    }
+  }
+}
