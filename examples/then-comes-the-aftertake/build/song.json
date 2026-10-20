@@ -1,0 +1,10 @@
+{
+  "model": "ACE-Step 1.5 XL Turbo (open weights) on Comfy Cloud",
+  "workflowSource": "https://github.com/Comfy-Org/workflow_templates/blob/main/benchmarks/audio_ace_step1_5_xl_turbo.json (MIT)",
+  "bpm": 103,
+  "seconds": 96,
+  "keyscale": "E minor",
+  "seeds": [1031, 2062, 3093, 4124],
+  "tags": "cinematic hip-hop, electronic trailer, 103 BPM, punchy kick, crisp snare, hand claps, booming timpani hits, deep sub bass, bright synth stabs, short orchestral string swells, vinyl texture, quiet tense intro then huge drop, confident male rap vocals, chanted hook, energetic, bold, playful, premium tech launch, clean loud modern mix",
+  "lyrics": "[Intro]\n(whispered) Every shot ends...\n(whispered) Then comes the...\n\n[Chorus]\nAftertake!\nPaint it, change it, make it new\nSame scene, a different view\nOpen weights on your own machine\nMake the next take, run the scene\n\n[Verse]\nRecast the lead, keep the move\nFive more dancers in the groove\nWords to video, still to light\nPull the camera, cut it right\nAn agent cuts it, frame by frame\nForty-four tools, still the same\n\n[Bridge]\nOn the beat... on the beat...\nCut to the beat\n\n[Chorus]\nYour clip! Your models! Your call!\nPaint it, change it, make it new\nMake the next take, run the scene\n\n[Outro]\nAftertake."
+}
