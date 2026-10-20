@@ -643,6 +643,22 @@ export default function SubjectEffects({
                   {preset?.description ||
                     'Choose an editable starting point, then adjust the controls. Applying a preset does not render.'}
                 </p>
+                <button
+                  className="button subject-effects-render"
+                  disabled={busy || Boolean(pending) || !connected || !validation.success}
+                  onClick={() => void render()}
+                >
+                  {busy || pending ? (
+                    <LoaderCircle size={15} className="spin" />
+                  ) : (
+                    <Copy size={15} />
+                  )}{' '}
+                  {pending
+                    ? pending.state === 'queued'
+                      ? 'Preview queued'
+                      : 'Building preview'
+                    : 'Build video preview'}
+                </button>
                 <label>
                   EFFECT NAME
                   <input
@@ -820,22 +836,6 @@ export default function SubjectEffects({
                     onChange={setGrow}
                   />
                 </fieldset>
-                <button
-                  className="button subject-effects-render"
-                  disabled={busy || Boolean(pending) || !connected || !validation.success}
-                  onClick={() => void render()}
-                >
-                  {busy || pending ? (
-                    <LoaderCircle size={15} className="spin" />
-                  ) : (
-                    <Copy size={15} />
-                  )}{' '}
-                  {pending
-                    ? pending.state === 'queued'
-                      ? 'Preview queued'
-                      : 'Building preview'
-                    : 'Build video preview'}
-                </button>
                 <p className="subject-effects-note">
                   CPU composition from your saved selection. No ComfyUI connection or credits
                   required. Review hair, hands and overlapping people in the result.
