@@ -10,6 +10,7 @@ const R = path.resolve(FILM, '..');
 // prepare.py writes the music, its beats, plates and the new CPU renders here.
 const WORK = process.env.AFTERTAKE_FILM_WORK || path.join(FILM, 'work');
 const RECORDINGS = path.join(FILM, 'recordings');
+const PROOF = path.join(FILM, 'proof');
 // music.json names the soundtrack, its beat analysis and the downbeat the logo
 // lands on; the edit counts beats from that drop, so any steady track can drive it.
 export const music = JSON.parse(readFileSync(`${WORK}/music.json`, 'utf8'));
@@ -40,6 +41,9 @@ export const files = {
   music: `${WORK}/${music.file}`,
   black: `${WORK}/plate-black.png`,
   graph: `${WORK}/graph-portal.png`,
+  // Real execution proof (../proof) and the time-lapses prepare.py cuts from it.
+  proofRun: `${WORK}/proof-run.mp4`, mcpRun: `${WORK}/proof-mcp-run.mp4`,
+  mcp: `${PROOF}/proof-mcp.mp4`, heroBanner: `${PROOF}/hero-banner.generated.png`,
   dark: `${WORK}/plate-dark.png`,
   logo: `${WORK}/logo-dark.png`,
   // HD source plates and their 720p examples (examples/hd-examples-v2.md).
@@ -120,14 +124,6 @@ export function resolveShots(sc, assets, durations) {
 function still(x, y) {
   return { keys: [{ at: 0, x, y, scale: 1, opacity: 1 }, { at: 1, x, y, scale: 1, opacity: 1 }] };
 }
-function pop() {
-  return { keys: [{ at: 0, x: 0, y: 0, scale: 0.2, opacity: 0 }, { at: 0.04, x: 0, y: 0, scale: 1.08, opacity: 1, easing: 'ease-out' },
-    { at: 0.07, x: 0, y: 0, scale: 1, opacity: 1, easing: 'ease-in-out' }, { at: 1, x: 0, y: 0, scale: 1, opacity: 1 }] };
-}
-function popTitle(x, y) {
-  return { keys: [{ at: 0, x, y, scale: 0.2, opacity: 0 }, { at: 0.05, x, y, scale: 1.08, opacity: 1, easing: 'ease-out' },
-    { at: 0.09, x, y, scale: 1, opacity: 1, easing: 'ease-in-out' }, { at: 1, x, y, scale: 1, opacity: 1 }] };
-}
 
 // Captions over footage sit on Film's dark caption panel so they read over bright shots.
 const kicker = (options = {}) => ({ style: 'caption', position: 'bottom', align: 'left', font: 'mono', animation: 'scramble', fontSize: 28, color: LIME, ...options });
@@ -201,46 +197,30 @@ export const scenes = [
     shot('falls', 30, 32, { in: 1.2, framing: push(1.02, 1.1), dissolve: D, transition: 'whip' });
     title('SAME SOURCE · A NEW TAKE', 29.8, 31.9, kicker());
   }),
-  // 4 · “Open weights on your own machine.” The real graph, the SDK call
-  // that submits it, the job that ran, and the stack around it.
-  scene('04 How it is built', 32, 48, ({ shot, title, graphic }) => {
-    shot('graph', 32, 38, { framing: push(1.0, 1.1, 0.42, 0.5) });
-    title('HOW IT’S BUILT', 32, 38, { position: 'top', font: 'display', fontSize: 84, animation: 'reveal', early: 0.05 });
-    title('THE WINDOW REPAINT’S EXECUTED GRAPH · 50 NODES · 10 AFTERTAKE NODES', 32.2, 35.4, kicker({ fontSize: 24 }));
-    title('LTX-2.5 · OPEN WEIGHTS · ON YOUR OWN MACHINE', 35.5, 37.9, kicker({ fontSize: 24 }));
-    shot('dark', 38, 44);
-    title('POWERED BY THE COMFY SDK', 38, 44, big({ position: 'top', fontSize: 52, animation: 'reveal', early: 0.05 }));
+  // 4 · “Open weights on your own machine. Make the next take, run the scene.”
+  // The executed graph, the SDK call that submits it, then a real recorded run.
+  scene('04 How it is built', 32, 48, ({ shot, title }) => {
+    shot('graph', 32, 37, { framing: push(1.0, 1.1, 0.42, 0.5) });
+    title('HOW IT’S BUILT', 32, 37, { position: 'top', font: 'display', fontSize: 84, animation: 'reveal', early: 0.05 });
+    title('THE WINDOW REPAINT’S EXECUTED GRAPH · 50 NODES · 10 AFTERTAKE NODES', 32.2, 34.4, kicker({ fontSize: 24 }));
+    title('OPEN WEIGHTS · Z-IMAGE · QWEN EDIT · LTX-2.5 · WAN 2 · MINIMAX H3 · SAM 3 · DA3', 34.5, 36.9, kicker({ fontSize: 24 }));
+    shot('dark', 37, 41);
+    title('POWERED BY THE COMFY SDK', 37, 41, big({ position: 'top', fontSize: 52, animation: 'reveal', early: 0.05 }));
     const code = [
-      ['server/sdk-worker.mjs', 38.3, DIM],
-      ["import { Comfy } from '@comfyorg/sdk'", 38.8, CREAM],
-      ['client = new Comfy({ timeoutMs })', 39.5, CREAM],
-      ['workflow = client.workflows.fromJson(graph)', 40.2, CREAM],
-      ['job = await client.submit(workflow, { idempotencyKey })', 41.2, CREAM],
-      ['→ job f402b3b2 · 50 nodes · ComfyUI ran it in 203 s', 42.4, LIME],
+      ['server/sdk-worker.mjs', 37.2, DIM],
+      ["import { Comfy } from '@comfyorg/sdk'", 37.6, CREAM],
+      ['client = new Comfy({ timeoutMs })', 38.1, CREAM],
+      ['workflow = client.workflows.fromJson(graph)', 38.6, CREAM],
+      ['job = await client.submit(workflow, { idempotencyKey })', 39.2, CREAM],
+      ['→ job f402b3b2 · 50 nodes · ComfyUI ran it in 203 s', 39.9, LIME],
     ];
-    code.forEach(([text, from, color], index) => title(text, from, 44, { style: 'caption', font: 'mono', fontSize: 30, animation: 'typewriter', motionDuration: 0.5,
+    code.forEach(([text, from, color], index) => title(text, from, 41, { style: 'caption', font: 'mono', fontSize: 30, animation: 'typewriter', motionDuration: 0.4,
       align: 'left', color, stroke: false, motion: still(0, -0.16 + index * 0.075), early: 0.05 }));
-    title('OPEN WEIGHTS · YOUR GPU · MIT', 44, 48, { position: 'top', font: 'mono', style: 'kicker', animation: 'scramble', fontSize: 24, color: LIME, stroke: false,
-      motion: still(0, 0.1), early: 0.1 });
-    shot('dark', 44, 48);
-    const box = (x, label, sub, from) => {
-      graphic({ kind: 'rectangle', x, y: 0.43, width: 0.24, height: 0.17, fill: INK, fillOpacity: 0.96, stroke: LIME, strokeWidth: 3, radius: 0.012, opacity: 1,
-        motion: pop() }, from, 48);
-      title(`${label}\n${sub}`, from, 48, { font: 'display', fontSize: 34, animation: 'pop', motionDuration: 0.3, stroke: false, color: CREAM,
-        motion: still(x - 0.5, -0.07), early: 0.1 });
-    };
-    box(0.18, 'AFTERTAKE', 'studio + agents', 44);
-    box(0.5, 'COMFY SDK', '@comfyorg/sdk', 44.5);
-    box(0.82, 'YOUR COMFYUI', 'local GPU', 45);
-    for (const [x, from] of [[0.34, 44.3], [0.66, 44.8]])
-      graphic({ kind: 'rectangle', x, y: 0.43, width: 0.08, height: 0.008, fill: LIME, fillOpacity: 1, strokeWidth: 0, opacity: 1,
-        motion: { keys: [{ at: 0, x: 0, y: 0, scale: 1, scaleX: 0.02, opacity: 1 }, { at: 0.1, x: 0, y: 0, scale: 1, scaleX: 1, opacity: 1, easing: 'ease-out' }, { at: 1, x: 0, y: 0, scale: 1, scaleX: 1, opacity: 1 }] } }, from, 48);
-    const models = ['Z-IMAGE', 'QWEN EDIT', 'LTX-2.5', 'WAN 2', 'MINIMAX H3', 'SAM 3', 'DA3', 'KOKORO'];
-    models.forEach((model, index) => {
-      const x = 0.12 + index * 0.108, from = 45.5 + index * 0.25;
-      graphic({ kind: 'rectangle', x, y: 0.7, width: 0.098, height: 0.075, fill: LIME, fillOpacity: 1, strokeWidth: 0, radius: 0.01, opacity: 1, motion: pop() }, from, 48);
-      title(model, from, 48, { font: 'mono', style: 'kicker', fontSize: 19, animation: 'none', stroke: false, color: INK, fontWeight: 700, motion: popTitle(x - 0.5, 0.2), early: 0.1 });
-    });
+    // proof/proof-render.mp4: Create video to the finished clip, 32× fast, then real time.
+    shot('proofRun', 41, 48, { in: 0, framing: cover, dissolve: D, transition: 'flash' });
+    title('MAKE THE NEXT TAKE,', 41.5, 43.7, big({ position: 'top', fontSize: 64, box: 'highlight', color: CREAM, tilt: -2, early: 0.02 }));
+    title('RUN THE SCENE.', 43.7, 48, big({ position: 'top', fontSize: 64, box: 'highlight', color: LIME, tilt: -2, early: 0.04 }));
+    title('RECORDED ON AN RTX 5080 · 32× FAST, THEN REAL TIME · COMFYUI: “PROMPT EXECUTED IN 80.97 SECONDS”', 41.3, 47.9, kicker({ fontSize: 22 }));
   }),
   // 5 · “Recast the lead, keep the move. Five more dancers in the groove.
   // Words to video, still to light. Pull the camera, cut it right.”
@@ -276,21 +256,16 @@ export const scenes = [
   // 6 · “An agent cuts it, frame by frame. Forty-four tools, still the same.
   // On the beat, on the beat, cut to the beat.”
   scene('06 Agents and Film', 69, 84, ({ shot, title }) => {
-    shot('dark', 69, 73);
-    title('AN AGENT CUTS IT,', 69.3, 71.5, big({ position: 'top', fontSize: 64, animation: 'reveal', early: 0.02 }));
-    title('FRAME BY FRAME.', 71.5, 73, big({ position: 'top', fontSize: 64, color: LIME, animation: 'pop', motionDuration: 0.35, early: 0.02 }));
-    const lines = [
-      ['› aftertake_detect_beats      102 BPM in 0.9 s', 69.6],
-      ['› aftertake_save_film_edit    aftertake-film/5', 70.4],
-      ['› aftertake_export_plan       native render', 71.2],
-      ['› aftertake_review_film       decoded frames', 72.0],
-    ];
-    lines.forEach(([text, from], index) => title(text, from, 73, { style: 'caption', font: 'mono', fontSize: 34, animation: 'typewriter', motionDuration: 0.6,
-      align: 'left', color: index ? CREAM : LIME, stroke: false, motion: still(0, -0.06 + index * 0.085), early: 0.05 }));
-    shot('agentAd', 73, 77, { in: 2.2, dissolve: D, transition: 'flash' });
-    title('44 MCP\nTOOLS,', 73.2, 75.7, big({ align: 'left', fontSize: 68, color: LIME, early: 0.02 }));
-    title('STILL\nTHE SAME.', 75.7, 77, big({ align: 'left', fontSize: 68, animation: 'pop', motionDuration: 0.35, early: 0.02 }));
-    title('THIS AD WAS\nASSEMBLED\nTHROUGH MCP', 73.4, 76.95, kicker());
+    // proof/proof-mcp.mp4: a real stdio MCP session generating and inspecting an image.
+    shot('mcpRun', 69, 73, { in: 0.5, framing: cover });
+    title('AN AGENT CUTS IT,', 69.3, 71.5, big({ position: 'bottom', fontSize: 72, box: 'highlight', color: CREAM, tilt: -2, early: 0.02 }));
+    title('FRAME BY FRAME.', 71.5, 73, big({ position: 'bottom', fontSize: 72, box: 'highlight', color: LIME, tilt: -2, early: 0.02 }));
+    title('A REAL MCP SESSION · GENERATE, POLL, INSPECT · 16× FAST', 69.2, 72.9, kicker({ position: 'top' }));
+    shot('mcp', 73, 75, { in: 12.0, framing: cover });
+    title('44 MCP\nTOOLS,', 73.2, 75, big({ align: 'right', fontSize: 100, box: 'highlight', color: LIME, tilt: -3, early: 0.02 }));
+    shot('heroBanner', 75, 77, { framing: push(1.0, 1.06, 0.6, 0.5), dissolve: D, transition: 'flash' });
+    title('STILL\nTHE SAME.', 75.7, 77, big({ align: 'left', fontSize: 84, animation: 'pop', motionDuration: 0.35, early: 0.02 }));
+    title('THE IMAGE THAT CALL MADE · Z-IMAGE TURBO · 720P', 75.2, 76.95, kicker());
     shot('uiFilm', 77, 79, { in: 1.2, framing: ui(0.38, 0.5, 2.1, 2.2), dissolve: D, transition: 'zoom' });
     title('ON THE BEAT,', 77.3, 79.4, big({ position: 'top', fontSize: 100, early: 0.02 }));
     title('SLAM · GLITCH · SCRAMBLE · POP', 77.3, 78.95, kicker());
@@ -338,7 +313,7 @@ export const scenes = [
     title('DEPTH → LENS BLUR', 105.4, 108, big({ position: 'bottom', align: 'left', fontSize: 80, animation: 'pop', early: 0.03 }));
     shot('layers', 108, 109, { framing: cover });
     title('LAYERS & MASKS', 108, 109, big({ position: 'bottom', align: 'left', fontSize: 80, color: INK, stroke: false, early: 0.03 }));
-    const montage = [['portal', 1.4], ['bridge', 0.6], ['echoes', 1.0], ['crystalMove', 1.8], ['noir', 1.6], ['teddy', 1.6], ['falls', 1.8], ['winter', 2.2], ['ensemble', 1.6]];
+    const montage = [['portal', 1.4], ['bridge', 0.6], ['echoes', 1.0], ['agentAd', 2.6], ['noir', 1.6], ['teddy', 1.6], ['falls', 1.8], ['winter', 2.2], ['ensemble', 1.6]];
     montage.slice(0, 118 - 109).forEach(([key, start], index) => shot(key, 109 + index, 110 + index, { in: start,
       framing: push(1.03, 1.1),
       ...(index && index % 2 === 0 ? { dissolve: D, transition: index % 4 ? 'glitch' : 'flash' } : {}) }));

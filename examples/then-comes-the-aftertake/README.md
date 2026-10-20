@@ -50,15 +50,15 @@ seven native Film projects, rendered by Aftertake's own CPU Film renderer.
 
 ## What is on screen
 
-| Time        | Scene           | Sung                                                                   | Real Aftertake work shown                                                                                                                                                  |
-| :---------- | :-------------- | :--------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0–12.3 s    | Every shot ends | “Every shot ends… then comes the…”                                     | The HD source plates: rooftop walk, orange-hoodie dancer, loft window                                                                                                      |
-| 12.3–21.7 s | The drop        | (drop)                                                                 | Generated results on every beat: portal, crystal, golden falls, castle, winter, Reclaimed, observatory, text-to-video, Wan motion transfer, five tracked dancers           |
-| 21.7–31.1 s | Paint it        | “Paint it, change it, make it new. Same scene, a different view.”      | Recorded cue painting and before/after reveal (LTX-2.5), the room before and after                                                                                         |
-| 31.1–40.5 s | How it's built  | “Open weights on your own machine. Make the next take, run the scene.” | The HD window repaint's executed 50-node ComfyUI graph, the `@comfyorg/sdk` calls that submit it, ComfyUI's recorded run time, and the stack with eight open-weight models |
-| 40.5–52.9 s | Change          | “Recast the lead… Five more dancers… Words to video… Pull the camera…” | SAM 3 tracking and MiniMax H3 recast, subject copies, text-to-video, Z-Image still to LTX motion, camera pull-backs                                                        |
-| 52.9–61.7 s | Agents and Film | “An agent cuts it, frame by frame. Forty-four tools… Cut to the beat.” | Real MCP results, an ad assembled through MCP, the Film editor snapping this film's cuts to beats                                                                          |
-| 61.7–93.5 s | Your call       | “Your clip! Your models! Your call!”, second chorus, “Aftertake.”      | Finishing looks, Wan Animate 2 motion transfer, repainted takes, depth lens blur, layers, montage, end card, credits                                                       |
+| Time        | Scene           | Sung                                                                   | Real Aftertake work shown                                                                                                                                                                                                         |
+| :---------- | :-------------- | :--------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0–12.3 s    | Every shot ends | “Every shot ends… then comes the…”                                     | The HD source plates: rooftop walk, orange-hoodie dancer, loft window                                                                                                                                                             |
+| 12.3–21.7 s | The drop        | (drop)                                                                 | Generated results on every beat: portal, crystal, golden falls, castle, winter, Reclaimed, observatory, text-to-video, Wan motion transfer, five tracked dancers                                                                  |
+| 21.7–31.1 s | Paint it        | “Paint it, change it, make it new. Same scene, a different view.”      | Recorded cue painting and before/after reveal (LTX-2.5), the room before and after                                                                                                                                                |
+| 31.1–40.5 s | How it's built  | “Open weights on your own machine. Make the next take, run the scene.” | The HD window repaint's executed 50-node ComfyUI graph, the `@comfyorg/sdk` calls that submit it, then a recorded real run on an RTX 5080: Aftertake, the ComfyUI console and `nvidia-smi` from Create video to the finished clip |
+| 40.5–52.9 s | Change          | “Recast the lead… Five more dancers… Words to video… Pull the camera…” | SAM 3 tracking and MiniMax H3 recast, subject copies, text-to-video, Z-Image still to LTX motion, camera pull-backs                                                                                                               |
+| 52.9–61.7 s | Agents and Film | “An agent cuts it, frame by frame. Forty-four tools… Cut to the beat.” | A recorded real MCP session: the 44-tool list, an image generated, polled and inspected, and the image it made; then the Film editor snapping this film's cuts to beats                                                           |
+| 61.7–93.5 s | Your call       | “Your clip! Your models! Your call!”, second chorus, “Aftertake.”      | Finishing looks, Wan Animate 2 motion transfer, repainted takes, depth lens blur, layers, montage, end card, credits                                                                                                              |
 
 The UI shots in `recordings/` were captured from the running studio's example
 workspace in Chromium at 1920 × 1080, with a drawn cursor. The film crops into
@@ -67,7 +67,26 @@ the takes shown are the repository's recorded example outputs. Paint strokes,
 compare sweeps, typing, look changes, title and transition menus, and the beat
 snap are real interactions with the app.
 
-Four kinds of picture were made new for this film, all on the CPU and with no
+## Execution proof
+
+`proof/` holds two uncut screen recordings from 20 October 2026 on an RTX 5080,
+with their logs, job records, MCP trace and validation (`proof/capture-notes.txt`
+describes the capture):
+
+- `proof-render.mp4` (5:49): the Product showcase starter rendered in
+  Aftertake through `@comfyorg/sdk`, beside the actual ComfyUI console and
+  `nvidia-smi`. ComfyUI reports “Prompt executed in 80.97 seconds”.
+- `proof-mcp.mp4` (1:04): a real stdio MCP client lists 44 tools, generates
+  the Hero banner starter, polls it to `succeeded` and inspects the picture.
+
+The film uses `proof-run.mp4` and `proof-mcp-run.mp4`, which `prepare.py`
+cuts from them: one stretch of each recording, sped up 32× and 16×, ending
+with a real-time hold. The render recording is cropped below the browser's
+toolbar and letterboxed, not enlarged. The film's captions state both speeds.
+The tool list plays in real time, and the hero banner is the image that MCP
+call produced.
+
+Three kinds of picture were made new for this film, all on the CPU and with no
 model:
 
 - `echoes` and `ensemble` reuse `examples/subject-duplicates-v2`' saved SAM 3
@@ -80,9 +99,10 @@ model:
   nodes are in lime. The code lines are quoted from `server/sdk-worker.mjs`.
   The job line (`f402b3b2`, 203 s) is ComfyUI's own `execution_start` to
   `execution_success` time, from `examples/portal-v2/native-engine-timing.json`.
-- The MCP lines quote a real `aftertake_detect_beats` call (102 BPM in 0.9 s)
-  through the official MCP SDK; the client listed 44 tools. The other three
-  lines name tools without quoting results.
+
+The MCP and Film recordings quote real results: the 44-tool list and image
+job from `proof-mcp.mp4`, and “102 BPM · 10 cuts on the beat” in the Film
+editor.
 
 ## Rebuild it
 

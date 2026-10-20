@@ -78,6 +78,20 @@ def main(music):
             'mode': 'finish', 'request': {'format': 'aftertake-finishing/1', 'clip': clip, 'settings': {**neutral, **look}}}
         (WORK / f'{name}.work.json').write_text(json.dumps(work))
         run(ROOT / 'scripts/finish-media.py', WORK / f'{name}.work.json')
+    # Time-lapses of the real proof recordings (../proof). Each keeps its ending
+    # in real time; the film labels the speed. The render recording loses the
+    # browser chrome above the app and is letterboxed, so nothing is enlarged.
+    proof = HERE.parent / 'proof'
+    timelapses = {
+        'proof-run.mp4': (proof / 'proof-render.mp4', 32, 120, 32, 1.6, 'crop=1920:900:0:180,pad=1920:1080:0:90:color=0x121713'),
+        'proof-mcp-run.mp4': (proof / 'proof-mcp.mp4', 15, 51, 16, 2, 'null'),
+    }
+    for name, (source, start, end, speed, hold, frame) in timelapses.items():
+        graph = (f'[0:v]trim={start}:{end},setpts=(PTS-STARTPTS)/{speed},fps=30[fast];'
+                 f'[0:v]trim={end}:{end + hold},setpts=PTS-STARTPTS[real];'
+                 f'[fast][real]concat=n=2:v=1:a=0,{frame}[out]')
+        subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', str(source), '-filter_complex', graph, '-map', '[out]',
+            '-c:v', 'libx264', '-crf', '16', '-pix_fmt', 'yuv420p', str(WORK / name)], check=True)
     print(f'Prepared {WORK}')
 
 
