@@ -29,6 +29,8 @@ async function open(url = 'http://127.0.0.1:4312/') {
   const browser = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] });
   const context = await browser.newContext({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 1.5 });
   await context.addInitScript(CURSOR);
+  // The recordings start in the workspace, not on the start screen.
+  await context.addInitScript(() => localStorage.setItem('aftertake-start', 'workspace'));
   const page = await context.newPage();
   await page.goto(url, { waitUntil: 'networkidle' });
   await page.waitForTimeout(800);

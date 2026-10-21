@@ -16,6 +16,7 @@ import {
   Film,
   FolderOpen,
   Layers2,
+  LayoutGrid,
   LoaderCircle,
   Maximize2,
   Pause,
@@ -74,6 +75,8 @@ import DepthEffectsStudio from './DepthEffectsStudio';
 import LayerStudio from './LayerStudio';
 import ComputeSettings from './ComputeSettings';
 import AftertakeBrand from './AftertakeBrand';
+import StartScreen from './StartScreen';
+import { startScreenWanted, type StartTask } from './start-tasks';
 import { characterBusy, type CharacterJob } from './character';
 import { ImagePlus, ScanFace } from 'lucide-react';
 import { spatialMask } from './mask';
@@ -201,6 +204,9 @@ export default function App() {
   const [toast, setToast] = useState('');
   const [engineOpen, setEngineOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [startOpen, setStartOpen] = useState(startScreenWanted);
+  // A start-screen task waiting for the viewer to choose a fitting source.
+  const [pendingStart, setPendingStart] = useState<{ task: StartTask; clipId?: string }>();
   const [sourceOpen, setSourceOpen] = useState(false);
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [exampleWorkspace, setExampleWorkspace] = useState(false);
@@ -607,6 +613,37 @@ export default function App() {
       setToast((failure as Error).message);
     } finally {
       setOpeningFinish(false);
+    }
+  }
+  /** Apply a start-screen task to the current source; false when it needs another source. */
+  function applyStartTask(task: StartTask) {
+    if (!recipe) return false;
+    const video = recipe.clip.kind !== 'image';
+    if (task === 'region') {
+      if (!video) return false;
+      changePipeline('inpaint');
+      setMode('cue');
+    } else if (task === 'motion') {
+      if (!video) return false;
+      changePipeline('motion-transfer');
+    } else if (task === 'camera') changePipeline('cinema');
+    else if (task === 'finish') void openFinishing();
+    return true;
+  }
+  function chooseStart(task: StartTask) {
+    setStartOpen(false);
+    if (task === 'video') setVideoStudioOpen(true);
+    else if (task === 'image') setImageStudioOpen(true);
+    else if (task === 'person') setCharacterStudioOpen(true);
+    else if (task === 'film')
+      requestAnimationFrame(() =>
+        document
+          .querySelector('.film-desk')
+          ?.scrollIntoView({ block: 'start', behavior: 'smooth' }),
+      );
+    else if (!applyStartTask(task)) {
+      setPendingStart({ task, clipId: recipe?.clip.id });
+      setSourceOpen(true);
     }
   }
   function changeSourceStart(value: number) {
@@ -1266,12 +1303,22 @@ export default function App() {
     return () => clearTimeout(retry);
   }, [busy, mediaError]);
 
+  useEffect(() => {
+    // Once the source picker closes, finish the start task on a newly chosen source.
+    if (!pendingStart || sourceOpen) return;
+    if (recipe && recipe.clip.id !== pendingStart.clipId) applyStartTask(pendingStart.task);
+    setPendingStart(undefined);
+  }, [pendingStart, sourceOpen, recipe?.clip.id]);
+
   return (
     <div className="app-shell">
       <aside className="rail" aria-label="Studio navigation">
         <div className="brand-mark">
           <AftertakeBrand compact />
         </div>
+        <button className="rail-button" title="Start" onClick={() => setStartOpen(true)}>
+          <LayoutGrid size={21} />
+        </button>
         <button
           className="rail-button selected"
           title="Studio"
@@ -2938,6 +2985,7 @@ export default function App() {
           onOpenRecorded={openRecordedWork}
         />
       )}
+      {startOpen && <StartScreen onChoose={chooseStart} onClose={() => setStartOpen(false)} />}
       {sourceOpen && (
         <div className="modal-backdrop" onClick={() => setSourceOpen(false)}>
           <section
@@ -2955,7 +3003,15 @@ export default function App() {
               <X size={19} />
             </button>
             <div className="eyebrow">SOURCE MATERIAL</div>
-            <h2>Choose a moment.</h2>
+            <h2>
+              {pendingStart?.task === 'region' || pendingStart?.task === 'motion'
+                ? 'Choose a video.'
+                : pendingStart?.task === 'camera'
+                  ? 'Choose a still or a video frame.'
+                  : pendingStart?.task === 'finish'
+                    ? 'Choose what to finish.'
+                    : 'Choose a moment.'}
+            </h2>
             <div className="source-choices">
               {clips.map((clip) => (
                 <button key={clip.id} onClick={() => selectClip(clip)}>
