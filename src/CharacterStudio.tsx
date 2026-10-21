@@ -26,6 +26,7 @@ import {
 } from './character';
 import CharacterReferenceEditor, { CharacterReferencePreview } from './CharacterReferenceEditor';
 import PreviewVideo from './PreviewVideo';
+import RenderEstimate from './RenderEstimate';
 import SubjectEffects, { reviewedSubjectSelection } from './SubjectEffects';
 import './character-studio.css';
 import './subject-effects.css';
@@ -1409,6 +1410,11 @@ export default function CharacterStudio({
               )}
               Track selected person
             </button>
+            <RenderEstimate
+              job={{ request: { format: 'aftertake-character-selection/1' } }}
+              history={jobs}
+              gpu={selectionEngine?.gpu}
+            />
             <p className="character-action-hint">{trackHint}</p>
             {source && !positive.length && (
               <button
@@ -1686,6 +1692,11 @@ export default function CharacterStudio({
               <ScanFace size={15} />
               Replace selected person
             </button>
+            <RenderEstimate
+              job={{ request: { format: 'aftertake-character/1' } }}
+              history={jobs}
+              gpu={engine?.gpu}
+            />
             <p className="character-action-hint" id="character-generate-hint">
               {generateHint}
             </p>

@@ -23,6 +23,7 @@ import {
 import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
 import PreviewVideo from './PreviewVideo';
 import CreativeRecipePicker from './CreativeRecipePicker';
+import RenderEstimate from './RenderEstimate';
 import { applyVideoCreativeRecipe } from './creative-recipes';
 import './image-studio.css';
 import './video-studio.css';
@@ -668,6 +669,7 @@ export default function VideoStudio({
               )}{' '}
               {admission ? 'Rejoin original request' : pending ? 'Creating video…' : 'Create video'}
             </button>
+            <RenderEstimate job={{ request }} history={videos} gpu={engine?.gpu} />
             <small>
               {d.width} × {d.height} · {d.frames} frames · {d.duration.toFixed(2)}s at 24 fps · 8
               native sampling steps. Generated footage starts from text alone.

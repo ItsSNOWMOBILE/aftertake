@@ -11,6 +11,7 @@ import {
   type CharacterJob,
 } from '../src/character.js';
 import { clipMediaRoute } from './generation-tools.js';
+import { estimateTable } from '../src/render-estimate.js';
 type Result = { data: any; images?: { data: string; mimeType: string }[] };
 type Register = (
   name: string,
@@ -74,6 +75,8 @@ export function registerCharacterTools({
           renderEngine,
           clips,
           jobs: jobs.slice(0, 25).map(summary),
+          // Usual time to track a person and to replace them; it costs only local GPU time.
+          expected: estimateTable(jobs, (key) => key.startsWith('character')),
           workflow: [
             'Use one continuous source shot, 1–15 seconds. Select points on one person; exclusion points disambiguate other people.',
             'Choose resolution 480 (default, up to 0.5 MP) or 768 (up to 1 MP) before tracking. Higher resolution uses more memory; the selection reports its actual size. Generation retains the reviewed selection resolution.',

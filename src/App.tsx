@@ -58,6 +58,7 @@ import FilmDesk from './FilmComposer';
 import TakeLibrary from './TakeLibrary';
 import TakeBlend, { takeBlendMatches } from './TakeBlend';
 import TakeStatus from './take-status';
+import RenderEstimate from './RenderEstimate';
 import { TakeClient, takeBusy, takeRecoverable } from './take-client';
 import { recordedFirst, selectRecordedWork, type RecordedWorkKind } from './RecordedHighlights';
 import { applyTemplate, type Template } from './templates';
@@ -2692,6 +2693,9 @@ export default function App() {
                         : 'Render take'}
             <ArrowUpRight size={18} />
           </button>
+          {recipe && !busy && (
+            <RenderEstimate job={{ recipe }} history={renders} gpu={engine.gpu} />
+          )}
           {!engine.ready && (
             <button className="setup-link" onClick={() => setEngineOpen(true)}>
               Set up rendering <ArrowUpRight size={11} />

@@ -9,6 +9,7 @@ import {
   type FrameEditRequest,
 } from './frame-edit';
 import CreativeRecipePicker from './CreativeRecipePicker';
+import RenderEstimate from './RenderEstimate';
 import { applyFrameCreativeRecipe } from './creative-recipes';
 
 async function request<T>(url: string, init?: RequestInit): Promise<T> {
@@ -540,6 +541,11 @@ export default function FrameEditor({
               {busy ? <LoaderCircle size={15} className="spin" /> : <Sparkles size={15} />}{' '}
               {pending ? 'Editing a frame…' : 'Create edited frame'}
             </button>
+            <RenderEstimate
+              job={{ request: { format: 'aftertake-frame-edit/1', mode } }}
+              history={edits}
+              gpu={engine?.gpu}
+            />
             <small>
               Runs on your local Comfy engine with open weights. Creating a frame does not start a
               video render or replace your current reference.

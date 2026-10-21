@@ -127,6 +127,15 @@ prompts adapt production ideas from [Higgsfield's public skills](https://github.
 (MIT) and [Comfy's workflow templates](https://github.com/Comfy-Org/workflow_templates/tree/86ce86e92ec77e3c3c6d4a754e69cfce37886542/templates);
 they run through Aftertake's existing Z-Image, LTX-2.5 and Qwen workflows.
 
+**Know the time before you render.** Create video, Create image, the frame
+editor, Render take and character replacement each show how long the job
+usually takes before you start it. The estimate is the median of your earlier
+runs with the same settings; until you have some, it is the time recorded on
+an RTX 5080 for the shipped examples, and it says which one it is. There is no
+price: every job runs on your own GPU. Agents read the same estimates from
+`aftertake_generation_workspace` and `aftertake_character_workspace`, and each
+generation call returns its `expected` time.
+
 ### One performance. Extra copies.
 
 [![Three tracked copies of one studio dancer, made from the original source pixels](examples/subject-duplicates/poster.jpg)](examples/subject-duplicates/result.mp4)

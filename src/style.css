@@ -1317,6 +1317,25 @@ textarea:focus {
 .render-button:disabled {
   opacity: 0.45;
 }
+.render-estimate {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1px 7px;
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.render-estimate svg {
+  color: var(--accent);
+}
+.render-estimate small {
+  grid-column: 2;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
 .setup-link {
   display: flex;
   align-items: center;

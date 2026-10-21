@@ -10,6 +10,13 @@ import {
   imageCreativeRecipes,
   videoCreativeRecipes,
 } from '../src/creative-recipes.js';
+import {
+  agentEstimate,
+  estimate,
+  estimateKey,
+  estimateTable,
+  type TimedJob,
+} from '../src/render-estimate.js';
 
 type Result = { data: any; images?: { data: string; mimeType: string }[] };
 type Register = (
@@ -120,6 +127,13 @@ export function registerGenerationTools(context: {
       throw Error(
         'Restart the local studio with separate final blend area support before rendering this recipe.',
       );
+    const history = await api<TimedJob[]>(routes[type]);
+    const expected = agentEstimate(
+      estimate(
+        estimateKey(type === 'take' ? { recipe: input as any } : { request: input as any }),
+        history,
+      ),
+    );
     const result = await api<Generation>(routes[type], input, key(type, id));
     if (result.requestKey !== key(type, id))
       throw Error(
@@ -129,6 +143,7 @@ export function registerGenerationTools(context: {
       data: {
         requestId: id,
         ...summary(type, result),
+        expected,
         next: 'Keep this request ID and poll aftertake_generation_status. Repeating the identical request rejoins this record. Review actual output frames before assembling the film.',
       },
     };
@@ -185,6 +200,11 @@ export function registerGenerationTools(context: {
               .map((r) => summary(type, r)),
           ),
           engine: profile ? await api<Engine>('/api/engine?pipeline=' + profile) : undefined,
+          // Expected time per kind of job, from earlier runs here or the RTX 5080 reference.
+          expected: estimateTable(
+            [...images, ...videos, ...frames, ...takes] as unknown as TimedJob[],
+            (key) => !key.startsWith('character'),
+          ),
           // The same starters as the studio pickers. Merge one's settings into a
           // request; the agent still chooses the name, frame, seed and media.
           starters: Object.fromEntries(
@@ -202,7 +222,7 @@ export function registerGenerationTools(context: {
               })),
             ]),
           ),
-          note: 'Starters hold editable prompt and look settings: merge one into a request and supply your own name, aspect, seed and media. A completed take can be used by renderId in a film plan. Text-to-video returns a source clipId; use aftertake_use_source to bring it, another source or a generated still into Film.',
+          note: 'Starters hold editable prompt and look settings: merge one into a request and supply your own name, aspect, seed and media. expected gives the usual time for each kind of job, keyed like video:final-720p or take:inpaint:final; generation costs nothing beyond local GPU time. A completed take can be used by renderId in a film plan. Text-to-video returns a source clipId; use aftertake_use_source to bring it, another source or a generated still into Film.',
         },
       };
     },

@@ -21,6 +21,7 @@ import {
 } from './image-generation';
 import { apiFetch, browserDemo, mediaUrl } from './transport';
 import CreativeRecipePicker from './CreativeRecipePicker';
+import RenderEstimate from './RenderEstimate';
 import { applyImageCreativeRecipe } from './creative-recipes';
 import './image-studio.css';
 
@@ -486,6 +487,7 @@ export default function ImageStudio({
               {pending ? <LoaderCircle size={15} className="spin" /> : <ImagePlus size={15} />}{' '}
               {pending ? 'Creating image…' : 'Create image'}
             </button>
+            <RenderEstimate job={{ request }} history={images} gpu={engine?.gpu} />
             <small>
               {dimensions[0]} × {dimensions[1]} · 8 steps · your local engine. Look choices add
               wording to the actual prompt.

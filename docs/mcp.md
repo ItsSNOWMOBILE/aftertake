@@ -83,7 +83,7 @@ root, including resolved symbolic links; remote media URLs are not accepted.
 | `aftertake_export_plan` | Exports through the native Film renderer using a persistent idempotency key. |
 | `aftertake_plan_status` | Rejoins the recorded plan and reads actual native export states after client reconnection. |
 | `aftertake_review_film` | Returns decoded export frames, timestamps, sample audio diagnostics and embedded-project verification. |
-| `aftertake_generation_workspace` | Lists canonical studio sources and actual generation records; optionally checks a model profile without starting work. |
+| `aftertake_generation_workspace` | Lists canonical studio sources and actual generation records, the editable starters and the expected time for each kind of job; optionally checks a model profile without starting work. |
 | `aftertake_generate_image` | Starts or rejoins the native Z-Image Turbo workflow with a stable operation `requestId`. |
 | `aftertake_generate_video` | Starts or rejoins native LTX-2.5 text-to-video with optional generated sound; returns a completed source clip for Film. |
 | `aftertake_edit_frame` | Starts or rejoins native Qwen reference editing with its original source bytes. |
@@ -254,6 +254,14 @@ each deliberate operation a stable `requestId`, such as `product-reference-v1`.
 The generation tools accept the native image request, frame-edit request or
 video recipe schemas. Retain the complete input and use exactly the same ID
 and input to rejoin. Changed inputs under the same key are rejected.
+
+Plan time with `expected`. The workspace lists the usual seconds for each kind
+of job (keys like `video:final-720p`, `image`, `frame:fast` or
+`take:inpaint:final`), and every generation call returns the `expected` time
+for its own request. Each value is the median of earlier runs with the same
+settings in this workspace, or of the runs recorded on an RTX 5080 when there
+are none yet, and its `basis` says which. Use it to space status polls; it is a
+guide, not a deadline. Generation has no per-call price: it runs on the local GPU.
 
 Generate and inspect the reference before animating it. Poll actual generation
 status, inspect the completed take, then use its `renderId` and inspected hash
