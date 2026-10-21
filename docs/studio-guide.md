@@ -493,6 +493,15 @@ grading is applied consistently after generation. The input frame is
 conditioned directly into the video latent. No inpainting adapter is needed
 for this mode.
 
+**Browse camera moves** opens a gallery of fourteen moves, each drawn as a small
+looping diagram: locked, push in, pull back, pan left and right, tilt up and
+down, crane up, truck sideways, orbit, crash zoom, whip pan, handheld and dolly
+zoom. Choosing one sets the camera; the same gallery is in Create video. Every
+move has its own prompt wording. Twelve also have screen-space framing tracks
+for the experimental track guidance; orbit and dolly zoom change perspective in
+depth, so they use prompt guidance only. As with every camera instruction,
+review the generated movement.
+
 Add an optional **Ending frame** to give the shot a destination. Choose an
 imported image, upload a PNG/JPEG/WebP, or **Create an ending frame** with the
 local Qwen editor. Review the image before selecting **Use as ending frame**.

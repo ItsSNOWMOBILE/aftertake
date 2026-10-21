@@ -1,0 +1,295 @@
+.moves-gallery {
+  display: grid;
+  gap: 8px;
+  margin-top: 6px;
+}
+.moves-toggle {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent, #d5e991);
+  font-size: 12px;
+  font-weight: 600;
+}
+.moves-toggle:hover {
+  text-decoration: underline;
+}
+.moves-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  gap: 8px;
+}
+.move-card {
+  display: grid;
+  gap: 3px;
+  align-content: start;
+  padding: 6px 6px 8px;
+  border: 1px solid #3d4740;
+  border-radius: 6px;
+  background: #141a16;
+  color: var(--text-primary, #eef1eb);
+  text-align: left;
+}
+.move-card:hover:not(:disabled) {
+  border-color: #748f57;
+}
+.move-card[aria-pressed='true'] {
+  border-color: var(--accent, #d5e991);
+  box-shadow: 0 0 0 1px var(--accent, #d5e991);
+}
+.move-card:disabled {
+  opacity: 0.5;
+}
+.move-card strong {
+  margin-top: 3px;
+  font-size: 12px;
+}
+.move-card small {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--text-secondary, #b7c1b9);
+}
+.move-diagram {
+  display: block;
+  width: 100%;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.move-sky {
+  fill: #23324a;
+}
+.move-sun {
+  fill: #f2c46d;
+}
+.move-hills {
+  fill: #3e5b4b;
+}
+.move-ground {
+  fill: #2b3b2f;
+}
+.move-subject {
+  fill: #e7d9c8;
+}
+.move-post {
+  fill: #121614;
+}
+.move-bush {
+  fill: #1b2a1f;
+}
+.move-frame {
+  fill: none;
+  stroke: rgb(255 255 255 / 0.18);
+  stroke-width: 1;
+}
+.move-diagram g {
+  transform-box: view-box;
+  transform-origin: 40px 22.5px;
+  animation-duration: 2.6s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-direction: alternate;
+}
+.move-locked .move-mid {
+  animation-name: move-sway;
+}
+.move-push .move-scene {
+  animation-name: move-push;
+}
+.move-pull .move-scene {
+  animation-name: move-pull;
+}
+.move-pan .move-scene {
+  animation-name: move-pan-left;
+}
+.move-pan-right .move-scene {
+  animation-name: move-pan-right;
+}
+.move-tilt-up .move-scene {
+  animation-name: move-tilt-up;
+}
+.move-tilt-down .move-scene {
+  animation-name: move-tilt-down;
+}
+.move-crane-up .move-scene {
+  animation-name: move-crane;
+}
+.move-truck .move-far {
+  animation-name: move-truck-far;
+}
+.move-truck .move-mid {
+  animation-name: move-truck-mid;
+}
+.move-truck .move-near {
+  animation-name: move-truck-near;
+}
+.move-orbit .move-far {
+  animation-name: move-orbit-far;
+}
+.move-orbit .move-near {
+  animation-name: move-orbit-near;
+}
+.move-orbit .move-mid {
+  animation-name: move-orbit-subject;
+}
+.move-crash-zoom .move-scene {
+  animation-name: move-crash;
+  animation-direction: normal;
+  animation-timing-function: linear;
+}
+.move-whip-pan .move-scene {
+  animation-name: move-whip;
+  animation-direction: normal;
+  animation-timing-function: linear;
+}
+.move-handheld .move-scene {
+  animation-name: move-handheld;
+  animation-direction: normal;
+  animation-timing-function: linear;
+}
+.move-dolly-zoom .move-far {
+  animation-name: move-dolly-zoom;
+}
+.move-dolly-zoom .move-near {
+  animation-name: move-dolly-zoom-near;
+}
+@keyframes move-sway {
+  to {
+    transform: translateX(3px);
+  }
+}
+@keyframes move-push {
+  to {
+    transform: scale(1.3);
+  }
+}
+@keyframes move-pull {
+  from {
+    transform: scale(1.3);
+  }
+}
+@keyframes move-pan-left {
+  to {
+    transform: translateX(10px);
+  }
+}
+@keyframes move-pan-right {
+  to {
+    transform: translateX(-10px);
+  }
+}
+@keyframes move-tilt-up {
+  to {
+    transform: translateY(8px);
+  }
+}
+@keyframes move-tilt-down {
+  to {
+    transform: translateY(-8px);
+  }
+}
+@keyframes move-crane {
+  to {
+    transform: translateY(9px) scale(0.9);
+  }
+}
+@keyframes move-truck-far {
+  to {
+    transform: translateX(3px);
+  }
+}
+@keyframes move-truck-mid {
+  to {
+    transform: translateX(9px);
+  }
+}
+@keyframes move-truck-near {
+  to {
+    transform: translateX(22px);
+  }
+}
+@keyframes move-orbit-far {
+  from {
+    transform: translateX(-7px);
+  }
+  to {
+    transform: translateX(7px);
+  }
+}
+@keyframes move-orbit-near {
+  from {
+    transform: translateX(12px);
+  }
+  to {
+    transform: translateX(-12px);
+  }
+}
+@keyframes move-orbit-subject {
+  from {
+    transform: scaleX(0.9);
+  }
+  to {
+    transform: scaleX(1.05);
+  }
+}
+@keyframes move-crash {
+  0%,
+  40% {
+    transform: scale(1);
+  }
+  62%,
+  100% {
+    transform: scale(1.8);
+  }
+}
+@keyframes move-whip {
+  0%,
+  35% {
+    transform: translateX(0);
+    filter: none;
+  }
+  50% {
+    transform: translateX(-30px);
+    filter: blur(1.6px);
+  }
+  62%,
+  100% {
+    transform: translateX(-46px);
+    filter: none;
+  }
+}
+@keyframes move-handheld {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate(1.2px, -0.8px) rotate(0.6deg);
+  }
+  45% {
+    transform: translate(-0.8px, 0.9px) rotate(-0.4deg);
+  }
+  70% {
+    transform: translate(1px, 0.5px) rotate(0.3deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+@keyframes move-dolly-zoom {
+  to {
+    transform: scale(1.6);
+  }
+}
+@keyframes move-dolly-zoom-near {
+  to {
+    transform: scale(0.8);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .move-diagram g {
+    animation: none;
+  }
+}

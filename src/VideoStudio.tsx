@@ -24,6 +24,7 @@ import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
 import PreviewVideo from './PreviewVideo';
 import CreativeRecipePicker from './CreativeRecipePicker';
 import RenderEstimate from './RenderEstimate';
+import MovesGallery from './MovesGallery';
 import { applyVideoCreativeRecipe } from './creative-recipes';
 import './image-studio.css';
 import './video-studio.css';
@@ -533,6 +534,11 @@ export default function VideoStudio({
                 </select>
               </label>
             </div>
+            <MovesGallery
+              value={look.movement}
+              disabled={locked}
+              onChange={(movement) => change({ cinema: { ...look, movement } })}
+            />
             <label className="video-sound">
               <input
                 type="checkbox"

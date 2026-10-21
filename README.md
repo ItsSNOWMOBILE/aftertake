@@ -135,6 +135,10 @@ prompts adapt production ideas from [Higgsfield's public skills](https://github.
 (MIT) and [Comfy's workflow templates](https://github.com/Comfy-Org/workflow_templates/tree/86ce86e92ec77e3c3c6d4a754e69cfce37886542/templates);
 they run through Aftertake's existing Z-Image, LTX-2.5 and Qwen workflows.
 
+**Fourteen camera moves, one click.** Create video and Animate a frame open a
+moves gallery where each move is a small looping diagram: push, pull, pans,
+tilts, crane, truck, orbit, crash zoom, whip pan, handheld and dolly zoom.
+
 **Know the time before you render.** Create video, Create image, the frame
 editor, Render take and character replacement each show how long the job
 usually takes before you start it. The estimate is the median of your earlier

@@ -59,6 +59,7 @@ import TakeLibrary from './TakeLibrary';
 import TakeBlend, { takeBlendMatches } from './TakeBlend';
 import TakeStatus from './take-status';
 import RenderEstimate from './RenderEstimate';
+import MovesGallery from './MovesGallery';
 import { TakeClient, takeBusy, takeRecoverable } from './take-client';
 import { recordedFirst, selectRecordedWork, type RecordedWorkKind } from './RecordedHighlights';
 import { applyTemplate, type Template } from './templates';
@@ -96,6 +97,7 @@ import {
   cinemaOptions,
   cinemaPrompt,
   defaultCinema,
+  promptOnlyMovements,
   savedLookSchema,
   type Cinema,
   type SavedLook,
@@ -1198,7 +1200,7 @@ export default function App() {
       : [];
   function changeFilmSetting(key: 'movement' | 'lens' | 'lighting' | 'palette', value: string) {
     const next = { ...filmSettings, [key]: value } as Cinema;
-    if (next.movement === 'orbit') next.guidance = 'prompt';
+    if (promptOnlyMovements.has(next.movement)) next.guidance = 'prompt';
     change({ cinema: next });
   }
   function saveFilmLook() {
@@ -2318,12 +2320,17 @@ export default function App() {
                   </select>
                 </label>
               ))}
+              <MovesGallery
+                value={filmSettings.movement}
+                disabled={!recipe || busy}
+                onChange={(movement) => changeFilmSetting('movement', movement)}
+              />
               <label className="framing-toggle">
                 <input
                   type="checkbox"
                   aria-label="Guide framing with motion tracks"
                   checked={filmSettings.guidance === 'tracks'}
-                  disabled={!recipe || busy || filmSettings.movement === 'orbit'}
+                  disabled={!recipe || busy || promptOnlyMovements.has(filmSettings.movement)}
                   onChange={(e) =>
                     change({
                       cinema: { ...filmSettings, guidance: e.target.checked ? 'tracks' : 'prompt' },

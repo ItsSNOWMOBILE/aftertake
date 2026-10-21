@@ -9,7 +9,16 @@ import {
   type Recipe,
 } from '../src/domain.js';
 import { buildWorkflow, requirements } from '../server/workflow.js';
-import { cameraTracks, cinemaPrompt, cinemaSchema, defaultCinema } from '../src/cinema.js';
+import {
+  cameraMovements,
+  cameraTracks,
+  cinemaOptions,
+  cinemaPrompt,
+  cinemaSchema,
+  defaultCinema,
+  movementNotes,
+  promptOnlyMovements,
+} from '../src/cinema.js';
 import { spatialMask } from '../src/mask.js';
 const recipe: Recipe = {
   format: 'aftertake/1',
@@ -298,4 +307,44 @@ test('framing tracks have the requested temporal direction and enter the actual 
   assert.deepEqual(graph['19'].inputs.samples, ['18', 2]);
   assert.deepEqual(graph['44'].inputs.images, ['41', 0]);
   assert.match(String(graph['4'].inputs.lora_name), /motion-track-control/);
+});
+
+test('every camera move has wording, a gallery line and on-canvas tracks that go the right way', () => {
+  assert.deepEqual(
+    cinemaOptions.movement.map(([value]) => value),
+    [...cameraMovements],
+  );
+  const prompts = new Set<string>();
+  for (const movement of cameraMovements) {
+    assert.ok(movementNotes[movement].length > 10, movement);
+    const prompt = cinemaPrompt('A lighthouse at dusk.', { ...defaultCinema, movement }, false);
+    prompts.add(prompt.split('.')[0]);
+    const tracks = cameraTracks(512, 288, 49, movement);
+    assert.equal(tracks.length, promptOnlyMovements.has(movement) ? 0 : 12, movement);
+    for (const track of tracks)
+      for (const point of track)
+        assert.ok(point.x >= 0 && point.x <= 512 && point.y >= 0 && point.y <= 288, movement);
+    assert.equal(
+      cinemaSchema.safeParse({ ...defaultCinema, movement, guidance: 'tracks' }).success,
+      !promptOnlyMovements.has(movement),
+      movement,
+    );
+  }
+  assert.equal(prompts.size, cameraMovements.length);
+  const middle = (movement: (typeof cameraMovements)[number]) =>
+    cameraTracks(512, 288, 49, movement)[5];
+  assert.ok(middle('pan-right')[48].x < middle('pan-right')[0].x);
+  assert.ok(middle('tilt-up')[48].y > middle('tilt-up')[0].y);
+  assert.ok(middle('tilt-down')[48].y < middle('tilt-down')[0].y);
+  assert.ok(middle('crane-up')[48].y > middle('crane-up')[0].y);
+  // Trucking moves nearer (lower) points further than distant (upper) ones.
+  const truck = cameraTracks(512, 288, 49, 'truck');
+  assert.ok(truck[9][48].x - truck[9][0].x > truck[1][48].x - truck[1][0].x);
+  // A crash zoom holds first, then lands well past a slow push.
+  const crash = cameraTracks(512, 288, 49, 'crash-zoom')[0];
+  assert.deepEqual(crash[10], crash[0]);
+  const push = cameraTracks(512, 288, 49, 'push')[0];
+  assert.ok(Math.abs(crash[48].x - 256) > Math.abs(push[48].x - 256));
+  const handheld = cameraTracks(512, 288, 49, 'handheld')[5];
+  assert.ok(handheld.every((point) => Math.abs(point.x - handheld[0].x) < 512 * 0.04));
 });
