@@ -299,3 +299,39 @@
 .finishing-redaction-time input {
   width: 72px;
 }
+
+.finishing-looks {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.finishing-looks legend {
+  margin-bottom: 8px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.finishing-look-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.finishing-look-row button {
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid #4a5056;
+  border-radius: 18px;
+  background: #202326;
+  color: #e6e8eb;
+  font-size: 13px;
+  cursor: pointer;
+}
+.finishing-look-row button[aria-pressed='true'] {
+  border-color: #d5e991;
+  color: #d5e991;
+  background: #2a3324;
+}
+.finishing-look-row button:focus-visible {
+  outline: 2px solid #d5e991;
+  outline-offset: 2px;
+}

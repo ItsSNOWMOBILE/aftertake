@@ -17,6 +17,7 @@ import type { FilmAsset } from './film';
 import {
   defaultFinishingSettings,
   finishingBusy,
+  finishingPresets,
   finishingRequestSchema,
   finishingRecipeSchema,
   applyOpticalFinishingPreset,
@@ -627,59 +628,24 @@ export default function FinishingStudio({
             </div>
           </div>
           <div className="image-controls finishing-controls">
-            <label>
-              SOURCE
-              <select
-                aria-label="Finishing source"
-                value={clip.id}
-                disabled={locked}
-                onChange={(event) => {
-                  const chosen = clips.find((item) => item.id === event.target.value);
-                  if (chosen) {
-                    clearPreview();
-                    setClip(chosen);
-                    setPreviewTime(0);
-                    setName((chosen.name + ' / finish').slice(0, 100));
-                  }
-                }}
-              >
-                {clips.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
+            <fieldset className="finishing-looks" disabled={locked}>
+              <legend>Film look</legend>
+              <div className="finishing-look-row">
+                {finishingPresets.map((preset) => (
+                  <button
+                    type="button"
+                    key={preset.id}
+                    aria-pressed={history.now.preset === preset.id}
+                    title={preset.description}
+                    onClick={() =>
+                      change({ preset: preset.id, lookStrength: preset.id === 'clean' ? 0 : 0.7 })
+                    }
+                  >
+                    {preset.name}
+                  </button>
                 ))}
-              </select>
-            </label>
-            <label>
-              TAKE NAME
-              <input
-                aria-label="Finishing take name"
-                maxLength={100}
-                value={name}
-                disabled={locked}
-                onChange={(event) => setName(event.target.value)}
-              />
-            </label>
-            <label>
-              FILM LOOK
-              <select
-                aria-label="Finishing film look"
-                value={history.now.preset}
-                disabled={locked}
-                onChange={(event) =>
-                  change({
-                    preset: event.target.value as FinishingSettings['preset'],
-                    lookStrength: event.target.value === 'clean' ? 0 : 0.7,
-                  })
-                }
-              >
-                <option value="clean">Clean / your adjustments</option>
-                <option value="warm-film">Warm film</option>
-                <option value="cool-film">Cool film</option>
-                <option value="noir">Noir</option>
-                <option value="vintage">Vintage</option>
-              </select>
-            </label>
+              </div>
+            </fieldset>
             {history.now.preset !== 'clean' && (
               <label>
                 LOOK STRENGTH
@@ -695,7 +661,7 @@ export default function FinishingStudio({
                 />
               </label>
             )}
-            {controls.map((control) => (
+            {controls.slice(0, 4).map((control) => (
               <label className="finishing-slider" key={control.key}>
                 <span>
                   {control.label}
@@ -713,54 +679,6 @@ export default function FinishingStudio({
                 />
               </label>
             ))}
-            <GradingControls settings={history.now} disabled={locked} onChange={change} />
-            <fieldset className="finishing-optics" disabled={locked}>
-              <legend>Optical effects</legend>
-              <label>
-                OPTICAL RECIPE
-                <select
-                  aria-label="Finishing optical recipe"
-                  value={matchingOpticalFinishingPreset(history.now)}
-                  onChange={(event) =>
-                    change(applyOpticalFinishingPreset(history.now, event.target.value))
-                  }
-                >
-                  <option value="custom" disabled>
-                    Custom adjustments
-                  </option>
-                  {opticalFinishingPresets.map((preset) => (
-                    <option key={preset.id} value={preset.id}>
-                      {preset.name}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <p>
-                Glow and warm halos spread bright highlights. Color separation adds a stylized
-                red/blue edge; it does not repair composite seams. Recipes keep your color grade.
-                Review with Preview frame before saving a finished take.
-              </p>
-              {opticalControls.map((control) => (
-                <label className="finishing-slider" key={control.key}>
-                  <span>
-                    {control.label}
-                    <output>
-                      {history.now[control.key].toFixed(2)}
-                      {control.unit}
-                    </output>
-                  </span>
-                  <input
-                    aria-label={'Finishing ' + control.label.toLowerCase()}
-                    type="range"
-                    min="0"
-                    max={control.max}
-                    step={control.step}
-                    value={history.now[control.key]}
-                    onChange={(event) => change({ [control.key]: Number(event.target.value) })}
-                  />
-                </label>
-              ))}
-            </fieldset>
             <fieldset className="finishing-redactions" disabled={locked}>
               <legend>Hide details</legend>
               <p>
@@ -862,28 +780,130 @@ export default function FinishingStudio({
                 </div>
               ))}
             </fieldset>
-            {history.now.grain > 0 && (
+            <details className="studio-advanced">
+              <summary>More options</summary>
               <label>
-                GRAIN SEED
-                <input
-                  aria-label="Finishing grain seed"
-                  type="number"
-                  min="0"
-                  max={2 ** 32 - 1}
-                  step="1"
-                  value={history.now.seed}
+                SOURCE
+                <select
+                  aria-label="Finishing source"
+                  value={clip.id}
                   disabled={locked}
-                  onChange={(event) =>
-                    change({
-                      seed: Math.max(
-                        0,
-                        Math.min(2 ** 32 - 1, Math.round(Number(event.target.value) || 0)),
-                      ),
-                    })
-                  }
+                  onChange={(event) => {
+                    const chosen = clips.find((item) => item.id === event.target.value);
+                    if (chosen) {
+                      clearPreview();
+                      setClip(chosen);
+                      setPreviewTime(0);
+                      setName((chosen.name + ' / finish').slice(0, 100));
+                    }
+                  }}
+                >
+                  {clips.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                TAKE NAME
+                <input
+                  aria-label="Finishing take name"
+                  maxLength={100}
+                  value={name}
+                  disabled={locked}
+                  onChange={(event) => setName(event.target.value)}
                 />
               </label>
-            )}
+              {controls.slice(4).map((control) => (
+                <label className="finishing-slider" key={control.key}>
+                  <span>
+                    {control.label}
+                    <output>{Number(history.now[control.key]).toFixed(2)}</output>
+                  </span>
+                  <input
+                    aria-label={'Finishing ' + control.label.toLowerCase()}
+                    type="range"
+                    min={control.min}
+                    max={control.max}
+                    step={control.step}
+                    value={Number(history.now[control.key])}
+                    disabled={locked}
+                    onChange={(event) => change({ [control.key]: Number(event.target.value) })}
+                  />
+                </label>
+              ))}
+              <GradingControls settings={history.now} disabled={locked} onChange={change} />
+              <fieldset className="finishing-optics" disabled={locked}>
+                <legend>Optical effects</legend>
+                <label>
+                  OPTICAL RECIPE
+                  <select
+                    aria-label="Finishing optical recipe"
+                    value={matchingOpticalFinishingPreset(history.now)}
+                    onChange={(event) =>
+                      change(applyOpticalFinishingPreset(history.now, event.target.value))
+                    }
+                  >
+                    <option value="custom" disabled>
+                      Custom adjustments
+                    </option>
+                    {opticalFinishingPresets.map((preset) => (
+                      <option key={preset.id} value={preset.id}>
+                        {preset.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <p>
+                  Glow and warm halos spread bright highlights. Color separation adds a stylized
+                  red/blue edge; it does not repair composite seams. Recipes keep your color grade.
+                  Review with Preview frame before saving a finished take.
+                </p>
+                {opticalControls.map((control) => (
+                  <label className="finishing-slider" key={control.key}>
+                    <span>
+                      {control.label}
+                      <output>
+                        {history.now[control.key].toFixed(2)}
+                        {control.unit}
+                      </output>
+                    </span>
+                    <input
+                      aria-label={'Finishing ' + control.label.toLowerCase()}
+                      type="range"
+                      min="0"
+                      max={control.max}
+                      step={control.step}
+                      value={history.now[control.key]}
+                      onChange={(event) => change({ [control.key]: Number(event.target.value) })}
+                    />
+                  </label>
+                ))}
+              </fieldset>
+              {history.now.grain > 0 && (
+                <label>
+                  GRAIN SEED
+                  <input
+                    aria-label="Finishing grain seed"
+                    type="number"
+                    min="0"
+                    max={2 ** 32 - 1}
+                    step="1"
+                    value={history.now.seed}
+                    disabled={locked}
+                    onChange={(event) =>
+                      change({
+                        seed: Math.max(
+                          0,
+                          Math.min(2 ** 32 - 1, Math.round(Number(event.target.value) || 0)),
+                        ),
+                      })
+                    }
+                  />
+                </label>
+              )}
+            </details>
             <button
               className="button"
               disabled={locked}
