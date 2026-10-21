@@ -1,6 +1,7 @@
 import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
 import PreviewVideo from './PreviewVideo';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { deferred, preloadDeferred } from './deferred';
 import {
   ArrowDownToLine,
   ArrowLeftRight,
@@ -58,24 +59,25 @@ import TakeLibrary from './TakeLibrary';
 import TakeBlend, { takeBlendMatches } from './TakeBlend';
 import TakeStatus from './take-status';
 import { TakeClient, takeBusy, takeRecoverable } from './take-client';
-import RecipeLibrary from './RecipeLibrary';
 import { recordedFirst, selectRecordedWork, type RecordedWorkKind } from './RecordedHighlights';
 import { applyTemplate, type Template } from './templates';
 import EditReference from './EditReference';
-import FrameEditor from './FrameEditor';
 import MotionDirection from './MotionDirection';
 import { frameEditBusy, type FrameEdit } from './frame-edit';
 import { imageBusy, type ImageGeneration } from './image-generation';
-import ImageStudio from './ImageStudio';
-import VideoStudio from './VideoStudio';
 import { videoBusy, type VideoGeneration } from './video-generation';
-import CharacterStudio from './CharacterStudio';
-import FinishingStudio from './FinishingStudio';
-import DepthEffectsStudio from './DepthEffectsStudio';
-import LayerStudio from './LayerStudio';
-import ComputeSettings from './ComputeSettings';
 import AftertakeBrand from './AftertakeBrand';
 import StartScreen from './StartScreen';
+// Studios open as dialogs, so each loads on first use (and is preloaded when idle).
+const RecipeLibrary = deferred(() => import('./RecipeLibrary'));
+const FrameEditor = deferred(() => import('./FrameEditor'));
+const ImageStudio = deferred(() => import('./ImageStudio'));
+const VideoStudio = deferred(() => import('./VideoStudio'));
+const CharacterStudio = deferred(() => import('./CharacterStudio'));
+const FinishingStudio = deferred(() => import('./FinishingStudio'));
+const DepthEffectsStudio = deferred(() => import('./DepthEffectsStudio'));
+const LayerStudio = deferred(() => import('./LayerStudio'));
+const ComputeSettings = deferred(() => import('./ComputeSettings'));
 import { startScreenWanted, type StartTask } from './start-tasks';
 import { characterBusy, type CharacterJob } from './character';
 import { ImagePlus, ScanFace } from 'lucide-react';
@@ -1303,6 +1305,7 @@ export default function App() {
     return () => clearTimeout(retry);
   }, [busy, mediaError]);
 
+  useEffect(() => preloadDeferred(), []);
   useEffect(() => {
     // Once the source picker closes, finish the start task on a newly chosen source.
     if (!pendingStart || sourceOpen) return;
