@@ -18,6 +18,7 @@
       "name": "Rooftop · two fictional identities · seed 610202"
     }
   ],
-  "actualUIScreenshot": "Missing: the actual UI screenshot capture timed out. This derived record is not a screenshot.",
-  "meaning": "Completed replacement ancestry is a structural count; visual success is reviewed separately in visual-review.json."
+  "actualUIScreenshot": "../chain-screenshot.png",
+  "meaning": "Completed replacement ancestry is a structural count; visual success is reviewed separately in visual-review.json.",
+  "screenshotCapture": "../screenshot-capture.json"
 }

@@ -14,13 +14,15 @@ film-request.json records the export request; film-render.json is the exact dura
 
 Native audio correlations against the original source are 0.99990 and 0.99990. The 720p delivery correlations are 0.99965 and 0.99973, with gains 0.99954 and 0.99953. Both outputs pass continuous 24 fps timestamps, duration, dimensions and aligned source-audio coverage checks.
 
-## Visual review and remaining screenshot
+## Visual review and UI proof
 
 Actual native frames 0, 24, 48 and 72, a full 73-frame contact, and detailed head/shoulder comparisons were reviewed. The intended seated man is consistently replaced, the foreground woman's face/curls/outfit remain coherent, and the old late-frame yellow shoulder patch is absent in the reviewed retry samples. The target face is small; this review does not establish pixel-perfect likeness or biometric identity. Contact sheets also cannot rule out every subpixel seam or brief motion artifact.
 
 The real application ancestry counts two replacement passes, and the root UI operator directly observed that count and the completed Film handoff. chain-evidence.json records the actual chain computed by the app function; ui-observation.json explicitly identifies the direct UI observations as text evidence.
 
-**chain-screenshot.png is still missing.** The actual browser screenshot attempt timed out after 5 seconds. No synthetic screenshot or replacement image is supplied. The rendering, review and delivery evidence is complete apart from that requested screenshot.
+The actual app screenshot now shows this successful retry and the two-person count. [Capture provenance](../screenshot-capture.json) records the displayed take, original viewport hash and crop. Earlier capture failures remain historical notes in ui-observation.json.
+
+![Actual Aftertake UI showing two people swapped](../chain-screenshot.png)
 
 ## Shared assets and replay
 

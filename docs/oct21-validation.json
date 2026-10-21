@@ -52,7 +52,7 @@
       "report": "examples/character-two-people/prompt-retry/README.md"
     },
     "uiChainPeople": 2,
-    "requestedScreenshot": "Unavailable: Chrome capture timed out; the actual two-person panel text and output ID were observed through the live DOM."
+    "requestedScreenshot": "Captured actual successful retry UI: examples/character-two-people/chain-screenshot.png"
   },
   "job7": {
     "baseline": {

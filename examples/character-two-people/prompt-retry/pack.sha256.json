@@ -3,9 +3,14 @@
   "pathsRelativeTo": ".",
   "files": [
     {
+      "path": "README.md",
+      "bytes": 3783,
+      "sha256": "e3bb9bc6f5422d7d6e2500d26cb1a4117d58a5106bed7dba48747794ba50bf04"
+    },
+    {
       "path": "chain-evidence.json",
-      "bytes": 992,
-      "sha256": "ba5e9232a3f9f1c243dd25de50be73cecb6fdab161089c62ddb25cf4fe12c745"
+      "bytes": 976,
+      "sha256": "72c5f59c6cfe03042d014f218399c98c16ba91b5414669b12148c1ef3453855f"
     },
     {
       "path": "clock-review.json",
@@ -86,11 +91,6 @@
       "path": "publication-audit.json",
       "bytes": 273,
       "sha256": "337618adb6a4fa9d742523c8a4194226df1e5a0a5582bb2f3dd29d31d259535e"
-    },
-    {
-      "path": "README.md",
-      "bytes": 3712,
-      "sha256": "460c68f3b5dc394280b41cf2bf4a36ae70a2041ef6e9f7a38447cfa2ebb403f4"
     },
     {
       "path": "render.json",
@@ -179,8 +179,8 @@
     },
     {
       "path": "ui-observation.json",
-      "bytes": 813,
-      "sha256": "663de36855548bb4e352e5acc66622a37c20faf1bcf2fdb96e21c2f450d48d36"
+      "bytes": 921,
+      "sha256": "05c4a9d54ece098194119efb5d96d22149d937f3315567552e1a3a2b380487b5"
     },
     {
       "path": "visual-review.json",

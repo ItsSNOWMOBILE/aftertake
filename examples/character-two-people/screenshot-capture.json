@@ -1,0 +1,39 @@
+{
+  "format": "aftertake-ui-screenshot/1",
+  "savedAtUtc": "2026-10-21T12:27:41.391939+00:00",
+  "applicationRevision": "17fd245b900644aae5cfafdab4587f7d56ab15eb",
+  "page": "http://127.0.0.1:4397/",
+  "dialog": "Replace a character",
+  "displayedTakeId": "65372afb-ec7c-4196-99d5-9348ba57c628",
+  "displayedTakeSha256": "06f5477a096f29ae0b1f7c5263cda08ff40da685da57ebf169c1ab9f2a88f2da",
+  "peopleCount": 2,
+  "visibleText": "1344 × 736 · 24 fps · seed 610202. 2 people swapped in this shot, one pass each, starting from “Rooftop recast · H3 · v2”. Review identity, hands and motion before using this take.",
+  "sourceCapture": {
+    "method": "Actual Chrome browser screenshot, full viewport",
+    "format": "JPEG",
+    "dimensions": [
+      4247,
+      1579
+    ],
+    "bytes": 232943,
+    "sha256": "9845d402c9a337be50ecdb567a14f494f8f0d099af6eef0e303df342b53bf24d"
+  },
+  "publishedScreenshot": {
+    "file": "chain-screenshot.png",
+    "format": "PNG",
+    "dimensions": [
+      1221,
+      1336
+    ],
+    "bytes": 871271,
+    "sha256": "a2004ca4dc5182dba159ac623b25fb9d0b15b3f1aa5d2c926f637b91978fc123",
+    "cropBoxSourcePixels": [
+      1301,
+      43,
+      2522,
+      1379
+    ]
+  },
+  "processing": "Crop the actual application dialog from the captured viewport and decode JPEG to PNG. No UI text, app state or video pixels were composited or retouched.",
+  "scope": "This capture shows the successful prompt-only retry. The failed baseline records and media remain unchanged."
+}
