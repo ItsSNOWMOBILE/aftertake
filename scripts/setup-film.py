@@ -4,6 +4,9 @@ import subprocess
 import sys
 import venv
 
+if sys.version_info < (3, 12):
+    raise SystemExit('The Film runtime needs Python 3.12 or newer (its pinned NumPy and PyAV require it).')
+
 root = Path(__file__).resolve().parents[1]
 environment = root / '.runtime/film-venv'
 python = environment / ('Scripts/python.exe' if sys.platform == 'win32' else 'bin/python')

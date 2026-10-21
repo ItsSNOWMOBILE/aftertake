@@ -7,6 +7,9 @@
   "description": "Direct where and when a video transformation happens, with open-weight ComfyUI workflows.",
   "scripts": {
     "dev": "tsx watch server/index.ts",
+    "aftertake": "node scripts/aftertake.mjs",
+    "doctor": "node scripts/aftertake.mjs doctor",
+    "setup:gpu": "node scripts/aftertake.mjs setup-gpu",
     "demo": "node scripts/run-demo.mjs",
     "mcp": "tsx server/mcp.ts",
     "build": "tsc --noEmit && vite build",

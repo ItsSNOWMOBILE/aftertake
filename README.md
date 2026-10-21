@@ -201,33 +201,27 @@ media imports and Film export run in the local studio.
 
 <a id="run-locally"></a>
 
-### Run the examples locally
+### Run it on your computer
 
-Requires **Node.js 22.12+**, **pnpm** and **Git**. No Python, GPU or model download
-is needed to explore the recorded examples.
+Works on **Windows, macOS and Linux**. You need [Node.js 22+](https://nodejs.org)
+and Git. To import your own footage and export films, Aftertake also uses
+Python 3.12 or newer; the launcher tells you if it is missing and how to add it.
 
 ```sh
 git clone https://github.com/ItsSNOWMOBILE/aftertake.git
 cd aftertake
-pnpm install --frozen-lockfile
-pnpm demo
+node scripts/aftertake.mjs --examples
 ```
 
-Open **http://127.0.0.1:4312**. Examples run in a separate workspace.
+Or double-click **`start.cmd`** (Windows), **`start.command`** (macOS) or run
+**`./start.sh`** (Linux) in the folder. The launcher checks your computer,
+installs what is missing, starts the studio with the recorded examples and
+opens it in your browser. Without `--examples` it opens your own workspace.
+`node scripts/aftertake.mjs doctor` prints the checklist on its own.
 
-To import your own footage and export films, install the small CPU runtime:
-
-```sh
-python scripts/setup-film.py
-```
-
-The studio prefers a healthy Film runtime for media processing, independently of
-the generation engine. To choose another installation, set `AFTERTAKE_PYTHON`
-in `.env` to its Python executable (`bin/python` on Linux or `Scripts/python.exe`
-on Windows). An explicit selection is never replaced by another runtime.
-
-Optional local narration is installed separately with
-`python scripts/setup-narration.py`. These Python setup paths use **Python 3.12**.
+No GPU or model download is needed for the examples, editing, Film, Color &
+finish or agents. Optional local narration installs with
+`python scripts/setup-narration.py` (Python 3.12).
 
 ### Prepare cloud rendering
 
@@ -242,34 +236,25 @@ current framework and an offline character-workflow deployment inventory.
 
 ### Generate new footage
 
-Requires **Python 3.12**, an **NVIDIA CUDA GPU**, and space for the selected
-model profile. The tested development host is Windows with an RTX 5080
-(16 GB VRAM) and 32 GB RAM; minimum supported hardware is not yet established.
-Setup and engine launch now validate native CUDA precision, kernels and available
-memory before model allocation. See [hardware setup and GPU selection](docs/hardware.md)
-for other NVIDIA devices, sequential offloading and explicit preflight checks.
-
-For native text-to-video with optional generated sound:
+Needs **Windows or Linux** with an **NVIDIA GPU** (tested on an RTX 5080 with
+16 GB) and **Python 3.12**. One command installs the engine and a model
+profile; the launcher then starts the engine with the studio:
 
 ```sh
-python scripts/setup.py --skip-models
-python scripts/download-models.py --text-video
-python scripts/engine.py --safe-weight-copies --no-node-cache
+node scripts/aftertake.mjs setup-gpu --video
+node scripts/aftertake.mjs
 ```
 
-In another terminal, start the studio:
-
-```sh
-pnpm dev
-```
-
-Open **http://127.0.0.1:4310** and choose **Create video**. This pinned profile
-contains **41.67 GB** of model files; allow additional space for the runtime
-and caches. Add `--models-dir /path/to/models` to the download command to use
-another disk.
+Choose any of `--video`, `--image`, `--frame-edit`, `--motion-transfer`,
+`--camera`, `--region-edit`, `--character-swap` and `--depth`, and add
+`--models-dir=PATH` to keep models on another disk. The text-to-video profile
+holds **41.67 GB** of model files. Setup and engine launch validate native CUDA
+precision, kernels and memory before allocating models; see
+[hardware setup and GPU selection](docs/hardware.md) for other NVIDIA devices.
+Render setup in the studio shows which tools are ready.
 
 <details>
-<summary><strong>Add other generation workflows</strong></summary>
+<summary><strong>Install workflows by hand</strong></summary>
 
 These commands add profiles to an installed runtime. Downloads verify pinned
 revisions, file sizes and SHA-256 hashes. Restart the engine after installation.
