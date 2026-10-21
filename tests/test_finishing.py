@@ -332,6 +332,21 @@ class RedactionTest(unittest.TestCase):
             self.assertFalse(receipt['identity'])
             self.assertEqual(receipt['redactions'], [{'frames': 1, 'boxes': 1}])
 
+    def test_matching_works_without_opencv_and_agrees_with_it(self):
+        gray = np.asarray(Image.open(ROOT / 'examples/depth-effects-v2/source.png').convert('L'), dtype=np.float32)
+        template = gray[200:240, 300:360].copy()
+        with patch.dict('sys.modules', {'cv2': None}):
+            without = finishing.match_scores(gray, template)
+            self.assertEqual(finishing.find_matches(gray, template, .9), [(300, 200, 360, 240)])
+        self.assertEqual(without.shape, (gray.shape[0] - 39, gray.shape[1] - 59))
+        self.assertAlmostEqual(float(without[200, 300]), 1, places=4)
+        try:
+            import cv2
+        except ImportError:
+            return
+        reference = cv2.matchTemplate(gray, template, cv2.TM_CCOEFF_NORMED)
+        self.assertLess(float(np.abs(without - reference).max()), 1e-3)
+
     def test_match_hides_every_copy_of_the_sample_and_nothing_else(self):
         box = {**sample_box(10, 10), 'start': 0, 'end': None, 'style': 'solid', 'match': {'at': 0, 'threshold': .9}}
         context = finishing.prepare_redactions([box], lambda seconds: marks([(10, 10)]))

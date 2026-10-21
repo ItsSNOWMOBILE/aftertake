@@ -134,20 +134,47 @@ def prepare_redactions(redactions, sample_frame):
     return context
 
 
+def match_scores(gray, template):
+    """Normalized correlation of the sample at every position, as OpenCV's TM_CCOEFF_NORMED.
+
+    OpenCV is used when the runtime has it; the NumPy path keeps "Hide every match"
+    working in the small media runtime, which does not install it.
+    """
+    try:
+        import cv2
+        return cv2.matchTemplate(gray, template, cv2.TM_CCOEFF_NORMED)
+    except ImportError:
+        pass
+    image, sample = gray.astype(np.float64), template.astype(np.float64)
+    height, width = sample.shape
+    sample = sample - sample.mean()
+    # Circular correlation through the FFT has no wrap-around at the valid positions.
+    spectrum = np.fft.rfft2(image) * np.conj(np.fft.rfft2(sample, s=image.shape))
+    numerator = np.fft.irfft2(spectrum, s=image.shape)[:image.shape[0] - height + 1, :image.shape[1] - width + 1]
+    def window_sums(values):
+        total = np.pad(values, ((1, 0), (1, 0))).cumsum(0).cumsum(1)
+        return total[height:, width:] - total[:-height, width:] - total[height:, :-width] + total[:-height, :-width]
+    count = height * width
+    spread = np.maximum(window_sums(image * image) - window_sums(image) ** 2 / count, 0)
+    denominator = np.sqrt(spread * float((sample * sample).sum()))
+    scores = np.zeros_like(numerator)
+    np.divide(numerator, denominator, out=scores, where=denominator > 1e-6 * count)
+    return np.clip(scores, -1, 1).astype(np.float32)
+
+
 def find_matches(gray, template, threshold):
     """Every non-overlapping place the sample appears, best first."""
-    import cv2
     height, width = template.shape
     if gray.shape[0] < height or gray.shape[1] < width:
         return []
-    scores = cv2.matchTemplate(gray, template, cv2.TM_CCOEFF_NORMED)
+    scores = match_scores(gray, template)
     scores[~np.isfinite(scores)] = -1
     found = []
     for _ in range(256):
-        _, best, _, (x, y) = cv2.minMaxLoc(scores)
-        if best < threshold:
+        y, x = np.unravel_index(int(np.argmax(scores)), scores.shape)
+        if scores[y, x] < threshold:
             break
-        found.append((x, y, x + width, y + height))
+        found.append((int(x), int(y), int(x) + width, int(y) + height))
         scores[max(0, y - height // 2):y + height // 2 + 1, max(0, x - width // 2):x + width // 2 + 1] = -1
     return found
 
