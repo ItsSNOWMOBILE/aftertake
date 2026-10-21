@@ -1,6 +1,6 @@
 {
   "format": "aftertake-film/3",
-  "id": "62686c23-8e7f-4c5c-be74-84c9d9f8c5e5",
+  "id": "2994e7b4-e482-45aa-be45-b187fac15011",
   "name": "Then comes the Aftertake",
   "aspect": "landscape",
   "resolution": "1080p",
@@ -51,15 +51,15 @@
       }
     },
     {
-      "assetId": "879db3fd-3968-454e-89db-3c983b66b807",
+      "assetId": "4699b69d-938a-4ca5-a8af-794f7a803a0c",
       "start": 0,
       "end": 9.416666666666666,
       "title": "scene-04.mp4",
-      "sha256": "41e02ebdac89da944208b23289a58cfed2e00e702217cbee58d7374c53e38f28",
+      "sha256": "ac179163c265e44d3a38542a81c3513722df7c35ac5567928a5053c83477c843",
       "asset": {
         "name": "scene-04.mp4",
         "kind": "video",
-        "sha256": "41e02ebdac89da944208b23289a58cfed2e00e702217cbee58d7374c53e38f28",
+        "sha256": "ac179163c265e44d3a38542a81c3513722df7c35ac5567928a5053c83477c843",
         "duration": 9.416666666666666,
         "width": 1920,
         "height": 1080
@@ -81,38 +81,38 @@
       }
     },
     {
-      "assetId": "e094ee63-92cf-4714-b17d-e6aa2c060cc9",
+      "assetId": "d6214d3c-d57e-4ca8-b135-83d4f70e2863",
       "start": 0,
       "end": 8.833333333333334,
       "title": "scene-06.mp4",
-      "sha256": "79e425315bec3863f0f1c8b832c6dfec703c6f6f3e1d426625e0c2001f5309e0",
+      "sha256": "6b090ebea531f07ac2c2fd15490b568c374dfcab1837479d1f0efcf31327d905",
       "asset": {
         "name": "scene-06.mp4",
         "kind": "video",
-        "sha256": "79e425315bec3863f0f1c8b832c6dfec703c6f6f3e1d426625e0c2001f5309e0",
+        "sha256": "6b090ebea531f07ac2c2fd15490b568c374dfcab1837479d1f0efcf31327d905",
         "duration": 8.833333333333334,
         "width": 1920,
         "height": 1080
       }
     },
     {
-      "assetId": "736d887e-cbae-4489-84f2-70b7dd798b90",
+      "assetId": "d6829d70-c3fd-477a-bc53-929c5fd92ecd",
       "start": 0,
       "end": 31.75,
       "title": "scene-07.mp4",
-      "sha256": "9478232ffbd22a5145f75c8dc487e0e9b63e70ed479d31f8ca77566a11fd0fa3",
+      "sha256": "190be4a3779abde3c1a4303c277e5f7b9bc01fe925572fbed065c678bf11ec1a",
       "asset": {
         "name": "scene-07.mp4",
         "kind": "video",
-        "sha256": "9478232ffbd22a5145f75c8dc487e0e9b63e70ed479d31f8ca77566a11fd0fa3",
+        "sha256": "190be4a3779abde3c1a4303c277e5f7b9bc01fe925572fbed065c678bf11ec1a",
         "duration": 31.75,
         "width": 1920,
         "height": 1080
       }
     }
   ],
-  "requestKey": "master-1792537412245",
-  "requestDigest": "8a229d9d0ed06369a6ed833f77c52b097979a2333e02910b995caeb47371b87e",
+  "requestKey": "master-1792541588022",
+  "requestDigest": "56b097ad51f058b9d6efd4ba3abb90987fab12372814d46b0362c0ba83c24d66",
   "titles": [],
   "audio": [
     {
@@ -134,6 +134,6 @@
   "normalizeAudio": false,
   "state": "ready",
   "duration": 93.45833333333333,
-  "createdAt": "2026-10-20T23:03:32.351Z",
-  "output": "/api/films/62686c23-8e7f-4c5c-be74-84c9d9f8c5e5/video"
+  "createdAt": "2026-10-21T00:13:08.138Z",
+  "output": "/api/films/2994e7b4-e482-45aa-be45-b187fac15011/video"
 }

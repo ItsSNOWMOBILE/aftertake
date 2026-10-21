@@ -220,7 +220,7 @@ export const scenes = [
     shot('proofRun', 41, 48, { in: 0, framing: cover, dissolve: D, transition: 'flash' });
     title('MAKE THE NEXT TAKE,', 41.5, 43.7, big({ position: 'top', fontSize: 64, box: 'highlight', color: CREAM, tilt: -2, early: 0.02 }));
     title('RUN THE SCENE.', 43.7, 48, big({ position: 'top', fontSize: 64, box: 'highlight', color: LIME, tilt: -2, early: 0.04 }));
-    title('RECORDED ON AN RTX 5080 · 32× FAST, THEN REAL TIME · COMFYUI: “PROMPT EXECUTED IN 80.97 SECONDS”', 41.3, 47.9, kicker({ fontSize: 22 }));
+    title('RTX 5080 · 32× FAST, THEN REAL TIME · “PROMPT EXECUTED IN 80.97 SECONDS”', 41.3, 47.9, kicker({ fontSize: 22 }));
   }),
   // 5 · “Recast the lead, keep the move. Five more dancers in the groove.
   // Words to video, still to light. Pull the camera, cut it right.”

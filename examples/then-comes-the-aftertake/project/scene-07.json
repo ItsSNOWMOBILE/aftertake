@@ -1,6 +1,6 @@
 {
   "format": "aftertake-film/5",
-  "id": "a5808819-d31e-489c-aa6c-f53e18bd823a",
+  "id": "eab2861d-563f-4c1b-915c-98f0cf2460d2",
   "name": "07 Your call",
   "aspect": "landscape",
   "resolution": "1080p",
@@ -464,7 +464,7 @@
       }
     },
     {
-      "assetId": "2021cf71-1f79-466d-9396-cfcd9a208c3c",
+      "assetId": "53fee3f5-9070-4163-b8cd-01ffdecff93e",
       "framing": {
         "zoom": 1.03,
         "endZoom": 1.1,
@@ -472,17 +472,17 @@
         "y": 0.5,
         "fit": "cover"
       },
-      "start": 1.7916666666666667,
-      "end": 2.5,
-      "title": "crystalMove.mp4",
-      "sha256": "0ea8874562af8a335572df604f829ec6a972407e08c88cb6b18949aeb741b5b8",
+      "start": 2.5833333333333335,
+      "end": 3.2916666666666665,
+      "title": "agentAd.mp4",
+      "sha256": "69d709f353879959a0ba6c3183e3d1b69ab08d2237584c0dc0ab7c069369a4f1",
       "asset": {
-        "name": "crystalMove.mp4",
+        "name": "agentAd.mp4",
         "kind": "video",
-        "sha256": "0ea8874562af8a335572df604f829ec6a972407e08c88cb6b18949aeb741b5b8",
-        "duration": 4.041666666666667,
-        "width": 768,
-        "height": 432
+        "sha256": "69d709f353879959a0ba6c3183e3d1b69ab08d2237584c0dc0ab7c069369a4f1",
+        "duration": 6.5,
+        "width": 720,
+        "height": 1280
       }
     },
     {
@@ -634,11 +634,11 @@
       }
     }
   ],
-  "requestKey": "07-Your-call-1792537022703",
-  "requestDigest": "eba3abf7b996439b872b5186dcea301de89a0b74828f0d2c47116a881be1b1b2",
+  "requestKey": "07-Your-call-1792539844316",
+  "requestDigest": "92feea36d0ce68172f9a6a92d45f3af720380f3374beff1b1f100ca6f91de834",
   "titles": [
     {
-      "id": "e7d317b2-a796-4cb4-bde5-b00336bf2847",
+      "id": "fe887795-f7aa-4be1-bfef-2244153d9638",
       "text": "YOUR CLIP.",
       "start": 0,
       "end": 1.977000000000007,
@@ -650,7 +650,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "6dcac294-7287-43b6-b36d-eefe2fda785e",
+      "id": "37a38229-7247-433f-bd3e-d71a348d12a6",
       "text": "YOUR CLIP.",
       "start": 2.0550500000000014,
       "end": 3.0869100000000063,
@@ -662,7 +662,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "1f1e819b-afa5-4b79-ab6e-4372b366a59a",
+      "id": "c958d002-4ba2-4403-af26-319c287421a9",
       "text": "YOUR MODELS.",
       "start": 3.1069100000000063,
       "end": 4.670499999999993,
@@ -674,7 +674,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "b28632e5-4943-433c-a541-a2f14c63d935",
+      "id": "3fe06c4f-6291-42ec-b6df-eddf5f9a4122",
       "text": "NOIR",
       "start": 5.874699999999997,
       "end": 6.458400000000001,
@@ -686,7 +686,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "367cf858-da72-41d5-9d6a-d9ae117592a9",
+      "id": "806cade3-d5ed-4f90-a7f7-1e4eba4b0f08",
       "text": "VINTAGE",
       "start": 6.478400000000001,
       "end": 7.038900000000002,
@@ -698,7 +698,7 @@
       "color": "#121713"
     },
     {
-      "id": "999e4c66-b6bd-493b-94b6-ff867a50e5f6",
+      "id": "8f7013cf-6569-4bdb-b28f-8ab3b8c45b04",
       "text": "YOUR CALL.",
       "start": 4.690499999999993,
       "end": 5.834699999999997,
@@ -712,7 +712,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "b3c8cab1-b64c-4cf9-99b3-40ba4ab67d93",
+      "id": "01b40589-a3a4-445b-8814-b9fdf86428cb",
       "text": "COLOR & FINISH \u00b7 LOOKS \u00b7 CURVES \u00b7 LUTS",
       "start": 4.748549999999987,
       "end": 7.029874999999997,
@@ -725,7 +725,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "49c3c449-d18b-4ff6-b276-949aef1511b9",
+      "id": "b105d09d-c8c3-4feb-9c7f-d266a29fcc98",
       "text": "THEIR GESTURE.",
       "start": 7.058900000000001,
       "end": 8.193100000000005,
@@ -740,7 +740,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "3be831bf-5f38-45f2-85f0-8dcf0c55a5d1",
+      "id": "b97c5dc6-5d2a-4923-bcad-857cf7628d2c",
       "text": "YOUR CHARACTER.",
       "start": 8.343100000000005,
       "end": 9.957799999999995,
@@ -755,7 +755,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "447a8fb9-b29b-4ae9-82ca-fbdf9dba55ca",
+      "id": "58f316fb-f3be-4761-b3fa-6fb0569b17b6",
       "text": "WAN ANIMATE 2 \u00b7 MOTION TRANSFER",
       "start": 8.359200000000008,
       "end": 9.947430000000004,
@@ -768,7 +768,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "79cc7a5d-8a7a-4fbe-bc85-73b2380c9a3f",
+      "id": "4c11fdb2-ab39-47ba-9386-26cbf6ff51ad",
       "text": "PAINT IT.",
       "start": 10.298049999999996,
       "end": 10.97465,
@@ -782,7 +782,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "e7be85c0-6010-43c9-a9f9-d9e3e24d58f0",
+      "id": "a7360c91-caeb-47d3-94d0-43a715ee1c75",
       "text": "CHANGE IT.",
       "start": 10.99465,
       "end": 11.571460000000005,
@@ -795,7 +795,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "3478368c-b329-4e8f-bac7-892a882befd7",
+      "id": "e9094bbb-e887-41ff-81b2-897aafcdc030",
       "text": "MAKE IT NEW.",
       "start": 11.591460000000005,
       "end": 12.545300000000012,
@@ -809,7 +809,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "946af5cc-f070-4347-9647-b7299d0331dd",
+      "id": "544eec49-ffd8-4818-9a0d-567027e6d894",
       "text": "DEPTH \u2192 LENS BLUR",
       "start": 12.58530000000001,
       "end": 14.087799999999996,
@@ -822,7 +822,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "2535c14e-f7cd-444d-a074-00135479afc1",
+      "id": "1be50959-1404-470b-a9f1-3a031a47f083",
       "text": "LAYERS & MASKS",
       "start": 14.117799999999995,
       "end": 14.668299999999997,
@@ -836,7 +836,7 @@
       "color": "#121713"
     },
     {
-      "id": "a297ecac-5e8e-4998-a6c5-625a07c56ffb",
+      "id": "115a46c5-5eca-4b72-bcf2-8ab36b148fa6",
       "text": "MAKE THE NEXT TAKE.",
       "start": 15.000149999999998,
       "end": 16.28509,
@@ -848,7 +848,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "513e10ef-d571-4ed2-a4a9-cf3881fa8fe8",
+      "id": "107323b1-1526-4232-bd52-1901f3c5fff4",
       "text": "RUN THE SCENE.",
       "start": 16.30509,
       "end": 17.627200000000006,
@@ -860,7 +860,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "94f6c4ea-e0e2-43ab-89bb-df6160bc4dfe",
+      "id": "b717e4da-f9b0-4aa5-9d5e-ca302a89cc38",
       "text": "EVERY EFFECT \u00b7 OPEN WEIGHTS \u00b7 YOUR GPU",
       "start": 17.763300000000008,
       "end": 19.957550000000005,
@@ -873,7 +873,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "887a3d20-4ccc-46f7-ab2d-32f5f404cfdc",
+      "id": "32f115a8-a835-439f-b47b-ea5b6676b5c0",
       "text": "THEN COMES THE",
       "start": 20.0156,
       "end": 21.1366,
@@ -886,7 +886,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "cf037ca2-eca1-47f7-a31b-b10b219a4e1f",
+      "id": "11d8a40a-26c1-4ea3-80c6-6736b72e47cf",
       "text": "OPEN SOURCE \u00b7 MIT",
       "start": 22.059000000000005,
       "end": 31.591700000000003,
@@ -921,7 +921,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "99d90542-5398-41f8-8522-4e07ac2bd440",
+      "id": "2c0c8cad-9be9-45b5-9a61-9b0d689af5cc",
       "text": "BUILT ON THE COMFY SDK \u00b7 OPEN WEIGHTS \u00b7 YOUR GPU",
       "start": 22.651149999999994,
       "end": 31.591700000000003,
@@ -954,7 +954,7 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "367090a5-4a0c-4eb1-a9ad-4b4cf1d7428d",
+      "id": "867a27f8-eb89-44f2-afa5-92f6de234bed",
       "text": "github.com/ItsSNOWMOBILE/aftertake",
       "start": 23.231649999999995,
       "end": 31.591700000000003,
@@ -987,7 +987,7 @@
       "color": "#d5eb94"
     },
     {
-      "id": "d139d768-d0c5-49e7-9f16-c3314d9d434e",
+      "id": "41db7957-35ed-4dd6-b227-1fd0cb0d641f",
       "text": "Song: \u201cAftertake\u201d, written for this film and generated with",
       "start": 27.074499999999993,
       "end": 31.591700000000003,
@@ -1020,7 +1020,7 @@
       "color": "#9aa58d"
     },
     {
-      "id": "41b5dc23-b44d-4806-823b-af2fc1e709b3",
+      "id": "07d74fda-9f34-462b-aa47-f0686f1b8ce6",
       "text": "ACE-Step 1.5 XL Turbo (open weights) on Comfy Cloud \u00b7 aftertake-song-ace-step.json",
       "start": 27.074499999999993,
       "end": 31.591700000000003,
@@ -1053,7 +1053,7 @@
       "color": "#9aa58d"
     },
     {
-      "id": "94b59724-ac91-480f-a4f9-a6f7b7f6e2da",
+      "id": "b28616e7-1037-4ecd-8f62-e724cfc8df99",
       "text": "Source plates generated with LTX-2.5 and Z-Image Turbo in Aftertake \u00b7 every person shown is fictional",
       "start": 27.074499999999993,
       "end": 31.591700000000003,
@@ -1086,7 +1086,7 @@
       "color": "#9aa58d"
     },
     {
-      "id": "1f30398a-a8e0-40d6-814b-57f86ae07eee",
+      "id": "9ecad4f4-4088-403b-95bb-d3905046fe45",
       "text": "Footage: Curtis Adams, Mikhail Nilov, Dean Diemert, Florian Del\u00e9e, Michael Burrows / Pexels",
       "start": 27.074499999999993,
       "end": 31.591700000000003,
@@ -1119,7 +1119,7 @@
       "color": "#9aa58d"
     },
     {
-      "id": "149b1a87-bed7-4fae-94b2-5a0c3bd1aba9",
+      "id": "ef41b887-567d-4efa-9bf4-18da0f52d120",
       "text": "Every effect rendered in Aftertake with open-weight models.",
       "start": 27.074499999999993,
       "end": 31.591700000000003,
@@ -1152,7 +1152,7 @@
       "color": "#9aa58d"
     },
     {
-      "id": "b0ed6da2-62b1-4595-ab8b-37ef70b26a1e",
+      "id": "8fc4b8ba-caf7-470b-b40a-6cc4e32c0dcc",
       "text": "Edited, titled and cut to the beat in Aftertake Film.",
       "start": 27.074499999999993,
       "end": 31.591700000000003,
@@ -1187,7 +1187,7 @@
   ],
   "graphics": [
     {
-      "id": "f281b6b8-506a-457d-acc5-2a905b0ff4a7",
+      "id": "fa4f1fe5-57e1-4f30-abe9-1ade6df3f384",
       "name": "logo",
       "kind": "image",
       "start": 21.1766,
@@ -1245,6 +1245,6 @@
   "normalizeAudio": false,
   "state": "ready",
   "duration": 31.75,
-  "createdAt": "2026-10-20T22:57:02.859Z",
-  "output": "/api/films/a5808819-d31e-489c-aa6c-f53e18bd823a/video"
+  "createdAt": "2026-10-20T23:44:07.939Z",
+  "output": "/api/films/eab2861d-563f-4c1b-915c-98f0cf2460d2/video"
 }

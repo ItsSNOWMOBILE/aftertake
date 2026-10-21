@@ -29,10 +29,12 @@ Every shot ends. Then comes the aftertake. The film cuts through generated
 portals, crystals, castles, recast characters, echoes and finishing looks, with
 the real UI that made them. It runs on an original song written for it, made
 with open-weight ACE-Step 1.5 on Comfy Cloud, and each section plays under its
-own sung line. Its 71 shots, 96 punch titles and 25 whip, zoom, flash and glitch
+own sung line. Its 72 shots, 84 punch titles and 26 whip, zoom, flash and glitch
 transitions are native Film layers, cut to the song's beats as measured by
 `aftertake_detect_beats`. It shows the real ComfyUI graph and `@comfyorg/sdk`
-calls behind a take, and this film being cut in Aftertake's own editor.
+calls behind a take, a recorded run on an RTX 5080 with the ComfyUI console
+beside it, a real agent session over MCP, and this film being cut in
+Aftertake's own editor.
 
 ## TAKE THE LEAD
 

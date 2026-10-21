@@ -12,10 +12,10 @@ seven native Film projects, rendered by Aftertake's own CPU Film renderer.
 |             |                                                                                            |
 | :---------- | :----------------------------------------------------------------------------------------- |
 | Length      | 93.458 s, 1920 × 1080, 24 fps                                                              |
-| Edit        | 71 shots in 7 scene projects, 1.3 s average shot, each section under its sung line         |
-| Typography  | 96 titles: slam, pop, line reveal, glitch, scramble, typewriter                            |
-| Transitions | 25 styled: whip pan, zoom punch, flash, glitch cut                                         |
-| Graphics    | 15 animated Film graphics (the architecture diagram and logo)                              |
+| Edit        | 72 shots in 7 scene projects, 1.3 s average shot, each section under its sung line         |
+| Typography  | 84 titles: slam, pop, line reveal, glitch, scramble, typewriter                            |
+| Transitions | 26 styled: whip pan, zoom punch, flash, glitch cut                                         |
+| Graphics    | 2 animated Film graphics (the logo slams)                              |
 | Music       | “Aftertake”, an original song made with open-weight ACE-Step 1.5 on Comfy Cloud, 102.3 BPM |
 | Audio       | −16.1 LUFS integrated, −1.5 dBTP                                                           |
 

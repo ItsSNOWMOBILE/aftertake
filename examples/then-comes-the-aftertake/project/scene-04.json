@@ -1,6 +1,6 @@
 {
   "format": "aftertake-film/5",
-  "id": "b91e1b3d-5e22-4cdd-aaad-690f90dc5672",
+  "id": "815de0c1-5467-4f4a-b88b-8845e4dfc113",
   "name": "04 How it is built",
   "aspect": "landscape",
   "resolution": "1080p",
@@ -15,7 +15,7 @@
         "fit": "cover"
       },
       "start": 0,
-      "end": 3.5416666666666665,
+      "end": 2.9583333333333335,
       "title": "graph.png",
       "sha256": "f8c7757e756f6afe7f7d76163693a2dd7c91f3c9ea83d77a7e11f43013babcd3",
       "asset": {
@@ -30,7 +30,7 @@
     {
       "assetId": "dadb09c0-b9c8-4647-9be1-ad5c6197d8db",
       "start": 0,
-      "end": 3.5416666666666665,
+      "end": 2.4583333333333335,
       "title": "dark.png",
       "sha256": "f296397b21eb2a793985df1c6c022b43b9b88e2307bf7bf21e09b88391bb1bb1",
       "asset": {
@@ -43,29 +43,38 @@
       }
     },
     {
-      "assetId": "dadb09c0-b9c8-4647-9be1-ad5c6197d8db",
+      "assetId": "22e362a7-859d-473c-88f7-17e046c49181",
+      "dissolve": 0.25,
+      "transition": "flash",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
       "start": 0,
-      "end": 2.3333333333333335,
-      "title": "dark.png",
-      "sha256": "f296397b21eb2a793985df1c6c022b43b9b88e2307bf7bf21e09b88391bb1bb1",
+      "end": 4.25,
+      "title": "proofRun.mp4",
+      "sha256": "767619e26caef61fb04f2fa5dbe54de67c220341db58141fb9772ac6787d0c52",
       "asset": {
-        "name": "dark.png",
-        "kind": "image",
-        "sha256": "f296397b21eb2a793985df1c6c022b43b9b88e2307bf7bf21e09b88391bb1bb1",
-        "duration": 30,
+        "name": "proofRun.mp4",
+        "kind": "video",
+        "sha256": "767619e26caef61fb04f2fa5dbe54de67c220341db58141fb9772ac6787d0c52",
+        "duration": 4.366666666666666,
         "width": 1920,
         "height": 1080
       }
     }
   ],
-  "requestKey": "04-How-it-is-built-1792535961725",
-  "requestDigest": "81b3417e73c362a1485fc20f202cb17159ad3abaa26dad56add9361e82c653b5",
+  "requestKey": "04-How-it-is-built-1792541483779",
+  "requestDigest": "d2a5652245dc8a3bd3e28e6698705f564e8405908b6969360d8e1a209f4c460d",
   "titles": [
     {
-      "id": "dcdc81ac-c02a-4c91-992f-83aee0a528da",
+      "id": "a411343f-4f2b-42cc-8c97-6a7be060d322",
       "text": "HOW IT\u2019S BUILT",
       "start": 0,
-      "end": 3.479399999999999,
+      "end": 2.8988999999999985,
       "style": "headline",
       "position": "top",
       "animation": "reveal",
@@ -74,10 +83,10 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "c399334e-22b3-4dcb-b035-f134496cf1f5",
+      "id": "c31e0c70-583f-4502-b0c2-29e76ffd44ec",
       "text": "THE WINDOW REPAINT\u2019S EXECUTED GRAPH \u00b7 50 NODES \u00b7 10 AFTERTAKE NODES",
       "start": 0.11610000000000298,
-      "end": 1.9969000000000001,
+      "end": 1.4163999999999994,
       "style": "caption",
       "position": "bottom",
       "animation": "scramble",
@@ -87,10 +96,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "7293bdda-5964-4eb4-9c03-0583483df4aa",
-      "text": "LTX-2.5 \u00b7 OPEN WEIGHTS \u00b7 ON YOUR OWN MACHINE",
-      "start": 2.0549500000000016,
-      "end": 3.4713499999999975,
+      "id": "e6f1ed6c-7933-41b1-815a-4a3ea946e229",
+      "text": "OPEN WEIGHTS \u00b7 Z-IMAGE \u00b7 QWEN EDIT \u00b7 LTX-2.5 \u00b7 WAN 2 \u00b7 MINIMAX H3 \u00b7 SAM 3 \u00b7 DA3",
+      "start": 1.474450000000001,
+      "end": 2.8885299999999994,
       "style": "caption",
       "position": "bottom",
       "animation": "scramble",
@@ -100,10 +109,10 @@
       "color": "#d5eb94"
     },
     {
-      "id": "53bb2be1-0ca9-4c14-86cd-e2bf8b7ccd2e",
+      "id": "1de14c8a-6727-4c84-ba8f-6e978f2dea7e",
       "text": "POWERED BY THE COMFY SDK",
-      "start": 3.529399999999999,
-      "end": 7.008800000000002,
+      "start": 2.9488999999999983,
+      "end": 5.244100000000004,
       "style": "headline",
       "position": "top",
       "animation": "reveal",
@@ -112,14 +121,14 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "814bf75b-0d64-4b63-9caa-87a8e7aa878c",
+      "id": "9cee370d-9cef-44ea-9d06-5daaabf3cca6",
       "text": "server/sdk-worker.mjs",
-      "start": 3.7035499999999963,
-      "end": 7.008800000000002,
+      "start": 3.0650000000000013,
+      "end": 5.244100000000004,
       "style": "caption",
       "position": "center",
       "animation": "typewriter",
-      "motionDuration": 0.5,
+      "motionDuration": 0.4,
       "motion": {
         "keys": [
           {
@@ -147,14 +156,14 @@
       "color": "#8c9a88"
     },
     {
-      "id": "3504d12c-ccc8-495c-b0a3-768910a37643",
+      "id": "db71cd2b-74f2-4be7-926c-8ab1c399d19a",
       "text": "import { Comfy } from '@comfyorg/sdk'",
-      "start": 3.9937999999999967,
-      "end": 7.008800000000002,
+      "start": 3.2972,
+      "end": 5.244100000000004,
       "style": "caption",
       "position": "center",
       "animation": "typewriter",
-      "motionDuration": 0.5,
+      "motionDuration": 0.4,
       "motion": {
         "keys": [
           {
@@ -182,14 +191,14 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "c367ad6f-c1c3-4bf5-975e-00d28bb84113",
+      "id": "0a9c24e3-7cae-4078-a0f8-2b0f0f60733e",
       "text": "client = new Comfy({ timeoutMs })",
-      "start": 4.40015,
-      "end": 7.008800000000002,
+      "start": 3.5874500000000005,
+      "end": 5.244100000000004,
       "style": "caption",
       "position": "center",
       "animation": "typewriter",
-      "motionDuration": 0.5,
+      "motionDuration": 0.4,
       "motion": {
         "keys": [
           {
@@ -217,14 +226,14 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "39dc2fb7-c7e1-418a-be6d-28f71e8f06d9",
+      "id": "72503285-cb4d-409d-9e2b-fc51b3088a67",
       "text": "workflow = client.workflows.fromJson(graph)",
-      "start": 4.811140000000005,
-      "end": 7.008800000000002,
+      "start": 3.877700000000001,
+      "end": 5.244100000000004,
       "style": "caption",
       "position": "center",
       "animation": "typewriter",
-      "motionDuration": 0.5,
+      "motionDuration": 0.4,
       "motion": {
         "keys": [
           {
@@ -252,14 +261,14 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "a53277a2-c517-462d-baa8-3cd5d21f346a",
+      "id": "f90a1a14-0123-4454-8de2-08fa5e41c455",
       "text": "job = await client.submit(workflow, { idempotencyKey })",
-      "start": 5.410200000000007,
-      "end": 7.008800000000002,
+      "start": 4.226000000000003,
+      "end": 5.244100000000004,
       "style": "caption",
       "position": "center",
       "animation": "typewriter",
-      "motionDuration": 0.5,
+      "motionDuration": 0.4,
       "motion": {
         "keys": [
           {
@@ -287,14 +296,14 @@
       "color": "#f3f1e9"
     },
     {
-      "id": "d32e56e0-effa-43d4-80eb-abf16d44859b",
+      "id": "5c1e94c2-621d-4b8e-9a93-dd9b54aee562",
       "text": "\u2192 job f402b3b2 \u00b7 50 nodes \u00b7 ComfyUI ran it in 203 s",
-      "start": 6.106799999999996,
-      "end": 7.008800000000002,
+      "start": 4.632349999999999,
+      "end": 5.244100000000004,
       "style": "caption",
       "position": "center",
       "animation": "typewriter",
-      "motionDuration": 0.5,
+      "motionDuration": 0.4,
       "motion": {
         "keys": [
           {
@@ -322,1248 +331,45 @@
       "color": "#d5eb94"
     },
     {
-      "id": "cb3e1079-9a86-40e6-bb23-fab2f404067a",
-      "text": "OPEN WEIGHTS \u00b7 YOUR GPU \u00b7 MIT",
-      "start": 7.0588000000000015,
-      "end": 9.304,
-      "style": "kicker",
+      "id": "1ae7d3b4-3c1e-472b-b320-3c693b96fa87",
+      "text": "MAKE THE NEXT TAKE,",
+      "start": 5.584350000000004,
+      "end": 6.857690000000005,
+      "style": "headline",
       "position": "top",
-      "animation": "scramble",
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0.1,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0.1,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      },
-      "fontSize": 24,
-      "stroke": false,
-      "font": "mono",
+      "animation": "slam",
+      "fontSize": 64,
+      "font": "display",
+      "box": "highlight",
+      "tilt": -2,
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "fcdb7bd3-3804-47c9-aef5-5f283460b0c4",
+      "text": "RUN THE SCENE.",
+      "start": 6.877690000000005,
+      "end": 9.364,
+      "style": "headline",
+      "position": "top",
+      "animation": "slam",
+      "fontSize": 64,
+      "font": "display",
+      "box": "highlight",
+      "tilt": -2,
       "color": "#d5eb94"
     },
     {
-      "id": "56e5b4ee-ddeb-43c4-92b5-73e30fcd4915",
-      "text": "AFTERTAKE\nstudio + agents",
-      "start": 7.0588000000000015,
-      "end": 9.304,
-      "style": "headline",
-      "position": "center",
-      "animation": "pop",
-      "motionDuration": 0.3,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": -0.32,
-            "y": -0.07,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          },
-          {
-            "at": 1,
-            "x": -0.32,
-            "y": -0.07,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      },
-      "fontSize": 34,
-      "stroke": false,
-      "font": "display",
-      "color": "#f3f1e9"
-    },
-    {
-      "id": "536d3ef3-a986-4075-bf0b-799484eecd55",
-      "text": "COMFY SDK\n@comfyorg/sdk",
-      "start": 7.349050000000002,
-      "end": 9.304,
-      "style": "headline",
-      "position": "center",
-      "animation": "pop",
-      "motionDuration": 0.3,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": -0.07,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": -0.07,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      },
-      "fontSize": 34,
-      "stroke": false,
-      "font": "display",
-      "color": "#f3f1e9"
-    },
-    {
-      "id": "49651f0b-8b93-4e68-81aa-3370a102c8ec",
-      "text": "YOUR COMFYUI\nlocal GPU",
-      "start": 7.639300000000002,
-      "end": 9.304,
-      "style": "headline",
-      "position": "center",
-      "animation": "pop",
-      "motionDuration": 0.3,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0.31999999999999995,
-            "y": -0.07,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          },
-          {
-            "at": 1,
-            "x": 0.31999999999999995,
-            "y": -0.07,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      },
-      "fontSize": 34,
-      "stroke": false,
-      "font": "display",
-      "color": "#f3f1e9"
-    },
-    {
-      "id": "2a7adf8c-15a2-4b68-943d-9d78efd0e573",
-      "text": "Z-IMAGE",
-      "start": 7.9295500000000025,
-      "end": 9.304,
-      "style": "kicker",
-      "position": "center",
-      "animation": "none",
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": -0.38,
-            "y": 0.2,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.05,
-            "x": -0.38,
-            "y": 0.2,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.09,
-            "x": -0.38,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": -0.38,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      },
-      "fontSize": 19,
-      "fontWeight": 700,
-      "stroke": false,
+      "id": "5c1d028e-f891-47fe-91f6-8a1858104ed2",
+      "text": "RTX 5080 \u00b7 32\u00d7 FAST, THEN REAL TIME \u00b7 \u201cPROMPT EXECUTED IN 80.97 SECONDS\u201d",
+      "start": 5.468250000000001,
+      "end": 9.345949999999998,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "scramble",
+      "fontSize": 22,
+      "align": "left",
       "font": "mono",
-      "color": "#121713"
-    },
-    {
-      "id": "948db021-7636-41c8-a439-600175c73432",
-      "text": "QWEN EDIT",
-      "start": 8.074675000000003,
-      "end": 9.304,
-      "style": "kicker",
-      "position": "center",
-      "animation": "none",
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": -0.272,
-            "y": 0.2,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.05,
-            "x": -0.272,
-            "y": 0.2,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.09,
-            "x": -0.272,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": -0.272,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      },
-      "fontSize": 19,
-      "fontWeight": 700,
-      "stroke": false,
-      "font": "mono",
-      "color": "#121713"
-    },
-    {
-      "id": "2e07c2f1-4767-4c89-b202-ad7e75d88a49",
-      "text": "LTX-2.5",
-      "start": 8.219800000000003,
-      "end": 9.304,
-      "style": "kicker",
-      "position": "center",
-      "animation": "none",
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": -0.16400000000000003,
-            "y": 0.2,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.05,
-            "x": -0.16400000000000003,
-            "y": 0.2,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.09,
-            "x": -0.16400000000000003,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": -0.16400000000000003,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      },
-      "fontSize": 19,
-      "fontWeight": 700,
-      "stroke": false,
-      "font": "mono",
-      "color": "#121713"
-    },
-    {
-      "id": "1ff70f98-3f5f-4bac-9992-4d8d6a8d59fc",
-      "text": "WAN 2",
-      "start": 8.370725000000004,
-      "end": 9.304,
-      "style": "kicker",
-      "position": "center",
-      "animation": "none",
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": -0.055999999999999994,
-            "y": 0.2,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.05,
-            "x": -0.055999999999999994,
-            "y": 0.2,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.09,
-            "x": -0.055999999999999994,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": -0.055999999999999994,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      },
-      "fontSize": 19,
-      "fontWeight": 700,
-      "stroke": false,
-      "font": "mono",
-      "color": "#121713"
-    },
-    {
-      "id": "84ec0e9e-dda3-4272-b3b1-85d51af21102",
-      "text": "MINIMAX H3",
-      "start": 8.521649999999998,
-      "end": 9.304,
-      "style": "kicker",
-      "position": "center",
-      "animation": "none",
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0.052000000000000046,
-            "y": 0.2,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.05,
-            "x": 0.052000000000000046,
-            "y": 0.2,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.09,
-            "x": 0.052000000000000046,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0.052000000000000046,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      },
-      "fontSize": 19,
-      "fontWeight": 700,
-      "stroke": false,
-      "font": "mono",
-      "color": "#121713"
-    },
-    {
-      "id": "a6de9dd7-2088-4362-bf5d-725e7be8daa1",
-      "text": "SAM 3",
-      "start": 8.672574999999998,
-      "end": 9.304,
-      "style": "kicker",
-      "position": "center",
-      "animation": "none",
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0.16000000000000003,
-            "y": 0.2,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.05,
-            "x": 0.16000000000000003,
-            "y": 0.2,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.09,
-            "x": 0.16000000000000003,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0.16000000000000003,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      },
-      "fontSize": 19,
-      "fontWeight": 700,
-      "stroke": false,
-      "font": "mono",
-      "color": "#121713"
-    },
-    {
-      "id": "17720771-83a8-4d0c-9bfa-10b8237cf809",
-      "text": "DA3",
-      "start": 8.8235,
-      "end": 9.304,
-      "style": "kicker",
-      "position": "center",
-      "animation": "none",
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0.268,
-            "y": 0.2,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.05,
-            "x": 0.268,
-            "y": 0.2,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.09,
-            "x": 0.268,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0.268,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      },
-      "fontSize": 19,
-      "fontWeight": 700,
-      "stroke": false,
-      "font": "mono",
-      "color": "#121713"
-    },
-    {
-      "id": "b1279a05-c16a-48cc-892d-93cddabdd594",
-      "text": "KOKORO",
-      "start": 8.968625,
-      "end": 9.304,
-      "style": "kicker",
-      "position": "center",
-      "animation": "none",
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0.376,
-            "y": 0.2,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.05,
-            "x": 0.376,
-            "y": 0.2,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.09,
-            "x": 0.376,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0.376,
-            "y": 0.2,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      },
-      "fontSize": 19,
-      "fontWeight": 700,
-      "stroke": false,
-      "font": "mono",
-      "color": "#121713"
-    }
-  ],
-  "graphics": [
-    {
-      "id": "a3392557-8a39-452c-9fec-69c075479310",
-      "name": "rectangle",
-      "kind": "rect",
-      "start": 7.0588000000000015,
-      "end": 9.404,
-      "x": 0.18,
-      "y": 0.43,
-      "width": 0.24,
-      "height": 0.17,
-      "color": "#121713",
-      "opacity": 1,
-      "fillOpacity": 0.96,
-      "radius": 0.012,
-      "strokeColor": "#d5eb94",
-      "strokeWidth": 3,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.04,
-            "x": 0,
-            "y": 0,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.07,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      }
-    },
-    {
-      "id": "2caba16d-9624-4bb7-b60d-2a71f27cde39",
-      "name": "rectangle",
-      "kind": "rect",
-      "start": 7.349050000000002,
-      "end": 9.404,
-      "x": 0.5,
-      "y": 0.43,
-      "width": 0.24,
-      "height": 0.17,
-      "color": "#121713",
-      "opacity": 1,
-      "fillOpacity": 0.96,
-      "radius": 0.012,
-      "strokeColor": "#d5eb94",
-      "strokeWidth": 3,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.04,
-            "x": 0,
-            "y": 0,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.07,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      }
-    },
-    {
-      "id": "0e06b627-0368-42bf-9927-4fc2f814d5b3",
-      "name": "rectangle",
-      "kind": "rect",
-      "start": 7.639300000000002,
-      "end": 9.404,
-      "x": 0.82,
-      "y": 0.43,
-      "width": 0.24,
-      "height": 0.17,
-      "color": "#121713",
-      "opacity": 1,
-      "fillOpacity": 0.96,
-      "radius": 0.012,
-      "strokeColor": "#d5eb94",
-      "strokeWidth": 3,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.04,
-            "x": 0,
-            "y": 0,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.07,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      }
-    },
-    {
-      "id": "14d785d8-84d2-481d-8569-dabfe305293e",
-      "name": "rectangle",
-      "kind": "rect",
-      "start": 7.232949999999999,
-      "end": 9.404,
-      "x": 0.34,
-      "y": 0.43,
-      "width": 0.08,
-      "height": 0.008,
-      "color": "#d5eb94",
-      "opacity": 1,
-      "fillOpacity": 1,
-      "strokeWidth": 0,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "scaleX": 0.02,
-            "rotation": 0,
-            "opacity": 1
-          },
-          {
-            "at": 0.1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "scaleX": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "scaleX": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      }
-    },
-    {
-      "id": "835786a5-eb34-45e5-ab15-4549ae423f7e",
-      "name": "rectangle",
-      "kind": "rect",
-      "start": 7.523199999999999,
-      "end": 9.404,
-      "x": 0.66,
-      "y": 0.43,
-      "width": 0.08,
-      "height": 0.008,
-      "color": "#d5eb94",
-      "opacity": 1,
-      "fillOpacity": 1,
-      "strokeWidth": 0,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "scaleX": 0.02,
-            "rotation": 0,
-            "opacity": 1
-          },
-          {
-            "at": 0.1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "scaleX": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "scaleX": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      }
-    },
-    {
-      "id": "c5096c5f-782f-4e21-ac0b-209c335f2acc",
-      "name": "rectangle",
-      "kind": "rect",
-      "start": 7.9295500000000025,
-      "end": 9.404,
-      "x": 0.12,
-      "y": 0.7,
-      "width": 0.098,
-      "height": 0.075,
-      "color": "#d5eb94",
-      "opacity": 1,
-      "fillOpacity": 1,
-      "radius": 0.01,
-      "strokeWidth": 0,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.04,
-            "x": 0,
-            "y": 0,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.07,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      }
-    },
-    {
-      "id": "4bd4a279-5918-4e65-93a1-a7c6adc2c069",
-      "name": "rectangle",
-      "kind": "rect",
-      "start": 8.074675000000003,
-      "end": 9.404,
-      "x": 0.22799999999999998,
-      "y": 0.7,
-      "width": 0.098,
-      "height": 0.075,
-      "color": "#d5eb94",
-      "opacity": 1,
-      "fillOpacity": 1,
-      "radius": 0.01,
-      "strokeWidth": 0,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.04,
-            "x": 0,
-            "y": 0,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.07,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      }
-    },
-    {
-      "id": "bb7dc46a-f60c-4a83-915c-c35db6867243",
-      "name": "rectangle",
-      "kind": "rect",
-      "start": 8.219800000000003,
-      "end": 9.404,
-      "x": 0.33599999999999997,
-      "y": 0.7,
-      "width": 0.098,
-      "height": 0.075,
-      "color": "#d5eb94",
-      "opacity": 1,
-      "fillOpacity": 1,
-      "radius": 0.01,
-      "strokeWidth": 0,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.04,
-            "x": 0,
-            "y": 0,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.07,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      }
-    },
-    {
-      "id": "a334ba0a-cb14-472f-a0bb-6dcf51bc5e97",
-      "name": "rectangle",
-      "kind": "rect",
-      "start": 8.370725000000004,
-      "end": 9.404,
-      "x": 0.444,
-      "y": 0.7,
-      "width": 0.098,
-      "height": 0.075,
-      "color": "#d5eb94",
-      "opacity": 1,
-      "fillOpacity": 1,
-      "radius": 0.01,
-      "strokeWidth": 0,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.04,
-            "x": 0,
-            "y": 0,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.07,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      }
-    },
-    {
-      "id": "eb44720b-c7eb-481f-8702-b23e5325150a",
-      "name": "rectangle",
-      "kind": "rect",
-      "start": 8.521649999999998,
-      "end": 9.404,
-      "x": 0.552,
-      "y": 0.7,
-      "width": 0.098,
-      "height": 0.075,
-      "color": "#d5eb94",
-      "opacity": 1,
-      "fillOpacity": 1,
-      "radius": 0.01,
-      "strokeWidth": 0,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.04,
-            "x": 0,
-            "y": 0,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.07,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      }
-    },
-    {
-      "id": "bcb7b7e3-2bad-4c0b-bb43-71d37c6d3785",
-      "name": "rectangle",
-      "kind": "rect",
-      "start": 8.672574999999998,
-      "end": 9.404,
-      "x": 0.66,
-      "y": 0.7,
-      "width": 0.098,
-      "height": 0.075,
-      "color": "#d5eb94",
-      "opacity": 1,
-      "fillOpacity": 1,
-      "radius": 0.01,
-      "strokeWidth": 0,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.04,
-            "x": 0,
-            "y": 0,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.07,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      }
-    },
-    {
-      "id": "dd0bd455-eeec-4391-835e-2a002026fcf6",
-      "name": "rectangle",
-      "kind": "rect",
-      "start": 8.8235,
-      "end": 9.404,
-      "x": 0.768,
-      "y": 0.7,
-      "width": 0.098,
-      "height": 0.075,
-      "color": "#d5eb94",
-      "opacity": 1,
-      "fillOpacity": 1,
-      "radius": 0.01,
-      "strokeWidth": 0,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.04,
-            "x": 0,
-            "y": 0,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.07,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      }
-    },
-    {
-      "id": "836936d1-aafe-437d-9527-c5b000de6e2f",
-      "name": "rectangle",
-      "kind": "rect",
-      "start": 8.968625,
-      "end": 9.404,
-      "x": 0.876,
-      "y": 0.7,
-      "width": 0.098,
-      "height": 0.075,
-      "color": "#d5eb94",
-      "opacity": 1,
-      "fillOpacity": 1,
-      "radius": 0.01,
-      "strokeWidth": 0,
-      "motion": {
-        "keys": [
-          {
-            "at": 0,
-            "x": 0,
-            "y": 0,
-            "scale": 0.2,
-            "rotation": 0,
-            "opacity": 0
-          },
-          {
-            "at": 0.04,
-            "x": 0,
-            "y": 0,
-            "scale": 1.08,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-out"
-          },
-          {
-            "at": 0.07,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1,
-            "easing": "ease-in-out"
-          },
-          {
-            "at": 1,
-            "x": 0,
-            "y": 0,
-            "scale": 1,
-            "rotation": 0,
-            "opacity": 1
-          }
-        ]
-      }
+      "color": "#d5eb94"
     }
   ],
   "audio": [],
@@ -1571,6 +377,6 @@
   "normalizeAudio": false,
   "state": "ready",
   "duration": 9.416666666666666,
-  "createdAt": "2026-10-20T22:39:21.739Z",
-  "output": "/api/films/b91e1b3d-5e22-4cdd-aaad-690f90dc5672/video"
+  "createdAt": "2026-10-21T00:11:23.796Z",
+  "output": "/api/films/815de0c1-5467-4f4a-b88b-8845e4dfc113/video"
 }
