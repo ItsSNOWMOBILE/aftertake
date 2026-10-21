@@ -1,0 +1,25 @@
+{
+  "format": "aftertake-character/1",
+  "name": "Cafe recast \u00b7 foreground protection test \u00b7 seed 610303",
+  "selectionId": "9f315a8e-53f1-4c7d-98f2-3efb912cf8a8",
+  "reference": {
+    "id": "e9707961-0302-4d67-82e0-e20d9848e4f2",
+    "name": "Cafe recast \u00b7 silver hair \u00b7 seed 610302",
+    "sha256": "a0c50b7a9452424dbde9d545381262dc5dcb45d2f45dc92d13347326f4ccbeb0",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "url": "/media/e9707961-0302-4d67-82e0-e20d9848e4f2.png",
+    "kind": "image",
+    "hasAudio": false
+  },
+  "faceBox": {
+    "x": 0.08,
+    "y": 0.05,
+    "width": 0.84,
+    "height": 0.6
+  },
+  "prompt": "Replace only the brown-haired woman wearing a navy blazer in Video 1 with the fictional woman from Picture 1. She must have the silver shoulder-length hair, freckled face and facial proportions shown in Picture 1 and its matching close head crop in Picture 2. Dress her in the dark green knitted sweater from Picture 1 instead of the navy blazer, including both sleeves. Preserve her mug-lifting gesture, body pose, gaze, smile and source performance. Keep the white ceramic mug, cafe, table, windows, background lighting, camera movement and original audio. No studio background from the reference photo.",
+  "wardrobe": "reference",
+  "seed": 610303
+}

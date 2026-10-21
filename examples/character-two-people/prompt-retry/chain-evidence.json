@@ -1,0 +1,23 @@
+{
+  "format": "aftertake-character-chain-evidence/1",
+  "method": "Current application characterChain on actual native API records",
+  "people": 2,
+  "passes": [
+    {
+      "id": "51057f6e-af0a-47a1-8a3c-5cc6a4bfc51c",
+      "selectionId": "7fdf4060-3ce9-4c4b-93cc-8b22dd398bfc",
+      "sha256": "b47c2faa8dafc83f9d78a90bfda866b075a7ab1268abc5a8d923ff5d49eaf03c",
+      "seed": 509103,
+      "name": "Rooftop recast · H3 · v2"
+    },
+    {
+      "id": "65372afb-ec7c-4196-99d5-9348ba57c628",
+      "selectionId": "cae5152d-c3d9-4bec-8a44-775c41efaa57",
+      "sha256": "06f5477a096f29ae0b1f7c5263cda08ff40da685da57ebf169c1ab9f2a88f2da",
+      "seed": 610202,
+      "name": "Rooftop · two fictional identities · seed 610202"
+    }
+  ],
+  "actualUIScreenshot": "Missing: the actual UI screenshot capture timed out. This derived record is not a screenshot.",
+  "meaning": "Completed replacement ancestry is a structural count; visual success is reviewed separately in visual-review.json."
+}

@@ -1,0 +1,28 @@
+{
+  "format": "aftertake-character-selection/1",
+  "clip": {
+    "id": "f48dc6ea-00dd-4984-bdf2-896ea853672d",
+    "name": "Cafe mug \u00b7 foreground protection \u00b7 seed 610301",
+    "sha256": "f317f07e4d953beb08a49e9c662f3c20ba214dfbeeae7136b8adf431b8e4e282",
+    "width": 1280,
+    "height": 720,
+    "duration": 5.041666666666667,
+    "url": "/media/f48dc6ea-00dd-4984-bdf2-896ea853672d.mp4",
+    "kind": "video",
+    "hasAudio": true
+  },
+  "trimStart": 0,
+  "duration": 5.041666666666667,
+  "positive": [
+    {
+      "x": 0.43999999999999995,
+      "y": 0.34999999999999987
+    },
+    {
+      "x": 0.7300000000000002,
+      "y": 0.5
+    }
+  ],
+  "negative": [],
+  "resolution": "768"
+}

@@ -1,0 +1,257 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "9f315a8e-53f1-4c7d-98f2-3efb912cf8a8",
+  "kind": "selection",
+  "request": {
+    "format": "aftertake-character-selection/1",
+    "clip": {
+      "id": "f48dc6ea-00dd-4984-bdf2-896ea853672d",
+      "name": "Cafe mug · foreground protection · seed 610301",
+      "sha256": "f317f07e4d953beb08a49e9c662f3c20ba214dfbeeae7136b8adf431b8e4e282",
+      "width": 1280,
+      "height": 720,
+      "duration": 5.041666666666667,
+      "url": "/media/f48dc6ea-00dd-4984-bdf2-896ea853672d.mp4",
+      "kind": "video",
+      "hasAudio": true
+    },
+    "trimStart": 0,
+    "duration": 5.041666666666667,
+    "positive": [
+      {
+        "x": 0.43999999999999995,
+        "y": 0.34999999999999987
+      },
+      {
+        "x": 0.7300000000000002,
+        "y": 0.5
+      }
+    ],
+    "negative": [],
+    "resolution": "768"
+  },
+  "workflow": {
+    "source": {
+      "class_type": "LoadVideo",
+      "inputs": {
+        "file": "f48dc6ea-00dd-4984-bdf2-896ea853672d.mp4"
+      }
+    },
+    "slice": {
+      "class_type": "Video Slice",
+      "inputs": {
+        "video": [
+          "source",
+          0
+        ],
+        "start_time": 0,
+        "duration": 5.041666666666667,
+        "strict_duration": true
+      }
+    },
+    "prepare": {
+      "class_type": "H3RelayPrepareSource",
+      "inputs": {
+        "video": [
+          "slice",
+          0
+        ],
+        "resolution": "768",
+        "duration_seconds": 0,
+        "missing_audio": "silence"
+      }
+    },
+    "frames": {
+      "class_type": "ImageFromBatch",
+      "inputs": {
+        "image": [
+          "prepare",
+          0
+        ],
+        "batch_index": 0,
+        "length": [
+          "prepare",
+          5
+        ]
+      }
+    },
+    "first": {
+      "class_type": "ImageFromBatch",
+      "inputs": {
+        "image": [
+          "frames",
+          0
+        ],
+        "batch_index": 0,
+        "length": 1
+      }
+    },
+    "points": {
+      "class_type": "AftertakeSubjectPoints",
+      "inputs": {
+        "images": [
+          "first",
+          0
+        ],
+        "source_width": 1280,
+        "source_height": 720,
+        "points_json": "{\"positive\": [{\"x\": 0.43999999999999995, \"y\": 0.34999999999999987}, {\"x\": 0.7300000000000002, \"y\": 0.5}], \"negative\": []}"
+      }
+    },
+    "sam": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "sam3.1_multiplex_fp16.safetensors"
+      }
+    },
+    "people": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "sam",
+          1
+        ],
+        "text": "person:12"
+      }
+    },
+    "detect": {
+      "class_type": "SAM3_Detect",
+      "inputs": {
+        "model": [
+          "sam",
+          0
+        ],
+        "image": [
+          "first",
+          0
+        ],
+        "conditioning": [
+          "people",
+          0
+        ],
+        "threshold": 0.35,
+        "refine_iterations": 2,
+        "individual_masks": true
+      }
+    },
+    "choose": {
+      "class_type": "AftertakeSelectCharacterMask",
+      "inputs": {
+        "masks": [
+          "detect",
+          0
+        ],
+        "positive_coords": [
+          "points",
+          0
+        ],
+        "negative_coords": [
+          "points",
+          1
+        ]
+      }
+    },
+    "track": {
+      "class_type": "SAM3_VideoTrack",
+      "inputs": {
+        "images": [
+          "frames",
+          0
+        ],
+        "model": [
+          "sam",
+          0
+        ],
+        "initial_mask": [
+          "choose",
+          0
+        ],
+        "detection_threshold": 0.5,
+        "max_objects": 1,
+        "detect_interval": 1
+      }
+    },
+    "mask": {
+      "class_type": "SAM3_TrackToMask",
+      "inputs": {
+        "track_data": [
+          "track",
+          0
+        ],
+        "object_indices": "0"
+      }
+    },
+    "mask_erode": {
+      "class_type": "GrowMask",
+      "inputs": {
+        "mask": [
+          "mask",
+          0
+        ],
+        "expand": -1,
+        "tapered_corners": false
+      }
+    },
+    "mask_open": {
+      "class_type": "GrowMask",
+      "inputs": {
+        "mask": [
+          "mask_erode",
+          0
+        ],
+        "expand": 1,
+        "tapered_corners": false
+      }
+    },
+    "selection": {
+      "class_type": "AftertakeSaveCharacterSelection",
+      "inputs": {
+        "images": [
+          "frames",
+          0
+        ],
+        "masks": [
+          "mask_open",
+          0
+        ],
+        "filename_prefix": "aftertake/characters/9f315a8e-53f1-4c7d-98f2-3efb912cf8a8/selection",
+        "request_json": "{\"format\": \"aftertake-character-selection/1\", \"clip\": {\"id\": \"f48dc6ea-00dd-4984-bdf2-896ea853672d\", \"name\": \"Cafe mug \\u00b7 foreground protection \\u00b7 seed 610301\", \"sha256\": \"f317f07e4d953beb08a49e9c662f3c20ba214dfbeeae7136b8adf431b8e4e282\", \"width\": 1280, \"height\": 720, \"duration\": 5.041666666666667, \"url\": \"/media/f48dc6ea-00dd-4984-bdf2-896ea853672d.mp4\", \"kind\": \"video\", \"hasAudio\": true}, \"trimStart\": 0, \"duration\": 5.041666666666667, \"positive\": [{\"x\": 0.43999999999999995, \"y\": 0.34999999999999987}, {\"x\": 0.7300000000000002, \"y\": 0.5}], \"negative\": [], \"resolution\": \"768\"}"
+      }
+    },
+    "source_save": {
+      "class_type": "SaveVideo",
+      "inputs": {
+        "video": [
+          "prepare",
+          8
+        ],
+        "filename_prefix": "aftertake/characters/9f315a8e-53f1-4c7d-98f2-3efb912cf8a8/source",
+        "format": "mp4",
+        "format.codec": "h264",
+        "format.codec.encoding": "re-encode",
+        "format.codec.encoding.crf": 14
+      }
+    }
+  },
+  "requestKey": "7c4dd3cd-87e1-482c-a6e6-17b49248dfe9",
+  "requestDigest": "fd83ce61be54a544f64d6efeebf4b404209fa6edbd9a66935edc31f1950e6b49",
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-21T04:57:20.165Z",
+  "updatedAt": "2026-10-21T04:57:50.912Z",
+  "jobId": "871c309a-b73e-4ee4-b13d-9d820d97c3a3",
+  "stage": "Selection ready to review",
+  "selection": {
+    "width": 1344,
+    "height": 736,
+    "frames": 121,
+    "fps": 24,
+    "emptyFrames": [],
+    "maskSha256": "3edc79c3ecd20b3cc60fd682fbd80b4e8a7c0294c795bdd164d0e42b34838d77",
+    "sourceSha256": "319fc8d4899f51d9ae522a38215df81ccfd25ed7ddf57229436464adad489317"
+  }
+}

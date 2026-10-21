@@ -1,0 +1,7 @@
+{
+  "format": "aftertake-native-export-publication-audit/1",
+  "nativeRecordsUnmodified": true,
+  "absolutePathFindings": [],
+  "readyForPathSafePublication": true,
+  "policy": "No native record was silently changed or redacted. Public HTTPS model-provenance links are not local filesystem paths. MP4 embedded metadata is audited separately with the app reader."
+}

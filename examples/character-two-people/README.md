@@ -2,6 +2,8 @@
 
 This is the requested **two-pass rooftop test**, retained as a reproducible diagnostic. The second H3 job completed technically and the studio ancestry contains two replacement operations, but **the intended second person was not convincingly recast**.
 
+The [same-seed prompt-only retry](prompt-retry/README.md) now visibly replaces the seated man while preserving the woman. Its successful native output, normal Film 720p delivery and new execution records are kept separately. This original failed baseline remains intact. The retry also explicitly records the still-missing actual chain screenshot after a browser capture timeout.
+
 The seated man on the left still has his original black hair and black jacket instead of the reference man's close-cropped hair, beard, mustard jacket and grey hoodie. The foreground woman's face remains stable, but an unwanted yellow patch appears on her left shoulder late in the shot, most clearly in frame 72. The reviewed SAM mask excludes her; its native 32 px expansion reaches her shoulder as the man becomes occluded. See `visual-review.json` and the native before/after stills in `review/`. The UI counter describes completed operation ancestry and does not certify visual correctness.
 
 | Stage | Seed | API wall time | Native engine time |

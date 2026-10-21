@@ -1,0 +1,25 @@
+{
+  "format": "aftertake-character/1",
+  "name": "Cafe recast \u00b7 foreground protection test \u00b7 seed 610303",
+  "selectionId": "9f315a8e-53f1-4c7d-98f2-3efb912cf8a8",
+  "reference": {
+    "id": "e9707961-0302-4d67-82e0-e20d9848e4f2",
+    "name": "Cafe recast \u00b7 silver hair \u00b7 seed 610302",
+    "sha256": "a0c50b7a9452424dbde9d545381262dc5dcb45d2f45dc92d13347326f4ccbeb0",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "url": "/media/e9707961-0302-4d67-82e0-e20d9848e4f2.png",
+    "kind": "image",
+    "hasAudio": false
+  },
+  "faceBox": {
+    "x": 0.08,
+    "y": 0.05,
+    "width": 0.84,
+    "height": 0.6
+  },
+  "prompt": "",
+  "wardrobe": "reference",
+  "seed": 610303
+}

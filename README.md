@@ -83,8 +83,8 @@ are included. Source performance: **COLORS · Quavo & Takeoff, “HOTEL LOBBY”
 the short demonstration is silent apart from original local narration.
 
 **Several people, one shot.** After a take finishes, **Swap another person in
-this shot** tracks the next person in that take. Each pass changes only the
-pixels inside its own mask, so the people you already swapped stay as they are.
+this shot** tracks the next person in that take. Each pass uses its own tracked
+area; review nearby people and overlapping limbs before accepting the result.
 When tracking drops the person for a moment, **Repair mask** fills gaps of up
 to half a second on the CPU and shows what it added before you generate.
 **Keep objects in front** puts back anything nearer the camera than the person,
@@ -142,8 +142,9 @@ tilts, crane, truck, orbit, crash zoom, whip pan, handheld and dolly zoom.
 **Sharper, smoother, scored.** **Enhance** upscales a clip ×2 with SeedVR2,
 adds in-between frames with RIFE for smooth 48 fps or slow motion, and composes
 songs with ACE-Step 1.5, from style tags and optional lyrics, ready for the
-Film audio lanes. All three are native ComfyUI 0.41 workflows on your GPU, with
-no custom nodes.
+Film audio lanes. Inference uses native ComfyUI 0.41 nodes on your GPU;
+Aftertake's media nodes load and save the video. The [RTX 5080 validation](examples/enhance/README.md)
+includes all five operations, measured times, native outputs and Film handoffs.
 
 **Know the time before you render.** Create video, Create image, the frame
 editor, Render take and character replacement each show how long the job

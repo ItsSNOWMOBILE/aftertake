@@ -1,0 +1,104 @@
+{
+  "source": {
+    "recordId": "f48dc6ea-00dd-4984-bdf2-896ea853672d",
+    "apiSeconds": 134.342,
+    "jobId": "9015ae3c-034a-4123-80cc-db7d2a71e917",
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "9015ae3c-034a-4123-80cc-db7d2a71e917",
+            "timestamp": 1792558236703
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "9015ae3c-034a-4123-80cc-db7d2a71e917",
+            "timestamp": 1792558236703
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "9015ae3c-034a-4123-80cc-db7d2a71e917",
+            "timestamp": 1792558369292
+          }
+        ]
+      ]
+    },
+    "engineSeconds": 132.589
+  },
+  "reference": {
+    "recordId": "e9707961-0302-4d67-82e0-e20d9848e4f2",
+    "apiSeconds": 28.248,
+    "jobId": "ee6cb652-15f9-4086-9f74-aa9b05d1785a",
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "ee6cb652-15f9-4086-9f74-aa9b05d1785a",
+            "timestamp": 1792558471389
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "ee6cb652-15f9-4086-9f74-aa9b05d1785a",
+            "timestamp": 1792558471389
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "ee6cb652-15f9-4086-9f74-aa9b05d1785a",
+            "timestamp": 1792558498331
+          }
+        ]
+      ]
+    },
+    "engineSeconds": 26.942
+  },
+  "selection": {
+    "recordId": "9f315a8e-53f1-4c7d-98f2-3efb912cf8a8",
+    "apiSeconds": 30.747,
+    "jobId": "871c309a-b73e-4ee4-b13d-9d820d97c3a3",
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "871c309a-b73e-4ee4-b13d-9d820d97c3a3",
+            "timestamp": 1792558640209
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "871c309a-b73e-4ee4-b13d-9d820d97c3a3",
+            "timestamp": 1792558640209
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "871c309a-b73e-4ee4-b13d-9d820d97c3a3",
+            "timestamp": 1792558669424
+          }
+        ]
+      ]
+    },
+    "engineSeconds": 29.215
+  }
+}

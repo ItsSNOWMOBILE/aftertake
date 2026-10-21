@@ -1,0 +1,61 @@
+{
+  "format": "aftertake-source-audio-verification/1",
+  "sourceFile": "take.mp4",
+  "resultFile": "protected.mp4",
+  "video": {
+    "width": 1344,
+    "height": 736,
+    "frames": 121,
+    "fps": 24.0,
+    "duration": 5.041666666666667,
+    "firstTimestamp": 0.0,
+    "lastTimestamp": 5.0,
+    "regular24FpsTimestamps": true,
+    "sha256": "7cd56bcd61ff2f84aaedf3629d4d079610169540fdb14ba8bbcadf6a8ef02bb5"
+  },
+  "checks": {
+    "regular24FpsTimestamps": true,
+    "expectedDuration": true,
+    "expectedGeometry": true
+  },
+  "audio": {
+    "sourceHasAudio": true,
+    "resultHasAudio": true,
+    "source": {
+      "rate": 48000,
+      "channels": 2,
+      "firstTimestamp": 0.0,
+      "decodedEnd": 5.0409999999999995,
+      "maximumTimestampGap": 8.881784197001252e-16,
+      "declaredDuration": 5.041
+    },
+    "result": {
+      "rate": 48000,
+      "channels": 2,
+      "firstTimestamp": 0.0,
+      "decodedEnd": 5.0409999999999995,
+      "maximumTimestampGap": 8.881784197001252e-16,
+      "declaredDuration": 5.041
+    },
+    "sourceTrimSeconds": 0,
+    "status": "verified-aligned-source-audio",
+    "correlationPerChannel": [
+      1.0,
+      1.0
+    ],
+    "rmsGainPerChannel": [
+      1.0,
+      1.0
+    ],
+    "comparedSamplesPerChannel": 239920,
+    "comparedRate": 48000,
+    "decodedCoverage": true,
+    "contiguousTimestamps": true,
+    "silentSource": false,
+    "pass": true
+  },
+  "technicalPass": true,
+  "sourceAudioPreservationPass": true,
+  "sourceArtifact": "take.mp4",
+  "resultArtifact": "protected.mp4"
+}

@@ -1,0 +1,15 @@
+{
+  "format": "aftertake-character-controlled-delta/1",
+  "baselineRecord": "../render.json",
+  "retryRecord": "render.json",
+  "changedRequestFields": [
+    {
+      "field": "prompt",
+      "before": "",
+      "after": "Replace only the seated man on the far left parapet behind the foreground woman in Video 1 with the fictional man from Picture 1. Use his close-cropped black hair, short dark beard, warm brown skin and face proportions from Picture 1 and the matching head crop in Picture 2. Dress that seated man in the mustard-yellow corduroy jacket and grey hoodie from Picture 1. Keep his seated pose and source performance. Preserve the foreground woman's face, dark hair, rust-orange jacket, cream top and all her arms and shoulders exactly. Keep the rooftop, skyline, railing, evening light, camera movement and original audio. Do not place any yellow clothing on the foreground woman."
+    }
+  ],
+  "onlyPromptAndDisplayNameChanged": true,
+  "sameSeed": true,
+  "causeStatus": "This is an observed controlled comparison, not proof of a universal model limitation or a categorical software bug."
+}

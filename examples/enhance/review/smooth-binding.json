@@ -1,0 +1,101 @@
+{
+  "format": "aftertake-enhance-review-binding/1",
+  "enhancementId": "13fc705c-c872-4fb9-b2c4-4dffb3126533",
+  "recordSha256": "94678903f174bbcffb2e18568abd3eb83b37ec76e83b5fa18f7643fca2f6d623",
+  "sourceSha256": "34825e59be74dc16ef3db45f6caa01aa86809eefc4403ca07528ae1b0d159682",
+  "resultSha256": "00aeaf9195e14c8f79871e0f568711cdeee6324698b9d0874e5c9fa8a71eb4f5",
+  "contactSha256": "4e1ade0d9a8b525399b413d14685655994ab95a9d1bf8aa2825d0cccc8354f27",
+  "frames": [
+    {
+      "row": "Source",
+      "frame": 0,
+      "timestamp": 0.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Source",
+      "frame": 24,
+      "timestamp": 1.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Source",
+      "frame": 48,
+      "timestamp": 2.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Source",
+      "frame": 72,
+      "timestamp": 3.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Source",
+      "frame": 96,
+      "timestamp": 4.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Result",
+      "frame": 0,
+      "timestamp": 0.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Result",
+      "frame": 48,
+      "timestamp": 1.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Result",
+      "frame": 96,
+      "timestamp": 2.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Result",
+      "frame": 144,
+      "timestamp": 3.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Result",
+      "frame": 192,
+      "timestamp": 4.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    }
+  ],
+  "limitation": "Five source-aligned samples cannot prove all-frame motion quality or aesthetic success."
+}

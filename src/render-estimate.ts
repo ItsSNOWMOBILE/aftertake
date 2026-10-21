@@ -27,7 +27,7 @@ export type TimedJob = {
   recipe?: Recipe;
   /** A recomposition reuses a saved generation, so its time says nothing about rendering. */
   recomposition?: unknown;
-  /** Mask repair and foreground protection are CPU work on an earlier job, not a GPU run. */
+  /** Mask repair and foreground protection are post-processing of an earlier job, not a new generation. */
   repair?: unknown;
   protection?: unknown;
 };
@@ -80,9 +80,9 @@ export function elapsedSeconds(job: TimedJob): number | null {
 export const referenceSeconds: Record<string, number[]> = {
   'video:draft': [62, 83],
   'video:final': [84],
-  'video:final-720p': [117, 117, 119, 120, 120, 122, 123, 123, 123, 125, 125, 125, 126],
+  'video:final-720p': [117, 117, 119, 120, 120, 122, 123, 123, 123, 125, 125, 125, 126, 134],
   image: [10, 10, 10, 10],
-  'image-720p': [28, 28, 28, 28, 28, 28, 28, 28, 30, 37, 45],
+  'image-720p': [28, 28, 28, 28, 28, 28, 28, 28, 28, 30, 37, 45],
   'frame:fast': [39, 39, 47, 47, 47],
   'frame:detail': [148, 199],
   'take:cinema:final': [73, 83, 83, 85, 89, 91],
@@ -91,8 +91,12 @@ export const referenceSeconds: Record<string, number[]> = {
   'take:inpaint:final-720p': [206],
   'take:motion-transfer:final': [137, 140, 195, 196, 197, 296],
   'take:motion-transfer:final-720p': [3142],
-  'character-selection': [14, 17, 21, 39, 288],
-  character: [214, 328, 381, 630],
+  'character-selection': [14, 17, 21, 31, 39, 288],
+  character: [214, 328, 376, 381, 630, 678, 716],
+  'enhance:slow-motion-x4': [10],
+  'enhance:smooth-x2': [6],
+  song: [8, 14],
+  'enhance:upscale': [390],
 };
 export const referenceGpu = 'RTX 5080';
 

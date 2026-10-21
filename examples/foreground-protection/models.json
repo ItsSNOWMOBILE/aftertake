@@ -1,0 +1,206 @@
+{
+  "format": "aftertake-example-model-provenance/1",
+  "models": [
+    {
+      "repository": "akatz-ai/MiniMax-H3-Character-Swap-LoRA",
+      "revision": "96ea3407b230b6f7df71c58c70e31df96bd7e533",
+      "path": "h3_character_swap_v1.5.safetensors",
+      "category": "loras",
+      "size": 155110792,
+      "sha256": "8f2c3c3eba161df8d0c6099598b4730f641f5ce01e04cd16d2427cff8a35218f",
+      "pinManifest": "docs/models-character-swap.json",
+      "file": "h3_character_swap_v1.5.safetensors",
+      "publisherLicense": {
+        "license": "other",
+        "verifiedRevision": "96ea3407b230b6f7df71c58c70e31df96bd7e533",
+        "source": "https://huggingface.co/akatz-ai/MiniMax-H3-Character-Swap-LoRA/blob/96ea3407b230b6f7df71c58c70e31df96bd7e533/README.md"
+      },
+      "pinnedDownload": "https://huggingface.co/akatz-ai/MiniMax-H3-Character-Swap-LoRA/resolve/96ea3407b230b6f7df71c58c70e31df96bd7e533/h3_character_swap_v1.5.safetensors"
+    },
+    {
+      "repository": "Comfy-Org/MiniMax-H3",
+      "revision": "e5eb578a89295337b8ff433a035929ce0279e0b6",
+      "path": "vae/minimax_h3_audio_vae_fp32.safetensors",
+      "category": "vae",
+      "size": 605254808,
+      "sha256": "8e505d95dd1561d47abd43d4238fd40d9bb1ae9e147ed0a4cba778d76ae4db48",
+      "pinManifest": "docs/models-character-swap.json",
+      "file": "minimax_h3_audio_vae_fp32.safetensors",
+      "publisherLicense": {
+        "license": "other",
+        "verifiedRevision": "e5eb578a89295337b8ff433a035929ce0279e0b6",
+        "source": "https://huggingface.co/Comfy-Org/MiniMax-H3/blob/e5eb578a89295337b8ff433a035929ce0279e0b6/README.md"
+      },
+      "pinnedDownload": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/e5eb578a89295337b8ff433a035929ce0279e0b6/vae/minimax_h3_audio_vae_fp32.safetensors"
+    },
+    {
+      "repository": "lightx2v/Minimax-h3-Turbo",
+      "revision": "a29e57d195f80ead07c89f89e55ecf2911e893c5",
+      "path": "minimax_h3_fl2v_turbo_8step_v1.0_768p_comfyui_bf16.safetensors",
+      "category": "loras",
+      "size": 1956193000,
+      "sha256": "08cfe946033af7d27719b964b6e0a0e50c32138daabbd6ce4137e23df6bf9980",
+      "pinManifest": "docs/models-character-swap.json",
+      "file": "minimax_h3_fl2v_turbo_8step_v1.0_768p_comfyui_bf16.safetensors",
+      "publisherLicense": {
+        "license": "apache-2.0",
+        "verifiedRevision": "a29e57d195f80ead07c89f89e55ecf2911e893c5",
+        "source": "https://huggingface.co/lightx2v/Minimax-h3-Turbo/blob/a29e57d195f80ead07c89f89e55ecf2911e893c5/README.md"
+      },
+      "pinnedDownload": "https://huggingface.co/lightx2v/Minimax-h3-Turbo/resolve/a29e57d195f80ead07c89f89e55ecf2911e893c5/minimax_h3_fl2v_turbo_8step_v1.0_768p_comfyui_bf16.safetensors"
+    },
+    {
+      "repository": "Comfy-Org/MiniMax-H3",
+      "revision": "e5eb578a89295337b8ff433a035929ce0279e0b6",
+      "path": "diffusion_models/minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+      "category": "diffusion_models",
+      "size": 20970379616,
+      "sha256": "9255f52b6677845ad238f20dfaafa94727053694127ab7f255c048f0f9365779",
+      "pinManifest": "docs/models-character-swap.json",
+      "file": "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+      "publisherLicense": {
+        "license": "other",
+        "verifiedRevision": "e5eb578a89295337b8ff433a035929ce0279e0b6",
+        "source": "https://huggingface.co/Comfy-Org/MiniMax-H3/blob/e5eb578a89295337b8ff433a035929ce0279e0b6/README.md"
+      },
+      "pinnedDownload": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/e5eb578a89295337b8ff433a035929ce0279e0b6/diffusion_models/minimax_h3_ref2va_pruned_int8_convrot.safetensors"
+    },
+    {
+      "repository": "Comfy-Org/MiniMax-H3",
+      "revision": "e5eb578a89295337b8ff433a035929ce0279e0b6",
+      "path": "vae/minimax_h3_video_vae_int8_convrot.safetensors",
+      "category": "vae",
+      "size": 2811065184,
+      "sha256": "52a2c8c73583c86e4f41cdcce3a6ad0ea562987bc0bf3d60a0cef5f5c8e60c0e",
+      "pinManifest": "docs/models-character-swap.json",
+      "file": "minimax_h3_video_vae_int8_convrot.safetensors",
+      "publisherLicense": {
+        "license": "other",
+        "verifiedRevision": "e5eb578a89295337b8ff433a035929ce0279e0b6",
+        "source": "https://huggingface.co/Comfy-Org/MiniMax-H3/blob/e5eb578a89295337b8ff433a035929ce0279e0b6/README.md"
+      },
+      "pinnedDownload": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/e5eb578a89295337b8ff433a035929ce0279e0b6/vae/minimax_h3_video_vae_int8_convrot.safetensors"
+    },
+    {
+      "repository": "Comfy-Org/MiniMax-H3",
+      "revision": "e5eb578a89295337b8ff433a035929ce0279e0b6",
+      "path": "text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+      "category": "text_encoders",
+      "size": 15687142551,
+      "sha256": "35a88d51044231fe332301d7a62aa81e3f2cba62febeb446e2c1e3e0ef76f2c6",
+      "pinManifest": "docs/models-character-swap.json",
+      "file": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+      "publisherLicense": {
+        "license": "other",
+        "verifiedRevision": "e5eb578a89295337b8ff433a035929ce0279e0b6",
+        "source": "https://huggingface.co/Comfy-Org/MiniMax-H3/blob/e5eb578a89295337b8ff433a035929ce0279e0b6/README.md"
+      },
+      "pinnedDownload": "https://huggingface.co/Comfy-Org/MiniMax-H3/resolve/e5eb578a89295337b8ff433a035929ce0279e0b6/text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors"
+    },
+    {
+      "repository": "Comfy-Org/sam3.1",
+      "revision": "7bb8374780a725b4353ed31f3a9395c9742b5621",
+      "path": "checkpoints/sam3.1_multiplex_fp16.safetensors",
+      "category": "checkpoints",
+      "size": 1745546848,
+      "sha256": "9ba99c92703c2e8b4f47de2d34a539bb8e18923049e238b780d70dbe6368eb03",
+      "pinManifest": "docs/models-character-swap.json",
+      "file": "sam3.1_multiplex_fp16.safetensors",
+      "publisherLicense": {
+        "license": "other",
+        "verifiedRevision": "7bb8374780a725b4353ed31f3a9395c9742b5621",
+        "source": "https://huggingface.co/Comfy-Org/sam3.1/blob/7bb8374780a725b4353ed31f3a9395c9742b5621/README.md"
+      },
+      "pinnedDownload": "https://huggingface.co/Comfy-Org/sam3.1/resolve/7bb8374780a725b4353ed31f3a9395c9742b5621/checkpoints/sam3.1_multiplex_fp16.safetensors"
+    }
+  ],
+  "sourceGenerationModels": {
+    "textVideo": [
+      {
+        "repository": "unsloth/LTX-2.5-GGUF",
+        "revision": "ac3c540c6025903784336e99b2dc179385c4c3b7",
+        "path": "distilled/ltx-2.5-22b-distilled-Q4_K_M.gguf",
+        "category": "diffusion_models",
+        "size": 13584703872,
+        "sha256": "ba40d53770314e69e88361661e55c6cc3b12a363646ba2ea53c8bcd459b66747",
+        "license": "other"
+      },
+      {
+        "repository": "unsloth/LTX-2.5-GGUF",
+        "revision": "ac3c540c6025903784336e99b2dc179385c4c3b7",
+        "path": "text_encoders/gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+        "category": "text_encoders",
+        "size": 26263858182,
+        "sha256": "ef7243612fdae7a75cb4d5cee9433e81380675fb6c213bd98ae74a9cd16561d1",
+        "license": "other"
+      },
+      {
+        "repository": "unsloth/LTX-2.5-GGUF",
+        "revision": "ac3c540c6025903784336e99b2dc179385c4c3b7",
+        "path": "vae/ltx-2.5-video-vae-conv-bf16.safetensors",
+        "category": "vae",
+        "size": 1452269922,
+        "sha256": "685b06ee3d9b2039647698fc4ea33175112462fc374e2777312c907897dfce8d",
+        "license": "other"
+      },
+      {
+        "repository": "unsloth/LTX-2.5-GGUF",
+        "revision": "ac3c540c6025903784336e99b2dc179385c4c3b7",
+        "path": "vae/ltx-2.5-audio-vae-bf16.safetensors",
+        "category": "vae",
+        "size": 364866540,
+        "sha256": "c52733d37f6a7fb7949c3dc0fb468c6cb2169e4d836983a73babb9f0d54837a5",
+        "license": "other"
+      }
+    ],
+    "imageGeneration": [
+      {
+        "repository": "Comfy-Org/z_image_turbo",
+        "revision": "6fc90a3b1b653e935a0d175e260736de25b84df5",
+        "path": "split_files/diffusion_models/z_image_turbo_bf16.safetensors",
+        "category": "diffusion_models",
+        "size": 12309866400,
+        "sha256": "2407613050b809ffdff18a4ac99af83ea6b95443ecebdf80e064a79c825574a6",
+        "license": "apache-2.0"
+      },
+      {
+        "repository": "Comfy-Org/z_image_turbo",
+        "revision": "6fc90a3b1b653e935a0d175e260736de25b84df5",
+        "path": "split_files/text_encoders/qwen_3_4b.safetensors",
+        "category": "text_encoders",
+        "size": 8044982048,
+        "sha256": "6c671498573ac2f7a5501502ccce8d2b08ea6ca2f661c458e708f36b36edfc5a",
+        "license": "apache-2.0"
+      },
+      {
+        "repository": "Comfy-Org/z_image_turbo",
+        "revision": "6fc90a3b1b653e935a0d175e260736de25b84df5",
+        "path": "split_files/vae/ae.safetensors",
+        "category": "vae",
+        "size": 335304388,
+        "sha256": "afc8e28272cd15db3919bacdb6918ce9c1ed22e96cb12c4d5ed0fba823529e38",
+        "license": "apache-2.0"
+      }
+    ],
+    "note": "Pinned model metadata from the application. Weight files are not included. Model licenses apply separately from the application MIT license."
+  },
+  "note": "Pins and hashes come from the repository model manifests; publisher cards identify model-specific license terms. MIT covers application code, not every model weight. Do not substitute private media IDs when replaying; reimport the included media and rebind IDs.",
+  "foregroundDepthModel": {
+    "name": "Depth Anything V2 Small",
+    "repository": "onnx-community/depth-anything-v2-small",
+    "revision": "4472b7362082ad9968fee890ca0f1e5aca36b93d",
+    "sha256": "afb6a5c28f3b6bf1618c6e43f02073ef9dfdc70e937502d51603e57b0a1df10c",
+    "license": "Apache-2.0"
+  },
+  "foregroundDepthEvidenceNote": "Model identity is copied from the actual protection receipt, not inferred from a status candidate. See protected-render.json for the actual accelerator.",
+  "foregroundDepthPinnedFile": {
+    "repository": "onnx-community/depth-anything-v2-small",
+    "revision": "4472b7362082ad9968fee890ca0f1e5aca36b93d",
+    "path": "onnx/model.onnx",
+    "category": "foreground_depth",
+    "size": 99060839,
+    "sha256": "afb6a5c28f3b6bf1618c6e43f02073ef9dfdc70e937502d51603e57b0a1df10c",
+    "license": "apache-2.0",
+    "pinManifest": "docs/models-foreground-depth.json"
+  }
+}

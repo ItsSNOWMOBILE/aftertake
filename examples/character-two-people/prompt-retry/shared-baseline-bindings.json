@@ -1,0 +1,46 @@
+{
+  "format": "aftertake-shared-baseline-bindings/1",
+  "artifacts": {
+    "source.mp4": {
+      "path": "../source.mp4",
+      "sha256": "b47c2faa8dafc83f9d78a90bfda866b075a7ab1268abc5a8d923ff5d49eaf03c",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    },
+    "prepared-source.mp4": {
+      "path": "../prepared-source.mp4",
+      "sha256": "f988b90efcc486cb78466fbffc3fc1bdcc7626260123b34a8791c8750c75f8c3",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    },
+    "reference.png": {
+      "path": "../reference.png",
+      "sha256": "dc97b5ef1001058cfdba180d59e14de95e570ea187ed3aa0476e3858fedd79a3",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    },
+    "person-mask.mkv": {
+      "path": "../person-mask.mkv",
+      "sha256": "b30d9b9e4e8dafdf002b8709c85daeaadd243f3b1a63bb4355c49d9606fdd7dc",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    },
+    "reference-generation.json": {
+      "path": "../reference-generation.json",
+      "sha256": "86fe0cfb47a7b7c4c9534f55e146627ad3ec904c3568f2116b6eb390dc0dfee4",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    },
+    "selection-render.json": {
+      "path": "../selection-render.json",
+      "sha256": "c7492b4844ba1498af0ef797f995ab88608cf542f2c5cc976aa20dd1ac728711",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    },
+    "models.json": {
+      "path": "../models.json",
+      "sha256": "521bd549f9ff6bc735450aaaf5412b20a18cb674484753f291f2749197af5e1b",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    }
+  },
+  "baselineTake": {
+    "path": "../native-result.mp4",
+    "sha256": "4e120b5ae89ceaa1ff706de3956f9b82927c0d02b5e8e7ff556660897f94b1ce",
+    "record": "../render.json"
+  },
+  "policy": "Original source/reference generation records, selection records and media stay in the parent folder byte-identical. This child records only the newly executed retry and protection."
+}

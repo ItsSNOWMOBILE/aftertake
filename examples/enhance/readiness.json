@@ -1,0 +1,30 @@
+{
+  "format": "aftertake-enhance-readiness/1",
+  "scope": "Read-only local profile checks; actual Render Setup UI also showed all three ready.",
+  "profiles": [
+    {
+      "feature": "upscale",
+      "observedAt": "2026-10-21T04:59:25.507Z",
+      "status": 200,
+      "connected": true,
+      "ready": true,
+      "missing": []
+    },
+    {
+      "feature": "interpolate",
+      "observedAt": "2026-10-21T04:59:25.614Z",
+      "status": 200,
+      "connected": true,
+      "ready": true,
+      "missing": []
+    },
+    {
+      "feature": "song",
+      "observedAt": "2026-10-21T04:59:25.622Z",
+      "status": 200,
+      "connected": true,
+      "ready": true,
+      "missing": []
+    }
+  ]
+}

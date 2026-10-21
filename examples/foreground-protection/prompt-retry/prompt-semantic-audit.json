@@ -1,0 +1,18 @@
+{
+  "format": "aftertake-character-prompt-semantic-audit/1",
+  "currentGenericEqualsFailedNative": true,
+  "currentGenericEqualsSuccessfulBase": true,
+  "successfulNativeExactlyCurrentGenericPlusExtra": true,
+  "failedExtraPrompt": "",
+  "successfulExtraPrompt": "Replace only the woman walking toward the camera with the fictional woman from Picture 1. She wears the matte rust-orange field jacket over a plain cream knit top and charcoal trousers from Picture 1. Preserve the second person by the railing, rooftop, skyline, wet ground reflections, original warm practical light and blue-hour scene. Follow the original walking performance, body pose, gaze and head movement naturally. No studio background from the reference photo.",
+  "mediaLabelAudit": {
+    "image1": "Primary reference",
+    "image2": "Head crop of primary reference",
+    "video1": "Source performance video",
+    "nativeTokenizerNumbersFrom1": true,
+    "referenceImageAspectPreserved": true
+  },
+  "categoricalBugFound": false,
+  "semanticWeakness": "The generic phrase selected person does not describe the target in text or explicitly enumerate the desired visible identity/clothing. The Qwen text/video reference receives source imagery and reference images but not the spatial mask as a labeled reference item. The sampler mask constrains where edits occur, not which person the text encoder describes. This especially weakens multi-person jobs, but does not establish the cause of the single-person cafe failure.",
+  "scopeNote": "No source edit, new generation, or model-kernel change was made."
+}

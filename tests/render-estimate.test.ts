@@ -49,7 +49,7 @@ test('earlier runs with the same settings come before the reference', () => {
   assert.deepEqual(estimate('video:draft', history), { seconds: 50, runs: 3, from: 'workspace' });
   assert.deepEqual(estimate('video:final-720p', history), {
     seconds: 123,
-    runs: 13,
+    runs: 14,
     from: 'reference',
   });
   assert.equal(estimate('take:structure:draft', []), null);

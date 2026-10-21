@@ -1,0 +1,139 @@
+{
+  "format": "aftertake-oct21-validation/1",
+  "machine": "NVIDIA RTX 5080 16 GB; Intel Core Ultra 9 285K and Intel NPU; 32 GB RAM; Windows x64",
+  "job5": {
+    "status": "passed",
+    "frames": 73,
+    "report": "docs/npu-depth-check.json",
+    "results": [
+      {
+        "provider": "openvino",
+        "accelerator": "Intel NPU (OpenVINO)",
+        "seconds": 19.118945299996994,
+        "status": "ok"
+      },
+      {
+        "provider": "cpu",
+        "accelerator": "CPU",
+        "seconds": 36.98802209994756,
+        "status": "ok"
+      },
+      {
+        "provider": "directml",
+        "accelerator": "GPU (DirectML)",
+        "seconds": 20.97072520002257,
+        "status": "ok"
+      }
+    ],
+    "defaultRestored": "openvino",
+    "comparisonLimits": "Single measured runs. NPU driver cache was warm; DirectML execution includes CPU support events. See the detailed report and executed-provider traces."
+  },
+  "job6": {
+    "selection": {
+      "id": "cae5152d-c3d9-4bec-8a44-775c41efaa57",
+      "state": "succeeded",
+      "appSeconds": 38.585
+    },
+    "baseline": {
+      "id": "d41b54b2-d49b-40e2-97dc-0aea5069ec0c",
+      "state": "succeeded",
+      "appSeconds": 629.541,
+      "visualPassed": false
+    },
+    "promptOnlyRetry": {
+      "id": "65372afb-ec7c-4196-99d5-9348ba57c628",
+      "state": "succeeded",
+      "appSeconds": 375.915,
+      "engineSeconds": 374.042,
+      "visualPassed": true,
+      "reviewCoverage": "All 73 frame thumbnails, native frames 0/24/48/72, overlap shoulders and continuation boundary. Left man adopts the intended beard, mustard jacket and grey hoodie; foreground woman remains coherent. Generated likeness remains a visual assessment.",
+      "media": "examples/character-two-people/prompt-retry/result.mp4",
+      "nativeRecord": "examples/character-two-people/prompt-retry/render.json",
+      "report": "examples/character-two-people/prompt-retry/README.md"
+    },
+    "uiChainPeople": 2,
+    "requestedScreenshot": "Unavailable: Chrome capture timed out; the actual two-person panel text and output ID were observed through the live DOM."
+  },
+  "job7": {
+    "baseline": {
+      "id": "dacee4e6-1d78-4ebe-9a76-ec9dcefe66f9",
+      "state": "succeeded",
+      "appSeconds": 677.825,
+      "visualPassed": false
+    },
+    "promptOnlyRetry": {
+      "id": "96dd66e1-bb23-4171-98fd-2d3536b884c3",
+      "state": "succeeded",
+      "appSeconds": 716.039,
+      "engineSeconds": 714.94,
+      "visualPassed": true,
+      "reviewCoverage": "All 121 frame thumbnails, native frames 0/30/60/90/119 and continuation joins. Silver hair and green sweater persist; hands and mug remain coherent. Opening source face crop and generated facial detail remain limitations."
+    },
+    "protection": {
+      "id": "441682e3-4bc5-4593-8ac1-96ecc477d886",
+      "state": "succeeded",
+      "appSeconds": 39.736,
+      "accelerator": "Intel NPU (OpenVINO)",
+      "frames": 121,
+      "protectedFrames": 121,
+      "protectedMaskPixels": 1093199,
+      "audioRetained": true,
+      "visibleBenefit": "Subtle: mug already coherent before protection. Counts describe restoration masks before feathering and encoding.",
+      "media": "examples/foreground-protection/prompt-retry/protected.mp4"
+    },
+    "report": "examples/foreground-protection/prompt-retry/README.md"
+  },
+  "job8": {
+    "status": "all_five_operations_and_film_handoffs_passed",
+    "jobs": [
+      {
+        "id": "13fc705c-c872-4fb9-b2c4-4dffb3126533",
+        "operation": "smooth",
+        "appSeconds": 6.428,
+        "sampledWholeGpuPeakMiB": 2467.0
+      },
+      {
+        "id": "3dbee1e6-7003-4c7e-a6d0-db69b4c61f93",
+        "operation": "slow-motion-x4",
+        "appSeconds": 10.238,
+        "sampledWholeGpuPeakMiB": 3209.0
+      },
+      {
+        "id": "46e9f057-97e5-4fa7-af72-10ecf5306bd7",
+        "operation": "upscaled",
+        "appSeconds": 390.187,
+        "sampledWholeGpuPeakMiB": 6300.0
+      },
+      {
+        "id": "6c0720ff-09e4-4910-9ce6-76572e42f088",
+        "operation": "song-lyrics",
+        "appSeconds": 8.205,
+        "sampledWholeGpuPeakMiB": 6930.0
+      },
+      {
+        "id": "95c2293b-2c05-4478-b504-b0f8c83c40f4",
+        "operation": "song-instrumental",
+        "appSeconds": 14.226,
+        "sampledWholeGpuPeakMiB": 6611.0
+      }
+    ],
+    "report": "examples/enhance/README.md",
+    "timings": "examples/enhance/timings.json",
+    "mediaVerification": "examples/enhance/media-verification.json",
+    "limits": "Silent video source does not demonstrate audio preservation. Song samples are finite/non-silent, but singing fidelity was not auditioned; lyric output has five near-full-scale channel samples. VRAM is a one-second sampled whole-device peak, not model-only memory or an absolute maximum."
+  },
+  "uiChecks": {
+    "newPhotoAvailableWithoutReload": true,
+    "activeSourcePreserved": "result.mp4",
+    "photoProbeId": "32bb08a0-99df-4ba8-951b-89044e042d54",
+    "enhanceDuringRealH3Job": "Shows another-generation message without false missing-model installation instructions."
+  },
+  "checks": {
+    "javascript": {
+      "passed": 407,
+      "failed": 0
+    },
+    "lint": "passed",
+    "productionBuild": "passed"
+  }
+}

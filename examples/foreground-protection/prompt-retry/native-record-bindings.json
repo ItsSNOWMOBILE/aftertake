@@ -1,0 +1,18 @@
+{
+  "format": "aftertake-native-record-bindings/1",
+  "records": [
+    {
+      "file": "render.json",
+      "nativeRecordId": "96dd66e1-bb23-4171-98fd-2d3536b884c3",
+      "sha256": "520c7680873a8c988bb8912f40e60dde50c202b7d8acfbca39efbe797f314a83",
+      "byteIdenticalToLocalNativeRecord": true
+    },
+    {
+      "file": "protected-render.json",
+      "nativeRecordId": "441682e3-4bc5-4593-8ac1-96ecc477d886",
+      "sha256": "d06a3df51eb5b50ceebeb55208ee796f97f563c7bbcbb9da958ccbfac6634be6",
+      "byteIdenticalToLocalNativeRecord": true
+    }
+  ],
+  "nativeRecordsUnmodified": true
+}
