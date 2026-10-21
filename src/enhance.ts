@@ -15,6 +15,10 @@ const videoClipSchema = clipSchema
     'Use a clip with even dimensions.',
   )
   .refine(
+    (clip) => Math.min(clip.width, clip.height) >= 64 && Math.max(clip.width, clip.height) <= 4096,
+    'Use a clip between 64 and 4096 pixels on each side.',
+  )
+  .refine(
     (clip) => clip.duration <= enhanceMaxSeconds + 0.001,
     `Trim the clip to ${Math.floor(enhanceMaxSeconds)} seconds or less before enhancing it.`,
   );
@@ -70,6 +74,61 @@ export const songKeys = [
   'Bb',
   'B',
 ].flatMap((root) => [`${root} major`, `${root} minor`]);
+/** Language menu of the pinned native TextEncodeAceStepAudio1.5 node. */
+export const songLanguages = [
+  'ar',
+  'az',
+  'bg',
+  'bn',
+  'ca',
+  'cs',
+  'da',
+  'de',
+  'el',
+  'en',
+  'es',
+  'fa',
+  'fi',
+  'fr',
+  'he',
+  'hi',
+  'hr',
+  'ht',
+  'hu',
+  'id',
+  'is',
+  'it',
+  'ja',
+  'ko',
+  'la',
+  'lt',
+  'ms',
+  'ne',
+  'nl',
+  'no',
+  'pa',
+  'pl',
+  'pt',
+  'ro',
+  'ru',
+  'sa',
+  'sk',
+  'sr',
+  'sv',
+  'sw',
+  'ta',
+  'te',
+  'th',
+  'tl',
+  'tr',
+  'uk',
+  'ur',
+  'vi',
+  'yue',
+  'zh',
+  'unknown',
+] as const;
+const songLanguageSet = new Set<string>(songLanguages);
 export const songRequestSchema = z.object({
   format: z.literal('aftertake-song/1'),
   name,
@@ -81,7 +140,9 @@ export const songRequestSchema = z.object({
   bpm: z.number().int().min(40).max(220),
   keyscale: z.enum(songKeys as [string, ...string[]]),
   timesignature: z.enum(['2', '3', '4', '6']),
-  language: z.string().regex(/^[a-z]{2,3}$/),
+  language: z
+    .string()
+    .refine((value) => songLanguageSet.has(value), 'Choose a supported song language.'),
   seed,
 });
 export type SongRequest = z.infer<typeof songRequestSchema>;

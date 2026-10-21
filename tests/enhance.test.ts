@@ -10,6 +10,7 @@ import express from 'express';
 import {
   enhanceOutput,
   enhanceRequestSchema,
+  songLanguages,
   songRequestSchema,
   type EnhanceRequest,
   type SongRequest,
@@ -86,6 +87,37 @@ test('requests stay inside what the engine nodes accept', () => {
   );
   assert.equal(songRequestSchema.safeParse({ ...song, seconds: 400 }).success, false);
   assert.equal(songRequestSchema.safeParse({ ...song, keyscale: 'H major' }).success, false);
+});
+
+test('enhancement source dimensions match the native clip loader bounds', () => {
+  for (const [width, height] of [
+    [32, 720],
+    [1280, 62],
+    [4098, 720],
+    [1280, 4098],
+  ])
+    assert.equal(
+      enhanceRequestSchema.safeParse({ ...smooth, clip: { ...clip, width, height } }).success,
+      false,
+    );
+  for (const [width, height] of [
+    [64, 64],
+    [4096, 64],
+    [64, 4096],
+  ])
+    assert.equal(
+      enhanceRequestSchema.safeParse({ ...smooth, clip: { ...clip, width, height } }).success,
+      true,
+    );
+});
+
+test('song languages use the native ACE-Step menu, including unknown', () => {
+  for (const language of songLanguages)
+    assert.equal(songRequestSchema.safeParse({ ...song, language }).success, true, language);
+  for (const language of ['zz', 'eng', 'EN', '', 'english'])
+    assert.equal(songRequestSchema.safeParse({ ...song, language }).success, false, language);
+  const unknown = songRequestSchema.parse({ ...song, language: 'unknown' });
+  assert.equal((buildEnhanceWorkflow('job', unknown) as any)['3'].inputs.language, 'unknown');
 });
 
 test('the result size, frame count, rate and sound follow the operation', () => {
