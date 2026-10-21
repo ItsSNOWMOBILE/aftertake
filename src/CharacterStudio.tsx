@@ -1223,18 +1223,22 @@ export default function CharacterStudio({
                 marks what repair added; it never removes tracked pixels.
               </p>
             )}
-            {selection?.state === 'succeeded' && selection.selection && !selection.repair && (
-              <button
-                className="button character-repair"
-                disabled={locked || browserDemo}
-                onClick={() => void repairSelection(selection)}
-              >
-                <Wand2 size={13} />
-                {jobs.some((job) => job.repair?.from === selection.id)
-                  ? 'Use the repaired mask'
-                  : 'Repair mask'}
-              </button>
-            )}
+            {selection?.state === 'succeeded' &&
+              selection.selection &&
+              !selection.repair &&
+              // On the result, repair is only offered when tracking actually lost the person.
+              (view !== 'result' || selection.selection.emptyFrames.length > 0) && (
+                <button
+                  className="button character-repair"
+                  disabled={locked || browserDemo}
+                  onClick={() => void repairSelection(selection)}
+                >
+                  <Wand2 size={13} />
+                  {jobs.some((job) => job.repair?.from === selection.id)
+                    ? 'Use the repaired mask'
+                    : 'Repair mask'}
+                </button>
+              )}
             {status?.error && (
               <p role="alert" className="character-error">
                 {status.error}
