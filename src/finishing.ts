@@ -11,6 +11,7 @@ import {
 
 /** These operations run in this order on upright RGB frames, without generation. */
 export const finishingPipeline = [
+  'redaction of hidden regions and matches',
   'linear-light exposure and white balance',
   'contrast and saturation',
   'selective HSL and master/RGB monotone curves',
@@ -158,15 +159,60 @@ export function finishingIsIdentity(settings: FinishingSettings) {
   );
 }
 
+export const redactionStyles = [
+  { id: 'blur', name: 'Blur' },
+  { id: 'pixelate', name: 'Pixelate' },
+  { id: 'solid', name: 'Solid fill' },
+] as const;
+/**
+ * A box to hide, in normalized source coordinates. With `match`, the box marks a
+ * sample at time `at` instead, and every place those pixels appear in a frame
+ * between `start` and `end` is hidden (for names or keys in screen recordings).
+ * Redaction runs on the source pixels, before every finishing operation.
+ */
+export const redactionSchema = z
+  .object({
+    x: z.number().min(0).max(1),
+    y: z.number().min(0).max(1),
+    width: z.number().positive().max(1),
+    height: z.number().positive().max(1),
+    start: z.number().min(0).max(600).default(0),
+    end: z.number().positive().max(600).nullable().default(null),
+    style: z.enum(['blur', 'pixelate', 'solid']).default('blur'),
+    match: z
+      .object({
+        at: z.number().min(0).max(600),
+        threshold: z.number().min(0.5).max(1).default(0.9),
+      })
+      .strict()
+      .nullable()
+      .default(null),
+  })
+  .strict()
+  .refine(
+    (box) => box.x + box.width <= 1 + 1e-9 && box.y + box.height <= 1 + 1e-9,
+    'Keep each redaction box inside the frame.',
+  )
+  .refine((box) => box.end === null || box.end > box.start, 'End a redaction after it starts.');
+export type Redaction = z.infer<typeof redactionSchema>;
+
 export const finishingRequestSchema = z
   .object({
     format: z.literal('aftertake-finishing/1'),
     name: z.string().trim().min(1).max(100),
     clip: clipSchema,
     settings: finishingSettingsSchema,
+    // Absent in requests made before redaction; treated as none.
+    redactions: z.array(redactionSchema).max(16).optional(),
   })
   .strict();
 export type FinishingRequest = z.infer<typeof finishingRequestSchema>;
+/** An identity export copies the source: no look and nothing to hide. */
+export function finishingRequestIsIdentity(
+  request: Pick<FinishingRequest, 'settings' | 'redactions'>,
+) {
+  return finishingIsIdentity(request.settings) && !request.redactions?.length;
+}
 
 export const finishingClockSchema = z
   .object({

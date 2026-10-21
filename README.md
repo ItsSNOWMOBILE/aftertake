@@ -143,7 +143,10 @@ saturation, grain, sharpness and vignette. Preview the actual processed frame,
 undo or redo settings, and save a new take while preserving the source clock and
 audio. Selective HSL adjusts eight color ranges; master/RGB curves and an imported
 display-sRGB `.cube` LUT add precise grading. Glow, warm halation and a small
-prism offset provide editable optical finishes.
+prism offset provide editable optical finishes. **Hide details** blurs,
+pixelates or fills boxes you draw on the frame. A box can also be a sample, and
+every place those pixels appear is hidden, such as a username or key that
+scrolls through a screen recording ([how it works](docs/finishing.md#hide-details)).
 
 **Layers & masks** combines up to eight still-image and adjustment layers. Reorder,
 duplicate, transform and blend images; attach rectangle, ellipse or image masks;

@@ -239,3 +239,63 @@
     font-size: 16px;
   }
 }
+
+.finishing-redaction-box {
+  position: absolute;
+  border: 2px dashed #cedf9a;
+  background: rgba(206, 223, 154, 0.14);
+  pointer-events: none;
+}
+.finishing-draw {
+  position: absolute;
+  inset: 0;
+  cursor: crosshair;
+  touch-action: none;
+}
+.finishing-redactions {
+  display: grid;
+  gap: 10px;
+}
+.finishing-redactions .button.active {
+  border-color: #cedf9a;
+  color: #cedf9a;
+}
+.finishing-redaction {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px 10px;
+  padding-top: 10px;
+  border-top: 1px solid #33393f;
+  font-size: 13px;
+}
+.finishing-redaction > span:first-child {
+  grid-row: 1;
+}
+.finishing-redaction > .icon-button {
+  grid-row: 1;
+  grid-column: 2;
+}
+.finishing-redaction > select,
+.finishing-redaction-match,
+.finishing-redaction-time {
+  grid-column: 1 / -1;
+}
+.finishing-redactions .finishing-redaction-match,
+.finishing-redactions .finishing-redaction-time {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.finishing-redaction-match input {
+  width: 16px;
+  height: 16px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  accent-color: #cedf9a;
+}
+.finishing-redaction-time input {
+  width: 72px;
+}

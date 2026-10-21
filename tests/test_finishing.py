@@ -294,3 +294,102 @@ class FinishingTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+def marks(spots, size=(96, 64)):
+    """A dark frame with a small L-shaped mark (with a dot) at each spot."""
+    pixels = np.full((size[1], size[0], 3), 20, np.uint8)
+    for x, y in spots:
+        pixels[y:y + 10, x:x + 3] = 230
+        pixels[y + 7:y + 10, x:x + 8] = 230
+        pixels[y:y + 3, x + 5:x + 8] = 140
+    return Image.fromarray(pixels)
+
+
+def sample_box(x, y, width=96, height=64):
+    return {'x': x / width, 'y': y / height, 'width': 8 / width, 'height': 10 / height}
+
+
+class RedactionTest(unittest.TestCase):
+    def test_static_box_hides_only_its_region(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            pixels = np.random.default_rng(7).integers(0, 256, (40, 60, 3), dtype=np.uint8)
+            source = folder / 'picture.png'
+            Image.fromarray(pixels).save(source)
+            clip = dict(id='d0c86952-104a-4ca6-9636-89b876dc952b', name='Source', kind='image',
+                        width=60, height=40, duration=1, sha256=finishing.file_hash(source),
+                        url='/media/source.png', hasAudio=False)
+            req = {**request(clip), 'redactions': [{'x': .25, 'y': .25, 'width': .5, 'height': .5, 'style': 'solid'}]}
+            exported = folder / 'hidden.png'
+            receipt = run(source, exported, req)
+            actual = np.asarray(Image.open(exported))
+            inside = actual[10:30, 15:45]
+            self.assertTrue((inside == inside[0, 0]).all())
+            mask = np.ones((40, 60), bool)
+            mask[10:30, 15:45] = False
+            np.testing.assert_array_equal(actual[mask], pixels[mask])
+            self.assertFalse(receipt['identity'])
+            self.assertEqual(receipt['redactions'], [{'frames': 1, 'boxes': 1}])
+
+    def test_match_hides_every_copy_of_the_sample_and_nothing_else(self):
+        box = {**sample_box(10, 10), 'start': 0, 'end': None, 'style': 'solid', 'match': {'at': 0, 'threshold': .9}}
+        context = finishing.prepare_redactions([box], lambda seconds: marks([(10, 10)]))
+        frame = marks([(50, 30), (70, 8)])
+        decoy = np.asarray(frame).copy()
+        decoy[40:52, 4:16] = 230
+        hidden = np.asarray(finishing.apply_redactions(Image.fromarray(decoy), context, 1.5))
+        self.assertLess(hidden[30:40, 50:58].max(), 200)
+        self.assertLess(hidden[8:18, 70:78].max(), 200)
+        np.testing.assert_array_equal(hidden[40:52, 4:16], decoy[40:52, 4:16])
+        self.assertEqual((context[0]['frames'], context[0]['boxes']), (1, 2))
+
+    def test_redactions_respect_their_time_range(self):
+        box = {**sample_box(10, 10), 'start': 1, 'end': 2, 'style': 'solid', 'match': None}
+        context = finishing.prepare_redactions([box], None)
+        frame = marks([(10, 10)])
+        np.testing.assert_array_equal(np.asarray(finishing.apply_redactions(frame, context, .5)), np.asarray(frame))
+        np.testing.assert_array_equal(np.asarray(finishing.apply_redactions(frame, context, 2)), np.asarray(frame))
+        inside = np.asarray(finishing.apply_redactions(frame, context, 1.5))[10:20, 10:18]
+        self.assertTrue((inside == inside[0, 0]).all())
+
+    def test_video_export_follows_a_moving_sample_on_the_source_clock(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            folder = Path(temporary)
+            source = folder / 'moving.mp4'
+            with av.open(str(source), 'w') as container:
+                stream = container.add_stream('libx264', rate=24)
+                stream.width, stream.height, stream.pix_fmt = 96, 64, 'yuv444p'
+                stream.options = {'crf': '0', 'bf': '0'}
+                for index in range(12):
+                    frame = av.VideoFrame.from_image(marks([(10 + index * 5, 10 + index * 3)]))
+                    frame.pts = index
+                    for packet in stream.encode(frame):
+                        container.mux(packet)
+                for packet in stream.encode():
+                    container.mux(packet)
+            clip = describe(source)
+            req = {**request(clip), 'redactions': [{**sample_box(10, 10), 'style': 'blur', 'match': {'at': 0}}]}
+            receipt = run(source, folder / 'hidden.mp4', req)
+            self.assertEqual(receipt['redactions'], [{'frames': 12, 'boxes': 12}])
+            self.assertFalse(receipt['identity'])
+            self.assertEqual(receipt['clock']['frames'], 12)
+            with av.open(str(folder / 'hidden.mp4')) as movie:
+                last = np.asarray(list(movie.decode(video=0))[-1].to_image())
+            self.assertLess(last[43:53, 65:73].max(), 200)
+
+    def test_invalid_redactions_fail_before_export(self):
+        clip = {'duration': 2}
+        for bad in ([{'x': .8, 'y': 0, 'width': .3, 'height': .1}],
+                    [{'x': 0, 'y': 0, 'width': .1, 'height': .1, 'start': 1, 'end': 1}],
+                    [{'x': 0, 'y': 0, 'width': .1, 'height': .1, 'style': 'smudge'}],
+                    [{'x': 0, 'y': 0, 'width': .1, 'height': .1, 'match': {'at': 2}}],
+                    [{'x': 0, 'y': 0, 'width': .1, 'height': .1, 'match': {'at': 0, 'threshold': .2}}],
+                    [{'x': 0, 'y': 0, 'width': .1, 'height': .1}] * 17,
+                    [{'x': True, 'y': 0, 'width': .1, 'height': .1}]):
+            with self.assertRaises(ValueError):
+                finishing.validate_redactions(bad, clip)
+        with self.assertRaises(ValueError):
+            finishing.prepare_redactions(finishing.validate_redactions(
+                [{'x': 0, 'y': 0, 'width': .5, 'height': .5, 'match': {'at': 0}}], clip),
+                lambda seconds: Image.new('RGB', (40, 40), (90, 90, 90)))
