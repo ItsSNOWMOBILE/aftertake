@@ -8,6 +8,7 @@ import sys
 import tempfile
 import importlib.util
 from collections import OrderedDict
+from concurrent.futures import ThreadPoolExecutor
 from fractions import Fraction
 import av
 import imageio_ffmpeg
@@ -22,6 +23,10 @@ film_scene = importlib.util.module_from_spec(_scene_spec)
 _scene_spec.loader.exec_module(film_scene)
 
 KINETIC = {'build', 'typewriter', 'impact', 'wipe', 'spoken', 'slam', 'pop', 'reveal', 'glitch', 'scramble'}
+# Titles and cuts render independently, so they share the CPU. Pillow and the
+# FFmpeg pipes release the interpreter lock, and every layer is encoded
+# losslessly, so the output is identical to a one-at-a-time render.
+WORKERS = max(1, min(int(os.environ.get('AFTERTAKE_FILM_WORKERS') or 0) or os.cpu_count() or 1, 8))
 # These animate the finished title image, which already carries any tilt.
 WHOLE_IMAGE = {'impact', 'wipe', 'slam', 'glitch'}
 FONT_FILES = {'display': 'archivo-black.ttf', 'condensed': 'anton.ttf', 'mono': 'jetbrains-mono.ttf'}
@@ -773,26 +778,30 @@ def assemble(settings):
             image = folder / 'scene.mov'
             animate_scene(scene, graphics, titles, width, height, settings['fonts'], count, image, binary)
             title_files.append(({'start': 0, 'end': count / 24, 'animation': 'none'}, image, True))
-        for graphic_index, graphic in enumerate(graphics if scene is None else []):
-            animated = 'motion' in graphic
-            image = folder / f'graphic-{graphic_index}{".mov" if animated else ".png"}'
-            if animated:
-                animate_graphic(graphic,width,height,image,binary)
+        layers = [('graphic', graphic, folder / f'graphic-{index}{".mov" if "motion" in graphic else ".png"}', 'motion' in graphic)
+                  for index, graphic in enumerate(graphics if scene is None else [])]
+        layers += [('title', title, folder / f'title-{index}{".mov" if title["animation"] in KINETIC or "motion" in title else ".png"}',
+                    title['animation'] in KINETIC or 'motion' in title)
+                   for index, title in enumerate(titles if scene is None else [])]
+        def render_layer(layer):
+            kind, item, image, animated = layer
+            if kind == 'graphic' and animated:
+                animate_graphic(item, width, height, image, binary)
+            elif kind == 'graphic':
+                film_motion.graphic_frame(film_motion.graphic_layout(item, width, height),
+                                          math.ceil(item['start'] * 24 - 1e-7)).save(image)
+            elif animated:
+                animate_title(item, width, height, settings['fonts'], image, binary)
             else:
-                layout = film_motion.graphic_layout(graphic,width,height)
-                film_motion.graphic_frame(layout,math.ceil(graphic['start']*24-1e-7)).save(image)
-            title_files.append(({**graphic,'animation':'none'}, image, animated))
-        for title_index, title in enumerate(titles if scene is None else []):
-            animated=title['animation'] in KINETIC or 'motion' in title
-            image = folder / f'title-{title_index}{".mov" if animated else ".png"}'
-            if animated:
-                animate_title(title,width,height,settings['fonts'],image,binary)
-            else:
-                title_image(title, width, height, settings['fonts']).save(image)
-            title_files.append((title, image, animated))
+                title_image(item, width, height, settings['fonts']).save(image)
+        with ThreadPoolExecutor(WORKERS) as pool:
+            list(pool.map(render_layer, layers))
+        title_files += [({**item, 'animation': 'none'} if kind == 'graphic' else item, image, animated)
+                        for kind, item, image, animated in layers]
         total_frames = 0
         previous_count = 0
         segments = []
+        encodes = []
         for index, shot in enumerate(settings['shots']):
             still = shot.get('kind') == 'image'
             audio = False
@@ -897,10 +906,13 @@ def assemble(settings):
                 graph_file = folder / f'camera-filters-{index:03d}.txt'
                 graph_file.write_text(';'.join(filters), encoding='utf-8')
                 graph_arguments = ['-filter_complex_script', str(graph_file)]
-            run([*args, '-filter_complex_threads', '2', *graph_arguments, '-map', '[v]', '-map', '[a]',
+            encodes.append([*args, '-filter_complex_threads', '2', *graph_arguments, '-map', '[v]', '-map', '[a]',
                 '-c:v', 'libx264', '-threads', '2', '-crf', '18', '-preset', 'fast', '-pix_fmt', 'yuv420p', '-r', '24',
                 '-fps_mode', 'cfr', '-c:a', 'pcm_s16le', '-t', str(duration), str(segment)])
             segments.append((segment, duration, overlap, cut_start))
+        # Each cut's encoder already uses two threads.
+        with ThreadPoolExecutor(max(1, WORKERS // 2)) as pool:
+            list(pool.map(run, encodes))
         # Explicit cut durations keep every join on the 24 fps timeline.
         base = folder / 'cuts.mov'
         if any(row[2] for row in segments):
