@@ -5,7 +5,7 @@ import { filmGraphicSchema, motionTrackSchema } from './film-motion';
 import { filmSceneSchema, sceneBindingErrors, sceneProjectionClearance } from './film-scene';
 
 // Include this revision in new export identities when renderer behavior changes.
-export const filmRenderRevision = 11;
+export const filmRenderRevision = 12;
 import type { Recipe } from './domain';
 
 export const spokenWordSchema = z
@@ -31,11 +31,18 @@ export const titleWordSchema = spokenWordSchema.safeExtend({
   phrase: z.number().int().min(0).max(239),
 });
 
+export const punchAnimations = ['slam', 'pop', 'reveal', 'glitch', 'scramble'] as const;
+export const titleFonts = ['display', 'condensed', 'mono'] as const;
+export const titleBoxes = ['stamp', 'highlight', 'underline'] as const;
+export const shotTransitions = ['dissolve', 'whip', 'zoom', 'flash', 'glitch', 'slide'] as const;
+
 export const filmShotSchema = z
   .object({
     renderId: z.string().uuid().optional(),
     assetId: z.string().uuid().optional(),
     dissolve: z.number().min(0).max(1).optional(),
+    // Styles the incoming overlap; its length remains the dissolve seconds.
+    transition: z.enum(shotTransitions).optional(),
     framing: filmFramingSchema.optional(),
     start: z.number().min(0).max(600),
     end: z.number().positive().max(600),
@@ -51,7 +58,17 @@ export const filmTitleSchema = z
     end: z.number().positive().max(600),
     style: z.enum(['headline', 'caption', 'kicker']),
     position: z.enum(['top', 'center', 'bottom']),
-    animation: z.enum(['fade', 'rise', 'none', 'build', 'typewriter', 'impact', 'wipe', 'spoken']),
+    animation: z.enum([
+      'fade',
+      'rise',
+      'none',
+      'build',
+      'typewriter',
+      'impact',
+      'wipe',
+      'spoken',
+      ...punchAnimations,
+    ]),
     words: z.array(titleWordSchema).min(1).max(120).optional(),
     motionDuration: z.number().min(0.15).max(4).optional(),
     motion: motionTrackSchema.optional(),
@@ -61,6 +78,9 @@ export const filmTitleSchema = z
       .optional(),
     stroke: z.boolean().optional(),
     align: z.enum(['left', 'center', 'right']).optional(),
+    font: z.enum(titleFonts).optional(),
+    box: z.enum(titleBoxes).optional(),
+    tilt: z.number().min(-20).max(20).optional(),
     color: z.string().regex(/^#[a-fA-F0-9]{6}$/),
   })
   .refine((title) => title.end - title.start >= 0.25, 'A title needs at least a quarter second.')
@@ -199,6 +219,7 @@ export const filmManifestSchema = filmDraftSchema
       'aftertake-film/2',
       'aftertake-film/3',
       'aftertake-film/4',
+      'aftertake-film/5',
     ]),
     shots: z.array(filmShotSchema.safeExtend({ sha256 })).min(1).max(48),
     graphics: z
@@ -227,12 +248,18 @@ export const filmManifestSchema = filmDraftSchema
     (film) =>
       film.format === 'aftertake-film/3' ||
       film.format === 'aftertake-film/4' ||
+      film.format === 'aftertake-film/5' ||
       !hasMotionFeatures(film),
     'Motion graphics and explicit export sizes require an aftertake-film/3 project.',
   )
   .refine(
-    (film) => film.format === 'aftertake-film/4' || !film.motionScene,
+    (film) =>
+      film.format === 'aftertake-film/4' || film.format === 'aftertake-film/5' || !film.motionScene,
     'Grouped depth and shutter motion require an aftertake-film/4 project.',
+  )
+  .refine(
+    (film) => film.format === 'aftertake-film/5' || !hasPunchFeatures(film),
+    'Punch typography and styled transitions require an aftertake-film/5 project.',
   )
   .refine(
     (film) =>
@@ -338,9 +365,28 @@ export function hasMotionFeatures(
   );
 }
 
+/** Typography presets, decorations and styled transitions added in format 5. */
+export function hasPunchFeatures(film: {
+  titles?: FilmDraft['titles'];
+  shots?: { transition?: (typeof shotTransitions)[number] }[];
+}) {
+  return (
+    !!film.shots?.some((shot) => shot.transition && shot.transition !== 'dissolve') ||
+    !!film.titles?.some(
+      (title) =>
+        title.font ||
+        title.box ||
+        title.tilt ||
+        (punchAnimations as readonly string[]).includes(title.animation),
+    )
+  );
+}
+
 export function filmFormat(
-  film: Pick<FilmDraft, 'graphics' | 'titles' | 'resolution' | 'motionScene'>,
+  film: Pick<FilmDraft, 'graphics' | 'titles' | 'resolution' | 'motionScene'> &
+    Partial<Pick<FilmDraft, 'shots'>>,
 ) {
+  if (hasPunchFeatures(film)) return 'aftertake-film/5' as const;
   if (film.motionScene) return 'aftertake-film/4' as const;
   return hasMotionFeatures(film) ? ('aftertake-film/3' as const) : ('aftertake-film/2' as const);
 }

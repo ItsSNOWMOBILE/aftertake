@@ -1,0 +1,122 @@
+{
+  "format": "aftertake-rife-interstitial-review/1",
+  "enhancementId": "13fc705c-c872-4fb9-b2c4-4dffb3126533",
+  "nativeRecordSha256": "94678903f174bbcffb2e18568abd3eb83b37ec76e83b5fa18f7643fca2f6d623",
+  "resultSha256": "00aeaf9195e14c8f79871e0f568711cdeee6324698b9d0874e5c9fa8a71eb4f5",
+  "sourceIntervals": [
+    [
+      12,
+      13
+    ],
+    [
+      24,
+      25
+    ],
+    [
+      48,
+      49
+    ],
+    [
+      72,
+      73
+    ],
+    [
+      90,
+      91
+    ]
+  ],
+  "outputFrames": [
+    {
+      "index": 24,
+      "timestamp": 0.5,
+      "isInterstitial": false
+    },
+    {
+      "index": 25,
+      "timestamp": 0.5208333333333334,
+      "isInterstitial": true
+    },
+    {
+      "index": 26,
+      "timestamp": 0.5416666666666666,
+      "isInterstitial": false
+    },
+    {
+      "index": 48,
+      "timestamp": 1.0,
+      "isInterstitial": false
+    },
+    {
+      "index": 49,
+      "timestamp": 1.0208333333333333,
+      "isInterstitial": true
+    },
+    {
+      "index": 50,
+      "timestamp": 1.0416666666666667,
+      "isInterstitial": false
+    },
+    {
+      "index": 96,
+      "timestamp": 2.0,
+      "isInterstitial": false
+    },
+    {
+      "index": 97,
+      "timestamp": 2.0208333333333335,
+      "isInterstitial": true
+    },
+    {
+      "index": 98,
+      "timestamp": 2.0416666666666665,
+      "isInterstitial": false
+    },
+    {
+      "index": 144,
+      "timestamp": 3.0,
+      "isInterstitial": false
+    },
+    {
+      "index": 145,
+      "timestamp": 3.0208333333333335,
+      "isInterstitial": true
+    },
+    {
+      "index": 146,
+      "timestamp": 3.0416666666666665,
+      "isInterstitial": false
+    },
+    {
+      "index": 180,
+      "timestamp": 3.75,
+      "isInterstitial": false
+    },
+    {
+      "index": 181,
+      "timestamp": 3.7708333333333335,
+      "isInterstitial": true
+    },
+    {
+      "index": 182,
+      "timestamp": 3.7916666666666665,
+      "isInterstitial": false
+    }
+  ],
+  "nativeCropBox": [
+    384,
+    396,
+    896,
+    684
+  ],
+  "contacts": [
+    {
+      "file": "smooth-rife-interstitial-full.jpg",
+      "sha256": "212a49febc420be7387cdd156507bf1ce7f58ff04b57ae2b4e27c2702d255e28"
+    },
+    {
+      "file": "smooth-rife-interstitial-crops.jpg",
+      "sha256": "066f4352fa873b2087cafaa9634b5ba251c45d5510a1c52cccae6a94fcc1025b"
+    }
+  ],
+  "limitation": "Five short consecutive-frame intervals only; human real-time playback not fully assessed."
+}

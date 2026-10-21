@@ -8,9 +8,11 @@ import sys
 import tempfile
 import importlib.util
 from collections import OrderedDict
+from concurrent.futures import ThreadPoolExecutor
 from fractions import Fraction
 import av
 import imageio_ffmpeg
+import numpy as np
 from PIL import Image, ImageChops, ImageDraw, ImageFont, ImageOps
 
 _motion_spec = importlib.util.spec_from_file_location('aftertake_film_motion', Path(__file__).with_name('film_motion.py'))
@@ -23,7 +25,107 @@ _probe_spec = importlib.util.spec_from_file_location('aftertake_film_asset_probe
 film_asset_probe = importlib.util.module_from_spec(_probe_spec)
 _probe_spec.loader.exec_module(film_asset_probe)
 
-KINETIC = {'build', 'typewriter', 'impact', 'wipe', 'spoken'}
+KINETIC = {'build', 'typewriter', 'impact', 'wipe', 'spoken', 'slam', 'pop', 'reveal', 'glitch', 'scramble'}
+# Titles and cuts render independently, so they share the CPU. Pillow and the
+# FFmpeg pipes release the interpreter lock, and every layer is encoded
+# losslessly, so the output is identical to a one-at-a-time render.
+WORKERS = max(1, min(int(os.environ.get('AFTERTAKE_FILM_WORKERS') or 0) or os.cpu_count() or 1, 8))
+# These animate the finished title image, which already carries any tilt.
+WHOLE_IMAGE = {'impact', 'wipe', 'slam', 'glitch'}
+FONT_FILES = {'display': 'archivo-black.ttf', 'condensed': 'anton.ttf', 'mono': 'jetbrains-mono.ttf'}
+BOXES = {'stamp', 'highlight', 'underline'}
+SCRAMBLE_GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+=?'
+
+
+def clamp(value):
+    return max(0, min(1, value))
+
+
+def motion_hash(value):
+    """The browser preview's Math.imul hash, so glitch and scramble noise match."""
+    return ((int(value) * 2654435761) & 0xffffffff) / 4294967296
+
+
+def title_frame(elapsed):
+    return math.floor(elapsed * 24 + 1e-6)
+
+
+def slam_motion(elapsed, duration):
+    land = clamp(elapsed / (duration * .4))
+    after = elapsed - duration * .4
+    amplitude = .018 * math.exp(-9 * after) if after > 0 else 0
+    return {'scale': 1 + 1.6 * (1 - land * land), 'x': amplitude * math.sin(2 * math.pi * 13 * after),
+        'y': amplitude * .6 * math.cos(2 * math.pi * 17 * after), 'opacity': clamp(elapsed / (duration * .12))}
+
+
+def stagger(index, count, duration, spread):
+    return duration * spread * index / (count - 1) if count > 1 else 0
+
+
+def pop_word(index, count, elapsed, duration):
+    part = clamp((elapsed - stagger(index, count, duration, .6)) / (duration * (.4 if count > 1 else 1)))
+    return {'scale': 1 + 2.70158 * (part - 1) ** 3 + 1.70158 * (part - 1) ** 2 if part else 0, 'opacity': clamp(part * 4)}
+
+
+def reveal_word(index, count, elapsed, duration):
+    part = clamp((elapsed - stagger(index, count, duration, .5)) / (duration * (.5 if count > 1 else 1)))
+    return {'visible': part > 0, 'offset': (1 - part) ** 3}
+
+
+def glitch_motion(elapsed, duration):
+    frame = title_frame(elapsed)
+    amount = (1 - max(0, elapsed) / duration) ** 2 if elapsed < duration else 0
+    return {'amount': amount, 'split': amount * .02 * (-1 if motion_hash(frame * 7 + 1) < .5 else 1),
+        'jitter': amount * .015 * (motion_hash(frame * 7 + 2) * 2 - 1), 'opacity': clamp(elapsed / .04)}
+
+
+def scramble_characters(text, elapsed, duration, offset=0, total=None):
+    """Characters of one word; offset counts the title's earlier visible characters."""
+    frame = title_frame(elapsed)
+    shown = []
+    for index, character in enumerate(text):
+        at = offset + index
+        if elapsed < duration * .5 * at / total:
+            shown.append(None)
+        elif elapsed >= duration * (.35 + .65 * at / total):
+            shown.append(character)
+        else:
+            shown.append(SCRAMBLE_GLYPHS[math.floor(motion_hash(frame * 31 + at) * len(SCRAMBLE_GLYPHS))])
+    return shown
+
+
+def paste_clipped(canvas, tile, left, top):
+    """Alpha-composite a tile that may extend beyond the canvas edges."""
+    left, top = round(left), round(top)
+    crop = (max(0, -left), max(0, -top), min(tile.width, canvas.width - left), min(tile.height, canvas.height - top))
+    if crop[0] < crop[2] and crop[1] < crop[3]:
+        canvas.alpha_composite(tile.crop(crop), (left + crop[0], top + crop[1]))
+
+
+def tilt_picture(picture, title, center):
+    angle = title.get('tilt', 0)
+    if not angle:
+        return picture
+    # CSS rotates clockwise for positive angles; Pillow rotates counter-clockwise.
+    return picture.rotate(-angle, resample=Image.Resampling.BICUBIC, center=center)
+
+
+def title_font(title, size, fonts):
+    family = title.get('font')
+    if family is not None and family not in FONT_FILES:
+        raise ValueError('Title font must be display, condensed or mono.')
+    name = FONT_FILES[family] if family else ('manrope.ttf' if title['style'] == 'headline' else 'dm-sans.ttf')
+    font = ImageFont.truetype(str(Path(fonts) / name), size)
+    try:
+        axes = font.get_variation_axes()
+    except OSError:
+        # Display and condensed faces have one fixed weight.
+        return font
+    weight = title.get('fontWeight', 700 if title['style'] == 'headline' else None)
+    if weight is not None:
+        # Preserve every other variable-font axis (DM Sans also has optical size).
+        font.set_variation_by_axes([weight if axis['name'] == b'Weight' else axis['default'] for axis in axes])
+    return font
 
 
 def title_frames(title):
@@ -51,15 +153,17 @@ def title_image(title, width, height, fonts, layout=False):
         raise ValueError('Title font weight must be 400, 500, 600 or 700.')
     if type(outlined) is not bool:
         raise ValueError('Title outline must be a boolean.')
+    decoration = title.get('box')
+    if decoration is not None and decoration not in BOXES:
+        raise ValueError('Title box must be stamp, highlight or underline.')
+    tilt = title.get('tilt', 0)
+    if type(tilt) not in (int, float) or not math.isfinite(tilt) or not -20 <= tilt <= 20:
+        raise ValueError('Title tilt must be between -20 and 20 degrees.')
     size = round(title.get('fontSize',{'headline':72,'caption':48,'kicker':28}[title['style']]) * scale)
-    font = ImageFont.truetype(str(Path(fonts) / ('manrope.ttf' if title['style'] == 'headline' else 'dm-sans.ttf')), size)
-    if weight is not None:
-        # Preserve every other variable-font axis (DM Sans also has optical size).
-        axes = font.get_variation_axes()
-        font.set_variation_by_axes([weight if axis['name'] == b'Weight' else axis['default'] for axis in axes])
-    elif title['style'] == 'headline':
-        font.set_variation_by_axes([700])
-    stroke = max(1, round(2 * scale)) if outlined else 0
+    font = title_font(title, size, fonts)
+    highlight = decoration == 'highlight'
+    fill = '#0b0f0a' if highlight else title['color']
+    stroke = max(1, round(2 * scale)) if outlined and not highlight else 0
     image = Image.new('RGBA', (width, height))
     draw = ImageDraw.Draw(image)
     lines = []
@@ -81,20 +185,33 @@ def title_image(title, width, height, fonts, layout=False):
     x = (width - text_width) / 2 if align == 'center' else width * .09 + (width * .82 - text_width) * (align == 'right')
     right = width - x if align == 'center' else x + text_width
     pad = round(16 * scale)
-    if title['style'] == 'caption':
-        draw.rounded_rectangle((max(0, x-pad), y-pad, min(width, right+pad), y+text_height+pad), radius=round(8*scale), fill=(12, 18, 11, 205))
-    draw.multiline_text((x, y-box[1]), text, font=font, spacing=round(size*.22), align=align, fill=title['color'],
+    center = (x + (box[0] + box[2]) / 2, y + text_height / 2)
+    def decorate(target):
+        # A box replaces the caption panel; it is drawn behind the glyphs.
+        target_draw = ImageDraw.Draw(target)
+        if decoration in ('stamp', 'highlight'):
+            rect = (x+box[0]-size*.3, y-size*.18, x+box[2]+size*.3, y+text_height+size*.18)
+            if highlight:
+                target_draw.rectangle(rect, fill=title['color'])
+            else:
+                target_draw.rectangle(rect, outline=title['color'], width=max(2, round(size*.07)))
+        elif decoration == 'underline':
+            top = y + text_height + size * .12
+            target_draw.rectangle((x+box[0], top, x+box[2], top+max(2, size*.09)), fill=title['color'])
+        elif title['style'] == 'caption':
+            target_draw.rounded_rectangle((max(0, x-pad), y-pad, min(width, right+pad), y+text_height+pad), radius=round(8*scale), fill=(12, 18, 11, 205))
+    decorate(image)
+    draw.multiline_text((x, y-box[1]), text, font=font, spacing=round(size*.22), align=align, fill=fill,
         stroke_width=stroke, stroke_fill=(8, 12, 9, 190))
     if not layout:
-        return image
+        return tilt_picture(image, title, center)
     glyphs = Image.new('RGBA', (width, height))
     glyph_draw = ImageDraw.Draw(glyphs)
     origin_y = y-box[1]
-    glyph_draw.multiline_text((x,origin_y),text,font=font,spacing=round(size*.22),align=align,fill=title['color'],
+    glyph_draw.multiline_text((x,origin_y),text,font=font,spacing=round(size*.22),align=align,fill=fill,
         stroke_width=stroke,stroke_fill=(8,12,9,190))
     background = Image.new('RGBA',(width,height))
-    if title['style'] == 'caption':
-        ImageDraw.Draw(background).rounded_rectangle((max(0,x-pad),y-pad,min(width,right+pad),y+text_height+pad),radius=round(8*scale),fill=(12,18,11,205))
+    decorate(background)
     # Derive line advance from the same layout engine used for the final image.
     spacing=round(size*.22)
     advance=glyph_draw.multiline_textbbox((0,0),'A\nA',font=font,spacing=spacing)[3]-glyph_draw.textbbox((0,0),'A',font=font)[3]
@@ -113,7 +230,8 @@ def title_image(title, width, height, fonts, layout=False):
             words.append({'text':word,'index':character_index+len(prefix),'x':word_x,'y':word_y,'rect':rect})
             prefix+=word+' '
         character_index+=len(line)+1
-    return {'image':image,'glyphs':glyphs,'background':background,'words':words,'font':font,'size':size,'characters':len(text)}
+    return {'image':tilt_picture(image,title,center),'glyphs':glyphs,'background':background,'words':words,'font':font,
+        'size':size,'characters':len(text),'center':center,'fill':fill,'stroke':stroke}
 
 
 def speech_layout(title,width,height,fonts):
@@ -126,6 +244,19 @@ def speech_layout(title,width,height,fonts):
 
 
 def title_motion_frame(title, layout, elapsed):
+    picture = kinetic_frame(title, layout, elapsed)
+    if elapsed < 0 or title['animation'] in WHOLE_IMAGE:
+        return picture
+    if title['animation'] == 'spoken':
+        phrase = 0
+        for word in title['words']:
+            if elapsed >= word['start']:
+                phrase = word['phrase']
+        return tilt_picture(picture, title, layout['phrases'][phrase]['layout']['center'])
+    return tilt_picture(picture, title, layout['center'])
+
+
+def kinetic_frame(title, layout, elapsed):
     if elapsed < 0:
         return Image.new('RGBA',layout['image'].size)
     length=title['end']-title['start']
@@ -141,7 +272,9 @@ def title_motion_frame(title, layout, elapsed):
         phrase=0
         for word in title['words']:
             if elapsed>=word['start']:phrase=word['phrase']
-        selected=layout['phrases'][phrase];part=selected['layout'];result=part['image'].copy();draw=ImageDraw.Draw(result)
+        selected=layout['phrases'][phrase];part=selected['layout']
+        # Start from the untilted pieces; title_motion_frame applies any tilt once.
+        result=part['background'].copy();result.alpha_composite(part['glyphs']);draw=ImageDraw.Draw(result)
         for word,position in zip(selected['timings'],part['words']):
             if word['start']<=elapsed<word['end']:
                 left,top,right,bottom=position['rect'];pad=round(part['size']*.08)
@@ -154,6 +287,36 @@ def title_motion_frame(title, layout, elapsed):
         box=image.getbbox();cx=(box[0]+box[2])/2;cy=(box[1]+box[3])/2
         result=image.transform((width,height),Image.Transform.AFFINE,(1/zoom,0,cx*(1-1/zoom),0,1/zoom,cy*(1-1/zoom)),Image.Resampling.BICUBIC)
         return opacity(result,exit_opacity*clamp(elapsed/min(.12,duration)))
+    if title['animation']=='slam':
+        motion=slam_motion(elapsed,duration);box=image.getbbox()
+        if not box:
+            return image
+        zoom=motion['scale'];cx=(box[0]+box[2])/2;cy=(box[1]+box[3])/2
+        dx=motion['x']*width;dy=motion['y']*width
+        result=image.transform((width,height),Image.Transform.AFFINE,(1/zoom,0,cx-(cx+dx)/zoom,0,1/zoom,cy-(cy+dy)/zoom),Image.Resampling.BICUBIC)
+        return opacity(result,exit_opacity*motion['opacity'])
+    if title['animation']=='glitch':
+        motion=glitch_motion(elapsed,duration);result=image
+        if motion['amount']>0:
+            split=round(motion['split']*width);jitter=round(motion['jitter']*width)
+            result=Image.new('RGBA',(width,height))
+            alpha=image.getchannel('A')
+            # Match the preview's red and cyan text shadows beneath the title.
+            for colour,offset in (((255,42,85),jitter-split),((34,227,255),jitter+split)):
+                ghost=Image.new('RGBA',(width,height),colour+(0,));ghost.putalpha(alpha)
+                paste_clipped(result,ghost,offset,0)
+            paste_clipped(result,image,jitter,0)
+            box=image.getbbox()
+            if box and motion['amount']>.05:
+                frame=title_frame(elapsed);span=box[3]-box[1]
+                for band in range(3):
+                    top=box[1]+round(span*motion_hash(frame*13+band*2))
+                    bottom=min(height,top+max(1,round(span*(.06+.1*motion_hash(frame*13+band*2+1)))))
+                    shift=round((motion_hash(frame*17+band)*2-1)*motion['amount']*.04*width)
+                    strip=result.crop((0,top,width,bottom))
+                    result.paste(Image.new('RGBA',strip.size),(0,top))
+                    paste_clipped(result,strip,shift,top)
+        return opacity(result,exit_opacity*motion['opacity'])
     if title['animation']=='wipe':
         box=image.getbbox();edge=box[0]+(box[2]-box[0])*(1-(1-progress)**3)
         mask=Image.new('L',(width,height));ImageDraw.Draw(mask).rectangle((0,0,max(0,edge),height),fill=255)
@@ -173,6 +336,38 @@ def title_motion_frame(title, layout, elapsed):
             ImageDraw.Draw(result).rectangle((caret[0]+3,caret[1]+2,caret[0]+max(4,layout['size']*.035),caret[2]-2),fill=title['color'])
         return result
     count=len(layout['words'])
+    if title['animation']=='scramble':
+        letters=Image.new('RGBA',(width,height));draw=ImageDraw.Draw(letters);font=layout['font']
+        total=max(1,sum(len(word['text']) for word in layout['words']));seen=0
+        for word in layout['words']:
+            shown=scramble_characters(word['text'],elapsed,duration,seen,total);seen+=len(word['text'])
+            for index,character in enumerate(shown):
+                if character is None:
+                    continue
+                # Keep each glyph at its settled position so the line never reflows.
+                left=word['x']+draw.textlength(word['text'][:index],font=font)
+                draw.text((left,word['y']),character,font=font,fill=layout['fill'],stroke_width=layout['stroke'],stroke_fill=(8,12,9,190))
+        result.alpha_composite(opacity(letters,exit_opacity));return result
+    if title['animation'] in ('pop','reveal'):
+        for index,word in enumerate(layout['words']):
+            left,top,right,bottom=word['rect'];tile=layout['glyphs'].crop(word['rect'])
+            if title['animation']=='pop':
+                part=pop_word(index,count,elapsed,duration)
+                if part['scale']<=0:
+                    continue
+                size=(max(1,round(tile.width*part['scale'])),max(1,round(tile.height*part['scale'])))
+                paste_clipped(result,opacity(tile.resize(size,Image.Resampling.BICUBIC),part['opacity']*exit_opacity),
+                    (left+right)/2-size[0]/2,(top+bottom)/2-size[1]/2)
+            else:
+                part=reveal_word(index,count,elapsed,duration)
+                if not part['visible']:
+                    continue
+                shift=round(part['offset']*1.1*tile.height)
+                if shift>=tile.height:
+                    continue
+                moved=Image.new('RGBA',tile.size);moved.paste(tile.crop((0,0,tile.width,tile.height-shift)),(0,shift))
+                result.alpha_composite(opacity(moved,exit_opacity),(left,top))
+        return result
     for index,word in enumerate(layout['words']):
         delay=duration*.65*index/(count-1) if count>1 else 0
         part=clamp((elapsed-delay)/(duration*(.35 if count>1 else 1)))
@@ -332,7 +527,75 @@ def film_frame_count(shots):
     return total
 
 
-def join_picture(segments, output, width, height):
+TRANSITIONS = {'dissolve', 'whip', 'zoom', 'flash', 'glitch', 'slide'}
+
+
+def smooth(value):
+    return value * value * (3 - 2 * value)
+
+
+def smear(picture, amount):
+    """Horizontal box blur about amount × width pixels wide, with clamped edges."""
+    radius = round(amount * picture.width / 2)
+    if radius < 1:
+        return picture
+    pixels = np.asarray(picture, dtype=np.float32)
+    padded = np.pad(pixels, ((0, 0), (radius + 1, radius), (0, 0)), mode='edge')
+    total = np.cumsum(padded, axis=1)
+    blurred = (total[:, 2 * radius + 1:] - total[:, :-2 * radius - 1]) / (2 * radius + 1)
+    return Image.fromarray(np.clip(blurred + .5, 0, 255).astype(np.uint8))
+
+
+def scaled(picture, scale):
+    """Centre crop-and-enlarge; the zoom punch never reveals an edge."""
+    if scale <= 1:
+        return picture
+    width, height = picture.size
+    crop_width, crop_height = width / scale, height / scale
+    left, top = (width - crop_width) / 2, (height - crop_height) / 2
+    return picture.resize(picture.size, Image.Resampling.BICUBIC, box=(left, top, left + crop_width, top + crop_height))
+
+
+def transition_frame(kind, outgoing, incoming, progress):
+    """One overlap frame; film-transitions.ts poses the browser preview with the same curves."""
+    if kind in (None, 'dissolve'):
+        return Image.blend(outgoing, incoming, progress)
+    width, height = outgoing.size
+    if kind in ('whip', 'slide'):
+        travel = smooth(progress)
+        canvas = Image.new('RGB', (width, height))
+        if kind == 'whip':
+            canvas.paste(outgoing, (round(-travel * width), 0))
+            canvas.paste(incoming, (round((1 - travel) * width), 0))
+            return smear(canvas, .06 * 4 * progress * (1 - progress))
+        canvas.paste(outgoing, (0, round(-travel * height)))
+        canvas.paste(incoming, (0, round((1 - travel) * height)))
+        return canvas
+    picture = incoming if progress >= .5 else outgoing
+    if kind == 'zoom':
+        scale = 1 + 1.5 * (2 * progress) ** 3 if progress < .5 else 1 + 1.5 * (1 - (2 * progress - 1)) ** 3
+        # Three nearby scales approximate a radial zoom blur during the fast part.
+        near = Image.blend(scaled(picture, scale), scaled(picture, scale * 1.03), .5)
+        return Image.blend(near, scaled(picture, scale * 1.06), 1 / 3)
+    if kind == 'flash':
+        return Image.blend(picture, Image.new('RGB', (width, height), (255, 255, 255)), clamp((1 - abs(2 * progress - 1)) * 1.5))
+    if kind == 'glitch':
+        amount = 1 - abs(2 * progress - 1)
+        frame = math.floor(progress * 24 * 8)
+        shift = round(amount * .03 * width)
+        red, green, blue = picture.split()
+        result = Image.merge('RGB', (ImageChops.offset(red, shift, 0), green, ImageChops.offset(blue, -shift, 0)))
+        result = ImageChops.offset(result, round(amount * .03 * width * (motion_hash(frame * 5 + 3) * 2 - 1)), 0)
+        for band in range(5):
+            top = round(height * motion_hash(frame * 11 + band))
+            bottom = min(height, top + max(1, round(height * (.02 + .06 * motion_hash(frame * 11 + band + 5)))))
+            strip = result.crop((0, top, width, bottom))
+            result.paste(ImageChops.offset(strip, round((motion_hash(frame * 19 + band) * 2 - 1) * amount * .08 * width), 0), (0, top))
+        return result
+    raise ValueError('Choose a supported shot transition.')
+
+
+def join_picture(segments, output, width, height, transitions=None):
     """Blend integer frame indices without an EOF-dependent framesync clock."""
     held=[];written=0
     with av.open(str(output),'w') as container:
@@ -352,7 +615,7 @@ def join_picture(segments, output, width, height):
             with av.open(str(segment)) as source:
                 for i,frame in enumerate(source.decode(video=0)):
                     picture=frame.to_image();decoded+=1
-                    if i<overlap:encode(Image.blend(held[i],picture,i/overlap))
+                    if i<overlap:encode(transition_frame((transitions or [None]*len(segments))[index],held[i],picture,i/overlap))
                     elif i<count-following:encode(picture)
                     else:next_held.append(picture)
             if decoded!=count:raise ValueError('A film cut did not contain its requested frames.')
@@ -518,26 +781,30 @@ def assemble(settings):
             image = folder / 'scene.mov'
             animate_scene(scene, graphics, titles, width, height, settings['fonts'], count, image, binary)
             title_files.append(({'start': 0, 'end': count / 24, 'animation': 'none'}, image, True))
-        for graphic_index, graphic in enumerate(graphics if scene is None else []):
-            animated = 'motion' in graphic
-            image = folder / f'graphic-{graphic_index}{".mov" if animated else ".png"}'
-            if animated:
-                animate_graphic(graphic,width,height,image,binary)
+        layers = [('graphic', graphic, folder / f'graphic-{index}{".mov" if "motion" in graphic else ".png"}', 'motion' in graphic)
+                  for index, graphic in enumerate(graphics if scene is None else [])]
+        layers += [('title', title, folder / f'title-{index}{".mov" if title["animation"] in KINETIC or "motion" in title else ".png"}',
+                    title['animation'] in KINETIC or 'motion' in title)
+                   for index, title in enumerate(titles if scene is None else [])]
+        def render_layer(layer):
+            kind, item, image, animated = layer
+            if kind == 'graphic' and animated:
+                animate_graphic(item, width, height, image, binary)
+            elif kind == 'graphic':
+                film_motion.graphic_frame(film_motion.graphic_layout(item, width, height),
+                                          math.ceil(item['start'] * 24 - 1e-7)).save(image)
+            elif animated:
+                animate_title(item, width, height, settings['fonts'], image, binary)
             else:
-                layout = film_motion.graphic_layout(graphic,width,height)
-                film_motion.graphic_frame(layout,math.ceil(graphic['start']*24-1e-7)).save(image)
-            title_files.append(({**graphic,'animation':'none'}, image, animated))
-        for title_index, title in enumerate(titles if scene is None else []):
-            animated=title['animation'] in KINETIC or 'motion' in title
-            image = folder / f'title-{title_index}{".mov" if animated else ".png"}'
-            if animated:
-                animate_title(title,width,height,settings['fonts'],image,binary)
-            else:
-                title_image(title, width, height, settings['fonts']).save(image)
-            title_files.append((title, image, animated))
+                title_image(item, width, height, settings['fonts']).save(image)
+        with ThreadPoolExecutor(WORKERS) as pool:
+            list(pool.map(render_layer, layers))
+        title_files += [({**item, 'animation': 'none'} if kind == 'graphic' else item, image, animated)
+                        for kind, item, image, animated in layers]
         total_frames = 0
         previous_count = 0
         segments = []
+        encodes = []
         unknown_source_durations = {}
         for index, shot in enumerate(settings['shots']):
             still = shot.get('kind') == 'image'
@@ -563,6 +830,8 @@ def assemble(settings):
             dissolve = shot.get('dissolve', 0) or 0
             if not isinstance(dissolve, (int, float)) or not math.isfinite(dissolve) or not 0 <= dissolve <= 1:
                 raise ValueError('A dissolve must be between zero and one second.')
+            if shot.get('transition', 'dissolve') not in TRANSITIONS:
+                raise ValueError('Choose a supported shot transition.')
             overlap = min(round(dissolve*24), count//2, previous_count//2) if index else 0
             total_frames -= overlap
             cut_start = total_frames / 24
@@ -648,15 +917,18 @@ def assemble(settings):
                 graph_file = folder / f'camera-filters-{index:03d}.txt'
                 graph_file.write_text(';'.join(filters), encoding='utf-8')
                 graph_arguments = ['-filter_complex_script', str(graph_file)]
-            run([*args, '-filter_complex_threads', '2', *graph_arguments, '-map', '[v]', '-map', '[a]',
+            encodes.append([*args, '-filter_complex_threads', '2', *graph_arguments, '-map', '[v]', '-map', '[a]',
                 '-c:v', 'libx264', '-threads', '2', '-crf', '18', '-preset', 'fast', '-pix_fmt', 'yuv420p', '-r', '24',
                 '-fps_mode', 'cfr', '-c:a', 'pcm_s16le', '-t', str(duration), str(segment)])
             segments.append((segment, duration, overlap, cut_start))
+        # Each cut's encoder already uses two threads.
+        with ThreadPoolExecutor(max(1, WORKERS // 2)) as pool:
+            list(pool.map(run, encodes))
         # Explicit cut durations keep every join on the 24 fps timeline.
         base = folder / 'cuts.mov'
         if any(row[2] for row in segments):
             picture=folder/'picture.mov'
-            join_picture(segments,picture,width,height)
+            join_picture(segments,picture,width,height,[shot.get('transition') for shot in settings['shots']])
             join_args, joins = [], []
             for index, (segment, _, _, _) in enumerate(segments):
                 join_args += ['-threads','1','-i',str(segment)]

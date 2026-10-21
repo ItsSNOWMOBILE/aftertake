@@ -31,7 +31,31 @@ const featureNames: Record<string, string> = {
   'character-selection': 'Track a person',
   'character-swap': 'Replace a character',
   depth: 'Still-image depth effects',
+  upscale: 'Upscale video',
+  interpolate: 'Smooth and slow motion',
+  song: 'Make a song',
 };
+
+// The launcher flag that installs each tool's local model profile.
+const setupFlags: Record<string, string> = {
+  'text-video': '--video',
+  'image-gen': '--image',
+  'frame-edit': '--frame-edit',
+  'motion-transfer': '--motion-transfer',
+  motion: '--camera',
+  inpaint: '--region-edit',
+  cinema: '--region-edit',
+  'character-selection': '--character-swap',
+  'character-swap': '--character-swap',
+  depth: '--depth',
+  upscale: '--upscale',
+  interpolate: '--interpolate',
+  song: '--song',
+};
+const setupCommand = (feature: string) =>
+  setupFlags[feature]
+    ? `node scripts/aftertake.mjs setup-gpu ${setupFlags[feature]}`
+    : 'python scripts/setup.py';
 
 async function computeRequest(path = '', init?: RequestInit): Promise<ComputeStatus> {
   const response = await apiFetch('/api/compute' + path, init);
@@ -73,6 +97,13 @@ export default function ComputeSettings({
         if (value.configured?.provider && value.configured.provider !== 'local') {
           setDestination(value.configured.provider);
           setEndpoint(value.configured.endpoint || '');
+        } else if (!value.checkedAt) {
+          // Check each local tool as the dialog opens, so readiness needs no extra click.
+          void computeRequest('/probe', { method: 'POST' })
+            .then((checked) => {
+              if (!canceled) setStatus(checked);
+            })
+            .catch(() => {});
         }
       })
       .catch(() => {
@@ -267,6 +298,42 @@ export default function ComputeSettings({
                   </span>
                 )}
               </div>
+              {!browserDemo && (
+                <ol className="compute-checklist" aria-label="Local generation checklist">
+                  <li className={engine.connected ? 'ready' : ''}>
+                    <strong>Engine running</strong>
+                    <span>
+                      {engine.connected
+                        ? 'Connected'
+                        : 'Start it with node scripts/aftertake.mjs, which launches the installed engine'}
+                    </span>
+                  </li>
+                  <li className={engine.gpu ? 'ready' : ''}>
+                    <strong>GPU found</strong>
+                    <span>
+                      {engine.gpu
+                        ? engine.gpu
+                            .replace(/^cuda:\d+\s+/, '')
+                            .replace(/\s*:\s*cudaMallocAsync$/, '')
+                        : 'Shown once the engine runs; generation needs an NVIDIA GPU on Windows or Linux'}
+                    </span>
+                  </li>
+                  <li
+                    className={
+                      status?.checkedAt && status.capabilities.every((item) => item.ready)
+                        ? 'ready'
+                        : ''
+                    }
+                  >
+                    <strong>Tools installed</strong>
+                    <span>
+                      {status?.checkedAt
+                        ? `${status.capabilities.filter((item) => item.ready).length} of ${status.capabilities.length} ready · details below`
+                        : 'Checking…'}
+                    </span>
+                  </li>
+                </ol>
+              )}
               {browserDemo ? (
                 <a
                   className="button compute-link"
@@ -314,12 +381,15 @@ export default function ComputeSettings({
                   <details className="compute-details">
                     <summary>Install or repair the local engine</summary>
                     <p>
-                      Run the engine and studio in separate terminals after installing the matching
-                      profile.
+                      Install the engine and this workflow's models, then start Aftertake; the
+                      launcher runs the engine with the studio.
                     </p>
                     <pre>
-                      python scripts/setup.py{setupProfile}
-                      {'\n'}python scripts/engine.py{'\n'}pnpm dev
+                      node scripts/aftertake.mjs setup-gpu{' '}
+                      {setupProfile.trim() === '--inpaint'
+                        ? '--region-edit'
+                        : setupProfile.trim() || '--video'}
+                      {'\n'}node scripts/aftertake.mjs
                     </pre>
                     <a
                       href="https://github.com/ItsSNOWMOBILE/aftertake/blob/aftertake-studio/docs/studio-guide.md"
@@ -514,6 +584,7 @@ export default function ComputeSettings({
                       >
                         <span>{featureNames[item.feature] || item.feature}</span>
                         <span>{item.ready ? 'Ready' : 'Needs setup'}</span>
+                        {!item.ready && <code>{setupCommand(item.feature)}</code>}
                       </li>
                     ))}
               </ul>

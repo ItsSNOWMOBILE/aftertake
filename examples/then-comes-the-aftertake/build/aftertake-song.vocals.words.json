@@ -1,0 +1,736 @@
+{
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 27.68,
+      "text": " Every shot ends... Then comes the... Paint it, change it, make it new. Same scene, a different view.",
+      "words": [
+        {
+          "word": " Every",
+          "start": 0.0,
+          "end": 0.12,
+          "probability": 0.5771484375
+        },
+        {
+          "word": " shot",
+          "start": 0.12,
+          "end": 0.52,
+          "probability": 0.9892578125
+        },
+        {
+          "word": " ends...",
+          "start": 0.52,
+          "end": 1.5,
+          "probability": 0.5160675048828125
+        },
+        {
+          "word": " Then",
+          "start": 1.5,
+          "end": 5.64,
+          "probability": 0.0943603515625
+        },
+        {
+          "word": " comes",
+          "start": 5.64,
+          "end": 6.0,
+          "probability": 0.1181640625
+        },
+        {
+          "word": " the...",
+          "start": 6.0,
+          "end": 6.86,
+          "probability": 0.47454833984375
+        },
+        {
+          "word": " Paint",
+          "start": 6.86,
+          "end": 21.06,
+          "probability": 0.00440216064453125
+        },
+        {
+          "word": " it,",
+          "start": 21.06,
+          "end": 21.56,
+          "probability": 0.2105712890625
+        },
+        {
+          "word": " change",
+          "start": 21.58,
+          "end": 21.82,
+          "probability": 0.96826171875
+        },
+        {
+          "word": " it,",
+          "start": 21.82,
+          "end": 22.14,
+          "probability": 0.86083984375
+        },
+        {
+          "word": " make",
+          "start": 22.16,
+          "end": 22.44,
+          "probability": 0.98583984375
+        },
+        {
+          "word": " it",
+          "start": 22.44,
+          "end": 22.66,
+          "probability": 0.96533203125
+        },
+        {
+          "word": " new.",
+          "start": 22.66,
+          "end": 23.0,
+          "probability": 0.97900390625
+        },
+        {
+          "word": " Same",
+          "start": 25.16,
+          "end": 25.8,
+          "probability": 0.9599609375
+        },
+        {
+          "word": " scene,",
+          "start": 25.8,
+          "end": 26.58,
+          "probability": 0.990234375
+        },
+        {
+          "word": " a",
+          "start": 26.62,
+          "end": 26.88,
+          "probability": 0.98681640625
+        },
+        {
+          "word": " different",
+          "start": 26.88,
+          "end": 27.14,
+          "probability": 0.99609375
+        },
+        {
+          "word": " view.",
+          "start": 27.14,
+          "end": 27.68,
+          "probability": 0.99267578125
+        }
+      ]
+    },
+    {
+      "start": 30.1,
+      "end": 33.5,
+      "text": " Open weights on your own machine",
+      "words": [
+        {
+          "word": " Open",
+          "start": 30.1,
+          "end": 30.74,
+          "probability": 0.48583984375
+        },
+        {
+          "word": " weights",
+          "start": 30.74,
+          "end": 31.38,
+          "probability": 0.9501953125
+        },
+        {
+          "word": " on",
+          "start": 31.38,
+          "end": 31.78,
+          "probability": 0.98583984375
+        },
+        {
+          "word": " your",
+          "start": 31.78,
+          "end": 32.1,
+          "probability": 0.99853515625
+        },
+        {
+          "word": " own",
+          "start": 32.1,
+          "end": 32.66,
+          "probability": 0.9892578125
+        },
+        {
+          "word": " machine",
+          "start": 32.66,
+          "end": 33.5,
+          "probability": 0.99609375
+        }
+      ]
+    },
+    {
+      "start": 34.68,
+      "end": 37.14,
+      "text": " Make the next take run the same",
+      "words": [
+        {
+          "word": " Make",
+          "start": 34.68,
+          "end": 35.32,
+          "probability": 0.1778564453125
+        },
+        {
+          "word": " the",
+          "start": 35.32,
+          "end": 35.6,
+          "probability": 0.99755859375
+        },
+        {
+          "word": " next",
+          "start": 35.6,
+          "end": 35.98,
+          "probability": 0.998046875
+        },
+        {
+          "word": " take",
+          "start": 35.98,
+          "end": 36.26,
+          "probability": 0.5947265625
+        },
+        {
+          "word": " run",
+          "start": 36.26,
+          "end": 36.56,
+          "probability": 0.80078125
+        },
+        {
+          "word": " the",
+          "start": 36.56,
+          "end": 36.78,
+          "probability": 0.99560546875
+        },
+        {
+          "word": " same",
+          "start": 36.78,
+          "end": 37.14,
+          "probability": 0.56103515625
+        }
+      ]
+    },
+    {
+      "start": 41.8,
+      "end": 44.08,
+      "text": " Recast the lead, keep the move",
+      "words": [
+        {
+          "word": " Recast",
+          "start": 41.8,
+          "end": 42.44,
+          "probability": 0.754638671875
+        },
+        {
+          "word": " the",
+          "start": 42.44,
+          "end": 42.68,
+          "probability": 0.89599609375
+        },
+        {
+          "word": " lead,",
+          "start": 42.68,
+          "end": 42.94,
+          "probability": 0.99462890625
+        },
+        {
+          "word": " keep",
+          "start": 43.1,
+          "end": 43.5,
+          "probability": 0.9873046875
+        },
+        {
+          "word": " the",
+          "start": 43.5,
+          "end": 43.82,
+          "probability": 1.0
+        },
+        {
+          "word": " move",
+          "start": 43.82,
+          "end": 44.08,
+          "probability": 0.99853515625
+        }
+      ]
+    },
+    {
+      "start": 44.08,
+      "end": 46.46,
+      "text": " Five more dancers in the groove",
+      "words": [
+        {
+          "word": " Five",
+          "start": 44.08,
+          "end": 44.78,
+          "probability": 0.89794921875
+        },
+        {
+          "word": " more",
+          "start": 44.78,
+          "end": 45.06,
+          "probability": 0.99951171875
+        },
+        {
+          "word": " dancers",
+          "start": 45.06,
+          "end": 45.58,
+          "probability": 0.998046875
+        },
+        {
+          "word": " in",
+          "start": 45.58,
+          "end": 46.0,
+          "probability": 0.98486328125
+        },
+        {
+          "word": " the",
+          "start": 46.0,
+          "end": 46.14,
+          "probability": 0.9609375
+        },
+        {
+          "word": " groove",
+          "start": 46.14,
+          "end": 46.46,
+          "probability": 0.9951171875
+        }
+      ]
+    },
+    {
+      "start": 46.46,
+      "end": 48.82,
+      "text": " Words to video, still the light",
+      "words": [
+        {
+          "word": " Words",
+          "start": 46.46,
+          "end": 47.24,
+          "probability": 0.9501953125
+        },
+        {
+          "word": " to",
+          "start": 47.24,
+          "end": 47.4,
+          "probability": 0.9990234375
+        },
+        {
+          "word": " video,",
+          "start": 47.4,
+          "end": 47.76,
+          "probability": 0.74560546875
+        },
+        {
+          "word": " still",
+          "start": 47.96,
+          "end": 48.18,
+          "probability": 0.685546875
+        },
+        {
+          "word": " the",
+          "start": 48.18,
+          "end": 48.52,
+          "probability": 0.7578125
+        },
+        {
+          "word": " light",
+          "start": 48.52,
+          "end": 48.82,
+          "probability": 0.986328125
+        }
+      ]
+    },
+    {
+      "start": 48.82,
+      "end": 51.1,
+      "text": " Pull the camera, cut it right",
+      "words": [
+        {
+          "word": " Pull",
+          "start": 48.82,
+          "end": 49.52,
+          "probability": 0.9794921875
+        },
+        {
+          "word": " the",
+          "start": 49.52,
+          "end": 49.66,
+          "probability": 0.97021484375
+        },
+        {
+          "word": " camera,",
+          "start": 49.66,
+          "end": 50.04,
+          "probability": 1.0
+        },
+        {
+          "word": " cut",
+          "start": 50.28,
+          "end": 50.6,
+          "probability": 1.0
+        },
+        {
+          "word": " it",
+          "start": 50.6,
+          "end": 50.82,
+          "probability": 1.0
+        },
+        {
+          "word": " right",
+          "start": 50.82,
+          "end": 51.1,
+          "probability": 0.9765625
+        }
+      ]
+    },
+    {
+      "start": 51.1,
+      "end": 53.62,
+      "text": " An agent cuts it, frame by frame",
+      "words": [
+        {
+          "word": " An",
+          "start": 51.1,
+          "end": 51.66,
+          "probability": 0.99658203125
+        },
+        {
+          "word": " agent",
+          "start": 51.66,
+          "end": 52.02,
+          "probability": 0.99951171875
+        },
+        {
+          "word": " cuts",
+          "start": 52.02,
+          "end": 52.28,
+          "probability": 1.0
+        },
+        {
+          "word": " it,",
+          "start": 52.28,
+          "end": 52.6,
+          "probability": 1.0
+        },
+        {
+          "word": " frame",
+          "start": 52.64,
+          "end": 53.0,
+          "probability": 1.0
+        },
+        {
+          "word": " by",
+          "start": 53.0,
+          "end": 53.24,
+          "probability": 1.0
+        },
+        {
+          "word": " frame",
+          "start": 53.24,
+          "end": 53.62,
+          "probability": 1.0
+        }
+      ]
+    },
+    {
+      "start": 53.62,
+      "end": 55.88,
+      "text": " 44 tools, still the same",
+      "words": [
+        {
+          "word": " 44",
+          "start": 53.62,
+          "end": 54.26,
+          "probability": 0.7724609375
+        },
+        {
+          "word": " tools,",
+          "start": 54.26,
+          "end": 54.84,
+          "probability": 0.998046875
+        },
+        {
+          "word": " still",
+          "start": 55.08,
+          "end": 55.36,
+          "probability": 1.0
+        },
+        {
+          "word": " the",
+          "start": 55.36,
+          "end": 55.56,
+          "probability": 0.99951171875
+        },
+        {
+          "word": " same",
+          "start": 55.56,
+          "end": 55.88,
+          "probability": 1.0
+        }
+      ]
+    },
+    {
+      "start": 55.88,
+      "end": 57.16,
+      "text": " On the beat",
+      "words": [
+        {
+          "word": " On",
+          "start": 55.88,
+          "end": 56.78,
+          "probability": 0.9833984375
+        },
+        {
+          "word": " the",
+          "start": 56.78,
+          "end": 56.9,
+          "probability": 0.99560546875
+        },
+        {
+          "word": " beat",
+          "start": 56.9,
+          "end": 57.16,
+          "probability": 0.9990234375
+        }
+      ]
+    },
+    {
+      "start": 57.16,
+      "end": 59.96,
+      "text": " On the beat, cut to the beat",
+      "words": [
+        {
+          "word": " On",
+          "start": 57.16,
+          "end": 57.88,
+          "probability": 0.21044921875
+        },
+        {
+          "word": " the",
+          "start": 57.88,
+          "end": 58.08,
+          "probability": 0.98974609375
+        },
+        {
+          "word": " beat,",
+          "start": 58.08,
+          "end": 58.36,
+          "probability": 0.99169921875
+        },
+        {
+          "word": " cut",
+          "start": 58.48,
+          "end": 59.08,
+          "probability": 0.94482421875
+        },
+        {
+          "word": " to",
+          "start": 59.08,
+          "end": 59.4,
+          "probability": 0.955078125
+        },
+        {
+          "word": " the",
+          "start": 59.4,
+          "end": 59.68,
+          "probability": 0.99560546875
+        },
+        {
+          "word": " beat",
+          "start": 59.68,
+          "end": 59.96,
+          "probability": 0.99951171875
+        }
+      ]
+    },
+    {
+      "start": 59.96,
+      "end": 60.72,
+      "text": " Your clip",
+      "words": [
+        {
+          "word": " Your",
+          "start": 59.96,
+          "end": 60.32,
+          "probability": 0.36376953125
+        },
+        {
+          "word": " clip",
+          "start": 60.32,
+          "end": 60.72,
+          "probability": 0.9775390625
+        }
+      ]
+    },
+    {
+      "start": 61.84,
+      "end": 63.06,
+      "text": " Your clip",
+      "words": [
+        {
+          "word": " Your",
+          "start": 61.84,
+          "end": 62.64,
+          "probability": 0.54931640625
+        },
+        {
+          "word": " clip",
+          "start": 62.64,
+          "end": 63.06,
+          "probability": 0.99169921875
+        }
+      ]
+    },
+    {
+      "start": 63.06,
+      "end": 65.4,
+      "text": " Your models, your core",
+      "words": [
+        {
+          "word": " Your",
+          "start": 63.06,
+          "end": 63.86,
+          "probability": 0.72021484375
+        },
+        {
+          "word": " models,",
+          "start": 63.86,
+          "end": 64.52,
+          "probability": 0.96484375
+        },
+        {
+          "word": " your",
+          "start": 64.68,
+          "end": 64.98,
+          "probability": 0.9892578125
+        },
+        {
+          "word": " core",
+          "start": 64.98,
+          "end": 65.4,
+          "probability": 0.4580078125
+        }
+      ]
+    },
+    {
+      "start": 69.98,
+      "end": 72.02,
+      "text": " Ain't a change in making",
+      "words": [
+        {
+          "word": " Ain't",
+          "start": 69.98,
+          "end": 70.78,
+          "probability": 0.93798828125
+        },
+        {
+          "word": " a",
+          "start": 70.78,
+          "end": 70.92,
+          "probability": 0.7294921875
+        },
+        {
+          "word": " change",
+          "start": 70.92,
+          "end": 71.3,
+          "probability": 0.99072265625
+        },
+        {
+          "word": " in",
+          "start": 71.3,
+          "end": 71.56,
+          "probability": 0.7275390625
+        },
+        {
+          "word": " making",
+          "start": 71.56,
+          "end": 72.02,
+          "probability": 0.919921875
+        }
+      ]
+    },
+    {
+      "start": 72.02,
+      "end": 77.16,
+      "text": " Make the next take run the scene",
+      "words": [
+        {
+          "word": " Make",
+          "start": 72.02,
+          "end": 72.88,
+          "probability": 0.27294921875
+        },
+        {
+          "word": " the",
+          "start": 72.88,
+          "end": 75.58,
+          "probability": 0.9970703125
+        },
+        {
+          "word": " next",
+          "start": 75.58,
+          "end": 75.98,
+          "probability": 0.998046875
+        },
+        {
+          "word": " take",
+          "start": 75.98,
+          "end": 76.3,
+          "probability": 0.92626953125
+        },
+        {
+          "word": " run",
+          "start": 76.3,
+          "end": 76.56,
+          "probability": 0.8916015625
+        },
+        {
+          "word": " the",
+          "start": 76.56,
+          "end": 76.76,
+          "probability": 0.9912109375
+        },
+        {
+          "word": " scene",
+          "start": 76.76,
+          "end": 77.16,
+          "probability": 0.984375
+        }
+      ]
+    },
+    {
+      "start": 80.56,
+      "end": 81.8,
+      "text": " After take",
+      "words": [
+        {
+          "word": " After",
+          "start": 80.56,
+          "end": 81.36,
+          "probability": 0.98486328125
+        },
+        {
+          "word": " take",
+          "start": 81.36,
+          "end": 81.8,
+          "probability": 0.67724609375
+        }
+      ]
+    },
+    {
+      "start": 91.42,
+      "end": 91.48,
+      "text": " Thank you.",
+      "words": [
+        {
+          "word": " Thank",
+          "start": 91.42,
+          "end": 91.46,
+          "probability": 0.2469482421875
+        },
+        {
+          "word": " you.",
+          "start": 91.46,
+          "end": 91.48,
+          "probability": 0.9990234375
+        }
+      ]
+    }
+  ]
+}

@@ -100,6 +100,68 @@ export const characterSelectionInfoSchema = z
     'Unexpected character canvas.',
   );
 export type CharacterSelectionInfo = z.infer<typeof characterSelectionInfoSchema>;
+const shaSchema = z.string().regex(/^[a-f0-9]{64}$/);
+/** How a repaired selection differs from the tracked one it came from; repair only adds pixels. */
+export const characterRepairSchema = z.object({
+  from: z.string().uuid(),
+  originalMaskSha256: shaSchema,
+  processor: z.literal('aftertake-mask-repair/1'),
+  maxGap: z.number().int().positive(),
+  flicker: z.number().int().positive(),
+  framesRecovered: z.array(z.number().int().nonnegative()).max(360),
+  recoveredPixels: z.number().int().nonnegative(),
+  restoredPixels: z.number().int().nonnegative(),
+});
+export type CharacterRepair = z.infer<typeof characterRepairSchema>;
+/** A take whose foreground was put back from the source; the counts arrive when it finishes. */
+export const characterProtectionSchema = z
+  .object({
+    from: z.string().uuid(),
+    margin: z.number().min(0.02).max(0.5),
+    accelerator: z.string().max(80).optional(),
+    frames: z.number().int().positive().optional(),
+    protectedFrames: z.number().int().nonnegative().optional(),
+    protectedPixels: z.number().int().nonnegative().optional(),
+    protectedFrameIndices: z.array(z.number().int().nonnegative()).max(360).optional(),
+    protectedPixelsByFrame: z.array(z.number().int().min(0).max(1000000)).max(360).optional(),
+    model: z
+      .object({
+        name: z.string().max(80),
+        repository: z.string().max(200),
+        revision: z.string().max(80),
+        sha256: shaSchema,
+        license: z.string().max(40),
+      })
+      .optional(),
+  })
+  .superRefine((receipt, context) => {
+    const indices = receipt.protectedFrameIndices,
+      counts = receipt.protectedPixelsByFrame;
+    if (indices === undefined && counts === undefined) return; // Historical receipts.
+    if (
+      !indices ||
+      !counts ||
+      receipt.frames === undefined ||
+      receipt.protectedFrames === undefined ||
+      receipt.protectedPixels === undefined
+    ) {
+      context.addIssue({ code: 'custom', message: 'Keep complete per-frame protection evidence.' });
+      return;
+    }
+    const expected = counts.flatMap((count, index) => (count ? [index] : []));
+    if (
+      counts.length !== receipt.frames ||
+      indices.length !== expected.length ||
+      indices.some((index, position) => index !== expected[position]) ||
+      receipt.protectedFrames !== expected.length ||
+      receipt.protectedPixels !== counts.reduce((sum, count) => sum + count, 0)
+    )
+      context.addIssue({
+        code: 'custom',
+        message: 'Protection frame indices and pixel counts must match the receipt totals.',
+      });
+  });
+export type CharacterProtection = z.infer<typeof characterProtectionSchema>;
 export type CharacterJob = {
   jobTarget?: JobTargetBinding;
   id: string;
@@ -116,6 +178,8 @@ export type CharacterJob = {
   updatedAt: string;
   workflow: Record<string, any>;
   selection?: CharacterSelectionInfo;
+  repair?: CharacterRepair;
+  protection?: CharacterProtection;
   clip?: Clip;
 };
 export const characterTerminal = new Set([
@@ -126,6 +190,36 @@ export const characterTerminal = new Set([
   'output_error',
 ]);
 export const characterBusy = (job: CharacterJob) => !characterTerminal.has(job.state);
+/**
+ * The replacements that made this take, oldest first. Each pass composites only
+ * inside its own mask, so tracking the next person in a finished take swaps
+ * several people in one shot.
+ */
+export function characterChain(job: CharacterJob, jobs: CharacterJob[]) {
+  const chain: CharacterJob[] = [];
+  const earlier = (take: CharacterJob) => {
+    const selectionId = (take.request as CharacterRequest).selectionId,
+      selection = jobs.find((item) => item.id === selectionId && item.kind === 'selection'),
+      source = (selection?.request as CharacterSelectionRequest | undefined)?.clip;
+    return source
+      ? jobs.find(
+          (item) =>
+            item.kind === 'replacement' &&
+            item.state === 'succeeded' &&
+            item.clip?.sha256 === source.sha256,
+        )
+      : undefined;
+  };
+  for (
+    let take: CharacterJob | undefined = job;
+    take?.kind === 'replacement';
+    take = earlier(take)
+  ) {
+    if (chain.includes(take)) break;
+    chain.unshift(take);
+  }
+  return chain;
+}
 export function characterCanvasLimit(r: Pick<CharacterSelectionRequest, 'resolution'>) {
   return r.resolution === '768' ? 1000000 : 500000;
 }

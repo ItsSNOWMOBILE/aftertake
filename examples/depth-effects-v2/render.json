@@ -1,0 +1,81 @@
+{
+  "id": "d9a8a708-4e32-4ea4-b9b9-863c72d7e2ca",
+  "request": {
+    "format": "aftertake-depth-effect/1",
+    "name": "Tokyo portrait · preserved depth recipe · v2",
+    "clip": {
+      "id": "2ac4c682-e267-44c1-b79d-96897b9e696b",
+      "name": "E - Neon depth portrait - seed 509052",
+      "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b",
+      "width": 1280,
+      "height": 720,
+      "duration": 1,
+      "url": "/media/2ac4c682-e267-44c1-b79d-96897b9e696b.png",
+      "kind": "image",
+      "hasAudio": false
+    },
+    "settings": {
+      "focus": 0.05,
+      "blur": 2,
+      "haze": 0.18,
+      "hazeColor": "#cbd7e3",
+      "lightAzimuth": -45,
+      "lightElevation": 35,
+      "lightStrength": 0.25
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-20T21:41:42.704Z",
+  "updatedAt": "2026-10-20T21:41:46.605Z",
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "requestKey": "source-upgrade-job3-depth-effects-v2-46c4b1804a128c5aee975aeb",
+  "requestDigest": "65cd9126dc9f8c87dbff8af3fa5768ec5ba7461ab3e8d9a8b0c70310e236f8d7",
+  "workflow": {
+    "1": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "2ac4c682-e267-44c1-b79d-96897b9e696b.png",
+        "width": 1280,
+        "height": 720,
+        "frames": 1,
+        "fps": 1,
+        "trim_start": 0
+      }
+    },
+    "2": {
+      "class_type": "AftertakeEstimateDepth",
+      "inputs": {
+        "images": [
+          "1",
+          0
+        ],
+        "request_json": "{\"format\":\"aftertake-depth-effect/1\",\"name\":\"Tokyo portrait · preserved depth recipe · v2\",\"clip\":{\"id\":\"2ac4c682-e267-44c1-b79d-96897b9e696b\",\"name\":\"E - Neon depth portrait - seed 509052\",\"sha256\":\"d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b\",\"width\":1280,\"height\":720,\"duration\":1,\"url\":\"/media/2ac4c682-e267-44c1-b79d-96897b9e696b.png\",\"kind\":\"image\",\"hasAudio\":false},\"settings\":{\"focus\":0.05,\"blur\":2,\"haze\":0.18,\"hazeColor\":\"#cbd7e3\",\"lightAzimuth\":-45,\"lightElevation\":35,\"lightStrength\":0.25}}"
+      }
+    }
+  },
+  "jobId": "c35e7220-0bd6-4346-9258-729d332921c2",
+  "stage": "Still image ready to edit or animate",
+  "depth": {
+    "sha256": "3a413b5a55325e8787017081f1f2ce1a97fcc383be239f8bf732bd69de2d1661",
+    "rawSha256": "c2f4132f81d80012afdfb5bd36e5d00d5978098f292423570268e1a78cb802b0",
+    "width": 1280,
+    "height": 720,
+    "modelSha256": "9c0a53d157c5b315d4c82908a43d93eeaa3a9ac3de9d15c2b4242ef46b5508ad"
+  },
+  "clip": {
+    "id": "d9a8a708-4e32-4ea4-b9b9-863c72d7e2ca",
+    "name": "Tokyo portrait · preserved depth recipe · v2",
+    "kind": "image",
+    "width": 1280,
+    "height": 720,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "069eb869fd16f2369b3c435b28bb64f7c742118766fb8b63de405ed57d031d36",
+    "url": "/media/d9a8a708-4e32-4ea4-b9b9-863c72d7e2ca.png"
+  }
+}

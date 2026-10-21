@@ -1,0 +1,33 @@
+{
+  "format": "aftertake-character-chain-evidence/1",
+  "method": "src/character.ts characterChain on actual API records",
+  "people": 2,
+  "passes": [
+    {
+      "id": "51057f6e-af0a-47a1-8a3c-5cc6a4bfc51c",
+      "selectionId": "7fdf4060-3ce9-4c4b-93cc-8b22dd398bfc",
+      "sha256": "b47c2faa8dafc83f9d78a90bfda866b075a7ab1268abc5a8d923ff5d49eaf03c",
+      "seed": 509103,
+      "name": "Rooftop recast Â· H3 Â· v2"
+    },
+    {
+      "id": "d41b54b2-d49b-40e2-97dc-0aea5069ec0c",
+      "selectionId": "cae5152d-c3d9-4bec-8a44-775c41efaa57",
+      "sha256": "4e120b5ae89ceaa1ff706de3956f9b82927c0d02b5e8e7ff556660897f94b1ce",
+      "seed": 610202,
+      "name": "Rooftop Â· two fictional identities Â· seed 610202"
+    }
+  ],
+  "actualUIScreenshot": "not captured; computer-use session was interrupted",
+  "actualDOMCountVerification": {
+    "people": 2,
+    "observer": "root",
+    "evidence": "Root reported actual live result-panel DOM counter verification; screenshot interrupted."
+  },
+  "followupUIScreenshot": {
+    "file": "chain-screenshot.png",
+    "takeId": "65372afb-ec7c-4196-99d5-9348ba57c628",
+    "captureReceipt": "screenshot-capture.json",
+    "scope": "Successful prompt-only retry; the baseline passes listed above are unchanged."
+  }
+}

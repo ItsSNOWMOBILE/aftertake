@@ -1,0 +1,78 @@
+Aftertake real execution proof
+
+Captured 20 October 2026 on Windows, NVIDIA GeForce RTX 5080 (16 GB VRAM).
+Product code: 317114f255b701d6232ed94f8285427dd2380fd1, the Claude demo branch
+with source-upgrade already merged. No product source changes are included here.
+
+Files for the edit
+
+proof-render.mp4: uncut 5:49.33 desktop recording. Aftertake occupies the left
+60%, the actual engine console the upper right and the actual nvidia-smi monitor
+the lower right. Shows the Product showcase starter, Draft, a fresh render,
+successful output, playback and actual recipe/workflow downloads. An earlier
+setup render remains honestly visible in history; the new take is named
+"Product showcase - live proof". The current take has its own native job ID.
+There are long operator pauses after completion; these are still real time.
+The last seconds show Chrome blocking the JSON-viewing attempt. Do not use that
+error screen as product footage. The downloaded files themselves are intact.
+
+proof-mcp.mp4: uncut 1:03.97 real stdio MCP client connected to npm run mcp.
+Shows the observed 44 tools, live generation workspace and Hero banner starter,
+one fresh image request, status polling to succeeded, and picture inspection.
+The fixed request ID did not rejoin an earlier generation. Terminal font is
+20 pt, with a genuine 29-row scrolling region and 108-column display wrapping.
+Full SDK responses are retained in proof-mcp.txt and proof-mcp.trace.json; the
+screen explicitly labels response excerpts and 1.5-second reading pauses.
+
+proof-workflow.mp4: separate uncut 50.07-second terminal review of the exact
+downloaded workflow JSON, with its SHA256. The reader prints the real file at
+100 ms per source line and wraps long lines for readability. It does not edit,
+execute or recreate the graph. This is a terminal review, not a ComfyUI canvas.
+
+The optional native ComfyUI canvas recording is absent: Chrome blocked access
+to the local canvas. No replacement canvas or staged console was created.
+The JSON download action in Aftertake saves a file; it does not open a viewer.
+
+Recording method
+
+All MP4s are native 1920x1080 desktop-region recordings at 30 fps, with the
+cursor captured, no system audio, no cuts, overlays, compositing, scaling or
+speed changes. The desktop is 3440x1440; only the actual top-left 1920x1080
+region was recorded. MKV captures were remuxed to MP4 with video stream copy.
+validation.json confirms identical encoded video before/after remux, complete
+error-free decoding and 30fps presentation timestamps rounded to the source
+Matroska millisecond clock (33/34ms steps). These checks do not prove that the
+operating system captured every unique refresh.
+
+The real monitor runs nvidia-smi dmon -s um in successive 12-sample batches to
+repeat its column headings. proof-gpu.log contains that output. The engine
+uses sequential residency, safe weight copies and disabled intermediate node
+cache. Native precision and attention kernels are unchanged. The product
+video uses LTX-2.5 Q4_K_M; the image uses Z-Image Turbo BF16.
+
+Execution records
+
+proof-render.json is the original Video recipe download. Its graph equals
+proof-render.workflow-api.json and the completed proof-render.record.json.
+proof-render.log is the unchanged byte prefix of engine-session.log through
+the end of recording A's job, ending before the image job's got-prompt line.
+engine-session.log retains the complete original engine session with both jobs.
+ComfyUI reports 80.97 seconds for the video and 30.91 seconds for the image.
+Those timings exclude some UI, download and operator time and are not general
+performance promises. The engine's startup message mentions default studio
+port 4310; this isolated proof studio actually ran on port 4396 as visible.
+
+product-showcase.generated.mp4 and hero-banner.generated.png are the original
+generated media. Their SHA256s match the native records and MCP inspection.
+mcp-inspection-2.jpg is the actual smaller review image returned by MCP.
+The generation prompts, seeds, model filenames and graphs are in the recipes.
+
+The actual SDK path is server/videos.ts -> client.submit / workflows.fromJson
+-> server/sdk-worker.mjs -> @comfyorg/sdk -> local ComfyUI. The MCP client and
+its expected starter snapshot are included for inspection and deliberate
+reproduction; supply your own --repo, --studio, --npm-cli and --python paths.
+Its default paths document this capture machine, not portable installation.
+
+The queues were empty before the proof engine and studio were stopped.
+Original Windows Terminal preferences were restored from their exact backup.
+No contest submission, social post or change to the Claude branch was made.

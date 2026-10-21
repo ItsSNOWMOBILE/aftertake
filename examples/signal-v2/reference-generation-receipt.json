@@ -1,0 +1,24 @@
+{
+  "letter": "T",
+  "seed": 2026,
+  "id": "ed8d9a72-4784-4dff-a29e-901a00e28a6c",
+  "jobId": "92cd19c3-143d-494b-9d19-073452b93669",
+  "state": "succeeded",
+  "clip": {
+    "id": "ed8d9a72-4784-4dff-a29e-901a00e28a6c",
+    "name": "Mint knitted teddy motion reference",
+    "kind": "image",
+    "width": 1280,
+    "height": 720,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "95f7b079dd08a9b0a25a1c66a0645a102cef60eaad746199dd5f627cfae6f99c",
+    "url": "/media/ed8d9a72-4784-4dff-a29e-901a00e28a6c.png"
+  },
+  "path": "reference.png",
+  "sha256": "95f7b079dd08a9b0a25a1c66a0645a102cef60eaad746199dd5f627cfae6f99c",
+  "elapsedThisRunSeconds": 32.219,
+  "source": "Native Aftertake API, Comfy SDK workflow; local AI-generated fictional footage. No resizing of a lower-resolution sample.",
+  "savedRecordWallSeconds": 28.397,
+  "pathNote": "Portable path to the identical generated media; original workstation directory omitted."
+}

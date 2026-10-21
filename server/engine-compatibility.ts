@@ -1,4 +1,4 @@
-import type { ComputeFeature } from '../src/compute.js';
+import { hardwareProfile, type ComputeFeature } from '../src/compute.js';
 import { requirements } from './workflow.js';
 
 export type EngineCompatibilityCheck = {
@@ -58,7 +58,7 @@ export function evaluateEngineCompatibility({
   };
   const hardwareFormat =
     own(hardwareInfo, 'format') === 'aftertake-hardware-status/1' &&
-    own(hardwareInfo, 'profile') === feature;
+    own(hardwareInfo, 'profile') === hardwareProfile(feature);
   check(
     'hardware-report',
     hardwareFormat,

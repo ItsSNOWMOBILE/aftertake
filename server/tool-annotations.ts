@@ -10,6 +10,7 @@ const idempotentWrites = new Set([
   'aftertake_generate_video',
   'aftertake_edit_frame',
   'aftertake_render_take',
+  'aftertake_enhance',
   'aftertake_track_character',
   'aftertake_replace_character',
   'aftertake_use_source',

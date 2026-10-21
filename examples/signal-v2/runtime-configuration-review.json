@@ -1,0 +1,85 @@
+{
+  "format": "aftertake-wan-runtime-readonly-review/1",
+  "scope": "Light filesystem reads and scalar estimates only. No model, Torch import, GPU probe, service change, repository edit or running-job mutation.",
+  "finding": "No clear accidental graph or startup-flag regression was found. Native HD full-sequence attention and CPU-cache/weight residency pressure are materially heavier than the old example. The sustained current slowdown is larger than attention scaling alone predicts; paging or driver residency pressure is plausible but not proven without a profiler.",
+  "baseline": {
+    "record": "repo/examples/signal/render.json",
+    "createdAt": "2026-10-19T13:56:28.644Z",
+    "updatedAt": "2026-10-19T14:01:24.901Z",
+    "savedRecordWallSeconds": 296.257,
+    "width": 576,
+    "height": 768,
+    "frames": 97,
+    "steps": 10,
+    "model": "wan_animate_2_distill_int8_convrot.safetensors",
+    "poseCacheDevice": "cpu",
+    "poseCacheDtype": "int4"
+  },
+  "current": {
+    "record": "job3/signal-v2/render.json",
+    "nativeWidth": 1280,
+    "nativeHeight": 736,
+    "deliveredWidth": 1280,
+    "deliveredHeight": 720,
+    "frames": 97,
+    "steps": 10,
+    "model": "wan_animate_2_distill_int8_convrot.safetensors",
+    "poseCacheDevice": "cpu",
+    "poseCacheDtype": "int4",
+    "firstIterationLoggedSeconds": 625.76,
+    "secondIterationReportedByRootSeconds": 507.1,
+    "remainingIterationsReportedByRoot": 8,
+    "samplingOnlyRemainingEstimateAtSecondIterationRateSeconds": 4056.8,
+    "estimateLimits": "One observed later iteration, not a stable ETA; excludes decoding, finalization and any later residency changes."
+  },
+  "unchangedGraphControlsVerified": [
+    "UNETLoader model file and weight_dtype=default",
+    "WanAnimate2Cache device=cpu and dtype=int4",
+    "BasicScheduler simple, 10 steps, denoise=1",
+    "SamplerCustom cfg=1, add_noise=true, seed=2026 and same conditioning/sampler links",
+    "KSamplerSelect lcm"
+  ],
+  "staticWorkEstimates": {
+    "method": "Wan's 8x spatial VAE reduction, 2x2 spatial patching, 25 pose latent frames plus one reference frame, 5120 channels and 40 blocks from the installed native implementation.",
+    "baselineTokensPerLatentFrame": 1728,
+    "currentTokensPerLatentFrame": 3680,
+    "baselineGenerationTokens": 44928,
+    "currentGenerationTokens": 95680,
+    "tokenRatio": 2.12963,
+    "quadraticAttentionWorkRatioApprox": 4.53532,
+    "baselineInt4PoseCachePayloadGiBApprox": 4.12,
+    "currentInt4PoseCachePayloadGiBApprox": 8.77,
+    "currentThreePersistentGenerationAttentionBuffersGiBApprox": 2.81,
+    "limits": "Estimates exclude quantization parameters, scales, temporary activations, Q/K/V projections, model/text/vision weights, transfer buffers, allocator overhead and WDDM/shared-memory behavior. They do not measure actual allocated or resident memory."
+  },
+  "nativeExecutionEvidence": [
+    "Engine log reports mixed-precision operations and native CUDA int8/convrot capabilities; Wan model weight/manual-cast dtype is FP16, not a new FP32 diffusion fallback.",
+    "Native WanAnimate2SelfAttention calls optimized_attention. The installed PyTorch attention path calls comfy.ops.scaled_dot_product_attention; its backend priority is FLASH_ATTENTION, CUDNN_ATTENTION, EFFICIENT_ATTENTION, then MATH.",
+    "The first sampling iteration runs the pose branch and fills its cache; later iterations reuse per-block cached inputs, dequantize/reproject K/V, and still run per-frame generation attention. At this geometry the generation branch has 26 frame calls per block across 40 blocks.",
+    "Startup --disable-smart-memory/--cache-none follows Aftertake's existing sequential policy; --disable-fast-disk/--async-offload 1 follows the explicit existing safe-weight-copy compatibility option. These flags do not disable optimized attention or send diffusion to CPU.",
+    "Triton was unavailable at engine startup, but native CUDA kernels and PyTorch SDPA remained available; nothing in this job newly removed Triton or selected an eager-only attention path. Actual per-call SDPA backend cannot be established from these logs."
+  ],
+  "pinnedMemoryClarification": {
+    "startupMessageMiB": 12856,
+    "meaning": "A maximum registration allowance, not a preallocation. On Windows MAX_PINNED_MEMORY=0.40*physicalRAM.",
+    "actualAllocationAccounting": "pin_memory registers an existing CPU tensor with cudaHostRegister and increments TOTAL_PINNED_MEMORY only after successful registration. The startup message does not reveal the live registered amount.",
+    "reference": "ComfyUI/comfy/model_management.py:1640-1694"
+  },
+  "actionableConclusion": [
+    "Preserve the running exact native graph and configuration; these reads do not justify restarting or changing its precision/kernels.",
+    "Avoid estimating this HD Wan job from the old five-minute example or the faster LTX/H3 runs. The observed second iteration alone is about 8.45 minutes.",
+    "If future capacity or throughput work is authorized, compare actual native attention backend and host/driver residency at a controlled completed-job boundary; do not infer that disabling cache, pinned memory or optimized paths will help.",
+    "Native static context windows could reduce full-sequence attention/cache pressure in a future explicit workflow variant, but would change the current graph and are not exposed or validated here. No such change was made."
+  ],
+  "references": [
+    "job2/engine.stderr.log",
+    "repo/custom_nodes/aftertake/vram.py:29-59",
+    "ComfyUI/comfy/ldm/wan/model_animate2.py:45-69",
+    "ComfyUI/comfy/ldm/wan/model_animate2.py:120-233",
+    "ComfyUI/comfy/ldm/wan/model_animate2.py:301-387",
+    "ComfyUI/comfy_extras/nodes_wan.py:1386-1420",
+    "ComfyUI/comfy/ldm/modules/attention.py:594-636",
+    "ComfyUI/comfy/ops.py:68-105",
+    "ComfyUI/comfy/model_management.py:1640-1694"
+  ]
+}

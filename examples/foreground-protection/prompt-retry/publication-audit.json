@@ -1,0 +1,7 @@
+{
+  "format": "aftertake-publication-audit/1",
+  "absolutePathFindings": [],
+  "readyForPathSafePublication": true,
+  "nativeRecordsUnmodified": true,
+  "note": "HTTPS provenance links and relative baseline artifact paths are permitted; native records/media were not redacted or remuxed."
+}

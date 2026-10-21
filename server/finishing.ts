@@ -9,7 +9,7 @@ import { clipSchema, type Clip } from '../src/domain.js';
 import {
   finishingBusy,
   finishingClockSchema,
-  finishingIsIdentity,
+  finishingRequestIsIdentity,
   finishingRecipeSchema,
   finishingRequestSchema,
   finishingSourceFiles,
@@ -34,6 +34,10 @@ const receiptSchema = z
     hasAudio: z.boolean(),
     identity: z.boolean(),
     clock: finishingClockSchema.optional(),
+    redactions: z
+      .array(z.object({ frames: z.number().int().min(0), boxes: z.number().int().min(0) }).strict())
+      .max(16)
+      .optional(),
   })
   .strict();
 const storedJobSchema = z
@@ -213,6 +217,8 @@ export async function finishingRouter(context: {
         sourceSha256: request.clip.sha256,
         settings: request.settings,
         format: request.format,
+        // Older requests had no redactions; keep their digests unchanged.
+        ...(request.redactions?.length ? { redactions: request.redactions } : {}),
       });
       const verifiedIdentity = Boolean(
         job.requestKey &&
@@ -351,7 +357,7 @@ export async function finishingRouter(context: {
     controller: AbortController,
     resolvedLuts: Record<string, string>,
   ) {
-    const suffix = finishingIsIdentity(job.request.settings)
+    const suffix = finishingRequestIsIdentity(job.request)
       ? path.extname(source).toLowerCase()
       : job.request.clip.kind === 'image'
         ? '.png'
@@ -383,7 +389,7 @@ export async function finishingRouter(context: {
         result.outputSha256 !== (await hashFile(output)) ||
         result.width !== job.request.clip.width ||
         result.height !== job.request.clip.height ||
-        result.identity !== finishingIsIdentity(job.request.settings) ||
+        result.identity !== finishingRequestIsIdentity(job.request) ||
         result.kind !== (job.request.clip.kind || 'video') ||
         (job.request.clip.hasAudio !== undefined &&
           result.hasAudio !== job.request.clip.hasAudio) ||
@@ -521,6 +527,7 @@ export async function finishingRouter(context: {
           sourceSha256: input.clip.sha256,
           settings: input.settings,
           format: input.format,
+          ...(input.redactions?.length ? { redactions: input.redactions } : {}),
         },
         jobs.values(),
       );

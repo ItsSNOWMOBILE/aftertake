@@ -1,0 +1,101 @@
+{
+  "format": "aftertake-enhance-review-binding/1",
+  "enhancementId": "46e9f057-97e5-4fa7-af72-10ecf5306bd7",
+  "recordSha256": "1dde0dcfad1a165c0d437f49dc4e38aad847e164b133d51f116a8e2ba19b9f3c",
+  "sourceSha256": "34825e59be74dc16ef3db45f6caa01aa86809eefc4403ca07528ae1b0d159682",
+  "resultSha256": "a7e4522028a9fefb5069ebf1f8754eca2e489b15deb56f6a57bf01fd41f60e58",
+  "contactSha256": "758e8c8dcecbca3c528314f5412bce9babd5500c8a7fd49057042766b1adb4aa",
+  "frames": [
+    {
+      "row": "Source",
+      "frame": 0,
+      "timestamp": 0.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Source",
+      "frame": 24,
+      "timestamp": 1.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Source",
+      "frame": 48,
+      "timestamp": 2.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Source",
+      "frame": 72,
+      "timestamp": 3.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Source",
+      "frame": 96,
+      "timestamp": 4.0,
+      "nativeSize": [
+        1280,
+        720
+      ]
+    },
+    {
+      "row": "Result",
+      "frame": 0,
+      "timestamp": 0.0,
+      "nativeSize": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "row": "Result",
+      "frame": 24,
+      "timestamp": 1.0,
+      "nativeSize": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "row": "Result",
+      "frame": 48,
+      "timestamp": 2.0,
+      "nativeSize": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "row": "Result",
+      "frame": 72,
+      "timestamp": 3.0,
+      "nativeSize": [
+        2560,
+        1440
+      ]
+    },
+    {
+      "row": "Result",
+      "frame": 96,
+      "timestamp": 4.0,
+      "nativeSize": [
+        2560,
+        1440
+      ]
+    }
+  ],
+  "limitation": "Five source-aligned samples cannot prove all-frame motion quality or aesthetic success."
+}

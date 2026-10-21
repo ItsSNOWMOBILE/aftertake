@@ -92,7 +92,7 @@ export function registerEffectsTools({
   );
   tool(
     'aftertake_finish_media',
-    'Save a color-finished image or video with editable, hash-bound settings: exposure, contrast, white balance, eight-channel HSL, master/RGB curves, an imported display-sRGB .cube LUT, film look, sharpness, optical effects, vignette and grain. Retains original video timing and audio. An active LUT needs its exact companion file already imported in Color & finish. Does not alter generated object geometry.',
+    'Save a color-finished image or video with editable, hash-bound settings: exposure, contrast, white balance, eight-channel HSL, master/RGB curves, an imported display-sRGB .cube LUT, film look, sharpness, optical effects, vignette and grain. Redactions blur, pixelate or fill boxes, or every place a sampled detail (a name or key in a screen recording) appears; the receipt counts what was hidden. Retains original video timing and audio. An active LUT needs its exact companion file already imported in Color & finish. Does not alter generated object geometry.',
     z.object({ requestId, request: finishingRequestSchema }),
     async (input) => ({ data: await api('/api/finishing', input.request, input.requestId) }),
     false,

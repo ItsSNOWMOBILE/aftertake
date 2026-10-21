@@ -1,0 +1,13 @@
+{
+  "format": "aftertake-prompt-retry-evidence/1",
+  "submissions": 0,
+  "takeId": "96dd66e1-bb23-4171-98fd-2d3536b884c3",
+  "protectedId": "441682e3-4bc5-4593-8ac1-96ecc477d886",
+  "baselineMediaDuplicated": false,
+  "baselineGenerationRecordsDuplicated": false,
+  "visualReviewPending": false,
+  "requiredRemaining": [],
+  "evidenceComplete": true,
+  "identityTransferPass": true,
+  "protectionExecutionPass": true
+}

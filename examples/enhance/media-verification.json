@@ -1,0 +1,409 @@
+{
+  "format": "aftertake-enhance-media-verification/1",
+  "results": [
+    {
+      "id": "13fc705c-c872-4fb9-b2c4-4dffb3126533",
+      "file": "smooth.mp4",
+      "media": {
+        "bytes": 2866675,
+        "sha256": "00aeaf9195e14c8f79871e0f568711cdeee6324698b9d0874e5c9fa8a71eb4f5",
+        "kind": "video",
+        "width": 1280,
+        "height": 720,
+        "frames": 193,
+        "fps": 48.0,
+        "fpsRational": "48/1",
+        "duration": 4.020833333333333,
+        "containerDuration": 4.020833,
+        "firstTimestamp": 0.0,
+        "lastTimestamp": 4.0,
+        "irregularFrameIntervals": 0,
+        "codec": "h264",
+        "audio": [],
+        "hasAudio": false
+      },
+      "checks": [
+        {
+          "check": "source_hash",
+          "passed": true
+        },
+        {
+          "check": "width",
+          "passed": true,
+          "actual": 1280,
+          "expected": 1280
+        },
+        {
+          "check": "height",
+          "passed": true,
+          "actual": 720,
+          "expected": 720
+        },
+        {
+          "check": "frames",
+          "passed": true,
+          "actual": 193,
+          "expected": 193
+        },
+        {
+          "check": "fps",
+          "passed": true,
+          "actual": 48.0,
+          "expected": 48
+        },
+        {
+          "check": "hasAudio",
+          "passed": true,
+          "actual": false,
+          "expected": false
+        },
+        {
+          "check": "regular_frame_clock",
+          "passed": true
+        },
+        {
+          "check": "embedded_video_request",
+          "passed": true
+        },
+        {
+          "check": "embedded_video_workflow",
+          "passed": true
+        },
+        {
+          "check": "input_source_hash",
+          "passed": true
+        }
+      ],
+      "filmImports": [
+        {
+          "id": "c5d25015-ae81-458b-a2ce-6a2b293f564c",
+          "name": "result.mp4 · smooth.mp4",
+          "kind": "video",
+          "createdAt": "2026-10-21T05:17:29.824Z",
+          "sha256": "00aeaf9195e14c8f79871e0f568711cdeee6324698b9d0874e5c9fa8a71eb4f5",
+          "mediaExists": true,
+          "hashVerified": true
+        }
+      ],
+      "auditStatus": "passed"
+    },
+    {
+      "id": "3dbee1e6-7003-4c7e-a6d0-db69b4c61f93",
+      "file": "slow-motion.mp4",
+      "media": {
+        "bytes": 5860553,
+        "sha256": "8bd620eac9a8898c34bb6db28f57c3228298ecab8b52b9c27411bec77a90cc21",
+        "kind": "video",
+        "width": 1280,
+        "height": 720,
+        "frames": 385,
+        "fps": 24.0,
+        "fpsRational": "24/1",
+        "duration": 16.041666666666668,
+        "containerDuration": 16.041667,
+        "firstTimestamp": 0.0,
+        "lastTimestamp": 16.0,
+        "irregularFrameIntervals": 0,
+        "codec": "h264",
+        "audio": [],
+        "hasAudio": false
+      },
+      "checks": [
+        {
+          "check": "source_hash",
+          "passed": true
+        },
+        {
+          "check": "width",
+          "passed": true,
+          "actual": 1280,
+          "expected": 1280
+        },
+        {
+          "check": "height",
+          "passed": true,
+          "actual": 720,
+          "expected": 720
+        },
+        {
+          "check": "frames",
+          "passed": true,
+          "actual": 385,
+          "expected": 385
+        },
+        {
+          "check": "fps",
+          "passed": true,
+          "actual": 24.0,
+          "expected": 24
+        },
+        {
+          "check": "hasAudio",
+          "passed": true,
+          "actual": false,
+          "expected": false
+        },
+        {
+          "check": "regular_frame_clock",
+          "passed": true
+        },
+        {
+          "check": "embedded_video_request",
+          "passed": true
+        },
+        {
+          "check": "embedded_video_workflow",
+          "passed": true
+        },
+        {
+          "check": "input_source_hash",
+          "passed": true
+        }
+      ],
+      "filmImports": [
+        {
+          "id": "e6d72326-5264-4871-9078-40e83abf1f27",
+          "name": "result.mp4 · slow motion.mp4",
+          "kind": "video",
+          "createdAt": "2026-10-21T05:18:07.890Z",
+          "sha256": "8bd620eac9a8898c34bb6db28f57c3228298ecab8b52b9c27411bec77a90cc21",
+          "mediaExists": true,
+          "hashVerified": true
+        }
+      ],
+      "auditStatus": "passed"
+    },
+    {
+      "id": "46e9f057-97e5-4fa7-af72-10ecf5306bd7",
+      "file": "upscaled.mp4",
+      "media": {
+        "bytes": 12399343,
+        "sha256": "a7e4522028a9fefb5069ebf1f8754eca2e489b15deb56f6a57bf01fd41f60e58",
+        "kind": "video",
+        "width": 2560,
+        "height": 1440,
+        "frames": 97,
+        "fps": 24.0,
+        "fpsRational": "24/1",
+        "duration": 4.041666666666667,
+        "containerDuration": 4.041667,
+        "firstTimestamp": 0.0,
+        "lastTimestamp": 4.0,
+        "irregularFrameIntervals": 0,
+        "codec": "h264",
+        "audio": [],
+        "hasAudio": false
+      },
+      "checks": [
+        {
+          "check": "source_hash",
+          "passed": true
+        },
+        {
+          "check": "width",
+          "passed": true,
+          "actual": 2560,
+          "expected": 2560
+        },
+        {
+          "check": "height",
+          "passed": true,
+          "actual": 1440,
+          "expected": 1440
+        },
+        {
+          "check": "frames",
+          "passed": true,
+          "actual": 97,
+          "expected": 97
+        },
+        {
+          "check": "fps",
+          "passed": true,
+          "actual": 24.0,
+          "expected": 24
+        },
+        {
+          "check": "hasAudio",
+          "passed": true,
+          "actual": false,
+          "expected": false
+        },
+        {
+          "check": "regular_frame_clock",
+          "passed": true
+        },
+        {
+          "check": "embedded_video_request",
+          "passed": true
+        },
+        {
+          "check": "embedded_video_workflow",
+          "passed": true
+        },
+        {
+          "check": "input_source_hash",
+          "passed": true
+        }
+      ],
+      "filmImports": [
+        {
+          "id": "5e549d43-db91-436e-b5f0-789e671f66cf",
+          "name": "result.mp4 · upscaled.mp4",
+          "kind": "video",
+          "createdAt": "2026-10-21T05:26:00.158Z",
+          "sha256": "a7e4522028a9fefb5069ebf1f8754eca2e489b15deb56f6a57bf01fd41f60e58",
+          "mediaExists": true,
+          "hashVerified": true
+        }
+      ],
+      "auditStatus": "passed"
+    },
+    {
+      "id": "6c0720ff-09e4-4910-9ce6-76572e42f088",
+      "file": "song-lyrics.flac",
+      "media": {
+        "bytes": 4796539,
+        "sha256": "690762cb4bb19728c4627a58ed1f380766dfbe936ef7de220d1a8956a9dfae04",
+        "kind": "audio",
+        "width": null,
+        "height": null,
+        "frames": null,
+        "fps": null,
+        "fpsRational": null,
+        "duration": 45.0,
+        "containerDuration": 45.0,
+        "firstTimestamp": null,
+        "lastTimestamp": null,
+        "irregularFrameIntervals": null,
+        "codec": null,
+        "audio": [
+          {
+            "sampleRate": 48000,
+            "channels": 2,
+            "samplesDecoded": 2160000,
+            "durationDecoded": 45.0,
+            "codec": "flac",
+            "signal": {
+              "channelSampleValues": 4320000,
+              "nonFiniteValues": 0,
+              "nonSilent": true,
+              "peakAbsolute": 1.0,
+              "peakDbFS": 0.0,
+              "rms": 0.20000278184189627,
+              "rmsDbFS": -13.979279273702074,
+              "dcMean": 0.0011083332626907914,
+              "samplesAtOrAbove0_9999": 5,
+              "samplesOutsideUnitRange": 0,
+              "clippingInterpretation": "Near-full-scale count is a clipping-risk statistic, not proof of perceptual clipping; saved integer PCM may already be saturated."
+            }
+          }
+        ],
+        "hasAudio": true
+      },
+      "checks": [
+        {
+          "check": "source_hash",
+          "passed": true
+        },
+        {
+          "check": "song_kind_and_length",
+          "passed": true
+        },
+        {
+          "check": "song_non_silent_and_finite",
+          "passed": true
+        },
+        {
+          "check": "embedded_song_workflow",
+          "passed": true
+        }
+      ],
+      "filmImports": [
+        {
+          "id": "8df4988f-22f3-495d-ac49-62e2b62e80b1",
+          "name": "Enhance validation · upbeat lyrics · 45s.flac",
+          "kind": "audio",
+          "createdAt": "2026-10-21T05:27:33.057Z",
+          "sha256": "690762cb4bb19728c4627a58ed1f380766dfbe936ef7de220d1a8956a9dfae04",
+          "mediaExists": true,
+          "hashVerified": true
+        }
+      ],
+      "auditStatus": "passed"
+    },
+    {
+      "id": "95c2293b-2c05-4478-b504-b0f8c83c40f4",
+      "file": "song-instrumental.flac",
+      "media": {
+        "bytes": 2381033,
+        "sha256": "d23c33534d51a9d97f5f7ff55e99ea233c3129272c5bd1db1f2f68c800918ff2",
+        "kind": "audio",
+        "width": null,
+        "height": null,
+        "frames": null,
+        "fps": null,
+        "fpsRational": null,
+        "duration": 30.0,
+        "containerDuration": 30.0,
+        "firstTimestamp": null,
+        "lastTimestamp": null,
+        "irregularFrameIntervals": null,
+        "codec": null,
+        "audio": [
+          {
+            "sampleRate": 48000,
+            "channels": 2,
+            "samplesDecoded": 1440000,
+            "durationDecoded": 30.0,
+            "codec": "flac",
+            "signal": {
+              "channelSampleValues": 2880000,
+              "nonFiniteValues": 0,
+              "nonSilent": true,
+              "peakAbsolute": 0.9306640625,
+              "peakDbFS": -0.6241411200297109,
+              "rms": 0.13962952741101137,
+              "rmsDbFS": -17.100454637742665,
+              "dcMean": 0.00040626983642578124,
+              "samplesAtOrAbove0_9999": 0,
+              "samplesOutsideUnitRange": 0,
+              "clippingInterpretation": "Near-full-scale count is a clipping-risk statistic, not proof of perceptual clipping; saved integer PCM may already be saturated."
+            }
+          }
+        ],
+        "hasAudio": true
+      },
+      "checks": [
+        {
+          "check": "source_hash",
+          "passed": true
+        },
+        {
+          "check": "song_kind_and_length",
+          "passed": true
+        },
+        {
+          "check": "song_non_silent_and_finite",
+          "passed": true
+        },
+        {
+          "check": "embedded_song_workflow",
+          "passed": true
+        }
+      ],
+      "filmImports": [
+        {
+          "id": "8e809ef4-5399-419f-92cb-417e49722296",
+          "name": "Enhance validation · cinematic instrumental · 30s.flac",
+          "kind": "audio",
+          "createdAt": "2026-10-21T05:26:49.191Z",
+          "sha256": "d23c33534d51a9d97f5f7ff55e99ea233c3129272c5bd1db1f2f68c800918ff2",
+          "mediaExists": true,
+          "hashVerified": true
+        }
+      ],
+      "auditStatus": "passed"
+    }
+  ]
+}

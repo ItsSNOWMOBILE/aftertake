@@ -1,0 +1,25 @@
+{
+  "format": "aftertake-character/1",
+  "name": "Rooftop \u00b7 two fictional identities \u00b7 seed 610202",
+  "selectionId": "cae5152d-c3d9-4bec-8a44-775c41efaa57",
+  "reference": {
+    "id": "b360c694-e199-4345-a2a3-fefd1db30be3",
+    "name": "Rooftop second fictional identity \u00b7 seed 610201",
+    "sha256": "dc97b5ef1001058cfdba180d59e14de95e570ea187ed3aa0476e3858fedd79a3",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "url": "/media/b360c694-e199-4345-a2a3-fefd1db30be3.png",
+    "kind": "image",
+    "hasAudio": false
+  },
+  "faceBox": {
+    "x": 0.2,
+    "y": 0.12,
+    "width": 0.65,
+    "height": 0.44
+  },
+  "prompt": "",
+  "wardrobe": "reference",
+  "seed": 610202
+}

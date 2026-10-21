@@ -1,4 +1,4 @@
-import type { ComputeFeature } from '../src/compute.js';
+import { hardwareProfile, type ComputeFeature } from '../src/compute.js';
 
 export const cudaSystemStats = {
   system: { os: 'win32' },
@@ -6,7 +6,9 @@ export const cudaSystemStats = {
 };
 
 // Saved metadata for validator tests; this is never evidence of real execution.
-export function hardwareFixture(profile: ComputeFeature) {
+// The engine is asked for the feature's hardware profile, as the studio does.
+export function hardwareFixture(feature: ComputeFeature) {
+  const profile = hardwareProfile(feature);
   return {
     format: 'aftertake-hardware-status/1',
     profile,

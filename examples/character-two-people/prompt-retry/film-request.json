@@ -1,0 +1,25 @@
+{
+  "name": "Two-person prompt retry - 720p delivery",
+  "aspect": "landscape",
+  "resolution": "720p",
+  "shots": [
+    {
+      "assetId": "2c08f48c-5e65-4170-8ef0-b8cd6ab387df",
+      "start": 0,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    }
+  ],
+  "titles": [],
+  "graphics": [],
+  "audio": [],
+  "sourceVolume": 1,
+  "normalizeAudio": false
+}

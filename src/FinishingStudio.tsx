@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import {
   ArrowUpRight,
   Download,
+  EyeOff,
   Film,
   LoaderCircle,
   Redo2,
   RotateCcw,
+  Trash2,
   Undo2,
   Upload,
   X,
@@ -15,15 +17,18 @@ import type { FilmAsset } from './film';
 import {
   defaultFinishingSettings,
   finishingBusy,
+  finishingPresets,
   finishingRequestSchema,
   finishingRecipeSchema,
   applyOpticalFinishingPreset,
   matchingOpticalFinishingPreset,
   opticalFinishingPresets,
   finishingSourceFiles,
+  redactionStyles,
   type FinishingJob,
   type FinishingRequest,
   type FinishingSettings,
+  type Redaction,
 } from './finishing';
 import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
 import PreviewVideo from './PreviewVideo';
@@ -32,6 +37,8 @@ import './image-studio.css';
 import './finishing-studio.css';
 
 type Pending = { key: string; request: FinishingRequest };
+type Box = { x0: number; y0: number; x1: number; y1: number };
+const unit = (value: number) => Math.max(0, Math.min(1, value));
 type History = { past: FinishingSettings[]; now: FinishingSettings; future: FinishingSettings[] };
 const controls: {
   key: keyof FinishingSettings;
@@ -134,6 +141,11 @@ export default function FinishingStudio({
   const [preview, setPreview] = useState<{ before: string; after: string; time: number }>();
   const [previewTime, setPreviewTime] = useState(0);
   const [split, setSplit] = useState(50);
+  // Boxes to hide, and the preview time each was drawn at (its match sample).
+  const [redactions, setRedactions] = useState<Redaction[]>([]);
+  const [sampled, setSampled] = useState<number[]>([]);
+  const [drawing, setDrawing] = useState(false);
+  const [draft, setDraft] = useState<Box>();
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const dialog = useRef<HTMLElement>(null);
@@ -148,6 +160,7 @@ export default function FinishingStudio({
       name,
       clip,
       settings: history.now,
+      ...(redactions.length ? { redactions } : {}),
     });
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
@@ -196,6 +209,36 @@ export default function FinishingStudio({
       now: { ...previous.now, ...next },
       future: [],
     }));
+  }
+  function changeRedaction(index: number, next: Partial<Redaction>) {
+    setRedactions((all) => all.map((item, at) => (at === index ? { ...item, ...next } : item)));
+  }
+  function removeRedaction(index: number) {
+    setRedactions((all) => all.filter((_, at) => at !== index));
+    setSampled((all) => all.filter((_, at) => at !== index));
+  }
+  function framePoint(event: React.PointerEvent<HTMLDivElement>) {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    return {
+      x: unit((event.clientX - bounds.left) / bounds.width),
+      y: unit((event.clientY - bounds.top) / bounds.height),
+    };
+  }
+  function finishBox() {
+    if (!draft || !preview) return;
+    const x = Math.min(draft.x0, draft.x1),
+      y = Math.min(draft.y0, draft.y1),
+      width = Math.abs(draft.x1 - draft.x0),
+      height = Math.abs(draft.y1 - draft.y0);
+    setDraft(undefined);
+    if (width < 0.005 || height < 0.005) return;
+    setRedactions((all) => [
+      ...all,
+      { x, y, width, height, start: 0, end: null, style: 'blur', match: null },
+    ]);
+    setSampled((all) => [...all, preview.time]);
+    setDrawing(false);
+    setNotice('Box added. Preview the frame again to see it hidden.');
   }
   function undo(forward = false) {
     clearPreview();
@@ -333,6 +376,8 @@ export default function FinishingStudio({
       setClip(original);
       setName(parsed.name);
       setHistory({ past: [], now: parsed.settings, future: [] });
+      setRedactions(parsed.redactions || []);
+      setSampled((parsed.redactions || []).map((item) => item.match?.at ?? 0));
       setPreviewTime(0);
       setNotice(
         'Settings restored and bound to the matching source. Review a frame before exporting.',
@@ -407,6 +452,48 @@ export default function FinishingStudio({
                   <span className="finishing-divider" style={{ left: split + '%' }} />
                   <span className="finishing-tag">FINISHED</span>
                   <span className="finishing-tag source">SOURCE</span>
+                  {[
+                    ...redactions,
+                    ...(draft
+                      ? [
+                          {
+                            x: Math.min(draft.x0, draft.x1),
+                            y: Math.min(draft.y0, draft.y1),
+                            width: Math.abs(draft.x1 - draft.x0),
+                            height: Math.abs(draft.y1 - draft.y0),
+                          },
+                        ]
+                      : []),
+                  ].map((box, index) => (
+                    <span
+                      key={index}
+                      className="finishing-redaction-box"
+                      style={{
+                        left: box.x * 100 + '%',
+                        top: box.y * 100 + '%',
+                        width: box.width * 100 + '%',
+                        height: box.height * 100 + '%',
+                      }}
+                    />
+                  ))}
+                  {drawing && (
+                    <div
+                      className="finishing-draw"
+                      aria-label="Drag across the frame to hide a region"
+                      onPointerDown={(event) => {
+                        event.currentTarget.setPointerCapture(event.pointerId);
+                        const point = framePoint(event);
+                        setDraft({ x0: point.x, y0: point.y, x1: point.x, y1: point.y });
+                      }}
+                      onPointerMove={(event) => {
+                        if (!draft) return;
+                        const point = framePoint(event);
+                        setDraft({ ...draft, x1: point.x, y1: point.y });
+                      }}
+                      onPointerUp={finishBox}
+                      onPointerCancel={() => setDraft(undefined)}
+                    />
+                  )}
                 </div>
               ) : clip.kind === 'image' ? (
                 <img src={mediaUrl(clip.url)} alt="Original source" />
@@ -541,59 +628,24 @@ export default function FinishingStudio({
             </div>
           </div>
           <div className="image-controls finishing-controls">
-            <label>
-              SOURCE
-              <select
-                aria-label="Finishing source"
-                value={clip.id}
-                disabled={locked}
-                onChange={(event) => {
-                  const chosen = clips.find((item) => item.id === event.target.value);
-                  if (chosen) {
-                    clearPreview();
-                    setClip(chosen);
-                    setPreviewTime(0);
-                    setName((chosen.name + ' / finish').slice(0, 100));
-                  }
-                }}
-              >
-                {clips.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
+            <fieldset className="finishing-looks" disabled={locked}>
+              <legend>Film look</legend>
+              <div className="finishing-look-row">
+                {finishingPresets.map((preset) => (
+                  <button
+                    type="button"
+                    key={preset.id}
+                    aria-pressed={history.now.preset === preset.id}
+                    title={preset.description}
+                    onClick={() =>
+                      change({ preset: preset.id, lookStrength: preset.id === 'clean' ? 0 : 0.7 })
+                    }
+                  >
+                    {preset.name}
+                  </button>
                 ))}
-              </select>
-            </label>
-            <label>
-              TAKE NAME
-              <input
-                aria-label="Finishing take name"
-                maxLength={100}
-                value={name}
-                disabled={locked}
-                onChange={(event) => setName(event.target.value)}
-              />
-            </label>
-            <label>
-              FILM LOOK
-              <select
-                aria-label="Finishing film look"
-                value={history.now.preset}
-                disabled={locked}
-                onChange={(event) =>
-                  change({
-                    preset: event.target.value as FinishingSettings['preset'],
-                    lookStrength: event.target.value === 'clean' ? 0 : 0.7,
-                  })
-                }
-              >
-                <option value="clean">Clean / your adjustments</option>
-                <option value="warm-film">Warm film</option>
-                <option value="cool-film">Cool film</option>
-                <option value="noir">Noir</option>
-                <option value="vintage">Vintage</option>
-              </select>
-            </label>
+              </div>
+            </fieldset>
             {history.now.preset !== 'clean' && (
               <label>
                 LOOK STRENGTH
@@ -609,7 +661,7 @@ export default function FinishingStudio({
                 />
               </label>
             )}
-            {controls.map((control) => (
+            {controls.slice(0, 4).map((control) => (
               <label className="finishing-slider" key={control.key}>
                 <span>
                   {control.label}
@@ -627,76 +679,231 @@ export default function FinishingStudio({
                 />
               </label>
             ))}
-            <GradingControls settings={history.now} disabled={locked} onChange={change} />
-            <fieldset className="finishing-optics" disabled={locked}>
-              <legend>Optical effects</legend>
+            <fieldset className="finishing-redactions" disabled={locked}>
+              <legend>Hide details</legend>
+              <p>
+                Blur, pixelate or fill a box. Turn on Hide every match to treat the box as a sample:
+                every place those pixels appear is hidden too, such as a name or key in a screen
+                recording. Hiding runs on the source pixels, before the color finish.
+              </p>
+              <button
+                type="button"
+                className={'button' + (drawing ? ' active' : '')}
+                disabled={!preview || Boolean(viewed?.clip)}
+                aria-pressed={drawing}
+                onClick={() => {
+                  setDrawing(!drawing);
+                  setDraft(undefined);
+                  // The controls run long; bring the frame to draw on into view.
+                  if (!drawing)
+                    dialog.current
+                      ?.querySelector('.finishing-viewer')
+                      ?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                }}
+              >
+                <EyeOff size={14} />
+                {drawing ? 'Drag across the frame' : 'Draw a box'}
+              </button>
+              {!preview && <small>Preview a frame first, then draw on it.</small>}
+              {redactions.map((item, index) => (
+                <div className="finishing-redaction" key={index}>
+                  <span>
+                    Box {index + 1} · {Math.round(item.width * 100)}% ×{' '}
+                    {Math.round(item.height * 100)}%
+                  </span>
+                  <select
+                    aria-label={`Redaction ${index + 1} style`}
+                    value={item.style}
+                    onChange={(event) =>
+                      changeRedaction(index, { style: event.target.value as Redaction['style'] })
+                    }
+                  >
+                    {redactionStyles.map((style) => (
+                      <option key={style.id} value={style.id}>
+                        {style.name}
+                      </option>
+                    ))}
+                  </select>
+                  <label className="finishing-redaction-match">
+                    <input
+                      type="checkbox"
+                      checked={Boolean(item.match)}
+                      onChange={(event) =>
+                        changeRedaction(index, {
+                          match: event.target.checked
+                            ? { at: sampled[index] ?? 0, threshold: 0.9 }
+                            : null,
+                        })
+                      }
+                    />
+                    Hide every match
+                  </label>
+                  {clip.kind !== 'image' && (
+                    <span className="finishing-redaction-time">
+                      <input
+                        aria-label={`Redaction ${index + 1} start`}
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        value={item.start}
+                        onChange={(event) =>
+                          changeRedaction(index, {
+                            start: Math.max(0, Number(event.target.value) || 0),
+                          })
+                        }
+                      />
+                      –
+                      <input
+                        aria-label={`Redaction ${index + 1} end`}
+                        type="number"
+                        min="0"
+                        step="0.1"
+                        placeholder="end"
+                        value={item.end ?? ''}
+                        onChange={(event) =>
+                          changeRedaction(index, {
+                            end: event.target.value === '' ? null : Number(event.target.value),
+                          })
+                        }
+                      />
+                      s
+                    </span>
+                  )}
+                  <button
+                    type="button"
+                    className="icon-button"
+                    aria-label={`Remove redaction ${index + 1}`}
+                    onClick={() => removeRedaction(index)}
+                  >
+                    <Trash2 size={13} />
+                  </button>
+                </div>
+              ))}
+            </fieldset>
+            <details className="studio-advanced">
+              <summary>More options</summary>
               <label>
-                OPTICAL RECIPE
+                SOURCE
                 <select
-                  aria-label="Finishing optical recipe"
-                  value={matchingOpticalFinishingPreset(history.now)}
-                  onChange={(event) =>
-                    change(applyOpticalFinishingPreset(history.now, event.target.value))
-                  }
+                  aria-label="Finishing source"
+                  value={clip.id}
+                  disabled={locked}
+                  onChange={(event) => {
+                    const chosen = clips.find((item) => item.id === event.target.value);
+                    if (chosen) {
+                      clearPreview();
+                      setClip(chosen);
+                      setPreviewTime(0);
+                      setName((chosen.name + ' / finish').slice(0, 100));
+                    }
+                  }}
                 >
-                  <option value="custom" disabled>
-                    Custom adjustments
-                  </option>
-                  {opticalFinishingPresets.map((preset) => (
-                    <option key={preset.id} value={preset.id}>
-                      {preset.name}
+                  {clips.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
                     </option>
                   ))}
                 </select>
               </label>
-              <p>
-                Glow and warm halos spread bright highlights. Color separation adds a stylized
-                red/blue edge; it does not repair composite seams. Recipes keep your color grade.
-                Review with Preview frame before saving a finished take.
-              </p>
-              {opticalControls.map((control) => (
+              <label>
+                TAKE NAME
+                <input
+                  aria-label="Finishing take name"
+                  maxLength={100}
+                  value={name}
+                  disabled={locked}
+                  onChange={(event) => setName(event.target.value)}
+                />
+              </label>
+              {controls.slice(4).map((control) => (
                 <label className="finishing-slider" key={control.key}>
                   <span>
                     {control.label}
-                    <output>
-                      {history.now[control.key].toFixed(2)}
-                      {control.unit}
-                    </output>
+                    <output>{Number(history.now[control.key]).toFixed(2)}</output>
                   </span>
                   <input
                     aria-label={'Finishing ' + control.label.toLowerCase()}
                     type="range"
-                    min="0"
+                    min={control.min}
                     max={control.max}
                     step={control.step}
-                    value={history.now[control.key]}
+                    value={Number(history.now[control.key])}
+                    disabled={locked}
                     onChange={(event) => change({ [control.key]: Number(event.target.value) })}
                   />
                 </label>
               ))}
-            </fieldset>
-            {history.now.grain > 0 && (
-              <label>
-                GRAIN SEED
-                <input
-                  aria-label="Finishing grain seed"
-                  type="number"
-                  min="0"
-                  max={2 ** 32 - 1}
-                  step="1"
-                  value={history.now.seed}
-                  disabled={locked}
-                  onChange={(event) =>
-                    change({
-                      seed: Math.max(
-                        0,
-                        Math.min(2 ** 32 - 1, Math.round(Number(event.target.value) || 0)),
-                      ),
-                    })
-                  }
-                />
-              </label>
-            )}
+              <GradingControls settings={history.now} disabled={locked} onChange={change} />
+              <fieldset className="finishing-optics" disabled={locked}>
+                <legend>Optical effects</legend>
+                <label>
+                  OPTICAL RECIPE
+                  <select
+                    aria-label="Finishing optical recipe"
+                    value={matchingOpticalFinishingPreset(history.now)}
+                    onChange={(event) =>
+                      change(applyOpticalFinishingPreset(history.now, event.target.value))
+                    }
+                  >
+                    <option value="custom" disabled>
+                      Custom adjustments
+                    </option>
+                    {opticalFinishingPresets.map((preset) => (
+                      <option key={preset.id} value={preset.id}>
+                        {preset.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <p>
+                  Glow and warm halos spread bright highlights. Color separation adds a stylized
+                  red/blue edge; it does not repair composite seams. Recipes keep your color grade.
+                  Review with Preview frame before saving a finished take.
+                </p>
+                {opticalControls.map((control) => (
+                  <label className="finishing-slider" key={control.key}>
+                    <span>
+                      {control.label}
+                      <output>
+                        {history.now[control.key].toFixed(2)}
+                        {control.unit}
+                      </output>
+                    </span>
+                    <input
+                      aria-label={'Finishing ' + control.label.toLowerCase()}
+                      type="range"
+                      min="0"
+                      max={control.max}
+                      step={control.step}
+                      value={history.now[control.key]}
+                      onChange={(event) => change({ [control.key]: Number(event.target.value) })}
+                    />
+                  </label>
+                ))}
+              </fieldset>
+              {history.now.grain > 0 && (
+                <label>
+                  GRAIN SEED
+                  <input
+                    aria-label="Finishing grain seed"
+                    type="number"
+                    min="0"
+                    max={2 ** 32 - 1}
+                    step="1"
+                    value={history.now.seed}
+                    disabled={locked}
+                    onChange={(event) =>
+                      change({
+                        seed: Math.max(
+                          0,
+                          Math.min(2 ** 32 - 1, Math.round(Number(event.target.value) || 0)),
+                        ),
+                      })
+                    }
+                  />
+                </label>
+              )}
+            </details>
             <button
               className="button"
               disabled={locked}

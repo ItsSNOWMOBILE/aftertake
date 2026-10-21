@@ -108,6 +108,47 @@ part of the edited area, and final video encoding can change pixel values.
 The [Hotel Lobby walkthrough](../examples/hotel-lobby/) includes the raw H3
 output and the separately executed native Comfy finish for comparison.
 
+**Repair mask.** When tracking loses the person for a few frames, or a limb
+drops out of the mask for a frame or two, **Repair mask** fixes it on the CPU in
+seconds. Frames with no person are filled from the nearest tracked frames,
+moved along the person's motion, for gaps up to half a second. A pixel missing
+for one or two frames between frames that have it is restored. Repair only adds
+to the mask, so it can never uncover part of the person, and it writes a new
+selection beside the tracked one: amber in its preview marks what was added,
+and the original stays available in the selection list. Longer losses still
+need a clearer or shorter range. Agents use `aftertake_character_action` with
+`repair`.
+
+**Keep objects in front.** A replacement may redraw a 32-pixel margin around the
+person, which can catch a cup held in front of the body, a microphone or a
+railing. **Keep objects in front** estimates depth for every frame on this
+computer and puts back, from the original shot, any pixel in that margin that
+is not the person and is clearly nearer the camera than the person beside it.
+Agreement across neighbouring frames keeps objects from flickering. Nothing
+outside the margin changes, so the result can only move back towards the
+source. It runs in the background as a new take with a receipt of how many
+frames changed and which accelerator ran depth; if nothing is in front, the
+take is left as it was.
+
+Depth is [Depth Anything V2 Small](models-foreground-depth.json) (Apache-2.0)
+through ONNX Runtime. `node scripts/aftertake.mjs setup-npu` installs the
+package for this computer: Core ML on Apple silicon, which uses the Neural
+Engine; OpenVINO on Intel Core Ultra, which uses the Intel NPU; QNN on
+Snapdragon Windows PCs; DirectML on other Windows PCs; and the CPU elsewhere.
+Add `--provider=coreml|openvino|qnn|directml|cpu` to choose, or set
+`AFTERTAKE_DEPTH_PROVIDER` at run time. If an accelerator cannot load the
+model, depth falls back to the CPU and the receipt names what actually ran.
+
+**Several people in one shot.** When a take finishes, **Swap another person in
+this shot** makes that take the source, keeps its working resolution and clears
+the points, photo and selection. Mark the next person, track them and choose
+their photo. Because each pass composites only inside its own tracked mask, the
+people you already swapped stay as they are; only where two masks overlap is the
+earlier result regenerated. The result notes how many people were swapped and
+which take the chain started from. Each pass is a normal take with its own
+recipe, so any step can be reused or redone. Agents follow the same chain by
+tracking in the completed take's clip.
+
 The character workspace includes take history, source/result review, reusable
 recipes, MP4 downloads and a Film handoff. **Continue in ComfyUI** exports the
 actual executed API graph, lossless tracked mask and prepared source; supply
@@ -140,8 +181,9 @@ encoder/VAEs and both adapters. FFmpeg and FFprobe must be available to the
 engine. `--ffmpeg-bin` is optional when both are already on PATH.
 `--safe-weight-copies` selects the PyTorch copy fallback for Windows file-backed
 host-buffer failures. `--no-node-cache` reduces host memory for native loop jobs;
-it can increase execution time. The H3 path is CUDA-based; no NPU inference is
-claimed. H3 Relay is installed separately at a pinned revision and retains its
+it can increase execution time. The H3 generation path is CUDA-based. Mask
+repair runs on the CPU, and foreground protection's depth runs on the Neural
+Engine or an NPU when one is present (below). H3 Relay is installed separately at a pinned revision and retains its
 GPL-3.0/Apache notices. Model terms remain separate from Aftertake's MIT code:
 [H3](https://huggingface.co/Comfy-Org/MiniMax-H3),
 [Character Swap](https://huggingface.co/akatz-ai/MiniMax-H3-Character-Swap-LoRA),
@@ -184,6 +226,27 @@ effect can be downloaded, used as a source or added to Film. **Portable recipe
 and original media** downloads the recipe plus its three exact companion files:
 original source, prepared source and lossless tracked mask. Import all three
 matching files with that recipe to restore the edit in another workspace.
+
+## Enhance: upscale, motion and songs
+
+**Enhance**, in the viewer toolbar, makes a new clip or a song without changing
+its source. Each operation is a native ComfyUI 0.41 workflow built from Comfy's
+own templates, so it needs only its model files:
+
+| Operation | Model | Result |
+| :--- | :--- | :--- |
+| Upscale ×2 | [SeedVR2 3B INT8](models-upscale.json) (Apache-2.0) | Twice the width and height, detail restored in one step, colour matched to the source in CIELAB, source sound kept |
+| Smooth motion | [RIFE 4.26](models-interpolation.json) (MIT) | 24 → 48 fps at the same length, source sound kept |
+| Slow motion ×2 or ×4 | RIFE 4.26 | Two or four times as long at 24 fps, silent |
+| Make a song | [ACE-Step 1.5 turbo](models-song.json) (Apache-2.0) | A FLAC song from style tags, optional lyrics, length, tempo, key and language |
+
+Video enhancement takes clips of up to 10.7 seconds, the engine loader's 257
+frames at 24 fps; upscaling takes up to 1280 pixels on the long side, so the
+result stays within 2560 × 1440. SeedVR2 splits the video into chunks that fit
+the free VRAM. A finished clip can be used as source footage or added to Film;
+a song can be played, downloaded or added to Film's audio. Install each model
+profile once with `node scripts/aftertake.mjs setup-gpu --upscale`,
+`--interpolate` or `--song`. Agents use `aftertake_enhance`.
 
 ## Color and finish
 
@@ -451,6 +514,15 @@ grading is applied consistently after generation. The input frame is
 conditioned directly into the video latent. No inpainting adapter is needed
 for this mode.
 
+**Browse camera moves** opens a gallery of fourteen moves, each drawn as a small
+looping diagram: locked, push in, pull back, pan left and right, tilt up and
+down, crane up, truck sideways, orbit, crash zoom, whip pan, handheld and dolly
+zoom. Choosing one sets the camera; the same gallery is in Create video. Every
+move has its own prompt wording. Twelve also have screen-space framing tracks
+for the experimental track guidance; orbit and dolly zoom change perspective in
+depth, so they use prompt guidance only. As with every camera instruction,
+review the generated movement.
+
 Add an optional **Ending frame** to give the shot a destination. Choose an
 imported image, upload a PNG/JPEG/WebP, or **Create an ending frame** with the
 local Qwen editor. Review the image before selecting **Use as ending frame**.
@@ -515,7 +587,10 @@ orientation in the browser, cue preview and render.
 
 The film desk joins up to 48 finished takes, imported videos or stills. Trim and
 reorder cuts, add timed headline/caption/kicker layers with word builds,
-typewriter reveals, impact entrances, wipes, fades or rises,
+typewriter reveals, impact entrances, slams, word pops, line reveals, glitch
+and scramble entrances, wipes, fades or rises, styled with stamp/highlight boxes,
+display fonts and tilt; style each cut as a dissolve, whip, zoom punch, flash,
+glitch or push,
 then mix voiceover clips against the original sound. The draft player previews
 cuts, titles and audio. Export a 720p landscape, portrait or square MP4 and an
 editable `aftertake-film/2` project containing media hashes, source recipes,

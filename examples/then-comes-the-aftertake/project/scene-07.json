@@ -1,0 +1,1250 @@
+{
+  "format": "aftertake-film/5",
+  "id": "eab2861d-563f-4c1b-915c-98f0cf2460d2",
+  "name": "07 Your call",
+  "aspect": "landscape",
+  "resolution": "1080p",
+  "shots": [
+    {
+      "assetId": "458ade46-232e-4470-8dcf-20500f0d1be5",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.06,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0.5833333333333334,
+      "end": 1.9166666666666667,
+      "title": "coastalSrc.mp4",
+      "sha256": "5029ea3c92f7fd79fe154116804bb12c76b7b88669d40980443813ac62f2b88b",
+      "asset": {
+        "name": "coastalSrc.mp4",
+        "kind": "video",
+        "sha256": "5029ea3c92f7fd79fe154116804bb12c76b7b88669d40980443813ac62f2b88b",
+        "duration": 4.208333333333333,
+        "width": 768,
+        "height": 432
+      }
+    },
+    {
+      "assetId": "d6ea7c08-ec71-446f-807c-41d1adb2154e",
+      "dissolve": 0.25,
+      "transition": "flash",
+      "framing": {
+        "zoom": 1.06,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1,
+      "end": 2.2916666666666665,
+      "title": "coastal.mp4",
+      "sha256": "e3373be04dce7bb375284939bd12a06d07e8033732c41f5c80c73d154425fb99",
+      "asset": {
+        "name": "coastal.mp4",
+        "kind": "video",
+        "sha256": "e3373be04dce7bb375284939bd12a06d07e8033732c41f5c80c73d154425fb99",
+        "duration": 4.041666666666667,
+        "width": 768,
+        "height": 432
+      }
+    },
+    {
+      "assetId": "810732ce-5556-46b0-9186-d432729adbf4",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.04,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0.7916666666666666,
+      "end": 1.4583333333333333,
+      "title": "winterSrc.mp4",
+      "sha256": "6c8a715365bcef18c6a54210c731957cd2f8dd3ebb6d0ba184fe833de1cbd415",
+      "asset": {
+        "name": "winterSrc.mp4",
+        "kind": "video",
+        "sha256": "6c8a715365bcef18c6a54210c731957cd2f8dd3ebb6d0ba184fe833de1cbd415",
+        "duration": 4.208333333333333,
+        "width": 768,
+        "height": 432
+      }
+    },
+    {
+      "assetId": "648b85d8-bc65-4e68-8a38-9bbeb4fc3e8c",
+      "dissolve": 0.25,
+      "transition": "glitch",
+      "framing": {
+        "zoom": 1.02,
+        "endZoom": 1.08,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1.4166666666666667,
+      "end": 2.75,
+      "title": "winter.mp4",
+      "sha256": "9d0db3cb65051affc025d6880b4c85c65723a5142de373803e3892d06d39d22d",
+      "asset": {
+        "name": "winter.mp4",
+        "kind": "video",
+        "sha256": "9d0db3cb65051affc025d6880b4c85c65723a5142de373803e3892d06d39d22d",
+        "duration": 4.041666666666667,
+        "width": 768,
+        "height": 432
+      }
+    },
+    {
+      "assetId": "a1b286dd-7165-4741-b79a-0a5df033775d",
+      "framing": {
+        "zoom": 1.02,
+        "endZoom": 1.08,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1.4166666666666667,
+      "end": 2,
+      "title": "reclaimed.mp4",
+      "sha256": "0de5748d4e2010b09e7684aa930a98e72efe1db93036846fb89d9365da3dc7f9",
+      "asset": {
+        "name": "reclaimed.mp4",
+        "kind": "video",
+        "sha256": "0de5748d4e2010b09e7684aa930a98e72efe1db93036846fb89d9365da3dc7f9",
+        "duration": 4.041666666666667,
+        "width": 768,
+        "height": 448
+      }
+    },
+    {
+      "assetId": "ac1f7756-577f-4910-8097-4672ef71a945",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.03,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1,
+      "end": 1.5833333333333333,
+      "title": "warm.mp4",
+      "sha256": "fae28b4083ed32d650d63432696810ee80f970ad4c2476577cc5d9d37a60e7fe",
+      "asset": {
+        "name": "warm.mp4",
+        "kind": "video",
+        "sha256": "fae28b4083ed32d650d63432696810ee80f970ad4c2476577cc5d9d37a60e7fe",
+        "duration": 4.041666666666667,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "60ba4345-1119-452f-8d8d-b516425659ff",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.03,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1.4166666666666667,
+      "end": 2,
+      "title": "cool.mp4",
+      "sha256": "cdb864701cc8fd5a3a64798f7f58eb3eae1528ee69e5a104cfc645c16a2b5c60",
+      "asset": {
+        "name": "cool.mp4",
+        "kind": "video",
+        "sha256": "cdb864701cc8fd5a3a64798f7f58eb3eae1528ee69e5a104cfc645c16a2b5c60",
+        "duration": 4.041666666666667,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "6e8e1c91-9fa0-4bf2-936d-188c86135781",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.03,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1.7916666666666667,
+      "end": 2.4166666666666665,
+      "title": "noir.mp4",
+      "sha256": "b0bd4047ea292f4c2149ede7f7cb89438f0b5e3acd46d79b7076d85e93044fad",
+      "asset": {
+        "name": "noir.mp4",
+        "kind": "video",
+        "sha256": "b0bd4047ea292f4c2149ede7f7cb89438f0b5e3acd46d79b7076d85e93044fad",
+        "duration": 4.041666666666667,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "312063f7-370d-4cb8-8820-57b28680ea6e",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.03,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 2.2083333333333335,
+      "end": 2.7916666666666665,
+      "title": "vintage.mp4",
+      "sha256": "33ee40135ac05e6fa1da5b41dd4c0a889c132e385912cd355605a0904934460d",
+      "asset": {
+        "name": "vintage.mp4",
+        "kind": "video",
+        "sha256": "33ee40135ac05e6fa1da5b41dd4c0a889c132e385912cd355605a0904934460d",
+        "duration": 4.041666666666667,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "6682caa8-77f5-4bfb-aeba-8bd8cef4d49f",
+      "start": 0.5833333333333334,
+      "end": 1.875,
+      "title": "dancerSrc.mp4",
+      "sha256": "5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3",
+      "asset": {
+        "name": "dancerSrc.mp4",
+        "kind": "video",
+        "sha256": "5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3",
+        "duration": 5.041666666666667,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "56f9e311-d17a-4f96-8638-185782a6b4af",
+      "dissolve": 0.25,
+      "transition": "zoom",
+      "start": 1.7916666666666667,
+      "end": 3.6666666666666665,
+      "title": "teddy.mp4",
+      "sha256": "b319a5bbb40f5f6021fcd94d430fe3e6f43a8654a4a64b5f2d8cb545647350a9",
+      "asset": {
+        "name": "teddy.mp4",
+        "kind": "video",
+        "sha256": "b319a5bbb40f5f6021fcd94d430fe3e6f43a8654a4a64b5f2d8cb545647350a9",
+        "duration": 4.041666666666667,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "d9fb313e-9cba-491d-b977-821f13154e33",
+      "framing": {
+        "zoom": 1.02,
+        "endZoom": 1.08,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1,
+      "end": 1.5833333333333333,
+      "title": "refPortal.mp4",
+      "sha256": "e42691ec7cffa1a8e47f3c6a0c30556e00d108664fbb1118c33840b2c3ee5a4e",
+      "asset": {
+        "name": "refPortal.mp4",
+        "kind": "video",
+        "sha256": "e42691ec7cffa1a8e47f3c6a0c30556e00d108664fbb1118c33840b2c3ee5a4e",
+        "duration": 4.041666666666667,
+        "width": 768,
+        "height": 432
+      }
+    },
+    {
+      "assetId": "47007836-2b46-4383-af2d-2f520b732ae2",
+      "framing": {
+        "zoom": 1.02,
+        "endZoom": 1.08,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 2,
+      "end": 2.7083333333333335,
+      "title": "falls.mp4",
+      "sha256": "363739a46445bc504f8042277bd8cff90aae7db7c6641371f9016a318e88fd98",
+      "asset": {
+        "name": "falls.mp4",
+        "kind": "video",
+        "sha256": "363739a46445bc504f8042277bd8cff90aae7db7c6641371f9016a318e88fd98",
+        "duration": 4.041666666666667,
+        "width": 768,
+        "height": 432
+      }
+    },
+    {
+      "assetId": "18373ac1-e0e1-4b5a-b9f0-34cbf7776925",
+      "dissolve": 0.25,
+      "transition": "flash",
+      "framing": {
+        "zoom": 1.02,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0.5833333333333334,
+      "end": 1.9166666666666667,
+      "title": "crystal-result.mp4",
+      "sha256": "58466390b52c27ef59f6d71d86be7e308b93db65f016bcdf60d93a696caae830",
+      "asset": {
+        "name": "crystal-result.mp4",
+        "kind": "video",
+        "sha256": "58466390b52c27ef59f6d71d86be7e308b93db65f016bcdf60d93a696caae830",
+        "duration": 4.041666666666667,
+        "width": 768,
+        "height": 432
+      }
+    },
+    {
+      "assetId": "68584aff-6f0f-4b95-aea5-fce58c0dc0f4",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 0.5833333333333334,
+      "title": "depthSrc.png",
+      "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b",
+      "asset": {
+        "name": "depthSrc.png",
+        "kind": "image",
+        "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b",
+        "duration": 30,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "ed2df21b-e52a-4965-a60e-d246393e9d74",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 0.5833333333333334,
+      "title": "depthMap.png",
+      "sha256": "3a413b5a55325e8787017081f1f2ce1a97fcc383be239f8bf732bd69de2d1661",
+      "asset": {
+        "name": "depthMap.png",
+        "kind": "image",
+        "sha256": "3a413b5a55325e8787017081f1f2ce1a97fcc383be239f8bf732bd69de2d1661",
+        "duration": 30,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "1412efb6-d100-482a-9b8d-45241b476449",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 0.5833333333333334,
+      "title": "depth.png",
+      "sha256": "069eb869fd16f2369b3c435b28bb64f7c742118766fb8b63de405ed57d031d36",
+      "asset": {
+        "name": "depth.png",
+        "kind": "image",
+        "sha256": "069eb869fd16f2369b3c435b28bb64f7c742118766fb8b63de405ed57d031d36",
+        "duration": 30,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "e69d74be-0640-4928-a711-967e8675dfb4",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 0.5833333333333334,
+      "title": "layers.png",
+      "sha256": "a3893fe6a5f56e282416501115029f4776d7f3c55706ed5d0bc4a3f17292e876",
+      "asset": {
+        "name": "layers.png",
+        "kind": "image",
+        "sha256": "a3893fe6a5f56e282416501115029f4776d7f3c55706ed5d0bc4a3f17292e876",
+        "duration": 30,
+        "width": 768,
+        "height": 432
+      }
+    },
+    {
+      "assetId": "ce45c8c3-1743-4999-a287-d03d4ca267c6",
+      "framing": {
+        "zoom": 1.03,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1.4166666666666667,
+      "end": 2,
+      "title": "portal.mp4",
+      "sha256": "ae783430aafebd577dda2f20add72ebfa11fddcf338d188a61628a1649be73a2",
+      "asset": {
+        "name": "portal.mp4",
+        "kind": "video",
+        "sha256": "ae783430aafebd577dda2f20add72ebfa11fddcf338d188a61628a1649be73a2",
+        "duration": 4.041666666666667,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "a325ae3b-cad4-4bf2-acdf-ef3af51aad92",
+      "framing": {
+        "zoom": 1.03,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0.5833333333333334,
+      "end": 1.2916666666666667,
+      "title": "bridge.mp4",
+      "sha256": "70707ba40ff1b4324c5e2875fedab8853a56910625d3b36d61c7de296126266e",
+      "asset": {
+        "name": "bridge.mp4",
+        "kind": "video",
+        "sha256": "70707ba40ff1b4324c5e2875fedab8853a56910625d3b36d61c7de296126266e",
+        "duration": 3.0416666666666665,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "36cd31c9-fcb5-44e1-85af-ede133ee468f",
+      "dissolve": 0.25,
+      "transition": "glitch",
+      "framing": {
+        "zoom": 1.03,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1,
+      "end": 1.75,
+      "title": "echoes.mp4",
+      "sha256": "88d47b87d59122c2c3cec89bb2d046b5144fa231b56183a59d7aea761250480a",
+      "asset": {
+        "name": "echoes.mp4",
+        "kind": "video",
+        "sha256": "88d47b87d59122c2c3cec89bb2d046b5144fa231b56183a59d7aea761250480a",
+        "duration": 3.0416666666666665,
+        "width": 1344,
+        "height": 736
+      }
+    },
+    {
+      "assetId": "53fee3f5-9070-4163-b8cd-01ffdecff93e",
+      "framing": {
+        "zoom": 1.03,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 2.5833333333333335,
+      "end": 3.2916666666666665,
+      "title": "agentAd.mp4",
+      "sha256": "69d709f353879959a0ba6c3183e3d1b69ab08d2237584c0dc0ab7c069369a4f1",
+      "asset": {
+        "name": "agentAd.mp4",
+        "kind": "video",
+        "sha256": "69d709f353879959a0ba6c3183e3d1b69ab08d2237584c0dc0ab7c069369a4f1",
+        "duration": 6.5,
+        "width": 720,
+        "height": 1280
+      }
+    },
+    {
+      "assetId": "6e8e1c91-9fa0-4bf2-936d-188c86135781",
+      "dissolve": 0.25,
+      "transition": "flash",
+      "framing": {
+        "zoom": 1.03,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1.5833333333333333,
+      "end": 2.2916666666666665,
+      "title": "noir.mp4",
+      "sha256": "b0bd4047ea292f4c2149ede7f7cb89438f0b5e3acd46d79b7076d85e93044fad",
+      "asset": {
+        "name": "noir.mp4",
+        "kind": "video",
+        "sha256": "b0bd4047ea292f4c2149ede7f7cb89438f0b5e3acd46d79b7076d85e93044fad",
+        "duration": 4.041666666666667,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "56f9e311-d17a-4f96-8638-185782a6b4af",
+      "framing": {
+        "zoom": 1.03,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1.5833333333333333,
+      "end": 2.2916666666666665,
+      "title": "teddy.mp4",
+      "sha256": "b319a5bbb40f5f6021fcd94d430fe3e6f43a8654a4a64b5f2d8cb545647350a9",
+      "asset": {
+        "name": "teddy.mp4",
+        "kind": "video",
+        "sha256": "b319a5bbb40f5f6021fcd94d430fe3e6f43a8654a4a64b5f2d8cb545647350a9",
+        "duration": 4.041666666666667,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "47007836-2b46-4383-af2d-2f520b732ae2",
+      "dissolve": 0.25,
+      "transition": "glitch",
+      "framing": {
+        "zoom": 1.03,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1.7916666666666667,
+      "end": 2.5,
+      "title": "falls.mp4",
+      "sha256": "363739a46445bc504f8042277bd8cff90aae7db7c6641371f9016a318e88fd98",
+      "asset": {
+        "name": "falls.mp4",
+        "kind": "video",
+        "sha256": "363739a46445bc504f8042277bd8cff90aae7db7c6641371f9016a318e88fd98",
+        "duration": 4.041666666666667,
+        "width": 768,
+        "height": 432
+      }
+    },
+    {
+      "assetId": "648b85d8-bc65-4e68-8a38-9bbeb4fc3e8c",
+      "framing": {
+        "zoom": 1.03,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 2.2083333333333335,
+      "end": 2.9583333333333335,
+      "title": "winter.mp4",
+      "sha256": "9d0db3cb65051affc025d6880b4c85c65723a5142de373803e3892d06d39d22d",
+      "asset": {
+        "name": "winter.mp4",
+        "kind": "video",
+        "sha256": "9d0db3cb65051affc025d6880b4c85c65723a5142de373803e3892d06d39d22d",
+        "duration": 4.041666666666667,
+        "width": 768,
+        "height": 432
+      }
+    },
+    {
+      "assetId": "ae700f40-8b1d-42fe-a739-2132c953d8d9",
+      "dissolve": 0.25,
+      "transition": "flash",
+      "framing": {
+        "zoom": 1.03,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1.5833333333333333,
+      "end": 2.2916666666666665,
+      "title": "ensemble.mp4",
+      "sha256": "6cc58aebe97f2720e5937cf0754334ae21ca10bcb0061eebe23642e28c5b1660",
+      "asset": {
+        "name": "ensemble.mp4",
+        "kind": "video",
+        "sha256": "6cc58aebe97f2720e5937cf0754334ae21ca10bcb0061eebe23642e28c5b1660",
+        "duration": 3.0416666666666665,
+        "width": 1344,
+        "height": 736
+      }
+    },
+    {
+      "assetId": "0269e4d8-de25-4e43-98e6-7dd4211d78d3",
+      "start": 0,
+      "end": 1.25,
+      "title": "black.png",
+      "sha256": "bf6b00e8405598251effbcbac63a6db08ff831425d7c3327e97583264d521818",
+      "asset": {
+        "name": "black.png",
+        "kind": "image",
+        "sha256": "bf6b00e8405598251effbcbac63a6db08ff831425d7c3327e97583264d521818",
+        "duration": 30,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "0269e4d8-de25-4e43-98e6-7dd4211d78d3",
+      "dissolve": 0.25,
+      "transition": "flash",
+      "start": 0,
+      "end": 10.708333333333334,
+      "title": "black.png",
+      "sha256": "bf6b00e8405598251effbcbac63a6db08ff831425d7c3327e97583264d521818",
+      "asset": {
+        "name": "black.png",
+        "kind": "image",
+        "sha256": "bf6b00e8405598251effbcbac63a6db08ff831425d7c3327e97583264d521818",
+        "duration": 30,
+        "width": 1920,
+        "height": 1080
+      }
+    }
+  ],
+  "requestKey": "07-Your-call-1792539844316",
+  "requestDigest": "92feea36d0ce68172f9a6a92d45f3af720380f3374beff1b1f100ca6f91de834",
+  "titles": [
+    {
+      "id": "fe887795-f7aa-4be1-bfef-2244153d9638",
+      "text": "YOUR CLIP.",
+      "start": 0,
+      "end": 1.977000000000007,
+      "style": "headline",
+      "position": "center",
+      "animation": "slam",
+      "fontSize": 140,
+      "font": "display",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "37a38229-7247-433f-bd3e-d71a348d12a6",
+      "text": "YOUR CLIP.",
+      "start": 2.0550500000000014,
+      "end": 3.0869100000000063,
+      "style": "headline",
+      "position": "center",
+      "animation": "glitch",
+      "fontSize": 140,
+      "font": "display",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "c958d002-4ba2-4403-af26-319c287421a9",
+      "text": "YOUR MODELS.",
+      "start": 3.1069100000000063,
+      "end": 4.670499999999993,
+      "style": "headline",
+      "position": "center",
+      "animation": "glitch",
+      "fontSize": 140,
+      "font": "display",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "3fe06c4f-6291-42ec-b6df-eddf5f9a4122",
+      "text": "NOIR",
+      "start": 5.874699999999997,
+      "end": 6.458400000000001,
+      "style": "headline",
+      "position": "center",
+      "animation": "slam",
+      "fontSize": 150,
+      "font": "display",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "806cade3-d5ed-4f90-a7f7-1e4eba4b0f08",
+      "text": "VINTAGE",
+      "start": 6.478400000000001,
+      "end": 7.038900000000002,
+      "style": "headline",
+      "position": "center",
+      "animation": "glitch",
+      "fontSize": 150,
+      "font": "display",
+      "color": "#121713"
+    },
+    {
+      "id": "8f7013cf-6569-4bdb-b28f-8ab3b8c45b04",
+      "text": "YOUR CALL.",
+      "start": 4.690499999999993,
+      "end": 5.834699999999997,
+      "style": "headline",
+      "position": "center",
+      "animation": "slam",
+      "fontSize": 150,
+      "font": "display",
+      "box": "highlight",
+      "tilt": -4,
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "01b40589-a3a4-445b-8814-b9fdf86428cb",
+      "text": "COLOR & FINISH \u00b7 LOOKS \u00b7 CURVES \u00b7 LUTS",
+      "start": 4.748549999999987,
+      "end": 7.029874999999997,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "scramble",
+      "fontSize": 28,
+      "align": "left",
+      "font": "mono",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "b105d09d-c8c3-4feb-9c7f-d266a29fcc98",
+      "text": "THEIR GESTURE.",
+      "start": 7.058900000000001,
+      "end": 8.193100000000005,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "slam",
+      "fontSize": 96,
+      "align": "left",
+      "font": "display",
+      "box": "highlight",
+      "tilt": -2,
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "b97c5dc6-5d2a-4923-bcad-857cf7628d2c",
+      "text": "YOUR CHARACTER.",
+      "start": 8.343100000000005,
+      "end": 9.957799999999995,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "slam",
+      "fontSize": 96,
+      "align": "left",
+      "font": "display",
+      "box": "highlight",
+      "tilt": -2,
+      "color": "#d5eb94"
+    },
+    {
+      "id": "58f316fb-f3be-4761-b3fa-6fb0569b17b6",
+      "text": "WAN ANIMATE 2 \u00b7 MOTION TRANSFER",
+      "start": 8.359200000000008,
+      "end": 9.947430000000004,
+      "style": "caption",
+      "position": "top",
+      "animation": "scramble",
+      "fontSize": 28,
+      "align": "left",
+      "font": "mono",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "4c11fdb2-ab39-47ba-9386-26cbf6ff51ad",
+      "text": "PAINT IT.",
+      "start": 10.298049999999996,
+      "end": 10.97465,
+      "style": "headline",
+      "position": "top",
+      "animation": "slam",
+      "fontSize": 96,
+      "font": "display",
+      "box": "stamp",
+      "tilt": -4,
+      "color": "#d5eb94"
+    },
+    {
+      "id": "a7360c91-caeb-47d3-94d0-43a715ee1c75",
+      "text": "CHANGE IT.",
+      "start": 10.99465,
+      "end": 11.571460000000005,
+      "style": "headline",
+      "position": "top",
+      "animation": "pop",
+      "motionDuration": 0.35,
+      "fontSize": 96,
+      "font": "display",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "e9094bbb-e887-41ff-81b2-897aafcdc030",
+      "text": "MAKE IT NEW.",
+      "start": 11.591460000000005,
+      "end": 12.545300000000012,
+      "style": "headline",
+      "position": "top",
+      "animation": "slam",
+      "fontSize": 96,
+      "font": "display",
+      "box": "highlight",
+      "tilt": -3,
+      "color": "#d5eb94"
+    },
+    {
+      "id": "544eec49-ffd8-4818-9a0d-567027e6d894",
+      "text": "DEPTH \u2192 LENS BLUR",
+      "start": 12.58530000000001,
+      "end": 14.087799999999996,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "pop",
+      "fontSize": 80,
+      "align": "left",
+      "font": "display",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "1be50959-1404-470b-a9f1-3a031a47f083",
+      "text": "LAYERS & MASKS",
+      "start": 14.117799999999995,
+      "end": 14.668299999999997,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "slam",
+      "fontSize": 80,
+      "stroke": false,
+      "align": "left",
+      "font": "display",
+      "color": "#121713"
+    },
+    {
+      "id": "115a46c5-5eca-4b72-bcf2-8ab36b148fa6",
+      "text": "MAKE THE NEXT TAKE.",
+      "start": 15.000149999999998,
+      "end": 16.28509,
+      "style": "headline",
+      "position": "center",
+      "animation": "slam",
+      "fontSize": 120,
+      "font": "display",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "107323b1-1526-4232-bd52-1901f3c5fff4",
+      "text": "RUN THE SCENE.",
+      "start": 16.30509,
+      "end": 17.627200000000006,
+      "style": "headline",
+      "position": "center",
+      "animation": "glitch",
+      "fontSize": 132,
+      "font": "display",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "b717e4da-f9b0-4aa5-9d5e-ca302a89cc38",
+      "text": "EVERY EFFECT \u00b7 OPEN WEIGHTS \u00b7 YOUR GPU",
+      "start": 17.763300000000008,
+      "end": 19.957550000000005,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "scramble",
+      "fontSize": 28,
+      "align": "left",
+      "font": "mono",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "32f115a8-a835-439f-b47b-ea5b6676b5c0",
+      "text": "THEN COMES THE",
+      "start": 20.0156,
+      "end": 21.1366,
+      "style": "headline",
+      "position": "center",
+      "animation": "pop",
+      "motionDuration": 0.6,
+      "fontSize": 104,
+      "font": "display",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "11d8a40a-26c1-4ea3-80c6-6736b72e47cf",
+      "text": "OPEN SOURCE \u00b7 MIT",
+      "start": 22.059000000000005,
+      "end": 31.591700000000003,
+      "style": "headline",
+      "position": "center",
+      "animation": "slam",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": -0.04,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.04,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 52,
+      "stroke": false,
+      "font": "display",
+      "box": "stamp",
+      "tilt": -4,
+      "color": "#d5eb94"
+    },
+    {
+      "id": "2c0c8cad-9be9-45b5-9a61-9b0d689af5cc",
+      "text": "BUILT ON THE COMFY SDK \u00b7 OPEN WEIGHTS \u00b7 YOUR GPU",
+      "start": 22.651149999999994,
+      "end": 31.591700000000003,
+      "style": "kicker",
+      "position": "center",
+      "animation": "scramble",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.06,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0.06,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 26,
+      "stroke": false,
+      "font": "mono",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "867a27f8-eb89-44f2-afa5-92f6de234bed",
+      "text": "github.com/ItsSNOWMOBILE/aftertake",
+      "start": 23.231649999999995,
+      "end": 31.591700000000003,
+      "style": "caption",
+      "position": "center",
+      "animation": "typewriter",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.14,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0.14,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 34,
+      "stroke": false,
+      "font": "mono",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "41db7957-35ed-4dd6-b227-1fd0cb0d641f",
+      "text": "Song: \u201cAftertake\u201d, written for this film and generated with",
+      "start": 27.074499999999993,
+      "end": 31.591700000000003,
+      "style": "kicker",
+      "position": "bottom",
+      "animation": "fade",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": -0.16,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.16,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 16,
+      "stroke": false,
+      "font": "mono",
+      "color": "#9aa58d"
+    },
+    {
+      "id": "07d74fda-9f34-462b-aa47-f0686f1b8ce6",
+      "text": "ACE-Step 1.5 XL Turbo (open weights) on Comfy Cloud \u00b7 aftertake-song-ace-step.json",
+      "start": 27.074499999999993,
+      "end": 31.591700000000003,
+      "style": "kicker",
+      "position": "bottom",
+      "animation": "fade",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": -0.134,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.134,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 16,
+      "stroke": false,
+      "font": "mono",
+      "color": "#9aa58d"
+    },
+    {
+      "id": "b28616e7-1037-4ecd-8f62-e724cfc8df99",
+      "text": "Source plates generated with LTX-2.5 and Z-Image Turbo in Aftertake \u00b7 every person shown is fictional",
+      "start": 27.074499999999993,
+      "end": 31.591700000000003,
+      "style": "kicker",
+      "position": "bottom",
+      "animation": "fade",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": -0.108,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.108,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 16,
+      "stroke": false,
+      "font": "mono",
+      "color": "#9aa58d"
+    },
+    {
+      "id": "9ecad4f4-4088-403b-95bb-d3905046fe45",
+      "text": "Footage: Curtis Adams, Mikhail Nilov, Dean Diemert, Florian Del\u00e9e, Michael Burrows / Pexels",
+      "start": 27.074499999999993,
+      "end": 31.591700000000003,
+      "style": "kicker",
+      "position": "bottom",
+      "animation": "fade",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": -0.08199999999999999,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.08199999999999999,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 16,
+      "stroke": false,
+      "font": "mono",
+      "color": "#9aa58d"
+    },
+    {
+      "id": "ef41b887-567d-4efa-9bf4-18da0f52d120",
+      "text": "Every effect rendered in Aftertake with open-weight models.",
+      "start": 27.074499999999993,
+      "end": 31.591700000000003,
+      "style": "kicker",
+      "position": "bottom",
+      "animation": "fade",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": -0.055999999999999994,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.055999999999999994,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 16,
+      "stroke": false,
+      "font": "mono",
+      "color": "#9aa58d"
+    },
+    {
+      "id": "8fc4b8ba-caf7-470b-b40a-6cc4e32c0dcc",
+      "text": "Edited, titled and cut to the beat in Aftertake Film.",
+      "start": 27.074499999999993,
+      "end": 31.591700000000003,
+      "style": "kicker",
+      "position": "bottom",
+      "animation": "fade",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": -0.03,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.03,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 16,
+      "stroke": false,
+      "font": "mono",
+      "color": "#9aa58d"
+    }
+  ],
+  "graphics": [
+    {
+      "id": "fa4f1fe5-57e1-4f30-abe9-1ade6df3f384",
+      "name": "logo",
+      "kind": "image",
+      "start": 21.1766,
+      "end": 31.7417,
+      "x": 0.5,
+      "y": 0.27,
+      "width": 0.56,
+      "height": 0.17,
+      "color": "#ffffff",
+      "opacity": 1,
+      "fit": "contain",
+      "assetId": "ae4c073b-81b4-4fd2-b33f-d288afb22cfc",
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0,
+            "scale": 2.2,
+            "rotation": 0,
+            "opacity": 0
+          },
+          {
+            "at": 0.03,
+            "x": 0,
+            "y": 0,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1,
+            "easing": "ease-in"
+          },
+          {
+            "at": 0.96,
+            "x": 0,
+            "y": 0,
+            "scale": 1.04,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0,
+            "scale": 1.04,
+            "rotation": 0,
+            "opacity": 0
+          }
+        ]
+      },
+      "sha256": "196cb5aba4af3086523b9b63c553263b2477a43025591508c801f26a827314da"
+    }
+  ],
+  "audio": [],
+  "sourceVolume": 0,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 31.75,
+  "createdAt": "2026-10-20T23:44:07.939Z",
+  "output": "/api/films/eab2861d-563f-4c1b-915c-98f0cf2460d2/video"
+}

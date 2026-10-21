@@ -1,0 +1,22 @@
+{
+  "format": "aftertake-native-mp4-publication-audit/1",
+  "records": [
+    {
+      "file": "protected.mp4",
+      "sha256": "7cd56bcd61ff2f84aaedf3629d4d079610169540fdb14ba8bbcadf6a8ef02bb5",
+      "nativeAppReaderUsed": true,
+      "absolutePathFindings": [],
+      "metadataUnavailable": "The video is missing its executed workflow. Update the Aftertake nodes."
+    },
+    {
+      "file": "take.mp4",
+      "sha256": "6c0b0e2f66330068e45db44bba8bfa1681a1c569d2e48aadc1bae3b9a20c2ebd",
+      "embeddedFormat": "aftertake-character-output/1",
+      "nativeAppReaderUsed": true,
+      "absolutePathFindings": []
+    }
+  ],
+  "nativeFilesUnmodified": true,
+  "readyForPathSafePublication": true,
+  "note": "No silent remux or metadata redaction. If a personal path is found, retain original privately and explicitly label any portable derivative with both original and derived hashes."
+}

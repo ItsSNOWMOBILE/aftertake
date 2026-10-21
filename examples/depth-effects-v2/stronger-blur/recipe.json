@@ -1,0 +1,44 @@
+{
+  "format": "aftertake-depth-effect-recipe/1",
+  "request": {
+    "format": "aftertake-depth-effect/1",
+    "name": "Tokyo portrait · optional stronger lens blur · v2",
+    "clip": {
+      "id": "2ac4c682-e267-44c1-b79d-96897b9e696b",
+      "name": "E - Neon depth portrait - seed 509052",
+      "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b",
+      "width": 1280,
+      "height": 720,
+      "duration": 1,
+      "url": "/media/2ac4c682-e267-44c1-b79d-96897b9e696b.png",
+      "kind": "image",
+      "hasAudio": false
+    },
+    "settings": {
+      "focus": 0,
+      "blur": 8,
+      "haze": 0.18,
+      "hazeColor": "#cbd7e3",
+      "lightAzimuth": -45,
+      "lightElevation": 35,
+      "lightStrength": 0.25
+    }
+  },
+  "model": {
+    "repository": "Comfy-Org/Depth-Anything-3",
+    "revision": "1aaeea516f22fb2f4c7fae761c8ed470c6cf9f93",
+    "sha256": "9c0a53d157c5b315d4c82908a43d93eeaa3a9ac3de9d15c2b4242ef46b5508ad",
+    "license": "Apache-2.0"
+  },
+  "output": {
+    "id": "17df0e2f-9904-441e-8ddf-da5dc8d8e447",
+    "name": "Tokyo portrait · optional stronger lens blur · v2",
+    "kind": "image",
+    "width": 1280,
+    "height": 720,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "cba2fd16370212ac7e7988e3e02b95df1b338af56b144da05e3c1773bf1abc80",
+    "url": "/media/17df0e2f-9904-441e-8ddf-da5dc8d8e447.png"
+  }
+}

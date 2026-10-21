@@ -1,0 +1,60 @@
+{
+  "format": "aftertake-source-aware-retry/1",
+  "seed": 9841,
+  "temporalCue": {
+    "start": 0.35,
+    "end": 3.8,
+    "fade": 0.3
+  },
+  "preserved": [
+    "original seed9841, sampler, final quality and duration",
+    "source C508020 and cue timing0.35\u20133.8s/fade0.3",
+    "successful Qwen editReference and glass-only generation context",
+    "native final inpaint Laplacian policy; color matching remains false"
+  ],
+  "changed": {
+    "generationRegion": "same22glass-only paint strokes as compositeRegion",
+    "generationFeather": {
+      "from": 0.035,
+      "to": 0.003
+    },
+    "prompt": "Continuous unobstructed nighttime megacity with distant neon high-rise towers, tiny flying vehicles threading between the towers, rain falling outside and subtle reflected colored lights. Realistic atmospheric perspective, coherent city architecture and the source camera viewpoint. Only exterior city scenery is visible in the painted regions."
+  },
+  "reason": "Rejected first broad-window context introduced a second window-frame structure inside protected original panes. No source blur or artificial degradation applied.",
+  "firstAttempt": "retained privately, excluded from portable hero folder",
+  "editedFirstFrameFallback": {
+    "route": "/api/frame-edits",
+    "request": "edited-first-frame/request.json",
+    "output": "edited-first-frame/result.png",
+    "videoRole": "editReference",
+    "seed": 9841,
+    "mode": "detail",
+    "steps": 20,
+    "reason": "Narrow-mask text-only attempt produced flat lime-green panes. Source-guided image edit anchors detailed neon city content before animation.",
+    "sourceFrameTime": 0
+  },
+  "rejectedAttempts": [
+    {
+      "kind": "broad-window context",
+      "reason": "Generated duplicate frame geometry inside original protected panes."
+    },
+    {
+      "kind": "glass-only text-driven context",
+      "reason": "Flat green panes and ghost city content; visually unusable."
+    }
+  ],
+  "finalCPURecomposition": {
+    "route": "/api/recompositions",
+    "request": "recomposition-request.json",
+    "sourceRenderId": "c8cce627-1491-42f0-896f-6ee3f74bdc2b",
+    "finalRenderId": "6d9ae452-6335-4af2-80f3-20af35492642",
+    "anchorSeconds": 2,
+    "feather": 0.003,
+    "tracking": "flow",
+    "region": "Continuous source-frame48 window interior, including old internal dividers; outer arch, brick, readers and room protected.",
+    "reason": "Bar-preserving flow matte retained broad sky bands and inherently backlit white dividers. Repainting the whole intended window interior removes those ghosts without another model invocation.",
+    "limitation": "Interior divider layout is intentionally reinterpreted, rather than claimed identical to the original. Thin pale outer-rim slivers and protected original room light beams remain.",
+    "normalApplicationContract": true,
+    "exactMaskSerialized": true
+  }
+}

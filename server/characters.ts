@@ -1,15 +1,17 @@
 import { cancelAndRefresh } from './job-cancel.js';
 import { RequestError } from './http-errors.js';
 import { Router } from 'express';
-import { mkdir, readFile, readdir, rename, writeFile, unlink } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, readdir, rename, writeFile, unlink } from 'node:fs/promises';
 import { createHash, randomUUID } from 'node:crypto';
-import { execFile } from 'node:child_process';
+import { execFile, spawn } from 'node:child_process';
 import { promisify, isDeepStrictEqual } from 'node:util';
 import path from 'node:path';
 import type { EngineClient, EngineJob } from './sdk-port.js';
 import type { Clip, Engine } from '../src/domain.js';
 import {
   characterBusy,
+  characterProtectionSchema,
+  characterRepairSchema,
   characterRequestSchema,
   parseCharacterSelectionInfo,
   characterSelectionSchema,
@@ -46,17 +48,31 @@ export async function characterRouter(context: {
   await mkdir(clips, { recursive: true });
   const jobs = new Map<string, CharacterJob>(),
     active = new Set<string>(),
-    handles = new Map<string, EngineJob>();
+    handles = new Map<string, EngineJob>(),
+    saves = new Map<string, Promise<void>>();
   const file = (id: string, suffix: string) => path.join(folder, `${id}-${suffix}`);
   async function persist(record: CharacterJob) {
     record.updatedAt = new Date().toISOString();
     const dest = path.join(folder, record.id + '.json'),
-      tmp = dest + '.' + randomUUID() + '.tmp';
+      tmp = dest + '.' + randomUUID() + '.tmp',
+      snapshot = JSON.stringify(record, null, 2);
+    // Progress and terminal writes share a record. Preserve their call order
+    // and keep a slow progress save from overwriting the finished receipt.
+    const pending = (saves.get(record.id) || Promise.resolve())
+      .catch(() => {})
+      .then(async () => {
+        try {
+          await writeFile(tmp, snapshot);
+          await rename(tmp, dest);
+        } finally {
+          await unlink(tmp).catch(() => {});
+        }
+      });
+    saves.set(record.id, pending);
     try {
-      await writeFile(tmp, JSON.stringify(record, null, 2));
-      await rename(tmp, dest);
+      await pending;
     } finally {
-      await unlink(tmp).catch(() => {});
+      if (saves.get(record.id) === pending) saves.delete(record.id);
     }
   }
   async function inspect(
@@ -396,6 +412,15 @@ export async function characterRouter(context: {
       else if (record.kind === 'replacement')
         record.request = characterRequestSchema.parse(record.request);
       else continue;
+      if (record.repair) record.repair = characterRepairSchema.parse(record.repair);
+      if (record.protection) {
+        record.protection = characterProtectionSchema.parse(record.protection);
+        if (characterBusy(record)) {
+          record.state = 'failed';
+          record.error = 'The studio stopped while protecting the foreground. Start it again.';
+          await persist(record);
+        }
+      }
       jobs.set(record.id, record);
       if (characterBusy(record) && !(await targetMatches(record))) continue;
       if (record.jobId && characterBusy(record)) void track(record);
@@ -520,6 +545,287 @@ export async function characterRouter(context: {
   }
   router.post('/selections', (req, res) => create('selection', req, res));
   router.post('/replacements', (req, res) => create('replacement', req, res));
+  const repairing = new Set<string>();
+  // Mask repair is CPU work: it writes a new selection beside the tracked one and
+  // leaves the original untouched, so either can be reviewed or used.
+  router.post('/:id/repair', async (req, res) => {
+    const original = jobs.get(req.params.id);
+    if (original?.kind !== 'selection' || original.state !== 'succeeded' || !original.selection)
+      return void res.status(409).json({ error: 'Repair a completed person selection.' });
+    if (original.repair)
+      return void res.status(409).json({
+        error: 'This selection is already repaired. Track the person again to change it.',
+      });
+    const existing = [...jobs.values()].find((job) => job.repair?.from === original.id);
+    if (existing) return void res.json(existing);
+    if (repairing.has(original.id))
+      return void res.status(409).json({ error: 'This selection is already being repaired.' });
+    const [mask, source] = await Promise.all([
+      readFile(file(original.id, 'mask.mkv')),
+      readFile(file(original.id, 'source.mp4')),
+    ]);
+    if (
+      sha(mask) !== original.selection.maskSha256 ||
+      sha(source) !== original.selection.sourceSha256
+    )
+      return void res
+        .status(409)
+        .json({ error: 'The reviewed selection changed on disk. Track this person again.' });
+    repairing.add(original.id);
+    const id = randomUUID(),
+      work = file(id, 'repair.json'),
+      outputs = ['mask.mkv', 'preview.mp4', 'source.mp4'].map((suffix) => file(id, suffix));
+    let saved = false;
+    try {
+      await writeFile(
+        work,
+        JSON.stringify({
+          mask: file(original.id, 'mask.mkv'),
+          source: file(original.id, 'source.mp4'),
+          maskOut: outputs[0],
+          previewOut: outputs[1],
+          request: original.request,
+        }),
+      );
+      let result: { changed: boolean; selection?: unknown; repair?: unknown };
+      try {
+        const { stdout } = await exec(
+          python,
+          [path.join(root, 'scripts/repair-character-mask.py'), work],
+          { cwd: root, timeout: 600000, maxBuffer: 1024 * 1024 },
+        );
+        result = JSON.parse(stdout);
+      } catch (error) {
+        const message = (error as { code?: number; stderr?: string }).stderr?.trim();
+        if ((error as { code?: number }).code === 2 && message)
+          return void res.status(422).json({ error: message });
+        throw error;
+      }
+      if (!result.changed)
+        return void res
+          .status(409)
+          .json({ error: 'This selection has no lost frames or flicker to repair.' });
+      const info = parseCharacterSelectionInfo(
+        result.selection,
+        original.request as CharacterSelectionRequest,
+      );
+      if (sha(await readFile(outputs[0])) !== info.maskSha256)
+        throw Error('The repaired mask does not match its receipt.');
+      await copyFile(file(original.id, 'source.mp4'), outputs[2]);
+      const now = new Date().toISOString(),
+        record: CharacterJob = {
+          id,
+          kind: 'selection',
+          request: original.request,
+          state: 'succeeded',
+          progress: 1,
+          stage: info.emptyFrames.length
+            ? 'Tracking needs correction'
+            : 'Repaired selection ready to review',
+          createdAt: now,
+          updatedAt: now,
+          workflow: original.workflow,
+          selection: { ...info, sourceSha256: original.selection.sourceSha256 },
+          repair: characterRepairSchema.parse({
+            ...(result.repair as object),
+            from: original.id,
+            originalMaskSha256: original.selection.maskSha256,
+          }),
+        };
+      jobs.set(id, record);
+      await persist(record);
+      saved = true;
+      res.status(201).json(record);
+    } finally {
+      repairing.delete(original.id);
+      await unlink(work).catch(() => {});
+      if (!saved) await Promise.all(outputs.map((output) => unlink(output).catch(() => {})));
+    }
+  });
+  async function depthStatus() {
+    const { stdout } = await exec(
+      python,
+      [path.join(root, 'scripts/depth_runtime.py'), '--status'],
+      {
+        cwd: root,
+        timeout: 30000,
+        maxBuffer: 1024 * 1024,
+      },
+    );
+    return JSON.parse(stdout) as {
+      runtime: string | null;
+      model: boolean;
+      accelerator: string | null;
+      fix: string | null;
+    };
+  }
+  router.get('/depth/status', async (_req, res) => {
+    try {
+      res.json(await depthStatus());
+    } catch {
+      res.json({
+        runtime: null,
+        model: false,
+        accelerator: null,
+        fix: 'python scripts/setup-film.py',
+      });
+    }
+  });
+  // Foreground protection is CPU and NPU work that takes up to a few minutes, so it
+  // runs in the background as a new take; the app polls it like any character job.
+  const protecting = new Set<string>();
+  router.post('/:id/protect', async (req, res) => {
+    const original = jobs.get(req.params.id);
+    if (original?.kind !== 'replacement' || original.state !== 'succeeded' || !original.clip)
+      return void res
+        .status(409)
+        .json({ error: 'Keep the foreground of a finished character take.' });
+    if (original.protection)
+      return void res.status(409).json({ error: 'This take already keeps its foreground.' });
+    const existing = [...jobs.values()].find(
+      (job) => job.protection?.from === original.id && job.state !== 'failed',
+    );
+    if (existing) return void res.json(existing);
+    const margin = Number(req.body?.margin ?? 0.1);
+    if (!(margin >= 0.02 && margin <= 0.5))
+      return void res.status(400).json({ error: 'Choose a depth margin between 0.02 and 0.5.' });
+    const selection = jobs.get((original.request as CharacterRequest).selectionId);
+    if (selection?.kind !== 'selection' || !selection.selection)
+      return void res.status(409).json({ error: 'This take is missing its tracked selection.' });
+    const take = path.join(clips, path.basename(original.clip.url));
+    const [takeBytes, mask, source] = await Promise.all([
+      readFile(take),
+      readFile(file(selection.id, 'mask.mkv')),
+      readFile(file(selection.id, 'source.mp4')),
+    ]);
+    if (
+      sha(takeBytes) !== original.clip.sha256 ||
+      sha(mask) !== selection.selection.maskSha256 ||
+      sha(source) !== selection.selection.sourceSha256
+    )
+      return void res
+        .status(409)
+        .json({ error: 'The take or its selection changed on disk. Make the take again.' });
+    const depth = await depthStatus().catch(() => null);
+    if (!depth?.runtime || !depth.model)
+      return void res.status(409).json({
+        error: `Install the depth runtime first: ${depth?.fix || 'node scripts/aftertake.mjs setup-npu'}`,
+      });
+    if (protecting.has(original.id))
+      return void res.status(409).json({ error: 'This take is already being protected.' });
+    const now = new Date().toISOString(),
+      record: CharacterJob = {
+        id: randomUUID(),
+        kind: 'replacement',
+        request: original.request,
+        state: 'running',
+        progress: 0,
+        stage: `Estimating depth on the ${depth.accelerator}`,
+        createdAt: now,
+        updatedAt: now,
+        workflow: original.workflow,
+        protection: { from: original.id, margin },
+      };
+    jobs.set(record.id, record);
+    await persist(record);
+    res.status(202).json(record);
+    protecting.add(original.id);
+    void protect(record, original, selection, take).finally(() => protecting.delete(original.id));
+  });
+  async function protect(
+    record: CharacterJob,
+    original: CharacterJob,
+    selection: CharacterJob,
+    take: string,
+  ) {
+    const output = path.join(clips, record.id + '.mp4'),
+      work = file(record.id, 'protect.json');
+    let terminal: Partial<CharacterJob> = {};
+    try {
+      await writeFile(
+        work,
+        JSON.stringify({
+          source: file(selection.id, 'source.mp4'),
+          mask: file(selection.id, 'mask.mkv'),
+          take,
+          output,
+          margin: record.protection!.margin,
+        }),
+      );
+      const result = await new Promise<Record<string, any>>((resolve, reject) => {
+        const child = spawn(python, [path.join(root, 'scripts/protect-foreground.py'), work], {
+          cwd: root,
+          stdio: ['ignore', 'pipe', 'pipe'],
+        });
+        let stdout = '',
+          stderr = '',
+          saved = 0;
+        child.stdout.on('data', (chunk) => (stdout += chunk));
+        child.stderr.on('data', (chunk) => {
+          stderr += chunk;
+          for (const match of String(chunk).matchAll(/progress ([0-9.]+)/g)) {
+            record.progress = Math.min(0.99, Number(match[1]));
+            if (record.progress - saved >= 0.1) {
+              saved = record.progress;
+              void persist(record).catch(() =>
+                console.warn(
+                  'Foreground progress could not be saved; the final receipt will be saved separately.',
+                ),
+              );
+            }
+          }
+        });
+        child.on('error', reject);
+        child.on('close', (code) => {
+          const message = stderr.replace(/progress [0-9.]+\s*/g, '').trim();
+          if (code === 0) resolve(JSON.parse(stdout));
+          else reject(Error(message || 'Foreground protection stopped.'));
+        });
+      });
+      // Keep measured evidence even for an unchanged take. A no-op still
+      // reports the accelerator and zero protected frames without faking output.
+      record.protection = characterProtectionSchema.parse({
+        from: original.id,
+        margin: record.protection!.margin,
+        accelerator: result.accelerator,
+        frames: result.frames,
+        protectedFrames: result.protectedFrames,
+        protectedPixels: result.protectedPixels,
+        protectedFrameIndices: result.protectedFrameIndices,
+        protectedPixelsByFrame: result.protectedPixelsByFrame,
+        model: result.model,
+      });
+      if (!result.changed)
+        throw Error(
+          'Nothing in front of the person was found, so the take is unchanged. Use the original take.',
+        );
+      const bytes = await readFile(output),
+        media = await inspect(output, selection.selection!);
+      record.clip = {
+        id: record.id,
+        name: `${(original.request as CharacterRequest).name} · foreground kept`.slice(0, 200),
+        kind: 'video',
+        sha256: sha(bytes),
+        width: media.width,
+        height: media.height,
+        duration: media.duration,
+        hasAudio: media.hasAudio,
+        url: `/media/${record.id}.mp4`,
+      };
+      const tmp = path.join(clips, record.id + '.json.tmp');
+      await writeFile(tmp, JSON.stringify(record.clip, null, 2));
+      await rename(tmp, path.join(clips, record.id + '.json'));
+      terminal = { state: 'succeeded', progress: 1, stage: 'Foreground kept from the source' };
+    } catch (error) {
+      terminal = { state: 'failed', error: error instanceof Error ? error.message : String(error) };
+      await unlink(output).catch(() => {});
+    } finally {
+      await unlink(work).catch(() => {});
+      const completed = { ...record, ...terminal };
+      await persist(completed);
+      Object.assign(record, completed);
+    }
+  }
   router.post('/:id/cancel', async (req, res) => {
     const record = jobs.get(req.params.id);
     if (!record?.jobId || !characterBusy(record) || record.state === 'finalizing')

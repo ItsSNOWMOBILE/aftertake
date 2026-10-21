@@ -14,6 +14,7 @@ export const videoRequestSchema = z.object({
     .max(2 ** 32 - 1),
   aspect: z.enum(['landscape', 'portrait', 'square']),
   quality: z.enum(['draft', 'final']),
+  resolution: z.literal('720p').optional(),
   seconds: z.number().int().min(2).max(5),
   sound: z.boolean(),
   cinema: cinemaSchema
@@ -45,16 +46,32 @@ export const videoTerminal = new Set([
   'output_error',
 ]);
 export const videoBusy = (video: VideoGeneration) => !videoTerminal.has(video.state);
-export function videoDimensions(request: Pick<VideoRequest, 'aspect' | 'quality' | 'seconds'>) {
-  const [width, height] = (
-    {
-      draft: { landscape: [512, 288], portrait: [288, 512], square: [512, 512] },
-      final: { landscape: [1024, 576], portrait: [576, 1024], square: [768, 768] },
-    } as const
-  )[request.quality][request.aspect];
+export function videoDimensions(
+  request: Pick<VideoRequest, 'aspect' | 'quality' | 'seconds' | 'resolution'>,
+) {
+  const [width, height] =
+    request.resolution === '720p'
+      ? ({ landscape: [1280, 720], portrait: [720, 1280], square: [720, 720] } as const)[
+          request.aspect
+        ]
+      : (
+          {
+            draft: { landscape: [512, 288], portrait: [288, 512], square: [512, 512] },
+            final: { landscape: [1024, 576], portrait: [576, 1024], square: [768, 768] },
+          } as const
+        )[request.quality][request.aspect];
   const fps = 24,
     frames = request.seconds * fps + 1;
   return { width, height, frames, fps, duration: frames / fps };
+}
+
+// LTX stores pixels on a 32-pixel spatial grid. Generate the surrounding
+// pixels and crop them in the native graph; never enlarge a smaller sample.
+export function videoModelDimensions(
+  request: Pick<VideoRequest, 'aspect' | 'quality' | 'seconds' | 'resolution'>,
+) {
+  const d = videoDimensions(request);
+  return { ...d, width: Math.ceil(d.width / 32) * 32, height: Math.ceil(d.height / 32) * 32 };
 }
 export function videoPrompt(request: VideoRequest) {
   return cinemaPrompt(

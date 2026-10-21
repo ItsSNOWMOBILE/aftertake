@@ -1,0 +1,91 @@
+{
+  "format": "aftertake-enhance-timings/1",
+  "machine": "RTX 5080 16 GB / Core Ultra 9 285K / 32 GB host RAM",
+  "jobs": [
+    {
+      "id": "13fc705c-c872-4fb9-b2c4-4dffb3126533",
+      "nativeJobId": "3444ac31-f0aa-4e9d-8490-4d037d3d8a02",
+      "name": "result.mp4 · smooth",
+      "label": "smooth",
+      "estimateKey": "enhance:smooth-x2",
+      "state": "succeeded",
+      "createdAt": "2026-10-21T05:17:07.250Z",
+      "updatedAt": "2026-10-21T05:17:13.678Z",
+      "elapsedSeconds": 6.428,
+      "timingScope": "Stored createdAt to updatedAt, including loading, queue, polling, transfer and validation; not isolated kernel compute.",
+      "vram": {
+        "sampledWholeGpuPeakMiB": 2467.0,
+        "samplesInWindow": 6,
+        "method": "Maximum observed whole-device usage within stored job timestamps; includes desktop/other processes. Timestamp overlap with explicit IDs when supplied. Sampled peak, not model-only usage or an absolute peak."
+      }
+    },
+    {
+      "id": "3dbee1e6-7003-4c7e-a6d0-db69b4c61f93",
+      "nativeJobId": "86f364ec-387b-4361-82b3-031c1a6a07dd",
+      "name": "result.mp4 · slow motion",
+      "label": "slow-motion-x4",
+      "estimateKey": "enhance:slow-motion-x4",
+      "state": "succeeded",
+      "createdAt": "2026-10-21T05:17:47.291Z",
+      "updatedAt": "2026-10-21T05:17:57.529Z",
+      "elapsedSeconds": 10.238,
+      "timingScope": "Stored createdAt to updatedAt, including loading, queue, polling, transfer and validation; not isolated kernel compute.",
+      "vram": {
+        "sampledWholeGpuPeakMiB": 3209.0,
+        "samplesInWindow": 9,
+        "method": "Maximum observed whole-device usage within stored job timestamps; includes desktop/other processes. Timestamp overlap with explicit IDs when supplied. Sampled peak, not model-only usage or an absolute peak."
+      }
+    },
+    {
+      "id": "46e9f057-97e5-4fa7-af72-10ecf5306bd7",
+      "nativeJobId": "8f3bd5c1-eec2-4eca-8e4d-d188d155f269",
+      "name": "result.mp4 · upscaled",
+      "label": "upscaled",
+      "estimateKey": "enhance:upscale",
+      "state": "succeeded",
+      "createdAt": "2026-10-21T05:18:25.314Z",
+      "updatedAt": "2026-10-21T05:24:55.501Z",
+      "elapsedSeconds": 390.187,
+      "timingScope": "Stored createdAt to updatedAt, including loading, queue, polling, transfer and validation; not isolated kernel compute.",
+      "vram": {
+        "sampledWholeGpuPeakMiB": 6300.0,
+        "samplesInWindow": 368,
+        "method": "Maximum observed whole-device usage within stored job timestamps; includes desktop/other processes. Timestamp overlap with explicit IDs when supplied. Sampled peak, not model-only usage or an absolute peak."
+      }
+    },
+    {
+      "id": "6c0720ff-09e4-4910-9ce6-76572e42f088",
+      "nativeJobId": "5c1e0409-3df7-480b-9600-f3f7a82e79e9",
+      "name": "Enhance validation · upbeat lyrics · 45s",
+      "label": "song-lyrics",
+      "estimateKey": "song",
+      "state": "succeeded",
+      "createdAt": "2026-10-21T05:27:14.403Z",
+      "updatedAt": "2026-10-21T05:27:22.608Z",
+      "elapsedSeconds": 8.205,
+      "timingScope": "Stored createdAt to updatedAt, including loading, queue, polling, transfer and validation; not isolated kernel compute.",
+      "vram": {
+        "sampledWholeGpuPeakMiB": 6930.0,
+        "samplesInWindow": 7,
+        "method": "Maximum observed whole-device usage within stored job timestamps; includes desktop/other processes. Timestamp overlap with explicit IDs when supplied. Sampled peak, not model-only usage or an absolute peak."
+      }
+    },
+    {
+      "id": "95c2293b-2c05-4478-b504-b0f8c83c40f4",
+      "nativeJobId": "ca730140-8b76-416b-b85c-d54cfc8d6b48",
+      "name": "Enhance validation · cinematic instrumental · 30s",
+      "label": "song-instrumental",
+      "estimateKey": "song",
+      "state": "succeeded",
+      "createdAt": "2026-10-21T05:26:18.579Z",
+      "updatedAt": "2026-10-21T05:26:32.805Z",
+      "elapsedSeconds": 14.226,
+      "timingScope": "Stored createdAt to updatedAt, including loading, queue, polling, transfer and validation; not isolated kernel compute.",
+      "vram": {
+        "sampledWholeGpuPeakMiB": 6611.0,
+        "samplesInWindow": 13,
+        "method": "Maximum observed whole-device usage within stored job timestamps; includes desktop/other processes. Timestamp overlap with explicit IDs when supplied. Sampled peak, not model-only usage or an absolute peak."
+      }
+    }
+  ]
+}

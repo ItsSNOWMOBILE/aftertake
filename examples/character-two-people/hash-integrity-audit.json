@@ -1,0 +1,138 @@
+{
+  "format": "aftertake-example-checksum-normalization-audit/1",
+  "auditedPublicationCommit": "4813c11570fdb87af8bd857fb92bb737d42bff54",
+  "finding": "Both original checksum indexes matched the Windows worktree, but seven JSON entries did not match the published Git blobs because their CRLF newlines were normalized to LF during publication.",
+  "originalIndexChecks": {
+    "files.sha256.json": {
+      "entries": 37,
+      "committedMismatches": 7,
+      "worktreeMismatches": 0
+    },
+    "pack.sha256.json": {
+      "entries": 48,
+      "committedMismatches": 7,
+      "worktreeMismatches": 0
+    }
+  },
+  "nativeRecordBytesPreserved": true,
+  "nativeBindingsVerified": {
+    "entries": 5,
+    "allMatchCommittedAndWorkingBytes": true,
+    "index": "native-record-bindings.json"
+  },
+  "nativeMediaBindings": {
+    "replacementOutputMatchesNativeMedia": true,
+    "replacementReferenceMatchesImage": true,
+    "selectionInputMatchesPassOneSource": true,
+    "selectionPreparedSourceMatchesMedia": true,
+    "selectionMaskMatchesMedia": true,
+    "referenceGenerationMatchesImage": true,
+    "derivedRequestMatchesNative": true,
+    "derivedWorkflowMatchesNative": true,
+    "derivedSelectionRequestMatchesNative": true,
+    "derivedReferenceRequestMatchesNative": true
+  },
+  "corrections": [
+    {
+      "path": "executed-workflow.json",
+      "previousIndexEntry": {
+        "bytes": 15591,
+        "sha256": "0760da0feb438167987eabb4164ded983154ba8150491e04b2f28b58a2ce8f70"
+      },
+      "canonicalGitBlob": {
+        "bytes": 14834,
+        "sha256": "70b434c3eb217fa6c2128e601932056fae889e1fa86d4347bf2bdaf49f7d4834"
+      },
+      "cause": "Git normalized CRLF to LF under the existing .gitattributes; JSON values are identical.",
+      "jsonValuesUnchanged": true
+    },
+    {
+      "path": "media-verification.json",
+      "previousIndexEntry": {
+        "bytes": 1555,
+        "sha256": "380e5041fa7bb7c7ed3b200be6caa984a52d82ef558153f95c0ce58ddebf65fb"
+      },
+      "canonicalGitBlob": {
+        "bytes": 1497,
+        "sha256": "43724c12199b308b42750796c27cae5675ed52e6b6f44a9772ab566faa071b2b"
+      },
+      "cause": "Git normalized CRLF to LF under the existing .gitattributes; JSON values are identical.",
+      "jsonValuesUnchanged": true
+    },
+    {
+      "path": "native-audio-verification.json",
+      "previousIndexEntry": {
+        "bytes": 1562,
+        "sha256": "5ee70ef25e15e038a538d9a414113ccf0505d6d1bf21b8c82abb163dea0d4466"
+      },
+      "canonicalGitBlob": {
+        "bytes": 1504,
+        "sha256": "0bae279e7030f70b36505e47bfa8889d84d2e083654cde632b359291bca5dfbb"
+      },
+      "cause": "Git normalized CRLF to LF under the existing .gitattributes; JSON values are identical.",
+      "jsonValuesUnchanged": true
+    },
+    {
+      "path": "publication-audit.json",
+      "previousIndexEntry": {
+        "bytes": 540,
+        "sha256": "1b7a82bcf899e105add119b4c190e1a4cbf479d969d5b19338f1307147b25d75"
+      },
+      "canonicalGitBlob": {
+        "bytes": 534,
+        "sha256": "d00185e1593d7fea9a8619535a707ca3f05fa95733bc8d6a533dffeb2b196227"
+      },
+      "cause": "Git normalized CRLF to LF under the existing .gitattributes; JSON values are identical.",
+      "jsonValuesUnchanged": true
+    },
+    {
+      "path": "reference-generation-request.json",
+      "previousIndexEntry": {
+        "bytes": 533,
+        "sha256": "348ba93458fd78140ac480f25dbc6b4ab9fdcd5837df497c6e8726f8952ae9ae"
+      },
+      "canonicalGitBlob": {
+        "bytes": 525,
+        "sha256": "61fc57a4b1875759644ecd5a926d2d262ba71ae18fbcdf5ede8c27c20f91ff1e"
+      },
+      "cause": "Git normalized CRLF to LF under the existing .gitattributes; JSON values are identical.",
+      "jsonValuesUnchanged": true
+    },
+    {
+      "path": "request.json",
+      "previousIndexEntry": {
+        "bytes": 724,
+        "sha256": "1d20066a6cbde7c8f99f7586aefb61bf07cbfb8c7f317e88b5695519c0108772"
+      },
+      "canonicalGitBlob": {
+        "bytes": 700,
+        "sha256": "643251373e56af52ce59ad9d8df55048d2d85cdb5e9845f440f78ecef8995ba0"
+      },
+      "cause": "Git normalized CRLF to LF under the existing .gitattributes; JSON values are identical.",
+      "jsonValuesUnchanged": true
+    },
+    {
+      "path": "selection-request.json",
+      "previousIndexEntry": {
+        "bytes": 746,
+        "sha256": "84879908e1cd26b815d4220f84156e2284f37f4e0630579e2a2c5be83d5f54f7"
+      },
+      "canonicalGitBlob": {
+        "bytes": 715,
+        "sha256": "3ede641f8a44d9236cf90b095c583a6b16c261e0ffe38299ec49e507c36db5f8"
+      },
+      "cause": "Git normalized CRLF to LF under the existing .gitattributes; JSON values are identical.",
+      "jsonValuesUnchanged": true
+    }
+  ],
+  "changesMade": [
+    "Regenerate derived files.sha256.json and pack.sha256.json for canonical Git/LF bytes.",
+    "Add this derived audit and an integrity-method note to README.md."
+  ],
+  "unchangedEvidence": "Native media, render.json, selection-render.json, reference-generation.json, ancestry records and all seven underlying JSON files were left untouched. No media remuxing, native record rewriting, metadata redaction or semantic request/workflow changes.",
+  "checksumMethod": "SHA-256 and byte sizes of exact Git blob bytes for existing evidence, with LF UTF-8 for newly written derived audit/README. The root .gitattributes already enforces LF for text. Verify from a clean checkout respecting those attributes or a Git archive; an older local Windows working tree may still contain pre-normalization CRLF files.",
+  "coverage": {
+    "files.sha256.json": "Root example files, excluding the two checksum indexes.",
+    "pack.sha256.json": "All example files recursively, including review images and this audit, excluding the two checksum indexes to avoid circular hashes."
+  }
+}

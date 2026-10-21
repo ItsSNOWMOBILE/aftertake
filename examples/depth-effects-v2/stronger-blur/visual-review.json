@@ -1,0 +1,18 @@
+{
+  "format": "aftertake-visual-review/1",
+  "status": "accepted-with-documented-limitations",
+  "reviewers": [
+    "render agent",
+    "parent agent",
+    "independent CPU reviewer"
+  ],
+  "strengths": [
+    "native1280x720 still and depth field",
+    "sharp face and body"
+  ],
+  "limitations": [
+    "source already has strong bokeh",
+    "relative-depth approximation, not physical lens simulation",
+    "optionalblur8 retains some blocky/stepped defocus in left background and thin edge artifacts"
+  ]
+}

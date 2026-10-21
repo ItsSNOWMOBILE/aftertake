@@ -19,8 +19,10 @@ import {
   opticalFinishingPresets,
   finishingBusy,
   finishingIsIdentity,
+  finishingRequestIsIdentity,
   finishingRecipeSchema,
   finishingRequestSchema,
+  redactionSchema,
   type FinishingJob,
   type FinishingRequest,
 } from '../src/finishing.js';
@@ -108,7 +110,7 @@ async function fixture(
           kind: 'image',
           duration: 1,
           hasAudio: false,
-          identity: finishingIsIdentity(work.request.settings),
+          identity: finishingRequestIsIdentity(work.request),
         }),
       );
     });
@@ -471,6 +473,50 @@ test('successful finish is a normal saved Clip with a hash-bound portable recipe
     );
     assert.equal(conflict.status, 409);
     assert.equal(f.calls.length, 1);
+  } finally {
+    await f.close();
+  }
+});
+
+test('redactions are bounded, part of the request identity and reach the worker', async () => {
+  const hideName = {
+    x: 0.5,
+    y: 0.1,
+    width: 0.1,
+    height: 0.05,
+    match: { at: 0 },
+  };
+  const parsed = redactionSchema.parse(hideName);
+  assert.equal(parsed.style, 'blur');
+  assert.equal(parsed.start, 0);
+  assert.equal(parsed.end, null);
+  assert.equal(parsed.match?.threshold, 0.9);
+  for (const bad of [
+    { ...hideName, x: 0.95 },
+    { ...hideName, start: 2, end: 1 },
+    { ...hideName, style: 'smudge' },
+    { ...hideName, match: { at: 0, threshold: 0.2 } },
+    { ...hideName, label: 'extra' },
+  ])
+    assert.equal(redactionSchema.safeParse(bad).success, false);
+  assert.equal(
+    finishingRequestSchema.safeParse({ ...request, redactions: Array(17).fill(hideName) }).success,
+    false,
+  );
+  assert.equal(finishingIsIdentity(request.settings), true);
+  assert.equal(finishingRequestIsIdentity(request), true);
+  assert.equal(finishingRequestIsIdentity({ ...request, redactions: [parsed] }), false);
+
+  const f = await fixture();
+  try {
+    const redacted = { ...request, redactions: [hideName] };
+    const response = await f.post('', redacted, 'hide-1');
+    assert.equal(response.status, 202);
+    const job = await terminal(f.url, ((await response.json()) as FinishingJob).id);
+    assert.equal(job.identity, false);
+    assert.deepEqual(f.calls[0].request.redactions, [parsed]);
+    // The same key without the redaction is different work, not a rejoin.
+    assert.equal((await f.post('', request, 'hide-1')).status, 409);
   } finally {
     await f.close();
   }

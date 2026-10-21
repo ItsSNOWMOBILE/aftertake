@@ -1,0 +1,52 @@
+{
+  "format": "aftertake-shared-baseline-bindings/1",
+  "artifacts": {
+    "source.mp4": {
+      "path": "../source.mp4",
+      "sha256": "f317f07e4d953beb08a49e9c662f3c20ba214dfbeeae7136b8adf431b8e4e282",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    },
+    "prepared-source.mp4": {
+      "path": "../prepared-source.mp4",
+      "sha256": "319fc8d4899f51d9ae522a38215df81ccfd25ed7ddf57229436464adad489317",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    },
+    "reference.png": {
+      "path": "../reference.png",
+      "sha256": "a0c50b7a9452424dbde9d545381262dc5dcb45d2f45dc92d13347326f4ccbeb0",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    },
+    "person-mask.mkv": {
+      "path": "../person-mask.mkv",
+      "sha256": "3edc79c3ecd20b3cc60fd682fbd80b4e8a7c0294c795bdd164d0e42b34838d77",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    },
+    "source-generation.json": {
+      "path": "../source-generation.json",
+      "sha256": "2d097b6298f9ba32a166920163b9aaa5ef7aea06efe9071481ea2a4993e812f3",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    },
+    "reference-generation.json": {
+      "path": "../reference-generation.json",
+      "sha256": "f212c18a1d65874965375c9ab3de957e60067d48fae4b07fc1a3549cde60bdcc",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    },
+    "selection-render.json": {
+      "path": "../selection-render.json",
+      "sha256": "3a46059cd29fec2e3015db26e957f3992820ce93be404e237a2315cb50b1c5f1",
+      "note": "Original shared baseline artifact; not duplicated or retimed."
+    },
+    "models.json": {
+      "path": "../models.json",
+      "sha256": "a297c814aa2b20c4d233774d0ee0fc0ebbe9273c4dce242b95c68e490fb44fb6",
+      "note": "Original shared baseline artifact; not duplicated or retimed.",
+      "hashBasis": "Canonical published LF bytes from the parent pack and Git index; native/media bindings remain exact original bytes."
+    }
+  },
+  "baselineTake": {
+    "path": "../take.mp4",
+    "sha256": "bb6051b64d36dfb2ee160dfbb421ae01a9ad62c8214ba95225136da5aa6d5732",
+    "record": "../render.json"
+  },
+  "policy": "Original source/reference generation records, selection records and media stay in the parent folder byte-identical. This child records only the newly executed retry and protection."
+}

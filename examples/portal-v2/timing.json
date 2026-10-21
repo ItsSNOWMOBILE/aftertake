@@ -1,0 +1,29 @@
+{
+  "format": "aftertake-multistage-example-timing/1",
+  "nativeGeneration": {
+    "format": "aftertake-observed-operation-timing/1",
+    "nativeOperationId": "c8cce627-1491-42f0-896f-6ee3f74bdc2b",
+    "createdAt": "2026-10-20T21:48:05.307Z",
+    "updatedAt": "2026-10-20T21:51:30.988Z",
+    "nativeOperationWallSeconds": 205.681,
+    "note": "Observed API operation wall time includes preparation and finishing; engine execution time, if separately recorded, is not the same measurement.",
+    "engineExecutionSeconds": 202.915,
+    "engineTimingMethod": "ComfyUI execution_start/execution_success status timestamps"
+  },
+  "finalCPURecomposition": {
+    "operationId": "6d9ae452-6335-4af2-80f3-20af35492642",
+    "createdAt": "2026-10-20T22:01:09.845Z",
+    "updatedAt": "2026-10-20T22:02:30.882Z",
+    "wallSeconds": 87.10363292694092,
+    "noModelInvocation": true,
+    "noComfyGraphExecution": true,
+    "codeCommit": "f06cdc8ab698621fb9665d740a65314bdda98b13",
+    "script": "scripts/recompose-take.py",
+    "scriptSha256": "d862bf0a893e295ff7763908df1c1e9a301ba4e399d3eaaaed194a996099d593",
+    "observedClientWallSeconds": 87.10363292694092,
+    "apiOperationWallSeconds": 81.037,
+    "wallSecondsMeasurement": "Client admission-to-completion observation; API created/updated span is recorded separately."
+  },
+  "editedFirstFrameTiming": "edited-first-frame/timing.json",
+  "note": "Successful final stages only. Rejected generation and failed pre-fix CPU attempts are retained privately and excluded from these successful-stage timings."
+}

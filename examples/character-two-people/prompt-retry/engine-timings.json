@@ -1,0 +1,35 @@
+{
+  "replacement": {
+    "id": "65372afb-ec7c-4196-99d5-9348ba57c628",
+    "apiSeconds": 375.915,
+    "engineStatus": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "c7b80482-1caf-43b3-be57-e3cfbcc2273a",
+            "timestamp": 1792561381353
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "c7b80482-1caf-43b3-be57-e3cfbcc2273a",
+            "timestamp": 1792561381353
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "c7b80482-1caf-43b3-be57-e3cfbcc2273a",
+            "timestamp": 1792561755395
+          }
+        ]
+      ]
+    },
+    "engineSeconds": 374.042
+  }
+}

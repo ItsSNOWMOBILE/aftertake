@@ -1,0 +1,382 @@
+{
+  "format": "aftertake-film/5",
+  "id": "815de0c1-5467-4f4a-b88b-8845e4dfc113",
+  "name": "04 How it is built",
+  "aspect": "landscape",
+  "resolution": "1080p",
+  "shots": [
+    {
+      "assetId": "f02b973c-a3da-46c9-89e9-43b91835b777",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.1,
+        "x": 0.42,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 2.9583333333333335,
+      "title": "graph.png",
+      "sha256": "f8c7757e756f6afe7f7d76163693a2dd7c91f3c9ea83d77a7e11f43013babcd3",
+      "asset": {
+        "name": "graph.png",
+        "kind": "image",
+        "sha256": "f8c7757e756f6afe7f7d76163693a2dd7c91f3c9ea83d77a7e11f43013babcd3",
+        "duration": 30,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "dadb09c0-b9c8-4647-9be1-ad5c6197d8db",
+      "start": 0,
+      "end": 2.4583333333333335,
+      "title": "dark.png",
+      "sha256": "f296397b21eb2a793985df1c6c022b43b9b88e2307bf7bf21e09b88391bb1bb1",
+      "asset": {
+        "name": "dark.png",
+        "kind": "image",
+        "sha256": "f296397b21eb2a793985df1c6c022b43b9b88e2307bf7bf21e09b88391bb1bb1",
+        "duration": 30,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "22e362a7-859d-473c-88f7-17e046c49181",
+      "dissolve": 0.25,
+      "transition": "flash",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 4.25,
+      "title": "proofRun.mp4",
+      "sha256": "767619e26caef61fb04f2fa5dbe54de67c220341db58141fb9772ac6787d0c52",
+      "asset": {
+        "name": "proofRun.mp4",
+        "kind": "video",
+        "sha256": "767619e26caef61fb04f2fa5dbe54de67c220341db58141fb9772ac6787d0c52",
+        "duration": 4.366666666666666,
+        "width": 1920,
+        "height": 1080
+      }
+    }
+  ],
+  "requestKey": "04-How-it-is-built-1792541483779",
+  "requestDigest": "d2a5652245dc8a3bd3e28e6698705f564e8405908b6969360d8e1a209f4c460d",
+  "titles": [
+    {
+      "id": "a411343f-4f2b-42cc-8c97-6a7be060d322",
+      "text": "HOW IT\u2019S BUILT",
+      "start": 0,
+      "end": 2.8988999999999985,
+      "style": "headline",
+      "position": "top",
+      "animation": "reveal",
+      "fontSize": 84,
+      "font": "display",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "c31e0c70-583f-4502-b0c2-29e76ffd44ec",
+      "text": "THE WINDOW REPAINT\u2019S EXECUTED GRAPH \u00b7 50 NODES \u00b7 10 AFTERTAKE NODES",
+      "start": 0.11610000000000298,
+      "end": 1.4163999999999994,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "scramble",
+      "fontSize": 24,
+      "align": "left",
+      "font": "mono",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "e6f1ed6c-7933-41b1-815a-4a3ea946e229",
+      "text": "OPEN WEIGHTS \u00b7 Z-IMAGE \u00b7 QWEN EDIT \u00b7 LTX-2.5 \u00b7 WAN 2 \u00b7 MINIMAX H3 \u00b7 SAM 3 \u00b7 DA3",
+      "start": 1.474450000000001,
+      "end": 2.8885299999999994,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "scramble",
+      "fontSize": 24,
+      "align": "left",
+      "font": "mono",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "1de14c8a-6727-4c84-ba8f-6e978f2dea7e",
+      "text": "POWERED BY THE COMFY SDK",
+      "start": 2.9488999999999983,
+      "end": 5.244100000000004,
+      "style": "headline",
+      "position": "top",
+      "animation": "reveal",
+      "fontSize": 52,
+      "font": "display",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "9cee370d-9cef-44ea-9d06-5daaabf3cca6",
+      "text": "server/sdk-worker.mjs",
+      "start": 3.0650000000000013,
+      "end": 5.244100000000004,
+      "style": "caption",
+      "position": "center",
+      "animation": "typewriter",
+      "motionDuration": 0.4,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": -0.16,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.16,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 30,
+      "stroke": false,
+      "align": "left",
+      "font": "mono",
+      "color": "#8c9a88"
+    },
+    {
+      "id": "db71cd2b-74f2-4be7-926c-8ab1c399d19a",
+      "text": "import { Comfy } from '@comfyorg/sdk'",
+      "start": 3.2972,
+      "end": 5.244100000000004,
+      "style": "caption",
+      "position": "center",
+      "animation": "typewriter",
+      "motionDuration": 0.4,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": -0.085,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.085,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 30,
+      "stroke": false,
+      "align": "left",
+      "font": "mono",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "0a9c24e3-7cae-4078-a0f8-2b0f0f60733e",
+      "text": "client = new Comfy({ timeoutMs })",
+      "start": 3.5874500000000005,
+      "end": 5.244100000000004,
+      "style": "caption",
+      "position": "center",
+      "animation": "typewriter",
+      "motionDuration": 0.4,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": -0.010000000000000009,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": -0.010000000000000009,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 30,
+      "stroke": false,
+      "align": "left",
+      "font": "mono",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "72503285-cb4d-409d-9e2b-fc51b3088a67",
+      "text": "workflow = client.workflows.fromJson(graph)",
+      "start": 3.877700000000001,
+      "end": 5.244100000000004,
+      "style": "caption",
+      "position": "center",
+      "animation": "typewriter",
+      "motionDuration": 0.4,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.06499999999999997,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0.06499999999999997,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 30,
+      "stroke": false,
+      "align": "left",
+      "font": "mono",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "f90a1a14-0123-4454-8de2-08fa5e41c455",
+      "text": "job = await client.submit(workflow, { idempotencyKey })",
+      "start": 4.226000000000003,
+      "end": 5.244100000000004,
+      "style": "caption",
+      "position": "center",
+      "animation": "typewriter",
+      "motionDuration": 0.4,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.13999999999999999,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0.13999999999999999,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 30,
+      "stroke": false,
+      "align": "left",
+      "font": "mono",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "5c1e94c2-621d-4b8e-9a93-dd9b54aee562",
+      "text": "\u2192 job f402b3b2 \u00b7 50 nodes \u00b7 ComfyUI ran it in 203 s",
+      "start": 4.632349999999999,
+      "end": 5.244100000000004,
+      "style": "caption",
+      "position": "center",
+      "animation": "typewriter",
+      "motionDuration": 0.4,
+      "motion": {
+        "keys": [
+          {
+            "at": 0,
+            "x": 0,
+            "y": 0.215,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          },
+          {
+            "at": 1,
+            "x": 0,
+            "y": 0.215,
+            "scale": 1,
+            "rotation": 0,
+            "opacity": 1
+          }
+        ]
+      },
+      "fontSize": 30,
+      "stroke": false,
+      "align": "left",
+      "font": "mono",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "1ae7d3b4-3c1e-472b-b320-3c693b96fa87",
+      "text": "MAKE THE NEXT TAKE,",
+      "start": 5.584350000000004,
+      "end": 6.857690000000005,
+      "style": "headline",
+      "position": "top",
+      "animation": "slam",
+      "fontSize": 64,
+      "font": "display",
+      "box": "highlight",
+      "tilt": -2,
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "fcdb7bd3-3804-47c9-aef5-5f283460b0c4",
+      "text": "RUN THE SCENE.",
+      "start": 6.877690000000005,
+      "end": 9.364,
+      "style": "headline",
+      "position": "top",
+      "animation": "slam",
+      "fontSize": 64,
+      "font": "display",
+      "box": "highlight",
+      "tilt": -2,
+      "color": "#d5eb94"
+    },
+    {
+      "id": "5c1d028e-f891-47fe-91f6-8a1858104ed2",
+      "text": "RTX 5080 \u00b7 32\u00d7 FAST, THEN REAL TIME \u00b7 \u201cPROMPT EXECUTED IN 80.97 SECONDS\u201d",
+      "start": 5.468250000000001,
+      "end": 9.345949999999998,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "scramble",
+      "fontSize": 22,
+      "align": "left",
+      "font": "mono",
+      "color": "#d5eb94"
+    }
+  ],
+  "audio": [],
+  "sourceVolume": 0,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 9.416666666666666,
+  "createdAt": "2026-10-21T00:11:23.796Z",
+  "output": "/api/films/815de0c1-5467-4f4a-b88b-8845e4dfc113/video"
+}

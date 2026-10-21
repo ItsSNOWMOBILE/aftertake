@@ -1,0 +1,29 @@
+name: Bug report
+description: Something in the studio, Film or MCP does not work as documented.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: A recipe, project or short list of steps helps most.
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Setup check
+      description: Paste the output of `node scripts/aftertake.mjs doctor`.
+      render: text
+  - type: input
+    id: hardware
+    attributes:
+      label: GPU and operating system
+      placeholder: e.g. RTX 4070 12 GB, Windows 11

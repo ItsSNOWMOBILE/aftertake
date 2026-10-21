@@ -1,0 +1,7 @@
+{
+  "format": "aftertake-native-export-publication-audit/1",
+  "nativeRecordsUnmodified": true,
+  "absolutePathFindings": [],
+  "readyForPathSafePublication": true,
+  "policy": "Do not silently edit native records. Keep exact originals privately; if redaction is necessary publish an explicitly labeled derived portable representation plus an original file SHA and a JSON-pointer redaction log. Do not claim the derived file is byte-identical native evidence. Audit MP4 embedded metadata with the app reader before publication too."
+}

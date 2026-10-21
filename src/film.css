@@ -679,6 +679,17 @@
   background: currentColor;
   margin-left: 0.04em;
 }
+.draft-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: #ffffff;
+  pointer-events: none;
+}
+.draft-title .reveal-word {
+  overflow: hidden;
+  vertical-align: bottom;
+}
 .draft-title.motion-build .title-content {
   white-space: pre-line;
 }
@@ -1054,4 +1065,16 @@
   .film-camera-mode select {
     font-size: 16px;
   }
+}
+
+.film-beat-snap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 8px 12px;
+  margin-top: 10px;
+}
+.film-beat-snap small {
+  flex-basis: 100%;
+  color: var(--film-muted);
 }

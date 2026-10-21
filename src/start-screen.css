@@ -1,0 +1,122 @@
+.start-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  overflow: auto;
+  background: radial-gradient(circle at 50% -20%, #2a3524 0%, #0d110e 55%);
+  color: var(--text-primary);
+  padding: 48px clamp(16px, 5vw, 72px) 32px;
+  display: grid;
+  gap: 32px;
+  align-content: start;
+}
+.start-header {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+.start-header h1 {
+  margin: 12px 0 0;
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(30px, 4vw, 52px);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.start-header p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+.start-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.start-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding: 0;
+  overflow: hidden;
+  text-align: left;
+  color: inherit;
+  background: #151b16;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+.start-card:hover,
+.start-card:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.start-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.start-card video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #0b0f0c;
+}
+.start-card-text {
+  display: grid;
+  gap: 4px;
+  padding: 14px 44px 16px 16px;
+}
+.start-card-text strong {
+  font-size: 17px;
+}
+.start-card-text small {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.start-card-arrow {
+  position: absolute;
+  right: 16px;
+  bottom: 18px;
+  color: var(--accent);
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+.start-card:hover .start-card-arrow,
+.start-card:focus-visible .start-card-arrow {
+  opacity: 1;
+}
+.start-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.start-footer label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+.start-footer input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .start-card,
+  .start-card-arrow {
+    transition: none;
+  }
+  .start-card:hover,
+  .start-card:focus-visible {
+    transform: none;
+  }
+}

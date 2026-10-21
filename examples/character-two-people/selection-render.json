@@ -1,0 +1,261 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "cae5152d-c3d9-4bec-8a44-775c41efaa57",
+  "kind": "selection",
+  "request": {
+    "format": "aftertake-character-selection/1",
+    "clip": {
+      "id": "15777e14-afdd-4721-ac13-f1be8e8d269f",
+      "name": "native-result.mp4",
+      "sha256": "b47c2faa8dafc83f9d78a90bfda866b075a7ab1268abc5a8d923ff5d49eaf03c",
+      "width": 1344,
+      "height": 736,
+      "duration": 3.0416666666666665,
+      "url": "/media/15777e14-afdd-4721-ac13-f1be8e8d269f.mp4",
+      "hasAudio": true
+    },
+    "trimStart": 0,
+    "duration": 3.0416666666666665,
+    "positive": [
+      {
+        "x": 0.24999999999999978,
+        "y": 0.31999999999999984
+      },
+      {
+        "x": 0.22999999999999976,
+        "y": 0.45999999999999996
+      }
+    ],
+    "negative": [
+      {
+        "x": 0.5,
+        "y": 0.42999999999999994
+      }
+    ],
+    "resolution": "768"
+  },
+  "workflow": {
+    "source": {
+      "class_type": "LoadVideo",
+      "inputs": {
+        "file": "15777e14-afdd-4721-ac13-f1be8e8d269f.mp4"
+      }
+    },
+    "slice": {
+      "class_type": "Video Slice",
+      "inputs": {
+        "video": [
+          "source",
+          0
+        ],
+        "start_time": 0,
+        "duration": 3.0416666666666665,
+        "strict_duration": true
+      }
+    },
+    "prepare": {
+      "class_type": "H3RelayPrepareSource",
+      "inputs": {
+        "video": [
+          "slice",
+          0
+        ],
+        "resolution": "768",
+        "duration_seconds": 0,
+        "missing_audio": "silence"
+      }
+    },
+    "frames": {
+      "class_type": "ImageFromBatch",
+      "inputs": {
+        "image": [
+          "prepare",
+          0
+        ],
+        "batch_index": 0,
+        "length": [
+          "prepare",
+          5
+        ]
+      }
+    },
+    "first": {
+      "class_type": "ImageFromBatch",
+      "inputs": {
+        "image": [
+          "frames",
+          0
+        ],
+        "batch_index": 0,
+        "length": 1
+      }
+    },
+    "points": {
+      "class_type": "AftertakeSubjectPoints",
+      "inputs": {
+        "images": [
+          "first",
+          0
+        ],
+        "source_width": 1344,
+        "source_height": 736,
+        "points_json": "{\"positive\": [{\"x\": 0.24999999999999978, \"y\": 0.31999999999999984}, {\"x\": 0.22999999999999976, \"y\": 0.45999999999999996}], \"negative\": [{\"x\": 0.5, \"y\": 0.42999999999999994}]}"
+      }
+    },
+    "sam": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "sam3.1_multiplex_fp16.safetensors"
+      }
+    },
+    "people": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "sam",
+          1
+        ],
+        "text": "person:12"
+      }
+    },
+    "detect": {
+      "class_type": "SAM3_Detect",
+      "inputs": {
+        "model": [
+          "sam",
+          0
+        ],
+        "image": [
+          "first",
+          0
+        ],
+        "conditioning": [
+          "people",
+          0
+        ],
+        "threshold": 0.35,
+        "refine_iterations": 2,
+        "individual_masks": true
+      }
+    },
+    "choose": {
+      "class_type": "AftertakeSelectCharacterMask",
+      "inputs": {
+        "masks": [
+          "detect",
+          0
+        ],
+        "positive_coords": [
+          "points",
+          0
+        ],
+        "negative_coords": [
+          "points",
+          1
+        ]
+      }
+    },
+    "track": {
+      "class_type": "SAM3_VideoTrack",
+      "inputs": {
+        "images": [
+          "frames",
+          0
+        ],
+        "model": [
+          "sam",
+          0
+        ],
+        "initial_mask": [
+          "choose",
+          0
+        ],
+        "detection_threshold": 0.5,
+        "max_objects": 1,
+        "detect_interval": 1
+      }
+    },
+    "mask": {
+      "class_type": "SAM3_TrackToMask",
+      "inputs": {
+        "track_data": [
+          "track",
+          0
+        ],
+        "object_indices": "0"
+      }
+    },
+    "mask_erode": {
+      "class_type": "GrowMask",
+      "inputs": {
+        "mask": [
+          "mask",
+          0
+        ],
+        "expand": -1,
+        "tapered_corners": false
+      }
+    },
+    "mask_open": {
+      "class_type": "GrowMask",
+      "inputs": {
+        "mask": [
+          "mask_erode",
+          0
+        ],
+        "expand": 1,
+        "tapered_corners": false
+      }
+    },
+    "selection": {
+      "class_type": "AftertakeSaveCharacterSelection",
+      "inputs": {
+        "images": [
+          "frames",
+          0
+        ],
+        "masks": [
+          "mask_open",
+          0
+        ],
+        "filename_prefix": "aftertake/characters/cae5152d-c3d9-4bec-8a44-775c41efaa57/selection",
+        "request_json": "{\"format\": \"aftertake-character-selection/1\", \"clip\": {\"id\": \"15777e14-afdd-4721-ac13-f1be8e8d269f\", \"name\": \"native-result.mp4\", \"sha256\": \"b47c2faa8dafc83f9d78a90bfda866b075a7ab1268abc5a8d923ff5d49eaf03c\", \"width\": 1344, \"height\": 736, \"duration\": 3.0416666666666665, \"url\": \"/media/15777e14-afdd-4721-ac13-f1be8e8d269f.mp4\", \"hasAudio\": true}, \"trimStart\": 0, \"duration\": 3.0416666666666665, \"positive\": [{\"x\": 0.24999999999999978, \"y\": 0.31999999999999984}, {\"x\": 0.22999999999999976, \"y\": 0.45999999999999996}], \"negative\": [{\"x\": 0.5, \"y\": 0.42999999999999994}], \"resolution\": \"768\"}"
+      }
+    },
+    "source_save": {
+      "class_type": "SaveVideo",
+      "inputs": {
+        "video": [
+          "prepare",
+          8
+        ],
+        "filename_prefix": "aftertake/characters/cae5152d-c3d9-4bec-8a44-775c41efaa57/source",
+        "format": "mp4",
+        "format.codec": "h264",
+        "format.codec.encoding": "re-encode",
+        "format.codec.encoding.crf": 14
+      }
+    }
+  },
+  "requestKey": "e3c2e7fa-3666-4c25-97c5-9277a809c90d",
+  "requestDigest": "527a74f84b9eb7209aafba7841aaab43b84ed6313e8fe0786e75b82829b09f9f",
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-21T03:30:15.391Z",
+  "updatedAt": "2026-10-21T03:30:53.976Z",
+  "jobId": "991a8a23-27ac-49b1-8f30-25345ca47507",
+  "stage": "Selection ready to review",
+  "selection": {
+    "width": 1344,
+    "height": 736,
+    "frames": 73,
+    "fps": 24,
+    "emptyFrames": [],
+    "maskSha256": "b30d9b9e4e8dafdf002b8709c85daeaadd243f3b1a63bb4355c49d9606fdd7dc",
+    "sourceSha256": "f988b90efcc486cb78466fbffc3fc1bdcc7626260123b34a8791c8750c75f8c3"
+  }
+}

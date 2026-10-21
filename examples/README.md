@@ -1,5 +1,12 @@
 # Remixable examples
 
+## Then comes the Aftertake
+
+The [93-second beat-cut film](then-comes-the-aftertake/README.md) is seven native
+Film projects on the beat grid of its original ACE-Step song. It uses punch typography, styled transitions,
+animated graphics and real studio recordings around this folder's generated takes.
+Its build scripts re-export every scene through the studio's Film API.
+
 ## Make the next take
 
 The [96-second campaign film](make-the-next-take/README.md) follows three dance
@@ -24,6 +31,18 @@ requests and executed workflows. The Wan motion-transfer example below is a
 different workflow from H3 character replacement.
 
 ## Recorded quality and pipeline version
+
+The [Enhance hardware validation](enhance/README.md) records real ×2 upscaling,
+48 fps smoothing, ×4 slow motion and two ACE-Step songs, including each native
+job and its Film handoff. [Depth validation](../docs/npu-depth-check.json)
+separately measures the Intel NPU, RTX DirectML and CPU paths.
+
+Same-seed, prompt-only retries succeeded for the
+[two-person scene](character-two-people/prompt-retry/README.md) and
+[cafe foreground-protection test](foreground-protection/prompt-retry/README.md).
+The original failed transfers remain in their parent folders. Reviews include
+native frames, the real NPU-protected cafe output and source-audio checks,
+distinguishing successful execution from visual quality.
 
 On October 19, twelve workflow examples were regenerated through the normal
 studio API at **Final / 24 fps**, using the current decoder, compositing and

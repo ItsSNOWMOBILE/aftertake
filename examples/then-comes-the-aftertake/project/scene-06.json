@@ -1,0 +1,317 @@
+{
+  "format": "aftertake-film/5",
+  "id": "950e9e6a-2ba9-485e-9bae-a839e8432c8a",
+  "name": "06 Agents and Film",
+  "aspect": "landscape",
+  "resolution": "1080p",
+  "shots": [
+    {
+      "assetId": "7c227f49-b997-428b-b0b4-057218cc56da",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0.5,
+      "end": 2.875,
+      "title": "mcpRun.mp4",
+      "sha256": "99fc37208ab7b838d3081f16abb2f316f02376d575aaa47dfbf77a34b6d89d21",
+      "asset": {
+        "name": "mcpRun.mp4",
+        "kind": "video",
+        "sha256": "99fc37208ab7b838d3081f16abb2f316f02376d575aaa47dfbf77a34b6d89d21",
+        "duration": 4.266666666666667,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "4f58b9ec-5d66-484c-a827-af1107f212ba",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 12,
+      "end": 13.291666666666666,
+      "title": "mcp.mp4",
+      "sha256": "14c80bdac5bf57ca080c0224baaabdab08e312a8e5ac927ab50bff31d546b622",
+      "asset": {
+        "name": "mcp.mp4",
+        "kind": "video",
+        "sha256": "14c80bdac5bf57ca080c0224baaabdab08e312a8e5ac927ab50bff31d546b622",
+        "duration": 63.966,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "6b1144ad-c242-480e-af59-469cfe2b8c4b",
+      "dissolve": 0.25,
+      "transition": "flash",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.06,
+        "x": 0.6,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 1.4166666666666667,
+      "title": "heroBanner.png",
+      "sha256": "9d77a0d1669f9b4bb6ade6d2d834613dbef9a2882e9ecd04ba94b111fe1ca00f",
+      "asset": {
+        "name": "heroBanner.png",
+        "kind": "image",
+        "sha256": "9d77a0d1669f9b4bb6ade6d2d834613dbef9a2882e9ecd04ba94b111fe1ca00f",
+        "duration": 30,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "8df11a73-8216-407d-8e8c-f1fec3d67bb9",
+      "dissolve": 0.25,
+      "transition": "zoom",
+      "framing": {
+        "zoom": 2.1,
+        "endZoom": 2.2,
+        "x": 0.38,
+        "y": 0.5
+      },
+      "start": 1.2083333333333333,
+      "end": 2.625,
+      "title": "uiFilm.mp4",
+      "sha256": "d7254e108cb91bebfe034d513b3266b651d730710ef372e9efa3ed56e52f3a6d",
+      "asset": {
+        "name": "uiFilm.mp4",
+        "kind": "video",
+        "sha256": "d7254e108cb91bebfe034d513b3266b651d730710ef372e9efa3ed56e52f3a6d",
+        "duration": 12.958333333333334,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "8df11a73-8216-407d-8e8c-f1fec3d67bb9",
+      "dissolve": 0.25,
+      "transition": "whip",
+      "framing": {
+        "zoom": 2.2,
+        "endZoom": 2.3,
+        "x": 0.36,
+        "y": 0.56
+      },
+      "start": 7.583333333333333,
+      "end": 9.041666666666666,
+      "title": "uiFilm.mp4",
+      "sha256": "d7254e108cb91bebfe034d513b3266b651d730710ef372e9efa3ed56e52f3a6d",
+      "asset": {
+        "name": "uiFilm.mp4",
+        "kind": "video",
+        "sha256": "d7254e108cb91bebfe034d513b3266b651d730710ef372e9efa3ed56e52f3a6d",
+        "duration": 12.958333333333334,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "8df11a73-8216-407d-8e8c-f1fec3d67bb9",
+      "dissolve": 0.25,
+      "transition": "glitch",
+      "framing": {
+        "zoom": 2.2,
+        "endZoom": 2.35,
+        "x": 0.46,
+        "y": 0.5
+      },
+      "start": 10.208333333333334,
+      "end": 12.083333333333334,
+      "title": "uiFilm.mp4",
+      "sha256": "d7254e108cb91bebfe034d513b3266b651d730710ef372e9efa3ed56e52f3a6d",
+      "asset": {
+        "name": "uiFilm.mp4",
+        "kind": "video",
+        "sha256": "d7254e108cb91bebfe034d513b3266b651d730710ef372e9efa3ed56e52f3a6d",
+        "duration": 12.958333333333334,
+        "width": 1920,
+        "height": 1080
+      }
+    }
+  ],
+  "requestKey": "06-Agents-and-Film-1792539737429",
+  "requestDigest": "73b71384976def1def56b6edb6789c6938de954e3ff926e866ecea387cc95342",
+  "titles": [
+    {
+      "id": "62716f3b-8d31-43b4-aefb-4bc3b21c79af",
+      "text": "AN AGENT CUTS IT,",
+      "start": 0.18110999999999677,
+      "end": 1.4544500000000045,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "slam",
+      "fontSize": 72,
+      "font": "display",
+      "box": "highlight",
+      "tilt": -2,
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "04934e4d-cfcd-4051-aad2-4fd25b4574c9",
+      "text": "FRAME BY FRAME.",
+      "start": 1.4744500000000045,
+      "end": 2.3252000000000055,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "slam",
+      "fontSize": 72,
+      "font": "display",
+      "box": "highlight",
+      "tilt": -2,
+      "color": "#d5eb94"
+    },
+    {
+      "id": "d14db138-638f-47e7-b5b0-e9e696073efe",
+      "text": "A REAL MCP SESSION \u00b7 GENERATE, POLL, INSPECT \u00b7 16\u00d7 FAST",
+      "start": 0.12074000000000495,
+      "end": 2.287150000000011,
+      "style": "caption",
+      "position": "top",
+      "animation": "scramble",
+      "fontSize": 28,
+      "align": "left",
+      "font": "mono",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "f989a225-bf89-4bfd-a76e-aacc24624860",
+      "text": "44 MCP\nTOOLS,",
+      "start": 2.4613000000000085,
+      "end": 3.4861999999999997,
+      "style": "headline",
+      "position": "center",
+      "animation": "slam",
+      "fontSize": 100,
+      "align": "right",
+      "font": "display",
+      "box": "highlight",
+      "tilt": -3,
+      "color": "#d5eb94"
+    },
+    {
+      "id": "5fa28621-79d9-4774-a0ee-cd543b8b0b39",
+      "text": "STILL\nTHE SAME.",
+      "start": 3.9287900000000064,
+      "end": 4.670400000000004,
+      "style": "headline",
+      "position": "center",
+      "animation": "pop",
+      "motionDuration": 0.35,
+      "fontSize": 84,
+      "align": "left",
+      "font": "display",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "fc0bb22c-e82a-4054-988d-b97791943973",
+      "text": "THE IMAGE THAT CALL MADE \u00b7 Z-IMAGE TURBO \u00b7 720P",
+      "start": 3.6269400000000047,
+      "end": 4.661375000000007,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "scramble",
+      "fontSize": 28,
+      "align": "left",
+      "font": "mono",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "d0cce6ea-563d-479d-9443-4f17e88cb7e5",
+      "text": "ON THE BEAT,",
+      "start": 4.871510000000001,
+      "end": 6.086800000000007,
+      "style": "headline",
+      "position": "top",
+      "animation": "slam",
+      "fontSize": 100,
+      "font": "display",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "aefab4fb-1e39-4504-a3ac-024808ca7699",
+      "text": "SLAM \u00b7 GLITCH \u00b7 SCRAMBLE \u00b7 POP",
+      "start": 4.871510000000001,
+      "end": 5.845575000000004,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "scramble",
+      "fontSize": 28,
+      "align": "left",
+      "font": "mono",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "cc4f83fb-37fd-4602-9488-987a6e67e23f",
+      "text": "ON THE BEAT,",
+      "start": 6.106800000000007,
+      "end": 7.280280000000008,
+      "style": "headline",
+      "position": "top",
+      "animation": "glitch",
+      "fontSize": 100,
+      "font": "display",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "cb2e6c90-2d22-44c3-8302-89b0344ba0a6",
+      "text": "WHIP \u00b7 ZOOM \u00b7 FLASH",
+      "start": 6.048749999999998,
+      "end": 7.028615000000009,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "scramble",
+      "fontSize": 28,
+      "align": "left",
+      "font": "mono",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "1dc2735f-15ad-4fa7-a1b2-3f9b9f91a3e5",
+      "text": "CUT TO THE BEAT.",
+      "start": 7.300280000000008,
+      "end": 8.783500000000004,
+      "style": "headline",
+      "position": "top",
+      "animation": "slam",
+      "fontSize": 100,
+      "font": "display",
+      "box": "highlight",
+      "tilt": -3,
+      "color": "#d5eb94"
+    },
+    {
+      "id": "cf98a916-2a22-4156-9126-f530c01b1eca",
+      "text": "THIS FILM WAS CUT IN AFTERTAKE",
+      "start": 7.421019999999999,
+      "end": 8.794475000000006,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "scramble",
+      "fontSize": 28,
+      "align": "left",
+      "font": "mono",
+      "color": "#f3f1e9"
+    }
+  ],
+  "audio": [],
+  "sourceVolume": 0,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 8.833333333333334,
+  "createdAt": "2026-10-20T23:42:17.496Z",
+  "output": "/api/films/950e9e6a-2ba9-485e-9bae-a839e8432c8a/video"
+}

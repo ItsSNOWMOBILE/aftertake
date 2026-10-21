@@ -1,4 +1,9 @@
-import { videoDimensions, videoPrompt, type VideoRequest } from '../src/video-generation.js';
+import {
+  videoDimensions,
+  videoModelDimensions,
+  videoPrompt,
+  type VideoRequest,
+} from '../src/video-generation.js';
 import { inpaintModelFiles } from './ltx-models.js';
 
 export const videoAudioModel = 'ltx-2.5-audio-vae-bf16.safetensors';
@@ -24,6 +29,7 @@ export function videoRequirements() {
       'LTXVAudioVAEDecode',
       'AftertakeFilmGrade',
       'AftertakeSaveVideo',
+      'ImageCrop',
     ],
     menus: [
       ['UnetLoaderGGUF', 'unet_name', inpaintModelFiles.diffusion],
@@ -39,6 +45,7 @@ export function buildVideoWorkflow(
   request: VideoRequest,
 ): Record<string, { class_type: string; inputs: Record<string, unknown> }> {
   const d = videoDimensions(request),
+    model = videoModelDimensions(request),
     n = (class_type: string, inputs: Record<string, unknown>) => ({ class_type, inputs });
   const graph: ReturnType<typeof buildVideoWorkflow> = {
     '1': n('UnetLoaderGGUF', { unet_name: inpaintModelFiles.diffusion }),
@@ -49,8 +56,8 @@ export function buildVideoWorkflow(
     '6': n('ConditioningZeroOut', { conditioning: ['5', 0] }),
     '7': n('LTXVConditioning', { positive: ['5', 0], negative: ['6', 0], frame_rate: d.fps }),
     '8': n('EmptyLTXVLatentVideo', {
-      width: d.width,
-      height: d.height,
+      width: model.width,
+      height: model.height,
       length: d.frames,
       batch_size: 1,
     }),
@@ -93,6 +100,16 @@ export function buildVideoWorkflow(
       recipe_json: JSON.stringify(request),
     }),
   };
+  if (model.width !== d.width || model.height !== d.height) {
+    graph['23'] = n('ImageCrop', {
+      image: ['19', 0],
+      width: d.width,
+      height: d.height,
+      x: (model.width - d.width) / 2,
+      y: (model.height - d.height) / 2,
+    });
+    graph['20'].inputs.images = ['23', 0];
+  }
   if (request.sound) {
     graph['22'] = n('LTXVAudioVAEDecode', { samples: ['18', 1], audio_vae: ['4', 0] });
     graph['21'].inputs.generated_audio = ['22', 0];

@@ -1,0 +1,144 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "e9707961-0302-4d67-82e0-e20d9848e4f2",
+  "request": {
+    "format": "aftertake-image/1",
+    "name": "Cafe recast · silver hair · seed 610302",
+    "prompt": "Photorealistic portrait of a fictional woman in her forties with silver shoulder-length hair and freckles, wearing a dark green knit sweater, soft daylight, neutral background, head and shoulders, sharp focus.",
+    "seed": 610302,
+    "aspect": "portrait",
+    "resolution": "720p",
+    "style": "none"
+  },
+  "workflow": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "z_image_turbo_bf16.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen_3_4b.safetensors",
+        "type": "lumina2",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ae.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "ModelSamplingAuraFlow",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "shift": 3
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "Photorealistic portrait of a fictional woman in her forties with silver shoulder-length hair and freckles, wearing a dark green knit sweater, soft daylight, neutral background, head and shoulders, sharp focus."
+      }
+    },
+    "6": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "EmptySD3LatentImage",
+      "inputs": {
+        "width": 720,
+        "height": 1280,
+        "batch_size": 1
+      }
+    },
+    "17": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "4",
+          0
+        ],
+        "seed": 610302,
+        "steps": 8,
+        "cfg": 1,
+        "sampler_name": "res_multistep",
+        "scheduler": "simple",
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "latent_image": [
+          "7",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "21": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "filename_prefix": "aftertake/imagine"
+      }
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-21T04:54:31.358Z",
+  "updatedAt": "2026-10-21T04:54:59.606Z",
+  "jobId": "ee6cb652-15f9-4086-9f74-aa9b05d1785a",
+  "stage": "Ready to edit or animate",
+  "clip": {
+    "id": "e9707961-0302-4d67-82e0-e20d9848e4f2",
+    "name": "Cafe recast · silver hair · seed 610302",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "a0c50b7a9452424dbde9d545381262dc5dcb45d2f45dc92d13347326f4ccbeb0",
+    "url": "/media/e9707961-0302-4d67-82e0-e20d9848e4f2.png"
+  }
+}

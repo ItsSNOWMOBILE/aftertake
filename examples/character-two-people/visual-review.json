@@ -1,0 +1,40 @@
+{
+  "format": "aftertake-character-visual-review/1",
+  "status": "failed-visual-validation",
+  "bothPeopleLookRightInEveryFrame": false,
+  "reviewedEveryFrameVia": "review/all-target-heads.jpg and review/all-native-frames.jpg",
+  "nativeFramesInspected": [
+    0,
+    24,
+    48,
+    72
+  ],
+  "findings": [
+    "The intended background man remains black-haired and in his original black jacket; intended beard and mustard/grey wardrobe are not convincingly transferred across the reviewed73-frame contact.",
+    "Foreground woman face and hair remain visually recognizable and stable.",
+    "A clear unwanted mustard-yellow patch appears on the foreground woman left shoulder late in the shot, most obvious in native frame72.",
+    "The base SAM mask excludes the woman; the32px expanded final blend reaches her shoulder as the seated man becomes occluded."
+  ],
+  "lateShoulderArtifactFramesAboveDiagnosticThreshold": [
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72
+  ],
+  "diagnosticNote": "Frame57\u201372 range is supported by decoded fixed-ROI differences and native review. This is not an exact semantic segmentation metric.",
+  "technicalSuccessIsNotVisualSuccess": true,
+  "chainCounterMeaning": "Two completed replacement operations in the recorded ancestry; this is not proof that the second identity succeeded visually.",
+  "possibleNextTest": "A separately recorded ordinary-app prompt retry can identify the seated man on far left explicitly. No retry has been submitted by this exporter."
+}

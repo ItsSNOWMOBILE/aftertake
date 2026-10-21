@@ -11,6 +11,7 @@ import {
   type CharacterJob,
 } from '../src/character.js';
 import { clipMediaRoute } from './generation-tools.js';
+import { estimateTable } from '../src/render-estimate.js';
 type Result = { data: any; images?: { data: string; mimeType: string }[] };
 type Register = (
   name: string,
@@ -38,6 +39,8 @@ function summary(job: CharacterJob) {
     jobId: job.jobId,
     requestKey: job.requestKey,
     selection: job.selection,
+    repair: job.repair,
+    protection: job.protection,
     clip: job.clip,
     request: job.request,
   };
@@ -74,15 +77,18 @@ export function registerCharacterTools({
           renderEngine,
           clips,
           jobs: jobs.slice(0, 25).map(summary),
+          // Usual time to track a person and to replace them; it costs only local GPU time.
+          expected: estimateTable(jobs, (key) => key.startsWith('character')),
           workflow: [
             'Use one continuous source shot, 1–15 seconds. Select points on one person; exclusion points disambiguate other people.',
             'Choose resolution 480 (default, up to 0.5 MP) or 768 (up to 1 MP) before tracking. Higher resolution uses more memory; the selection reports its actual size. Generation retains the reviewed selection resolution.',
             'Call aftertake_track_character with a stable requestId, then inspect its real tracked overlay with aftertake_inspect_character.',
-            'Reject missing limbs, other selected people or lost tracking. Make a deliberate new selection if necessary.',
+            'Reject missing limbs, other selected people or lost tracking. For lost frames or limbs that flicker out for a frame or two, aftertake_character_action repair writes a repaired selection; inspect it, then use its id. Otherwise make a deliberate new selection.',
             'Use the original primary photo directly. An optional faceBox crops the real head; it does not generate a new face. The primary photo controls reference clothing.',
             'Optionally add up to seven identityReferences from different original photos of the same person. Each has its own image reference and optional faceBox. Supporting photos provide identity detail only; they do not control clothing or motion. Extra references use more memory and do not guarantee better likeness.',
             'Call aftertake_replace_character with the inspected mask hash and a separate stable requestId. Timeouts require status/reconciliation, not a new request.',
             'Inspect the resulting clip for likeness, hands, occlusions and continuation joins. Technical checks do not certify appearance.',
+            'To swap several people in one shot, replace one person, then track the next person in that completed take: use its clip as the selection source with trimStart 0. Each pass composites only inside its own mask, so people already swapped stay as they are unless the masks overlap. Give each pass its own requestId.',
             'A completed take is a studio clip. Inspect or promote its clipId with the existing studio-to-film tools, then edit it in the same film plan.',
           ],
         },
@@ -141,8 +147,8 @@ export function registerCharacterTools({
   );
   tool(
     'aftertake_character_action',
-    'Cancel active character work or reconcile an uncertain submission/output download using its original record and SDK key. Does not create a replacement job.',
-    z.object({ id: uuid, action: z.enum(['cancel', 'reconcile']) }),
+    'Cancel active character work, reconcile an uncertain submission/output download using its original record and SDK key, or repair a completed selection. Repair runs on the CPU: it fills frames where tracking lost the person (gaps up to half a second) and brief dropouts, only ever adding to the mask, and returns a new selection to inspect before replacing. protect, on a finished take, puts objects that are clearly in front of the person (a cup, a microphone, a railing) back from the source using local depth on the Neural Engine, an NPU, DirectML or the CPU; it runs in the background as a new take, so poll aftertake_character_status with the returned id. Never starts a GPU generation.',
+    z.object({ id: uuid, action: z.enum(['cancel', 'reconcile', 'repair', 'protect']) }),
     async (input) => ({
       data: summary(await api<CharacterJob>(`/api/characters/${input.id}/${input.action}`, {})),
     }),

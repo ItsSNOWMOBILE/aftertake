@@ -1,0 +1,144 @@
+{
+  "format": "aftertake-example-model-provenance/1",
+  "models": [
+    {
+      "repository": "Comfy-Org/Wan-Animate-2",
+      "revision": "e7181fe1896b7f2ce34120d1a3663413548240d7",
+      "path": "vae/Wan2_1_VAE_bf16.safetensors",
+      "category": "vae",
+      "size": 253806278,
+      "sha256": "1ab9a32cc2c740f6e39d80d367ce5dcc28db8c71b79b28670546b8973e9d75f9",
+      "license": "apache-2.0",
+      "pinManifest": "docs/models-motion-transfer.json",
+      "file": "Wan2_1_VAE_bf16.safetensors",
+      "publisherLicense": {
+        "license": "apache-2.0",
+        "verifiedRevision": "e7181fe1896b7f2ce34120d1a3663413548240d7",
+        "source": "https://huggingface.co/Comfy-Org/Wan-Animate-2/blob/e7181fe1896b7f2ce34120d1a3663413548240d7/README.md"
+      },
+      "pinnedDownload": "https://huggingface.co/Comfy-Org/Wan-Animate-2/resolve/e7181fe1896b7f2ce34120d1a3663413548240d7/vae/Wan2_1_VAE_bf16.safetensors"
+    },
+    {
+      "repository": "Comfy-Org/Wan-Animate-2",
+      "revision": "e7181fe1896b7f2ce34120d1a3663413548240d7",
+      "path": "clip_vision/clip_vision_h.safetensors",
+      "category": "clip_vision",
+      "size": 1264219396,
+      "sha256": "64a7ef761bfccbadbaa3da77366aac4185a6c58fa5de5f589b42a65bcc21f161",
+      "license": "apache-2.0",
+      "pinManifest": "docs/models-motion-transfer.json",
+      "file": "clip_vision_h.safetensors",
+      "publisherLicense": {
+        "license": "apache-2.0",
+        "verifiedRevision": "e7181fe1896b7f2ce34120d1a3663413548240d7",
+        "source": "https://huggingface.co/Comfy-Org/Wan-Animate-2/blob/e7181fe1896b7f2ce34120d1a3663413548240d7/README.md"
+      },
+      "pinnedDownload": "https://huggingface.co/Comfy-Org/Wan-Animate-2/resolve/e7181fe1896b7f2ce34120d1a3663413548240d7/clip_vision/clip_vision_h.safetensors"
+    },
+    {
+      "repository": "Comfy-Org/Wan-Animate-2",
+      "revision": "e7181fe1896b7f2ce34120d1a3663413548240d7",
+      "path": "text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "category": "text_encoders",
+      "size": 6735906897,
+      "sha256": "c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68",
+      "license": "apache-2.0",
+      "pinManifest": "docs/models-motion-transfer.json",
+      "file": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "publisherLicense": {
+        "license": "apache-2.0",
+        "verifiedRevision": "e7181fe1896b7f2ce34120d1a3663413548240d7",
+        "source": "https://huggingface.co/Comfy-Org/Wan-Animate-2/blob/e7181fe1896b7f2ce34120d1a3663413548240d7/README.md"
+      },
+      "pinnedDownload": "https://huggingface.co/Comfy-Org/Wan-Animate-2/resolve/e7181fe1896b7f2ce34120d1a3663413548240d7/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors"
+    },
+    {
+      "repository": "Comfy-Org/Wan-Animate-2",
+      "revision": "e7181fe1896b7f2ce34120d1a3663413548240d7",
+      "path": "diffusion_models/wan_animate_2_distill_int8_convrot.safetensors",
+      "category": "diffusion_models",
+      "size": 16653175528,
+      "sha256": "d2e566ecac3f164cb1a6b63dc7d868d6678c9affa49fbceb3abe4f9458f89c8a",
+      "license": "apache-2.0",
+      "pinManifest": "docs/models-motion-transfer.json",
+      "file": "wan_animate_2_distill_int8_convrot.safetensors",
+      "publisherLicense": {
+        "license": "apache-2.0",
+        "verifiedRevision": "e7181fe1896b7f2ce34120d1a3663413548240d7",
+        "source": "https://huggingface.co/Comfy-Org/Wan-Animate-2/blob/e7181fe1896b7f2ce34120d1a3663413548240d7/README.md"
+      },
+      "pinnedDownload": "https://huggingface.co/Comfy-Org/Wan-Animate-2/resolve/e7181fe1896b7f2ce34120d1a3663413548240d7/diffusion_models/wan_animate_2_distill_int8_convrot.safetensors"
+    }
+  ],
+  "sourceGenerationModels": {
+    "textVideo": [
+      {
+        "repository": "unsloth/LTX-2.5-GGUF",
+        "revision": "ac3c540c6025903784336e99b2dc179385c4c3b7",
+        "path": "distilled/ltx-2.5-22b-distilled-Q4_K_M.gguf",
+        "category": "diffusion_models",
+        "size": 13584703872,
+        "sha256": "ba40d53770314e69e88361661e55c6cc3b12a363646ba2ea53c8bcd459b66747",
+        "license": "other"
+      },
+      {
+        "repository": "unsloth/LTX-2.5-GGUF",
+        "revision": "ac3c540c6025903784336e99b2dc179385c4c3b7",
+        "path": "text_encoders/gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+        "category": "text_encoders",
+        "size": 26263858182,
+        "sha256": "ef7243612fdae7a75cb4d5cee9433e81380675fb6c213bd98ae74a9cd16561d1",
+        "license": "other"
+      },
+      {
+        "repository": "unsloth/LTX-2.5-GGUF",
+        "revision": "ac3c540c6025903784336e99b2dc179385c4c3b7",
+        "path": "vae/ltx-2.5-video-vae-conv-bf16.safetensors",
+        "category": "vae",
+        "size": 1452269922,
+        "sha256": "685b06ee3d9b2039647698fc4ea33175112462fc374e2777312c907897dfce8d",
+        "license": "other"
+      },
+      {
+        "repository": "unsloth/LTX-2.5-GGUF",
+        "revision": "ac3c540c6025903784336e99b2dc179385c4c3b7",
+        "path": "vae/ltx-2.5-audio-vae-bf16.safetensors",
+        "category": "vae",
+        "size": 364866540,
+        "sha256": "c52733d37f6a7fb7949c3dc0fb468c6cb2169e4d836983a73babb9f0d54837a5",
+        "license": "other"
+      }
+    ],
+    "imageGeneration": [
+      {
+        "repository": "Comfy-Org/z_image_turbo",
+        "revision": "6fc90a3b1b653e935a0d175e260736de25b84df5",
+        "path": "split_files/diffusion_models/z_image_turbo_bf16.safetensors",
+        "category": "diffusion_models",
+        "size": 12309866400,
+        "sha256": "2407613050b809ffdff18a4ac99af83ea6b95443ecebdf80e064a79c825574a6",
+        "license": "apache-2.0"
+      },
+      {
+        "repository": "Comfy-Org/z_image_turbo",
+        "revision": "6fc90a3b1b653e935a0d175e260736de25b84df5",
+        "path": "split_files/text_encoders/qwen_3_4b.safetensors",
+        "category": "text_encoders",
+        "size": 8044982048,
+        "sha256": "6c671498573ac2f7a5501502ccce8d2b08ea6ca2f661c458e708f36b36edfc5a",
+        "license": "apache-2.0"
+      },
+      {
+        "repository": "Comfy-Org/z_image_turbo",
+        "revision": "6fc90a3b1b653e935a0d175e260736de25b84df5",
+        "path": "split_files/vae/ae.safetensors",
+        "category": "vae",
+        "size": 335304388,
+        "sha256": "afc8e28272cd15db3919bacdb6918ce9c1ed22e96cb12c4d5ed0fba823529e38",
+        "license": "apache-2.0"
+      }
+    ],
+    "note": "Pinned model metadata from the application. Weight files are not included. Model licenses apply separately from the application MIT license."
+  },
+  "note": "Pins and hashes come from the repository model manifests; publisher cards identify model-specific license terms. MIT covers application code, not every model weight. Do not substitute private media IDs when replaying; reimport the included media and rebind IDs."
+}

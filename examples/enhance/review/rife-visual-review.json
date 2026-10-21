@@ -1,0 +1,51 @@
+{
+  "format": "aftertake-rife-visual-review/1",
+  "method": "Visual inspection of actual full-frame and native-size water/edge contact sheets; no real-time playback claim.",
+  "outputs": [
+    {
+      "id": "13fc705c-c872-4fb9-b2c4-4dffb3126533",
+      "multiplier": 2,
+      "resultSha256": "00aeaf9195e14c8f79871e0f568711cdeee6324698b9d0874e5c9fa8a71eb4f5",
+      "framesInspected": 15,
+      "actualInterstitialFramesInspected": 5
+    },
+    {
+      "id": "3dbee1e6-7003-4c7e-a6d0-db69b4c61f93",
+      "multiplier": 4,
+      "resultSha256": "8bd620eac9a8898c34bb6db28f57c3228298ecab8b52b9c27411bec77a90cc21",
+      "framesInspected": 25,
+      "actualInterstitialFramesInspected": 15
+    }
+  ],
+  "sourceIntervals": [
+    [
+      12,
+      13
+    ],
+    [
+      24,
+      25
+    ],
+    [
+      48,
+      49
+    ],
+    [
+      72,
+      73
+    ],
+    [
+      90,
+      91
+    ]
+  ],
+  "observations": [
+    "No obvious new tearing or gross lighthouse/rock geometry break observed in the sampled intervals.",
+    "Wave movement progresses between endpoints; fine foam texture is somewhat soft in intervening frames."
+  ],
+  "limitations": [
+    "Five brief sampled intervals cannot certify all output frames.",
+    "Human real-time playback not fully assessed.",
+    "This generated source contains its own model artifacts; interpolation does not establish physical accuracy."
+  ]
+}

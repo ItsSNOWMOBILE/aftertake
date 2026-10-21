@@ -1,0 +1,38 @@
+[
+  {
+    "repository": "Comfy-Org/SeedVR2",
+    "revision": "df48879708206a403d2a61acd55578c2e80fd233",
+    "path": "diffusion_models/seedvr2_3b_int8_convrot.safetensors",
+    "category": "diffusion_models",
+    "size": 3458259704,
+    "sha256": "c3dec8bcc5916843a8a858572970597462e1f2dc598d6dfd818f6cd40f53a157",
+    "license": "apache-2.0"
+  },
+  {
+    "repository": "Comfy-Org/SeedVR2",
+    "revision": "df48879708206a403d2a61acd55578c2e80fd233",
+    "path": "vae/seedvr2_ema_vae_fp16.safetensors",
+    "category": "vae",
+    "size": 501324814,
+    "sha256": "20678548f420d98d26f11442d3528f8b8c94e57ee046ef93dbb7633da8612ca1",
+    "license": "apache-2.0"
+  },
+  {
+    "repository": "Comfy-Org/frame_interpolation",
+    "revision": "219da3c9d8c357ceaf457fc1d5932c6e861b8dee",
+    "path": "frame_interpolation/rife_v4.26.safetensors",
+    "category": "frame_interpolation",
+    "size": 22674688,
+    "sha256": "151874592c877740e5db11522f4514df569eeafb0a0fcb2696f16e9e8d317c94",
+    "license": "mit"
+  },
+  {
+    "repository": "Comfy-Org/ace_step_1.5_ComfyUI_files",
+    "revision": "6707deb277e9e0907fd9c14ce6b6f1d695c6a3fc",
+    "path": "checkpoints/ace_step_1.5_turbo_aio.safetensors",
+    "category": "checkpoints",
+    "size": 10025478736,
+    "sha256": "67b0f43aa5c51c840bd0228e6a935d8ff416ec87e5df2fc0637da17a561252bc",
+    "license": "apache-2.0"
+  }
+]

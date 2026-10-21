@@ -1,0 +1,46 @@
+{
+  "id": "ad54a6fb-0400-48a4-a2af-d8f3c46a74a2",
+  "name": "character-h3-high-v2 · 720p delivery",
+  "aspect": "landscape",
+  "resolution": "720p",
+  "shots": [
+    {
+      "assetId": "8b2b4806-0bd4-41d9-b511-72cee04daefa",
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 3.0416666666666665,
+      "title": "character-h3-high-v2-native.mp4",
+      "sha256": "b47c2faa8dafc83f9d78a90bfda866b075a7ab1268abc5a8d923ff5d49eaf03c",
+      "asset": {
+        "kind": "video",
+        "duration": 3.0416666666666665,
+        "width": 1344,
+        "height": 736,
+        "id": "8b2b4806-0bd4-41d9-b511-72cee04daefa",
+        "name": "character-h3-high-v2-native.mp4",
+        "extension": ".mp4",
+        "sha256": "b47c2faa8dafc83f9d78a90bfda866b075a7ab1268abc5a8d923ff5d49eaf03c",
+        "url": "/api/films/assets/8b2b4806-0bd4-41d9-b511-72cee04daefa/media",
+        "createdAt": "2026-10-20T20:25:38.684Z"
+      }
+    }
+  ],
+  "requestKey": "source-upgrade-job3-character-h3-high-v2-9908d5e9378985a2328e3303",
+  "requestDigest": "0c8e2d2e4d11b17ed8d6a2aca65499c21ffa46506afd0ef67e48aad31756fe16",
+  "titles": [],
+  "graphics": [],
+  "audio": [],
+  "sourceVolume": 1,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 3.0416666666666665,
+  "createdAt": "2026-10-20T20:25:38.728Z",
+  "output": "/api/films/ad54a6fb-0400-48a4-a2af-d8f3c46a74a2/video"
+}

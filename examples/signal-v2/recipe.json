@@ -1,0 +1,50 @@
+{
+  "format": "aftertake/1",
+  "name": "signal-v2",
+  "clip": {
+    "id": "fa39831b-2f47-44e2-8136-a39d59e08f09",
+    "name": "B - Dancer - seed 508021",
+    "sha256": "5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3",
+    "width": 1280,
+    "height": 720,
+    "duration": 5.041666666666667,
+    "url": "/media/fa39831b-2f47-44e2-8136-a39d59e08f09.mp4",
+    "kind": "video",
+    "hasAudio": true
+  },
+  "prompt": "A friendly mint-green knitted teddy bear mascot standing upright against a plain light-gray studio background. The bear performs the gesture from the driving video. Soft yarn texture and cream-colored belly remain consistent. One full-body shot, fixed camera.",
+  "cue": {
+    "start": 0.4,
+    "end": 2.9,
+    "fade": 0.4,
+    "feather": 0.055,
+    "anchor": 0,
+    "strokes": []
+  },
+  "seed": 2026,
+  "quality": "final",
+  "resolution": "720p",
+  "trimStart": 0,
+  "pipeline": "motion-transfer",
+  "cinema": {
+    "movement": "locked",
+    "lens": "natural",
+    "lighting": "source",
+    "palette": "source"
+  },
+  "transfer": {
+    "reference": {
+      "id": "ed8d9a72-4784-4dff-a29e-901a00e28a6c",
+      "name": "Mint knitted teddy motion reference",
+      "sha256": "95f7b079dd08a9b0a25a1c66a0645a102cef60eaad746199dd5f627cfae6f99c",
+      "width": 1280,
+      "height": 720,
+      "duration": 1,
+      "url": "/media/ed8d9a72-4784-4dff-a29e-901a00e28a6c.png",
+      "kind": "image",
+      "hasAudio": false
+    },
+    "motionCaption": "A street dancer in a bright orange hoodie and white sneakers performs sharp popping and locking moves in an empty concrete parking garage. The full body stays in frame and the camera remains locked off.",
+    "scope": "frame"
+  }
+}

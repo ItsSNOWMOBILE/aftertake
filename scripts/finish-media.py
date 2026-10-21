@@ -17,7 +17,7 @@ import sys
 
 import av
 import numpy as np
-from PIL import Image, ImageFilter, ImageOps
+from PIL import Image, ImageFilter, ImageOps, ImageStat
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import grading_math as grading
@@ -70,6 +70,156 @@ def is_identity(settings):
     return all(settings[name] == 0 for name in ('exposureEV',) + SIGNED + ('sharpen', 'vignette', 'grain')) and (
         settings['preset'] == 'clean' or settings['lookStrength'] == 0) and all(
             settings.get(name, 0) == 0 for name in ('glowStrength', 'halationStrength', 'chromaticStrength')) and grading.grading_identity(settings)
+
+
+REDACTION_STYLES = {'blur', 'pixelate', 'solid'}
+
+
+def validate_redactions(redactions, clip):
+    """Normalize request redactions; the TypeScript schema mirrors these limits."""
+    if redactions is None:
+        return []
+    if not isinstance(redactions, list) or len(redactions) > 16:
+        raise ValueError('Use at most 16 redactions.')
+    number = lambda value: not isinstance(value, bool) and isinstance(value, (int, float)) and math.isfinite(value)
+    result = []
+    for item in redactions:
+        keys = {'x', 'y', 'width', 'height', 'start', 'end', 'style', 'match'}
+        if not isinstance(item, dict) or set(item) - keys or not {'x', 'y', 'width', 'height'} <= set(item):
+            raise ValueError('Each redaction needs a box.')
+        box = {**{'start': 0, 'end': None, 'style': 'blur', 'match': None}, **item}
+        if not all(number(box[name]) for name in ('x', 'y', 'width', 'height', 'start')):
+            raise ValueError('A redaction box must use finite numbers.')
+        if (not 0 <= box['x'] <= 1 or not 0 <= box['y'] <= 1 or not 0 < box['width'] <= 1 or not 0 < box['height'] <= 1 or
+                box['x'] + box['width'] > 1 + 1e-9 or box['y'] + box['height'] > 1 + 1e-9):
+            raise ValueError('Keep each redaction box inside the frame.')
+        if (not 0 <= box['start'] <= 600 or box['end'] is not None and
+                (not number(box['end']) or not box['start'] < box['end'] <= 600)):
+            raise ValueError('End a redaction after it starts, within ten minutes.')
+        if box['style'] not in REDACTION_STYLES:
+            raise ValueError('Use a blur, pixelate or solid redaction.')
+        match = box['match']
+        if match is not None:
+            if not isinstance(match, dict) or set(match) - {'at', 'threshold'} or 'at' not in match:
+                raise ValueError('A matching redaction needs a sample time.')
+            match = {'threshold': .9, **match}
+            if (not number(match['at']) or not 0 <= match['at'] < clip['duration'] or
+                    not number(match['threshold']) or not .5 <= match['threshold'] <= 1):
+                raise ValueError('Take the match sample inside the clip, with a threshold from 0.5 to 1.')
+            box['match'] = match
+        result.append(box)
+    return result
+
+
+def pixel_box(box, width, height):
+    left, top = round(box['x'] * width), round(box['y'] * height)
+    right, bottom = round((box['x'] + box['width']) * width), round((box['y'] + box['height']) * height)
+    return left, top, max(left + 1, min(width, right)), max(top + 1, min(height, bottom))
+
+
+def prepare_redactions(redactions, sample_frame):
+    """Cut each matching redaction's grayscale sample from the frame at its time."""
+    context = []
+    for box in redactions:
+        template = None
+        if box['match']:
+            image = sample_frame(box['match']['at'])
+            left, top, right, bottom = pixel_box(box, image.width, image.height)
+            if right - left < 4 or bottom - top < 4:
+                raise ValueError('Draw a match sample at least four pixels wide and tall.')
+            template = np.asarray(image.convert('L').crop((left, top, right, bottom)), dtype=np.float32)
+            if float(template.std()) < 1:
+                raise ValueError('The match sample is flat. Draw it around the detail to hide.')
+        context.append({'box': box, 'template': template, 'frames': 0, 'boxes': 0})
+    return context
+
+
+def match_scores(gray, template):
+    """Normalized correlation of the sample at every position, as OpenCV's TM_CCOEFF_NORMED.
+
+    OpenCV is used when the runtime has it; the NumPy path keeps "Hide every match"
+    working in the small media runtime, which does not install it.
+    """
+    try:
+        import cv2
+        return cv2.matchTemplate(gray, template, cv2.TM_CCOEFF_NORMED)
+    except ImportError:
+        pass
+    image, sample = gray.astype(np.float64), template.astype(np.float64)
+    height, width = sample.shape
+    sample = sample - sample.mean()
+    # Circular correlation through the FFT has no wrap-around at the valid positions.
+    spectrum = np.fft.rfft2(image) * np.conj(np.fft.rfft2(sample, s=image.shape))
+    numerator = np.fft.irfft2(spectrum, s=image.shape)[:image.shape[0] - height + 1, :image.shape[1] - width + 1]
+    def window_sums(values):
+        total = np.pad(values, ((1, 0), (1, 0))).cumsum(0).cumsum(1)
+        return total[height:, width:] - total[:-height, width:] - total[height:, :-width] + total[:-height, :-width]
+    count = height * width
+    spread = np.maximum(window_sums(image * image) - window_sums(image) ** 2 / count, 0)
+    denominator = np.sqrt(spread * float((sample * sample).sum()))
+    scores = np.zeros_like(numerator)
+    np.divide(numerator, denominator, out=scores, where=denominator > 1e-6 * count)
+    return np.clip(scores, -1, 1).astype(np.float32)
+
+
+def find_matches(gray, template, threshold):
+    """Every non-overlapping place the sample appears, best first."""
+    height, width = template.shape
+    if gray.shape[0] < height or gray.shape[1] < width:
+        return []
+    scores = match_scores(gray, template)
+    scores[~np.isfinite(scores)] = -1
+    found = []
+    for _ in range(256):
+        y, x = np.unravel_index(int(np.argmax(scores)), scores.shape)
+        if scores[y, x] < threshold:
+            break
+        found.append((int(x), int(y), int(x) + width, int(y) + height))
+        scores[max(0, y - height // 2):y + height // 2 + 1, max(0, x - width // 2):x + width // 2 + 1] = -1
+    return found
+
+
+def hide(image, box, style):
+    left, top, right, bottom = box
+    region = image.crop(box)
+    size = min(right - left, bottom - top)
+    if style == 'blur':
+        # Strong enough that text of the box's height cannot be read back.
+        region = region.filter(ImageFilter.GaussianBlur(max(4, size * .6))).filter(ImageFilter.GaussianBlur(max(4, size * .6)))
+    elif style == 'pixelate':
+        block = max(6, size // 3)
+        small = region.resize((max(1, (right - left) // block), max(1, (bottom - top) // block)), Image.Resampling.BOX)
+        region = small.resize(region.size, Image.Resampling.NEAREST)
+    else:
+        region = Image.new('RGB', region.size, tuple(round(value) for value in ImageStat.Stat(region).median))
+    image.paste(region, (left, top))
+
+
+def apply_redactions(image, context, seconds):
+    """Hide each active redaction on the source pixels; counts feed the receipt."""
+    if not context:
+        return image
+    image = image.convert('RGB').copy()
+    gray = None
+    for item in context:
+        box = item['box']
+        if seconds + 1e-9 < box['start'] or box['end'] is not None and seconds >= box['end']:
+            continue
+        if item['template'] is None:
+            boxes = [pixel_box(box, image.width, image.height)]
+        else:
+            if gray is None:
+                gray = np.asarray(image.convert('L'), dtype=np.float32)
+            # Pad matches so anti-aliased edges are hidden too.
+            pad = max(2, round(item['template'].shape[0] * .2))
+            boxes = [(max(0, l - pad), max(0, t - pad), min(image.width, r + pad), min(image.height, b + pad))
+                     for l, t, r, b in find_matches(gray, item['template'], box['match']['threshold'])]
+        for found in boxes:
+            hide(image, found, box['style'])
+        if boxes:
+            item['frames'] += 1
+            item['boxes'] += len(boxes)
+    return image
 
 
 def prepare_grading_context(settings, lut_path=None):
@@ -375,6 +525,7 @@ def process(work):
     if request['format'] != 'aftertake-finishing/1':
         raise ValueError('Use an Aftertake finishing request.')
     settings, clip = validate_settings(request['settings']), request['clip']
+    redactions = validate_redactions(request.get('redactions'), clip)
     if file_hash(source) != clip['sha256']:
         raise ValueError('The original media changed. Import it again.')
     lut_path = work.get('resolvedLuts', {}).get(settings['lut']['sha256']) if settings['lutStrength'] else None
@@ -388,23 +539,27 @@ def process(work):
         raise ValueError('Choose a preview time inside the source clip.')
     image = image_source(source)
     clock, has_audio = None, False
+    identity = is_identity(settings) and not redactions
     if image is not None:
         check_dimensions(image, clip)
         if mode == 'preview' and preview_time != 0:
             raise ValueError('A still image has a single frame at time zero.')
-        if mode == 'finish' and is_identity(settings):
+        hidden = prepare_redactions(redactions, lambda seconds: image)
+        if mode == 'finish' and identity:
             shutil.copyfile(source, output)
         else:
-            apply_finishing(image, settings, grading_context=grading_context).save(output, format='PNG')
+            apply_finishing(apply_redactions(image, hidden, 0), settings,
+                            grading_context=grading_context).save(output, format='PNG')
         kind, duration = 'image', 1
     else:
         kind = 'video'
-        if mode == 'finish' and not is_identity(settings) and (clip['width'] % 2 or clip['height'] % 2):
+        hidden = prepare_redactions(redactions, lambda seconds: preview_video(source, clip, seconds)[0])
+        if mode == 'finish' and not identity and (clip['width'] % 2 or clip['height'] % 2):
             raise ValueError('Import video with even dimensions for H.264 finishing.')
         encoder, encoded_stream = None, None
         pending_durations = {}
         try:
-            if mode == 'finish' and not is_identity(settings):
+            if mode == 'finish' and not identity:
                 encoder = av.open(str(output), 'w', format='mp4')
             def mux_packet(packet):
                 # Encoders infer the final packet duration from average_rate,
@@ -428,6 +583,7 @@ def process(work):
                     encoded_stream.time_base = time_base
                     encoded_stream.codec_context.time_base = time_base
                     encoded_stream.options = {'crf': '17', 'preset': 'fast', 'bf': '0'}
+                frame_image = apply_redactions(frame_image, hidden, float(timestamp))
                 rendered = av.VideoFrame.from_image(apply_finishing(frame_image, settings, index, grading_context))
                 pts, ticks = timestamp / time_base, frame_duration / time_base
                 if pts.denominator != 1 or ticks.denominator != 1:
@@ -439,7 +595,8 @@ def process(work):
             if mode == 'preview':
                 selected, selected_index = preview_video(source, clip, preview_time)
                 duration = clip['duration']
-                apply_finishing(selected, settings, selected_index, grading_context).save(output, format='PNG')
+                apply_finishing(apply_redactions(selected, hidden, preview_time), settings, selected_index,
+                                grading_context).save(output, format='PNG')
             else:
                 clock, has_audio, audio_trim_start = video_frames(source, clip, consume)
                 duration = clock['duration']
@@ -466,7 +623,8 @@ def process(work):
     return {'processor': PROCESSOR, 'sourceSha256': clip['sha256'], 'outputSha256': file_hash(output),
             'width': clip['width'], 'height': clip['height'], 'kind': kind,
             'duration': duration, 'hasAudio': has_audio if mode == 'finish' else False,
-            'identity': is_identity(settings), **({'clock': clock} if clock is not None else {})}
+            'identity': identity, **({'clock': clock} if clock is not None else {}),
+            **({'redactions': [{'frames': item['frames'], 'boxes': item['boxes']} for item in hidden]} if hidden else {})}
 
 
 def main():

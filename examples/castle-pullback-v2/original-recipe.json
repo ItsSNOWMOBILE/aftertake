@@ -1,0 +1,34 @@
+{
+  "format": "aftertake/1",
+  "name": "The tide keeps a secret — current pipeline refresh",
+  "clip": {
+    "id": "b1262e85-c2ba-4334-bc61-8faa573b106d",
+    "name": "Edited frame · Replace the small white lighthouse and adjacent buildings on the cliff",
+    "sha256": "43d829b7bcc252e0c4df8d4080065428534794c159ca7e680d2dc4f315a113fa",
+    "width": 768,
+    "height": 432,
+    "duration": 1,
+    "url": "/media/b1262e85-c2ba-4334-bc61-8faa573b106d.png",
+    "kind": "image",
+    "hasAudio": false
+  },
+  "prompt": "A magnificent ancient stone castle with tall slender towers and warm amber windows stands on a rugged coastal cliff at sunset. Gentle ocean waves roll toward the rocks below. The castle architecture stays stable and solid, the distant horizon remains level, and coastal vegetation moves softly in the breeze. Photorealistic fantasy cinematography, a dramatic cinematic establishing shot.",
+  "cue": {
+    "start": 0,
+    "end": 4,
+    "fade": 0.2,
+    "feather": 0.03,
+    "strokes": []
+  },
+  "seed": 2960,
+  "quality": "final",
+  "trimStart": 0,
+  "pipeline": "cinema",
+  "cinema": {
+    "movement": "pull",
+    "lens": "wide",
+    "lighting": "source",
+    "palette": "source",
+    "guidance": "tracks"
+  }
+}

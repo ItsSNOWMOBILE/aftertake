@@ -1,0 +1,23 @@
+{
+  "format": "aftertake-visual-review/1",
+  "status": "reviewed-with-documented-limitations",
+  "reviewers": [
+    "render agent",
+    "parent agent",
+    "independent reviewer"
+  ],
+  "reviewed": [
+    "nine source-still/result samples frame0 through96",
+    "native720p frame48"
+  ],
+  "strengths": [
+    "lighthouse structure and red/white bands remain recognizable",
+    "visible guided pullback",
+    "wave and foam motion across clip",
+    "no localized patch boundary because this is full-frame animation"
+  ],
+  "limitations": [
+    "the source lightning bolt remains visible unusually long rather than behaving as a brief physical flash",
+    "generative wave detail changes rather than a measured fluid simulation"
+  ]
+}

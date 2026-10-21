@@ -1,0 +1,40 @@
+{
+  "format": "aftertake-two-person-controlled-retry-review/1",
+  "visualPass": true,
+  "intendedPersonReplaced": true,
+  "foregroundPersonPreserved": true,
+  "reviewFrames": [
+    0,
+    24,
+    48,
+    72
+  ],
+  "allFrameContactReviewed": 73,
+  "additionalBoundaryReview": "Detailed actual native crops compare the seated man and foreground shoulder at the four required samples, including the late-frame contamination previously seen at frame72.",
+  "findings": [
+    "The seated far-left man now has the short dark hair, beard, mustard corduroy jacket and grey hoodie from the supplied fictional reference.",
+    "The foreground woman retains her first-pass face, dark curls, cream top and rust jacket. No obvious yellow shoulder contamination is visible in the reviewed native retry samples.",
+    "The replacement persists across the full73-frame temporal contact without a conspicuous identity collapse or abrupt jump in the reviewed samples."
+  ],
+  "limitations": [
+    "The target face is small in the native source; this visual review does not establish pixel-perfect face identity or biometric similarity.",
+    "A full contact sheet screens temporal consistency but cannot exclude every subpixel seam or brief motion artifact.",
+    "The actual requested chain screenshot remains missing because the browser capture timed out; text observations and structural chain evidence are explicitly identified as such."
+  ],
+  "sameSeed": 610202,
+  "changedRequestFields": [
+    "prompt"
+  ],
+  "baselineFailedDataPreserved": true,
+  "normalFilmDelivery": {
+    "result": "result.mp4",
+    "width": 1280,
+    "height": 720,
+    "frames": 73,
+    "fps": 24,
+    "duration": 3.0416666666666665,
+    "sourceVolume": 1,
+    "normalizeAudio": false,
+    "matchedBefore": "../before-720p.mp4"
+  }
+}

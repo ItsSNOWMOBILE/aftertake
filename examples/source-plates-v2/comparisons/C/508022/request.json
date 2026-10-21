@@ -1,0 +1,17 @@
+{
+  "format": "aftertake-text-video/1",
+  "name": "C - Repaint plate - seed 508022",
+  "prompt": "Slow push-in on a dim industrial loft with one huge arched window, dust drifting in the window light, a person sits reading on a sofa in the foreground left, the window shows a plain overcast sky, moody, photoreal, 24 fps. All people are fictional, not based on any real person. No text, subtitles, labels or logos. Natural scene ambience only, no speech or music.",
+  "seed": 508022,
+  "aspect": "landscape",
+  "quality": "final",
+  "resolution": "720p",
+  "seconds": 5,
+  "sound": true,
+  "cinema": {
+    "movement": "push",
+    "lens": "natural",
+    "lighting": "source",
+    "palette": "source"
+  }
+}

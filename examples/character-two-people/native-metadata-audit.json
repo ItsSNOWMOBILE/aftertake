@@ -1,0 +1,48 @@
+{
+  "format": "aftertake-native-mp4-publication-audit/1",
+  "records": [
+    {
+      "file": "before-720p.mp4",
+      "sha256": "383f9ddf9f41ae5d448cc5de4c1cd7f95461cebee229253ebf79200c45201d29",
+      "nativeAppReaderUsed": true,
+      "absolutePathFindings": []
+    },
+    {
+      "file": "native-result.mp4",
+      "sha256": "4e120b5ae89ceaa1ff706de3956f9b82927c0d02b5e8e7ff556660897f94b1ce",
+      "embeddedFormat": "aftertake-character-output/1",
+      "nativeAppReaderUsed": true,
+      "absolutePathFindings": []
+    },
+    {
+      "file": "prepared-source.mp4",
+      "sha256": "f988b90efcc486cb78466fbffc3fc1bdcc7626260123b34a8791c8750c75f8c3",
+      "nativeAppReaderUsed": true,
+      "absolutePathFindings": [],
+      "metadataUnavailable": "The video is missing its executed workflow. Update the Aftertake nodes."
+    },
+    {
+      "file": "result.mp4",
+      "sha256": "2f0ddd50c9d4417f5f079499c94d44ffa696ccfe250b7233995d741b8cf2e855",
+      "nativeAppReaderUsed": true,
+      "absolutePathFindings": []
+    },
+    {
+      "file": "selection-preview.mp4",
+      "sha256": "c824b7710b55c6a2bae5b6d0aaa8094b33423bc8241ac01d7a6acf1e8576a8f9",
+      "embeddedFormat": "aftertake-character-selection-output/1",
+      "nativeAppReaderUsed": true,
+      "absolutePathFindings": []
+    },
+    {
+      "file": "source.mp4",
+      "sha256": "b47c2faa8dafc83f9d78a90bfda866b075a7ab1268abc5a8d923ff5d49eaf03c",
+      "embeddedFormat": "aftertake-character-output/1",
+      "nativeAppReaderUsed": true,
+      "absolutePathFindings": []
+    }
+  ],
+  "nativeFilesUnmodified": true,
+  "readyForPathSafePublication": true,
+  "note": "No silent remux or metadata redaction. If a personal path is found, retain original privately and explicitly label any portable derivative with both original and derived hashes."
+}

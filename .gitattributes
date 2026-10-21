@@ -5,3 +5,8 @@
 *.png binary
 # Preserve the checked release package's exact bytes on every platform.
 examples/make-the-next-take/** -text
+# Keep vendored font licenses byte-identical to their recorded receipts.
+public/fonts/*-OFL.txt -text
+*.cmd text eol=crlf
+*.sh text eol=lf
+*.command text eol=lf

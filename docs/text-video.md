@@ -28,6 +28,7 @@ or prompt enhancer. Those extra features are not exposed here.
 | --- | --- |
 | Draft | 512 × 288 landscape, 288 × 512 portrait, 512 × 512 square |
 | Final | 1024 × 576 landscape, 576 × 1024 portrait, 768 × 768 square |
+| Optional HD output | Select **HD · 720p** or add `resolution: "720p"` to the saved request: 1280 × 720 landscape, 720 × 1280 portrait, 720 × 720 square. Higher memory use; draft/final defaults remain unchanged. |
 | Length | 2–5 seconds of action on the native 8n+1 grid: 49–121 frames at 24 fps; the MP4 lasts one frame longer than the selected action interval |
 | Sound | Joint AV sampling always runs. Keeping sound adds the native decoded audio; silent delivery omits its decoder and track |
 | Camera/lens/light | Inspectable prompt direction, requiring visual review; no geometric camera reconstruction is claimed |
@@ -39,6 +40,20 @@ the server compares the embedded graph/request and decodes the MP4 to verify
 geometry, frame count, zero-origin 24 fps timestamps and the requested sound.
 Generated sound must cover the video with continuous audio timestamps. AAC
 encoding is lossy; audio packet identity is not claimed.
+
+HD output samples the full native resolution. LTX's 32-pixel latent grid uses
+1280 × 736 for landscape (736 × 1280 portrait), followed by an eight-pixel
+crop on both edges of the padded axis inside the saved Comfy workflow. This
+does not enlarge a lower-resolution sample. Z-Image's matching optional
+`resolution: "720p"` image preset samples 1280 × 720 directly.
+
+For an existing 16:9 source, **HD finish** adds the same optional resolution
+to painted edits, camera moves and motion transfer recipes. Existing recipes
+without this field keep their original sizes. Source pixels and paint are
+mapped into the padded model canvas together, and the final video crops back
+to the visible 720p canvas. Tracked camera moves use a 64-pixel model grid.
+Raw takes retain their padded dimensions for saved motion finishing and
+recomposition; those operations remove the padding without stretching it.
 
 **Add to Film** verifies the bytes and reuses an existing identical Film asset.
 **Use as source** opens the video for painted editing or character replacement.

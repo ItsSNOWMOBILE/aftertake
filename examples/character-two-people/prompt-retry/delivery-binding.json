@@ -1,0 +1,24 @@
+{
+  "format": "aftertake-normal-film-delivery/1",
+  "takeId": "65372afb-ec7c-4196-99d5-9348ba57c628",
+  "nativeTake": "take.mp4",
+  "nativeTakeSha256": "06f5477a096f29ae0b1f7c5263cda08ff40da685da57ebf169c1ab9f2a88f2da",
+  "result": "result.mp4",
+  "resultSha256": "8835c957b25b271ce1f119fc096c36e5130a55b7f83062287b8caad3b7a3b8cf",
+  "filmId": "4c71646b-a895-4d62-b03a-9d3fdc8c5be0",
+  "nativeFilmRecordSha256": "4669a5d9c7100bd2bc273b487d1b1efbd21a2ef33ac34304d4912333b353088f",
+  "project": "film-manifest.json",
+  "request": "film-request.json",
+  "before": "../before-720p.mp4",
+  "beforeSha256": "383f9ddf9f41ae5d448cc5de4c1cd7f95461cebee229253ebf79200c45201d29",
+  "framing": {
+    "zoom": 1,
+    "endZoom": 1,
+    "x": 0.5,
+    "y": 0.5,
+    "fit": "cover"
+  },
+  "sourceVolume": 1,
+  "normalizeAudio": false,
+  "note": "Normal app Film export from the actual UI-imported asset. The unchanged baseline prepared source and its identical 720p cover transform are referenced, not exported or duplicated again."
+}

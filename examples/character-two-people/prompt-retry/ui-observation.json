@@ -1,0 +1,15 @@
+{
+  "format": "aftertake-ui-observation/1",
+  "observedBy": "Root agent directly operating the actual app UI",
+  "takeId": "65372afb-ec7c-4196-99d5-9348ba57c628",
+  "chainCountObserved": 2,
+  "chainObservation": "Root directly observed two completed replacement passes, including the original Rooftop H3 v2 pass and this seated-man retry. Actual application ancestry is independently computed in chain-evidence.json.",
+  "filmHandoffObserved": true,
+  "filmStatusText": "Added to film media. Open Film editing to place it in your cut.",
+  "filmAssetMediaShaVerified": true,
+  "screenshotCaptured": true,
+  "isScreenshot": false,
+  "previousScreenshotFailure": "The actual browser screenshot capture timed out after 5 seconds, as reported by the root UI operator. No chain-screenshot.png was fabricated or substituted.",
+  "screenshotFile": "../chain-screenshot.png",
+  "screenshotCapture": "../screenshot-capture.json"
+}

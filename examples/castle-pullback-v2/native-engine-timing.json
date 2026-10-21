@@ -1,0 +1,33 @@
+{
+  "format": "aftertake-comfy-engine-timing/1",
+  "jobId": "f48b2314-ffc8-4883-866f-97c835aaa476",
+  "status": {
+    "status_str": "success",
+    "completed": true,
+    "messages": [
+      [
+        "execution_start",
+        {
+          "prompt_id": "f48b2314-ffc8-4883-866f-97c835aaa476",
+          "timestamp": 1792531667453
+        }
+      ],
+      [
+        "execution_cached",
+        {
+          "nodes": [],
+          "prompt_id": "f48b2314-ffc8-4883-866f-97c835aaa476",
+          "timestamp": 1792531667453
+        }
+      ],
+      [
+        "execution_success",
+        {
+          "prompt_id": "f48b2314-ffc8-4883-866f-97c835aaa476",
+          "timestamp": 1792532208655
+        }
+      ]
+    ]
+  },
+  "executionSeconds": 541.202
+}

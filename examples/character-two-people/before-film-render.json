@@ -1,0 +1,46 @@
+{
+  "id": "d4e044ed-1595-45fa-ad2a-da253889bf10",
+  "name": "Two people swapped · before-720p",
+  "aspect": "landscape",
+  "resolution": "720p",
+  "shots": [
+    {
+      "assetId": "fb8218f9-f930-45e8-83c9-267b15790911",
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 3.0416666666666665,
+      "title": "two-people-prepared-source.mp4",
+      "sha256": "f988b90efcc486cb78466fbffc3fc1bdcc7626260123b34a8791c8750c75f8c3",
+      "asset": {
+        "kind": "video",
+        "duration": 3.0416666666666665,
+        "width": 1344,
+        "height": 736,
+        "id": "fb8218f9-f930-45e8-83c9-267b15790911",
+        "name": "two-people-prepared-source.mp4",
+        "extension": ".mp4",
+        "sha256": "f988b90efcc486cb78466fbffc3fc1bdcc7626260123b34a8791c8750c75f8c3",
+        "url": "/api/films/assets/fb8218f9-f930-45e8-83c9-267b15790911/media",
+        "createdAt": "2026-10-21T03:43:20.480Z"
+      }
+    }
+  ],
+  "requestKey": "job6-before--e15a4c58d2802e69dc8a01a47b567db6",
+  "requestDigest": "b0d41a9226ef7927f271ea04bbab790f70a5846d58077e647a4cb2d769365369",
+  "titles": [],
+  "graphics": [],
+  "audio": [],
+  "sourceVolume": 1,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 3.0416666666666665,
+  "createdAt": "2026-10-21T03:43:20.488Z",
+  "output": "/api/films/d4e044ed-1595-45fa-ad2a-da253889bf10/video"
+}

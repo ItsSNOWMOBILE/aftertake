@@ -1,0 +1,41 @@
+{
+  "format": "aftertake-native-record-bindings/1",
+  "records": [
+    {
+      "publishedFile": "render.json",
+      "nativeRecordId": "dacee4e6-1d78-4ebe-9a76-ec9dcefe66f9",
+      "sha256": "bd50642d8c5f1e217c67e7ad23cf37c5ef6d4876759739a042a950038ccbf06d",
+      "byteIdenticalToLocalNativeRecord": true,
+      "nativeStore": "characters/<recordId>.json"
+    },
+    {
+      "publishedFile": "protected-render.json",
+      "nativeRecordId": "0d16740b-88c0-48b9-8a77-8e423aeae809",
+      "sha256": "5afebcbe522787b556e76a861e420bbdc5f7c81546e3fa491033c39066fa161b",
+      "byteIdenticalToLocalNativeRecord": true,
+      "nativeStore": "characters/<recordId>.json"
+    },
+    {
+      "publishedFile": "selection-render.json",
+      "nativeRecordId": "9f315a8e-53f1-4c7d-98f2-3efb912cf8a8",
+      "sha256": "3a46059cd29fec2e3015db26e957f3992820ce93be404e237a2315cb50b1c5f1",
+      "byteIdenticalToLocalNativeRecord": true,
+      "nativeStore": "characters/<recordId>.json"
+    },
+    {
+      "publishedFile": "reference-generation.json",
+      "nativeRecordId": "e9707961-0302-4d67-82e0-e20d9848e4f2",
+      "sha256": "f212c18a1d65874965375c9ab3de957e60067d48fae4b07fc1a3549cde60bdcc",
+      "byteIdenticalToLocalNativeRecord": true,
+      "nativeStore": "images/<recordId>.json"
+    },
+    {
+      "publishedFile": "source-generation.json",
+      "nativeRecordId": "f48dc6ea-00dd-4984-bdf2-896ea853672d",
+      "sha256": "2d097b6298f9ba32a166920163b9aaa5ef7aea06efe9071481ea2a4993e812f3",
+      "byteIdenticalToLocalNativeRecord": true,
+      "nativeStore": "videos/<recordId>.json"
+    }
+  ],
+  "policy": "Published native records remain byte-identical to durable application records. No private absolute path was substituted; publication audit is recorded separately."
+}

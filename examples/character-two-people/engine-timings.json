@@ -1,0 +1,69 @@
+{
+  "selection": {
+    "jobId": "991a8a23-27ac-49b1-8f30-25345ca47507",
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "991a8a23-27ac-49b1-8f30-25345ca47507",
+            "timestamp": 1792553415476
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "991a8a23-27ac-49b1-8f30-25345ca47507",
+            "timestamp": 1792553415476
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "991a8a23-27ac-49b1-8f30-25345ca47507",
+            "timestamp": 1792553452467
+          }
+        ]
+      ]
+    },
+    "seconds": 36.991
+  },
+  "replacement": {
+    "jobId": "f5c29743-eac7-42ad-b768-6ebec305bc6b",
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "f5c29743-eac7-42ad-b768-6ebec305bc6b",
+            "timestamp": 1792553562617
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "f5c29743-eac7-42ad-b768-6ebec305bc6b",
+            "timestamp": 1792553562617
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "f5c29743-eac7-42ad-b768-6ebec305bc6b",
+            "timestamp": 1792554190963
+          }
+        ]
+      ]
+    },
+    "seconds": 628.346
+  },
+  "reference": {
+    "unavailable": "URLError"
+  }
+}

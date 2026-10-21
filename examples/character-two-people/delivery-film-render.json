@@ -1,0 +1,46 @@
+{
+  "id": "dfc6c986-5faa-4ebd-8fb2-dfe0d02b9c19",
+  "name": "Two people swapped · delivery-720p",
+  "aspect": "landscape",
+  "resolution": "720p",
+  "shots": [
+    {
+      "assetId": "dc1d25f5-7cec-4ef6-8d7a-e1aaac910cf1",
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 3.0416666666666665,
+      "title": "two-people-native-result.mp4",
+      "sha256": "4e120b5ae89ceaa1ff706de3956f9b82927c0d02b5e8e7ff556660897f94b1ce",
+      "asset": {
+        "kind": "video",
+        "duration": 3.0416666666666665,
+        "width": 1344,
+        "height": 736,
+        "id": "dc1d25f5-7cec-4ef6-8d7a-e1aaac910cf1",
+        "name": "two-people-native-result.mp4",
+        "extension": ".mp4",
+        "sha256": "4e120b5ae89ceaa1ff706de3956f9b82927c0d02b5e8e7ff556660897f94b1ce",
+        "url": "/api/films/assets/dc1d25f5-7cec-4ef6-8d7a-e1aaac910cf1/media",
+        "createdAt": "2026-10-21T03:43:16.176Z"
+      }
+    }
+  ],
+  "requestKey": "job6-delivery--a8c514e349987bcca4763e7e666d7314",
+  "requestDigest": "4b022140e6645aa20a974902079a42ae874673e1b03bea098f73babc78c49245",
+  "titles": [],
+  "graphics": [],
+  "audio": [],
+  "sourceVolume": 1,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 3.0416666666666665,
+  "createdAt": "2026-10-21T03:43:16.196Z",
+  "output": "/api/films/dfc6c986-5faa-4ebd-8fb2-dfe0d02b9c19/video"
+}

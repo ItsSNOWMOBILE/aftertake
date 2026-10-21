@@ -1,0 +1,46 @@
+{
+  "format": "aftertake-upscale-native-detail/1",
+  "enhancementId": "46e9f057-97e5-4fa7-af72-10ecf5306bd7",
+  "sourceSha256": "34825e59be74dc16ef3db45f6caa01aa86809eefc4403ca07528ae1b0d159682",
+  "resultSha256": "a7e4522028a9fefb5069ebf1f8754eca2e489b15deb56f6a57bf01fd41f60e58",
+  "frames": [
+    0,
+    48,
+    96
+  ],
+  "contacts": [
+    {
+      "file": "upscale-native-lighthouse.jpg",
+      "sha256": "934ab36562537294dec67c833c18c6705d4d6c2cde73ef73d3bfd161fde4ebcf",
+      "sourceCrop": [
+        320,
+        64,
+        576,
+        352
+      ],
+      "nativeResultCrop": [
+        640,
+        128,
+        1152,
+        704
+      ]
+    },
+    {
+      "file": "upscale-native-water.jpg",
+      "sha256": "05b1d93db9e90ba1d2b50377445deb45c17e329388c3bbeaeec9e126b38f3035",
+      "sourceCrop": [
+        384,
+        396,
+        640,
+        540
+      ],
+      "nativeResultCrop": [
+        768,
+        792,
+        1280,
+        1080
+      ]
+    }
+  ],
+  "method": "Source crop displayed with Lanczos 2x; actual SeedVR2 output crop at native resolution. Saved native media is unchanged."
+}

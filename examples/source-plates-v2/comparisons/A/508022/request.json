@@ -1,0 +1,17 @@
+{
+  "format": "aftertake-text-video/1",
+  "name": "A - Hero walk - seed 508022",
+  "prompt": "Cinematic medium shot, a young woman in a black bomber jacket walks straight toward the camera across a wet rooftop at blue hour, her face clearly visible and lit by warm practical light, a second person leans on the railing far behind her, city skyline bokeh, the camera dollies back slowly at her walking pace, natural gait, anamorphic lens, shallow depth of field, photoreal film grain, 24 fps. All people are fictional, not based on any real person. No text, subtitles, labels or logos. Natural scene ambience only, no speech or music.",
+  "seed": 508022,
+  "aspect": "landscape",
+  "quality": "final",
+  "resolution": "720p",
+  "seconds": 5,
+  "sound": true,
+  "cinema": {
+    "movement": "pull",
+    "lens": "anamorphic",
+    "lighting": "source",
+    "palette": "source"
+  }
+}

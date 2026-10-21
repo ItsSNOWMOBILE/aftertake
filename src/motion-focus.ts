@@ -1,4 +1,4 @@
-import { renderDimensions, type Recipe } from './domain';
+import { displayDimensions, renderDimensions, type Recipe } from './domain';
 
 export type MotionFocus = NonNullable<Recipe['transfer']>['focus'];
 
@@ -6,11 +6,14 @@ export type MotionFocus = NonNullable<Recipe['transfer']>['focus'];
 export function motionFocusGeometry(recipe: Recipe) {
   const focus = recipe.transfer?.focus;
   if (!focus) return null;
-  const d = renderDimensions(recipe);
-  const x = Math.floor(focus.x * d.width),
-    y = Math.floor(focus.y * d.height);
-  const right = Math.min(d.width, Math.ceil((focus.x + focus.width) * d.width)),
-    bottom = Math.min(d.height, Math.ceil((focus.y + focus.height) * d.height));
+  const model = renderDimensions(recipe);
+  const d = recipe.resolution === '720p' ? displayDimensions(recipe) : model;
+  const left = (model.width - d.width) / 2;
+  const top = (model.height - d.height) / 2;
+  const x = Math.floor(focus.x * d.width) + left,
+    y = Math.floor(focus.y * d.height) + top;
+  const right = Math.min(d.width, Math.ceil((focus.x + focus.width) * d.width)) + left,
+    bottom = Math.min(d.height, Math.ceil((focus.y + focus.height) * d.height)) + top;
   const ratio = (focus.width * recipe.clip.width) / (focus.height * recipe.clip.height),
     long = recipe.quality === 'final' ? 768 : 512;
   return {
@@ -28,7 +31,7 @@ export function focusFromPaint(recipe: Recipe): NonNullable<MotionFocus> {
     .filter((stroke) => stroke.mode !== 'erase')
     .flatMap((stroke) => stroke.points.map((point) => ({ point, radius: stroke.radius })));
   if (!points.length) return { x: 0, y: 0, width: 1, height: 1 };
-  const d = renderDimensions(recipe),
+  const d = recipe.resolution === '720p' ? displayDimensions(recipe) : renderDimensions(recipe),
     scale = Math.min(d.width, d.height);
   const bounds = (axis: 'x' | 'y', size: number) => {
     const paintLow = Math.min(

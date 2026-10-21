@@ -1,0 +1,17 @@
+{
+  "format": "aftertake-prompt-retry-evidence/1",
+  "submissions": 0,
+  "takeId": "65372afb-ec7c-4196-99d5-9348ba57c628",
+  "protectedId": null,
+  "baselineMediaDuplicated": false,
+  "baselineGenerationRecordsDuplicated": false,
+  "visualReviewPending": false,
+  "requiredRemaining": [
+    "Actual chain-screenshot.png; browser capture timed out. No screenshot was fabricated."
+  ],
+  "identityTransferPass": true,
+  "foregroundPersonPreserved": true,
+  "normalFilmDeliveryPass": true,
+  "sourceAudioPreservationPass": true,
+  "evidenceCompleteExceptScreenshot": true
+}

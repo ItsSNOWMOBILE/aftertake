@@ -1,0 +1,216 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "46e9f057-97e5-4fa7-af72-10ecf5306bd7",
+  "requestKey": "8bc13507-8aa0-4404-84ea-784a3e06b456",
+  "requestDigest": "ff5f0e15311ef7f608fe747c138ec5bfe887eed6acf826079c2473e383868434",
+  "request": {
+    "format": "aftertake-enhance/1",
+    "operation": "upscale",
+    "name": "result.mp4 · upscaled",
+    "clip": {
+      "id": "9e11fc3f-0c6e-4b01-8ca8-d0ff716b362c",
+      "name": "result.mp4",
+      "sha256": "34825e59be74dc16ef3db45f6caa01aa86809eefc4403ca07528ae1b0d159682",
+      "width": 1280,
+      "height": 720,
+      "duration": 4.041666666666667,
+      "url": "/media/9e11fc3f-0c6e-4b01-8ca8-d0ff716b362c.mp4",
+      "kind": "video",
+      "hasAudio": false
+    },
+    "seed": 5090
+  },
+  "workflow": {
+    "1": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "9e11fc3f-0c6e-4b01-8ca8-d0ff716b362c.mp4",
+        "width": 1280,
+        "height": 720,
+        "frames": 97,
+        "fps": 24,
+        "trim_start": 0
+      }
+    },
+    "2": {
+      "class_type": "ImageScaleBy",
+      "inputs": {
+        "image": [
+          "1",
+          0
+        ],
+        "upscale_method": "lanczos",
+        "scale_by": 2
+      }
+    },
+    "3": {
+      "class_type": "SeedVR2Preprocess",
+      "inputs": {
+        "resized_images": [
+          "2",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "seedvr2_ema_vae_fp16.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "VAEEncodeTiled",
+      "inputs": {
+        "pixels": [
+          "3",
+          0
+        ],
+        "vae": [
+          "4",
+          0
+        ],
+        "tile_size": 512,
+        "overlap": 128,
+        "temporal_size": 64,
+        "temporal_overlap": 8
+      }
+    },
+    "6": {
+      "class_type": "SeedVR2TemporalChunk",
+      "inputs": {
+        "latent": [
+          "5",
+          0
+        ],
+        "temporal_overlap": 0,
+        "chunking_mode": "auto"
+      }
+    },
+    "7": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "seedvr2_3b_int8_convrot.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "8": {
+      "class_type": "SeedVR2Conditioning",
+      "inputs": {
+        "model": [
+          "7",
+          0
+        ],
+        "vae_conditioning": [
+          "6",
+          0
+        ]
+      }
+    },
+    "9": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "7",
+          0
+        ],
+        "seed": 5090,
+        "steps": 1,
+        "cfg": 1,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "positive": [
+          "8",
+          0
+        ],
+        "negative": [
+          "8",
+          1
+        ],
+        "latent_image": [
+          "6",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "10": {
+      "class_type": "SeedVR2TemporalMerge",
+      "inputs": {
+        "latents": [
+          "9",
+          0
+        ],
+        "temporal_overlap": [
+          "6",
+          1
+        ]
+      }
+    },
+    "11": {
+      "class_type": "VAEDecodeTiled",
+      "inputs": {
+        "samples": [
+          "10",
+          0
+        ],
+        "vae": [
+          "4",
+          0
+        ],
+        "tile_size": 512,
+        "overlap": 128,
+        "temporal_size": 64,
+        "temporal_overlap": 8
+      }
+    },
+    "12": {
+      "class_type": "SeedVR2PostProcessing",
+      "inputs": {
+        "images": [
+          "11",
+          0
+        ],
+        "original_resized_images": [
+          "2",
+          0
+        ],
+        "color_correction_method": "lab"
+      }
+    },
+    "13": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "12",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/enhance/46e9f057-97e5-4fa7-af72-10ecf5306bd7/upscale",
+        "recipe_json": "{\"format\":\"aftertake-enhance-output/1\",\"request\":{\"format\":\"aftertake-enhance/1\",\"operation\":\"upscale\",\"name\":\"result.mp4 · upscaled\",\"clip\":{\"id\":\"9e11fc3f-0c6e-4b01-8ca8-d0ff716b362c\",\"name\":\"result.mp4\",\"sha256\":\"34825e59be74dc16ef3db45f6caa01aa86809eefc4403ca07528ae1b0d159682\",\"width\":1280,\"height\":720,\"duration\":4.041666666666667,\"url\":\"/media/9e11fc3f-0c6e-4b01-8ca8-d0ff716b362c.mp4\",\"kind\":\"video\",\"hasAudio\":false},\"seed\":5090}}",
+        "source_audio": "",
+        "audio_start": 0
+      }
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-21T05:18:25.314Z",
+  "updatedAt": "2026-10-21T05:24:55.501Z",
+  "jobId": "8f3bd5c1-eec2-4eca-8e4d-d188d155f269",
+  "stage": "Ready to use",
+  "clip": {
+    "id": "46e9f057-97e5-4fa7-af72-10ecf5306bd7",
+    "name": "result.mp4 · upscaled",
+    "kind": "video",
+    "width": 2560,
+    "height": 1440,
+    "duration": 4.041666666666667,
+    "hasAudio": false,
+    "sha256": "a7e4522028a9fefb5069ebf1f8754eca2e489b15deb56f6a57bf01fd41f60e58",
+    "url": "/media/46e9f057-97e5-4fa7-af72-10ecf5306bd7.mp4"
+  }
+}

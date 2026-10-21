@@ -1,0 +1,15 @@
+{
+  "format": "aftertake-character-controlled-delta/1",
+  "baselineRecord": "../render.json",
+  "retryRecord": "render.json",
+  "changedRequestFields": [
+    {
+      "field": "prompt",
+      "before": "",
+      "after": "Replace only the brown-haired woman wearing a navy blazer in Video 1 with the fictional woman from Picture 1. She must have the silver shoulder-length hair, freckled face and facial proportions shown in Picture 1 and its matching close head crop in Picture 2. Dress her in the dark green knitted sweater from Picture 1 instead of the navy blazer, including both sleeves. Preserve her mug-lifting gesture, body pose, gaze, smile and source performance. Keep the white ceramic mug, cafe, table, windows, background lighting, camera movement and original audio. No studio background from the reference photo."
+    }
+  ],
+  "onlyPromptAndDisplayNameChanged": true,
+  "sameSeed": true,
+  "causeStatus": "This is an observed controlled comparison, not proof of a universal model limitation or a categorical software bug."
+}

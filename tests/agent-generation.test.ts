@@ -143,10 +143,24 @@ test('real MCP generation transport preserves operation IDs across reconnect, ch
     const workspace = await call('aftertake_generation_workspace', { profile: 'image-gen' });
     assert.ok(!workspace.isError);
     assert.equal((workspace.structuredContent as any).sources[0].id, clip.id);
+    const starters = (workspace.structuredContent as any).starters;
+    assert.deepEqual(Object.keys(starters), ['image', 'video', 'frame']);
+    const showcase = starters.video.find((item: any) => item.id === 'product-showcase');
+    assert.equal(showcase.settings.cinema.movement, 'orbit');
+    assert.match(showcase.sources[0], /^https:\/\/github\.com\/higgsfield-ai\//);
+    const expected = (workspace.structuredContent as any).expected;
+    assert.equal(expected['video:final-720p'].seconds, 123);
+    assert.match(expected['video:final-720p'].basis, /RTX 5080/);
+    assert.equal(expected.character, undefined);
     const first = await call('aftertake_generate_image', image),
       again = await call('aftertake_generate_image', image);
     assert.ok(!first.isError && !again.isError);
     assert.equal((first.structuredContent as any).id, (again.structuredContent as any).id);
+    assert.deepEqual((first.structuredContent as any).expected, {
+      seconds: 10,
+      basis: 'median of 4 runs recorded on an RTX 5080',
+      cost: 'none: it runs on the local GPU',
+    });
     assert.equal(admissions, 1);
     const changed = await call('aftertake_generate_image', {
       ...image,

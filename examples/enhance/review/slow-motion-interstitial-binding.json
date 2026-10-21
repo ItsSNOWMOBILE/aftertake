@@ -1,0 +1,172 @@
+{
+  "format": "aftertake-rife-interstitial-review/1",
+  "enhancementId": "3dbee1e6-7003-4c7e-a6d0-db69b4c61f93",
+  "nativeRecordSha256": "f251d351eaa14f2246bda5632e79b1735c9bcdbb554bc94f7341ae23f1e34d47",
+  "resultSha256": "8bd620eac9a8898c34bb6db28f57c3228298ecab8b52b9c27411bec77a90cc21",
+  "sourceIntervals": [
+    [
+      12,
+      13
+    ],
+    [
+      24,
+      25
+    ],
+    [
+      48,
+      49
+    ],
+    [
+      72,
+      73
+    ],
+    [
+      90,
+      91
+    ]
+  ],
+  "outputFrames": [
+    {
+      "index": 48,
+      "timestamp": 2.0,
+      "isInterstitial": false
+    },
+    {
+      "index": 49,
+      "timestamp": 2.0416666666666665,
+      "isInterstitial": true
+    },
+    {
+      "index": 50,
+      "timestamp": 2.0833333333333335,
+      "isInterstitial": true
+    },
+    {
+      "index": 51,
+      "timestamp": 2.125,
+      "isInterstitial": true
+    },
+    {
+      "index": 52,
+      "timestamp": 2.1666666666666665,
+      "isInterstitial": false
+    },
+    {
+      "index": 96,
+      "timestamp": 4.0,
+      "isInterstitial": false
+    },
+    {
+      "index": 97,
+      "timestamp": 4.041666666666667,
+      "isInterstitial": true
+    },
+    {
+      "index": 98,
+      "timestamp": 4.083333333333333,
+      "isInterstitial": true
+    },
+    {
+      "index": 99,
+      "timestamp": 4.125,
+      "isInterstitial": true
+    },
+    {
+      "index": 100,
+      "timestamp": 4.166666666666667,
+      "isInterstitial": false
+    },
+    {
+      "index": 192,
+      "timestamp": 8.0,
+      "isInterstitial": false
+    },
+    {
+      "index": 193,
+      "timestamp": 8.041666666666666,
+      "isInterstitial": true
+    },
+    {
+      "index": 194,
+      "timestamp": 8.083333333333334,
+      "isInterstitial": true
+    },
+    {
+      "index": 195,
+      "timestamp": 8.125,
+      "isInterstitial": true
+    },
+    {
+      "index": 196,
+      "timestamp": 8.166666666666666,
+      "isInterstitial": false
+    },
+    {
+      "index": 288,
+      "timestamp": 12.0,
+      "isInterstitial": false
+    },
+    {
+      "index": 289,
+      "timestamp": 12.041666666666666,
+      "isInterstitial": true
+    },
+    {
+      "index": 290,
+      "timestamp": 12.083333333333334,
+      "isInterstitial": true
+    },
+    {
+      "index": 291,
+      "timestamp": 12.125,
+      "isInterstitial": true
+    },
+    {
+      "index": 292,
+      "timestamp": 12.166666666666666,
+      "isInterstitial": false
+    },
+    {
+      "index": 360,
+      "timestamp": 15.0,
+      "isInterstitial": false
+    },
+    {
+      "index": 361,
+      "timestamp": 15.041666666666666,
+      "isInterstitial": true
+    },
+    {
+      "index": 362,
+      "timestamp": 15.083333333333334,
+      "isInterstitial": true
+    },
+    {
+      "index": 363,
+      "timestamp": 15.125,
+      "isInterstitial": true
+    },
+    {
+      "index": 364,
+      "timestamp": 15.166666666666666,
+      "isInterstitial": false
+    }
+  ],
+  "nativeCropBox": [
+    384,
+    396,
+    896,
+    684
+  ],
+  "contacts": [
+    {
+      "file": "slow-motion-rife-interstitial-full.jpg",
+      "sha256": "a6e07322fae8a016d1e41f9c80dc650318c3c28a38ffee2b4263a2216205d9b5"
+    },
+    {
+      "file": "slow-motion-rife-interstitial-crops.jpg",
+      "sha256": "ecbc6a1ae3081d906b343c107d92b54e43004418e86a1923853c453e3a33b388"
+    }
+  ],
+  "limitation": "Five short consecutive-frame intervals only; human real-time playback not fully assessed."
+}

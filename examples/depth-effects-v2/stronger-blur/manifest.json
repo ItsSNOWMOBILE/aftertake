@@ -1,0 +1,66 @@
+{
+  "format": "aftertake-example-upgrade/1",
+  "name": "depth-effects-v2/stronger-blur",
+  "apiBase": "http://127.0.0.1:4394",
+  "request": {
+    "format": "aftertake-depth-effect/1",
+    "name": "Tokyo portrait \u00c2\u00b7 optional stronger lens blur \u00c2\u00b7 v2",
+    "clip": {
+      "id": "2ac4c682-e267-44c1-b79d-96897b9e696b",
+      "name": "E - Neon depth portrait - seed 509052",
+      "kind": "image",
+      "width": 1280,
+      "height": 720,
+      "duration": 1,
+      "hasAudio": false,
+      "sha256": "d425dbd28f09249c79c3a07001e597ec83b4b5918d92465215b446b309b04d0b",
+      "url": "/media/2ac4c682-e267-44c1-b79d-96897b9e696b.png"
+    },
+    "settings": {
+      "focus": 0,
+      "blur": 8,
+      "haze": 0.18,
+      "hazeColor": "#cbd7e3",
+      "lightAzimuth": -45,
+      "lightElevation": 35,
+      "lightStrength": 0.25
+    }
+  },
+  "codeBranch": "source-upgrade",
+  "codeCommit": "4af8331df15730658b9d0c44b60adf18d3935374",
+  "originalRecipe": "original-recipe.json",
+  "render": "render.json",
+  "output": {
+    "path": "result.png",
+    "sha256": "cba2fd16370212ac7e7988e3e02b95df1b338af56b144da05e3c1773bf1abc80",
+    "bytes": 893364
+  },
+  "modelFiles": [],
+  "sourceOrigin": "AI-generated fictional footage and references from job2; no phone capture is claimed.",
+  "deliveryDescription": "Native Aftertake result at requested 1280x720.",
+  "note": "Original focus0.05 blur2 is subtle atmosphere; preserve as requested and do not pretend this is a strong lens-blur showcase",
+  "imageVerification": "image-verification.json",
+  "variant": "optional-moderate-lens-blur",
+  "primary": "../result.png",
+  "modelProvenance": "models.json",
+  "runtimeCodeCommit": "06ca946c5e0db28a8199c2337a0c14d748aa3289",
+  "changedSettings": {
+    "focus": {
+      "from": 0.05,
+      "to": 0
+    },
+    "blur": {
+      "from": 2,
+      "to": 8
+    }
+  },
+  "focusMethod": "../focus-sample.json",
+  "observedTiming": {
+    "format": "aftertake-observed-operation-timing/1",
+    "operationId": "17df0e2f-9904-441e-8ddf-da5dc8d8e447",
+    "createdAt": "2026-10-20T21:46:50.301Z",
+    "updatedAt": "2026-10-20T21:46:52.932Z",
+    "apiWallSeconds": 2.631,
+    "engineSeconds": 0.557
+  }
+}

@@ -12,6 +12,27 @@
   font-display: swap;
   src: url('/fonts/manrope.ttf') format('truetype');
 }
+@font-face {
+  font-family: 'Archivo Black';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/archivo-black.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Anton';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/anton.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono.ttf') format('truetype');
+}
 :root {
   font-family: 'DM Sans', sans-serif;
   color: var(--text-primary);
@@ -1295,6 +1316,25 @@ textarea:focus {
 }
 .render-button:disabled {
   opacity: 0.45;
+}
+.render-estimate {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1px 7px;
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.render-estimate svg {
+  color: var(--accent);
+}
+.render-estimate small {
+  grid-column: 2;
+  font-size: 11px;
+  color: var(--text-secondary);
 }
 .setup-link {
   display: flex;
@@ -3724,4 +3764,20 @@ textarea:focus {
   padding: 32px;
   font-size: 14px;
   color: #d5e991;
+}
+
+/* Intermediate outputs for finishing elsewhere stay one click away. */
+.inspector-more > summary {
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 13px;
+  padding: 6px 0;
+}
+.inspector-more > summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.inspector-more[open] {
+  display: grid;
+  gap: 8px;
 }

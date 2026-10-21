@@ -1,0 +1,21 @@
+{
+  "format": "aftertake-native-mp4-publication-audit/1",
+  "records": [
+    {
+      "file": "result.mp4",
+      "sha256": "8835c957b25b271ce1f119fc096c36e5130a55b7f83062287b8caad3b7a3b8cf",
+      "nativeAppReaderUsed": true,
+      "absolutePathFindings": []
+    },
+    {
+      "file": "take.mp4",
+      "sha256": "06f5477a096f29ae0b1f7c5263cda08ff40da685da57ebf169c1ab9f2a88f2da",
+      "embeddedFormat": "aftertake-character-output/1",
+      "nativeAppReaderUsed": true,
+      "absolutePathFindings": []
+    }
+  ],
+  "nativeFilesUnmodified": true,
+  "readyForPathSafePublication": true,
+  "note": "No silent remux or metadata redaction. If a personal path is found, retain original privately and explicitly label any portable derivative with both original and derived hashes."
+}

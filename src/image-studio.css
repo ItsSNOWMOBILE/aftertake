@@ -274,3 +274,27 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+/* Secondary settings stay one click away; the main column keeps the essentials. */
+.studio-advanced {
+  border-top: 1px solid #3a4046;
+  padding-top: 12px;
+}
+.studio-advanced > summary {
+  cursor: pointer;
+  color: #d4dcd5;
+  font-size: 13px;
+  font-weight: 600;
+  list-style-position: inside;
+}
+.studio-advanced > summary:focus-visible {
+  outline: 2px solid #d5e991;
+  outline-offset: 3px;
+}
+.studio-advanced[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.studio-advanced[open] > summary {
+  margin-bottom: 4px;
+}

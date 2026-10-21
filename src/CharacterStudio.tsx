@@ -8,24 +8,31 @@ import {
   Plus,
   RotateCcw,
   ScanFace,
+  Shield,
   Upload,
+  UserPlus,
+  Wand2,
   X,
 } from 'lucide-react';
 import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
 import { findImportedClip, type Clip, type Engine } from './domain';
 import {
   characterBusy,
+  characterChain,
   characterMaxIdentityReferences,
   characterRequestSchema,
   characterSelectionKey,
   characterSelectionSchema,
   type CharacterJob,
   type CharacterIdentityReference,
+  type CharacterProtection,
+  type CharacterRepair,
   type CharacterRequest,
   type CharacterSelectionRequest,
 } from './character';
 import CharacterReferenceEditor, { CharacterReferencePreview } from './CharacterReferenceEditor';
 import PreviewVideo from './PreviewVideo';
+import RenderEstimate from './RenderEstimate';
 import SubjectEffects, { reviewedSubjectSelection } from './SubjectEffects';
 import './character-studio.css';
 import './subject-effects.css';
@@ -39,6 +46,24 @@ async function api<T>(url: string, init?: RequestInit) {
     });
   return body as T;
 }
+function repairSummary(repair: CharacterRepair) {
+  const frames = repair.framesRecovered.length;
+  return [
+    frames ? `${frames} lost ${frames === 1 ? 'frame' : 'frames'} filled` : '',
+    repair.restoredPixels ? 'brief dropouts restored' : '',
+  ]
+    .filter(Boolean)
+    .join(', ');
+}
+function protectionSummary(protection: CharacterProtection) {
+  return `objects in front of the person came back from the source in ${protection.protectedFrames} of ${protection.frames} frames, with depth from ${protection.accelerator}`;
+}
+type DepthStatus = {
+  runtime: string | null;
+  model: boolean;
+  accelerator: string | null;
+  fix: string | null;
+};
 function download(value: unknown, filename = 'aftertake-character-recipe.json') {
   const url = URL.createObjectURL(
     new Blob([JSON.stringify(value, null, 2)], { type: 'application/json' }),
@@ -134,7 +159,8 @@ export default function CharacterStudio({
     [error, setError] = useState(''),
     [notice, setNotice] = useState('');
   const [engine, setEngine] = useState<Engine | null>(null),
-    [selectionEngine, setSelectionEngine] = useState<Engine | null>(null);
+    [selectionEngine, setSelectionEngine] = useState<Engine | null>(null),
+    [depth, setDepth] = useState<DepthStatus | null>(null);
   const dialog = useRef<HTMLElement>(null),
     fileInput = useRef<HTMLInputElement>(null),
     identityFileInput = useRef<HTMLInputElement>(null),
@@ -183,6 +209,7 @@ export default function CharacterStudio({
   const resultSelection = viewed
     ? jobs.find((j) => j.id === (viewed.request as CharacterRequest).selectionId)
     : undefined;
+  const chain = viewed ? characterChain(viewed, jobs) : [];
   const sourceReview = jobs.find((j) => j.id === sourceReviewId) || selection;
   const sourceRange = sourceReview?.request as CharacterSelectionRequest | undefined;
   const request: CharacterRequest | undefined =
@@ -247,6 +274,32 @@ export default function CharacterStudio({
     setResultId('');
     setView('frame');
     setError('');
+  }
+  /** Make a finished take the source, so the next person can be tracked and replaced in it. */
+  function swapAnother(job: CharacterJob) {
+    const clip = job.clip!,
+      earlier = jobs.find((item) => item.id === (job.request as CharacterRequest).selectionId),
+      people = characterChain(job, jobs).length;
+    onImport(clip);
+    setSourceId(clip.id);
+    setTrimStart(0);
+    setDuration(Math.min(15, clip.duration));
+    setPositive([]);
+    setNegative([]);
+    setResolution((earlier?.request as CharacterSelectionRequest | undefined)?.resolution || '480');
+    setSelectionId('');
+    setSourceReviewId('');
+    setResultId('');
+    setReferenceId('');
+    setFaceBox(undefined);
+    setIdentityReferences([]);
+    setName(`${(job.request as CharacterRequest).name}, person ${people + 1}`.slice(0, 100));
+    setView('frame');
+    setError('');
+    setNotice(
+      `Person ${people + 1}: this take is now the source. Mark the next person, track them, then choose their photo. Everything outside the new person's mask stays as it is, including the ${people === 1 ? 'person' : `${people} people`} you already swapped.`,
+    );
+    sourceStep.current?.scrollIntoView({ block: 'start' });
   }
   function useTrackedSelection(job: CharacterJob) {
     const saved = restoreTrackedSelection(job, clips);
@@ -438,6 +491,54 @@ export default function CharacterStudio({
         }
       }
       setError(failure.message);
+    } finally {
+      setSending(false);
+    }
+  }
+  useEffect(() => {
+    if (browserDemo) return;
+    api<DepthStatus>('/api/characters/depth/status')
+      .then(setDepth)
+      .catch(() => {});
+  }, []);
+  /** Put objects in front of the person back from the source, as a new take. */
+  async function protectForeground(job: CharacterJob) {
+    setSending(true);
+    setError('');
+    try {
+      const started = await api<CharacterJob>(`/api/characters/${job.id}/protect`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ margin: 0.1 }),
+      });
+      onUpdate(started);
+      setResultId(started.id);
+      setView('result');
+      setNotice(
+        'Keeping objects in front of the person. Depth is estimated for every frame on this computer; the new take appears here when it finishes.',
+      );
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setSending(false);
+    }
+  }
+  /** Fill lost frames and brief dropouts on the CPU, then review the repaired selection. */
+  async function repairSelection(job: CharacterJob) {
+    setSending(true);
+    setError('');
+    setNotice('Repairing the tracked mask on this computer…');
+    try {
+      const repaired = await api<CharacterJob>(`/api/characters/${job.id}/repair`, {
+        method: 'POST',
+      });
+      onUpdate(repaired);
+      setSelectionId(repaired.id);
+      setView('selection');
+      setNotice(`Repaired: ${repairSummary(repaired.repair!)}. Review the tracked selection.`);
+    } catch (e) {
+      setNotice('');
+      setError((e as Error).message);
     } finally {
       setSending(false);
     }
@@ -855,7 +956,9 @@ export default function CharacterStudio({
                       ? 'Check the submitted job'
                       : pending.kind === 'selection'
                         ? 'Tracking the selected person'
-                        : 'Generating your character take'}
+                        : pending.protection
+                          ? 'Keeping objects in front'
+                          : 'Generating your character take'}
                   </strong>
                   {reportedProgress !== undefined && (
                     <span>{Math.round(reportedProgress * 100)}%</span>
@@ -873,7 +976,9 @@ export default function CharacterStudio({
                       ? 'Connection uncertain. Progress may be out of date.'
                       : reportedProgress === undefined
                         ? 'Waiting for engine progress.'
-                        : 'Progress reported by the engine.'}
+                        : pending.protection
+                          ? 'Progress reported by depth on this computer.'
+                          : 'Progress reported by the engine.'}
                   </span>
                   {uncertainJob ? (
                     <button disabled={sending} onClick={() => void act(pending, 'reconcile')}>
@@ -1098,6 +1203,7 @@ export default function CharacterStudio({
                   {matching.map((j) => (
                     <option key={j.id} value={j.id}>
                       {new Date(j.createdAt).toLocaleTimeString()} · {j.state.replaceAll('_', ' ')}
+                      {j.repair ? ' · repaired' : ''}
                     </option>
                   ))}
                 </select>
@@ -1107,10 +1213,32 @@ export default function CharacterStudio({
               <p className={`character-selection-status ${selectionReady ? 'ready' : ''}`}>
                 {selectionReady ? <Check size={14} /> : null}
                 {selection.selection.emptyFrames.length
-                  ? `Tracking lost the person in ${selection.selection.emptyFrames.length} frames. Choose a clearer or shorter range before replacing them.`
+                  ? `Tracking lost the person in ${selection.selection.emptyFrames.length} frames. ${selection.repair ? 'These gaps are longer than half a second' : 'Repair mask fills gaps up to half a second'}; otherwise choose a clearer or shorter range before replacing them.`
                   : `${selection.selection.width} × ${selection.selection.height} · ${selection.selection.frames} tracked frames · ${(selection.selection.frames / 24).toFixed(2)}s. Check hands, hair and overlapping people in the preview.`}
               </p>
             )}
+            {selection?.repair && (
+              <p className="character-hint">
+                Repaired mask: {repairSummary(selection.repair)}. Amber in the tracked selection
+                marks what repair added; it never removes tracked pixels.
+              </p>
+            )}
+            {selection?.state === 'succeeded' &&
+              selection.selection &&
+              !selection.repair &&
+              // On the result, repair is only offered when tracking actually lost the person.
+              (view !== 'result' || selection.selection.emptyFrames.length > 0) && (
+                <button
+                  className="button character-repair"
+                  disabled={locked || browserDemo}
+                  onClick={() => void repairSelection(selection)}
+                >
+                  <Wand2 size={13} />
+                  {jobs.some((job) => job.repair?.from === selection.id)
+                    ? 'Use the repaired mask'
+                    : 'Repair mask'}
+                </button>
+              )}
             {status?.error && (
               <p role="alert" className="character-error">
                 {status.error}
@@ -1129,6 +1257,14 @@ export default function CharacterStudio({
               )}
             {view === 'result' && viewed?.clip && (
               <>
+                <button
+                  className="button character-swap-another"
+                  disabled={locked || browserDemo}
+                  onClick={() => swapAnother(viewed)}
+                >
+                  <UserPlus size={14} />
+                  Swap another person in this shot
+                </button>
                 <div className="character-output-actions">
                   <button
                     className="button"
@@ -1181,10 +1317,37 @@ export default function CharacterStudio({
                     Recipe ↗
                   </button>
                 </div>
+                {viewed.protection?.frames ? (
+                  <p className="character-hint">
+                    Foreground kept: {protectionSummary(viewed.protection)}.
+                  </p>
+                ) : (
+                  <>
+                    <button
+                      className="button character-repair"
+                      disabled={locked || browserDemo || !depth?.runtime || !depth.model}
+                      onClick={() => void protectForeground(viewed)}
+                    >
+                      <Shield size={13} />
+                      Keep objects in front
+                    </button>
+                    <p className="character-hint">
+                      Puts back anything clearly in front of the person, like a cup, a microphone or
+                      a railing, from the original shot.{' '}
+                      {!depth
+                        ? ''
+                        : depth.runtime && depth.model
+                          ? `Depth runs on the ${depth.accelerator}.`
+                          : `Install local depth first: ${depth.fix || 'node scripts/aftertake.mjs setup-npu'}`}
+                    </p>
+                  </>
+                )}
                 <p className="character-hint">
                   {viewed.clip.width} × {viewed.clip.height} · 24 fps · seed{' '}
-                  {(viewed.request as CharacterRequest).seed}. Review identity, hands and motion
-                  before using this take.
+                  {(viewed.request as CharacterRequest).seed}.{' '}
+                  {chain.length > 1 &&
+                    `${chain.length} people swapped in this shot, one pass each, starting from “${(chain[0].request as CharacterRequest).name}”. `}
+                  Review identity, hands and motion before using this take.
                 </p>
                 <button className="button" disabled={locked} onClick={() => reuse(viewed)}>
                   <RotateCcw size={13} />
@@ -1409,6 +1572,11 @@ export default function CharacterStudio({
               )}
               Track selected person
             </button>
+            <RenderEstimate
+              job={{ request: { format: 'aftertake-character-selection/1' } }}
+              history={jobs}
+              gpu={selectionEngine?.gpu}
+            />
             <p className="character-action-hint">{trackHint}</p>
             {source && !positive.length && (
               <button
@@ -1643,14 +1811,19 @@ export default function CharacterStudio({
               EXTRA DIRECTION · OPTIONAL
               <textarea
                 aria-label="Character extra direction"
+                aria-describedby="character-direction-hint"
                 rows={3}
                 value={prompt}
                 maxLength={2000}
                 disabled={locked}
-                placeholder="Preserve the cup and the original gesture."
+                placeholder="The woman holding the mug: silver hair, freckles, a green sweater. Keep her gesture."
                 onChange={(e) => setPrompt(e.target.value)}
               />
             </label>
+            <p className="character-hint" id="character-direction-hint">
+              Describe the target's position and the replacement's face, hair and outfit. Specific
+              direction can help the model follow your photos.
+            </p>
             <label>
               SEED
               <div className="character-seed">
@@ -1686,6 +1859,11 @@ export default function CharacterStudio({
               <ScanFace size={15} />
               Replace selected person
             </button>
+            <RenderEstimate
+              job={{ request: { format: 'aftertake-character/1' } }}
+              history={jobs}
+              gpu={engine?.gpu}
+            />
             <p className="character-action-hint" id="character-generate-hint">
               {generateHint}
             </p>

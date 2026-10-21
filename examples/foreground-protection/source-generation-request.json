@@ -1,0 +1,17 @@
+{
+  "format": "aftertake-text-video/1",
+  "name": "Cafe mug \u00b7 foreground protection \u00b7 seed 610301",
+  "prompt": "A woman in a navy blazer stands in a bright cafe holding a large white ceramic mug with both hands in front of her chest, steam rising, she lifts the mug slightly and smiles, shallow depth of field, natural window light, realistic, no text.",
+  "seed": 610301,
+  "aspect": "landscape",
+  "quality": "final",
+  "resolution": "720p",
+  "seconds": 5,
+  "sound": true,
+  "cinema": {
+    "movement": "locked",
+    "lens": "natural",
+    "lighting": "daylight",
+    "palette": "source"
+  }
+}

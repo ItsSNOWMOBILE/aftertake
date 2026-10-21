@@ -1,0 +1,263 @@
+{
+  "format": "aftertake-text-video/1",
+  "request": {
+    "format": "aftertake-text-video/1",
+    "name": "A - Hero walk - clean-lens quality variant - seed 508023",
+    "prompt": "Full-frame photorealistic medium shot of a fictional adult woman in a black bomber jacket walking straight toward the camera across a wet rooftop at blue hour. Her face is clearly visible, sharply focused and lit by a steady soft warm practical light. Her facial structure and jacket remain consistent. The camera dollies backward at exactly her walking pace, keeping her face at the same scale and the same focus distance. Natural relaxed gait and subtle hair movement. A second fictional adult leans on the railing far behind her; a city skyline recedes in the distance. Clean natural 35 mm lens, moderate depth of field, realistic clear detail. The image fills the entire rectangular frame. No vignette, no black borders, no rounded frame, no fisheye, no lens bloom, no added grain, no focus pulling, no focus breathing, no slow motion. No text, subtitles, labels or logos. Quiet rooftop ambience only, no speech or music. One continuous 24 fps shot.",
+    "seed": 508023,
+    "aspect": "landscape",
+    "quality": "final",
+    "resolution": "720p",
+    "seconds": 5,
+    "sound": true,
+    "cinema": {
+      "movement": "pull",
+      "lens": "natural",
+      "lighting": "source",
+      "palette": "source"
+    }
+  },
+  "workflow": {
+    "1": {
+      "class_type": "UnetLoaderGGUF",
+      "inputs": {
+        "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+        "type": "ltxv",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ltx-2.5-audio-vae-bf16.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "The camera slowly tracks backward in one steady continuous move, gradually revealing more of the environment. Full-frame photorealistic medium shot of a fictional adult woman in a black bomber jacket walking straight toward the camera across a wet rooftop at blue hour. Her face is clearly visible, sharply focused and lit by a steady soft warm practical light. Her facial structure and jacket remain consistent. The camera dollies backward at exactly her walking pace, keeping her face at the same scale and the same focus distance. Natural relaxed gait and subtle hair movement. A second fictional adult leans on the railing far behind her; a city skyline recedes in the distance. Clean natural 35 mm lens, moderate depth of field, realistic clear detail. The image fills the entire rectangular frame. No vignette, no black borders, no rounded frame, no fisheye, no lens bloom, no added grain, no focus pulling, no focus breathing, no slow motion. No text, subtitles, labels or logos. Quiet rooftop ambience only, no speech or music. One continuous 24 fps shot. One continuous cinematic shot. Natural perspective, crisp believable detail and moderate depth of field. Keep lighting direction and exposure consistent throughout the shot. Keep natural color relationships coherent throughout the shot. The scene remains coherent over time."
+      }
+    },
+    "6": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "LTXVConditioning",
+      "inputs": {
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "frame_rate": 24
+      }
+    },
+    "8": {
+      "class_type": "EmptyLTXVLatentVideo",
+      "inputs": {
+        "width": 1280,
+        "height": 736,
+        "length": 121,
+        "batch_size": 1
+      }
+    },
+    "9": {
+      "class_type": "LTXVEmptyLatentAudio",
+      "inputs": {
+        "frames_number": 121,
+        "frame_rate": 24,
+        "batch_size": 1,
+        "audio_vae": [
+          "4",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "LTXVConcatAVLatent",
+      "inputs": {
+        "video_latent": [
+          "8",
+          0
+        ],
+        "audio_latent": [
+          "9",
+          0
+        ]
+      }
+    },
+    "13": {
+      "class_type": "RandomNoise",
+      "inputs": {
+        "noise_seed": 508023
+      }
+    },
+    "14": {
+      "class_type": "KSamplerSelect",
+      "inputs": {
+        "sampler_name": "euler_ancestral"
+      }
+    },
+    "15": {
+      "class_type": "ManualSigmas",
+      "inputs": {
+        "sigmas": "1., 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+      }
+    },
+    "16": {
+      "class_type": "LTXVDualCFGGuider",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "positive": [
+          "7",
+          0
+        ],
+        "negative": [
+          "7",
+          1
+        ],
+        "video_cfg": 1,
+        "audio_cfg": 1
+      }
+    },
+    "17": {
+      "class_type": "SamplerCustomAdvanced",
+      "inputs": {
+        "noise": [
+          "13",
+          0
+        ],
+        "guider": [
+          "16",
+          0
+        ],
+        "sampler": [
+          "14",
+          0
+        ],
+        "sigmas": [
+          "15",
+          0
+        ],
+        "latent_image": [
+          "10",
+          0
+        ]
+      }
+    },
+    "18": {
+      "class_type": "LTXVSeparateAVLatent",
+      "inputs": {
+        "av_latent": [
+          "17",
+          0
+        ]
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "18",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "20": {
+      "class_type": "AftertakeFilmGrade",
+      "inputs": {
+        "images": [
+          "23",
+          0
+        ],
+        "palette": "source"
+      }
+    },
+    "21": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "20",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/text-video",
+        "recipe_json": "{\"format\":\"aftertake-text-video/1\",\"name\":\"A - Hero walk - clean-lens quality variant - seed 508023\",\"prompt\":\"Full-frame photorealistic medium shot of a fictional adult woman in a black bomber jacket walking straight toward the camera across a wet rooftop at blue hour. Her face is clearly visible, sharply focused and lit by a steady soft warm practical light. Her facial structure and jacket remain consistent. The camera dollies backward at exactly her walking pace, keeping her face at the same scale and the same focus distance. Natural relaxed gait and subtle hair movement. A second fictional adult leans on the railing far behind her; a city skyline recedes in the distance. Clean natural 35 mm lens, moderate depth of field, realistic clear detail. The image fills the entire rectangular frame. No vignette, no black borders, no rounded frame, no fisheye, no lens bloom, no added grain, no focus pulling, no focus breathing, no slow motion. No text, subtitles, labels or logos. Quiet rooftop ambience only, no speech or music. One continuous 24 fps shot.\",\"seed\":508023,\"aspect\":\"landscape\",\"quality\":\"final\",\"resolution\":\"720p\",\"seconds\":5,\"sound\":true,\"cinema\":{\"movement\":\"pull\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\"}}",
+        "generated_audio": [
+          "22",
+          0
+        ]
+      }
+    },
+    "22": {
+      "class_type": "LTXVAudioVAEDecode",
+      "inputs": {
+        "samples": [
+          "18",
+          1
+        ],
+        "audio_vae": [
+          "4",
+          0
+        ]
+      }
+    },
+    "23": {
+      "class_type": "ImageCrop",
+      "inputs": {
+        "image": [
+          "19",
+          0
+        ],
+        "width": 1280,
+        "height": 720,
+        "x": 0,
+        "y": 8
+      }
+    }
+  },
+  "output": {
+    "id": "e63dec49-6bde-4af4-aed2-0ec3421e02d8",
+    "name": "A - Hero walk - clean-lens quality variant - seed 508023",
+    "kind": "video",
+    "width": 1280,
+    "height": 720,
+    "duration": 5.041666666666667,
+    "hasAudio": true,
+    "sha256": "ec8ecb736b250eea4c8236c549c901bddf9931576e70deb29a17c03b50e2111b",
+    "url": "/media/e63dec49-6bde-4af4-aed2-0ec3421e02d8.mp4"
+  },
+  "jobId": "601bf1ec-88dd-457f-88db-6d903dc8455f"
+}

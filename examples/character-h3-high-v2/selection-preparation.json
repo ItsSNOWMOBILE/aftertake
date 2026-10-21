@@ -1,0 +1,17 @@
+{
+  "frames": 73,
+  "sourceTrim": 0,
+  "positive": "Head and torso points inside foreground woman",
+  "seed": 509103,
+  "preserveOriginalAudio": true,
+  "state": "approved-for-generation",
+  "format": "aftertake-selection-preparation/1",
+  "sourceHasAudio": true,
+  "sourceFrame": 0,
+  "negative": "Background man seated on left railing",
+  "subject": "Central foreground woman wearing black bomber jacket",
+  "checks": "Root reviewed all11source frames. Agent independently reviewed native frame0. Complete SAM3 mask remains unreviewed until generated.",
+  "fps": 24,
+  "operationId": "7fdf4060-3ce9-4c4b-93cc-8b22dd398bfc",
+  "reviewedMaskSha256": "d2435f58c48e0dca2af9b0da77dfe0c32a390cf8aa3198f9900249735c23513d"
+}

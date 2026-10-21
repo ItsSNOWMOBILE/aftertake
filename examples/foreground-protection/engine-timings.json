@@ -1,0 +1,66 @@
+{
+  "selection": {
+    "jobId": "871c309a-b73e-4ee4-b13d-9d820d97c3a3",
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "871c309a-b73e-4ee4-b13d-9d820d97c3a3",
+            "timestamp": 1792558640209
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "871c309a-b73e-4ee4-b13d-9d820d97c3a3",
+            "timestamp": 1792558640209
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "871c309a-b73e-4ee4-b13d-9d820d97c3a3",
+            "timestamp": 1792558669424
+          }
+        ]
+      ]
+    },
+    "seconds": 29.215
+  },
+  "replacement": {
+    "jobId": "f4741267-e610-48af-9be6-7cb5876a2c4d",
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "f4741267-e610-48af-9be6-7cb5876a2c4d",
+            "timestamp": 1792558799586
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "f4741267-e610-48af-9be6-7cb5876a2c4d",
+            "timestamp": 1792558799586
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "f4741267-e610-48af-9be6-7cb5876a2c4d",
+            "timestamp": 1792559474954
+          }
+        ]
+      ]
+    },
+    "seconds": 675.368
+  }
+}

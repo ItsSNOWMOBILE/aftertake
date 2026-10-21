@@ -1,0 +1,23 @@
+{
+  "format": "aftertake-matched-comparison/1",
+  "originalSource": "source.mp4",
+  "preparedSource": "prepared-source.mp4",
+  "before": "before-720p.mp4",
+  "after": "result.mp4",
+  "beforeSha256": "b5c5ed5500a172d598cc56773e96262047c15d5402488f59a069348f7bea0fe3",
+  "afterSha256": "2bfb355ca68b0e3dc6f3e0f674939fde0477ba89d03ce369c772d6029dba83d3",
+  "aspect": "landscape",
+  "resolution": "720p",
+  "framing": {
+    "zoom": 1,
+    "endZoom": 1,
+    "x": 0.5,
+    "y": 0.5,
+    "fit": "cover"
+  },
+  "start": 0,
+  "end": 3.0416666666666665,
+  "sourceVolume": 1,
+  "normalizeAudio": false,
+  "note": "Before and after are exported from the same aligned preparation canvas with the identical Film transform. The original source is also retained; it is not presented as the pixel-aligned before."
+}

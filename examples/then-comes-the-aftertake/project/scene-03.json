@@ -1,0 +1,247 @@
+{
+  "format": "aftertake-film/5",
+  "id": "ef73ff7f-fe48-4fb4-a1b3-351433286bdb",
+  "name": "03 Paint it",
+  "aspect": "landscape",
+  "resolution": "1080p",
+  "shots": [
+    {
+      "assetId": "0f6ce844-33c0-4a5e-aea7-6b952e1ceaca",
+      "framing": {
+        "zoom": 1.75,
+        "endZoom": 1.9,
+        "x": 0.47,
+        "y": 0.52
+      },
+      "start": 1.9166666666666667,
+      "end": 4.291666666666667,
+      "title": "uiPaint.mp4",
+      "sha256": "aba1fad2b64191eb90909b69fd77ba2fe0eea3e5d58715bc817fa4942d5aa19c",
+      "asset": {
+        "name": "uiPaint.mp4",
+        "kind": "video",
+        "sha256": "aba1fad2b64191eb90909b69fd77ba2fe0eea3e5d58715bc817fa4942d5aa19c",
+        "duration": 14.5,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "87f272ec-651c-4a56-adec-b3d516069387",
+      "framing": {
+        "zoom": 1.55,
+        "endZoom": 1.62,
+        "x": 0.47,
+        "y": 0.52
+      },
+      "start": 2.0833333333333335,
+      "end": 4.416666666666667,
+      "title": "uiCompare.mp4",
+      "sha256": "a43f4fd0b78c2bfca95c96d456e966b61ee47875dd87b6ce08a3d0868244af6b",
+      "asset": {
+        "name": "uiCompare.mp4",
+        "kind": "video",
+        "sha256": "a43f4fd0b78c2bfca95c96d456e966b61ee47875dd87b6ce08a3d0868244af6b",
+        "duration": 6.125,
+        "width": 1920,
+        "height": 1080
+      }
+    },
+    {
+      "assetId": "34ffa659-00fc-4f3b-bc2a-388fb6ff374d",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.04,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0.4166666666666667,
+      "end": 2.3333333333333335,
+      "title": "loftSrc.mp4",
+      "sha256": "ab694e2d3f5f542b8cf0abf099bf3e8d7fd7b172718012a696bb381499ef2d86",
+      "asset": {
+        "name": "loftSrc.mp4",
+        "kind": "video",
+        "sha256": "ab694e2d3f5f542b8cf0abf099bf3e8d7fd7b172718012a696bb381499ef2d86",
+        "duration": 5.041666666666667,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "ce45c8c3-1743-4999-a287-d03d4ca267c6",
+      "dissolve": 0.25,
+      "transition": "flash",
+      "framing": {
+        "zoom": 1.04,
+        "endZoom": 1.06,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 2.1666666666666665,
+      "end": 3.4166666666666665,
+      "title": "portal.mp4",
+      "sha256": "ae783430aafebd577dda2f20add72ebfa11fddcf338d188a61628a1649be73a2",
+      "asset": {
+        "name": "portal.mp4",
+        "kind": "video",
+        "sha256": "ae783430aafebd577dda2f20add72ebfa11fddcf338d188a61628a1649be73a2",
+        "duration": 4.041666666666667,
+        "width": 1280,
+        "height": 720
+      }
+    },
+    {
+      "assetId": "18b3055e-4b1a-4f14-84e0-5e8c62f07eea",
+      "framing": {
+        "zoom": 1.02,
+        "endZoom": 1.06,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1,
+      "end": 1.75,
+      "title": "fallsSrc.mp4",
+      "sha256": "b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57",
+      "asset": {
+        "name": "fallsSrc.mp4",
+        "kind": "video",
+        "sha256": "b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57",
+        "duration": 4.208333333333333,
+        "width": 768,
+        "height": 432
+      }
+    },
+    {
+      "assetId": "47007836-2b46-4383-af2d-2f520b732ae2",
+      "dissolve": 0.25,
+      "transition": "whip",
+      "framing": {
+        "zoom": 1.02,
+        "endZoom": 1.1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 1.2083333333333333,
+      "end": 2.5,
+      "title": "falls.mp4",
+      "sha256": "363739a46445bc504f8042277bd8cff90aae7db7c6641371f9016a318e88fd98",
+      "asset": {
+        "name": "falls.mp4",
+        "kind": "video",
+        "sha256": "363739a46445bc504f8042277bd8cff90aae7db7c6641371f9016a318e88fd98",
+        "duration": 4.041666666666667,
+        "width": 768,
+        "height": 432
+      }
+    }
+  ],
+  "requestKey": "03-Paint-it-1792535854339",
+  "requestDigest": "1ff34c95e74766360c051060abec40ab274a6c0985038b855bd6ab3394c4b428",
+  "titles": [
+    {
+      "id": "fa6df905-9a55-426b-942f-d429972f14d3",
+      "text": "PAINT IT.",
+      "start": 1.0100499999999997,
+      "end": 1.5867900000000001,
+      "style": "headline",
+      "position": "top",
+      "animation": "slam",
+      "fontSize": 96,
+      "font": "display",
+      "box": "stamp",
+      "tilt": -4,
+      "color": "#d5eb94"
+    },
+    {
+      "id": "9e52bc8c-b6ec-43ad-b576-5b4821f22edc",
+      "text": "CHANGE IT.",
+      "start": 1.6067900000000002,
+      "end": 2.1742499999999967,
+      "style": "headline",
+      "position": "top",
+      "animation": "pop",
+      "motionDuration": 0.35,
+      "fontSize": 96,
+      "font": "display",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "8d95aa99-3f3d-4c3d-9404-5192aafee2f4",
+      "text": "MAKE IT NEW.",
+      "start": 2.1942499999999967,
+      "end": 3.479399999999999,
+      "style": "headline",
+      "position": "top",
+      "animation": "slam",
+      "fontSize": 96,
+      "font": "display",
+      "box": "highlight",
+      "tilt": -3,
+      "color": "#d5eb94"
+    },
+    {
+      "id": "514b7587-8f98-49ba-921d-2cb6001be70b",
+      "text": "LOCAL LTX-2.5 \u00b7 ONLY THE PAINTED REGION CHANGES",
+      "start": 2.484499999999997,
+      "end": 4.655549999999998,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "scramble",
+      "fontSize": 28,
+      "align": "left",
+      "font": "mono",
+      "color": "#d5eb94"
+    },
+    {
+      "id": "cfc1eb55-5111-413b-9056-91a7b09a8135",
+      "text": "SAME SCENE.",
+      "start": 5.236049999999999,
+      "end": 6.632450000000002,
+      "style": "headline",
+      "position": "center",
+      "animation": "slam",
+      "fontSize": 124,
+      "font": "display",
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "48994b11-a3dd-4beb-8bf2-42756f01de8a",
+      "text": "A DIFFERENT VIEW.",
+      "start": 6.7105,
+      "end": 7.961519999999999,
+      "style": "headline",
+      "position": "center",
+      "animation": "slam",
+      "fontSize": 104,
+      "font": "display",
+      "box": "highlight",
+      "tilt": -3,
+      "color": "#f3f1e9"
+    },
+    {
+      "id": "ac70ce04-dbf5-4987-b1af-6c063dbb9d5c",
+      "text": "SAME SOURCE \u00b7 A NEW TAKE",
+      "start": 8.12226,
+      "end": 9.366919999999997,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "scramble",
+      "fontSize": 28,
+      "align": "left",
+      "font": "mono",
+      "color": "#d5eb94"
+    }
+  ],
+  "audio": [],
+  "sourceVolume": 0,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 9.416666666666666,
+  "createdAt": "2026-10-20T22:37:34.497Z",
+  "output": "/api/films/ef73ff7f-fe48-4fb4-a1b3-351433286bdb/video"
+}

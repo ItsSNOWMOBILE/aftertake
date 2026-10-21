@@ -1,0 +1,231 @@
+{
+  "1": {
+    "class_type": "UnetLoaderGGUF",
+    "inputs": {
+      "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+      "type": "ltxv",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "ltx-2.5-audio-vae-bf16.safetensors"
+    }
+  },
+  "5": {
+    "class_type": "CLIPTextEncode",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "text": "The camera moves slowly forward in one smooth continuous dolly, gently approaching the subject with visible parallax. Slow push-in on a dim industrial loft with one huge arched window, dust drifting in the window light, a person sits reading on a sofa in the foreground left, the window shows a plain overcast sky, moody, photoreal, 24 fps. All people are fictional, not based on any real person. No text, subtitles, labels or logos. Natural scene ambience only, no speech or music. One continuous cinematic shot. Natural perspective, crisp believable detail and moderate depth of field. Keep lighting direction and exposure consistent throughout the shot. Keep natural color relationships coherent throughout the shot. The scene remains coherent over time."
+    }
+  },
+  "6": {
+    "class_type": "ConditioningZeroOut",
+    "inputs": {
+      "conditioning": [
+        "5",
+        0
+      ]
+    }
+  },
+  "7": {
+    "class_type": "LTXVConditioning",
+    "inputs": {
+      "positive": [
+        "5",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "frame_rate": 24
+    }
+  },
+  "8": {
+    "class_type": "EmptyLTXVLatentVideo",
+    "inputs": {
+      "width": 1280,
+      "height": 736,
+      "length": 121,
+      "batch_size": 1
+    }
+  },
+  "9": {
+    "class_type": "LTXVEmptyLatentAudio",
+    "inputs": {
+      "frames_number": 121,
+      "frame_rate": 24,
+      "batch_size": 1,
+      "audio_vae": [
+        "4",
+        0
+      ]
+    }
+  },
+  "10": {
+    "class_type": "LTXVConcatAVLatent",
+    "inputs": {
+      "video_latent": [
+        "8",
+        0
+      ],
+      "audio_latent": [
+        "9",
+        0
+      ]
+    }
+  },
+  "13": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": 508022
+    }
+  },
+  "14": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "euler_ancestral"
+    }
+  },
+  "15": {
+    "class_type": "ManualSigmas",
+    "inputs": {
+      "sigmas": "1., 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+    }
+  },
+  "16": {
+    "class_type": "LTXVDualCFGGuider",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "positive": [
+        "7",
+        0
+      ],
+      "negative": [
+        "7",
+        1
+      ],
+      "video_cfg": 1,
+      "audio_cfg": 1
+    }
+  },
+  "17": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "13",
+        0
+      ],
+      "guider": [
+        "16",
+        0
+      ],
+      "sampler": [
+        "14",
+        0
+      ],
+      "sigmas": [
+        "15",
+        0
+      ],
+      "latent_image": [
+        "10",
+        0
+      ]
+    }
+  },
+  "18": {
+    "class_type": "LTXVSeparateAVLatent",
+    "inputs": {
+      "av_latent": [
+        "17",
+        0
+      ]
+    }
+  },
+  "19": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "18",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "20": {
+    "class_type": "AftertakeFilmGrade",
+    "inputs": {
+      "images": [
+        "23",
+        0
+      ],
+      "palette": "source"
+    }
+  },
+  "21": {
+    "class_type": "AftertakeSaveVideo",
+    "inputs": {
+      "images": [
+        "20",
+        0
+      ],
+      "fps": 24,
+      "filename_prefix": "aftertake/text-video",
+      "recipe_json": "{\"format\":\"aftertake-text-video/1\",\"name\":\"C - Repaint plate - seed 508022\",\"prompt\":\"Slow push-in on a dim industrial loft with one huge arched window, dust drifting in the window light, a person sits reading on a sofa in the foreground left, the window shows a plain overcast sky, moody, photoreal, 24 fps. All people are fictional, not based on any real person. No text, subtitles, labels or logos. Natural scene ambience only, no speech or music.\",\"seed\":508022,\"aspect\":\"landscape\",\"quality\":\"final\",\"resolution\":\"720p\",\"seconds\":5,\"sound\":true,\"cinema\":{\"movement\":\"push\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\"}}",
+      "generated_audio": [
+        "22",
+        0
+      ]
+    }
+  },
+  "22": {
+    "class_type": "LTXVAudioVAEDecode",
+    "inputs": {
+      "samples": [
+        "18",
+        1
+      ],
+      "audio_vae": [
+        "4",
+        0
+      ]
+    }
+  },
+  "23": {
+    "class_type": "ImageCrop",
+    "inputs": {
+      "image": [
+        "19",
+        0
+      ],
+      "width": 1280,
+      "height": 720,
+      "x": 0,
+      "y": 8
+    }
+  }
+}

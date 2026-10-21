@@ -1,0 +1,83 @@
+{
+  "format": "aftertake-example-upgrade/1",
+  "name": "castle-pullback-v2",
+  "apiBase": "http://127.0.0.1:4394",
+  "request": {
+    "format": "aftertake/1",
+    "name": "castle-pullback-v2",
+    "clip": {
+      "id": "50af43c4-d029-4116-858d-64a98a139cc9",
+      "name": "D - Storm lighthouse - seed 509042",
+      "kind": "image",
+      "width": 1280,
+      "height": 720,
+      "duration": 1,
+      "hasAudio": false,
+      "sha256": "9e11d43f6c628458eef2e2e5dcfd124ab41e930e059ced4a9a95c5140f56a085",
+      "url": "/media/50af43c4-d029-4116-858d-64a98a139cc9.png"
+    },
+    "prompt": "A lone lighthouse stands solid and stable on a black basalt sea stack in a violent storm. Enormous waves explode against the rock, rain sweeps across the scene, a distant lightning bolt illuminates the clouds, and the lighthouse beam cuts through the rain. The lighthouse architecture remains consistent as the camera pulls back slowly to reveal more of the surrounding ocean. Epic wide shot, photorealistic cinematic detail.",
+    "cue": {
+      "start": 0,
+      "end": 4,
+      "fade": 0.2,
+      "feather": 0.03,
+      "strokes": []
+    },
+    "seed": 2960,
+    "quality": "final",
+    "trimStart": 0,
+    "pipeline": "cinema",
+    "cinema": {
+      "movement": "pull",
+      "lens": "wide",
+      "lighting": "source",
+      "palette": "source",
+      "guidance": "tracks"
+    },
+    "resolution": "720p"
+  },
+  "codeBranch": "source-upgrade",
+  "codeCommit": "ec7c99f721a59b622afa5b007d3c4e1a69871960",
+  "originalRecipe": "original-recipe.json",
+  "render": "render.json",
+  "output": {
+    "path": "result.mp4",
+    "sha256": "34825e59be74dc16ef3db45f6caa01aa86809eefc4403ca07528ae1b0d159682",
+    "bytes": 2785481
+  },
+  "modelFiles": [
+    {
+      "kind": "unet_name",
+      "file": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+    },
+    {
+      "kind": "clip_name",
+      "file": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors"
+    },
+    {
+      "kind": "vae_name",
+      "file": "ltx-2.5-video-vae-conv-bf16.safetensors"
+    },
+    {
+      "kind": "lora_name",
+      "file": "ltx-2.3-22b-ic-lora-motion-track-control-ref0.5.safetensors"
+    }
+  ],
+  "sourceOrigin": "AI-generated fictional footage and references from job2; no phone capture is claimed.",
+  "deliveryDescription": "Native Aftertake result at requested 1280x720.",
+  "note": null,
+  "runtimeCodeCommit": "06ca946c5e0db28a8199c2337a0c14d748aa3289",
+  "modelProvenance": "models.json",
+  "observedTiming": {
+    "format": "aftertake-observed-operation-timing/1",
+    "nativeOperationId": "2b82a337-93de-43e2-8afa-b34ab699d373",
+    "createdAt": "2026-10-20T21:27:47.333Z",
+    "updatedAt": "2026-10-20T21:36:50.672Z",
+    "nativeOperationWallSeconds": 543.339,
+    "note": "Observed API operation wall time includes preparation and finishing; engine execution time, if separately recorded, is not the same measurement.",
+    "engineExecutionSeconds": 541.202,
+    "engineTimingMethod": "ComfyUI execution_start/execution_success status timestamps"
+  },
+  "portability": "Stored clip, reference, selection and Film asset IDs are local execution evidence. Import the included files on the target app and rebind them before replaying the ordinary API requests."
+}

@@ -1,0 +1,14 @@
+{
+  "file": "aftertake-song.mp3",
+  "beats": "aftertake-song.beats.json",
+  "sha256": "d97f1946f10846dafb2d0cbb89fde70df4930dbcd796babadf1c4f5abb5d0949",
+  "duration": 96.024,
+  "dropTime": 10.5419,
+  "cardBeat": 120,
+  "endBeat": 138,
+  "volume": 0.62,
+  "credit": [
+    "Song: “Aftertake”, written for this film and generated with",
+    "ACE-Step 1.5 XL Turbo (open weights) on Comfy Cloud · aftertake-song-ace-step.json"
+  ]
+}

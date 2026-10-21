@@ -1,0 +1,758 @@
+{
+  "model": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    },
+    "_meta": {
+      "title": "UNETLoader"
+    }
+  },
+  "shift": {
+    "class_type": "MiniMaxH3SigmaShift",
+    "inputs": {
+      "model": [
+        "model",
+        0
+      ],
+      "shift_video": 12,
+      "shift_audio": 3
+    },
+    "_meta": {
+      "title": "MiniMaxH3SigmaShift"
+    }
+  },
+  "attention": {
+    "class_type": "ModelAttentionBackend",
+    "inputs": {
+      "model": [
+        "shift",
+        0
+      ],
+      "attention": "comfy kitchen attention"
+    },
+    "_meta": {
+      "title": "ModelAttentionBackend"
+    }
+  },
+  "text": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+      "type": "minimax",
+      "device": "default"
+    },
+    "_meta": {
+      "title": "CLIPLoader"
+    }
+  },
+  "text_device": {
+    "class_type": "SelectCLIPDevice",
+    "inputs": {
+      "clip": [
+        "text",
+        0
+      ],
+      "device": "gpu:0"
+    },
+    "_meta": {
+      "title": "SelectCLIPDevice"
+    }
+  },
+  "text_memory": {
+    "class_type": "H3RelayTextMemory",
+    "inputs": {
+      "clip": [
+        "text_device",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "H3RelayTextMemory"
+    }
+  },
+  "video_vae": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "minimax_h3_video_vae_int8_convrot.safetensors"
+    },
+    "_meta": {
+      "title": "VAELoader"
+    }
+  },
+  "audio_vae": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+    },
+    "_meta": {
+      "title": "VAELoader"
+    }
+  },
+  "turbo": {
+    "class_type": "LoraLoaderModelOnly",
+    "inputs": {
+      "model": [
+        "attention",
+        0
+      ],
+      "lora_name": "minimax_h3_fl2v_turbo_8step_v1.0_768p_comfyui_bf16.safetensors",
+      "strength_model": 1
+    },
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "adapter": {
+    "class_type": "LoraLoaderModelOnly",
+    "inputs": {
+      "model": [
+        "turbo",
+        0
+      ],
+      "lora_name": "h3_character_swap_v1.5.safetensors",
+      "strength_model": 1
+    },
+    "_meta": {
+      "title": "LoraLoaderModelOnly"
+    }
+  },
+  "source": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "7fdf4060-3ce9-4c4b-93cc-8b22dd398bfc-source.mp4"
+    },
+    "_meta": {
+      "title": "LoadVideo"
+    }
+  },
+  "prepare": {
+    "class_type": "H3RelayPrepareSource",
+    "inputs": {
+      "video": [
+        "source",
+        0
+      ],
+      "resolution": "768",
+      "duration_seconds": 0,
+      "missing_audio": "silence"
+    },
+    "_meta": {
+      "title": "H3RelayPrepareSource"
+    }
+  },
+  "dimensions": {
+    "class_type": "GetImageSize",
+    "inputs": {
+      "image": [
+        "prepare",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "GetImageSize"
+    }
+  },
+  "reference": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "f3339a35-fb39-4264-bdbd-fd01384a5417.png"
+    },
+    "_meta": {
+      "title": "LoadImage"
+    }
+  },
+  "expand_mask": {
+    "class_type": "GrowMask",
+    "inputs": {
+      "mask": [
+        "aligned_mask",
+        0
+      ],
+      "expand": 32,
+      "tapered_corners": false
+    }
+  },
+  "plan": {
+    "class_type": "H3RelayWindowPlan",
+    "inputs": {
+      "source_frames": [
+        "prepare",
+        5
+      ],
+      "window_frames": "56",
+      "history_frames": "18",
+      "seed": 509103,
+      "schedule": "adaptive",
+      "seed_mode": "fixed",
+      "seed_overrides": "{}"
+    },
+    "_meta": {
+      "title": "Plan source-aligned windows"
+    }
+  },
+  "start": {
+    "class_type": "StartLoop",
+    "inputs": {
+      "mode": "simple",
+      "mode.num_iterations": [
+        "plan",
+        2
+      ],
+      "cache_iterations": false
+    },
+    "_meta": {
+      "title": "Native loop · one H3 window"
+    },
+    "_loop_body": [
+      "append",
+      "decode",
+      "edit_mask",
+      "encode_source",
+      "guide",
+      "guider",
+      "history",
+      "noise",
+      "reference_conditioning",
+      "sample",
+      "sampling_memory",
+      "separate",
+      "window"
+    ],
+    "_loop_end": "end"
+  },
+  "window": {
+    "class_type": "H3RelayWindowInputs",
+    "inputs": {
+      "source": [
+        "prepare",
+        0
+      ],
+      "window": [
+        "plan",
+        3
+      ],
+      "iteration_index": [
+        "start",
+        0
+      ],
+      "previous": [
+        "start",
+        4
+      ],
+      "reference_history": true,
+      "fps": 24,
+      "resize_anchor": true,
+      "history_audio_mode": "source",
+      "source_audio": [
+        "prepare",
+        1
+      ],
+      "mask": [
+        "expand_mask",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "H3RelayWindowInputs"
+    }
+  },
+  "reference_conditioning": {
+    "class_type": "MiniMaxH3ReferenceToVideo",
+    "inputs": {
+      "clip": [
+        "text_memory",
+        0
+      ],
+      "prompt": "Replace ONLY the selected person in <Video 1> with the person in <Picture 1>.\n\n<Picture 1> is the original character photo. <Picture 2> is an unmodified crop of the SAME person's head. Use its close facial detail to preserve identity.\n\nPreserve the reference person's facial identity, facial proportions, hair and skin. Follow the source performance's pose, gaze, expression, hand gestures and movement.\n\nReplace the source outfit with the clothing shown in <Picture 1>, over the whole visible body including the sleeves. Dress the replacement character in that reference outfit. Do not retain source clothing when it differs from the reference photo.\n\nKeep every other person, their limbs, props, background, lighting, camera framing and original audio timing. Natural scene integration and clean edges.\n\nReplace only the woman walking toward the camera with the fictional woman from Picture 1. She wears the matte rust-orange field jacket over a plain cream knit top and charcoal trousers from Picture 1. Preserve the second person by the railing, rooftop, skyline, wet ground reflections, original warm practical light and blue-hour scene. Follow the original walking performance, body pose, gaze and head movement naturally. No studio background from the reference photo.",
+      "width": [
+        "dimensions",
+        0
+      ],
+      "height": [
+        "dimensions",
+        1
+      ],
+      "length": [
+        "window",
+        8
+      ],
+      "ref_image_size": "match",
+      "ref_videos.ref_video_0": [
+        "window",
+        5
+      ],
+      "ref_images.ref_image_0": [
+        "reference",
+        0
+      ],
+      "vae": [
+        "video_vae",
+        0
+      ],
+      "audio_vae": [
+        "audio_vae",
+        0
+      ],
+      "ref_audios.ref_audio_0": [
+        "window",
+        6
+      ],
+      "ref_images.ref_image_1": [
+        "face_reference",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "Native H3 reference conditioning"
+    }
+  },
+  "history": {
+    "class_type": "H3RelayApplyHistory",
+    "inputs": {
+      "positive": [
+        "reference_conditioning",
+        0
+      ],
+      "latent": [
+        "reference_conditioning",
+        1
+      ],
+      "vae": [
+        "video_vae",
+        0
+      ],
+      "audio_vae": [
+        "audio_vae",
+        0
+      ],
+      "frames": [
+        "window",
+        3
+      ],
+      "history_frames": [
+        "window",
+        7
+      ],
+      "first_frame_guide": false,
+      "target_audio_guide": true,
+      "audio": [
+        "window",
+        4
+      ]
+    },
+    "_meta": {
+      "title": "H3RelayApplyHistory"
+    }
+  },
+  "encode_source": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "window",
+        0
+      ],
+      "vae": [
+        "video_vae",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "VAEEncode"
+    }
+  },
+  "edit_mask": {
+    "class_type": "H3RelayApplyEditMask",
+    "inputs": {
+      "latent": [
+        "history",
+        1
+      ],
+      "source_latent": [
+        "encode_source",
+        0
+      ],
+      "mask": [
+        "window",
+        1
+      ]
+    },
+    "_meta": {
+      "title": "H3RelayApplyEditMask"
+    }
+  },
+  "guide": {
+    "class_type": "MiniMaxH3AddGuide",
+    "inputs": {
+      "positive": [
+        "history",
+        0
+      ],
+      "latent": [
+        "edit_mask",
+        0
+      ],
+      "frame_idx": 0,
+      "audio_vae": [
+        "audio_vae",
+        0
+      ],
+      "audio": [
+        "window",
+        2
+      ]
+    },
+    "_meta": {
+      "title": "Native target guide"
+    }
+  },
+  "sampling_memory": {
+    "class_type": "H3RelaySamplingMemory",
+    "inputs": {
+      "model": [
+        "adapter",
+        0
+      ],
+      "latent": [
+        "edit_mask",
+        0
+      ],
+      "conditioning": [
+        "guide",
+        0
+      ],
+      "activation_memory_gib": 6
+    },
+    "_meta": {
+      "title": "H3RelaySamplingMemory"
+    }
+  },
+  "noise": {
+    "class_type": "RandomNoise",
+    "inputs": {
+      "noise_seed": [
+        "window",
+        10
+      ]
+    },
+    "_meta": {
+      "title": "RandomNoise"
+    }
+  },
+  "guider": {
+    "class_type": "CFGGuider",
+    "inputs": {
+      "model": [
+        "sampling_memory",
+        0
+      ],
+      "positive": [
+        "guide",
+        0
+      ],
+      "negative": [
+        "guide",
+        0
+      ],
+      "cfg": 1
+    },
+    "_meta": {
+      "title": "CFGGuider"
+    }
+  },
+  "sampler": {
+    "class_type": "KSamplerSelect",
+    "inputs": {
+      "sampler_name": "er_sde"
+    },
+    "_meta": {
+      "title": "KSamplerSelect"
+    }
+  },
+  "schedule": {
+    "class_type": "BasicScheduler",
+    "inputs": {
+      "model": [
+        "adapter",
+        0
+      ],
+      "scheduler": "normal",
+      "steps": 8,
+      "denoise": 1
+    },
+    "_meta": {
+      "title": "BasicScheduler"
+    }
+  },
+  "sample": {
+    "class_type": "SamplerCustomAdvanced",
+    "inputs": {
+      "noise": [
+        "noise",
+        0
+      ],
+      "guider": [
+        "guider",
+        0
+      ],
+      "sampler": [
+        "sampler",
+        0
+      ],
+      "sigmas": [
+        "schedule",
+        0
+      ],
+      "latent_image": [
+        "edit_mask",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "SamplerCustomAdvanced"
+    }
+  },
+  "separate": {
+    "class_type": "LTXVSeparateAVLatent",
+    "inputs": {
+      "av_latent": [
+        "sample",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "LTXVSeparateAVLatent"
+    }
+  },
+  "decode": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "separate",
+        0
+      ],
+      "vae": [
+        "video_vae",
+        0
+      ]
+    },
+    "_meta": {
+      "title": "VAEDecode"
+    }
+  },
+  "append": {
+    "class_type": "H3RelayAppendWindow",
+    "inputs": {
+      "frames": [
+        "decode",
+        0
+      ],
+      "window": [
+        "window",
+        12
+      ],
+      "previous": [
+        "start",
+        4
+      ]
+    },
+    "_meta": {
+      "title": "H3RelayAppendWindow"
+    }
+  },
+  "end": {
+    "class_type": "EndLoop",
+    "inputs": {
+      "output_value": [
+        "append",
+        0
+      ],
+      "next_iteration_value": [
+        "append",
+        0
+      ],
+      "accumulate": false
+    },
+    "_meta": {
+      "title": "EndLoop"
+    }
+  },
+  "finish": {
+    "class_type": "H3RelayFinishWindows",
+    "inputs": {
+      "state": [
+        "end",
+        0
+      ],
+      "audio_mode": "source",
+      "source_audio": [
+        "prepare",
+        1
+      ]
+    },
+    "_meta": {
+      "title": "H3RelayFinishWindows"
+    }
+  },
+  "save": {
+    "class_type": "AftertakeSaveVideo",
+    "inputs": {
+      "images": [
+        "source_composite",
+        0
+      ],
+      "fps": 24,
+      "filename_prefix": "aftertake/characters/51057f6e-af0a-47a1-8a3c-5cc6a4bfc51c/result",
+      "recipe_json": "{\"format\": \"aftertake-character-output/1\", \"request\": {\"format\": \"aftertake-character/1\", \"name\": \"Rooftop recast \\u00b7 H3 \\u00b7 v2\", \"selectionId\": \"7fdf4060-3ce9-4c4b-93cc-8b22dd398bfc\", \"reference\": {\"id\": \"f3339a35-fb39-4264-bdbd-fd01384a5417\", \"name\": \"Fictional rooftop recast reference\", \"sha256\": \"5e55499d75eaf69928d94fb436e5487f9dc7e15617b607b0c5ae0eccc32a8296\", \"width\": 1280, \"height\": 720, \"duration\": 1, \"url\": \"/media/f3339a35-fb39-4264-bdbd-fd01384a5417.png\", \"kind\": \"image\", \"hasAudio\": false}, \"faceBox\": {\"x\": 0.45, \"y\": 0.025, \"width\": 0.17, \"height\": 0.31}, \"prompt\": \"Replace only the woman walking toward the camera with the fictional woman from Picture 1. She wears the matte rust-orange field jacket over a plain cream knit top and charcoal trousers from Picture 1. Preserve the second person by the railing, rooftop, skyline, wet ground reflections, original warm practical light and blue-hour scene. Follow the original walking performance, body pose, gaze and head movement naturally. No studio background from the reference photo.\", \"wardrobe\": \"reference\", \"seed\": 509103}, \"selectionId\": \"7fdf4060-3ce9-4c4b-93cc-8b22dd398bfc\"}",
+      "source_audio": [
+        "original_audio",
+        1
+      ],
+      "audio_start": 0
+    }
+  },
+  "face_reference": {
+    "class_type": "AftertakeCropRegion",
+    "inputs": {
+      "images": [
+        "reference",
+        0
+      ],
+      "x": 576,
+      "y": 18,
+      "width": 218,
+      "height": 223,
+      "target_width": 512,
+      "target_height": 512
+    }
+  },
+  "mask_video": {
+    "class_type": "LoadVideo",
+    "inputs": {
+      "file": "7fdf4060-3ce9-4c4b-93cc-8b22dd398bfc-mask.mkv"
+    }
+  },
+  "mask_components": {
+    "class_type": "GetVideoComponents",
+    "inputs": {
+      "video": [
+        "mask_video",
+        0
+      ]
+    }
+  },
+  "raw_mask": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "mask_components",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "aligned_mask": {
+    "class_type": "AftertakeAlignCharacterMask",
+    "inputs": {
+      "masks": [
+        "raw_mask",
+        0
+      ],
+      "images": [
+        "prepare",
+        0
+      ],
+      "source_frames": [
+        "prepare",
+        5
+      ]
+    }
+  },
+  "source_frames": {
+    "class_type": "ImageFromBatch",
+    "inputs": {
+      "image": [
+        "prepare",
+        0
+      ],
+      "batch_index": 0,
+      "length": [
+        "prepare",
+        5
+      ]
+    }
+  },
+  "composite_expand_mask": {
+    "class_type": "GrowMask",
+    "inputs": {
+      "mask": [
+        "raw_mask",
+        0
+      ],
+      "expand": 32,
+      "tapered_corners": false
+    }
+  },
+  "composite_mask_image": {
+    "class_type": "MaskToImage",
+    "inputs": {
+      "mask": [
+        "composite_expand_mask",
+        0
+      ]
+    }
+  },
+  "composite_blur": {
+    "class_type": "ImageBlur",
+    "inputs": {
+      "image": [
+        "composite_mask_image",
+        0
+      ],
+      "blur_radius": 3,
+      "sigma": 1.5
+    }
+  },
+  "composite_mask": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "composite_blur",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "source_composite": {
+    "class_type": "ImageCompositeMasked",
+    "inputs": {
+      "destination": [
+        "source_frames",
+        0
+      ],
+      "source": [
+        "finish",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "resize_source": false,
+      "mask": [
+        "composite_mask",
+        0
+      ]
+    }
+  },
+  "original_audio": {
+    "class_type": "AftertakeLoadClip",
+    "inputs": {
+      "filename": "e63dec49-6bde-4af4-aed2-0ec3421e02d8.mp4",
+      "width": 64,
+      "height": 64,
+      "frames": 1,
+      "fps": 24,
+      "trim_start": 0
+    }
+  }
+}

@@ -16,7 +16,7 @@ export function cuePreviewSettings(recipe: Recipe, target: PaintTarget) {
   const final = target === 'composite' && canSeparateComposite(recipe) && recipe.compositeRegion;
   return {
     ...dimensions,
-    ...(final ? displayDimensions(recipe) : {}),
+    ...(final || recipe.resolution === '720p' ? displayDimensions(recipe) : {}),
     clip: recipe.clip,
     cue: paintedCue(recipe, target),
     trimStart: recipe.trimStart,

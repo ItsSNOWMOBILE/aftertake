@@ -1,0 +1,103 @@
+CUDA backend: NVIDIA GeForce RTX 5080 · sequential residency; native model precision and attention unchanged.
+Starting the local engine. Studio URL: http://127.0.0.1:4310
+======== Running on http://127.0.0.1:8189 ========
+(Press CTRL+C to quit)
+[INFO] setup plugin alembic.autogenerate.schemas
+[INFO] setup plugin alembic.autogenerate.tables
+[INFO] setup plugin alembic.autogenerate.types
+[INFO] setup plugin alembic.autogenerate.constraints
+[INFO] setup plugin alembic.autogenerate.defaults
+[INFO] setup plugin alembic.autogenerate.comments
+[INFO] setup plugin alembic.ext.checkconstraint_byname
+[INFO] Adding extra search path diffusion_models E:\Aftertake-Models\diffusion_models
+[INFO] Adding extra search path text_encoders E:\Aftertake-Models\text_encoders
+[INFO] Adding extra search path clip_vision E:\Aftertake-Models\clip_vision
+[INFO] Adding extra search path vae E:\Aftertake-Models\vae
+[INFO] Adding extra search path loras E:\Aftertake-Models\loras
+[INFO] Adding extra search path latent_upscale_models E:\Aftertake-Models\latent_upscale_models
+[INFO] Adding extra search path checkpoints E:\Aftertake-Models\checkpoints
+[INFO] Adding extra search path geometry_estimation E:\Aftertake-Models\geometry_estimation
+[INFO] Found comfy_kitchen backend triton: {'available': False, 'disabled': True, 'unavailable_reason': "ImportError: No module named 'triton'", 'capabilities': []}
+[INFO] Found comfy_kitchen backend hip: {'available': False, 'disabled': False, 'unavailable_reason': 'PyTorch ROCm/HIP runtime not available', 'capabilities': []}
+[INFO] Found comfy_kitchen backend eager: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'convrot_w4a4_linear', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_embedding', 'dequantize_int8_simple', 'dequantize_int8_simple_dtype', 'dequantize_mxfp8', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'fp16_conv3d', 'fp16_conv3d_out', 'fp16_linear', 'gemv_awq_w4a16', 'group_norm_silu_pad3d', 'group_norm_silu_pad3d_out', 'int8_linear', 'na3d', 'prepare_int4_weight_for_int8_linear', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'rotate_int8_convrot_weight', 'scaled_mm_mxfp8', 'scaled_mm_nvfp4', 'scaled_mm_svdquant_w4a4', 'sol_attn', 'stochastic_rounding_fp8', 'w4a8_int8_linear', 'w4a8_packed_linear']}
+[INFO] Found comfy_kitchen backend ascend: {'available': False, 'disabled': False, 'unavailable_reason': "torch-npu is not installed: No module named 'torch_npu'", 'capabilities': []}
+[INFO] Found comfy_kitchen backend cuda: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['adaln', 'apply_rope', 'apply_rope1', 'apply_rope1_', 'apply_rope_', 'apply_rope_split_half', 'apply_rope_split_half1', 'apply_rope_split_half1_', 'apply_rope_split_half_', 'closest_point_on_mesh', 'connected_components', 'convrot_w4a4_linear', 'delaunay3d', 'dequantize_convrot_w4a4_weight', 'dequantize_int8_convrot_weight', 'dequantize_int8_convrot_weight_dtype', 'dequantize_int8_simple', 'dequantize_int8_simple_dtype', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'dequantize_w4a8_int8_weight', 'edge_collapse_checks', 'fp16_conv3d', 'fp16_conv3d_out', 'fp16_linear', 'gemv_awq_w4a16', 'group_norm_silu_pad3d', 'group_norm_silu_pad3d_out', 'int8_linear', 'mesh_bvh', 'min_cut', 'na3d', 'prepare_int4_weight_for_int8_linear', 'quantize_and_rotate_rowwise', 'quantize_convrot_w4a4_weight', 'quantize_int8_convrot_weight', 'quantize_int8_rowwise', 'quantize_int8_tensorwise', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'quantize_svdquant_w4a4', 'quantize_w4a8_int8_weight', 'rms_adaln', 'rms_rope', 'rms_rope1', 'rms_rope1_', 'rms_rope_', 'rms_rope_split_half', 'rms_rope_split_half1', 'rms_rope_split_half1_', 'rms_rope_split_half_', 'rotate_int8_convrot_weight', 'scaled_mm_nvfp4', 'scaled_mm_svdquant_w4a4', 'sol_attn', 'stochastic_rounding_fp8', 'w4a8_int8_linear', 'w4a8_packed_linear']}
+[INFO] Checkpoint files will always be loaded safely.
+[INFO] Total VRAM 16275 MB, total RAM 32142 MB
+[INFO] pytorch version: 2.11.0+cu130
+[INFO] Set vram state to: NORMAL_VRAM
+[INFO] Disabling smart memory management
+[INFO] Device: cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync
+[INFO] Using async weight offloading with 1 streams
+[INFO] Enabled pinned memory 12856.0
+[INFO] Using pytorch attention
+[INFO] aimdo: src-win/cuda-detour.c:38:INFO:aimdo_setup_hooks: installing 6 hooks
+[INFO] aimdo: src/control.c:269:INFO:comfy-aimdo NVML pressure enabled
+[INFO] aimdo: src-win/shmem-detect.c:80:INFO:comfy-aimdo WDDM adapter match: NVIDIA GeForce RTX 5080 runtime_luid=00000000:00011706 dxgi_luid=00000000:00011706
+[INFO] aimdo: src/control.c:284:INFO:comfy-aimdo inited for GPU: NVIDIA GeForce RTX 5080 (VRAM: 16275 MB)
+[INFO] DynamicVRAM support detected and enabled
+[INFO] Python version: 3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]
+[INFO] ComfyUI version: 0.41.0
+[INFO] comfy-aimdo version: 0.5.6
+[INFO] comfy-kitchen version: 0.2.38
+[INFO] comfyui-frontend-package version: 1.55.17
+[INFO] comfyui-workflow-templates version: 0.11.87
+[INFO] comfyui-embedded-docs version: 0.5.14
+[INFO] comfy-kitchen version: 0.2.38
+[INFO] comfy-aimdo version: 0.5.6
+[INFO] [Prompt Server] web root: E:\Aftertake\claude-jobs-20261020\repo\.runtime\venv\Lib\site-packages\comfyui_frontend_package\static
+[INFO] Asset seeder disabled
+[INFO] No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+[INFO] Aftertake safe weight copies: PyTorch handles file-backed CPU/GPU transfers
+[INFO] ComfyUI-GGUF: Allowing full torch compile
+W1020 19:02:45.500000 3496 C:\Users\Jay\Documents\ChatGPT\Comfy-Higgs\.runtime\venv\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+E:\Aftertake\claude-jobs-20261020\repo\.runtime\venv\Lib\site-packages\colour\utilities\verbose.py:340: ColourUsageWarning: "Matplotlib" related API features are not available: "No module named 'matplotlib'".
+See the installation guide for more information: https://www.colour-science.org/installation-guide/
+  warn(*args, **kwargs)
+[INFO] 
+Import times for custom nodes:
+[INFO]    0.0 seconds: C:\Users\Jay\Documents\ChatGPT\Comfy-Higgs\.runtime\ComfyUI\custom_nodes\websocket_image_save.py
+[INFO]    0.0 seconds: C:\Users\Jay\Documents\ChatGPT\Comfy-Higgs\.runtime\ComfyUI\custom_nodes\aftertake_h3_windows
+[INFO]    0.0 seconds: C:\Users\Jay\Documents\ChatGPT\Comfy-Higgs\.runtime\ComfyUI\custom_nodes\aftertake
+[INFO]    0.0 seconds: C:\Users\Jay\Documents\ChatGPT\Comfy-Higgs\.runtime\ComfyUI\custom_nodes\ComfyUI-GGUF
+[INFO]    0.1 seconds: C:\Users\Jay\Documents\ChatGPT\Comfy-Higgs\.runtime\ComfyUI\custom_nodes\h3-relay
+[INFO]    0.9 seconds: C:\Users\Jay\Documents\ChatGPT\Comfy-Higgs\.runtime\ComfyUI\custom_nodes\ComfyUI-LTXVideo
+[INFO] 
+[INFO] Disabling intermediate node cache.
+[INFO] Starting server
+
+[INFO] To see the GUI go to: http://127.0.0.1:8188
+[INFO] got prompt
+[INFO] Model storage policy: fast_disk=False paths=['C:\\Users\\Jay\\Documents\\ChatGPT\\Comfy-Higgs\\.runtime\\ComfyUI\\models\\vae\\ltx-2.5-video-vae-conv-bf16.safetensors']
+[INFO] VAE load device: cuda:0, offload device: cpu, dtype: torch.bfloat16
+[INFO] Model storage policy: fast_disk=False paths=['E:\\Aftertake-Models\\vae\\ltx-2.5-audio-vae-bf16.safetensors']
+[INFO] VAE load device: cuda:0, offload device: cpu, dtype: torch.float32
+[INFO] Model storage policy: fast_disk=False paths=['E:\\Aftertake-Models\\text_encoders\\gemma4-12b-with-proj-ltx-2.5-bf16.safetensors']
+[INFO] CLIP/text encoder model load device: cuda:0, offload device: cpu, current: cpu, dtype: torch.float16
+[INFO] Requested to load LTXAVTEModel_
+[INFO] Model LTXAVTEModel_ prepared for dynamic VRAM loading. 24998MB Staged. 0 patches attached. Force pre-loaded 293 weights: 1535 KB.
+[INFO] gguf qtypes: F32 (2577), BF16 (332), Q4_K (1216), Q6_K (224)
+[INFO] model weight dtype torch.bfloat16, manual cast: None
+[INFO] model_type FLUX
+[INFO] Model storage policy: fast_disk=False paths=[]
+[INFO] Requested to load LTXAV
+[INFO] loaded partially; 10964.14 MB usable, 10955.11 MB loaded, 2266.83 MB offloaded, 9.03 MB buffer reserved, lowvram patches: 0
+
+  0%|          | 0/8 [00:00<?, ?it/s]
+  0%|          | 0/8 [00:00<?, ?it/s,   Model Initializing ...  ]
+  0%|          | 0/8 [00:05<?, ?it/s,  Model Initialization complete!  ]
+ 12%|█▎        | 1/8 [00:05<00:35,  5.14s/it,  Model Initialization complete!  ]
+ 12%|█▎        | 1/8 [00:04<00:35,  5.14s/it]                                   
+ 25%|██▌       | 2/8 [00:04<00:14,  2.36s/it]
+ 38%|███▊      | 3/8 [00:07<00:12,  2.45s/it]
+ 50%|█████     | 4/8 [00:09<00:09,  2.33s/it]
+ 62%|██████▎   | 5/8 [00:11<00:07,  2.51s/it]
+ 75%|███████▌  | 6/8 [00:14<00:04,  2.40s/it]
+ 88%|████████▊ | 7/8 [00:16<00:02,  2.43s/it]
+100%|██████████| 8/8 [00:19<00:00,  2.35s/it]
+100%|██████████| 8/8 [00:19<00:00,  2.40s/it]
+[INFO] Comfy model compiler graph breaks: 3, rogues: 0
+[INFO] Requested to load VideoVAE
+[INFO] Model VideoVAE prepared for dynamic VRAM loading. 1384MB Staged. 0 patches attached.
+[INFO] Prompt executed in 80.97 seconds
+[INFO] Disabling intermediate node cache.

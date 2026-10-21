@@ -122,3 +122,23 @@ Older recipes default all selective adjustments to zero, curves to identity
 and LUT strength to zero. Their prior pixels and the original-file identity
 path are unchanged. Saved stable request keys migrate only after their original
 raw content digest is verified, preserving replay without repeating an export.
+
+## Hide details
+
+Redactions hide parts of the frame before any other finishing step, on the
+source pixels. Each is a box in normalized source coordinates with a style
+(blur, pixelate or solid fill) and an optional time range. A request holds up
+to 16.
+
+Turn on **Hide every match** and the box becomes a sample instead. It is cut
+from the frame at the time you drew it. On every frame in the box's time range,
+each place the sample appears (normalized cross-correlation of at least 0.9,
+adjustable from 0.5 to 1 in a recipe) is padded slightly and hidden. This suits
+screen recordings, where text renders identically wherever it scrolls. It does
+not track faces or objects that change shape; draw a timed box for those.
+
+The finishing receipt records, for each redaction, how many frames had
+something hidden and how many boxes were hidden in total. Agents use the same
+`redactions` field through `aftertake_finish_media` and can check a frame with
+`aftertake_preview_finish`. The competition film's proof recording uses it to
+hide a username in the engine console (`examples/then-comes-the-aftertake/build/prepare.py`).

@@ -1,6 +1,7 @@
 import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
 import PreviewVideo from './PreviewVideo';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { deferred, preloadDeferred } from './deferred';
 import {
   ArrowDownToLine,
   ArrowLeftRight,
@@ -16,6 +17,7 @@ import {
   Film,
   FolderOpen,
   Layers2,
+  LayoutGrid,
   LoaderCircle,
   Maximize2,
   Pause,
@@ -31,6 +33,7 @@ import {
   Upload,
   Volume2,
   VolumeX,
+  Wand2,
   X,
 } from 'lucide-react';
 import {
@@ -56,24 +59,31 @@ import FilmDesk from './FilmComposer';
 import TakeLibrary from './TakeLibrary';
 import TakeBlend, { takeBlendMatches } from './TakeBlend';
 import TakeStatus from './take-status';
+import RenderEstimate from './RenderEstimate';
+import { enhancementBusy, type Enhancement } from './enhance';
+import MovesGallery from './MovesGallery';
 import { TakeClient, takeBusy, takeRecoverable } from './take-client';
-import RecipeLibrary from './RecipeLibrary';
 import { recordedFirst, selectRecordedWork, type RecordedWorkKind } from './RecordedHighlights';
 import { applyTemplate, type Template } from './templates';
 import EditReference from './EditReference';
-import FrameEditor from './FrameEditor';
 import MotionDirection from './MotionDirection';
 import { frameEditBusy, type FrameEdit } from './frame-edit';
 import { imageBusy, type ImageGeneration } from './image-generation';
-import ImageStudio from './ImageStudio';
-import VideoStudio from './VideoStudio';
 import { videoBusy, type VideoGeneration } from './video-generation';
-import CharacterStudio from './CharacterStudio';
-import FinishingStudio from './FinishingStudio';
-import DepthEffectsStudio from './DepthEffectsStudio';
-import LayerStudio from './LayerStudio';
-import ComputeSettings from './ComputeSettings';
 import AftertakeBrand from './AftertakeBrand';
+import StartScreen from './StartScreen';
+// Studios open as dialogs, so each loads on first use (and is preloaded when idle).
+const RecipeLibrary = deferred(() => import('./RecipeLibrary'));
+const FrameEditor = deferred(() => import('./FrameEditor'));
+const ImageStudio = deferred(() => import('./ImageStudio'));
+const VideoStudio = deferred(() => import('./VideoStudio'));
+const CharacterStudio = deferred(() => import('./CharacterStudio'));
+const FinishingStudio = deferred(() => import('./FinishingStudio'));
+const DepthEffectsStudio = deferred(() => import('./DepthEffectsStudio'));
+const LayerStudio = deferred(() => import('./LayerStudio'));
+const ComputeSettings = deferred(() => import('./ComputeSettings'));
+const EnhanceStudio = deferred(() => import('./EnhanceStudio'));
+import { startScreenWanted, type StartTask } from './start-tasks';
 import { characterBusy, type CharacterJob } from './character';
 import { ImagePlus, ScanFace } from 'lucide-react';
 import { spatialMask } from './mask';
@@ -90,6 +100,7 @@ import {
   cinemaOptions,
   cinemaPrompt,
   defaultCinema,
+  promptOnlyMovements,
   savedLookSchema,
   type Cinema,
   type SavedLook,
@@ -182,6 +193,8 @@ export default function App() {
   const [depthClip, setDepthClip] = useState<Clip | null>(null);
   const [layerStudioOpen, setLayerStudioOpen] = useState(false);
   const [characterJobs, setCharacterJobs] = useState<CharacterJob[]>([]);
+  const [enhancements, setEnhancements] = useState<Enhancement[]>([]),
+    [enhanceOpen, setEnhanceOpen] = useState(false);
   const [recordedCharacterId, setRecordedCharacterId] = useState('');
   const [recordedVideoId, setRecordedVideoId] = useState('');
   const [frameEditorSource, setFrameEditorSource] = useState<Recipe | null>(null);
@@ -201,6 +214,9 @@ export default function App() {
   const [toast, setToast] = useState('');
   const [engineOpen, setEngineOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
+  const [startOpen, setStartOpen] = useState(startScreenWanted);
+  // A start-screen task waiting for the viewer to choose a fitting source.
+  const [pendingStart, setPendingStart] = useState<{ task: StartTask; clipId?: string }>();
   const [sourceOpen, setSourceOpen] = useState(false);
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [exampleWorkspace, setExampleWorkspace] = useState(false);
@@ -360,6 +376,21 @@ export default function App() {
     };
   }, [images.some(imageBusy)]);
   useEffect(() => {
+    const completed = images.flatMap((image) =>
+      image.state === 'succeeded' && image.clip ? [image.clip] : [],
+    );
+    if (!completed.length) return;
+    setClips((current) => {
+      const known = new Set(current.map((clip) => clip.id));
+      const added = completed.filter((clip) => {
+        if (known.has(clip.id)) return false;
+        known.add(clip.id);
+        return true;
+      });
+      return added.length ? [...current, ...added] : current;
+    });
+  }, [images]);
+  useEffect(() => {
     let live = true;
     const check = () =>
       api<CharacterJob[]>('/api/characters')
@@ -374,6 +405,22 @@ export default function App() {
       clearInterval(timer);
     };
   }, [characterJobs.some(characterBusy)]);
+  useEffect(() => {
+    if (browserDemo) return;
+    let live = true;
+    const check = () =>
+      api<Enhancement[]>('/api/enhancements')
+        .then((found) => {
+          if (live) setEnhancements(found);
+        })
+        .catch(() => {});
+    void check();
+    const timer = setInterval(check, enhancements.some(enhancementBusy) ? 1500 : 6000);
+    return () => {
+      live = false;
+      clearInterval(timer);
+    };
+  }, [enhancements.some(enhancementBusy)]);
   useEffect(() => {
     let live = true;
     const check = () =>
@@ -510,9 +557,9 @@ export default function App() {
         next.transfer = { ...next.transfer, finish: undefined };
       return next;
     });
-  function changeQuality(quality: Recipe['quality']) {
+  function changeQuality(quality: Recipe['quality'], resolution?: Recipe['resolution']) {
     if (!recipe) return;
-    const next = { ...recipe, quality },
+    const next = { ...recipe, quality, resolution },
       d = renderDimensions(next);
     if (next.transfer?.finish) next.transfer = { ...next.transfer, finish: undefined };
     const end = Math.min(next.cue.end, d.duration);
@@ -609,6 +656,37 @@ export default function App() {
       setOpeningFinish(false);
     }
   }
+  /** Apply a start-screen task to the current source; false when it needs another source. */
+  function applyStartTask(task: StartTask) {
+    if (!recipe) return false;
+    const video = recipe.clip.kind !== 'image';
+    if (task === 'region') {
+      if (!video) return false;
+      changePipeline('inpaint');
+      setMode('cue');
+    } else if (task === 'motion') {
+      if (!video) return false;
+      changePipeline('motion-transfer');
+    } else if (task === 'camera') changePipeline('cinema');
+    else if (task === 'finish') void openFinishing();
+    return true;
+  }
+  function chooseStart(task: StartTask) {
+    setStartOpen(false);
+    if (task === 'video') setVideoStudioOpen(true);
+    else if (task === 'image') setImageStudioOpen(true);
+    else if (task === 'person') setCharacterStudioOpen(true);
+    else if (task === 'film')
+      requestAnimationFrame(() =>
+        document
+          .querySelector('.film-desk')
+          ?.scrollIntoView({ block: 'start', behavior: 'smooth' }),
+      );
+    else if (!applyStartTask(task)) {
+      setPendingStart({ task, clipId: recipe?.clip.id });
+      setSourceOpen(true);
+    }
+  }
   function changeSourceStart(value: number) {
     if (!recipe || !Number.isFinite(value)) return;
     const trimStart = Math.max(
@@ -653,8 +731,9 @@ export default function App() {
   const envelope = recipe ? cueEnvelope(time, recipe.cue) : 0;
   const paintCue = recipe ? paintedCue(recipe, paintTarget) : null;
   const editingComposite = Boolean(recipe?.compositeRegion && paintTarget === 'composite');
-  const paintWidth = editingComposite ? presentation.width : dimensions.width;
-  const paintHeight = editingComposite ? presentation.height : dimensions.height;
+  const visiblePaint = editingComposite || recipe?.resolution === '720p';
+  const paintWidth = visiblePaint ? presentation.width : dimensions.width;
+  const paintHeight = visiblePaint ? presentation.height : dimensions.height;
   useEffect(() => {
     setPaintTarget(recipe?.compositeRegion ? 'composite' : 'generation');
     setRedo([]);
@@ -679,6 +758,7 @@ export default function App() {
     paintTarget,
     recipe?.trimStart,
     recipe?.quality,
+    recipe?.resolution,
   ]);
   useEffect(() => {
     previewSerial.current++;
@@ -1156,7 +1236,7 @@ export default function App() {
       : [];
   function changeFilmSetting(key: 'movement' | 'lens' | 'lighting' | 'palette', value: string) {
     const next = { ...filmSettings, [key]: value } as Cinema;
-    if (next.movement === 'orbit') next.guidance = 'prompt';
+    if (promptOnlyMovements.has(next.movement)) next.guidance = 'prompt';
     change({ cinema: next });
   }
   function saveFilmLook() {
@@ -1197,7 +1277,8 @@ export default function App() {
     frameBusy ||
     imageGenBusy ||
     videoGenBusy ||
-    characterJobs.some(characterBusy);
+    characterJobs.some(characterBusy) ||
+    enhancements.some(enhancementBusy);
   function useTemplate(item: Template) {
     if (!recipe || busy) return;
     try {
@@ -1264,12 +1345,23 @@ export default function App() {
     return () => clearTimeout(retry);
   }, [busy, mediaError]);
 
+  useEffect(() => preloadDeferred(), []);
+  useEffect(() => {
+    // Once the source picker closes, finish the start task on a newly chosen source.
+    if (!pendingStart || sourceOpen) return;
+    if (recipe && recipe.clip.id !== pendingStart.clipId) applyStartTask(pendingStart.task);
+    setPendingStart(undefined);
+  }, [pendingStart, sourceOpen, recipe?.clip.id]);
+
   return (
     <div className="app-shell">
       <aside className="rail" aria-label="Studio navigation">
         <div className="brand-mark">
           <AftertakeBrand compact />
         </div>
+        <button className="rail-button" title="Start" onClick={() => setStartOpen(true)}>
+          <LayoutGrid size={21} />
+        </button>
         <button
           className="rail-button selected"
           title="Studio"
@@ -1652,6 +1744,18 @@ export default function App() {
               <SlidersHorizontal size={13} />
             )}
             Color &amp; finish
+          </button>
+          <button
+            className="button"
+            onClick={() => {
+              video.current?.pause();
+              outputVideo.current?.pause();
+              setPlaying(false);
+              setEnhanceOpen(true);
+            }}
+          >
+            <Wand2 size={13} />
+            Enhance
           </button>
           <button
             className="button"
@@ -2265,12 +2369,17 @@ export default function App() {
                   </select>
                 </label>
               ))}
+              <MovesGallery
+                value={filmSettings.movement}
+                disabled={!recipe || busy}
+                onChange={(movement) => changeFilmSetting('movement', movement)}
+              />
               <label className="framing-toggle">
                 <input
                   type="checkbox"
                   aria-label="Guide framing with motion tracks"
                   checked={filmSettings.guidance === 'tracks'}
-                  disabled={!recipe || busy || filmSettings.movement === 'orbit'}
+                  disabled={!recipe || busy || promptOnlyMovements.has(filmSettings.movement)}
                   onChange={(e) =>
                     change({
                       cinema: { ...filmSettings, guidance: e.target.checked ? 'tracks' : 'prompt' },
@@ -2527,11 +2636,30 @@ export default function App() {
             </button>
             <button
               disabled={!recipe || busy}
-              className={recipe?.quality === 'final' ? 'active' : ''}
+              className={recipe?.quality === 'final' && !recipe.resolution ? 'active' : ''}
               onClick={() => changeQuality('final')}
             >
               <strong>Finish</strong>
               <span>768 px · 24 fps</span>
+            </button>
+            <button
+              disabled={
+                !recipe ||
+                busy ||
+                Math.abs(
+                  Math.log(
+                    Math.max(recipe.clip.width, recipe.clip.height) /
+                      Math.min(recipe.clip.width, recipe.clip.height) /
+                      (16 / 9),
+                  ),
+                ) >= 0.01
+              }
+              className={recipe?.resolution === '720p' ? 'active' : ''}
+              onClick={() => changeQuality('final', '720p')}
+              title="Generate at 720p on a compatible 16:9 canvas. Uses more GPU memory."
+            >
+              <strong>HD finish</strong>
+              <span>720p · 24 fps</span>
             </button>
           </div>
           <div className="seed-row">
@@ -2621,6 +2749,9 @@ export default function App() {
                         : 'Render take'}
             <ArrowUpRight size={18} />
           </button>
+          {recipe && !busy && (
+            <RenderEstimate job={{ recipe }} history={renders} gpu={engine.gpu} />
+          )}
           {!engine.ready && (
             <button className="setup-link" onClick={() => setEngineOpen(true)}>
               Set up rendering <ArrowUpRight size={11} />
@@ -2646,39 +2777,46 @@ export default function App() {
               Download video
             </a>
           )}
-          {take?.rawOutput && !browserDemo && isTransfer && (
-            <a className="download-video" href={mediaUrl(take.rawOutput)} download>
-              <Download size={14} />
-              {take.recipe.transfer?.focus
-                ? 'Placed generation for finishing'
-                : 'Raw generation for finishing'}
-            </a>
-          )}
-          {take?.focusOutput && !browserDemo && (
-            <a className="download-video" href={mediaUrl(take.focusOutput)} download>
-              <Download size={14} />
-              Focused model output
-            </a>
-          )}
-          {take?.guideOutput && (
-            <a
-              className="download-video"
-              href={mediaUrl(take.guideOutput)}
-              download
-              onClick={
-                browserDemo
-                  ? (event) => {
-                      event.preventDefault();
-                      void saveMedia(take.guideOutput!, 'aftertake-motion-guide.mp4').catch(
-                        (error) => setToast(error.message),
-                      );
-                    }
-                  : undefined
-              }
-            >
-              <Download size={14} />
-              Download motion guide
-            </a>
+          {((take?.rawOutput && !browserDemo && isTransfer) ||
+            (take?.focusOutput && !browserDemo) ||
+            take?.guideOutput) && (
+            <details className="inspector-more">
+              <summary>More downloads</summary>
+              {take?.rawOutput && !browserDemo && isTransfer && (
+                <a className="download-video" href={mediaUrl(take.rawOutput)} download>
+                  <Download size={14} />
+                  {take.recipe.transfer?.focus
+                    ? 'Placed generation for finishing'
+                    : 'Raw generation for finishing'}
+                </a>
+              )}
+              {take?.focusOutput && !browserDemo && (
+                <a className="download-video" href={mediaUrl(take.focusOutput)} download>
+                  <Download size={14} />
+                  Focused model output
+                </a>
+              )}
+              {take?.guideOutput && (
+                <a
+                  className="download-video"
+                  href={mediaUrl(take.guideOutput)}
+                  download
+                  onClick={
+                    browserDemo
+                      ? (event) => {
+                          event.preventDefault();
+                          void saveMedia(take.guideOutput!, 'aftertake-motion-guide.mp4').catch(
+                            (error) => setToast(error.message),
+                          );
+                        }
+                      : undefined
+                  }
+                >
+                  <Download size={14} />
+                  Download motion guide
+                </a>
+              )}
+            </details>
           )}
           <button
             className="export-workflow"
@@ -2875,6 +3013,37 @@ export default function App() {
           }}
         />
       )}
+      {enhanceOpen && (
+        <EnhanceStudio
+          clips={clips}
+          jobs={enhancements}
+          initialClip={recipe?.clip}
+          otherBusy={
+            rendering ||
+            takeAction ||
+            Boolean(takeAdmission) ||
+            Boolean(activeTake) ||
+            frameBusy ||
+            imageGenBusy ||
+            videoGenBusy ||
+            characterJobs.some(characterBusy)
+          }
+          onUpdate={(job) =>
+            setEnhancements((all) => [job, ...all.filter((item) => item.id !== job.id)])
+          }
+          onFilmAdded={() => setFilmMediaRevision((v) => v + 1)}
+          onClose={() => setEnhanceOpen(false)}
+          onUse={(clip) => {
+            setEnhanceOpen(false);
+            setTake(null);
+            setTime(0);
+            setClips((all) => (all.some((c) => c.id === clip.id) ? all : [...all, clip]));
+            setRecipe({ ...makeRecipe(clip), name: clip.name });
+            setMode('source');
+            setToast('The enhanced clip is now your source footage.');
+          }}
+        />
+      )}
       {imageStudioOpen && (
         <ImageStudio
           images={images}
@@ -2917,6 +3086,7 @@ export default function App() {
           onOpenRecorded={openRecordedWork}
         />
       )}
+      {startOpen && <StartScreen onChoose={chooseStart} onClose={() => setStartOpen(false)} />}
       {sourceOpen && (
         <div className="modal-backdrop" onClick={() => setSourceOpen(false)}>
           <section
@@ -2934,7 +3104,15 @@ export default function App() {
               <X size={19} />
             </button>
             <div className="eyebrow">SOURCE MATERIAL</div>
-            <h2>Choose a moment.</h2>
+            <h2>
+              {pendingStart?.task === 'region' || pendingStart?.task === 'motion'
+                ? 'Choose a video.'
+                : pendingStart?.task === 'camera'
+                  ? 'Choose a still or a video frame.'
+                  : pendingStart?.task === 'finish'
+                    ? 'Choose what to finish.'
+                    : 'Choose a moment.'}
+            </h2>
             <div className="source-choices">
               {clips.map((clip) => (
                 <button key={clip.id} onClick={() => selectClip(clip)}>

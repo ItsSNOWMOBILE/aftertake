@@ -1,7 +1,7 @@
 import { createJobTarget } from '../server/job-target.js';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import {
   characterRequestSchema,
   characterSelectionSchema,
@@ -9,11 +9,14 @@ import {
   characterPrompt,
   parseCharacterSelectionInfo,
   characterMaxIdentityReferences,
+  characterChain,
+  characterProtectionSchema,
+  type CharacterJob,
 } from '../src/character.js';
 import { registerCharacterTools } from '../server/character-tools.js';
 import { characterRouter } from '../server/characters.js';
 import express from 'express';
-import { mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 const source = {
@@ -64,6 +67,32 @@ const identities = Array.from({ length: 8 }, (_, index) => ({
     name: `Independent photo ${index + 1}`,
   },
 }));
+test('protection receipts preserve historical records and validate exact per-frame evidence', () => {
+  const legacy = {
+    from: randomUUID(),
+    margin: 0.1,
+    frames: 4,
+    protectedFrames: 2,
+    protectedPixels: 12,
+  };
+  assert.ok(characterProtectionSchema.safeParse(legacy).success);
+  const receipt = {
+    ...legacy,
+    protectedFrameIndices: [1, 3],
+    protectedPixelsByFrame: [0, 7, 0, 5],
+  };
+  assert.deepEqual(characterProtectionSchema.parse(receipt), receipt);
+  for (const patch of [
+    { protectedFrameIndices: [1, 1] },
+    { protectedFrameIndices: [3, 1] },
+    { protectedFrameIndices: [1, 4] },
+    { protectedPixelsByFrame: [0, 7, 0] },
+    { protectedPixelsByFrame: [0, 7, 0, 6] },
+    { protectedFrames: 3 },
+    { protectedPixelsByFrame: undefined },
+  ])
+    assert.equal(characterProtectionSchema.safeParse({ ...receipt, ...patch }).success, false);
+});
 test('character selection binds the actual source, selected range and points', () => {
   assert.ok(characterSelectionSchema.safeParse(selection).success);
   assert.equal(characterSelectionSchema.safeParse({ ...selection, positive: [] }).success, false);
@@ -81,6 +110,47 @@ test('character selection binds the actual source, selected range and points', (
   ])
     assert.notEqual(characterSelectionKey(selection), characterSelectionKey(changed));
 });
+test('a take tracked in an earlier take counts every person swapped in the shot', () => {
+  const job = (fields: Partial<CharacterJob>) =>
+    ({
+      id: randomUUID(),
+      state: 'succeeded',
+      progress: 1,
+      createdAt: '',
+      updatedAt: '',
+      workflow: {},
+      ...fields,
+    }) as CharacterJob;
+  const take = (selected: CharacterJob, sha: string, name: string) =>
+    job({
+      kind: 'replacement',
+      request: { ...request, name, selectionId: selected.id },
+      clip: { ...source, id: randomUUID(), sha256: sha.repeat(64), duration: 8 },
+    });
+  const firstSelection = job({ kind: 'selection', request: selection });
+  const first = take(firstSelection, 'c', 'First person');
+  const secondSelection = job({
+    kind: 'selection',
+    request: { ...selection, clip: first.clip!, trimStart: 0 },
+  });
+  const second = take(secondSelection, 'd', 'Second person');
+  const thirdSelection = job({
+    kind: 'selection',
+    request: { ...selection, clip: second.clip!, trimStart: 0 },
+  });
+  const third = take(thirdSelection, 'e', 'Third person');
+  const jobs = [third, thirdSelection, second, secondSelection, first, firstSelection];
+  assert.deepEqual(
+    characterChain(third, jobs).map((item) => item.id),
+    [first.id, second.id, third.id],
+  );
+  assert.deepEqual(characterChain(first, jobs), [first]);
+  assert.deepEqual(characterChain(firstSelection, jobs), []);
+  // A failed earlier pass made no picture, so it cannot be part of the shot.
+  const failed = jobs.map((item) => (item === first ? { ...first, state: 'failed' } : item));
+  assert.equal(characterChain(third, failed).length, 2);
+});
+
 test('identity focus uses the actual photo and keeps face/wardrobe references distinct', () => {
   assert.ok(characterRequestSchema.safeParse(request).success);
   assert.match(characterPrompt(request), /unmodified crop/);
@@ -338,3 +408,309 @@ test('selection media remains readable when the studio data lives in a hidden wo
     await rm(directory, { recursive: true, force: true });
   }
 });
+
+test('mask repair writes a new reviewed selection beside the tracked one', async () => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'aftertake-repair-')),
+    data = path.join(directory, 'data'),
+    folder = path.join(data, 'characters'),
+    id = randomUUID();
+  await mkdir(folder, { recursive: true });
+  await mkdir(path.join(directory, 'scripts'));
+  const mask = Buffer.from('tracked mask with lost frames'),
+    prepared = Buffer.from('prepared source'),
+    repaired = Buffer.from('repaired mask');
+  const digest = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
+  await writeFile(path.join(folder, id + '-mask.mkv'), mask);
+  await writeFile(path.join(folder, id + '-source.mp4'), prepared);
+  await writeFile(path.join(folder, id + '-preview.mp4'), 'preview');
+  const tracked = {
+    id,
+    kind: 'selection',
+    state: 'succeeded',
+    request: selection,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    workflow: { tracked: true },
+    selection: {
+      frames: 48,
+      width: 960,
+      height: 512,
+      fps: 24,
+      emptyFrames: [10, 11],
+      maskSha256: digest(mask),
+      sourceSha256: digest(prepared),
+    },
+  };
+  await writeFile(path.join(folder, id + '.json'), JSON.stringify(tracked));
+  // Stand-in for the Python repair, run by Node so this test needs no media runtime.
+  const behaviour = path.join(directory, 'behaviour.txt');
+  await writeFile(
+    path.join(directory, 'scripts/repair-character-mask.py'),
+    `const fs = require('node:fs');
+const job = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+const mode = fs.readFileSync(${JSON.stringify(behaviour)}, 'utf8');
+if (mode === 'fail') { process.stderr.write('Tracking lost the person in every frame.'); process.exit(2); }
+if (mode === 'clean') { console.log(JSON.stringify({ changed: false })); process.exit(0); }
+fs.writeFileSync(job.maskOut, ${JSON.stringify(repaired.toString())});
+fs.writeFileSync(job.previewOut, 'repaired preview');
+console.log(JSON.stringify({ changed: true,
+  selection: { width: 960, height: 512, frames: 48, fps: 24, emptyFrames: [],
+    maskSha256: ${JSON.stringify(digest(repaired))} },
+  repair: { processor: 'aftertake-mask-repair/1', maxGap: 12, flicker: 2,
+    framesRecovered: [10, 11], recoveredPixels: 900, restoredPixels: 40 } }));`,
+  );
+  const app = express(),
+    { router } = await characterRouter({
+      root: directory,
+      data,
+      python: process.execPath,
+      client: {} as any,
+      target: createJobTarget({
+        sdkBaseUrl: 'http://127.0.0.1:8189',
+        uiBaseUrl: 'http://127.0.0.1:8188',
+        allowLegacyLoopback: true,
+      }),
+      uiUrl: 'http://127.0.0.1:1',
+      engine: async () => ({ ready: true }) as any,
+      takeBusy: () => false,
+      setAdmitting: () => {},
+    });
+  app.use(express.json());
+  app.use('/api/characters', router);
+  const server = app.listen(0, '127.0.0.1');
+  await new Promise<void>((resolve) => server.on('listening', resolve));
+  const address = server.address();
+  assert.ok(address && typeof address !== 'string');
+  const base = `http://127.0.0.1:${address.port}/api/characters/`;
+  const repair = (target: string) => fetch(base + target + '/repair', { method: 'POST' });
+  try {
+    await writeFile(behaviour, 'fail');
+    const failed = await repair(id);
+    assert.equal(failed.status, 422);
+    assert.match((await failed.json()).error, /every frame/);
+    await writeFile(behaviour, 'clean');
+    assert.equal((await repair(id)).status, 409);
+    await writeFile(behaviour, 'repair');
+    const created = await repair(id);
+    assert.equal(created.status, 201);
+    const record = await created.json();
+    assert.notEqual(record.id, id);
+    assert.deepEqual(record.request, selection);
+    assert.deepEqual(record.workflow, { tracked: true });
+    assert.deepEqual(record.selection.emptyFrames, []);
+    assert.equal(record.selection.sourceSha256, digest(prepared));
+    assert.equal(record.repair.from, id);
+    assert.equal(record.repair.originalMaskSha256, digest(mask));
+    assert.deepEqual(record.repair.framesRecovered, [10, 11]);
+    const media = async (suffix: string) =>
+      Buffer.from(await (await fetch(base + record.id + '/' + suffix)).arrayBuffer());
+    assert.deepEqual(await media('mask'), repaired);
+    assert.deepEqual(await media('source'), prepared);
+    // The tracked selection is untouched, a second request returns the same repair,
+    // and a repaired selection is not repaired again.
+    assert.deepEqual(
+      await (await fetch(base + id + '/mask')).arrayBuffer().then(Buffer.from),
+      mask,
+    );
+    assert.equal((await (await repair(id)).json()).id, record.id);
+    assert.equal((await repair(record.id)).status, 409);
+    const listed = await (await fetch(base)).json();
+    assert.equal(listed.length, 2);
+  } finally {
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+for (const foregroundFound of [true, false])
+  test(
+    foregroundFound
+      ? 'keeping the foreground preserves exact per-frame evidence on a new take'
+      : 'no foreground keeps a failed no-output record with honest zero-frame evidence',
+    async () => {
+      const directory = await mkdtemp(path.join(tmpdir(), 'aftertake-protect-')),
+        data = path.join(directory, 'data'),
+        folder = path.join(data, 'characters'),
+        clipsFolder = path.join(data, 'clips');
+      await mkdir(folder, { recursive: true });
+      await mkdir(clipsFolder, { recursive: true });
+      await mkdir(path.join(directory, 'scripts'));
+      const digest = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
+      const mask = Buffer.from('mask'),
+        prepared = Buffer.from('prepared'),
+        takeBytes = Buffer.from('take with a redrawn cup');
+      const selectionId = randomUUID(),
+        takeId = randomUUID();
+      await writeFile(path.join(folder, selectionId + '-mask.mkv'), mask);
+      await writeFile(path.join(folder, selectionId + '-source.mp4'), prepared);
+      await writeFile(path.join(clipsFolder, takeId + '.mp4'), takeBytes);
+      const now = new Date().toISOString();
+      await writeFile(
+        path.join(folder, selectionId + '.json'),
+        JSON.stringify({
+          id: selectionId,
+          kind: 'selection',
+          state: 'succeeded',
+          request: selection,
+          createdAt: now,
+          updatedAt: now,
+          workflow: {},
+          selection: {
+            frames: 48,
+            width: 960,
+            height: 512,
+            fps: 24,
+            emptyFrames: [],
+            maskSha256: digest(mask),
+            sourceSha256: digest(prepared),
+          },
+        }),
+      );
+      await writeFile(
+        path.join(folder, takeId + '.json'),
+        JSON.stringify({
+          id: takeId,
+          kind: 'replacement',
+          state: 'succeeded',
+          request: { ...request, selectionId },
+          createdAt: now,
+          updatedAt: now,
+          workflow: { executed: true },
+          clip: {
+            ...source,
+            id: takeId,
+            name: 'A replacement',
+            sha256: digest(takeBytes),
+            width: 960,
+            height: 512,
+            duration: 2,
+            url: `/media/${takeId}.mp4`,
+          },
+        }),
+      );
+      // Node stands in for the Python scripts, so this test needs no media runtime.
+      const installed = path.join(directory, 'installed.txt');
+      await writeFile(installed, 'no');
+      const script = (name: string, body: string) =>
+        writeFile(path.join(directory, 'scripts', name), `const fs = require('node:fs');\n${body}`);
+      await script(
+        'depth_runtime.py',
+        `const ready = fs.readFileSync(${JSON.stringify(installed)}, 'utf8') === 'yes';
+console.log(JSON.stringify(ready ? { runtime: '1.30.0', model: true, accelerator: 'Intel NPU (OpenVINO)', fix: null }
+  : { runtime: null, model: false, accelerator: null, fix: 'node scripts/aftertake.mjs setup-npu' }));`,
+      );
+      await script(
+        'protect-foreground.py',
+        `const job = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+for (const share of [0.3, 0.6, 0.9]) process.stderr.write('progress ' + share + '\\n');
+const found = ${foregroundFound};
+if (found) fs.writeFileSync(job.output, 'protected take');
+console.log(JSON.stringify({ changed: found, frames: 48, protectedFrames: found ? 40 : 0, protectedPixels: found ? 9000 : 0,
+  protectedFrameIndices: found ? Array.from({length:40}, (_, i) => i) : [],
+  protectedPixelsByFrame: Array.from({length:48}, (_, i) => found && i < 40 ? 225 : 0),
+  accelerator: 'Intel NPU (OpenVINO)', model: { name: 'Depth Anything V2 Small',
+  repository: 'onnx-community/depth-anything-v2-small', revision: 'r1', sha256: '${'e'.repeat(64)}',
+  license: 'Apache-2.0' } }));`,
+      );
+      await script(
+        'inspect-character-media.py',
+        `console.log(JSON.stringify({ width: 960, height: 512, frames: 48, fps: 24, regularTimestamps: true,
+  duration: 2, hasAudio: true }));`,
+      );
+      const app = express(),
+        { router } = await characterRouter({
+          root: directory,
+          data,
+          python: process.execPath,
+          client: {} as any,
+          target: createJobTarget({
+            sdkBaseUrl: 'http://127.0.0.1:8189',
+            uiBaseUrl: 'http://127.0.0.1:8188',
+            allowLegacyLoopback: true,
+          }),
+          uiUrl: 'http://127.0.0.1:1',
+          engine: async () => ({ ready: true }) as any,
+          takeBusy: () => false,
+          setAdmitting: () => {},
+        });
+      app.use(express.json());
+      app.use('/api/characters', router);
+      const server = app.listen(0, '127.0.0.1');
+      await new Promise<void>((resolve) => server.on('listening', resolve));
+      const address = server.address();
+      assert.ok(address && typeof address !== 'string');
+      const base = `http://127.0.0.1:${address.port}/api/characters/`;
+      const keep = (id: string, margin?: number) =>
+        fetch(base + id + '/protect', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(margin === undefined ? {} : { margin }),
+        });
+      try {
+        const missing = await keep(takeId);
+        assert.equal(missing.status, 409);
+        assert.match((await missing.json()).error, /setup-npu/);
+        await writeFile(installed, 'yes');
+        assert.equal(
+          (await (await fetch(base + 'depth/status')).json()).accelerator,
+          'Intel NPU (OpenVINO)',
+        );
+        assert.equal((await keep(takeId, 0.9)).status, 400);
+        const started = await keep(takeId);
+        assert.equal(started.status, 202);
+        const running = await started.json();
+        assert.equal(running.state, 'running');
+        assert.equal(running.protection.from, takeId);
+        assert.match(running.stage, /Intel NPU/);
+        let record = running;
+        for (let attempt = 0; attempt < 100 && record.state === 'running'; attempt++) {
+          await new Promise((resolve) => setTimeout(resolve, 50));
+          record = await (await fetch(base + running.id)).json();
+        }
+        assert.equal(record.state, foregroundFound ? 'succeeded' : 'failed', record.error);
+        assert.equal(record.protection.protectedFrames, foregroundFound ? 40 : 0);
+        assert.deepEqual(
+          record.protection.protectedFrameIndices,
+          foregroundFound ? Array.from({ length: 40 }, (_, index) => index) : [],
+        );
+        assert.deepEqual(
+          record.protection.protectedPixelsByFrame,
+          Array.from({ length: 48 }, (_, index) => (foregroundFound && index < 40 ? 225 : 0)),
+        );
+        assert.equal(record.protection.accelerator, 'Intel NPU (OpenVINO)');
+        assert.deepEqual(record.request, { ...request, selectionId });
+        assert.deepEqual(record.workflow, { executed: true });
+        const savedRecord = JSON.parse(
+          await readFile(path.join(folder, record.id + '.json'), 'utf8'),
+        );
+        assert.equal(
+          savedRecord.state,
+          record.state,
+          'Terminal state is exposed only after its record is durable.',
+        );
+        assert.deepEqual(savedRecord.protection, record.protection);
+        if (!foregroundFound) {
+          assert.match(record.error, /Nothing in front.*unchanged/);
+          assert.equal(record.clip, undefined);
+          await assert.rejects(readFile(path.join(clipsFolder, record.id + '.mp4')));
+          await assert.rejects(readFile(path.join(clipsFolder, record.id + '.json')));
+          assert.deepEqual(await readFile(path.join(clipsFolder, takeId + '.mp4')), takeBytes);
+          return;
+        }
+        assert.equal(record.clip.url, `/media/${record.id}.mp4`);
+        assert.equal(record.clip.sha256, digest(Buffer.from('protected take')));
+        const saved = JSON.parse(
+          await readFile(path.join(clipsFolder, record.id + '.json'), 'utf8'),
+        );
+        assert.equal(saved.sha256, record.clip.sha256);
+        // The original take is untouched, asking again returns the same take, and a
+        // protected take is not protected twice.
+        assert.deepEqual(await readFile(path.join(clipsFolder, takeId + '.mp4')), takeBytes);
+        assert.equal((await (await keep(takeId)).json()).id, record.id);
+        assert.equal((await keep(record.id)).status, 409);
+      } finally {
+        await new Promise<void>((resolve) => server.close(() => resolve()));
+        await rm(directory, { recursive: true, force: true });
+      }
+    },
+  );

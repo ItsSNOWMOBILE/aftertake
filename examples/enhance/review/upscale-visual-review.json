@@ -1,0 +1,22 @@
+{
+  "format": "aftertake-upscale-visual-review/1",
+  "enhancementId": "46e9f057-97e5-4fa7-af72-10ecf5306bd7",
+  "resultSha256": "a7e4522028a9fefb5069ebf1f8754eca2e489b15deb56f6a57bf01fd41f60e58",
+  "framesInspected": [
+    0,
+    48,
+    96
+  ],
+  "method": "Actual native-resolution SeedVR2 detail crops compared with the matching source crops displayed using Lanczos 2x. Native output untouched.",
+  "observations": [
+    "Railings, masonry, rain and rock edges become visibly sharper than the source display baseline.",
+    "Fine lantern/roof/rock details are reconstructed or changed, so this is not ground-truth recovery.",
+    "Some strengthened edge/halo texture is visible near the lantern roof in the middle sample.",
+    "No gross lighthouse geometry break in these three sampled full frames."
+  ],
+  "limitations": [
+    "Only five source-aligned full frames and three detailed crop frames inspected.",
+    "Full human real-time playback not fully assessed.",
+    "Generative enhancement may invent details and strengthen source artifacts."
+  ]
+}
