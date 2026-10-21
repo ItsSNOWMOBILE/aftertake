@@ -462,24 +462,6 @@ export default function VideoStudio({
                 setNotice('Starter loaded. Edit the prompt and camera, then create the video.');
               }}
             />
-            <button
-              className="image-recipe-import"
-              disabled={locked}
-              onClick={() => input.current?.click()}
-            >
-              <Upload size={12} />
-              Import video recipe
-            </button>
-            <label>
-              VIDEO NAME
-              <input
-                aria-label="Video name"
-                value={request.name}
-                disabled={locked}
-                maxLength={100}
-                onChange={(e) => change({ name: e.target.value })}
-              />
-            </label>
             <label>
               YOUR SCENE
               <textarea
@@ -506,6 +488,21 @@ export default function VideoStudio({
                 </select>
               </label>
               <label>
+                SHOT LENGTH
+                <select
+                  aria-label="Video shot length"
+                  value={request.seconds}
+                  disabled={locked}
+                  onChange={(e) => change({ seconds: Number(e.target.value) })}
+                >
+                  {[2, 3, 4, 5].map((s) => (
+                    <option key={s} value={s}>
+                      {s}s · {s * 24 + 1} frames
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
                 QUALITY
                 <select
                   aria-label="Video quality"
@@ -517,36 +514,24 @@ export default function VideoStudio({
                   <option value="final">Final</option>
                 </select>
               </label>
+              <label>
+                CAMERA
+                <select
+                  aria-label="Video movement"
+                  disabled={locked}
+                  value={look.movement}
+                  onChange={(e) =>
+                    change({ cinema: { ...look, movement: e.target.value } as Cinema })
+                  }
+                >
+                  {cinemaOptions.movement.map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </label>
             </div>
-            <label>
-              OUTPUT SIZE
-              <select
-                aria-label="Video output size"
-                value={request.resolution || 'standard'}
-                disabled={locked}
-                onChange={(e) =>
-                  change({ resolution: e.target.value === '720p' ? '720p' : undefined })
-                }
-              >
-                <option value="standard">Standard · follows quality</option>
-                <option value="720p">HD · 720p</option>
-              </select>
-            </label>
-            <label>
-              SHOT LENGTH
-              <select
-                aria-label="Video shot length"
-                value={request.seconds}
-                disabled={locked}
-                onChange={(e) => change({ seconds: Number(e.target.value) })}
-              >
-                {[2, 3, 4, 5].map((s) => (
-                  <option key={s} value={s}>
-                    {s}s · {s * 24 + 1} frames
-                  </option>
-                ))}
-              </select>
-            </label>
             <label className="video-sound">
               <input
                 type="checkbox"
@@ -562,73 +547,107 @@ export default function VideoStudio({
                 </small>
               </span>
             </label>
-            <fieldset className="image-direction">
-              <legend>Direct the shot</legend>
-              {(['movement', 'lens', 'lighting', 'palette'] as const).map((key) => (
-                <label key={key}>
-                  {
-                    {
-                      movement: 'CAMERA',
-                      lens: 'LENS DIRECTION',
-                      lighting: 'LIGHT',
-                      palette: 'GRADE',
-                    }[key]
-                  }
-                  <select
-                    aria-label={'Video ' + key}
-                    disabled={locked}
-                    value={look[key]}
-                    onChange={(e) =>
-                      change({ cinema: { ...look, [key]: e.target.value } as Cinema })
-                    }
-                  >
-                    {cinemaOptions[key].map(([value, label]) => (
-                      <option key={value} value={value}>
-                        {value === 'source'
-                          ? key === 'lighting'
-                            ? 'Natural / your prompt'
-                            : 'Natural color'
-                          : label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              ))}
-              <small>
-                Camera and lighting choices guide the prompt. Review the generated movement.
-              </small>
-            </fieldset>
-            <details className="image-compiled">
-              <summary>View the exact generation prompt</summary>
-              <p>{videoPrompt(request)}</p>
-            </details>
-            <label>
-              SEED
-              <div className="image-seed">
+            <details className="studio-advanced">
+              <summary>More options</summary>
+              <label>
+                VIDEO NAME
                 <input
-                  aria-label="Video seed"
-                  type="number"
-                  min={0}
-                  max={2 ** 32 - 1}
-                  step={1}
-                  value={request.seed}
+                  aria-label="Video name"
+                  value={request.name}
                   disabled={locked}
-                  onChange={(e) => {
-                    const v = Number(e.target.value);
-                    if (Number.isInteger(v))
-                      change({ seed: Math.max(0, Math.min(2 ** 32 - 1, v)) });
-                  }}
+                  maxLength={100}
+                  onChange={(e) => change({ name: e.target.value })}
                 />
-                <button
-                  className="button"
-                  aria-label="New video seed"
+              </label>
+              <label>
+                OUTPUT SIZE
+                <select
+                  aria-label="Video output size"
+                  value={request.resolution || 'standard'}
                   disabled={locked}
-                  onClick={() => change({ seed: crypto.getRandomValues(new Uint32Array(1))[0] })}
+                  onChange={(e) =>
+                    change({ resolution: e.target.value === '720p' ? '720p' : undefined })
+                  }
                 >
-                  <RotateCcw size={14} />
-                </button>
-              </div>
-            </label>
+                  <option value="standard">Standard · follows quality</option>
+                  <option value="720p">HD · 720p</option>
+                </select>
+              </label>
+              <fieldset className="image-direction">
+                <legend>Lens, light and grade</legend>
+                {(['lens', 'lighting', 'palette'] as const).map((key) => (
+                  <label key={key}>
+                    {
+                      {
+                        lens: 'LENS DIRECTION',
+                        lighting: 'LIGHT',
+                        palette: 'GRADE',
+                      }[key]
+                    }
+                    <select
+                      aria-label={'Video ' + key}
+                      disabled={locked}
+                      value={look[key]}
+                      onChange={(e) =>
+                        change({ cinema: { ...look, [key]: e.target.value } as Cinema })
+                      }
+                    >
+                      {cinemaOptions[key].map(([value, label]) => (
+                        <option key={value} value={value}>
+                          {value === 'source'
+                            ? key === 'lighting'
+                              ? 'Natural / your prompt'
+                              : 'Natural color'
+                            : label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                ))}
+                <small>
+                  Camera and lighting choices guide the prompt. Review the generated movement.
+                </small>
+              </fieldset>
+              <label>
+                SEED
+                <div className="image-seed">
+                  <input
+                    aria-label="Video seed"
+                    type="number"
+                    min={0}
+                    max={2 ** 32 - 1}
+                    step={1}
+                    value={request.seed}
+                    disabled={locked}
+                    onChange={(e) => {
+                      const v = Number(e.target.value);
+                      if (Number.isInteger(v))
+                        change({ seed: Math.max(0, Math.min(2 ** 32 - 1, v)) });
+                    }}
+                  />
+                  <button
+                    className="button"
+                    aria-label="New video seed"
+                    disabled={locked}
+                    onClick={() => change({ seed: crypto.getRandomValues(new Uint32Array(1))[0] })}
+                  >
+                    <RotateCcw size={14} />
+                  </button>
+                </div>
+              </label>
+              <details className="image-compiled">
+                <summary>View the exact generation prompt</summary>
+                <p>{videoPrompt(request)}</p>
+              </details>
+              <button
+                className="image-recipe-import"
+                disabled={locked}
+                onClick={() => input.current?.click()}
+              >
+                <Upload size={12} />
+                Import video recipe
+              </button>
+            </details>
             <button
               className="button image-generate"
               disabled={

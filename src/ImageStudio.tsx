@@ -321,24 +321,6 @@ export default function ImageStudio({
               }}
             />
             {notice && <p role="status">{notice}</p>}
-            <button
-              className="image-recipe-import"
-              disabled={busy}
-              onClick={() => input.current?.click()}
-            >
-              <Upload size={12} />
-              Import image recipe
-            </button>
-            <label>
-              IMAGE NAME
-              <input
-                aria-label="Image name"
-                maxLength={100}
-                value={request.name}
-                disabled={busy}
-                onChange={(event) => change({ name: event.target.value })}
-              />
-            </label>
             <label>
               YOUR SCENE
               <textarea
@@ -387,89 +369,110 @@ export default function ImageStudio({
                 </select>
               </label>
             </div>
-            <label>
-              OUTPUT SIZE
-              <select
-                aria-label="Image output size"
-                value={request.resolution || 'standard'}
-                disabled={busy}
-                onChange={(e) =>
-                  change({ resolution: e.target.value === '720p' ? '720p' : undefined })
-                }
-              >
-                <option value="standard">Standard</option>
-                <option value="720p">HD · 720p</option>
-              </select>
-            </label>
-            <fieldset className="image-direction">
-              <legend>Compose the shot</legend>
-              {(['shot', 'lens', 'lighting'] as const).map((key) => (
-                <label key={key}>
-                  {{ shot: 'SHOT', lens: 'LENS DIRECTION', lighting: 'LIGHT' }[key]}
-                  <select
-                    aria-label={
-                      {
-                        shot: 'Image shot',
-                        lens: 'Image lens direction',
-                        lighting: 'Image lighting',
-                      }[key]
-                    }
-                    disabled={busy}
-                    value={(request.direction || imageDirectionDefaults)[key]}
-                    onChange={(event) =>
-                      change({
-                        direction: {
-                          ...imageDirectionDefaults,
-                          ...request.direction,
-                          [key]: event.target.value,
-                        },
-                      })
-                    }
-                  >
-                    {imageDirectionOptions[key].map(([value, label]) => (
-                      <option key={value} value={value}>
-                        {label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              ))}
-              <small>
-                These choices guide the model through your prompt. Review the image for the framing
-                and light you want.
-              </small>
-            </fieldset>
-            <details className="image-compiled">
-              <summary>View the exact generation prompt</summary>
-              <p>{imagePrompt(request)}</p>
-            </details>
-            <label>
-              SEED
-              <div className="image-seed">
+            <details className="studio-advanced">
+              <summary>More options</summary>
+              <label>
+                IMAGE NAME
                 <input
-                  aria-label="Image seed"
-                  type="number"
-                  min={0}
-                  max={2 ** 32 - 1}
-                  step={1}
-                  value={request.seed}
+                  aria-label="Image name"
+                  maxLength={100}
+                  value={request.name}
                   disabled={busy}
-                  onChange={(event) => {
-                    const seed = Number(event.target.value);
-                    if (Number.isInteger(seed))
-                      change({ seed: Math.max(0, Math.min(2 ** 32 - 1, seed)) });
-                  }}
+                  onChange={(event) => change({ name: event.target.value })}
                 />
-                <button
-                  className="button"
+              </label>
+              <label>
+                OUTPUT SIZE
+                <select
+                  aria-label="Image output size"
+                  value={request.resolution || 'standard'}
                   disabled={busy}
-                  aria-label="New image seed"
-                  onClick={() => change({ seed: crypto.getRandomValues(new Uint32Array(1))[0] })}
+                  onChange={(e) =>
+                    change({ resolution: e.target.value === '720p' ? '720p' : undefined })
+                  }
                 >
-                  <RotateCcw size={14} />
-                </button>
-              </div>
-            </label>
+                  <option value="standard">Standard</option>
+                  <option value="720p">HD · 720p</option>
+                </select>
+              </label>
+              <fieldset className="image-direction">
+                <legend>Compose the shot</legend>
+                {(['shot', 'lens', 'lighting'] as const).map((key) => (
+                  <label key={key}>
+                    {{ shot: 'SHOT', lens: 'LENS DIRECTION', lighting: 'LIGHT' }[key]}
+                    <select
+                      aria-label={
+                        {
+                          shot: 'Image shot',
+                          lens: 'Image lens direction',
+                          lighting: 'Image lighting',
+                        }[key]
+                      }
+                      disabled={busy}
+                      value={(request.direction || imageDirectionDefaults)[key]}
+                      onChange={(event) =>
+                        change({
+                          direction: {
+                            ...imageDirectionDefaults,
+                            ...request.direction,
+                            [key]: event.target.value,
+                          },
+                        })
+                      }
+                    >
+                      {imageDirectionOptions[key].map(([value, label]) => (
+                        <option key={value} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                ))}
+                <small>
+                  These choices guide the model through your prompt. Review the image for the
+                  framing and light you want.
+                </small>
+              </fieldset>
+              <label>
+                SEED
+                <div className="image-seed">
+                  <input
+                    aria-label="Image seed"
+                    type="number"
+                    min={0}
+                    max={2 ** 32 - 1}
+                    step={1}
+                    value={request.seed}
+                    disabled={busy}
+                    onChange={(event) => {
+                      const seed = Number(event.target.value);
+                      if (Number.isInteger(seed))
+                        change({ seed: Math.max(0, Math.min(2 ** 32 - 1, seed)) });
+                    }}
+                  />
+                  <button
+                    className="button"
+                    disabled={busy}
+                    aria-label="New image seed"
+                    onClick={() => change({ seed: crypto.getRandomValues(new Uint32Array(1))[0] })}
+                  >
+                    <RotateCcw size={14} />
+                  </button>
+                </div>
+              </label>
+              <details className="image-compiled">
+                <summary>View the exact generation prompt</summary>
+                <p>{imagePrompt(request)}</p>
+              </details>
+              <button
+                className="image-recipe-import"
+                disabled={busy}
+                onClick={() => input.current?.click()}
+              >
+                <Upload size={12} />
+                Import image recipe
+              </button>
+            </details>
             <button
               className="button image-generate"
               disabled={
