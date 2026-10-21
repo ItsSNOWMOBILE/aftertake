@@ -2714,39 +2714,46 @@ export default function App() {
               Download video
             </a>
           )}
-          {take?.rawOutput && !browserDemo && isTransfer && (
-            <a className="download-video" href={mediaUrl(take.rawOutput)} download>
-              <Download size={14} />
-              {take.recipe.transfer?.focus
-                ? 'Placed generation for finishing'
-                : 'Raw generation for finishing'}
-            </a>
-          )}
-          {take?.focusOutput && !browserDemo && (
-            <a className="download-video" href={mediaUrl(take.focusOutput)} download>
-              <Download size={14} />
-              Focused model output
-            </a>
-          )}
-          {take?.guideOutput && (
-            <a
-              className="download-video"
-              href={mediaUrl(take.guideOutput)}
-              download
-              onClick={
-                browserDemo
-                  ? (event) => {
-                      event.preventDefault();
-                      void saveMedia(take.guideOutput!, 'aftertake-motion-guide.mp4').catch(
-                        (error) => setToast(error.message),
-                      );
-                    }
-                  : undefined
-              }
-            >
-              <Download size={14} />
-              Download motion guide
-            </a>
+          {((take?.rawOutput && !browserDemo && isTransfer) ||
+            (take?.focusOutput && !browserDemo) ||
+            take?.guideOutput) && (
+            <details className="inspector-more">
+              <summary>More downloads</summary>
+              {take?.rawOutput && !browserDemo && isTransfer && (
+                <a className="download-video" href={mediaUrl(take.rawOutput)} download>
+                  <Download size={14} />
+                  {take.recipe.transfer?.focus
+                    ? 'Placed generation for finishing'
+                    : 'Raw generation for finishing'}
+                </a>
+              )}
+              {take?.focusOutput && !browserDemo && (
+                <a className="download-video" href={mediaUrl(take.focusOutput)} download>
+                  <Download size={14} />
+                  Focused model output
+                </a>
+              )}
+              {take?.guideOutput && (
+                <a
+                  className="download-video"
+                  href={mediaUrl(take.guideOutput)}
+                  download
+                  onClick={
+                    browserDemo
+                      ? (event) => {
+                          event.preventDefault();
+                          void saveMedia(take.guideOutput!, 'aftertake-motion-guide.mp4').catch(
+                            (error) => setToast(error.message),
+                          );
+                        }
+                      : undefined
+                  }
+                >
+                  <Download size={14} />
+                  Download motion guide
+                </a>
+              )}
+            </details>
           )}
           <button
             className="export-workflow"

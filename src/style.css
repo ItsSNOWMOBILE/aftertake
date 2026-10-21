@@ -3746,3 +3746,19 @@ textarea:focus {
   font-size: 14px;
   color: #d5e991;
 }
+
+/* Intermediate outputs for finishing elsewhere stay one click away. */
+.inspector-more > summary {
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 13px;
+  padding: 6px 0;
+}
+.inspector-more > summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.inspector-more[open] {
+  display: grid;
+  gap: 8px;
+}
