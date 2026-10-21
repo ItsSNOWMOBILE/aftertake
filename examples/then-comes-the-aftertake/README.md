@@ -5,9 +5,13 @@ made entirely in Aftertake. Every moving picture is an Aftertake output or a rea
 recording of the app. Every title, graphic, transition and cut is a layer in
 seven native Film projects, rendered by Aftertake's own CPU Film renderer.
 
-[![Watch the film](poster.jpg)](film.mp4)
+[![Watch the film](poster.jpg)](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/then-comes-the-aftertake-2026-10-21/then-comes-the-aftertake.mp4)
 
-**[Watch the film](film.mp4)** · [Editable projects](project/) · [Build scripts](build/)
+**[Watch the film](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/then-comes-the-aftertake-2026-10-21/then-comes-the-aftertake.mp4)** · [Editable projects](project/) · [Build scripts](build/)
+
+The finished film is published as a [release download](https://github.com/ItsSNOWMOBILE/aftertake/releases/tag/then-comes-the-aftertake-2026-10-21) to keep the
+repository small. Its SHA-256 is
+`824531b63c81b750a2ed3a7ce8e6cdf38beacab3b5917880201da317acfa286d`.
 
 |             |                                                                                            |
 | :---------- | :----------------------------------------------------------------------------------------- |

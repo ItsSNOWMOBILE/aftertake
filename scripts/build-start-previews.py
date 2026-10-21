@@ -12,6 +12,7 @@ import json
 import subprocess
 import sys
 import tempfile
+import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -19,6 +20,11 @@ OUT = ROOT / 'public/start'
 STARTER_OUT = ROOT / 'public/starters'
 EX = ROOT / 'examples'
 SECONDS, WIDTH, HEIGHT = 3, 640, 360
+# The finished film is a release download, not part of the repository.
+FILM = EX / 'then-comes-the-aftertake/film.mp4'
+FILM_URL = ('https://github.com/ItsSNOWMOBILE/aftertake/releases/download/'
+            'then-comes-the-aftertake-2026-10-21/then-comes-the-aftertake.mp4')
+FILM_SHA256 = '824531b63c81b750a2ed3a7ce8e6cdf38beacab3b5917880201da317acfa286d'
 
 # card id -> segments of (file, start seconds, length seconds); stills get a slow push.
 CARDS = {
@@ -28,7 +34,7 @@ CARDS = {
     'person': [(EX / 'character-h3-high-v2/before-720p.mp4', 0.2, 1.3), (EX / 'character-h3-high-v2/result.mp4', 1.5, 1.5)],
     'camera': [(EX / 'castle-pullback-v2/result.mp4', 0.6, 3)],
     'motion': [(EX / 'signal-v2/source.mp4', 0.6, 1.4), (EX / 'signal-v2/result.mp4', 2.0, 1.6)],
-    'film': [(EX / 'then-comes-the-aftertake/film.mp4', 59.6, 3)],
+    'film': [(FILM, 59.6, 3)],
 }
 # Starters with a real output made from them (both from the recorded proof run).
 STARTERS = {
@@ -46,6 +52,21 @@ FRAME = f'scale={WIDTH}:{HEIGHT}:force_original_aspect_ratio=increase,crop={WIDT
 
 def ffmpeg(*args):
     subprocess.run(['ffmpeg', '-v', 'error', '-y', *map(str, args)], check=True)
+
+
+def fetch_film():
+    """Download the finished film from its release once, checking its SHA-256."""
+    if FILM.exists():
+        return
+    print(f'Downloading the film from {FILM_URL}')
+    partial = FILM.with_suffix('.part')
+    with urllib.request.urlopen(FILM_URL) as response, partial.open('wb') as file:
+        while chunk := response.read(1 << 20):
+            file.write(chunk)
+    if hashlib.sha256(partial.read_bytes()).hexdigest() != FILM_SHA256:
+        partial.unlink()
+        raise SystemExit('The downloaded film does not match its published SHA-256.')
+    partial.rename(FILM)
 
 
 def encode(segments, output):
@@ -83,6 +104,7 @@ def graded(source, look, folder):
 
 
 def main():
+    fetch_film()
     OUT.mkdir(parents=True, exist_ok=True)
     for card, segments in CARDS.items():
         encode(segments, OUT / f'{card}.mp4')

@@ -22,3 +22,5 @@ test-results/
 /examples/product-film/music-bed.wav
 /examples/product-film/full-demo-media/
 examples/then-comes-the-aftertake/work/
+# The finished film is a release download (scripts/build-start-previews.py fetches it).
+/examples/then-comes-the-aftertake/film.mp4

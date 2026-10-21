@@ -15,7 +15,7 @@ workflows. No credits, no uploads, no closed APIs.
 [![MCP: 45 tools](https://img.shields.io/badge/MCP-45_tools-d5eb94?labelColor=182015)](docs/mcp.md)
 [![Windows · macOS · Linux](https://img.shields.io/badge/runs_on-Windows_·_macOS_·_Linux-c3d4a6?labelColor=182015)](#quick-start)
 
-**[Watch the film](examples/then-comes-the-aftertake/film.mp4)** ·
+**[Watch the film](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/then-comes-the-aftertake-2026-10-21/then-comes-the-aftertake.mp4)** ·
 **[Try it in your browser](https://aftertake-studio.right-bard-9761.chatgpt.site/studio/)** ·
 **[Quick start](#quick-start)** ·
 **[How it's built](#how-its-built)** ·
@@ -27,9 +27,9 @@ workflows. No credits, no uploads, no closed APIs.
 
 ## Then comes the Aftertake
 
-[![Then comes the Aftertake: a 93-second film made entirely in Aftertake](docs/assets/readme/film-poster.jpg)](examples/then-comes-the-aftertake/film.mp4)
+[![Then comes the Aftertake: a 93-second film made entirely in Aftertake](docs/assets/readme/film-poster.jpg)](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/then-comes-the-aftertake-2026-10-21/then-comes-the-aftertake.mp4)
 
-<p align="center"><b><a href="examples/then-comes-the-aftertake/film.mp4">▶ Watch the 93-second film</a></b> · <a href="examples/then-comes-the-aftertake/README.md">Open its editable projects</a></p>
+<p align="center"><b><a href="https://github.com/ItsSNOWMOBILE/aftertake/releases/download/then-comes-the-aftertake-2026-10-21/then-comes-the-aftertake.mp4">▶ Watch the 93-second film</a></b> · <a href="examples/then-comes-the-aftertake/README.md">Open its editable projects</a></p>
 
 A film about Aftertake, made in Aftertake. It cuts through generated portals,
 castles, recast characters and finishing looks to its own song, which was made
