@@ -1,7 +1,7 @@
 import { cancelAndRefresh } from './job-cancel.js';
 import { RequestError } from './http-errors.js';
 import { Router } from 'express';
-import { mkdir, readFile, readdir, rename, writeFile, unlink } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, readdir, rename, writeFile, unlink } from 'node:fs/promises';
 import { createHash, randomUUID } from 'node:crypto';
 import { execFile } from 'node:child_process';
 import { promisify, isDeepStrictEqual } from 'node:util';
@@ -10,6 +10,7 @@ import type { EngineClient, EngineJob } from './sdk-port.js';
 import type { Clip, Engine } from '../src/domain.js';
 import {
   characterBusy,
+  characterRepairSchema,
   characterRequestSchema,
   parseCharacterSelectionInfo,
   characterSelectionSchema,
@@ -396,6 +397,7 @@ export async function characterRouter(context: {
       else if (record.kind === 'replacement')
         record.request = characterRequestSchema.parse(record.request);
       else continue;
+      if (record.repair) record.repair = characterRepairSchema.parse(record.repair);
       jobs.set(record.id, record);
       if (characterBusy(record) && !(await targetMatches(record))) continue;
       if (record.jobId && characterBusy(record)) void track(record);
@@ -520,6 +522,103 @@ export async function characterRouter(context: {
   }
   router.post('/selections', (req, res) => create('selection', req, res));
   router.post('/replacements', (req, res) => create('replacement', req, res));
+  const repairing = new Set<string>();
+  // Mask repair is CPU work: it writes a new selection beside the tracked one and
+  // leaves the original untouched, so either can be reviewed or used.
+  router.post('/:id/repair', async (req, res) => {
+    const original = jobs.get(req.params.id);
+    if (original?.kind !== 'selection' || original.state !== 'succeeded' || !original.selection)
+      return void res.status(409).json({ error: 'Repair a completed person selection.' });
+    if (original.repair)
+      return void res.status(409).json({
+        error: 'This selection is already repaired. Track the person again to change it.',
+      });
+    const existing = [...jobs.values()].find((job) => job.repair?.from === original.id);
+    if (existing) return void res.json(existing);
+    if (repairing.has(original.id))
+      return void res.status(409).json({ error: 'This selection is already being repaired.' });
+    const [mask, source] = await Promise.all([
+      readFile(file(original.id, 'mask.mkv')),
+      readFile(file(original.id, 'source.mp4')),
+    ]);
+    if (
+      sha(mask) !== original.selection.maskSha256 ||
+      sha(source) !== original.selection.sourceSha256
+    )
+      return void res
+        .status(409)
+        .json({ error: 'The reviewed selection changed on disk. Track this person again.' });
+    repairing.add(original.id);
+    const id = randomUUID(),
+      work = file(id, 'repair.json'),
+      outputs = ['mask.mkv', 'preview.mp4', 'source.mp4'].map((suffix) => file(id, suffix));
+    let saved = false;
+    try {
+      await writeFile(
+        work,
+        JSON.stringify({
+          mask: file(original.id, 'mask.mkv'),
+          source: file(original.id, 'source.mp4'),
+          maskOut: outputs[0],
+          previewOut: outputs[1],
+          request: original.request,
+        }),
+      );
+      let result: { changed: boolean; selection?: unknown; repair?: unknown };
+      try {
+        const { stdout } = await exec(
+          python,
+          [path.join(root, 'scripts/repair-character-mask.py'), work],
+          { cwd: root, timeout: 600000, maxBuffer: 1024 * 1024 },
+        );
+        result = JSON.parse(stdout);
+      } catch (error) {
+        const message = (error as { code?: number; stderr?: string }).stderr?.trim();
+        if ((error as { code?: number }).code === 2 && message)
+          return void res.status(422).json({ error: message });
+        throw error;
+      }
+      if (!result.changed)
+        return void res
+          .status(409)
+          .json({ error: 'This selection has no lost frames or flicker to repair.' });
+      const info = parseCharacterSelectionInfo(
+        result.selection,
+        original.request as CharacterSelectionRequest,
+      );
+      if (sha(await readFile(outputs[0])) !== info.maskSha256)
+        throw Error('The repaired mask does not match its receipt.');
+      await copyFile(file(original.id, 'source.mp4'), outputs[2]);
+      const now = new Date().toISOString(),
+        record: CharacterJob = {
+          id,
+          kind: 'selection',
+          request: original.request,
+          state: 'succeeded',
+          progress: 1,
+          stage: info.emptyFrames.length
+            ? 'Tracking needs correction'
+            : 'Repaired selection ready to review',
+          createdAt: now,
+          updatedAt: now,
+          workflow: original.workflow,
+          selection: { ...info, sourceSha256: original.selection.sourceSha256 },
+          repair: characterRepairSchema.parse({
+            ...(result.repair as object),
+            from: original.id,
+            originalMaskSha256: original.selection.maskSha256,
+          }),
+        };
+      jobs.set(id, record);
+      await persist(record);
+      saved = true;
+      res.status(201).json(record);
+    } finally {
+      repairing.delete(original.id);
+      await unlink(work).catch(() => {});
+      if (!saved) await Promise.all(outputs.map((output) => unlink(output).catch(() => {})));
+    }
+  });
   router.post('/:id/cancel', async (req, res) => {
     const record = jobs.get(req.params.id);
     if (!record?.jobId || !characterBusy(record) || record.state === 'finalizing')

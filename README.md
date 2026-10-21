@@ -85,6 +85,8 @@ the short demonstration is silent apart from original local narration.
 **Several people, one shot.** After a take finishes, **Swap another person in
 this shot** tracks the next person in that take. Each pass changes only the
 pixels inside its own mask, so the people you already swapped stay as they are.
+When tracking drops the person for a moment, **Repair mask** fills gaps of up
+to half a second on the CPU and shows what it added before you generate.
 
 ## From the first prompt to the final cut
 

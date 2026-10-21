@@ -465,6 +465,12 @@
   flex: 0 0 auto;
   margin-top: 2px;
 }
+.character-repair {
+  align-self: flex-start;
+  gap: 6px;
+  margin-top: 9px;
+  font-size: 12px;
+}
 .character-swap-another {
   width: 100%;
   justify-content: center;

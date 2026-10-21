@@ -1,7 +1,7 @@
 import { createJobTarget } from '../server/job-target.js';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import {
   characterRequestSchema,
   characterSelectionSchema,
@@ -376,6 +376,119 @@ test('selection media remains readable when the studio data lives in a hidden wo
       assert.deepEqual(Buffer.from(await response.arrayBuffer()), expected);
     }
     assert.equal((await fetch(base + randomUUID() + '/preview')).status, 404);
+  } finally {
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test('mask repair writes a new reviewed selection beside the tracked one', async () => {
+  const directory = await mkdtemp(path.join(tmpdir(), 'aftertake-repair-')),
+    data = path.join(directory, 'data'),
+    folder = path.join(data, 'characters'),
+    id = randomUUID();
+  await mkdir(folder, { recursive: true });
+  await mkdir(path.join(directory, 'scripts'));
+  const mask = Buffer.from('tracked mask with lost frames'),
+    prepared = Buffer.from('prepared source'),
+    repaired = Buffer.from('repaired mask');
+  const digest = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
+  await writeFile(path.join(folder, id + '-mask.mkv'), mask);
+  await writeFile(path.join(folder, id + '-source.mp4'), prepared);
+  await writeFile(path.join(folder, id + '-preview.mp4'), 'preview');
+  const tracked = {
+    id,
+    kind: 'selection',
+    state: 'succeeded',
+    request: selection,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    workflow: { tracked: true },
+    selection: {
+      frames: 48,
+      width: 960,
+      height: 512,
+      fps: 24,
+      emptyFrames: [10, 11],
+      maskSha256: digest(mask),
+      sourceSha256: digest(prepared),
+    },
+  };
+  await writeFile(path.join(folder, id + '.json'), JSON.stringify(tracked));
+  // Stand-in for the Python repair, run by Node so this test needs no media runtime.
+  const behaviour = path.join(directory, 'behaviour.txt');
+  await writeFile(
+    path.join(directory, 'scripts/repair-character-mask.py'),
+    `const fs = require('node:fs');
+const job = JSON.parse(fs.readFileSync(process.argv[2], 'utf8'));
+const mode = fs.readFileSync(${JSON.stringify(behaviour)}, 'utf8');
+if (mode === 'fail') { process.stderr.write('Tracking lost the person in every frame.'); process.exit(2); }
+if (mode === 'clean') { console.log(JSON.stringify({ changed: false })); process.exit(0); }
+fs.writeFileSync(job.maskOut, ${JSON.stringify(repaired.toString())});
+fs.writeFileSync(job.previewOut, 'repaired preview');
+console.log(JSON.stringify({ changed: true,
+  selection: { width: 960, height: 512, frames: 48, fps: 24, emptyFrames: [],
+    maskSha256: ${JSON.stringify(digest(repaired))} },
+  repair: { processor: 'aftertake-mask-repair/1', maxGap: 12, flicker: 2,
+    framesRecovered: [10, 11], recoveredPixels: 900, restoredPixels: 40 } }));`,
+  );
+  const app = express(),
+    { router } = await characterRouter({
+      root: directory,
+      data,
+      python: process.execPath,
+      client: {} as any,
+      target: createJobTarget({
+        sdkBaseUrl: 'http://127.0.0.1:8189',
+        uiBaseUrl: 'http://127.0.0.1:8188',
+        allowLegacyLoopback: true,
+      }),
+      uiUrl: 'http://127.0.0.1:1',
+      engine: async () => ({ ready: true }) as any,
+      takeBusy: () => false,
+      setAdmitting: () => {},
+    });
+  app.use(express.json());
+  app.use('/api/characters', router);
+  const server = app.listen(0, '127.0.0.1');
+  await new Promise<void>((resolve) => server.on('listening', resolve));
+  const address = server.address();
+  assert.ok(address && typeof address !== 'string');
+  const base = `http://127.0.0.1:${address.port}/api/characters/`;
+  const repair = (target: string) => fetch(base + target + '/repair', { method: 'POST' });
+  try {
+    await writeFile(behaviour, 'fail');
+    const failed = await repair(id);
+    assert.equal(failed.status, 422);
+    assert.match((await failed.json()).error, /every frame/);
+    await writeFile(behaviour, 'clean');
+    assert.equal((await repair(id)).status, 409);
+    await writeFile(behaviour, 'repair');
+    const created = await repair(id);
+    assert.equal(created.status, 201);
+    const record = await created.json();
+    assert.notEqual(record.id, id);
+    assert.deepEqual(record.request, selection);
+    assert.deepEqual(record.workflow, { tracked: true });
+    assert.deepEqual(record.selection.emptyFrames, []);
+    assert.equal(record.selection.sourceSha256, digest(prepared));
+    assert.equal(record.repair.from, id);
+    assert.equal(record.repair.originalMaskSha256, digest(mask));
+    assert.deepEqual(record.repair.framesRecovered, [10, 11]);
+    const media = async (suffix: string) =>
+      Buffer.from(await (await fetch(base + record.id + '/' + suffix)).arrayBuffer());
+    assert.deepEqual(await media('mask'), repaired);
+    assert.deepEqual(await media('source'), prepared);
+    // The tracked selection is untouched, a second request returns the same repair,
+    // and a repaired selection is not repaired again.
+    assert.deepEqual(
+      await (await fetch(base + id + '/mask')).arrayBuffer().then(Buffer.from),
+      mask,
+    );
+    assert.equal((await (await repair(id)).json()).id, record.id);
+    assert.equal((await repair(record.id)).status, 409);
+    const listed = await (await fetch(base)).json();
+    assert.equal(listed.length, 2);
   } finally {
     await new Promise<void>((resolve) => server.close(() => resolve()));
     await rm(directory, { recursive: true, force: true });

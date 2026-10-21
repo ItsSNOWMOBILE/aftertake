@@ -24,6 +24,8 @@ export type TimedJob = {
   recipe?: Recipe;
   /** A recomposition reuses a saved generation, so its time says nothing about rendering. */
   recomposition?: unknown;
+  /** A repaired mask is CPU work on an earlier selection, not a tracking run. */
+  repair?: unknown;
 };
 
 const hd = (resolution?: string) => (resolution === '720p' ? '-720p' : '');
@@ -55,7 +57,7 @@ export function estimateKey(job: Pick<TimedJob, 'request' | 'recipe'>): string |
 
 /** Seconds from admission to the final update, for a job that finished and rendered. */
 export function elapsedSeconds(job: TimedJob): number | null {
-  if (job.state !== 'succeeded' || job.recomposition) return null;
+  if (job.state !== 'succeeded' || job.recomposition || job.repair) return null;
   const seconds = (Date.parse(job.updatedAt) - Date.parse(job.createdAt)) / 1000;
   return Number.isFinite(seconds) && seconds > 0 ? seconds : null;
 }

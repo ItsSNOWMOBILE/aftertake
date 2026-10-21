@@ -108,6 +108,17 @@ part of the edited area, and final video encoding can change pixel values.
 The [Hotel Lobby walkthrough](../examples/hotel-lobby/) includes the raw H3
 output and the separately executed native Comfy finish for comparison.
 
+**Repair mask.** When tracking loses the person for a few frames, or a limb
+drops out of the mask for a frame or two, **Repair mask** fixes it on the CPU in
+seconds. Frames with no person are filled from the nearest tracked frames,
+moved along the person's motion, for gaps up to half a second. A pixel missing
+for one or two frames between frames that have it is restored. Repair only adds
+to the mask, so it can never uncover part of the person, and it writes a new
+selection beside the tracked one: amber in its preview marks what was added,
+and the original stays available in the selection list. Longer losses still
+need a clearer or shorter range. Agents use `aftertake_character_action` with
+`repair`.
+
 **Several people in one shot.** When a take finishes, **Swap another person in
 this shot** makes that take the source, keeps its working resolution and clears
 the points, photo and selection. Mark the next person, track them and choose

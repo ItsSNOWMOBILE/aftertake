@@ -10,6 +10,7 @@ import {
   ScanFace,
   Upload,
   UserPlus,
+  Wand2,
   X,
 } from 'lucide-react';
 import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
@@ -23,6 +24,7 @@ import {
   characterSelectionSchema,
   type CharacterJob,
   type CharacterIdentityReference,
+  type CharacterRepair,
   type CharacterRequest,
   type CharacterSelectionRequest,
 } from './character';
@@ -41,6 +43,15 @@ async function api<T>(url: string, init?: RequestInit) {
       character: body.character,
     });
   return body as T;
+}
+function repairSummary(repair: CharacterRepair) {
+  const frames = repair.framesRecovered.length;
+  return [
+    frames ? `${frames} lost ${frames === 1 ? 'frame' : 'frames'} filled` : '',
+    repair.restoredPixels ? 'brief dropouts restored' : '',
+  ]
+    .filter(Boolean)
+    .join(', ');
 }
 function download(value: unknown, filename = 'aftertake-character-recipe.json') {
   const url = URL.createObjectURL(
@@ -468,6 +479,26 @@ export default function CharacterStudio({
         }
       }
       setError(failure.message);
+    } finally {
+      setSending(false);
+    }
+  }
+  /** Fill lost frames and brief dropouts on the CPU, then review the repaired selection. */
+  async function repairSelection(job: CharacterJob) {
+    setSending(true);
+    setError('');
+    setNotice('Repairing the tracked mask on this computer…');
+    try {
+      const repaired = await api<CharacterJob>(`/api/characters/${job.id}/repair`, {
+        method: 'POST',
+      });
+      onUpdate(repaired);
+      setSelectionId(repaired.id);
+      setView('selection');
+      setNotice(`Repaired: ${repairSummary(repaired.repair!)}. Review the tracked selection.`);
+    } catch (e) {
+      setNotice('');
+      setError((e as Error).message);
     } finally {
       setSending(false);
     }
@@ -1128,6 +1159,7 @@ export default function CharacterStudio({
                   {matching.map((j) => (
                     <option key={j.id} value={j.id}>
                       {new Date(j.createdAt).toLocaleTimeString()} · {j.state.replaceAll('_', ' ')}
+                      {j.repair ? ' · repaired' : ''}
                     </option>
                   ))}
                 </select>
@@ -1137,9 +1169,27 @@ export default function CharacterStudio({
               <p className={`character-selection-status ${selectionReady ? 'ready' : ''}`}>
                 {selectionReady ? <Check size={14} /> : null}
                 {selection.selection.emptyFrames.length
-                  ? `Tracking lost the person in ${selection.selection.emptyFrames.length} frames. Choose a clearer or shorter range before replacing them.`
+                  ? `Tracking lost the person in ${selection.selection.emptyFrames.length} frames. ${selection.repair ? 'These gaps are longer than half a second' : 'Repair mask fills gaps up to half a second'}; otherwise choose a clearer or shorter range before replacing them.`
                   : `${selection.selection.width} × ${selection.selection.height} · ${selection.selection.frames} tracked frames · ${(selection.selection.frames / 24).toFixed(2)}s. Check hands, hair and overlapping people in the preview.`}
               </p>
+            )}
+            {selection?.repair && (
+              <p className="character-hint">
+                Repaired mask: {repairSummary(selection.repair)}. Amber in the tracked selection
+                marks what repair added; it never removes tracked pixels.
+              </p>
+            )}
+            {selection?.state === 'succeeded' && selection.selection && !selection.repair && (
+              <button
+                className="button character-repair"
+                disabled={locked || browserDemo}
+                onClick={() => void repairSelection(selection)}
+              >
+                <Wand2 size={13} />
+                {jobs.some((job) => job.repair?.from === selection.id)
+                  ? 'Use the repaired mask'
+                  : 'Repair mask'}
+              </button>
             )}
             {status?.error && (
               <p role="alert" className="character-error">

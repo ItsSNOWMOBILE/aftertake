@@ -100,6 +100,19 @@ export const characterSelectionInfoSchema = z
     'Unexpected character canvas.',
   );
 export type CharacterSelectionInfo = z.infer<typeof characterSelectionInfoSchema>;
+const shaSchema = z.string().regex(/^[a-f0-9]{64}$/);
+/** How a repaired selection differs from the tracked one it came from; repair only adds pixels. */
+export const characterRepairSchema = z.object({
+  from: z.string().uuid(),
+  originalMaskSha256: shaSchema,
+  processor: z.literal('aftertake-mask-repair/1'),
+  maxGap: z.number().int().positive(),
+  flicker: z.number().int().positive(),
+  framesRecovered: z.array(z.number().int().nonnegative()).max(360),
+  recoveredPixels: z.number().int().nonnegative(),
+  restoredPixels: z.number().int().nonnegative(),
+});
+export type CharacterRepair = z.infer<typeof characterRepairSchema>;
 export type CharacterJob = {
   jobTarget?: JobTargetBinding;
   id: string;
@@ -116,6 +129,7 @@ export type CharacterJob = {
   updatedAt: string;
   workflow: Record<string, any>;
   selection?: CharacterSelectionInfo;
+  repair?: CharacterRepair;
   clip?: Clip;
 };
 export const characterTerminal = new Set([
