@@ -54,7 +54,13 @@ function probe(program, programArgs) {
   return result.status === 0 ? `${result.stdout}${result.stderr}`.trim() : null;
 }
 function python(versions) {
-  const candidates = windows
+  // An installed runtime can remain usable after the system Python is removed
+  // from PATH, or when the Windows Python launcher is not installed.
+  const local = ['venv', 'film-venv']
+    .map(venvPython)
+    .filter((program) => existsSync(program))
+    .map((program) => [program, []]);
+  const system = windows
     ? versions.map((version) => ['py', [`-${version}`]]).concat([['python', []]])
     : versions
         .map((version) => [`python${version}`, []])
@@ -62,7 +68,7 @@ function python(versions) {
           ['python3', []],
           ['python', []],
         ]);
-  for (const [program, prefix] of candidates) {
+  for (const [program, prefix] of [...local, ...system]) {
     const version = probe(program, [
       ...prefix,
       '-c',
