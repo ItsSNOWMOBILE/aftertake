@@ -106,6 +106,7 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
   let retainGraphics = true;
   let retainResolution = true;
   let retainTitleMotion = true;
+  let retainCurves = true;
   let exportCalls = 0;
   let exportedDraft: any;
   let reviewFilm: any;
@@ -128,6 +129,14 @@ test('the real MCP stdio server discovers typed editing tools and confines impor
     if (!retainResolution) delete draft.resolution;
     if (!retainTitleMotion)
       draft.titles = draft.titles?.map(({ motion: _motion, ...title }: any) => title);
+    // A studio without custom curves could only flatten them to its default easing.
+    if (!retainCurves)
+      for (const title of draft.titles || [])
+        for (const key of title.motion?.keys || [])
+          if (key.easing === 'custom') {
+            delete key.easing;
+            delete key.bezier;
+          }
     res.json(draft);
   });
   const filmId = '00000000-0000-4000-8000-000000000098';
@@ -239,6 +248,12 @@ syncBuiltinESMExports();
         `Missing ${name}`,
       );
     assert.ok(list.tools.every((tool) => tool.inputSchema.type === 'object'));
+    // Agents discover per-key custom easing from the same project contract.
+    const editSchema = JSON.stringify(
+      list.tools.find((tool) => tool.name === 'aftertake_save_film_edit')!.inputSchema,
+    );
+    for (const field of ['"bezier"', '"custom"', '"x1"', '"y2"'])
+      assert.ok(editSchema.includes(field), `The film edit schema omits ${field}`);
     assert.ok(
       list.tools.find((tool) => tool.name === 'aftertake_export_plan')?.annotations?.idempotentHint,
     );
@@ -339,7 +354,13 @@ syncBuiltinESMExports();
           position: 'center',
           animation: 'none',
           color: '#ffffff',
-          motion: motionPreset('slide-up'),
+          motion: {
+            keys: motionPreset('slide-up')!.keys.map((key, index) =>
+              index === 1
+                ? { ...key, easing: 'custom' as const, bezier: { x1: 0.16, y1: 1, x2: 0.3, y2: 1 } }
+                : key,
+            ),
+          },
         },
       ],
       graphics: [
@@ -367,16 +388,17 @@ syncBuiltinESMExports();
     const motionPlanId = (savedMotion.structuredContent as any).planId;
     const exportMotion = () =>
       client.callTool({ name: 'aftertake_export_plan', arguments: { planId: motionPlanId } });
-    for (const feature of ['graphics', 'resolution', 'titleMotion']) {
+    for (const feature of ['graphics', 'resolution', 'titleMotion', 'curves']) {
       retainGraphics = feature !== 'graphics';
       retainResolution = feature !== 'resolution';
       retainTitleMotion = feature !== 'titleMotion';
+      retainCurves = feature !== 'curves';
       const stripped = await exportMotion();
       assert.equal(stripped.isError, true, `Export admitted stripped ${feature}`);
       assert.match((stripped.content as any)[0].text, /did not retain every edit setting/);
       assert.equal(exportCalls, 0, 'A changed edit reached the export POST.');
     }
-    retainGraphics = retainResolution = retainTitleMotion = true;
+    retainGraphics = retainResolution = retainTitleMotion = retainCurves = true;
     const exported = await exportMotion();
     assert.ok(!exported.isError);
     assert.equal(exportCalls, 1);
@@ -408,6 +430,11 @@ syncBuiltinESMExports();
     const changedGraphic = await review(alteredGraphic);
     assert.equal(changedGraphic.isError, true);
     assert.match((changedGraphic.content as any)[0].text, /differs.*graphics/);
+    const alteredCurve = structuredClone(reviewFilm);
+    alteredCurve.titles[0].motion.keys[1].bezier.x1 = 0.5;
+    const changedCurve = await review(alteredCurve);
+    assert.equal(changedCurve.isError, true);
+    assert.match((changedCurve.content as any)[0].text, /differs.*titles/);
     reviewFilm.motionScene = {
       groups: [],
       order: [

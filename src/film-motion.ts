@@ -1,6 +1,34 @@
 import { z } from 'zod';
 
-export const motionEasings = ['linear', 'ease-in', 'ease-out', 'ease-in-out', 'hold'] as const;
+export const motionEasings = [
+  'linear',
+  'ease-in',
+  'ease-out',
+  'ease-in-out',
+  'hold',
+  'custom',
+] as const;
+
+// CSS cubic-bezier order. Time handles stay in 0–1 so x(u) = time has one root.
+// Progress handles stay in 0–1 so every eased pose remains between its two keys,
+// as the scale, opacity and depth-clearance bounds assume.
+export const motionCurveSchema = z
+  .object({
+    x1: z.number().min(0).max(1),
+    y1: z.number().min(0).max(1),
+    x2: z.number().min(0).max(1),
+    y2: z.number().min(0).max(1),
+  })
+  .strict();
+export type MotionCurve = z.infer<typeof motionCurveSchema>;
+
+/** A key carries a curve exactly when its arriving segment uses custom easing. */
+export const curveMatchesEasing = (key: { easing?: string; bezier?: unknown }) =>
+  (key.easing === 'custom') === (key.bezier !== undefined);
+export const curveMismatch = {
+  message: 'Custom easing needs its bezier curve; other easings cannot carry one.',
+  path: ['bezier'],
+};
 
 export const motionKeyframeSchema = z
   .object({
@@ -15,8 +43,10 @@ export const motionKeyframeSchema = z
     opacity: z.number().min(0).max(1),
     // Describes the segment arriving at this key. Missing easing means linear.
     easing: z.enum(motionEasings).optional(),
+    bezier: motionCurveSchema.optional(),
   })
-  .strict();
+  .strict()
+  .refine(curveMatchesEasing, curveMismatch);
 
 export const motionTrackSchema = z
   .object({
@@ -60,7 +90,32 @@ const pose = (key: MotionKeyframe): MotionPose => ({
   opacity: key.opacity,
 });
 
-function eased(progress: number, easing: MotionKeyframe['easing']): number {
+/**
+ * Solve x(u) = progress with a fixed bisection, then return y(u). The native
+ * renderer runs the same IEEE operations in the same order, so preview and
+ * export produce identical amounts.
+ */
+export function motionCurveAmount(progress: number, curve: MotionCurve): number {
+  if (!(progress > 0)) return 0;
+  if (progress >= 1) return 1;
+  const cx = 3 * curve.x1,
+    bx = 3 * (curve.x2 - curve.x1) - cx,
+    ax = 1 - cx - bx;
+  let low = 0,
+    high = 1;
+  for (let step = 0; step < 52; step++) {
+    const middle = (low + high) / 2;
+    if (((ax * middle + bx) * middle + cx) * middle < progress) low = middle;
+    else high = middle;
+  }
+  const u = (low + high) / 2;
+  const cy = 3 * curve.y1,
+    by = 3 * (curve.y2 - curve.y1) - cy,
+    ay = 1 - cy - by;
+  return Math.min(1, Math.max(0, ((ay * u + by) * u + cy) * u));
+}
+
+function eased(progress: number, easing: MotionKeyframe['easing'], curve?: MotionCurve): number {
   switch (easing) {
     case 'ease-in':
       return progress ** 3;
@@ -70,6 +125,9 @@ function eased(progress: number, easing: MotionKeyframe['easing']): number {
       return progress * progress * (3 - 2 * progress);
     case 'hold':
       return progress < 1 ? 0 : 1;
+    case 'custom':
+      if (!curve) throw new RangeError('Custom easing needs its bezier curve.');
+      return motionCurveAmount(progress, curve);
     default:
       return progress;
   }
@@ -84,7 +142,7 @@ export function motionAt(track: MotionTrack | undefined, progress: number): Moti
   const rightIndex = track.keys.findIndex((key) => key.at >= time);
   const right = track.keys[rightIndex];
   const left = track.keys[rightIndex - 1];
-  const amount = eased((time - left.at) / (right.at - left.at), right.easing);
+  const amount = eased((time - left.at) / (right.at - left.at), right.easing, right.bezier);
   return {
     x: left.x + (right.x - left.x) * amount,
     y: left.y + (right.y - left.y) * amount,
@@ -235,4 +293,35 @@ export function motionPreset(name: MotionPresetName): MotionTrack | undefined {
   const track = presetTracks[name];
   if (!track) throw new RangeError('Choose a supported motion preset.');
   return structuredClone(track);
+}
+
+/** Editable starting points for a custom segment, all inside the bounded square. */
+export const motionCurvePresets = {
+  standard: { x1: 0.25, y1: 0.1, x2: 0.25, y2: 1 },
+  'sine-in-out': { x1: 0.37, y1: 0, x2: 0.63, y2: 1 },
+  'quint-in-out': { x1: 0.83, y1: 0, x2: 0.17, y2: 1 },
+  'expo-out': { x1: 0.16, y1: 1, x2: 0.3, y2: 1 },
+  'expo-in': { x1: 0.7, y1: 0, x2: 0.84, y2: 0 },
+  'speed-ramp': { x1: 0.1, y1: 0.6, x2: 0.9, y2: 0.4 },
+} as const satisfies Record<string, MotionCurve>;
+export type MotionCurvePresetName = keyof typeof motionCurvePresets;
+
+/**
+ * The Bezier form of a named easing, so switching a key to custom keeps its
+ * motion. With x1 = 1/3 and x2 = 2/3, x(u) = u, making the cubic ease-in,
+ * ease-out and smoothstep curves exact. Hold is a jump, so it starts from Standard.
+ */
+export function namedEasingCurve(easing: MotionKeyframe['easing']): MotionCurve {
+  switch (easing) {
+    case 'ease-in':
+      return { x1: 1 / 3, y1: 0, x2: 2 / 3, y2: 0 };
+    case 'ease-out':
+      return { x1: 1 / 3, y1: 1, x2: 2 / 3, y2: 1 };
+    case 'ease-in-out':
+      return { x1: 1 / 3, y1: 0, x2: 2 / 3, y2: 1 };
+    case 'hold':
+      return { ...motionCurvePresets.standard };
+    default:
+      return { x1: 1 / 3, y1: 1 / 3, x2: 2 / 3, y2: 2 / 3 };
+  }
 }

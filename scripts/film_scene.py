@@ -173,13 +173,15 @@ def validate_depth(value, motion):
         raise ValueError('Group depth needs between two and twelve keys.')
     previous = -1
     for key in keys:
-        if (not isinstance(key, dict) or set(key) - {'at', 'yaw', 'pitch', 'z', 'easing'}
+        if (not isinstance(key, dict) or set(key) - {'at', 'yaw', 'pitch', 'z', 'easing', 'bezier'}
                 or {'at', 'yaw', 'pitch', 'z'} - set(key)):
             raise ValueError('Each depth key needs its time, yaw, pitch and z.')
         for name, low, high in [('at', 0, 1), ('yaw', -35, 35), ('pitch', -35, 35), ('z', -.2, .2)]:
             motion.number(key[name], low, high, 'depth ' + name)
-        easing = key.get('easing', 'linear')
-        if key['at'] <= previous or not isinstance(easing, str) or easing not in motion.EASINGS:
+        # The shared validator bounds custom curves, so the clearance below
+        # still covers every interpolated pose.
+        motion.validate_easing(key)
+        if key['at'] <= previous:
             raise ValueError('Depth keys need ordered times and supported destination easing.')
         previous = key['at']
     if keys[0]['at'] != 0 or keys[-1]['at'] != 1:
@@ -196,7 +198,8 @@ def depth_at(depth, progress, motion):
     for before, after in zip(keys, keys[1:]):
         if progress <= after['at']:
             left, right = before, after
-            amount = motion.eased(max(0, (progress - left['at']) / (right['at'] - left['at'])), right.get('easing', 'linear'))
+            amount = motion.eased(max(0, (progress - left['at']) / (right['at'] - left['at'])),
+                                  right.get('easing', 'linear'), right.get('bezier'))
             break
     return {**{field: left[field] + (right[field] - left[field]) * amount for field in ('yaw', 'pitch', 'z')},
             'perspective': depth['perspective']}

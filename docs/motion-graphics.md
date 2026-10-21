@@ -117,6 +117,45 @@ Each destination key selects the easing for the segment arriving at it:
 | Fast start, soft stop | Cubic ease-out |
 | Smooth start & stop | Smoothstep ease-in-out |
 | Hold, then jump | Keeps the preceding pose until this key |
+| Custom curve · cubic Bézier | Your own timing curve for this segment |
+
+### Custom curves
+
+Choose **Custom curve · cubic Bézier** to shape one segment. The key card shows
+the curve: across is time between the two keys, up is progress toward this key,
+and the dots mark equal time steps, so wider gaps move faster. Drag either
+handle, type **x1**, **y1**, **x2** and **y2**, or pick a starting point:
+
+| Curve preset | Values | Feel |
+| --- | --- | --- |
+| Standard | 0.25, 0.1, 0.25, 1 | Soft start, settled stop |
+| Sine | 0.37, 0, 0.63, 1 | Gentle in and out |
+| Quint | 0.83, 0, 0.17, 1 | Dramatic in and out |
+| Snap | 0.16, 1, 0.3, 1 | Fast arrival, long settle |
+| Wind-up | 0.7, 0, 0.84, 0 | Slow start, fast exit |
+| Speed ramp | 0.1, 0.6, 0.9, 0.4 | Fast, hang in the middle, fast |
+
+Switching a key from a named easing starts from that easing's exact curve, so
+its motion does not jump; Hold starts from Standard. The values use CSS
+`cubic-bezier(x1, y1, x2, y2)` order and are stored on the destination key:
+
+```json
+{ "at": 1, "x": 0.2, "y": 0, "scale": 1, "rotation": 0, "opacity": 1,
+  "easing": "custom", "bezier": { "x1": 0.16, "y1": 1, "x2": 0.3, "y2": 1 } }
+```
+
+All four values stay between 0 and 1. Time handles inside that range keep the
+curve moving forward, so each frame time has exactly one position on it.
+Progress handles inside that range keep every eased pose between its two keys,
+so opacity, scale and group depth limits still hold. For an overshoot or
+anticipation, add a keyframe beyond the resting pose, as **Pop into place**
+does. A `bezier` without `easing: "custom"`, or the reverse, is rejected.
+
+The browser preview and the native renderer solve the same curve with the same
+fixed 52-step bisection and arithmetic, so a frame's position is the same
+number in both. The first and last displayed frames still land exactly on their
+keys. Custom curves work for graphics, titles, group transforms and group depth
+keys; camera keyframes keep their own easing list.
 
 Fill opacity affects the shape interior or image pixels. Stroke remains
 independent; layer opacity and motion opacity affect both. A zero-opacity fill
@@ -146,6 +185,8 @@ storage. Review the actual export for source softness and edge quality.
 
 Projects containing graphic layers, title transform tracks or an explicit export
 size use **`aftertake-film/3`**. Older project format labels reject those settings.
+Custom curves need no new label; an older Aftertake build rejects a custom key
+instead of flattening it to another easing.
 Keep the JSON and exact companion media together; import the media before using
 **Import film project** on another device. Restore verifies hashes and rebinds
 workspace asset IDs while retaining the edit.

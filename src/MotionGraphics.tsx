@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { z } from 'zod';
 import {
   ArrowDown,
@@ -18,11 +18,16 @@ import type { FilmAsset } from './film';
 import {
   filmGraphicSchema,
   motionAt,
+  motionCurveAmount,
+  motionCurvePresets,
   motionPreset,
   motionPresets,
   motionProgress,
   motionTrackSchema,
+  namedEasingCurve,
   type FilmGraphic,
+  type MotionCurve,
+  type MotionCurvePresetName,
   type MotionKeyframe,
   type MotionPresetName,
   type MotionTrack,
@@ -46,12 +51,31 @@ const easingLabels = [
   ['ease-out', 'Fast start, soft stop'],
   ['ease-in-out', 'Smooth start & stop'],
   ['hold', 'Hold, then jump'],
+  ['custom', 'Custom curve · cubic Bézier'],
 ] as const;
+const curvePresetLabels: Record<MotionCurvePresetName, string> = {
+  standard: 'Standard · soft start, settled stop',
+  'sine-in-out': 'Sine · gentle in and out',
+  'quint-in-out': 'Quint · dramatic in and out',
+  'expo-out': 'Snap · fast arrival, long settle',
+  'expo-in': 'Wind-up · slow start, fast exit',
+  'speed-ramp': 'Speed ramp · fast, hang, fast',
+};
+const curvePresetNames = Object.keys(motionCurvePresets) as MotionCurvePresetName[];
+const curveFields = [
+  ['x1', 'Leave · time (x1)'],
+  ['y1', 'Leave · progress (y1)'],
+  ['x2', 'Arrive · time (x2)'],
+  ['y2', 'Arrive · progress (y2)'],
+] as const;
+// Equal time steps between the keys, evaluated by the renderer's own solver.
+const curveSamples = Array.from({ length: 11 }, (_, index) => (index + 1) / 12);
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
 const display = (value: number) => Number(value.toFixed(4));
 
 function NumberField({
   label,
+  ariaLabel,
   value,
   min,
   max,
@@ -62,6 +86,7 @@ function NumberField({
   onChange,
 }: {
   label: string;
+  ariaLabel?: string;
   value: number;
   min: number;
   max: number;
@@ -76,7 +101,7 @@ function NumberField({
       {label}
       <input
         type="number"
-        aria-label={label}
+        aria-label={ariaLabel ?? label}
         min={min * factor}
         max={max * factor}
         step={step}
@@ -89,6 +114,141 @@ function NumberField({
         }}
       />
     </label>
+  );
+}
+
+function MotionCurveEditor({
+  label,
+  curve,
+  disabled = false,
+  onChange,
+}: {
+  label: string;
+  curve: MotionCurve;
+  disabled?: boolean;
+  onChange: (curve: MotionCurve) => void;
+}) {
+  const graph = useRef<SVGSVGElement>(null);
+  const [dragging, setDragging] = useState<'leave' | 'arrive'>();
+  const preset = curvePresetNames.find((name) =>
+    curveFields.every(([field]) => motionCurvePresets[name][field] === curve[field]),
+  );
+  const css = `cubic-bezier(${curveFields.map(([field]) => display(curve[field])).join(', ')})`;
+  function drag(event: ReactPointerEvent<SVGGElement>, handle: 'leave' | 'arrive') {
+    const box = graph.current?.getBoundingClientRect();
+    if (disabled || !box?.width || !box.height) return;
+    // The viewBox pads the unit square by 0.1 on each side, and progress points up.
+    const x = clamp(Math.round(((event.clientX - box.left) / box.width) * 120 - 10) / 100, 0, 1);
+    const y = clamp(Math.round(110 - ((event.clientY - box.top) / box.height) * 120) / 100, 0, 1);
+    onChange(handle === 'leave' ? { ...curve, x1: x, y1: y } : { ...curve, x2: x, y2: y });
+  }
+  const handles = [
+    ['leave', curve.x1, curve.y1, 0, 1],
+    ['arrive', curve.x2, curve.y2, 1, 0],
+  ] as const;
+  return (
+    <div className="motion-curve-editor motion-full-width">
+      <svg
+        ref={graph}
+        className={'motion-curve-graph' + (dragging ? ' dragging' : '')}
+        viewBox="-0.1 -0.1 1.2 1.2"
+        role="img"
+        aria-label={`${label} easing curve ${css}`}
+      >
+        <rect className="motion-curve-frame" x={0} y={0} width={1} height={1} />
+        {[0.25, 0.5, 0.75].map((at) => (
+          <g key={at} className="motion-curve-grid">
+            <line x1={at} y1={0} x2={at} y2={1} />
+            <line x1={0} y1={at} x2={1} y2={at} />
+          </g>
+        ))}
+        <line className="motion-curve-linear" x1={0} y1={1} x2={1} y2={0} />
+        {handles.map(([handle, x, y, anchorX, anchorY]) => (
+          <line
+            key={handle}
+            className="motion-curve-arm"
+            x1={anchorX}
+            y1={anchorY}
+            x2={x}
+            y2={1 - y}
+          />
+        ))}
+        <path
+          className="motion-curve-path"
+          d={`M0 1C${curve.x1} ${1 - curve.y1} ${curve.x2} ${1 - curve.y2} 1 0`}
+        />
+        {curveSamples.map((at) => (
+          <circle
+            key={at}
+            className="motion-curve-sample"
+            cx={at}
+            cy={1 - motionCurveAmount(at, curve)}
+            r={0.018}
+          />
+        ))}
+        {handles.map(([handle, x, y]) => (
+          <g
+            key={handle}
+            className="motion-curve-handle"
+            onPointerDown={(event) => {
+              if (disabled) return;
+              event.currentTarget.setPointerCapture(event.pointerId);
+              setDragging(handle);
+            }}
+            onPointerMove={(event) => {
+              if (dragging === handle) drag(event, handle);
+            }}
+            onPointerUp={() => setDragging(undefined)}
+            onLostPointerCapture={() => setDragging(undefined)}
+          >
+            <circle className="motion-curve-target" cx={x} cy={1 - y} r={0.09} />
+            <circle cx={x} cy={1 - y} r={0.04} />
+          </g>
+        ))}
+      </svg>
+      <div>
+        <label>
+          Curve preset
+          <select
+            aria-label={`${label} curve preset`}
+            value={preset || 'edited'}
+            disabled={disabled}
+            onChange={(event) => {
+              const name = event.target.value as MotionCurvePresetName;
+              if (Object.hasOwn(motionCurvePresets, name))
+                onChange({ ...motionCurvePresets[name] });
+            }}
+          >
+            {!preset && <option value="edited">Edited curve</option>}
+            {curvePresetNames.map((name) => (
+              <option key={name} value={name}>
+                {curvePresetLabels[name]}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div className="motion-curve-fields">
+          {curveFields.map(([field, text]) => (
+            <NumberField
+              key={field}
+              label={text}
+              ariaLabel={`${label} curve ${field}`}
+              value={curve[field]}
+              min={0}
+              max={1}
+              step={0.01}
+              disabled={disabled}
+              onChange={(value) => onChange({ ...curve, [field]: value })}
+            />
+          ))}
+        </div>
+        <code className="motion-curve-css">{css}</code>
+        <p className="motion-hint">
+          Across is time, up is progress toward this key. Dots mark equal time steps; wider gaps
+          move faster. For overshoot, add a keyframe.
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -117,6 +277,20 @@ export function MotionTrackEditor({
   function update(index: number, patch: Partial<MotionKeyframe>) {
     if (!keys) return;
     write(keys.map((key, at) => (at === index ? { ...key, ...patch } : key)));
+  }
+  function changeEasing(index: number, easing: MotionKeyframe['easing']) {
+    if (!keys) return;
+    // A custom curve starts from the current easing; a named easing drops the curve.
+    const { bezier, ...key } = keys[index];
+    write(
+      keys.map((item, at) =>
+        at !== index
+          ? item
+          : easing === 'custom'
+            ? { ...key, easing, bezier: bezier ?? namedEasingCurve(key.easing) }
+            : { ...key, easing },
+      ),
+    );
   }
   let widest = 0;
   for (let index = 1; keys && index < keys.length - 1; index++) {
@@ -293,9 +467,7 @@ export function MotionTrackEditor({
                             aria-label={`Key ${index + 1} easing`}
                             value={key.easing || 'linear'}
                             onChange={(event) =>
-                              update(index, {
-                                easing: event.target.value as MotionKeyframe['easing'],
-                              })
+                              changeEasing(index, event.target.value as MotionKeyframe['easing'])
                             }
                           >
                             {easingLabels.map(([value, label]) => (
@@ -305,6 +477,14 @@ export function MotionTrackEditor({
                             ))}
                           </select>
                         </label>
+                      )}
+                      {index > 0 && key.easing === 'custom' && key.bezier && (
+                        <MotionCurveEditor
+                          label={`Key ${index + 1}`}
+                          curve={key.bezier}
+                          disabled={disabled}
+                          onChange={(bezier) => update(index, { bezier })}
+                        />
                       )}
                     </div>
                   </details>

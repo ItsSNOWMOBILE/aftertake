@@ -21,6 +21,9 @@ _motion_spec.loader.exec_module(film_motion)
 _scene_spec = importlib.util.spec_from_file_location('aftertake_film_scene', Path(__file__).with_name('film_scene.py'))
 film_scene = importlib.util.module_from_spec(_scene_spec)
 _scene_spec.loader.exec_module(film_scene)
+_probe_spec = importlib.util.spec_from_file_location('aftertake_film_asset_probe', Path(__file__).with_name('probe-film-asset.py'))
+film_asset_probe = importlib.util.module_from_spec(_probe_spec)
+_probe_spec.loader.exec_module(film_asset_probe)
 
 KINETIC = {'build', 'typewriter', 'impact', 'wipe', 'spoken', 'slam', 'pop', 'reveal', 'glitch', 'scramble'}
 # Titles and cuts render independently, so they share the CPU. Pillow and the
@@ -802,6 +805,7 @@ def assemble(settings):
         previous_count = 0
         segments = []
         encodes = []
+        unknown_source_durations = {}
         for index, shot in enumerate(settings['shots']):
             still = shot.get('kind') == 'image'
             audio = False
@@ -810,6 +814,13 @@ def assemble(settings):
                     audio = bool(container.streams.audio)
                     video = container.streams.video[0]
                     available = float(video.duration * video.time_base) if video.duration else float(container.duration or 0) / av.time_base
+                    if not available:
+                        # MediaRecorder's live WebM has no finalized duration.
+                        # Reuse import's bounded packet/real-frame probe, once
+                        # per source, without trusting saved client metadata.
+                        if shot['source'] not in unknown_source_durations:
+                            unknown_source_durations[shot['source']] = film_asset_probe.probe(shot['source'])['duration']
+                        available = unknown_source_durations[shot['source']]
                     if shot['end'] > available + 1 / 24:
                         raise ValueError('A film trim ends after its footage.')
             if shot['start'] < 0 or shot['end'] - shot['start'] < .25:
