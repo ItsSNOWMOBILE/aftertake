@@ -91,7 +91,28 @@ def main(music):
                  f'[0:v]trim={end}:{end + hold},setpts=PTS-STARTPTS[real];'
                  f'[fast][real]concat=n=2:v=1:a=0,{frame}[out]')
         subprocess.run(['ffmpeg', '-v', 'error', '-y', '-i', str(source), '-filter_complex', graph, '-map', '[out]',
-            '-c:v', 'libx264', '-crf', '16', '-pix_fmt', 'yuv420p', str(WORK / name)], check=True)
+            '-c:v', 'libx264', '-crf', '16', '-pix_fmt', 'yuv420p', str(WORK / f'raw-{name}')], check=True)
+    shutil.move(WORK / 'raw-proof-mcp-run.mp4', WORK / 'proof-mcp-run.mp4')
+
+    # The engine console prints model paths under the capture machine's user
+    # folder. Color & finish hides that username wherever it scrolls: the box is
+    # the word as it appears 0.2 s into the time-lapse, matched on every frame.
+    raw = WORK / 'raw-proof-run.mp4'
+    probe = json.loads(subprocess.check_output(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries',
+        'stream=width,height:format=duration', '-of', 'json', str(raw)]))
+    width, height = probe['streams'][0]['width'], probe['streams'][0]['height']
+    clip = {'id': '7d2b6c55-4f0e-4d8a-9a51-6d3f0c1b2e40', 'name': 'proof-run', 'kind': 'video', 'url': '/media/proof-run.mp4',
+        'width': width, 'height': height, 'duration': float(probe['format']['duration']), 'hasAudio': False,
+        'sha256': hashlib.sha256(raw.read_bytes()).hexdigest()}
+    username = {'x': 1447 / width, 'y': 92 / height, 'width': 28 / width, 'height': 18 / height,
+        'style': 'blur', 'match': {'at': 0.2, 'threshold': 0.9}}
+    work = {'source': str(raw), 'output': str(WORK / 'proof-run.mp4'), 'receipt': str(WORK / 'proof-run.receipt.json'),
+        'mode': 'finish', 'request': {'format': 'aftertake-finishing/1', 'name': 'Proof run, username hidden',
+            'clip': clip, 'settings': neutral, 'redactions': [username]}}
+    (WORK / 'proof-run.work.json').write_text(json.dumps(work))
+    run(ROOT / 'scripts/finish-media.py', WORK / 'proof-run.work.json')
+    hidden = json.loads((WORK / 'proof-run.receipt.json').read_text())['redactions'][0]
+    print(f"Hid the username {hidden['boxes']} times in {hidden['frames']} frames of the run time-lapse.")
     print(f'Prepared {WORK}')
 
 

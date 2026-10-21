@@ -82,7 +82,9 @@ describes the capture):
 The film uses `proof-run.mp4` and `proof-mcp-run.mp4`, which `prepare.py`
 cuts from them: one stretch of each recording, sped up 32× and 16×, ending
 with a real-time hold. The render recording is cropped below the browser's
-toolbar and letterboxed, not enlarged. The film's captions state both speeds.
+toolbar and letterboxed, not enlarged. The film's captions state both speeds. The engine console prints model paths
+under the capture machine's user folder; Color & finish's Hide details blurs
+that username wherever it scrolls (113 boxes in 55 frames, from its receipt).
 The tool list plays in real time, and the hero banner is the image that MCP
 call produced.
 
