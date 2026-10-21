@@ -3,6 +3,11 @@
   "pathsRelativeTo": ".",
   "files": [
     {
+      "path": "README.md",
+      "bytes": 4431,
+      "sha256": "fd1f2a26316d5d59c53d6084388e85ab2d409510c318d8af8a16d61e5fdcb105"
+    },
+    {
       "path": "before-720p.mp4",
       "bytes": 954962,
       "sha256": "383f9ddf9f41ae5d448cc5de4c1cd7f95461cebee229253ebf79200c45201d29"
@@ -64,8 +69,8 @@
     },
     {
       "path": "executed-workflow.json",
-      "bytes": 15591,
-      "sha256": "0760da0feb438167987eabb4164ded983154ba8150491e04b2f28b58a2ce8f70"
+      "bytes": 14834,
+      "sha256": "70b434c3eb217fa6c2128e601932056fae889e1fa86d4347bf2bdaf49f7d4834"
     },
     {
       "path": "export-summary.json",
@@ -78,14 +83,19 @@
       "sha256": "f0c3896829f8a103dcf27d33e4e3cab9ab7a2c8810b63a829fcc1c974da5bb3f"
     },
     {
+      "path": "hash-integrity-audit.json",
+      "bytes": 5795,
+      "sha256": "4392b2205f3c9ad815713c766c4a5f46a74c7d2ea8a34e69527bdfd393fe5691"
+    },
+    {
       "path": "manifest.json",
       "bytes": 2026,
       "sha256": "88487367d0d02354dda67687ab6dba1a872f65d3e2d06b3443c7f0d005b74ce5"
     },
     {
       "path": "media-verification.json",
-      "bytes": 1555,
-      "sha256": "380e5041fa7bb7c7ed3b200be6caa984a52d82ef558153f95c0ce58ddebf65fb"
+      "bytes": 1497,
+      "sha256": "43724c12199b308b42750796c27cae5675ed52e6b6f44a9772ab566faa071b2b"
     },
     {
       "path": "models.json",
@@ -94,8 +104,8 @@
     },
     {
       "path": "native-audio-verification.json",
-      "bytes": 1562,
-      "sha256": "5ee70ef25e15e038a538d9a414113ccf0505d6d1bf21b8c82abb163dea0d4466"
+      "bytes": 1504,
+      "sha256": "0bae279e7030f70b36505e47bfa8889d84d2e083654cde632b359291bca5dfbb"
     },
     {
       "path": "native-metadata-audit.json",
@@ -124,18 +134,13 @@
     },
     {
       "path": "publication-audit.json",
-      "bytes": 540,
-      "sha256": "1b7a82bcf899e105add119b4c190e1a4cbf479d969d5b19338f1307147b25d75"
-    },
-    {
-      "path": "README.md",
-      "bytes": 4034,
-      "sha256": "e82ff052766f3ffe437a6559dd4758b21a2d28b195cab22dd7375d14314550cc"
+      "bytes": 534,
+      "sha256": "d00185e1593d7fea9a8619535a707ca3f05fa95733bc8d6a533dffeb2b196227"
     },
     {
       "path": "reference-generation-request.json",
-      "bytes": 533,
-      "sha256": "348ba93458fd78140ac480f25dbc6b4ab9fdcd5837df497c6e8726f8952ae9ae"
+      "bytes": 525,
+      "sha256": "61fc57a4b1875759644ecd5a926d2d262ba71ae18fbcdf5ede8c27c20f91ff1e"
     },
     {
       "path": "reference-generation.json",
@@ -154,8 +159,8 @@
     },
     {
       "path": "request.json",
-      "bytes": 724,
-      "sha256": "1d20066a6cbde7c8f99f7586aefb61bf07cbfb8c7f317e88b5695519c0108772"
+      "bytes": 700,
+      "sha256": "643251373e56af52ce59ad9d8df55048d2d85cdb5e9845f440f78ecef8995ba0"
     },
     {
       "path": "result.mp4",
@@ -174,8 +179,8 @@
     },
     {
       "path": "selection-request.json",
-      "bytes": 746,
-      "sha256": "84879908e1cd26b815d4220f84156e2284f37f4e0630579e2a2c5be83d5f54f7"
+      "bytes": 715,
+      "sha256": "3ede641f8a44d9236cf90b095c583a6b16c261e0ffe38299ec49e507c36db5f8"
     },
     {
       "path": "source.mp4",
@@ -187,5 +192,7 @@
       "bytes": 1586,
       "sha256": "7d180a5cf30c6e4d5b487b65a547ce11a67aa9e866b1afef99c22e7360369cb8"
     }
-  ]
+  ],
+  "byteSource": "Canonical Git blob bytes; UTF-8 text has LF newlines as enforced by .gitattributes.",
+  "normalizationAudit": "hash-integrity-audit.json"
 }
