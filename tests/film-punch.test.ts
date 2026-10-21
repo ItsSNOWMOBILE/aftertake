@@ -127,7 +127,10 @@ test('punch motion settles exactly and matches the native renderer reference val
 
 test('transition poses hand over between pictures without gaps', () => {
   assert.equal(zoomScale(0.2), 1.096);
-  assert.equal(zoomScale(0.7), 1.324);
+  assert.ok(
+    Math.abs(zoomScale(0.7) - 1.324) < 1e-12,
+    'Zoom scale matches within floating-point precision.',
+  );
   assert.deepEqual([flashAmount(0.2), flashAmount(0.5)], [0.6000000000000001, 1]);
   assert.equal(whipBlur(0.3), 0.05039999999999999);
   for (const kind of ['whip', 'slide'] as const) {
