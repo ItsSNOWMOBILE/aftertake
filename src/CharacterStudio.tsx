@@ -1807,14 +1807,19 @@ export default function CharacterStudio({
               EXTRA DIRECTION · OPTIONAL
               <textarea
                 aria-label="Character extra direction"
+                aria-describedby="character-direction-hint"
                 rows={3}
                 value={prompt}
                 maxLength={2000}
                 disabled={locked}
-                placeholder="Preserve the cup and the original gesture."
+                placeholder="The woman holding the mug: silver hair, freckles, a green sweater. Keep her gesture."
                 onChange={(e) => setPrompt(e.target.value)}
               />
             </label>
+            <p className="character-hint" id="character-direction-hint">
+              Describe the target's position and the replacement's face, hair and outfit. Specific
+              direction can help the model follow your photos.
+            </p>
             <label>
               SEED
               <div className="character-seed">

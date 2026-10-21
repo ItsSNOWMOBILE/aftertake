@@ -11,6 +11,8 @@ Aftertake can track a person, replace them from original photos, retain source s
 5. Add inclusion points on the intended person and exclusion points on nearby people or props. Track with SAM3, then inspect the overlay throughout the shot. Check hair, fingers, limbs, occlusions, the other people and the background before replacing.
 6. Run the replacement with a saved seed and prompt. Review the actual result, including transitions between H3 continuation windows. Keep the selection request, reviewed mask hash, complete replacement request, executed workflow, native job ID and result hash.
 
+Describe the target's position and the replacement's distinguishing face, hair and clothing in **Extra direction**. In the [controlled cafe test](../examples/foreground-protection/prompt-retry/README.md), the generic prompt barely changed the person; adding those specifics produced the silver-haired character and green sweater with the same seed, reference, crop and tracked mask. This is one measured comparison, not a guarantee for other shots. Preserve the original failed result when comparing prompts.
+
 The MCP equivalents are `aftertake_import_media`, `aftertake_track_character`, `aftertake_inspect_character`, `aftertake_replace_character`, `aftertake_character_status` and `aftertake_character_recipe`. Keep a stable request ID for each admitted job. After an uncertain response, use status or reconciliation to rejoin that job.
 
 `aftertake_character_recipe` retains the primary photo, every supporting reference and their crops. The files themselves must be supplied separately when reopening in another workspace. Personal reference photographs and their recipes can remain in private local storage.

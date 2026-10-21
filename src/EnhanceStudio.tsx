@@ -163,9 +163,11 @@ export default function EnhanceStudio({
   const feature = tab === 'song' ? 'song' : operation === 'upscale' ? 'upscale' : 'interpolate';
   const pending = jobs.find(enhancementBusy),
     viewed = jobs.find((job) => job.id === selected) || jobs[0];
+  const generationActive = otherBusy || Boolean(pending);
   useEffect(() => {
     let live = true;
     setEngine(null);
+    if (generationActive) return;
     const check = () =>
       api<Engine>(`/api/engine?pipeline=${feature}`)
         .then((value) => live && setEngine(value))
@@ -176,7 +178,7 @@ export default function EnhanceStudio({
       live = false;
       clearInterval(timer);
     };
-  }, [feature]);
+  }, [feature, generationActive]);
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     dialog.current?.querySelector<HTMLButtonElement>('.modal-close')?.focus();
@@ -545,7 +547,7 @@ export default function EnhanceStudio({
             {validation && !validation.success && (
               <p className="enhance-error">{validation.error.issues[0].message}</p>
             )}
-            {engine && !engine.ready && !browserDemo && (
+            {engine && !engine.ready && !browserDemo && !generationActive && (
               <p className="image-install">
                 Install this tool's models once, then restart the engine:{' '}
                 <code>node scripts/aftertake.mjs setup-gpu --{feature}</code>

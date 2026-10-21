@@ -376,6 +376,21 @@ export default function App() {
     };
   }, [images.some(imageBusy)]);
   useEffect(() => {
+    const completed = images.flatMap((image) =>
+      image.state === 'succeeded' && image.clip ? [image.clip] : [],
+    );
+    if (!completed.length) return;
+    setClips((current) => {
+      const known = new Set(current.map((clip) => clip.id));
+      const added = completed.filter((clip) => {
+        if (known.has(clip.id)) return false;
+        known.add(clip.id);
+        return true;
+      });
+      return added.length ? [...current, ...added] : current;
+    });
+  }, [images]);
+  useEffect(() => {
     let live = true;
     const check = () =>
       api<CharacterJob[]>('/api/characters')
