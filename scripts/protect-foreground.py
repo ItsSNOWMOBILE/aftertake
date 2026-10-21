@@ -97,9 +97,18 @@ def protect(job, depth=None, report=lambda share: None):
         else:
             steady.append(masks[index])
     protected = [np.unpackbits(bits, axis=1, count=width).astype(bool) for bits in steady]
-    pixels = sum(int(mask.sum()) for mask in protected)
+    # Report the masks that actually reach compositing, after the temporal vote.
+    # Encoded before/after differences cannot recover this evidence reliably.
+    pixels_by_frame = [int(mask.sum()) for mask in protected]
+    protected_indices = [index for index, count in enumerate(pixels_by_frame) if count]
+    pixels = sum(pixels_by_frame)
+    receipt = {'frames': len(protected), 'protectedFrames': len(protected_indices),
+               'protectedPixels': pixels, 'protectedFrameIndices': protected_indices,
+               'protectedPixelsByFrame': pixels_by_frame, 'margin': margin, 'grow': GROW,
+               'accelerator': getattr(depth, 'label', 'custom'),
+               'model': {key: depth_runtime.MODEL[key] for key in ('name', 'repository', 'revision', 'sha256', 'license')}}
     if not pixels:
-        return {'changed': False}
+        return {'changed': False, **receipt}
     # Pass two: put the protected pixels back from the source, with a soft edge.
     output = Path(job['output'])
     handle, picture = tempfile.mkstemp(suffix='.mp4', prefix='aftertake-protect-', dir=output.parent)
@@ -128,11 +137,7 @@ def protect(job, depth=None, report=lambda share: None):
     finally:
         Path(picture).unlink(missing_ok=True)
     report(1)
-    return {'changed': True, 'frames': len(protected),
-            'protectedFrames': sum(1 for mask in protected if mask.any()),
-            'protectedPixels': pixels, 'margin': margin, 'grow': GROW,
-            'accelerator': getattr(depth, 'label', 'custom'),
-            'model': {key: depth_runtime.MODEL[key] for key in ('name', 'repository', 'revision', 'sha256', 'license')}}
+    return {'changed': True, **receipt}
 
 
 if __name__ == '__main__':

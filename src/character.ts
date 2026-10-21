@@ -114,23 +114,53 @@ export const characterRepairSchema = z.object({
 });
 export type CharacterRepair = z.infer<typeof characterRepairSchema>;
 /** A take whose foreground was put back from the source; the counts arrive when it finishes. */
-export const characterProtectionSchema = z.object({
-  from: z.string().uuid(),
-  margin: z.number().min(0.02).max(0.5),
-  accelerator: z.string().max(80).optional(),
-  frames: z.number().int().positive().optional(),
-  protectedFrames: z.number().int().nonnegative().optional(),
-  protectedPixels: z.number().int().nonnegative().optional(),
-  model: z
-    .object({
-      name: z.string().max(80),
-      repository: z.string().max(200),
-      revision: z.string().max(80),
-      sha256: shaSchema,
-      license: z.string().max(40),
-    })
-    .optional(),
-});
+export const characterProtectionSchema = z
+  .object({
+    from: z.string().uuid(),
+    margin: z.number().min(0.02).max(0.5),
+    accelerator: z.string().max(80).optional(),
+    frames: z.number().int().positive().optional(),
+    protectedFrames: z.number().int().nonnegative().optional(),
+    protectedPixels: z.number().int().nonnegative().optional(),
+    protectedFrameIndices: z.array(z.number().int().nonnegative()).max(360).optional(),
+    protectedPixelsByFrame: z.array(z.number().int().min(0).max(1000000)).max(360).optional(),
+    model: z
+      .object({
+        name: z.string().max(80),
+        repository: z.string().max(200),
+        revision: z.string().max(80),
+        sha256: shaSchema,
+        license: z.string().max(40),
+      })
+      .optional(),
+  })
+  .superRefine((receipt, context) => {
+    const indices = receipt.protectedFrameIndices,
+      counts = receipt.protectedPixelsByFrame;
+    if (indices === undefined && counts === undefined) return; // Historical receipts.
+    if (
+      !indices ||
+      !counts ||
+      receipt.frames === undefined ||
+      receipt.protectedFrames === undefined ||
+      receipt.protectedPixels === undefined
+    ) {
+      context.addIssue({ code: 'custom', message: 'Keep complete per-frame protection evidence.' });
+      return;
+    }
+    const expected = counts.flatMap((count, index) => (count ? [index] : []));
+    if (
+      counts.length !== receipt.frames ||
+      indices.length !== expected.length ||
+      indices.some((index, position) => index !== expected[position]) ||
+      receipt.protectedFrames !== expected.length ||
+      receipt.protectedPixels !== counts.reduce((sum, count) => sum + count, 0)
+    )
+      context.addIssue({
+        code: 'custom',
+        message: 'Protection frame indices and pixel counts must match the receipt totals.',
+      });
+  });
 export type CharacterProtection = z.infer<typeof characterProtectionSchema>;
 export type CharacterJob = {
   jobTarget?: JobTargetBinding;

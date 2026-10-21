@@ -48,17 +48,31 @@ export async function characterRouter(context: {
   await mkdir(clips, { recursive: true });
   const jobs = new Map<string, CharacterJob>(),
     active = new Set<string>(),
-    handles = new Map<string, EngineJob>();
+    handles = new Map<string, EngineJob>(),
+    saves = new Map<string, Promise<void>>();
   const file = (id: string, suffix: string) => path.join(folder, `${id}-${suffix}`);
   async function persist(record: CharacterJob) {
     record.updatedAt = new Date().toISOString();
     const dest = path.join(folder, record.id + '.json'),
-      tmp = dest + '.' + randomUUID() + '.tmp';
+      tmp = dest + '.' + randomUUID() + '.tmp',
+      snapshot = JSON.stringify(record, null, 2);
+    // Progress and terminal writes share a record. Preserve their call order
+    // and keep a slow progress save from overwriting the finished receipt.
+    const pending = (saves.get(record.id) || Promise.resolve())
+      .catch(() => {})
+      .then(async () => {
+        try {
+          await writeFile(tmp, snapshot);
+          await rename(tmp, dest);
+        } finally {
+          await unlink(tmp).catch(() => {});
+        }
+      });
+    saves.set(record.id, pending);
     try {
-      await writeFile(tmp, JSON.stringify(record, null, 2));
-      await rename(tmp, dest);
+      await pending;
     } finally {
-      await unlink(tmp).catch(() => {});
+      if (saves.get(record.id) === pending) saves.delete(record.id);
     }
   }
   async function inspect(
@@ -726,6 +740,7 @@ export async function characterRouter(context: {
   ) {
     const output = path.join(clips, record.id + '.mp4'),
       work = file(record.id, 'protect.json');
+    let terminal: Partial<CharacterJob> = {};
     try {
       await writeFile(
         work,
@@ -752,7 +767,11 @@ export async function characterRouter(context: {
             record.progress = Math.min(0.99, Number(match[1]));
             if (record.progress - saved >= 0.1) {
               saved = record.progress;
-              void persist(record);
+              void persist(record).catch(() =>
+                console.warn(
+                  'Foreground progress could not be saved; the final receipt will be saved separately.',
+                ),
+              );
             }
           }
         });
@@ -762,6 +781,19 @@ export async function characterRouter(context: {
           if (code === 0) resolve(JSON.parse(stdout));
           else reject(Error(message || 'Foreground protection stopped.'));
         });
+      });
+      // Keep measured evidence even for an unchanged take. A no-op still
+      // reports the accelerator and zero protected frames without faking output.
+      record.protection = characterProtectionSchema.parse({
+        from: original.id,
+        margin: record.protection!.margin,
+        accelerator: result.accelerator,
+        frames: result.frames,
+        protectedFrames: result.protectedFrames,
+        protectedPixels: result.protectedPixels,
+        protectedFrameIndices: result.protectedFrameIndices,
+        protectedPixelsByFrame: result.protectedPixelsByFrame,
+        model: result.model,
       });
       if (!result.changed)
         throw Error(
@@ -783,25 +815,15 @@ export async function characterRouter(context: {
       const tmp = path.join(clips, record.id + '.json.tmp');
       await writeFile(tmp, JSON.stringify(record.clip, null, 2));
       await rename(tmp, path.join(clips, record.id + '.json'));
-      record.protection = characterProtectionSchema.parse({
-        from: original.id,
-        margin: record.protection!.margin,
-        accelerator: result.accelerator,
-        frames: result.frames,
-        protectedFrames: result.protectedFrames,
-        protectedPixels: result.protectedPixels,
-        model: result.model,
-      });
-      record.state = 'succeeded';
-      record.progress = 1;
-      record.stage = 'Foreground kept from the source';
+      terminal = { state: 'succeeded', progress: 1, stage: 'Foreground kept from the source' };
     } catch (error) {
-      record.state = 'failed';
-      record.error = error instanceof Error ? error.message : String(error);
+      terminal = { state: 'failed', error: error instanceof Error ? error.message : String(error) };
       await unlink(output).catch(() => {});
     } finally {
       await unlink(work).catch(() => {});
-      await persist(record);
+      const completed = { ...record, ...terminal };
+      await persist(completed);
+      Object.assign(record, completed);
     }
   }
   router.post('/:id/cancel', async (req, res) => {

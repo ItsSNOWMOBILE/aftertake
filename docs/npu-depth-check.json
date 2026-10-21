@@ -1,0 +1,600 @@
+{
+  "format": "aftertake-npu-depth-check/1",
+  "machine": "Intel Core Ultra 9 285K; Intel AI Boost NPU; NVIDIA GeForce RTX 5080; Windows x64",
+  "python": "3.12.14",
+  "scope": "Depth Anything V2 Small foreground protection only. No video diffusion, SAM3 tracking, custom CUDA kernels or model-weight precision paths were changed.",
+  "method": {
+    "setupSequence": [
+      "node scripts/aftertake.mjs setup-npu",
+      "AFTERTAKE_DEPTH_PROVIDER=openvino",
+      "AFTERTAKE_DEPTH_PROVIDER=cpu",
+      "node scripts/aftertake.mjs setup-npu --provider=directml",
+      "AFTERTAKE_DEPTH_PROVIDER=directml; AFTERTAKE_DEPTH_DML_DEVICE_ID=0",
+      "node scripts/aftertake.mjs setup-npu"
+    ],
+    "call": "Invoke scripts/protect-foreground.py:protect(job, depth=timed_depth), where timed_depth wraps scripts/depth_runtime.py:Depth(1344,736); profile enabled through AFTERTAKE_DEPTH_PROFILE_PREFIX, then closed with Depth.finish_profiling().",
+    "parameters": {
+      "margin": 0.1,
+      "grow": 32,
+      "sourceCanvas": [
+        1344,
+        736
+      ],
+      "modelInputTensorNCHW": [
+        1,
+        3,
+        364,
+        658
+      ],
+      "frames": 73,
+      "fps": 24
+    },
+    "model": {
+      "name": "Depth Anything V2 Small",
+      "repository": "onnx-community/depth-anything-v2-small",
+      "revision": "4472b7362082ad9968fee890ca0f1e5aca36b93d",
+      "path": "onnx/model.onnx",
+      "sha256": "afb6a5c28f3b6bf1618c6e43f02073ef9dfdc70e937502d51603e57b0a1df10c",
+      "license": "Apache-2.0",
+      "weightsModified": false
+    },
+    "timing": {
+      "seconds": "Wall clock from Depth construction through protect returning, including initialization, input decoding, depth preprocessing/inference/resizing, protection masks and temporal voting.",
+      "excluded": [
+        "Preflight full-decoded input frame counts and SHA-256 validation",
+        "ORT profile finalization and report serialization",
+        "Process startup and Python imports"
+      ],
+      "depthTiming": "Timed complete Depth calls, including CPU image preprocessing/output resize; not isolated accelerator kernel latency.",
+      "profileDurations": "ORT kernel-event microseconds include host scheduling/waiting. Event counts differ across graph fusion strategies and are not directly comparable amounts of compute.",
+      "output": "All providers returned changed:false, so no protected video was encoded or audio remuxed."
+    },
+    "observabilityVersions": "OpenVINO used the earlier unchanged numeric worker returning changed:false only. CPU and DirectML used the same numeric/compositing logic plus additive post-vote protection counters.",
+    "interpretation": "One measured run per provider on one scene and machine. NPU ran after an initial compilation probe, and DirectML includes its own first-inference setup. These are not universally comparable cold-start timings or a general performance ranking."
+  },
+  "inputs": {
+    "source": {
+      "path": "examples/character-h3-high-v2/prepared-source.mp4",
+      "width": 1344,
+      "height": 736,
+      "rate": "24/1",
+      "decodedFrames": 73,
+      "sha256": "51df852ea83513fe7d5d09a973687402d7fac46245f62968790fc557bba91ab0"
+    },
+    "mask": {
+      "path": "examples/character-h3-high-v2/person-mask.mkv",
+      "width": 1344,
+      "height": 736,
+      "rate": "24/1",
+      "decodedFrames": 73,
+      "sha256": "d2435f58c48e0dca2af9b0da77dfe0c32a390cf8aa3198f9900249735c23513d"
+    },
+    "take": {
+      "path": "examples/character-h3-high-v2/native-result.mp4",
+      "width": 1344,
+      "height": 736,
+      "rate": "24/1",
+      "decodedFrames": 73,
+      "sha256": "b47c2faa8dafc83f9d78a90bfda866b075a7ab1268abc5a8d923ff5d49eaf03c"
+    }
+  },
+  "initialUnmodifiedNpuProbe": {
+    "seconds": 21.022744399961084,
+    "status": "ok",
+    "error": null,
+    "python": "3.12.14",
+    "registeredProviders": [
+      "OpenVINOExecutionProvider",
+      "CPUExecutionProvider"
+    ],
+    "outputShape": [
+      736,
+      1344
+    ],
+    "finite": true,
+    "method": "Before runtime source fixes: construct Depth(1344,736), infer the first source frame and validate finite output.",
+    "limit": "The baseline registered-provider label alone did not prove node placement. The subsequent 73-frame benchmark adds executed-provider profiling."
+  },
+  "results": [
+    {
+      "provider": "openvino",
+      "accelerator": "Intel NPU (OpenVINO)",
+      "frames": 73,
+      "seconds": 19.118945299996994,
+      "status": "ok",
+      "error": null,
+      "initSeconds": 0.5383630000287667,
+      "protectSeconds": 18.58057870005723,
+      "depthTiming": {
+        "sumSeconds": 7.789174900040962,
+        "firstSeconds": 0.31989889999385923,
+        "medianSeconds": 0.10361350001767278,
+        "minSeconds": 0.10105800000019372,
+        "maxSeconds": 0.31989889999385923,
+        "p95Seconds": 0.10574479994829744
+      },
+      "result": {
+        "changed": false
+      },
+      "runtimePackage": "onnxruntime-openvino==1.24.1",
+      "session": {
+        "requestedProvider": "openvino",
+        "provider": "openvino",
+        "accelerator": "Intel NPU (OpenVINO)",
+        "registeredProviders": [
+          "OpenVINOExecutionProvider",
+          "CPUExecutionProvider"
+        ],
+        "requestedProviderOptions": {
+          "device_type": "NPU",
+          "reshape_input": "pixel_values[1,3,364,658]"
+        },
+        "availableProviders": [
+          "OpenVINOExecutionProvider",
+          "CPUExecutionProvider"
+        ],
+        "inputSize": [
+          658,
+          364
+        ],
+        "fallback": false,
+        "failedProviders": [],
+        "executionEvidence": {
+          "status": "profiled",
+          "providers": {
+            "OpenVINOExecutionProvider": {
+              "kernelEvents": 73,
+              "kernelMicroseconds": 6399282,
+              "ops": {
+                "OpenVINO-EP-subgraph_1": 73
+              }
+            }
+          },
+          "unassignedKernelEvents": 0,
+          "note": "ORT kernel-event durations include host scheduling/waiting; they are not isolated device compute times.",
+          "sha256": "acf6cd69cc6ece719ca83f630ef3826c2d9ce213e4400ded9bd825030526413d"
+        }
+      },
+      "privateBenchmarkReceiptSha256": "76957e83f27363f2aba8a7a4a20229ac93db73bffd27aeb3ba1c647354fae2b1",
+      "placementSummary": "73 executed OpenVINO fused-subgraph kernel events with device_type=NPU requested; no CPU kernel events in the collected ORT trace.",
+      "receiptNote": "This benchmark ran before additive per-frame protection counters were added. Its exact protection result is only {\"changed\":false}; no frame-counter arrays have been invented. The benchmark wrapper separately counted 73 real Depth calls.",
+      "cacheNote": "Measured after the successful initial NPU compilation/probe. Driver cache was warm relative to that first probe; individual cache hits were not instrumented."
+    },
+    {
+      "provider": "cpu",
+      "accelerator": "CPU",
+      "frames": 73,
+      "seconds": 36.98802209994756,
+      "status": "ok",
+      "error": null,
+      "initSeconds": 0.4264637000160292,
+      "protectSeconds": 36.56155389989726,
+      "depthTiming": {
+        "sumSeconds": 24.04686940065585,
+        "firstSeconds": 0.40012620005290955,
+        "medianSeconds": 0.3189733000472188,
+        "minSeconds": 0.2733629000140354,
+        "maxSeconds": 0.43854410003405064,
+        "p95Seconds": 0.40012620005290955
+      },
+      "result": {
+        "changed": false,
+        "frames": 73,
+        "protectedFrames": 0,
+        "protectedPixels": 0,
+        "protectedFrameIndices": [],
+        "protectedPixelsByFrame": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "margin": 0.1,
+        "grow": 32,
+        "accelerator": "CPU",
+        "model": {
+          "name": "Depth Anything V2 Small",
+          "repository": "onnx-community/depth-anything-v2-small",
+          "revision": "4472b7362082ad9968fee890ca0f1e5aca36b93d",
+          "sha256": "afb6a5c28f3b6bf1618c6e43f02073ef9dfdc70e937502d51603e57b0a1df10c",
+          "license": "Apache-2.0"
+        }
+      },
+      "runtimePackage": "onnxruntime-openvino==1.24.1",
+      "session": {
+        "requestedProvider": "cpu",
+        "provider": "cpu",
+        "accelerator": "CPU",
+        "registeredProviders": [
+          "CPUExecutionProvider"
+        ],
+        "requestedProviderOptions": {},
+        "registeredProviderOptions": {
+          "CPUExecutionProvider": {}
+        },
+        "availableProviders": [
+          "OpenVINOExecutionProvider",
+          "CPUExecutionProvider"
+        ],
+        "inputSize": [
+          658,
+          364
+        ],
+        "fallback": false,
+        "failedProviders": [],
+        "executionEvidence": {
+          "status": "profiled",
+          "providers": {
+            "CPUExecutionProvider": {
+              "kernelEvents": 42267,
+              "kernelMicroseconds": 22283851,
+              "ops": {
+                "Shape": 1898,
+                "Gather": 2774,
+                "Div": 365,
+                "Unsqueeze": 2847,
+                "Concat": 3066,
+                "Resize": 365,
+                "Transpose": 2409,
+                "Reshape": 2190,
+                "Conv": 2263,
+                "ReorderOutput": 803,
+                "Slice": 657,
+                "Equal": 73,
+                "Where": 73,
+                "Expand": 73,
+                "Add": 5110,
+                "ReduceMean": 511,
+                "Sub": 292,
+                "SimplifiedLayerNormalization": 73,
+                "MatMul": 4380,
+                "Split": 876,
+                "Squeeze": 2701,
+                "FusedMatMul": 876,
+                "Softmax": 876,
+                "Mul": 2336,
+                "LayerNormalization": 1460,
+                "BiasGelu": 876,
+                "Pow": 219,
+                "Sqrt": 219,
+                "ReorderInput": 730,
+                "ConvTranspose": 146,
+                "Relu": 584,
+                "SkipLayerNormalization": 73,
+                "Upsample": 73
+              }
+            }
+          },
+          "unassignedKernelEvents": 0,
+          "note": "ORT kernel-event durations include host scheduling/waiting; they are not isolated device compute times.",
+          "sha256": "2385ab8eebff680c8d3d355ce833a22d12f7165d84ca0af7978746b8ec927c0f"
+        }
+      },
+      "privateBenchmarkReceiptSha256": "fe2bb7f6fd073f4105377fe10c94faba4c24d75df9c1f47cc7e90e1fc8fe2ccf",
+      "placementSummary": "42,267 executed CPU kernel events; CPU explicitly selected."
+    },
+    {
+      "provider": "directml",
+      "accelerator": "GPU (DirectML)",
+      "frames": 73,
+      "seconds": 20.97072520002257,
+      "status": "ok",
+      "error": null,
+      "initSeconds": 0.6345442000310868,
+      "protectSeconds": 20.336177699966356,
+      "depthTiming": {
+        "sumSeconds": 11.81326070043724,
+        "firstSeconds": 1.9645015998976305,
+        "medianSeconds": 0.1360443999292329,
+        "minSeconds": 0.12986410001758486,
+        "maxSeconds": 1.9645015998976305,
+        "p95Seconds": 0.14574680000077933
+      },
+      "result": {
+        "changed": false,
+        "frames": 73,
+        "protectedFrames": 0,
+        "protectedPixels": 0,
+        "protectedFrameIndices": [],
+        "protectedPixelsByFrame": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "margin": 0.1,
+        "grow": 32,
+        "accelerator": "GPU (DirectML)",
+        "model": {
+          "name": "Depth Anything V2 Small",
+          "repository": "onnx-community/depth-anything-v2-small",
+          "revision": "4472b7362082ad9968fee890ca0f1e5aca36b93d",
+          "sha256": "afb6a5c28f3b6bf1618c6e43f02073ef9dfdc70e937502d51603e57b0a1df10c",
+          "license": "Apache-2.0"
+        }
+      },
+      "runtimePackage": "onnxruntime-directml==1.24.4",
+      "session": {
+        "requestedProvider": "directml",
+        "provider": "directml",
+        "accelerator": "GPU (DirectML)",
+        "registeredProviders": [
+          "DmlExecutionProvider",
+          "CPUExecutionProvider"
+        ],
+        "requestedProviderOptions": {
+          "device_id": "0"
+        },
+        "registeredProviderOptions": {
+          "DmlExecutionProvider": {},
+          "CPUExecutionProvider": {}
+        },
+        "availableProviders": [
+          "DmlExecutionProvider",
+          "CPUExecutionProvider"
+        ],
+        "inputSize": [
+          658,
+          364
+        ],
+        "fallback": false,
+        "failedProviders": [],
+        "executionEvidence": {
+          "status": "profiled",
+          "providers": {
+            "DmlExecutionProvider": {
+              "kernelEvents": 30733,
+              "kernelMicroseconds": 2608338,
+              "ops": {
+                "Shape": 1898,
+                "MemcpyFromHost": 73,
+                "Transpose": 2409,
+                "Reshape": 2190,
+                "Concat": 146,
+                "Conv": 1606,
+                "Expand": 73,
+                "Add": 5913,
+                "ReduceMean": 584,
+                "Sub": 292,
+                "Pow": 292,
+                "Sqrt": 292,
+                "Div": 292,
+                "Mul": 2263,
+                "MatMul": 4380,
+                "Gather": 2628,
+                "FusedMatMulActivation": 876,
+                "LayerNormalization": 1460,
+                "BiasGelu": 876,
+                "SkipLayerNormalization": 73,
+                "Slice": 292,
+                "Relu": 584,
+                "DmlFusedConv": 657,
+                "Resize": 365,
+                "ConvTranspose": 146,
+                "Squeeze": 73
+              }
+            },
+            "CPUExecutionProvider": {
+              "kernelEvents": 9417,
+              "kernelMicroseconds": 7001601,
+              "ops": {
+                "Gather": 2774,
+                "Div": 146,
+                "Unsqueeze": 2847,
+                "Concat": 2920,
+                "Resize": 73,
+                "Slice": 365,
+                "Equal": 73,
+                "Where": 73,
+                "Mul": 146
+              }
+            }
+          },
+          "unassignedKernelEvents": 0,
+          "note": "ORT kernel-event durations include host scheduling/waiting; they are not isolated device compute times.",
+          "sha256": "09bdfa18f1775ad592023badfaad38945c03b1ab1beccbb989905c11e9039ae5"
+        }
+      },
+      "privateBenchmarkReceiptSha256": "12356a42a8d411eb2af6c7034198aa0b655cb8df6601a67f586bd98628b373bb",
+      "placementSummary": "Mixed execution: 30,733 DirectML kernel events and 9,417 CPU kernel events. This is accelerated DirectML inference, not an all-GPU graph.",
+      "directmlSessionOptions": {
+        "enable_mem_pattern": false,
+        "execution_mode": "ORT_SEQUENTIAL"
+      }
+    }
+  ],
+  "directmlAdapterEvidence": {
+    "method": "Native Windows dxgi.dll: CreateDXGIFactory1 -> IDXGIFactory::EnumAdapters -> IDXGIAdapter::GetDesc. This is the documented DirectML device_id enumeration order.",
+    "selectedDeviceId": 0,
+    "adapters": [
+      {
+        "device_id": 0,
+        "description": "NVIDIA GeForce RTX 5080",
+        "vendor_id": "0x10de",
+        "pci_device_id": "0x2c02",
+        "dedicated_video_memory": 16753098752
+      },
+      {
+        "device_id": 1,
+        "description": "Intel(R) Graphics",
+        "vendor_id": "0x8086",
+        "pci_device_id": "0x7d67",
+        "dedicated_video_memory": 134217728
+      },
+      {
+        "device_id": 2,
+        "description": "Microsoft Basic Render Driver",
+        "vendor_id": "0x1414",
+        "pci_device_id": "0x008c",
+        "dedicated_video_memory": 0
+      }
+    ],
+    "note": "Adapter0 was the RTX 5080 on this machine at measurement time. Do not assume adapter0 is NVIDIA on other machines.",
+    "officialReference": "https://onnxruntime.ai/docs/execution-providers/DirectML-ExecutionProvider.html"
+  },
+  "conditionalIntelGpuExperiment": {
+    "required": false,
+    "performed": false,
+    "reason": "The NPU compiled and completed all 73 frames without an error, so the brief's conditional OpenVINO GPU experiment was not needed."
+  },
+  "doctor": "Aftertake setup check\n\n  [ok] Node.js 24.21.0\n  [ok] App dependencies\n  [ok] Media runtime for importing footage, Film export and Color & finish\n  [ok] Python 3.12\n  [ok] Local depth for foreground protection: Intel NPU (OpenVINO)\n\n  Local generation (optional; the examples, editing and Film work without it)\n\n  [ok] NVIDIA GPU: NVIDIA GeForce RTX 5080, 16303 MiB\n  [ok] Python 3.12 for the engine\n  [ok] Generation engine\n  [ok] FFmpeg on PATH (character replacement only)\n  [ok] 510 GB free on this disk",
+  "initialDoctor": "Aftertake setup check\n\n  [ok] Node.js 24.21.0\n  [ok] App dependencies\n  [ok] Media runtime for importing footage, Film export and Color & finish\n  [ok] Python 3.13\n  [ok] Local depth for foreground protection: Intel NPU (OpenVINO)\n\n  Local generation (optional; the examples, editing and Film work without it)\n\n  [ok] NVIDIA GPU: NVIDIA GeForce RTX 5080, 16303 MiB\n  [!!] Python 3.12 for the engine\n         -> winget install Python.Python.3.12\n  [ok] Generation engine\n  [ok] FFmpeg on PATH (character replacement only)\n  [ok] 524 GB free on this disk",
+  "doctorNote": "The initial launcher preferred Python 3.13 and reported engine Python 3.12 missing; the media runtime itself was Python 3.12.14. Launcher detection was corrected before the final doctor report.",
+  "restoration": {
+    "command": "node scripts/aftertake.mjs setup-npu",
+    "status": "ok",
+    "runtimePackage": "onnxruntime-openvino==1.24.1",
+    "openvinoPackage": "openvino==2025.4.1",
+    "depthStatus": {
+      "runtime": "1.24.1",
+      "model": true,
+      "accelerator": "Intel NPU (OpenVINO)",
+      "providers": [
+        "Intel NPU (OpenVINO)",
+        "CPU"
+      ],
+      "verification": "not-initialized",
+      "note": "Accelerator is a candidate. Model compilation and node placement have not been checked.",
+      "fix": null
+    },
+    "note": "Restored auto installation selects OpenVINO. The final status is intentionally an uninitialized candidate check; actual successful NPU execution is evidenced by the measured benchmark."
+  }
+}

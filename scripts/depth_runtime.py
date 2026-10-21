@@ -2,9 +2,13 @@
 
 The order is Core ML (Apple Neural Engine and GPU), QNN (Snapdragon NPU), OpenVINO
 (Intel NPU), DirectML (any DirectX 12 GPU), then the CPU. Only the ONNX Runtime
-package that scripts/setup-depth.py installed is present, so in practice the
-order picks that package's accelerator and keeps the CPU as the fallback. Set
-AFTERTAKE_DEPTH_PROVIDER to coreml, qnn, openvino, directml or cpu to choose.
+package that scripts/setup-depth.py installed is present. Automatic selection
+reports failed accelerators before trying the CPU. An explicit
+AFTERTAKE_DEPTH_PROVIDER choice never silently changes to another provider.
+CPU graph nodes may still support an accelerated session; provider registration
+alone is not proof of where the model's compute ran. For a measured run, set
+AFTERTAKE_DEPTH_PROFILE_PREFIX to a private output prefix and call finish_profiling().
+AFTERTAKE_DEPTH_DML_DEVICE_ID selects the DirectML DXGI adapter (default 0).
 
     python scripts/depth_runtime.py --status   prints what is installed, as JSON
 """
@@ -13,6 +17,7 @@ import hashlib
 import json
 import os
 import sys
+import warnings
 
 import numpy as np
 
@@ -53,6 +58,11 @@ def provider_options(key, width, height):
     if key == 'openvino':
         # NPUs compile a fixed shape; each video keeps one input size.
         return {'device_type': 'NPU', 'reshape_input': f'pixel_values[1,3,{height},{width}]'}
+    if key == 'directml':
+        value = os.environ.get('AFTERTAKE_DEPTH_DML_DEVICE_ID', '0').strip()
+        if not value.isdecimal():
+            raise ValueError('AFTERTAKE_DEPTH_DML_DEVICE_ID must be a nonnegative DXGI adapter index.')
+        return {'device_id': str(int(value))}
     return {}
 
 
@@ -62,7 +72,9 @@ def preferred(available):
     if chosen:
         if chosen not in PROVIDERS:
             raise ValueError(f'AFTERTAKE_DEPTH_PROVIDER must be one of {", ".join(PROVIDERS)}.')
-        return [chosen] if chosen == 'cpu' else [chosen, 'cpu']
+        if PROVIDERS[chosen][0] not in available:
+            raise ValueError(f'Requested depth provider {chosen} is not installed. Available providers: {", ".join(available)}.')
+        return [chosen]
     return [key for key, (name, _) in PROVIDERS.items() if name in available]
 
 
@@ -88,7 +100,7 @@ def verify_model(path=MODEL_PATH):
 class Depth:
     """One session for frames of one size; call it with an RGB uint8 frame for relative nearness."""
 
-    def __init__(self, width, height, ort=None, model=MODEL_PATH):
+    def __init__(self, width, height, ort=None, model=MODEL_PATH, profile_prefix=None):
         if ort is None:
             try:
                 ort = import_runtime()
@@ -97,23 +109,64 @@ class Depth:
             verify_model(model)
         self.width, self.height = width, height
         self.size = input_size(width, height)
-        failures = []
-        for key in preferred(ort.get_available_providers()):
+        self.requested_provider = os.environ.get('AFTERTAKE_DEPTH_PROVIDER', '').strip().lower() or 'auto'
+        self.available_providers = list(ort.get_available_providers())
+        self.failures = []
+        self.profile_prefix = str(profile_prefix or os.environ.get('AFTERTAKE_DEPTH_PROFILE_PREFIX', ''))
+        self.profile_result = None
+        for key in preferred(self.available_providers):
             name = PROVIDERS[key][0]
-            providers = [(name, provider_options(key, *self.size))]
+            requested_options = provider_options(key, *self.size)
+            providers = [(name, requested_options)]
             if key != 'cpu':
                 providers.append(('CPUExecutionProvider', {}))
+            options = ort.SessionOptions()
+            if key == 'directml':
+                options.enable_mem_pattern = False
+                options.execution_mode = ort.ExecutionMode.ORT_SEQUENTIAL
+            if self.profile_prefix:
+                options.enable_profiling = True
+                options.profile_file_prefix = self.profile_prefix
             try:
-                self.session = ort.InferenceSession(str(model), providers=providers)
+                session = ort.InferenceSession(str(model), sess_options=options,
+                                               providers=providers, enable_fallback=False)
+                registered = list(session.get_providers())
+                if not registered or registered[0] != name:
+                    raise RuntimeError(f'Requested {name}, but session registered {registered}.')
             except Exception as error:  # an accelerator can be listed yet unusable
-                failures.append(f'{PROVIDERS[key][1]}: {error}')
+                self.failures.append(f'{PROVIDERS[key][1]}: {error}')
                 continue
-            active = self.session.get_providers()[0]
-            self.provider = next(k for k, (n, _) in PROVIDERS.items() if n == active)
+            self.session = session
+            self.provider = key
+            self.registered_providers = registered
+            self.requested_options = requested_options
             self.label = PROVIDERS[self.provider][1]
             self.input = self.session.get_inputs()[0].name
+            if self.failures:
+                warnings.warn('Depth automatic selection used ' + self.label + ' after: ' + '; '.join(self.failures),
+                              RuntimeWarning, stacklevel=2)
             return
-        raise ValueError('No ONNX Runtime accelerator could load the depth model. ' + '; '.join(failures))
+        raise ValueError('No ONNX Runtime accelerator could load the depth model. ' + '; '.join(self.failures))
+
+    def diagnostics(self):
+        """Session facts, distinct from the per-node execution evidence in a profile."""
+        return {'requestedProvider': self.requested_provider, 'provider': self.provider,
+                'accelerator': self.label, 'registeredProviders': list(self.session.get_providers()),
+                'requestedProviderOptions': self.requested_options,
+                'registeredProviderOptions': (self.session.get_provider_options()
+                    if hasattr(self.session, 'get_provider_options') else {}),
+                'availableProviders': self.available_providers, 'inputSize': list(self.size),
+                'fallback': bool(self.failures), 'failedProviders': list(self.failures),
+                'executionEvidence': self.profile_result or {'status': 'not-profiled',
+                    'note': 'Registered providers do not prove model node placement.'}}
+
+    def finish_profiling(self):
+        """Close an opt-in ORT profile and summarize executed kernel providers, not device-only time."""
+        if not self.profile_prefix:
+            return None
+        if self.profile_result is None:
+            self.profile_result = summarize_profile(self.session.end_profiling())
+        return self.profile_result
 
     def __call__(self, frame):
         from PIL import Image
@@ -125,8 +178,31 @@ class Depth:
         return np.asarray(resized, np.float32)
 
 
+def summarize_profile(path):
+    """ORT kernel events provide node-provider evidence; host preprocessing is outside this trace."""
+    events = json.loads(Path(path).read_text(encoding='utf-8'))
+    providers = {}
+    unassigned = 0
+    for event in events:
+        if event.get('cat') != 'Node' or not event.get('name', '').endswith('_kernel_time'):
+            continue
+        args = event.get('args', {})
+        name = args.get('provider')
+        if not name:
+            unassigned += 1
+            continue
+        record = providers.setdefault(name, {'kernelEvents': 0, 'kernelMicroseconds': 0, 'ops': {}})
+        record['kernelEvents'] += 1
+        record['kernelMicroseconds'] += event.get('dur', 0)
+        op = args.get('op_name', 'unknown')
+        record['ops'][op] = record['ops'].get(op, 0) + 1
+    return {'status': 'profiled' if providers else 'no-provider-events', 'path': str(path),
+            'providers': providers, 'unassignedKernelEvents': unassigned,
+            'note': 'ORT kernel-event durations include host scheduling/waiting; they are not isolated device compute times.'}
+
+
 def status():
-    """What is installed and which accelerator depth would use, without loading the model."""
+    """Installed packages and an uninitialized provider candidate, never an execution claim."""
     try:
         ort = import_runtime()
     except ImportError:
@@ -141,6 +217,8 @@ def status():
     return {'runtime': ort.__version__, 'model': model,
             'accelerator': PROVIDERS[keys[0]][1] if keys else None,
             'providers': [PROVIDERS[key][1] for key in keys],
+            'verification': 'not-initialized',
+            'note': 'Accelerator is a candidate. Model compilation and node placement have not been checked.',
             'fix': None if model else 'node scripts/aftertake.mjs setup-npu'}
 
 

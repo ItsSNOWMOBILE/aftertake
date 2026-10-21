@@ -60,7 +60,7 @@ class FakeDepth:
 
 
 class ProtectForegroundTest(unittest.TestCase):
-    def run_protect(self, with_cup=True):
+    def run_protect(self, with_cup=True, cup_visible=None):
         folder = Path(self.enterContext(tempfile.TemporaryDirectory()))
         source, person, cup = scene()
         if not with_cup:
@@ -69,7 +69,12 @@ class ProtectForegroundTest(unittest.TestCase):
         region = protect.grown(person, protect.GROW)
         take = source.copy()
         take[region] = NEW
-        write(folder / 'source.mp4', [source] * FRAMES)
+        source_frames = [source.copy() for _ in range(FRAMES)]
+        if cup_visible is not None:
+            for image, visible in zip(source_frames, cup_visible):
+                if not visible:
+                    image[cup] = BACKGROUND
+        write(folder / 'source.mp4', source_frames)
         write(folder / 'take.mp4', [take] * FRAMES)
         write(folder / 'mask.mkv', [person.astype(np.uint8) * 255] * FRAMES, 'gray')
         job = {'source': folder / 'source.mp4', 'mask': folder / 'mask.mkv', 'take': folder / 'take.mp4',
@@ -85,6 +90,9 @@ class ProtectForegroundTest(unittest.TestCase):
         self.assertTrue(result['changed'])
         self.assertEqual(result['frames'], FRAMES)
         self.assertEqual(result['protectedFrames'], FRAMES)
+        self.assertEqual(result['protectedFrameIndices'], list(range(FRAMES)))
+        self.assertEqual(len(result['protectedPixelsByFrame']), FRAMES)
+        self.assertEqual(sum(result['protectedPixelsByFrame']), result['protectedPixels'])
         self.assertEqual(result['accelerator'], 'test')
         frame = output[2].astype(int)
         inner = cup & ~protect.grown(~cup, 4)  # 4:2:0 chroma softens the edge rows
@@ -95,8 +103,27 @@ class ProtectForegroundTest(unittest.TestCase):
 
     def test_a_shot_with_nothing_in_front_is_left_alone(self):
         result, output, *_ = self.run_protect(with_cup=False)
-        self.assertEqual(result, {'changed': False})
+        self.assertFalse(result['changed'])
+        self.assertEqual(result['frames'], FRAMES)
+        self.assertEqual(result['protectedFrames'], 0)
+        self.assertEqual(result['protectedPixels'], 0)
+        self.assertEqual(result['protectedFrameIndices'], [])
+        self.assertEqual(result['protectedPixelsByFrame'], [0] * FRAMES)
+        self.assertEqual(result['accelerator'], 'test')
         self.assertIsNone(output)
+
+    def test_frame_receipt_describes_stabilized_masks_rather_than_raw_depth_detections(self):
+        result, *_ = self.run_protect(cup_visible=[False, True, False, True, True, False])
+        # Interior frames use the unchanged two-of-three vote; endpoints keep
+        # their original mask. Raw frame1 drops out and raw-empty frame2 fills.
+        self.assertEqual(result['protectedFrameIndices'], [2, 3, 4])
+        self.assertEqual(result['protectedFrames'], 3)
+        counts = result['protectedPixelsByFrame']
+        self.assertEqual([index for index, count in enumerate(counts) if count], [2, 3, 4])
+        self.assertEqual(counts[0:2], [0, 0])
+        self.assertEqual(counts[5], 0)
+        self.assertTrue(all(counts[index] > 0 for index in [2, 3, 4]))
+        self.assertEqual(sum(counts), result['protectedPixels'])
 
     def test_the_margin_is_checked(self):
         with self.assertRaisesRegex(ValueError, 'margin'):
@@ -108,7 +135,7 @@ class DepthRuntimeTest(unittest.TestCase):
         made = []
 
         class Session:
-            def __init__(self, model, providers):
+            def __init__(self, model, providers, sess_options=None, enable_fallback=True):
                 name = providers[0][0]
                 if name in broken:
                     raise RuntimeError(f'{name} failed')
@@ -125,7 +152,9 @@ class DepthRuntimeTest(unittest.TestCase):
                 pixels = feeds['pixel_values']
                 return [np.ones((1, pixels.shape[2], pixels.shape[3]), np.float32)]
 
-        return types.SimpleNamespace(get_available_providers=lambda: available, InferenceSession=Session), made
+        return types.SimpleNamespace(get_available_providers=lambda: available, InferenceSession=Session,
+                                     SessionOptions=types.SimpleNamespace,
+                                     ExecutionMode=types.SimpleNamespace(ORT_SEQUENTIAL='sequential')), made
 
     def test_the_best_accelerator_is_used_and_a_broken_one_falls_back(self):
         ort, made = self.fake_ort(['OpenVINOExecutionProvider', 'CPUExecutionProvider'])
@@ -136,7 +165,8 @@ class DepthRuntimeTest(unittest.TestCase):
         self.assertEqual(made[0][1][0], 'CPUExecutionProvider')
         self.assertEqual(depth(np.zeros((720, 1280, 3), np.uint8)).shape, (720, 1280))
         ort, made = self.fake_ort(['CoreMLExecutionProvider', 'CPUExecutionProvider'], broken={'CoreMLExecutionProvider'})
-        depth = depth_runtime.Depth(640, 480, ort=ort, model=Path('model.onnx'))
+        with self.assertWarnsRegex(RuntimeWarning, 'Depth automatic selection used CPU'):
+            depth = depth_runtime.Depth(640, 480, ort=ort, model=Path('model.onnx'))
         self.assertEqual(depth.label, 'CPU')
 
     def test_the_choice_can_be_forced_and_is_validated(self):
