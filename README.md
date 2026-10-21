@@ -87,6 +87,8 @@ this shot** tracks the next person in that take. Each pass changes only the
 pixels inside its own mask, so the people you already swapped stay as they are.
 When tracking drops the person for a moment, **Repair mask** fills gaps of up
 to half a second on the CPU and shows what it added before you generate.
+**Keep objects in front** puts back anything nearer the camera than the person,
+like a cup or a microphone, using depth on the Neural Engine or an NPU.
 
 ## From the first prompt to the final cut
 
@@ -235,7 +237,9 @@ opens it in your browser. Without `--examples` it opens your own workspace.
 `node scripts/aftertake.mjs doctor` prints the checklist on its own.
 
 No GPU or model download is needed for the examples, editing, Film, Color &
-finish or agents. Optional local narration installs with
+finish or agents. `node scripts/aftertake.mjs setup-npu` adds local depth for
+keeping objects in front of a replaced person; it runs on the Neural Engine of
+Apple silicon, the NPU of Intel Core Ultra and Snapdragon PCs, or the CPU. Optional local narration installs with
 `python scripts/setup-narration.py` (Python 3.12).
 
 ### Prepare cloud rendering

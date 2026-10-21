@@ -3,13 +3,14 @@ import { RequestError } from './http-errors.js';
 import { Router } from 'express';
 import { copyFile, mkdir, readFile, readdir, rename, writeFile, unlink } from 'node:fs/promises';
 import { createHash, randomUUID } from 'node:crypto';
-import { execFile } from 'node:child_process';
+import { execFile, spawn } from 'node:child_process';
 import { promisify, isDeepStrictEqual } from 'node:util';
 import path from 'node:path';
 import type { EngineClient, EngineJob } from './sdk-port.js';
 import type { Clip, Engine } from '../src/domain.js';
 import {
   characterBusy,
+  characterProtectionSchema,
   characterRepairSchema,
   characterRequestSchema,
   parseCharacterSelectionInfo,
@@ -398,6 +399,14 @@ export async function characterRouter(context: {
         record.request = characterRequestSchema.parse(record.request);
       else continue;
       if (record.repair) record.repair = characterRepairSchema.parse(record.repair);
+      if (record.protection) {
+        record.protection = characterProtectionSchema.parse(record.protection);
+        if (characterBusy(record)) {
+          record.state = 'failed';
+          record.error = 'The studio stopped while protecting the foreground. Start it again.';
+          await persist(record);
+        }
+      }
       jobs.set(record.id, record);
       if (characterBusy(record) && !(await targetMatches(record))) continue;
       if (record.jobId && characterBusy(record)) void track(record);
@@ -619,6 +628,182 @@ export async function characterRouter(context: {
       if (!saved) await Promise.all(outputs.map((output) => unlink(output).catch(() => {})));
     }
   });
+  async function depthStatus() {
+    const { stdout } = await exec(
+      python,
+      [path.join(root, 'scripts/depth_runtime.py'), '--status'],
+      {
+        cwd: root,
+        timeout: 30000,
+        maxBuffer: 1024 * 1024,
+      },
+    );
+    return JSON.parse(stdout) as {
+      runtime: string | null;
+      model: boolean;
+      accelerator: string | null;
+      fix: string | null;
+    };
+  }
+  router.get('/depth/status', async (_req, res) => {
+    try {
+      res.json(await depthStatus());
+    } catch {
+      res.json({
+        runtime: null,
+        model: false,
+        accelerator: null,
+        fix: 'python scripts/setup-film.py',
+      });
+    }
+  });
+  // Foreground protection is CPU and NPU work that takes up to a few minutes, so it
+  // runs in the background as a new take; the app polls it like any character job.
+  const protecting = new Set<string>();
+  router.post('/:id/protect', async (req, res) => {
+    const original = jobs.get(req.params.id);
+    if (original?.kind !== 'replacement' || original.state !== 'succeeded' || !original.clip)
+      return void res
+        .status(409)
+        .json({ error: 'Keep the foreground of a finished character take.' });
+    if (original.protection)
+      return void res.status(409).json({ error: 'This take already keeps its foreground.' });
+    const existing = [...jobs.values()].find(
+      (job) => job.protection?.from === original.id && job.state !== 'failed',
+    );
+    if (existing) return void res.json(existing);
+    const margin = Number(req.body?.margin ?? 0.1);
+    if (!(margin >= 0.02 && margin <= 0.5))
+      return void res.status(400).json({ error: 'Choose a depth margin between 0.02 and 0.5.' });
+    const selection = jobs.get((original.request as CharacterRequest).selectionId);
+    if (selection?.kind !== 'selection' || !selection.selection)
+      return void res.status(409).json({ error: 'This take is missing its tracked selection.' });
+    const take = path.join(clips, path.basename(original.clip.url));
+    const [takeBytes, mask, source] = await Promise.all([
+      readFile(take),
+      readFile(file(selection.id, 'mask.mkv')),
+      readFile(file(selection.id, 'source.mp4')),
+    ]);
+    if (
+      sha(takeBytes) !== original.clip.sha256 ||
+      sha(mask) !== selection.selection.maskSha256 ||
+      sha(source) !== selection.selection.sourceSha256
+    )
+      return void res
+        .status(409)
+        .json({ error: 'The take or its selection changed on disk. Make the take again.' });
+    const depth = await depthStatus().catch(() => null);
+    if (!depth?.runtime || !depth.model)
+      return void res.status(409).json({
+        error: `Install the depth runtime first: ${depth?.fix || 'node scripts/aftertake.mjs setup-npu'}`,
+      });
+    if (protecting.has(original.id))
+      return void res.status(409).json({ error: 'This take is already being protected.' });
+    const now = new Date().toISOString(),
+      record: CharacterJob = {
+        id: randomUUID(),
+        kind: 'replacement',
+        request: original.request,
+        state: 'running',
+        progress: 0,
+        stage: `Estimating depth on the ${depth.accelerator}`,
+        createdAt: now,
+        updatedAt: now,
+        workflow: original.workflow,
+        protection: { from: original.id, margin },
+      };
+    jobs.set(record.id, record);
+    await persist(record);
+    res.status(202).json(record);
+    protecting.add(original.id);
+    void protect(record, original, selection, take).finally(() => protecting.delete(original.id));
+  });
+  async function protect(
+    record: CharacterJob,
+    original: CharacterJob,
+    selection: CharacterJob,
+    take: string,
+  ) {
+    const output = path.join(clips, record.id + '.mp4'),
+      work = file(record.id, 'protect.json');
+    try {
+      await writeFile(
+        work,
+        JSON.stringify({
+          source: file(selection.id, 'source.mp4'),
+          mask: file(selection.id, 'mask.mkv'),
+          take,
+          output,
+          margin: record.protection!.margin,
+        }),
+      );
+      const result = await new Promise<Record<string, any>>((resolve, reject) => {
+        const child = spawn(python, [path.join(root, 'scripts/protect-foreground.py'), work], {
+          cwd: root,
+          stdio: ['ignore', 'pipe', 'pipe'],
+        });
+        let stdout = '',
+          stderr = '',
+          saved = 0;
+        child.stdout.on('data', (chunk) => (stdout += chunk));
+        child.stderr.on('data', (chunk) => {
+          stderr += chunk;
+          for (const match of String(chunk).matchAll(/progress ([0-9.]+)/g)) {
+            record.progress = Math.min(0.99, Number(match[1]));
+            if (record.progress - saved >= 0.1) {
+              saved = record.progress;
+              void persist(record);
+            }
+          }
+        });
+        child.on('error', reject);
+        child.on('close', (code) => {
+          const message = stderr.replace(/progress [0-9.]+\s*/g, '').trim();
+          if (code === 0) resolve(JSON.parse(stdout));
+          else reject(Error(message || 'Foreground protection stopped.'));
+        });
+      });
+      if (!result.changed)
+        throw Error(
+          'Nothing in front of the person was found, so the take is unchanged. Use the original take.',
+        );
+      const bytes = await readFile(output),
+        media = await inspect(output, selection.selection!);
+      record.clip = {
+        id: record.id,
+        name: `${(original.request as CharacterRequest).name} · foreground kept`.slice(0, 200),
+        kind: 'video',
+        sha256: sha(bytes),
+        width: media.width,
+        height: media.height,
+        duration: media.duration,
+        hasAudio: media.hasAudio,
+        url: `/media/${record.id}.mp4`,
+      };
+      const tmp = path.join(clips, record.id + '.json.tmp');
+      await writeFile(tmp, JSON.stringify(record.clip, null, 2));
+      await rename(tmp, path.join(clips, record.id + '.json'));
+      record.protection = characterProtectionSchema.parse({
+        from: original.id,
+        margin: record.protection!.margin,
+        accelerator: result.accelerator,
+        frames: result.frames,
+        protectedFrames: result.protectedFrames,
+        protectedPixels: result.protectedPixels,
+        model: result.model,
+      });
+      record.state = 'succeeded';
+      record.progress = 1;
+      record.stage = 'Foreground kept from the source';
+    } catch (error) {
+      record.state = 'failed';
+      record.error = error instanceof Error ? error.message : String(error);
+      await unlink(output).catch(() => {});
+    } finally {
+      await unlink(work).catch(() => {});
+      await persist(record);
+    }
+  }
   router.post('/:id/cancel', async (req, res) => {
     const record = jobs.get(req.params.id);
     if (!record?.jobId || !characterBusy(record) || record.state === 'finalizing')

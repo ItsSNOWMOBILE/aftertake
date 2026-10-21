@@ -113,6 +113,25 @@ export const characterRepairSchema = z.object({
   restoredPixels: z.number().int().nonnegative(),
 });
 export type CharacterRepair = z.infer<typeof characterRepairSchema>;
+/** A take whose foreground was put back from the source; the counts arrive when it finishes. */
+export const characterProtectionSchema = z.object({
+  from: z.string().uuid(),
+  margin: z.number().min(0.02).max(0.5),
+  accelerator: z.string().max(80).optional(),
+  frames: z.number().int().positive().optional(),
+  protectedFrames: z.number().int().nonnegative().optional(),
+  protectedPixels: z.number().int().nonnegative().optional(),
+  model: z
+    .object({
+      name: z.string().max(80),
+      repository: z.string().max(200),
+      revision: z.string().max(80),
+      sha256: shaSchema,
+      license: z.string().max(40),
+    })
+    .optional(),
+});
+export type CharacterProtection = z.infer<typeof characterProtectionSchema>;
 export type CharacterJob = {
   jobTarget?: JobTargetBinding;
   id: string;
@@ -130,6 +149,7 @@ export type CharacterJob = {
   workflow: Record<string, any>;
   selection?: CharacterSelectionInfo;
   repair?: CharacterRepair;
+  protection?: CharacterProtection;
   clip?: Clip;
 };
 export const characterTerminal = new Set([

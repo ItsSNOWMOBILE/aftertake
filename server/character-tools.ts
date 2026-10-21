@@ -40,6 +40,7 @@ function summary(job: CharacterJob) {
     requestKey: job.requestKey,
     selection: job.selection,
     repair: job.repair,
+    protection: job.protection,
     clip: job.clip,
     request: job.request,
   };
@@ -146,8 +147,8 @@ export function registerCharacterTools({
   );
   tool(
     'aftertake_character_action',
-    'Cancel active character work, reconcile an uncertain submission/output download using its original record and SDK key, or repair a completed selection. Repair runs on the CPU: it fills frames where tracking lost the person (gaps up to half a second) and brief dropouts, only ever adding to the mask, and returns a new selection to inspect before replacing. Never creates a replacement job.',
-    z.object({ id: uuid, action: z.enum(['cancel', 'reconcile', 'repair']) }),
+    'Cancel active character work, reconcile an uncertain submission/output download using its original record and SDK key, or repair a completed selection. Repair runs on the CPU: it fills frames where tracking lost the person (gaps up to half a second) and brief dropouts, only ever adding to the mask, and returns a new selection to inspect before replacing. protect, on a finished take, puts objects that are clearly in front of the person (a cup, a microphone, a railing) back from the source using local depth on the Neural Engine, an NPU, DirectML or the CPU; it runs in the background as a new take, so poll aftertake_character_status with the returned id. Never starts a GPU generation.',
+    z.object({ id: uuid, action: z.enum(['cancel', 'reconcile', 'repair', 'protect']) }),
     async (input) => ({
       data: summary(await api<CharacterJob>(`/api/characters/${input.id}/${input.action}`, {})),
     }),

@@ -6,6 +6,7 @@
 //   node scripts/aftertake.mjs --examples   the same, in the recorded example workspace
 //   node scripts/aftertake.mjs doctor       print the setup checklist only
 //   node scripts/aftertake.mjs setup-gpu    install local generation (NVIDIA, Windows or Linux)
+//   node scripts/aftertake.mjs setup-npu    install local depth on the Neural Engine, an NPU or the CPU
 import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, statfsSync } from 'node:fs';
 import path from 'node:path';
@@ -99,6 +100,17 @@ function checks() {
   };
 }
 
+/** Local depth runs in the media runtime through ONNX Runtime; null until that runtime exists. */
+function depthStatus() {
+  if (!existsSync(venvPython('film-venv'))) return null;
+  const output = probe(venvPython('film-venv'), ['scripts/depth_runtime.py', '--status']);
+  try {
+    return output ? JSON.parse(output.split('\n').at(-1)) : null;
+  } catch {
+    return null;
+  }
+}
+
 function report(state) {
   const line = (ok, text, fix) =>
     console.log(
@@ -120,6 +132,14 @@ function report(state) {
     Boolean(state.python),
     state.python ? `Python ${state.python.version}` : 'Python 3.12 or newer',
     hint('python'),
+  );
+  const depth = depthStatus();
+  line(
+    depth ? Boolean(depth.runtime && depth.model) : null,
+    depth?.runtime && depth.model
+      ? `Local depth for foreground protection: ${depth.accelerator}`
+      : 'Local depth for foreground protection (optional; uses the Neural Engine or an NPU when present)',
+    'node scripts/aftertake.mjs setup-npu',
   );
   console.log('\n  Local generation (optional; the examples, editing and Film work without it)\n');
   if (!state.gpuPlatform)
@@ -250,6 +270,25 @@ async function start() {
   if (!flag('no-open')) openBrowser(url);
 }
 
+function setupNpu() {
+  let state = checks();
+  if (!state.media) {
+    if (!state.python) throw new Error(`Install Python first: ${hint('python')}`);
+    run(
+      state.python.program,
+      [...state.python.prefix, 'scripts/setup-film.py'],
+      'Installing the media runtime',
+    );
+    state = checks();
+  }
+  const provider = option('provider');
+  run(
+    venvPython('film-venv'),
+    ['scripts/setup-depth.py', ...(provider ? [`--provider=${provider}`] : [])],
+    'Installing local depth',
+  );
+}
+
 function setupGpu() {
   const state = checks();
   if (!state.gpuPlatform)
@@ -278,9 +317,12 @@ function setupGpu() {
 try {
   if (command === 'doctor') report(checks());
   else if (command === 'setup-gpu') setupGpu();
+  else if (command === 'setup-npu') setupNpu();
   else if (command === 'start') await start();
   else
-    throw new Error(`Unknown command "${command}". Use doctor, setup-gpu, or no command to start.`);
+    throw new Error(
+      `Unknown command "${command}". Use doctor, setup-gpu, setup-npu, or no command to start.`,
+    );
 } catch (failure) {
   console.error(`\n${failure.message}\n`);
   process.exitCode = 1;

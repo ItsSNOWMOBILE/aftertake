@@ -119,6 +119,26 @@ and the original stays available in the selection list. Longer losses still
 need a clearer or shorter range. Agents use `aftertake_character_action` with
 `repair`.
 
+**Keep objects in front.** A replacement may redraw a 32-pixel margin around the
+person, which can catch a cup held in front of the body, a microphone or a
+railing. **Keep objects in front** estimates depth for every frame on this
+computer and puts back, from the original shot, any pixel in that margin that
+is not the person and is clearly nearer the camera than the person beside it.
+Agreement across neighbouring frames keeps objects from flickering. Nothing
+outside the margin changes, so the result can only move back towards the
+source. It runs in the background as a new take with a receipt of how many
+frames changed and which accelerator ran depth; if nothing is in front, the
+take is left as it was.
+
+Depth is [Depth Anything V2 Small](models-foreground-depth.json) (Apache-2.0)
+through ONNX Runtime. `node scripts/aftertake.mjs setup-npu` installs the
+package for this computer: Core ML on Apple silicon, which uses the Neural
+Engine; OpenVINO on Intel Core Ultra, which uses the Intel NPU; QNN on
+Snapdragon Windows PCs; DirectML on other Windows PCs; and the CPU elsewhere.
+Add `--provider=coreml|openvino|qnn|directml|cpu` to choose, or set
+`AFTERTAKE_DEPTH_PROVIDER` at run time. If an accelerator cannot load the
+model, depth falls back to the CPU and the receipt names what actually ran.
+
 **Several people in one shot.** When a take finishes, **Swap another person in
 this shot** makes that take the source, keeps its working resolution and clears
 the points, photo and selection. Mark the next person, track them and choose
@@ -161,8 +181,9 @@ encoder/VAEs and both adapters. FFmpeg and FFprobe must be available to the
 engine. `--ffmpeg-bin` is optional when both are already on PATH.
 `--safe-weight-copies` selects the PyTorch copy fallback for Windows file-backed
 host-buffer failures. `--no-node-cache` reduces host memory for native loop jobs;
-it can increase execution time. The H3 path is CUDA-based; no NPU inference is
-claimed. H3 Relay is installed separately at a pinned revision and retains its
+it can increase execution time. The H3 generation path is CUDA-based. Mask
+repair runs on the CPU, and foreground protection's depth runs on the Neural
+Engine or an NPU when one is present (below). H3 Relay is installed separately at a pinned revision and retains its
 GPL-3.0/Apache notices. Model terms remain separate from Aftertake's MIT code:
 [H3](https://huggingface.co/Comfy-Org/MiniMax-H3),
 [Character Swap](https://huggingface.co/akatz-ai/MiniMax-H3-Character-Swap-LoRA),

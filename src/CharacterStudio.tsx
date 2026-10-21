@@ -8,6 +8,7 @@ import {
   Plus,
   RotateCcw,
   ScanFace,
+  Shield,
   Upload,
   UserPlus,
   Wand2,
@@ -24,6 +25,7 @@ import {
   characterSelectionSchema,
   type CharacterJob,
   type CharacterIdentityReference,
+  type CharacterProtection,
   type CharacterRepair,
   type CharacterRequest,
   type CharacterSelectionRequest,
@@ -53,6 +55,15 @@ function repairSummary(repair: CharacterRepair) {
     .filter(Boolean)
     .join(', ');
 }
+function protectionSummary(protection: CharacterProtection) {
+  return `objects in front of the person came back from the source in ${protection.protectedFrames} of ${protection.frames} frames, with depth from ${protection.accelerator}`;
+}
+type DepthStatus = {
+  runtime: string | null;
+  model: boolean;
+  accelerator: string | null;
+  fix: string | null;
+};
 function download(value: unknown, filename = 'aftertake-character-recipe.json') {
   const url = URL.createObjectURL(
     new Blob([JSON.stringify(value, null, 2)], { type: 'application/json' }),
@@ -148,7 +159,8 @@ export default function CharacterStudio({
     [error, setError] = useState(''),
     [notice, setNotice] = useState('');
   const [engine, setEngine] = useState<Engine | null>(null),
-    [selectionEngine, setSelectionEngine] = useState<Engine | null>(null);
+    [selectionEngine, setSelectionEngine] = useState<Engine | null>(null),
+    [depth, setDepth] = useState<DepthStatus | null>(null);
   const dialog = useRef<HTMLElement>(null),
     fileInput = useRef<HTMLInputElement>(null),
     identityFileInput = useRef<HTMLInputElement>(null),
@@ -479,6 +491,34 @@ export default function CharacterStudio({
         }
       }
       setError(failure.message);
+    } finally {
+      setSending(false);
+    }
+  }
+  useEffect(() => {
+    if (browserDemo) return;
+    api<DepthStatus>('/api/characters/depth/status')
+      .then(setDepth)
+      .catch(() => {});
+  }, []);
+  /** Put objects in front of the person back from the source, as a new take. */
+  async function protectForeground(job: CharacterJob) {
+    setSending(true);
+    setError('');
+    try {
+      const started = await api<CharacterJob>(`/api/characters/${job.id}/protect`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ margin: 0.1 }),
+      });
+      onUpdate(started);
+      setResultId(started.id);
+      setView('result');
+      setNotice(
+        'Keeping objects in front of the person. Depth is estimated for every frame on this computer; the new take appears here when it finishes.',
+      );
+    } catch (e) {
+      setError((e as Error).message);
     } finally {
       setSending(false);
     }
@@ -916,7 +956,9 @@ export default function CharacterStudio({
                       ? 'Check the submitted job'
                       : pending.kind === 'selection'
                         ? 'Tracking the selected person'
-                        : 'Generating your character take'}
+                        : pending.protection
+                          ? 'Keeping objects in front'
+                          : 'Generating your character take'}
                   </strong>
                   {reportedProgress !== undefined && (
                     <span>{Math.round(reportedProgress * 100)}%</span>
@@ -934,7 +976,9 @@ export default function CharacterStudio({
                       ? 'Connection uncertain. Progress may be out of date.'
                       : reportedProgress === undefined
                         ? 'Waiting for engine progress.'
-                        : 'Progress reported by the engine.'}
+                        : pending.protection
+                          ? 'Progress reported by depth on this computer.'
+                          : 'Progress reported by the engine.'}
                   </span>
                   {uncertainJob ? (
                     <button disabled={sending} onClick={() => void act(pending, 'reconcile')}>
@@ -1269,6 +1313,31 @@ export default function CharacterStudio({
                     Recipe ↗
                   </button>
                 </div>
+                {viewed.protection?.frames ? (
+                  <p className="character-hint">
+                    Foreground kept: {protectionSummary(viewed.protection)}.
+                  </p>
+                ) : (
+                  <>
+                    <button
+                      className="button character-repair"
+                      disabled={locked || browserDemo || !depth?.runtime || !depth.model}
+                      onClick={() => void protectForeground(viewed)}
+                    >
+                      <Shield size={13} />
+                      Keep objects in front
+                    </button>
+                    <p className="character-hint">
+                      Puts back anything clearly in front of the person, like a cup, a microphone or
+                      a railing, from the original shot.{' '}
+                      {!depth
+                        ? ''
+                        : depth.runtime && depth.model
+                          ? `Depth runs on the ${depth.accelerator}.`
+                          : `Install local depth first: ${depth.fix || 'node scripts/aftertake.mjs setup-npu'}`}
+                    </p>
+                  </>
+                )}
                 <p className="character-hint">
                   {viewed.clip.width} × {viewed.clip.height} · 24 fps · seed{' '}
                   {(viewed.request as CharacterRequest).seed}.{' '}
