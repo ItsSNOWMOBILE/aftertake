@@ -11,6 +11,7 @@ import { imageRequirements } from './image-workflow.js';
 import { characterRequirements } from './character-profile.js';
 import { videoRequirements } from './video-workflow.js';
 import { depthRequirements } from './depth-workflow.js';
+import { enhanceRequirements, type EnhanceFeature } from './enhance-workflow.js';
 import { inpaintModelFiles } from './ltx-models.js';
 import { applyRenderResolution } from './render-resolution.js';
 export { inpaintModelFiles } from './ltx-models.js';
@@ -45,9 +46,12 @@ export function requirements(
     | 'text-video'
     | 'character-selection'
     | 'depth'
-    | 'character-swap' = 'structure',
+    | 'character-swap'
+    | EnhanceFeature = 'structure',
 ): { nodes: string[]; menus: [string, string, string][] } {
   if (pipeline === 'depth') return depthRequirements();
+  if (pipeline === 'upscale' || pipeline === 'interpolate' || pipeline === 'song')
+    return enhanceRequirements(pipeline);
   if (pipeline === 'text-video') return videoRequirements();
   if (pipeline === 'character-selection' || pipeline === 'character-swap')
     return characterRequirements(pipeline === 'character-selection');

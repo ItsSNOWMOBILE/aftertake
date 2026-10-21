@@ -211,7 +211,7 @@ syncBuiltinESMExports();
   try {
     await client.connect(transport);
     const list = await client.listTools();
-    assert.equal(list.tools.length, 44);
+    assert.equal(list.tools.length, 45);
     for (const name of [
       'aftertake_character_workspace',
       'aftertake_track_character',

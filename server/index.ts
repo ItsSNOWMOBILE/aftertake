@@ -42,7 +42,8 @@ import { finishingRouter } from './finishing.js';
 import { recompositionRouter } from './recompositions.js';
 import { resolveFinishingLutSettings } from './finishing-luts.js';
 import { layerStackRouter } from './layer-stack.js';
-import { computeFeatures, type ComputeFeature } from '../src/compute.js';
+import { computeFeatures, hardwareProfile, type ComputeFeature } from '../src/compute.js';
+import { enhancementRouter } from './enhancements.js';
 import { depthEffectsRouter } from './depth-effects.js';
 import {
   assertJobTarget,
@@ -144,7 +145,7 @@ async function engine(pipeline: ComputeFeature = 'structure'): Promise<Engine> {
       fetch(`${uiUrl}/object_info`, { signal: AbortSignal.timeout(5000) }),
       fetch(`${uiUrl}/system_stats`, { signal: AbortSignal.timeout(5000) }),
       fetch(`${sdkBaseUrl}/api/v2/health`, { signal: AbortSignal.timeout(5000) }),
-      fetch(`${uiUrl}/aftertake/runtime?profile=${encodeURIComponent(pipeline)}`, {
+      fetch(`${uiUrl}/aftertake/runtime?profile=${encodeURIComponent(hardwareProfile(pipeline))}`, {
         signal: AbortSignal.timeout(15000),
       }).catch(() => null),
     ]);
@@ -581,6 +582,18 @@ const videos = await videoRouter({
 });
 generation.register('videos', videos.busy);
 app.use('/api/videos', videos.router);
+const enhancements = await enhancementRouter({
+  target: jobTarget,
+  root,
+  data,
+  python,
+  client,
+  uiUrl,
+  engine: (feature) => engine(feature),
+  ...generation.forWorker('enhancements'),
+});
+generation.register('enhancements', enhancements.busy);
+app.use('/api/enhancements', enhancements.router);
 app.use('/api/templates', await templateRouter(root, data, renders));
 app.use('/api/films', await filmRouter(root, data, python, renders));
 app.post('/api/cue-preview', async (req, res) => {

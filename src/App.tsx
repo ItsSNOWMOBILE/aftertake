@@ -33,6 +33,7 @@ import {
   Upload,
   Volume2,
   VolumeX,
+  Wand2,
   X,
 } from 'lucide-react';
 import {
@@ -59,6 +60,7 @@ import TakeLibrary from './TakeLibrary';
 import TakeBlend, { takeBlendMatches } from './TakeBlend';
 import TakeStatus from './take-status';
 import RenderEstimate from './RenderEstimate';
+import { enhancementBusy, type Enhancement } from './enhance';
 import MovesGallery from './MovesGallery';
 import { TakeClient, takeBusy, takeRecoverable } from './take-client';
 import { recordedFirst, selectRecordedWork, type RecordedWorkKind } from './RecordedHighlights';
@@ -80,6 +82,7 @@ const FinishingStudio = deferred(() => import('./FinishingStudio'));
 const DepthEffectsStudio = deferred(() => import('./DepthEffectsStudio'));
 const LayerStudio = deferred(() => import('./LayerStudio'));
 const ComputeSettings = deferred(() => import('./ComputeSettings'));
+const EnhanceStudio = deferred(() => import('./EnhanceStudio'));
 import { startScreenWanted, type StartTask } from './start-tasks';
 import { characterBusy, type CharacterJob } from './character';
 import { ImagePlus, ScanFace } from 'lucide-react';
@@ -190,6 +193,8 @@ export default function App() {
   const [depthClip, setDepthClip] = useState<Clip | null>(null);
   const [layerStudioOpen, setLayerStudioOpen] = useState(false);
   const [characterJobs, setCharacterJobs] = useState<CharacterJob[]>([]);
+  const [enhancements, setEnhancements] = useState<Enhancement[]>([]),
+    [enhanceOpen, setEnhanceOpen] = useState(false);
   const [recordedCharacterId, setRecordedCharacterId] = useState('');
   const [recordedVideoId, setRecordedVideoId] = useState('');
   const [frameEditorSource, setFrameEditorSource] = useState<Recipe | null>(null);
@@ -385,6 +390,22 @@ export default function App() {
       clearInterval(timer);
     };
   }, [characterJobs.some(characterBusy)]);
+  useEffect(() => {
+    if (browserDemo) return;
+    let live = true;
+    const check = () =>
+      api<Enhancement[]>('/api/enhancements')
+        .then((found) => {
+          if (live) setEnhancements(found);
+        })
+        .catch(() => {});
+    void check();
+    const timer = setInterval(check, enhancements.some(enhancementBusy) ? 1500 : 6000);
+    return () => {
+      live = false;
+      clearInterval(timer);
+    };
+  }, [enhancements.some(enhancementBusy)]);
   useEffect(() => {
     let live = true;
     const check = () =>
@@ -1241,7 +1262,8 @@ export default function App() {
     frameBusy ||
     imageGenBusy ||
     videoGenBusy ||
-    characterJobs.some(characterBusy);
+    characterJobs.some(characterBusy) ||
+    enhancements.some(enhancementBusy);
   function useTemplate(item: Template) {
     if (!recipe || busy) return;
     try {
@@ -1707,6 +1729,18 @@ export default function App() {
               <SlidersHorizontal size={13} />
             )}
             Color &amp; finish
+          </button>
+          <button
+            className="button"
+            onClick={() => {
+              video.current?.pause();
+              outputVideo.current?.pause();
+              setPlaying(false);
+              setEnhanceOpen(true);
+            }}
+          >
+            <Wand2 size={13} />
+            Enhance
           </button>
           <button
             className="button"
@@ -2961,6 +2995,37 @@ export default function App() {
             setToast(
               'Your generated video is ready as source footage. Add it to Film from the video studio to start a cut.',
             );
+          }}
+        />
+      )}
+      {enhanceOpen && (
+        <EnhanceStudio
+          clips={clips}
+          jobs={enhancements}
+          initialClip={recipe?.clip}
+          otherBusy={
+            rendering ||
+            takeAction ||
+            Boolean(takeAdmission) ||
+            Boolean(activeTake) ||
+            frameBusy ||
+            imageGenBusy ||
+            videoGenBusy ||
+            characterJobs.some(characterBusy)
+          }
+          onUpdate={(job) =>
+            setEnhancements((all) => [job, ...all.filter((item) => item.id !== job.id)])
+          }
+          onFilmAdded={() => setFilmMediaRevision((v) => v + 1)}
+          onClose={() => setEnhanceOpen(false)}
+          onUse={(clip) => {
+            setEnhanceOpen(false);
+            setTake(null);
+            setTime(0);
+            setClips((all) => (all.some((c) => c.id === clip.id) ? all : [...all, clip]));
+            setRecipe({ ...makeRecipe(clip), name: clip.name });
+            setMode('source');
+            setToast('The enhanced clip is now your source footage.');
           }}
         />
       )}

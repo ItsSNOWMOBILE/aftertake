@@ -227,6 +227,27 @@ and original media** downloads the recipe plus its three exact companion files:
 original source, prepared source and lossless tracked mask. Import all three
 matching files with that recipe to restore the edit in another workspace.
 
+## Enhance: upscale, motion and songs
+
+**Enhance**, in the viewer toolbar, makes a new clip or a song without changing
+its source. Each operation is a native ComfyUI 0.41 workflow built from Comfy's
+own templates, so it needs only its model files:
+
+| Operation | Model | Result |
+| :--- | :--- | :--- |
+| Upscale ×2 | [SeedVR2 3B INT8](models-upscale.json) (Apache-2.0) | Twice the width and height, detail restored in one step, colour matched to the source in CIELAB, source sound kept |
+| Smooth motion | [RIFE 4.26](models-interpolation.json) (MIT) | 24 → 48 fps at the same length, source sound kept |
+| Slow motion ×2 or ×4 | RIFE 4.26 | Two or four times as long at 24 fps, silent |
+| Make a song | [ACE-Step 1.5 turbo](models-song.json) (Apache-2.0) | A FLAC song from style tags, optional lyrics, length, tempo, key and language |
+
+Video enhancement takes clips of up to 10.7 seconds, the engine loader's 257
+frames at 24 fps; upscaling takes up to 1280 pixels on the long side, so the
+result stays within 2560 × 1440. SeedVR2 splits the video into chunks that fit
+the free VRAM. A finished clip can be used as source footage or added to Film;
+a song can be played, downloaded or added to Film's audio. Install each model
+profile once with `node scripts/aftertake.mjs setup-gpu --upscale`,
+`--interpolate` or `--song`. Agents use `aftertake_enhance`.
+
 ## Color and finish
 
 Open **Color & finish** below the main viewer. When a completed take is shown,

@@ -4,6 +4,7 @@ import { recipeSchema, type Clip, type Engine } from '../src/domain.js';
 import { imageRequestSchema } from '../src/image-generation.js';
 import { videoRequestSchema } from '../src/video-generation.js';
 import { frameEditRequestSchema } from '../src/frame-edit.js';
+import { enhanceRequestSchema, songRequestSchema } from '../src/enhance.js';
 import type { FilmAsset } from '../src/film.js';
 import {
   frameCreativeRecipes,
@@ -39,9 +40,10 @@ type Generation = {
   recipe?: { name?: string };
   clip?: Clip;
   output?: string;
+  audio?: unknown;
   workflow?: Record<string, unknown>;
 };
-const kind = z.enum(['image', 'video', 'frame', 'take']),
+const kind = z.enum(['image', 'video', 'frame', 'take', 'enhance']),
   requestId = z
     .string()
     .min(1)
@@ -55,6 +57,7 @@ const routes = {
   video: '/api/videos',
   frame: '/api/frame-edits',
   take: '/api/renders',
+  enhance: '/api/enhancements',
 } as const;
 const terminal = new Set(['succeeded', 'failed', 'canceled', 'expired', 'output_error']);
 const key = (type: Kind, id: string) =>
@@ -104,6 +107,7 @@ export function registerGenerationTools(context: {
       clip: value.clip,
       renderId: type === 'take' && value.state === 'succeeded' ? value.id : undefined,
       video: value.output ? base + value.output : undefined,
+      audio: value.audio ? `${base}${routes.enhance}/${value.id}/audio` : undefined,
       recipe:
         type === 'take'
           ? base + routes.take + '/' + value.id
@@ -164,6 +168,9 @@ export function registerGenerationTools(context: {
           'motion',
           'motion-transfer',
           'structure',
+          'upscale',
+          'interpolate',
+          'song',
         ])
         .optional(),
     }),
@@ -171,12 +178,13 @@ export function registerGenerationTools(context: {
       const workspace = await currentStudio();
       if (profile === 'text-video' && workspace.textVideoProtocol !== 1)
         throw Error('Restart the studio with text-to-video support.');
-      const [sources, images, videos, frames, takes] = await Promise.all([
+      const [sources, images, videos, frames, takes, enhancements] = await Promise.all([
         api<Clip[]>('/api/clips'),
         api<Generation[]>(routes.image),
         workspace.textVideoProtocol === 1 ? api<Generation[]>(routes.video) : Promise.resolve([]),
         api<Generation[]>(routes.frame),
         api<Generation[]>(routes.take),
+        api<Generation[]>(routes.enhance).catch(() => []),
       ]);
       const matches = (name: string) => name.toLowerCase().includes(query.toLowerCase()),
         name = (r: Generation) => r.request?.name || r.recipe?.name || r.request?.prompt || '';
@@ -192,6 +200,7 @@ export function registerGenerationTools(context: {
               ['video', videos],
               ['frame', frames],
               ['take', takes],
+              ['enhance', enhancements],
             ] as const
           ).flatMap(([type, records]) =>
             records
@@ -202,7 +211,7 @@ export function registerGenerationTools(context: {
           engine: profile ? await api<Engine>('/api/engine?pipeline=' + profile) : undefined,
           // Expected time per kind of job, from earlier runs here or the RTX 5080 reference.
           expected: estimateTable(
-            [...images, ...videos, ...frames, ...takes] as unknown as TimedJob[],
+            [...images, ...videos, ...frames, ...takes, ...enhancements] as unknown as TimedJob[],
             (key) => !key.startsWith('character'),
           ),
           // The same starters as the studio pickers. Merge one's settings into a
@@ -246,6 +255,13 @@ export function registerGenerationTools(context: {
     'Create a Qwen edited frame from a canonical studio source and optional subject reference. Keep the same requestId and inputs when rejoining; inspect the resulting image before using it as a video guide.',
     z.object({ requestId, request: frameEditRequestSchema }),
     async (input) => generate('frame', input.requestId, input.request),
+    false,
+  );
+  tool(
+    'aftertake_enhance',
+    'Upscale a studio video ×2 with SeedVR2, add in-between frames with RIFE for smooth 48 fps or slow motion, or compose a song with ACE-Step 1.5, as native ComfyUI workflows. Videos up to 10.7 seconds; upscaling takes up to 1280 pixels on the long side. Keep the same requestId and inputs to rejoin. A video result is a new studio clip for aftertake_use_source; a song result has an audio URL to import into Film.',
+    z.object({ requestId, request: z.union([enhanceRequestSchema, songRequestSchema]) }),
+    async (input) => generate('enhance', input.requestId, input.request),
     false,
   );
   tool(

@@ -1,0 +1,132 @@
+.enhance-tabs {
+  display: flex;
+  gap: 6px;
+  margin-top: 18px;
+}
+.enhance-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border: 1px solid #4a5056;
+  border-radius: 999px;
+  background: #1a1d20;
+  color: #c7ccd2;
+  font-size: 13px;
+}
+.enhance-tabs button[aria-selected='true'] {
+  border-color: #d5e991;
+  color: #f1f3f5;
+  background: #26301d;
+}
+.enhance-picture video {
+  width: 100%;
+  height: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  background: #000;
+}
+.enhance-song {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  color: #d5e991;
+}
+.enhance-song strong {
+  color: #f1f3f5;
+}
+.enhance-result {
+  display: grid;
+  gap: 4px;
+  margin-top: 12px;
+}
+.enhance-result small {
+  color: #b8bec5;
+  font-size: 12px;
+}
+.enhance-error {
+  color: #f0b3a3;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.enhance-history {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px;
+  margin-top: 14px;
+}
+.enhance-history button {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 7px;
+  align-items: center;
+  padding: 7px 9px;
+  border: 1px solid #3d4740;
+  border-radius: 5px;
+  background: #15191a;
+  color: #e6e8eb;
+  text-align: left;
+  font-size: 12px;
+}
+.enhance-history button[aria-pressed='true'] {
+  border-color: #d5e991;
+}
+.enhance-history span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.enhance-history small {
+  grid-column: 2;
+  color: #9aa3ab;
+}
+.enhance-operations {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.enhance-operations button {
+  display: grid;
+  gap: 4px;
+  align-content: start;
+  padding: 10px;
+  border: 1px solid #4a5056;
+  border-radius: 6px;
+  background: #1a1d20;
+  color: #e6e8eb;
+  text-align: left;
+}
+.enhance-operations button[aria-checked='true'] {
+  border-color: #d5e991;
+  box-shadow: 0 0 0 1px #d5e991;
+}
+.enhance-operations strong {
+  font-size: 13px;
+}
+.enhance-operations small {
+  font-size: 11px;
+  line-height: 1.45;
+  color: #b8bec5;
+}
+.enhance-starters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.enhance-starters button {
+  padding: 6px 11px;
+  border: 1px solid #4a5056;
+  border-radius: 999px;
+  background: #1a1d20;
+  color: #c7ccd2;
+  font-size: 12px;
+}
+.enhance-starters button[aria-pressed='true'] {
+  border-color: #d5e991;
+  color: #f1f3f5;
+}
+@media (max-width: 760px) {
+  .enhance-operations {
+    grid-template-columns: 1fr;
+  }
+}

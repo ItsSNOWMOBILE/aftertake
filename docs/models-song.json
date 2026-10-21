@@ -1,0 +1,11 @@
+[
+  {
+    "repository": "Comfy-Org/ace_step_1.5_ComfyUI_files",
+    "revision": "6707deb277e9e0907fd9c14ce6b6f1d695c6a3fc",
+    "path": "checkpoints/ace_step_1.5_turbo_aio.safetensors",
+    "category": "checkpoints",
+    "size": 10025478736,
+    "sha256": "67b0f43aa5c51c840bd0228e6a935d8ff416ec87e5df2fc0637da17a561252bc",
+    "license": "apache-2.0"
+  }
+]

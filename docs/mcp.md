@@ -83,6 +83,7 @@ root, including resolved symbolic links; remote media URLs are not accepted.
 | `aftertake_export_plan` | Exports through the native Film renderer using a persistent idempotency key. |
 | `aftertake_plan_status` | Rejoins the recorded plan and reads actual native export states after client reconnection. |
 | `aftertake_review_film` | Returns decoded export frames, timestamps, sample audio diagnostics and embedded-project verification. |
+| `aftertake_enhance` | Upscales a studio video ×2 (SeedVR2), adds in-between frames for smooth 48 fps or slow motion (RIFE), or composes a song (ACE-Step 1.5); rejoins by `requestId`. |
 | `aftertake_generation_workspace` | Lists canonical studio sources and actual generation records, the editable starters and the expected time for each kind of job; optionally checks a model profile without starting work. |
 | `aftertake_generate_image` | Starts or rejoins the native Z-Image Turbo workflow with a stable operation `requestId`. |
 | `aftertake_generate_video` | Starts or rejoins native LTX-2.5 text-to-video with optional generated sound; returns a completed source clip for Film. |

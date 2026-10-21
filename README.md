@@ -104,7 +104,7 @@ assemble it with narration and editable typography.
 | **Depth-finished stills** with native DA3 Small | **Tracked subject copies** with position, scale, rotation and mask controls | **Color and texture finishing** with exact before/after frame previews |
 | **Layered still compositions** from imported transparent images | **Shape and image masks**, clipping and 27 blend modes | **Selective HSL, master/RGB curves and 3D LUTs** shared with adjustment layers |
 
-Use the visual editor or connect an agent through **44 MCP tools**. Both work with
+Use the visual editor or connect an agent through **45 MCP tools**. Both work with
 the same local studio, persisted jobs and editable projects. Generation uses the
 official Comfy SDK and open-weight model workflows; editing existing footage and
 local narration can run on the CPU.
@@ -138,6 +138,12 @@ they run through Aftertake's existing Z-Image, LTX-2.5 and Qwen workflows.
 **Fourteen camera moves, one click.** Create video and Animate a frame open a
 moves gallery where each move is a small looping diagram: push, pull, pans,
 tilts, crane, truck, orbit, crash zoom, whip pan, handheld and dolly zoom.
+
+**Sharper, smoother, scored.** **Enhance** upscales a clip ×2 with SeedVR2,
+adds in-between frames with RIFE for smooth 48 fps or slow motion, and composes
+songs with ACE-Step 1.5, from style tags and optional lyrics, ready for the
+Film audio lanes. All three are native ComfyUI 0.41 workflows on your GPU, with
+no custom nodes.
 
 **Know the time before you render.** Create video, Create image, the frame
 editor, Render take and character replacement each show how long the job
@@ -269,7 +275,8 @@ node scripts/aftertake.mjs
 ```
 
 Choose any of `--video`, `--image`, `--frame-edit`, `--motion-transfer`,
-`--camera`, `--region-edit`, `--character-swap` and `--depth`, and add
+`--camera`, `--region-edit`, `--character-swap`, `--depth`, `--upscale`,
+`--interpolate` and `--song`, and add
 `--models-dir=PATH` to keep models on another disk. The text-to-video profile
 holds **41.67 GB** of model files. Setup and engine launch validate native CUDA
 precision, kernels and memory before allocating models; see
@@ -290,6 +297,9 @@ revisions, file sizes and SHA-256 hashes. Restart the engine after installation.
 | Motion transfer | `python scripts/download-models.py --motion-transfer` | [Motion transfer](docs/studio-guide.md#transfer-motion) |
 | Masked video editing | `python scripts/setup.py --inpaint` | [Adapter access and installation](docs/studio-guide.md#experimental-native-inpainting) |
 | Motion-control adapter | `python scripts/download-models.py --motion` | [Camera and motion guidance](docs/studio-guide.md#animate-a-frame) |
+| Upscale ×2 (SeedVR2 3B) | `python scripts/download-models.py --upscale` | [Enhance](docs/studio-guide.md#enhance-upscale-motion-and-songs) |
+| Smooth and slow motion (RIFE 4.26) | `python scripts/download-models.py --interpolate` | [Enhance](docs/studio-guide.md#enhance-upscale-motion-and-songs) |
+| Songs (ACE-Step 1.5) | `python scripts/download-models.py --song` | [Enhance](docs/studio-guide.md#enhance-upscale-motion-and-songs) |
 | Still-image depth effects | `python scripts/setup.py --depth-effects` | [Depth, light and atmosphere](docs/depth-effects.md) |
 
 Some profiles share model files. Sizes, dependencies and model terms are

@@ -4,7 +4,7 @@ import { open, mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 import path from 'node:path';
-import { computeFeatures, type ComputeFeature } from '../src/compute.js';
+import { computeFeatures, hardwareProfile, type ComputeFeature } from '../src/compute.js';
 import { requirements } from '../server/workflow.js';
 import { evaluateEngineCompatibility } from '../server/engine-compatibility.js';
 
@@ -149,7 +149,7 @@ async function main() {
             report !== null &&
             typeof report === 'object' &&
             Object.hasOwn(report, 'profile') &&
-            report.profile === feature,
+            report.profile === hardwareProfile(feature),
         )
       : hardwareValue;
     const evaluation = evaluateEngineCompatibility({

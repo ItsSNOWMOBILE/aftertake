@@ -1,0 +1,20 @@
+[
+  {
+    "repository": "Comfy-Org/SeedVR2",
+    "revision": "df48879708206a403d2a61acd55578c2e80fd233",
+    "path": "diffusion_models/seedvr2_3b_int8_convrot.safetensors",
+    "category": "diffusion_models",
+    "size": 3458259704,
+    "sha256": "c3dec8bcc5916843a8a858572970597462e1f2dc598d6dfd818f6cd40f53a157",
+    "license": "apache-2.0"
+  },
+  {
+    "repository": "Comfy-Org/SeedVR2",
+    "revision": "df48879708206a403d2a61acd55578c2e80fd233",
+    "path": "vae/seedvr2_ema_vae_fp16.safetensors",
+    "category": "vae",
+    "size": 501324814,
+    "sha256": "20678548f420d98d26f11442d3528f8b8c94e57ee046ef93dbb7633da8612ca1",
+    "license": "apache-2.0"
+  }
+]

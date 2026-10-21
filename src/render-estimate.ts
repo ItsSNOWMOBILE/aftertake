@@ -8,6 +8,9 @@ type Request = {
   quality?: string;
   resolution?: string;
   mode?: string;
+  operation?: string;
+  timing?: string;
+  multiplier?: number;
 };
 type Recipe = {
   pipeline?: string;
@@ -51,6 +54,12 @@ export function estimateKey(job: Pick<TimedJob, 'request' | 'recipe'>): string |
       return 'character-selection';
     case 'aftertake-character/1':
       return 'character';
+    case 'aftertake-enhance/1':
+      return request.operation === 'upscale'
+        ? 'enhance:upscale'
+        : `enhance:${request.timing}-x${request.multiplier}`;
+    case 'aftertake-song/1':
+      return 'song';
     default:
       return null;
   }

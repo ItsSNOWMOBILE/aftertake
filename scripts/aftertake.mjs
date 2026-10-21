@@ -28,6 +28,9 @@ const ENGINE_PROFILES = {
   'region-edit': ['setup', '--inpaint'],
   'character-swap': ['setup', '--character-swap'],
   depth: ['setup', '--depth-effects'],
+  upscale: ['download', '--upscale'],
+  interpolate: ['download', '--interpolate'],
+  song: ['download', '--song'],
 };
 const INSTALL = {
   python: {

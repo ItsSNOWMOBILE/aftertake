@@ -31,6 +31,9 @@ const featureNames: Record<string, string> = {
   'character-selection': 'Track a person',
   'character-swap': 'Replace a character',
   depth: 'Still-image depth effects',
+  upscale: 'Upscale video',
+  interpolate: 'Smooth and slow motion',
+  song: 'Make a song',
 };
 
 // The launcher flag that installs each tool's local model profile.
@@ -45,6 +48,9 @@ const setupFlags: Record<string, string> = {
   'character-selection': '--character-swap',
   'character-swap': '--character-swap',
   depth: '--depth',
+  upscale: '--upscale',
+  interpolate: '--interpolate',
+  song: '--song',
 };
 const setupCommand = (feature: string) =>
   setupFlags[feature]

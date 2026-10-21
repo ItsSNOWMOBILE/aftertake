@@ -1,0 +1,11 @@
+[
+  {
+    "repository": "Comfy-Org/frame_interpolation",
+    "revision": "219da3c9d8c357ceaf457fc1d5932c6e861b8dee",
+    "path": "frame_interpolation/rife_v4.26.safetensors",
+    "category": "frame_interpolation",
+    "size": 22674688,
+    "sha256": "151874592c877740e5db11522f4514df569eeafb0a0fcb2696f16e9e8d317c94",
+    "license": "mit"
+  }
+]

@@ -12,7 +12,20 @@ export const computeFeatures = [
   'character-selection',
   'character-swap',
   'depth',
+  'upscale',
+  'interpolate',
+  'song',
 ] as const;
+/**
+ * The engine's hardware preflight profile for each feature. Upscaling, frame
+ * interpolation and songs run native diffusion or flow models on the GPU with no
+ * LTX or H3 decoder contract, which the image profile checks.
+ */
+export function hardwareProfile(feature: (typeof computeFeatures)[number]) {
+  return feature === 'upscale' || feature === 'interpolate' || feature === 'song'
+    ? 'image-gen'
+    : feature;
+}
 
 export type ComputeFeature = (typeof computeFeatures)[number];
 export type ComputeProvider = 'local' | 'comfy-cloud' | 'managed-deployment';
