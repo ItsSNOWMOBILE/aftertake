@@ -4,42 +4,77 @@
   padding: 14px;
   background: #191c1f;
 }
-.image-controls .creative-recipe-picker > label,
-.frame-editor-controls .creative-recipe-picker > label {
+.creative-recipe-heading {
   display: block;
   color: #e6e8eb;
   font-size: 14px;
   font-weight: 600;
-  letter-spacing: 0;
-  margin-bottom: 9px;
+  margin-bottom: 10px;
 }
-.creative-recipe-row {
-  display: flex;
+.creative-recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
   gap: 8px;
-  flex-wrap: wrap;
 }
-.creative-recipe-row > select {
-  flex: 1 1 160px;
-  min-width: 0;
-  width: 100%;
-  min-height: 40px;
-  padding: 9px;
-  border: 1px solid #636c75;
-  border-radius: 4px;
-  background: #202326;
-  color: #f1f3f5;
-  font: inherit;
-  font-size: 14px;
-}
-.creative-recipe-row > button {
-  min-height: 40px;
-  padding: 9px 12px;
+.creative-recipe-card {
+  display: grid;
+  gap: 3px;
+  align-content: start;
+  padding: 0 0 9px;
+  overflow: hidden;
+  text-align: left;
   color: #e6e8eb;
+  background: #202326;
+  border: 1px solid #3f464c;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.creative-recipe-card:hover {
+  border-color: #8a9580;
+}
+.creative-recipe-card[aria-pressed='true'] {
+  border-color: #d5e991;
+  box-shadow: inset 0 0 0 1px #d5e991;
+}
+.creative-recipe-card:focus-visible {
+  outline: 2px solid #d5e991;
+  outline-offset: 2px;
+}
+.creative-recipe-card video,
+.creative-recipe-tile {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin-bottom: 5px;
+  color: #d5e991;
+}
+.creative-recipe-tile.tone-0 {
+  background: linear-gradient(135deg, #2b3a2a, #151b16);
+}
+.creative-recipe-tile.tone-1 {
+  background: linear-gradient(135deg, #2f2b3a, #16151b);
+}
+.creative-recipe-tile.tone-2 {
+  background: linear-gradient(135deg, #3a3029, #1b1714);
+}
+.creative-recipe-tile.tone-3 {
+  background: linear-gradient(135deg, #263540, #13181b);
+}
+.creative-recipe-card strong,
+.creative-recipe-card small {
+  padding: 0 9px;
+}
+.creative-recipe-card strong {
   font-size: 13px;
 }
-.creative-recipe-row > :focus-visible {
-  outline: 2px solid #d5e991;
-  outline-offset: 3px;
+.creative-recipe-card small {
+  color: #aab4bd;
+  font-size: 11px;
+}
+.creative-recipe-use {
+  margin-top: 10px;
 }
 .creative-recipe-picker > p,
 .creative-recipe-picker > small {

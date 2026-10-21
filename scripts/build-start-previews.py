@@ -1,4 +1,4 @@
-"""Cut the start screen's card previews from the repository's real outputs.
+"""Cut the start screen's and starter gallery's previews from real outputs.
 
 Each preview is a silent three-second loop at 640x360 with a poster frame, small
 enough to autoplay on the start screen. Before/after cards cut from the source to
@@ -16,6 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'public/start'
+STARTER_OUT = ROOT / 'public/starters'
 EX = ROOT / 'examples'
 SECONDS, WIDTH, HEIGHT = 3, 640, 360
 
@@ -28,6 +29,11 @@ CARDS = {
     'camera': [(EX / 'castle-pullback-v2/result.mp4', 0.6, 3)],
     'motion': [(EX / 'signal-v2/source.mp4', 0.6, 1.4), (EX / 'signal-v2/result.mp4', 2.0, 1.6)],
     'film': [(EX / 'then-comes-the-aftertake/film.mp4', 59.6, 3)],
+}
+# Starters with a real output made from them (both from the recorded proof run).
+STARTERS = {
+    'hero-banner': [(EX / 'then-comes-the-aftertake/proof/hero-banner.generated.png', 0, 3)],
+    'product-showcase': [(EX / 'then-comes-the-aftertake/proof/product-showcase.generated.mp4', 0.5, 3)],
 }
 LOOKS = {
     'warm-film': dict(preset='warm-film', lookStrength=1, halationStrength=.6, halationRadius=10, vignette=.35, contrast=.15),
@@ -85,8 +91,12 @@ def main():
         portrait = EX / 'depth-effects-v2/source.png'
         warm, noir = graded(portrait, 'warm-film', folder), graded(portrait, 'noir', folder)
         encode([(warm, 0, 1.5), (noir, 0, 1.5)], OUT / 'finish.mp4')
-    total = sum(path.stat().st_size for path in OUT.iterdir())
-    print(f'Wrote {len(CARDS) + 1} previews to {OUT.relative_to(ROOT)} ({total / 1e6:.1f} MB)')
+    STARTER_OUT.mkdir(parents=True, exist_ok=True)
+    for starter, segments in STARTERS.items():
+        encode(segments, STARTER_OUT / f'{starter}.mp4')
+    for folder in (OUT, STARTER_OUT):
+        total = sum(path.stat().st_size for path in folder.iterdir())
+        print(f'Wrote previews to {folder.relative_to(ROOT)} ({total / 1e6:.1f} MB)')
 
 
 if __name__ == '__main__':

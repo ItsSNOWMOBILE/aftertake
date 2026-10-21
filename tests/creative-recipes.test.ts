@@ -1,4 +1,5 @@
 import { test } from 'node:test';
+import { existsSync } from 'node:fs';
 import assert from 'node:assert/strict';
 import {
   applyFrameCreativeRecipe,
@@ -14,6 +15,7 @@ import {
 import { frameEditRequestSchema } from '../src/frame-edit.js';
 import { imageRequestSchema } from '../src/image-generation.js';
 import { videoRequestSchema } from '../src/video-generation.js';
+import { starterPreviewIds } from '../src/starter-previews.js';
 
 const image = imageRequestSchema.parse({
   format: 'aftertake-image/1',
@@ -204,4 +206,17 @@ test('frame starters retain the actual uploaded source, subject, trim and seed w
     undefined,
   );
   assert.throws(() => applyFrameCreativeRecipe(frame, 'missing'), /Unknown frame starter/);
+});
+
+test('gallery previews belong to real starters and ship their loop and poster', () => {
+  const ids = new Set(
+    [...imageCreativeRecipes, ...videoCreativeRecipes, ...frameCreativeRecipes].map(
+      (item) => item.id,
+    ),
+  );
+  for (const id of starterPreviewIds) {
+    assert(ids.has(id), `${id} is not a starter`);
+    for (const extension of ['mp4', 'jpg'])
+      assert(existsSync(new URL(`../public/starters/${id}.${extension}`, import.meta.url)));
+  }
 });

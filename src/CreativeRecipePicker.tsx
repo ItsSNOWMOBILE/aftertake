@@ -1,10 +1,40 @@
 import { useId, useState } from 'react';
+import { Clapperboard, ImageIcon, Wand2 } from 'lucide-react';
 import {
   frameCreativeRecipes,
   imageCreativeRecipes,
   videoCreativeRecipes,
 } from './creative-recipes';
+import { cinemaOptions } from './cinema';
+import { starterPreviewIds } from './starter-previews';
 import './creative-recipes.css';
+
+type Kind = 'image' | 'video' | 'frame';
+const icons = { image: ImageIcon, video: Clapperboard, frame: Wand2 };
+const capital = (text: string) => text[0].toUpperCase() + text.slice(1);
+
+/** A short factual line under each card: what the starter sets. */
+function facts(kind: Kind, id: string) {
+  if (kind === 'video') {
+    const recipe = videoCreativeRecipes.find((item) => item.id === id)!;
+    const movement = cinemaOptions.movement.find(
+      ([value]) => value === recipe.settings.cinema.movement,
+    )?.[1];
+    return `${movement} · ${recipe.settings.seconds} s${recipe.settings.sound ? ' · sound' : ''}`;
+  }
+  if (kind === 'image') {
+    const recipe = imageCreativeRecipes.find((item) => item.id === id)!;
+    const direction = recipe.settings.direction;
+    return [
+      capital(recipe.settings.style),
+      direction && direction.shot !== 'none' && direction.shot,
+    ]
+      .filter(Boolean)
+      .join(' · ');
+  }
+  const recipe = frameCreativeRecipes.find((item) => item.id === id)!;
+  return recipe.requiresSubject ? 'Uses your subject image' : 'Keeps your frame';
+}
 
 export default function CreativeRecipePicker({
   kind,
@@ -12,7 +42,7 @@ export default function CreativeRecipePicker({
   disabled = false,
   onLoad,
 }: {
-  kind: 'image' | 'video' | 'frame';
+  kind: Kind;
   hasSubject?: boolean;
   disabled?: boolean;
   onLoad: (id: string) => void;
@@ -27,40 +57,60 @@ export default function CreativeRecipePicker({
   const recipe = recipes.find((item) => item.id === selected);
   const needsSubject =
     recipe && 'requiresSubject' in recipe && recipe.requiresSubject && !hasSubject;
+  const Icon = icons[kind];
+  const preview = (starter: string, extension: 'mp4' | 'jpg') =>
+    `${import.meta.env.BASE_URL}starters/${starter}.${extension}`;
   return (
     <div className="creative-recipe-picker">
-      <label htmlFor={id}>Start with a recipe</label>
-      <div className="creative-recipe-row">
-        <select
-          id={id}
-          value={selected}
-          disabled={disabled}
-          aria-describedby={`${id}-description`}
-          onChange={(event) => setSelected(event.target.value)}
-        >
-          <option value="">Choose a starter…</option>
-          {recipes.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.label}
-            </option>
-          ))}
-        </select>
-        <button
-          type="button"
-          className="button"
-          disabled={disabled || !recipe || !!needsSubject}
-          onClick={() => recipe && onLoad(recipe.id)}
-        >
-          Load starter
-        </button>
+      <span className="creative-recipe-heading" id={`${id}-heading`}>
+        Start with a recipe
+      </span>
+      <div className="creative-recipe-grid" role="group" aria-labelledby={`${id}-heading`}>
+        {recipes.map((item, index) => (
+          <button
+            type="button"
+            key={item.id}
+            className="creative-recipe-card"
+            aria-pressed={item.id === selected}
+            disabled={disabled}
+            onClick={() => setSelected(item.id === selected ? '' : item.id)}
+          >
+            {starterPreviewIds.has(item.id) ? (
+              <video
+                aria-hidden="true"
+                src={preview(item.id, 'mp4')}
+                poster={preview(item.id, 'jpg')}
+                muted
+                loop
+                playsInline
+                autoPlay
+                preload="metadata"
+              />
+            ) : (
+              <span className={`creative-recipe-tile tone-${index % 4}`} aria-hidden="true">
+                <Icon size={22} />
+              </span>
+            )}
+            <strong>{item.label}</strong>
+            <small>{facts(kind, item.id)}</small>
+          </button>
+        ))}
       </div>
-      <p id={`${id}-description`}>
+      <p id={`${id}-description`} aria-live="polite">
         {needsSubject
           ? 'Choose a subject reference below to use this starter.'
-          : recipe?.description}
-        {!recipe &&
-          'Load an editable prompt and look. Review the settings, then generate when ready.'}
+          : recipe?.description ||
+            'Pick a starter to load an editable prompt and look. Review it, then generate.'}
       </p>
+      <button
+        type="button"
+        className="button creative-recipe-use"
+        disabled={disabled || !recipe || !!needsSubject}
+        aria-describedby={`${id}-description`}
+        onClick={() => recipe && onLoad(recipe.id)}
+      >
+        Use this starter
+      </button>
       <small>
         {
           {
