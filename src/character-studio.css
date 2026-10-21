@@ -465,6 +465,18 @@
   flex: 0 0 auto;
   margin-top: 2px;
 }
+.character-swap-another {
+  width: 100%;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 17px;
+  border-color: #748f57 !important;
+  color: #c7e99e !important;
+  font-weight: 600;
+}
+.character-swap-another + .character-output-actions {
+  margin-top: 9px;
+}
 .character-output-actions {
   display: flex;
   flex-wrap: wrap;

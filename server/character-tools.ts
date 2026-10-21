@@ -86,6 +86,7 @@ export function registerCharacterTools({
             'Optionally add up to seven identityReferences from different original photos of the same person. Each has its own image reference and optional faceBox. Supporting photos provide identity detail only; they do not control clothing or motion. Extra references use more memory and do not guarantee better likeness.',
             'Call aftertake_replace_character with the inspected mask hash and a separate stable requestId. Timeouts require status/reconciliation, not a new request.',
             'Inspect the resulting clip for likeness, hands, occlusions and continuation joins. Technical checks do not certify appearance.',
+            'To swap several people in one shot, replace one person, then track the next person in that completed take: use its clip as the selection source with trimStart 0. Each pass composites only inside its own mask, so people already swapped stay as they are unless the masks overlap. Give each pass its own requestId.',
             'A completed take is a studio clip. Inspect or promote its clipId with the existing studio-to-film tools, then edit it in the same film plan.',
           ],
         },

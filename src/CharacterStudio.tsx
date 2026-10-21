@@ -9,12 +9,14 @@ import {
   RotateCcw,
   ScanFace,
   Upload,
+  UserPlus,
   X,
 } from 'lucide-react';
 import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
 import { findImportedClip, type Clip, type Engine } from './domain';
 import {
   characterBusy,
+  characterChain,
   characterMaxIdentityReferences,
   characterRequestSchema,
   characterSelectionKey,
@@ -184,6 +186,7 @@ export default function CharacterStudio({
   const resultSelection = viewed
     ? jobs.find((j) => j.id === (viewed.request as CharacterRequest).selectionId)
     : undefined;
+  const chain = viewed ? characterChain(viewed, jobs) : [];
   const sourceReview = jobs.find((j) => j.id === sourceReviewId) || selection;
   const sourceRange = sourceReview?.request as CharacterSelectionRequest | undefined;
   const request: CharacterRequest | undefined =
@@ -248,6 +251,32 @@ export default function CharacterStudio({
     setResultId('');
     setView('frame');
     setError('');
+  }
+  /** Make a finished take the source, so the next person can be tracked and replaced in it. */
+  function swapAnother(job: CharacterJob) {
+    const clip = job.clip!,
+      earlier = jobs.find((item) => item.id === (job.request as CharacterRequest).selectionId),
+      people = characterChain(job, jobs).length;
+    onImport(clip);
+    setSourceId(clip.id);
+    setTrimStart(0);
+    setDuration(Math.min(15, clip.duration));
+    setPositive([]);
+    setNegative([]);
+    setResolution((earlier?.request as CharacterSelectionRequest | undefined)?.resolution || '480');
+    setSelectionId('');
+    setSourceReviewId('');
+    setResultId('');
+    setReferenceId('');
+    setFaceBox(undefined);
+    setIdentityReferences([]);
+    setName(`${(job.request as CharacterRequest).name}, person ${people + 1}`.slice(0, 100));
+    setView('frame');
+    setError('');
+    setNotice(
+      `Person ${people + 1}: this take is now the source. Mark the next person, track them, then choose their photo. Everything outside the new person's mask stays as it is, including the ${people === 1 ? 'person' : `${people} people`} you already swapped.`,
+    );
+    sourceStep.current?.scrollIntoView({ block: 'start' });
   }
   function useTrackedSelection(job: CharacterJob) {
     const saved = restoreTrackedSelection(job, clips);
@@ -1130,6 +1159,14 @@ export default function CharacterStudio({
               )}
             {view === 'result' && viewed?.clip && (
               <>
+                <button
+                  className="button character-swap-another"
+                  disabled={locked || browserDemo}
+                  onClick={() => swapAnother(viewed)}
+                >
+                  <UserPlus size={14} />
+                  Swap another person in this shot
+                </button>
                 <div className="character-output-actions">
                   <button
                     className="button"
@@ -1184,8 +1221,10 @@ export default function CharacterStudio({
                 </div>
                 <p className="character-hint">
                   {viewed.clip.width} × {viewed.clip.height} · 24 fps · seed{' '}
-                  {(viewed.request as CharacterRequest).seed}. Review identity, hands and motion
-                  before using this take.
+                  {(viewed.request as CharacterRequest).seed}.{' '}
+                  {chain.length > 1 &&
+                    `${chain.length} people swapped in this shot, one pass each, starting from “${(chain[0].request as CharacterRequest).name}”. `}
+                  Review identity, hands and motion before using this take.
                 </p>
                 <button className="button" disabled={locked} onClick={() => reuse(viewed)}>
                   <RotateCcw size={13} />

@@ -9,6 +9,8 @@ import {
   characterPrompt,
   parseCharacterSelectionInfo,
   characterMaxIdentityReferences,
+  characterChain,
+  type CharacterJob,
 } from '../src/character.js';
 import { registerCharacterTools } from '../server/character-tools.js';
 import { characterRouter } from '../server/characters.js';
@@ -81,6 +83,47 @@ test('character selection binds the actual source, selected range and points', (
   ])
     assert.notEqual(characterSelectionKey(selection), characterSelectionKey(changed));
 });
+test('a take tracked in an earlier take counts every person swapped in the shot', () => {
+  const job = (fields: Partial<CharacterJob>) =>
+    ({
+      id: randomUUID(),
+      state: 'succeeded',
+      progress: 1,
+      createdAt: '',
+      updatedAt: '',
+      workflow: {},
+      ...fields,
+    }) as CharacterJob;
+  const take = (selected: CharacterJob, sha: string, name: string) =>
+    job({
+      kind: 'replacement',
+      request: { ...request, name, selectionId: selected.id },
+      clip: { ...source, id: randomUUID(), sha256: sha.repeat(64), duration: 8 },
+    });
+  const firstSelection = job({ kind: 'selection', request: selection });
+  const first = take(firstSelection, 'c', 'First person');
+  const secondSelection = job({
+    kind: 'selection',
+    request: { ...selection, clip: first.clip!, trimStart: 0 },
+  });
+  const second = take(secondSelection, 'd', 'Second person');
+  const thirdSelection = job({
+    kind: 'selection',
+    request: { ...selection, clip: second.clip!, trimStart: 0 },
+  });
+  const third = take(thirdSelection, 'e', 'Third person');
+  const jobs = [third, thirdSelection, second, secondSelection, first, firstSelection];
+  assert.deepEqual(
+    characterChain(third, jobs).map((item) => item.id),
+    [first.id, second.id, third.id],
+  );
+  assert.deepEqual(characterChain(first, jobs), [first]);
+  assert.deepEqual(characterChain(firstSelection, jobs), []);
+  // A failed earlier pass made no picture, so it cannot be part of the shot.
+  const failed = jobs.map((item) => (item === first ? { ...first, state: 'failed' } : item));
+  assert.equal(characterChain(third, failed).length, 2);
+});
+
 test('identity focus uses the actual photo and keeps face/wardrobe references distinct', () => {
   assert.ok(characterRequestSchema.safeParse(request).success);
   assert.match(characterPrompt(request), /unmodified crop/);

@@ -126,6 +126,36 @@ export const characterTerminal = new Set([
   'output_error',
 ]);
 export const characterBusy = (job: CharacterJob) => !characterTerminal.has(job.state);
+/**
+ * The replacements that made this take, oldest first. Each pass composites only
+ * inside its own mask, so tracking the next person in a finished take swaps
+ * several people in one shot.
+ */
+export function characterChain(job: CharacterJob, jobs: CharacterJob[]) {
+  const chain: CharacterJob[] = [];
+  const earlier = (take: CharacterJob) => {
+    const selectionId = (take.request as CharacterRequest).selectionId,
+      selection = jobs.find((item) => item.id === selectionId && item.kind === 'selection'),
+      source = (selection?.request as CharacterSelectionRequest | undefined)?.clip;
+    return source
+      ? jobs.find(
+          (item) =>
+            item.kind === 'replacement' &&
+            item.state === 'succeeded' &&
+            item.clip?.sha256 === source.sha256,
+        )
+      : undefined;
+  };
+  for (
+    let take: CharacterJob | undefined = job;
+    take?.kind === 'replacement';
+    take = earlier(take)
+  ) {
+    if (chain.includes(take)) break;
+    chain.unshift(take);
+  }
+  return chain;
+}
 export function characterCanvasLimit(r: Pick<CharacterSelectionRequest, 'resolution'>) {
   return r.resolution === '768' ? 1000000 : 500000;
 }

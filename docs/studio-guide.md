@@ -108,6 +108,16 @@ part of the edited area, and final video encoding can change pixel values.
 The [Hotel Lobby walkthrough](../examples/hotel-lobby/) includes the raw H3
 output and the separately executed native Comfy finish for comparison.
 
+**Several people in one shot.** When a take finishes, **Swap another person in
+this shot** makes that take the source, keeps its working resolution and clears
+the points, photo and selection. Mark the next person, track them and choose
+their photo. Because each pass composites only inside its own tracked mask, the
+people you already swapped stay as they are; only where two masks overlap is the
+earlier result regenerated. The result notes how many people were swapped and
+which take the chain started from. Each pass is a normal take with its own
+recipe, so any step can be reused or redone. Agents follow the same chain by
+tracking in the completed take's clip.
+
 The character workspace includes take history, source/result review, reusable
 recipes, MP4 downloads and a Film handoff. **Continue in ComfyUI** exports the
 actual executed API graph, lossless tracked mask and prepared source; supply

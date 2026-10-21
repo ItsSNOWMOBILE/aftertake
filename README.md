@@ -82,6 +82,10 @@ The [executed workflows, settings and editable film](examples/hotel-lobby/README
 are included. Source performance: **COLORS · Quavo & Takeoff, “HOTEL LOBBY” (2022)**;
 the short demonstration is silent apart from original local narration.
 
+**Several people, one shot.** After a take finishes, **Swap another person in
+this shot** tracks the next person in that take. Each pass changes only the
+pixels inside its own mask, so the people you already swapped stay as they are.
+
 ## From the first prompt to the final cut
 
 Aftertake brings generation and editing into one local workspace. Start with words,
