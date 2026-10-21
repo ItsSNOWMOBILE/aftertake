@@ -1,0 +1,20 @@
+{
+  "format": "aftertake-native-frame-audit/1",
+  "frames": 73,
+  "fps": 24,
+  "canvas": [
+    1344,
+    736
+  ],
+  "selectedNativeFrames": [
+    0,
+    24,
+    48,
+    72
+  ],
+  "regularClock": true,
+  "consecutiveExactDuplicateFrames": [],
+  "source": "prepared-source.mp4",
+  "after": "native-result.mp4",
+  "note": "Frame clock/uniqueness and mask boxes are measured. Visual identity, boundary and motion verdict is separate. No generative editing or pixel manipulation applied to the videos."
+}

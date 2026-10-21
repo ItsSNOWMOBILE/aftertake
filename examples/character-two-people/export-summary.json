@@ -1,0 +1,27 @@
+{
+  "format": "aftertake-ui-character-evidence/1",
+  "takeId": "d41b54b2-d49b-40e2-97dc-0aea5069ec0c",
+  "selectionId": "cae5152d-c3d9-4bec-8a44-775c41efaa57",
+  "selectionSeconds": 38.585,
+  "replacementSeconds": 629.541,
+  "repaired": false,
+  "nativeCanvas": [
+    1344,
+    736
+  ],
+  "nativeDuration": 3.0416666666666665,
+  "exportMethod": "Read-only fetch of existing app records/media; actual UI action provenance must be supplied by recordings/screenshots.",
+  "requiredRemaining": [
+    "chain-screenshot.png not captured: computer-use session interrupted"
+  ],
+  "referenceGenerationSeconds": 36.849,
+  "visualValidation": "failed; see visual-review.json",
+  "nativeReviewFrames": [
+    0,
+    24,
+    48,
+    72
+  ],
+  "delivery": "Normal Aftertake Film720p export and matched before are complete",
+  "frozen": true
+}

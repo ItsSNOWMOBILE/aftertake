@@ -1,0 +1,25 @@
+{
+  "name": "Two people swapped · before-720p",
+  "aspect": "landscape",
+  "resolution": "720p",
+  "shots": [
+    {
+      "assetId": "fb8218f9-f930-45e8-83c9-267b15790911",
+      "start": 0,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    }
+  ],
+  "titles": [],
+  "graphics": [],
+  "audio": [],
+  "sourceVolume": 1,
+  "normalizeAudio": false
+}

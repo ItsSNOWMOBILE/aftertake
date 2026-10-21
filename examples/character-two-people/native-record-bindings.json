@@ -1,0 +1,33 @@
+{
+  "format": "aftertake-native-record-bindings/1",
+  "recordBytesPreserved": true,
+  "redactions": [],
+  "note": "Exact native record bytes are preserved. Historical ancestry records remain in their existing neighboring example and are referenced by relative paths; no duplicate historical files are included here. Derived request/graph summaries are separate files.",
+  "files": [
+    {
+      "path": "render.json",
+      "sha256": "786da55ae05c542aa02b1a07f00337f83c04ae848e286f1af94ea7f25749091f",
+      "bytes": 18120
+    },
+    {
+      "path": "selection-render.json",
+      "sha256": "c7492b4844ba1498af0ef797f995ab88608cf542f2c5cc976aa20dd1ac728711",
+      "bytes": 6550
+    },
+    {
+      "path": "reference-generation.json",
+      "sha256": "86fe0cfb47a7b7c4c9534f55e146627ad3ec904c3568f2116b6eb390dc0dfee4",
+      "bytes": 3653
+    },
+    {
+      "path": "../character-h3-high-v2/render.json",
+      "sha256": "a635a42b3d9a8b12beef30672b8d5c8d6a443c1d5c303c997f2f4b3ab1593cb2",
+      "bytes": 19458
+    },
+    {
+      "path": "../character-h3-high-v2/selection-render.json",
+      "sha256": "0de0bfb8efc510ecff762c610b8d57a719e72f3beaa096e444f785eecac5ff96",
+      "bytes": 6477
+    }
+  ]
+}

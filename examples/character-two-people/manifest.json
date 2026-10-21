@@ -1,0 +1,52 @@
+{
+  "format": "aftertake-character-two-person-test/1",
+  "status": "technical-completion-visual-failure",
+  "source": "source.mp4",
+  "reference": "reference.png",
+  "selectionId": "cae5152d-c3d9-4bec-8a44-775c41efaa57",
+  "replacementId": "d41b54b2-d49b-40e2-97dc-0aea5069ec0c",
+  "twoCompletedPasses": 2,
+  "bothPeopleLookRightInEveryFrame": false,
+  "sourceOrigin": "Fictional generated rooftop and fictional reference portraits; pass1 preserved from existing open example.",
+  "nativeOutput": {
+    "path": "native-result.mp4",
+    "sha256": "4e120b5ae89ceaa1ff706de3956f9b82927c0d02b5e8e7ff556660897f94b1ce",
+    "width": 1344,
+    "height": 736,
+    "frames": 73,
+    "fps": 24
+  },
+  "delivery": {
+    "path": "result.mp4",
+    "sha256": "2f0ddd50c9d4417f5f079499c94d44ffa696ccfe250b7233995d741b8cf2e855",
+    "width": 1280,
+    "height": 720,
+    "frames": 73,
+    "fps": 24,
+    "method": "Normal Aftertake Film API encoding, identical matched-before transform",
+    "sourceVolume": 1,
+    "normalizeAudio": false
+  },
+  "observedTiming": {
+    "selectionAPISeconds": 38.585,
+    "replacementAPISeconds": 629.541,
+    "selectionEngineSeconds": 36.991,
+    "replacementEngineSeconds": 628.346,
+    "referenceAPISeconds": 36.849,
+    "referenceEngineSeconds": null
+  },
+  "technicalChecks": {
+    "nativeAudioAndClock": true,
+    "deliveryAudioAndClock": true
+  },
+  "nativeRecordBindings": "native-record-bindings.json",
+  "visualReview": "visual-review.json",
+  "modelProvenance": "models.json",
+  "lineage": "chain-evidence.json",
+  "chainScreenshot": {
+    "path": "chain-screenshot.png",
+    "state": "not-captured",
+    "reason": "Computer-use session interrupted; actual DOM count2 separately verified."
+  },
+  "replay": "Import source/reference, rebind local clip/selection IDs, track using saved points at768, review mask, then run saved default request seed610202. To reconstruct UI ancestry from scratch first run the linked first-pass example. No hidden GPU rerender or hand-edited composite is included."
+}

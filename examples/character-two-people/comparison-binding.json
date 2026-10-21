@@ -1,0 +1,19 @@
+{
+  "format": "aftertake-matched-comparison/1",
+  "originalSource": "source.mp4",
+  "preparedSource": "prepared-source.mp4",
+  "before": "before-720p.mp4",
+  "after": "result.mp4",
+  "beforeSha256": "383f9ddf9f41ae5d448cc5de4c1cd7f95461cebee229253ebf79200c45201d29",
+  "afterSha256": "2f0ddd50c9d4417f5f079499c94d44ffa696ccfe250b7233995d741b8cf2e855",
+  "framing": {
+    "zoom": 1,
+    "endZoom": 1,
+    "x": 0.5,
+    "y": 0.5,
+    "fit": "cover"
+  },
+  "sourceVolume": 1,
+  "normalizeAudio": false,
+  "note": "Matched720p cover exports use the same native canvas and transform. Actual native and original imported source are retained separately."
+}

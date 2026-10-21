@@ -1,0 +1,25 @@
+{
+  "name": "Two people swapped · delivery-720p",
+  "aspect": "landscape",
+  "resolution": "720p",
+  "shots": [
+    {
+      "assetId": "dc1d25f5-7cec-4ef6-8d7a-e1aaac910cf1",
+      "start": 0,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    }
+  ],
+  "titles": [],
+  "graphics": [],
+  "audio": [],
+  "sourceVolume": 1,
+  "normalizeAudio": false
+}

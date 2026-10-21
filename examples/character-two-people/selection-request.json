@@ -1,0 +1,32 @@
+{
+  "format": "aftertake-character-selection/1",
+  "clip": {
+    "id": "15777e14-afdd-4721-ac13-f1be8e8d269f",
+    "name": "native-result.mp4",
+    "sha256": "b47c2faa8dafc83f9d78a90bfda866b075a7ab1268abc5a8d923ff5d49eaf03c",
+    "width": 1344,
+    "height": 736,
+    "duration": 3.0416666666666665,
+    "url": "/media/15777e14-afdd-4721-ac13-f1be8e8d269f.mp4",
+    "hasAudio": true
+  },
+  "trimStart": 0,
+  "duration": 3.0416666666666665,
+  "positive": [
+    {
+      "x": 0.24999999999999978,
+      "y": 0.31999999999999984
+    },
+    {
+      "x": 0.22999999999999976,
+      "y": 0.45999999999999996
+    }
+  ],
+  "negative": [
+    {
+      "x": 0.5,
+      "y": 0.42999999999999994
+    }
+  ],
+  "resolution": "768"
+}

@@ -82,7 +82,7 @@ export const referenceSeconds: Record<string, number[]> = {
   'video:final': [84],
   'video:final-720p': [117, 117, 119, 120, 120, 122, 123, 123, 123, 125, 125, 125, 126],
   image: [10, 10, 10, 10],
-  'image-720p': [28, 28, 28, 28, 28, 28, 28, 28, 30, 45],
+  'image-720p': [28, 28, 28, 28, 28, 28, 28, 28, 30, 37, 45],
   'frame:fast': [39, 39, 47, 47, 47],
   'frame:detail': [148, 199],
   'take:cinema:final': [73, 83, 83, 85, 89, 91],
@@ -91,8 +91,8 @@ export const referenceSeconds: Record<string, number[]> = {
   'take:inpaint:final-720p': [206],
   'take:motion-transfer:final': [137, 140, 195, 196, 197, 296],
   'take:motion-transfer:final-720p': [3142],
-  'character-selection': [14, 17, 21, 288],
-  character: [214, 328, 381],
+  'character-selection': [14, 17, 21, 39, 288],
+  character: [214, 328, 381, 630],
 };
 export const referenceGpu = 'RTX 5080';
 
