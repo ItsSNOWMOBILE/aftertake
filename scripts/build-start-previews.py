@@ -23,8 +23,8 @@ SECONDS, WIDTH, HEIGHT = 3, 640, 360
 # The finished film is a release download, not part of the repository.
 FILM = EX / 'then-comes-the-aftertake/film.mp4'
 FILM_URL = ('https://github.com/ItsSNOWMOBILE/aftertake/releases/download/'
-            'then-comes-the-aftertake-2026-10-21/then-comes-the-aftertake.mp4')
-FILM_SHA256 = '824531b63c81b750a2ed3a7ce8e6cdf38beacab3b5917880201da317acfa286d'
+            'then-comes-the-aftertake-2026-10-22/then-comes-the-aftertake.mp4')
+FILM_SHA256 = 'f80e3b10c57755e3f7833e66adc96a3011fb97b60c13dc4d460e2f7f789f617d'
 
 # card id -> segments of (file, start seconds, length seconds); stills get a slow push.
 CARDS = {

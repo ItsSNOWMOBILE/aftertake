@@ -1,0 +1,506 @@
+{
+  "format": "aftertake-film-sharpening/1",
+  "date": "2026-10-22",
+  "film": {
+    "sha256": "f80e3b10c57755e3f7833e66adc96a3011fb97b60c13dc4d460e2f7f789f617d",
+    "bytes": 56179229,
+    "frames": 2243,
+    "seconds": 93.458,
+    "size": [
+      1920,
+      1080
+    ],
+    "previousSha256": "824531b63c81b750a2ed3a7ce8e6cdf38beacab3b5917880201da317acfa286d"
+  },
+  "how": "Every generated plate below 1080p was upscaled x2 with SeedVR2 3B through Aftertake's Upscale studio, switched to Comfy Cloud in Render setup (Standard plan). The seven scene projects in project/ were re-rendered unchanged through the Film API with each plate swapped for its upscale, then joined with the released soundtrack. Titles, timing, transitions and the edit are identical.",
+  "plates": [
+    {
+      "plate": "examples/agent-edit/result.mp4",
+      "sourceSha256": "69d709f353879959a0ba6c3183e3d1b69ab08d2237584c0dc0ab7c069369a4f1",
+      "sourceSize": [
+        720,
+        1280
+      ],
+      "outputSha256": "6ff0c6ad66dd04272009e8c819d41d9e940cd79ceb11d1d393d2df685565cb5d",
+      "outputSize": [
+        1440,
+        2560
+      ],
+      "secondsSubmitToReady": 430,
+      "cloudJobId": "3e39a382-1b86-43ed-816d-d9d01e345f0b",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/castle-pullback-v2/result.mp4",
+      "sourceSha256": "34825e59be74dc16ef3db45f6caa01aa86809eefc4403ca07528ae1b0d159682",
+      "sourceSize": [
+        1280,
+        720
+      ],
+      "outputSha256": "2838265ffccd8a771c62c034a70acd26ba9b891fd1cda71e7b0b447912ed32ee",
+      "outputSize": [
+        2560,
+        1440
+      ],
+      "secondsSubmitToReady": 280,
+      "cloudJobId": "1f634c36-b7f5-434c-a1c7-42cff6689829",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/character-h3-high-v2/before-720p.mp4",
+      "sourceSha256": "eb64929622b5fa1041273007a2d47df29487e802488c66c36dedae134b124c16",
+      "sourceSize": [
+        1280,
+        720
+      ],
+      "outputSha256": "85fc119ed148e38459cafb485a30ced6810bed1232742718887c5adf3f65478b",
+      "outputSize": [
+        2560,
+        1440
+      ],
+      "secondsSubmitToReady": 12,
+      "cloudJobId": "a5c5ce9f-7221-4ab3-bc22-3d23cb12124e",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/character-h3-high-v2/result.mp4",
+      "sourceSha256": "70707ba40ff1b4324c5e2875fedab8853a56910625d3b36d61c7de296126266e",
+      "sourceSize": [
+        1280,
+        720
+      ],
+      "outputSha256": "9e0d333469f077496ba481e42a00fd92feeb9597d4e214080ad3841fd991ca97",
+      "outputSize": [
+        2560,
+        1440
+      ],
+      "secondsSubmitToReady": 202,
+      "cloudJobId": "6619b373-8269-4727-a39c-1437fcdb52be",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/character-h3-high-v2/source.mp4",
+      "sourceSha256": "ec8ecb736b250eea4c8236c549c901bddf9931576e70deb29a17c03b50e2111b",
+      "sourceSize": [
+        1280,
+        720
+      ],
+      "outputSha256": "c37875d9e58c26ba0722f06590093c23413562e228ccc2f6de453ec3df7b91aa",
+      "outputSize": [
+        2560,
+        1440
+      ],
+      "secondsSubmitToReady": 328,
+      "cloudJobId": "0d2af5fe-2788-4c04-ab01-f8833729e448",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/coastal-kingdom/result.mp4",
+      "sourceSha256": "e3373be04dce7bb375284939bd12a06d07e8033732c41f5c80c73d154425fb99",
+      "sourceSize": [
+        768,
+        432
+      ],
+      "outputSha256": "b53b3746265e272f657664d9b5e88303c44cfd422417145d00c9b5e886980451",
+      "outputSize": [
+        1536,
+        864
+      ],
+      "secondsSubmitToReady": 105,
+      "cloudJobId": "c605fe9a-a85d-4c17-abe5-f1036c2fd60d",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/coastal-kingdom/source.mp4",
+      "sourceSha256": "5029ea3c92f7fd79fe154116804bb12c76b7b88669d40980443813ac62f2b88b",
+      "sourceSize": [
+        768,
+        432
+      ],
+      "outputSha256": "b797629f1362af315eee50b40573cf9b4650ee0265cab0652d68978ef9bae2da",
+      "outputSize": [
+        1536,
+        864
+      ],
+      "secondsSubmitToReady": 108,
+      "cloudJobId": "e9f5db86-f893-4250-afd1-c1fc32eed222",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/crystal-forest/result.mp4",
+      "sourceSha256": "58466390b52c27ef59f6d71d86be7e308b93db65f016bcdf60d93a696caae830",
+      "sourceSize": [
+        768,
+        432
+      ],
+      "outputSha256": "ed55fde65b03d587f2d86c38b75d7809a86d0476d973761ec907e144b67c9da4",
+      "outputSize": [
+        1536,
+        864
+      ],
+      "secondsSubmitToReady": 113,
+      "cloudJobId": "922ef589-805b-4ede-ac61-d7686f549892",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/golden-falls/result.mp4",
+      "sourceSha256": "363739a46445bc504f8042277bd8cff90aae7db7c6641371f9016a318e88fd98",
+      "sourceSize": [
+        768,
+        432
+      ],
+      "outputSha256": "3eb5920e696ef49e5c43663208e414a3340d50181f6fe1b7d7c663919cd4710a",
+      "outputSize": [
+        1536,
+        864
+      ],
+      "secondsSubmitToReady": 120,
+      "cloudJobId": "e9b7cc63-217c-4c0f-aec4-63084b1b25bd",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/golden-falls/source.mp4",
+      "sourceSha256": "b56ae4820886f0e33e118604e107b6fcfc34c38c51b732203f52285476912a57",
+      "sourceSize": [
+        768,
+        432
+      ],
+      "outputSha256": "046ba93729665d35266c2085b01e85f80a6c9d7bc49629f53df527269205350c",
+      "outputSize": [
+        1536,
+        864
+      ],
+      "secondsSubmitToReady": 121,
+      "cloudJobId": "11b78f16-b939-47af-aa5d-379b4444124b",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/guided-pullback/result.mp4",
+      "sourceSha256": "3fb2a043f2b9d450d4aede98b78004158357292ee1d7b8fbf0a288e92943abd4",
+      "sourceSize": [
+        768,
+        432
+      ],
+      "outputSha256": "a11e7995c7c9c116386398cee1f469e1df0ec01b8d170c428fda4e030be8c30e",
+      "outputSize": [
+        1536,
+        864
+      ],
+      "secondsSubmitToReady": 96,
+      "cloudJobId": "982efdcd-5b63-4008-9f16-f7c80733a320",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/observatory/result.mp4",
+      "sourceSha256": "213a657b5fc69de4fe54deb1962de42e64d93ac03bb751a0e8c614a85fac01b2",
+      "sourceSize": [
+        768,
+        512
+      ],
+      "outputSha256": "69caf01edadee98b5023131cecd27bef85ce7e70019e2c97fb0478bf1c054c5a",
+      "outputSize": [
+        1536,
+        1024
+      ],
+      "secondsSubmitToReady": 124,
+      "cloudJobId": "e06e5a7a-de4d-4635-80bb-69a7ff0de498",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/portal-v2/result.mp4",
+      "sourceSha256": "ae783430aafebd577dda2f20add72ebfa11fddcf338d188a61628a1649be73a2",
+      "sourceSize": [
+        1280,
+        720
+      ],
+      "outputSha256": "52e12e0c39ab3c0a0bcc71f6b7e4656c57d60dd4dc7b24bd2186a6fd3d948462",
+      "outputSize": [
+        2560,
+        1440
+      ],
+      "secondsSubmitToReady": 251,
+      "cloudJobId": "b4fb56bd-c1f8-4370-8077-aed12f77e2d6",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/portal-v2/source.mp4",
+      "sourceSha256": "ab694e2d3f5f542b8cf0abf099bf3e8d7fd7b172718012a696bb381499ef2d86",
+      "sourceSize": [
+        1280,
+        720
+      ],
+      "outputSha256": "4e6636ba10a4022d3df386beb81603999844cde49e5116b2b56d6f51f280a815",
+      "outputSize": [
+        2560,
+        1440
+      ],
+      "secondsSubmitToReady": 328,
+      "cloudJobId": "fa4b0494-19a3-47d4-8035-04b4925b3d3a",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/reclaimed/result.mp4",
+      "sourceSha256": "0de5748d4e2010b09e7684aa930a98e72efe1db93036846fb89d9365da3dc7f9",
+      "sourceSize": [
+        768,
+        448
+      ],
+      "outputSha256": "dab5a57ec67a953464022934e1ea02047b8f865560e6d79882d68fb1c0d66e3f",
+      "outputSize": [
+        1536,
+        896
+      ],
+      "secondsSubmitToReady": 97,
+      "cloudJobId": "ee43928d-137f-4bed-aa80-41f75549aaca",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/reference-portal/result.mp4",
+      "sourceSha256": "e42691ec7cffa1a8e47f3c6a0c30556e00d108664fbb1118c33840b2c3ee5a4e",
+      "sourceSize": [
+        768,
+        432
+      ],
+      "outputSha256": "15d62b800e30fd4c8fc16091b9ff3ff3a1365f66d9805e7bafd48540cc74842f",
+      "outputSize": [
+        1536,
+        864
+      ],
+      "secondsSubmitToReady": 112,
+      "cloudJobId": "417baace-a789-4a40-9a35-1837ec0f7402",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/signal-v2/result.mp4",
+      "sourceSha256": "b319a5bbb40f5f6021fcd94d430fe3e6f43a8654a4a64b5f2d8cb545647350a9",
+      "sourceSize": [
+        1280,
+        720
+      ],
+      "outputSha256": "379872c3a3bbfb3efe92a18379fa09069b0bad8437ba9aa37612f558ee665559",
+      "outputSize": [
+        2560,
+        1440
+      ],
+      "secondsSubmitToReady": 275,
+      "cloudJobId": "987c6ae4-f416-4969-a574-fdeac3be6d27",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/subject-duplicates-v2/before-720p.mp4",
+      "sourceSha256": "b5c5ed5500a172d598cc56773e96262047c15d5402488f59a069348f7bea0fe3",
+      "sourceSize": [
+        1280,
+        720
+      ],
+      "outputSha256": "22685779c22b4558a4e3033839ef479ad042bf689df679c2693f95d95901f47e",
+      "outputSize": [
+        2560,
+        1440
+      ],
+      "secondsSubmitToReady": 207,
+      "cloudJobId": "f9e4d9a2-6496-4c09-bdf0-a94e6479c44c",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/subject-duplicates-v2/source.mp4",
+      "sourceSha256": "5c2ba4b2bec0c06904366980f8bf00e878a8c4947971ce06c22fd383b070c1a3",
+      "sourceSize": [
+        1280,
+        720
+      ],
+      "outputSha256": "26bb9fb6e719dc8695f4b7440ac231be947429cb328c90e496cab6a2f5fc3295",
+      "outputSize": [
+        2560,
+        1440
+      ],
+      "secondsSubmitToReady": 8,
+      "cloudJobId": "be397b56-cf6d-4ebf-9ab5-9ae7cc9dd4cf",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/text-video/portrait/result.mp4",
+      "sourceSha256": "4e2b3059ad5b22ff84fbe01335526fcf87d78d1d52c6b50f557b0c30aae4111a",
+      "sourceSize": [
+        576,
+        1024
+      ],
+      "outputSha256": "5ce19c62a33aeffa12dc160ff04dfcbb96f3594d0ee0326ba40077b9f11d16c1",
+      "outputSize": [
+        1152,
+        2048
+      ],
+      "secondsSubmitToReady": 137,
+      "cloudJobId": "e1ba23c5-69c9-45bb-af94-48a6c8e42453",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/text-video/square/result.mp4",
+      "sourceSha256": "839bc3d4273dd2f2078e41d67e435bf8422fef5e275498ec8cef661bd1529e30",
+      "sourceSize": [
+        512,
+        512
+      ],
+      "outputSha256": "ab1e25b4f9c73fa44e3e62a34221207f95aa05a7b4e6c5ade8dc3724f7a8e377",
+      "outputSize": [
+        1024,
+        1024
+      ],
+      "secondsSubmitToReady": 47,
+      "cloudJobId": "343204bd-cb40-4904-a3a9-119995cd7da4",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/winter-valley/result.mp4",
+      "sourceSha256": "9d0db3cb65051affc025d6880b4c85c65723a5142de373803e3892d06d39d22d",
+      "sourceSize": [
+        768,
+        432
+      ],
+      "outputSha256": "f83537cbc8d0ece4abf27678fdc4cc36fde1bb32c067f97df67df763ad96b044",
+      "outputSize": [
+        1536,
+        864
+      ],
+      "secondsSubmitToReady": 104,
+      "cloudJobId": "99228947-474f-4a6c-a660-c9d489cd5324",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    },
+    {
+      "plate": "examples/winter-valley/source.mp4",
+      "sourceSha256": "6c8a715365bcef18c6a54210c731957cd2f8dd3ebb6d0ba184fe833de1cbd415",
+      "sourceSize": [
+        768,
+        432
+      ],
+      "outputSha256": "04f642ddee5996c742e67e134edca2710029cf2643c4bf1f1cf37b15bc19a343",
+      "outputSize": [
+        1536,
+        864
+      ],
+      "secondsSubmitToReady": 120,
+      "cloudJobId": "9e0eb562-18e8-4d1b-9550-98eaf169799d",
+      "request": {
+        "operation": "upscale",
+        "seed": 42
+      }
+    }
+  ],
+  "regradedFromUpscaledCastle": {
+    "source": "2838265ffccd8a771c62c034a70acd26ba9b891fd1cda71e7b0b447912ed32ee",
+    "settings": "build/prepare.py, Color & finish",
+    "looks": [
+      {
+        "look": "castle-warm",
+        "originalSha256": "fae28b4083ed32d650d63432696810ee80f970ad4c2476577cc5d9d37a60e7fe",
+        "outputSha256": "e58b1a10e0fa9804b8a5d2e122cd309c705f6d630fe25847138f8eea49c5a714",
+        "outputSize": [
+          2560,
+          1440
+        ]
+      },
+      {
+        "look": "castle-cool",
+        "originalSha256": "cdb864701cc8fd5a3a64798f7f58eb3eae1528ee69e5a104cfc645c16a2b5c60",
+        "outputSha256": "271128dbe961a060a38485288e8265c21a975132cb354a22d44d76eb70f778e6",
+        "outputSize": [
+          2560,
+          1440
+        ]
+      },
+      {
+        "look": "castle-noir",
+        "originalSha256": "b0bd4047ea292f4c2149ede7f7cb89438f0b5e3acd46d79b7076d85e93044fad",
+        "outputSha256": "d445bc811c6243a61514d699fec5ed4cc62e2e7d40dbe270879bb5bf95112d41",
+        "outputSize": [
+          2560,
+          1440
+        ]
+      },
+      {
+        "look": "castle-vintage",
+        "originalSha256": "33ee40135ac05e6fa1da5b41dd4c0a889c132e385912cd355605a0904934460d",
+        "outputSha256": "2343c6700d186fb520956d6fe9f006057f2313292038dc95c56499db6ab7cbe3",
+        "outputSize": [
+          2560,
+          1440
+        ]
+      }
+    ]
+  },
+  "notUpscaled": {
+    "reason": "The Upscale studio accepts sources up to 1280 pixels on the long side; these are already 1344x736.",
+    "plates": [
+      "character-h3-high-v2/selection-preview.mp4",
+      "work/ensemble.mp4",
+      "work/echoes.mp4"
+    ]
+  },
+  "unchanged": "Screen recordings, proof captures and graphics were already 1920x1080."
+}

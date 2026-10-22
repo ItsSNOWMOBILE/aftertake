@@ -29,7 +29,7 @@ workflows. No credits, no uploads, no closed APIs.
 
 [![Then comes the Aftertake: a 93-second film made entirely in Aftertake](docs/assets/readme/film-poster.jpg)](https://itssnowmobile.github.io/aftertake/film/)
 
-<p align="center"><b><a href="https://itssnowmobile.github.io/aftertake/film/">▶ Watch the 93-second film</a></b> · <a href="https://github.com/ItsSNOWMOBILE/aftertake/releases/download/then-comes-the-aftertake-2026-10-21/then-comes-the-aftertake.mp4">Download the MP4</a> · <a href="examples/then-comes-the-aftertake/README.md">Open its editable projects</a></p>
+<p align="center"><b><a href="https://itssnowmobile.github.io/aftertake/film/">▶ Watch the 93-second film</a></b> · <a href="https://github.com/ItsSNOWMOBILE/aftertake/releases/download/then-comes-the-aftertake-2026-10-22/then-comes-the-aftertake.mp4">Download the MP4</a> · <a href="examples/then-comes-the-aftertake/README.md">Open its editable projects</a></p>
 
 A film about Aftertake, made in Aftertake. It cuts through generated portals,
 castles, recast characters and finishing looks to its own song, which was made
@@ -37,7 +37,9 @@ with open-weight ACE-Step 1.5, with each section under its sung line. All 72
 shots, 84 titles and 26 transitions are native, editable Film layers, cut to beats
 measured by `aftertake_detect_beats`. The film also shows how a take is built:
 the real ComfyUI graph, the `@comfyorg/sdk` calls, a recorded run on an RTX 5080
-and a live agent session over MCP.
+and a live agent session over MCP. Its generated plates were then upscaled ×2 on
+Comfy Cloud with Aftertake's own Upscale studio, and the scenes re-rendered
+unchanged.
 
 ## What you can make
 

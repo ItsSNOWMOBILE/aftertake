@@ -7,11 +7,16 @@ seven native Film projects, rendered by Aftertake's own CPU Film renderer.
 
 [![Watch the film](poster.jpg)](https://itssnowmobile.github.io/aftertake/film/)
 
-**[Watch the film](https://itssnowmobile.github.io/aftertake/film/)** · [Download the MP4](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/then-comes-the-aftertake-2026-10-21/then-comes-the-aftertake.mp4) · [Editable projects](project/) · [Build scripts](build/)
+**[Watch the film](https://itssnowmobile.github.io/aftertake/film/)** · [Download the MP4](https://github.com/ItsSNOWMOBILE/aftertake/releases/download/then-comes-the-aftertake-2026-10-22/then-comes-the-aftertake.mp4) · [Editable projects](project/) · [Build scripts](build/)
 
-The finished film is published as a [release download](https://github.com/ItsSNOWMOBILE/aftertake/releases/tag/then-comes-the-aftertake-2026-10-21) to keep the
+The finished film is published as a [release download](https://github.com/ItsSNOWMOBILE/aftertake/releases/tag/then-comes-the-aftertake-2026-10-22) to keep the
 repository small. Its SHA-256 is
-`824531b63c81b750a2ed3a7ce8e6cdf38beacab3b5917880201da317acfa286d`.
+`f80e3b10c57755e3f7833e66adc96a3011fb97b60c13dc4d460e2f7f789f617d`. This cut
+is sharpened: its 23 generated plates below 1080p were upscaled ×2 with
+SeedVR2 on Comfy Cloud through Aftertake's own Upscale studio, and the scenes
+re-rendered unchanged ([how](#sharpened-on-comfy-cloud)). The first cut,
+`824531b6…`, is the
+[2026-10-21 release](https://github.com/ItsSNOWMOBILE/aftertake/releases/tag/then-comes-the-aftertake-2026-10-21).
 
 |             |                                                                                            |
 | :---------- | :----------------------------------------------------------------------------------------- |
@@ -138,14 +143,38 @@ To open a scene in the editor, import the matching media, then use **Import
 film project** with a file from `project/`. Project files hold content hashes,
 not media. The master project references the seven scene renders by hash.
 
+### Sharpened on Comfy Cloud
+
+The released cut swaps 23 generated plates for ×2 upscales. In Render setup,
+switch Upscale to Comfy Cloud (or keep it on a local GPU with the `--upscale`
+profile), then:
+
+```sh
+python examples/then-comes-the-aftertake/build/sharpen.py     # needs the studio and build/prepare.py's work folder
+cd examples/then-comes-the-aftertake/build
+node rerender.mjs ../work/sharp path/to/soundtrack.wav       # the released film's audio track
+```
+
+`sharpen.py` finds every video plate the scene projects use below 1920 pixels
+wide, upscales it with SeedVR2 3B through the Upscale studio and downloads the
+result. It then rebuilds the four castle looks with Color & finish from the
+upscaled castle. `rerender.mjs` re-renders the seven scene projects with each
+plate swapped for its upscale, checks every scene's frame count and joins them.
+[`sharpening.json`](sharpening.json) records every plate's source and output
+hash, size and Cloud job, and the three 1344 × 736 clips left as they were:
+the Upscale studio accepts sources up to 1280 pixels on the long side. The
+upscales took 62 minutes from submission to download, on a Comfy Cloud
+Standard plan.
+
 ## Boundaries
 
 This is a promotional cut, not a benchmark. Generated takes come from the
 reviewed examples in this repository at their native resolutions. The HD
 examples (recast, copies, echoes, gesture transfer, window repaint, lighthouse,
 depth) are 1280 × 720; the older takes in the drop, the second chorus and the
-montage are mostly 768 × 432. The 1080p canvas enlarges them; it does not add
-detail. The HD source plates are generated, not filmed, and every person in
+montage are mostly 768 × 432. In the released cut, SeedVR2 upscales most of
+them ×2. That adds plausible detail, not recorded detail: dense foliage can
+look slightly patterned. The HD source plates are generated, not filmed, and every person in
 them is fictional. The
 dancer copies and colour echoes reuse source pixels. Lighting, depth and
 occlusion are not re-inferred. Transition smears, zoom blur and glitch bands
