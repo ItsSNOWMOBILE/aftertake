@@ -4,9 +4,9 @@
 
 [Try the browser editor](https://itssnowmobile.github.io/aftertake/studio/) ·
 [Watch the 93-second film](https://itssnowmobile.github.io/aftertake/film/) ·
-[Open the demo chapter guide](https://aftertake-studio.right-bard-9761.chatgpt.site/judges/) ·
-[Review the native H3 character replacement](https://aftertake-studio.right-bard-9761.chatgpt.site/cast/h3.html) ·
-[Watch the narrated-cut workflow](https://aftertake-studio.right-bard-9761.chatgpt.site/ads/workflow.html) ·
+[Open the demo chapter guide](https://itssnowmobile.github.io/aftertake/judges/) ·
+[Review the native H3 character replacement](https://itssnowmobile.github.io/aftertake/cast/h3.html) ·
+[Watch the narrated-cut workflow](https://itssnowmobile.github.io/aftertake/ads/workflow.html) ·
 [Build evidence](progress.md)
 
 **Your next ad. Your next impossible take.**
@@ -24,8 +24,8 @@ still-image depth and editing, retaining operation keys across reconnect and res
 Editing existing footage works with the small CPU film runtime; new image/video
 generation uses the local Comfy engine. Complete recorded examples are in
 `examples/agent-edit/` and `examples/agent-generation/`.
-[Watch the recorded MCP edit](https://aftertake-studio.right-bard-9761.chatgpt.site/agent/).
-[Review the generated product shot and narrated export](https://aftertake-studio.right-bard-9761.chatgpt.site/agent/generate.html).
+[Watch the recorded MCP edit](https://itssnowmobile.github.io/aftertake/agent/).
+[Review the generated product shot and narrated export](https://itssnowmobile.github.io/aftertake/agent/generate.html).
 
 **Finish existing footage:** **Color & finish** provides real processed-frame
 comparison, selective HSL, RGB curves, imported LUTs and texture controls.
@@ -36,7 +36,7 @@ background-focus edit. These pixel operations run on the CPU with the film
 runtime. **Depth & light** adds optional model-estimated depth effects for still
 images; new depth estimation needs the native CUDA BF16 engine.
 
-[Two narrated vertical ads](https://aftertake-studio.right-bard-9761.chatgpt.site/ads/)
+[Two narrated vertical ads](https://itssnowmobile.github.io/aftertake/ads/)
 show the short-form workflow using matching licensed coffee footage. Their
 editable projects, original voice clips and source receipts are included in
 `examples/social-ad/`. The opening hooks are manually prepared variants; no
@@ -46,18 +46,18 @@ automatic ad optimization or campaign performance is claimed.
 uses native LTX-2.5 joint video/audio sampling, with 2–5 second shots, three
 canvas shapes, draft/final resolution and optional generated sound. Review the
 take, reuse its exact settings, export its native graph, or add it to Film.
-[See the recorded product shot](https://aftertake-studio.right-bard-9761.chatgpt.site/create/).
+[See the recorded product shot](https://itssnowmobile.github.io/aftertake/create/).
 
 **Draft from a brief:** the optional [local script model](script-draft.md)
 suggests one short spoken line per described picture and retains an explicit
 closing line. Review and edit its suggestions before using the same narrated-cut
 builder. It runs on the CPU with open weights; no hosted language-model account
-is needed. [Review the actual brief-assisted cut](https://aftertake-studio.right-bard-9761.chatgpt.site/ads/script.html).
+is needed. [Review the actual brief-assisted cut](https://itssnowmobile.github.io/aftertake/ads/script.html).
 
 **Optional mouth-performance finish:** a separate [local utility](face-performance.md)
 uses the original driving video to refine a tracked lower-face region after
 character generation. It retains the current head pose and writes a matte and
-hash-bound receipt. [Compare the actual candidate](https://aftertake-studio.right-bard-9761.chatgpt.site/cast/performance.html).
+hash-bound receipt. [Compare the actual candidate](https://itssnowmobile.github.io/aftertake/cast/performance.html).
 This experimental command-line pass is separate from the UI and MCP tools;
 head-turn repair and audio-driven dialogue remain incomplete.
 
@@ -68,7 +68,7 @@ retains the body plate and includes both subject arrays and a processing receipt
 This is an experimental local finish requiring visual review, with no audio-driven
 dialogue or general head-turn guarantee. It is not yet in the judge-film export.
 
-The **[browser editor](https://aftertake-studio.right-bard-9761.chatgpt.site/studio/)** opens
+The **[browser editor](https://itssnowmobile.github.io/aftertake/studio/)** opens
 thirteen real, recorded examples without installation. Paint and erase cues,
 change their timing, compare source and result, review edited frames, and
 download recipes, portable workflows or the original recorded files. Changes
@@ -639,7 +639,7 @@ Apply the reviewed cut or restore the previous one. Exact voices are reused
 after reconnecting, and unchanged exports rejoin their recorded jobs.
 The UI shares the local MCP's beat compiler. The included portrait ad, alternate
 hook and 20-second native walkthrough are under `examples/narrated-cut/`.
-The [Follow voice example](https://aftertake-studio.right-bard-9761.chatgpt.site/type/spoken.html)
+The [Follow voice example](https://itssnowmobile.github.io/aftertake/type/spoken.html)
 contains twelve timed words from three complete local voices. Its project and
 source receipts are in `examples/spoken-type/`. Timing is estimated and editable;
 the same pinned Kokoro model supplies it without an extra runtime download.
