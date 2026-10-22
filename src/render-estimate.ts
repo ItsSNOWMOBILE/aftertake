@@ -3,6 +3,8 @@
  * before rendering. Earlier runs in this workspace come first; without them the
  * estimate falls back to times recorded on an RTX 5080 for the shipped examples.
  */
+import { comfyCloudEngine } from './compute';
+
 type Request = {
   format?: string;
   quality?: string;
@@ -141,6 +143,11 @@ export function formatDuration(seconds: number) {
 
 /** The time and where it comes from, for beside a render button; null when nothing is known. */
 export function describeEstimate(value: RenderEstimate | null, gpu?: string) {
+  if (gpu === comfyCloudEngine)
+    return {
+      time: 'Renders on Comfy Cloud · uses your credits',
+      basis: "Time depends on Comfy Cloud's queue",
+    };
   if (!value) return null;
   const time = `About ${formatDuration(value.seconds)} · free on your own GPU`;
   if (value.from === 'workspace')
@@ -153,15 +160,18 @@ export function describeEstimate(value: RenderEstimate | null, gpu?: string) {
 }
 
 /** The estimate for an agent: whole seconds, what they rest on, and the cost. */
-export function agentEstimate(value: RenderEstimate | null) {
+export function agentEstimate(value: RenderEstimate | null, onCloud = false) {
   return (
     value && {
       seconds: Math.round(value.seconds),
-      basis:
+      basis: `${
         value.from === 'workspace'
           ? `median of ${value.runs} earlier runs in this workspace`
-          : `median of ${value.runs} runs recorded on an ${referenceGpu}`,
-      cost: 'none: it runs on the local GPU',
+          : `median of ${value.runs} runs recorded on an ${referenceGpu}`
+      }${onCloud ? "; Comfy Cloud's time depends on its queue" : ''}`,
+      cost: onCloud
+        ? 'Comfy Cloud credits on the connected account'
+        : 'none: it runs on the local GPU',
     }
   );
 }

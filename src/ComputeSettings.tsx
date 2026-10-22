@@ -10,7 +10,7 @@ import {
   X,
 } from 'lucide-react';
 import { apiFetch, browserDemo } from './transport';
-import type { ComputeProvider, ComputeStatus } from './compute';
+import { comfyCloudEngine, type ComputeProvider, type ComputeStatus } from './compute';
 import type { Engine } from './domain';
 import './compute-settings.css';
 
@@ -52,6 +52,28 @@ const setupFlags: Record<string, string> = {
   interpolate: '--interpolate',
   song: '--song',
 };
+const cloudSteps = [
+  [
+    'Your account',
+    "Use a key from a paid Comfy Cloud plan. Free accounts can render only on Comfy Cloud's website.",
+  ],
+  [
+    'What runs there',
+    "You choose, studio by studio: images, text to video, upscaling, smooth and slow motion, and songs. Character, region and depth tools need Aftertake's own nodes, so they stay on your GPU.",
+  ],
+  [
+    'Your credits',
+    "Cloud renders use your account's credits. Aftertake adds the sound and color grade on your computer.",
+  ],
+] as const;
+const deploymentSteps = [
+  ['Your account', "Add your own key when you're ready."],
+  [
+    'A compatible workflow',
+    "Aftertake's models and custom nodes must be available on the deployment.",
+  ],
+  ['Verified billing', 'Confirm whose credits pay for the run before enabling it.'],
+] as const;
 const setupCommand = (feature: string) =>
   setupFlags[feature]
     ? `node scripts/aftertake.mjs setup-gpu ${setupFlags[feature]}`
@@ -146,11 +168,18 @@ export default function ComputeSettings({
         setNotice('Saved cloud credentials removed. Your local engine selection is unchanged.');
       } else if (action === 'save') {
         setNotice(
-          value.configured?.hasApiKey
-            ? 'Connection saved for this server session. Cloud generation remains unavailable.'
-            : 'Cloud setup saved for this server session. Add your key when your account is ready.',
+          !value.configured?.hasApiKey
+            ? 'Cloud setup saved for this server session. Add your key when your account is ready.'
+            : destination === 'comfy-cloud'
+              ? 'Key saved for this server session. Check it to turn on Comfy Cloud.'
+              : 'Connection saved for this server session. Cloud generation remains unavailable.',
         );
-      } else setNotice('Connection check finished. No generation was started.');
+      } else
+        setNotice(
+          value.state === 'cloud'
+            ? 'Comfy Cloud is connected. Choose which studios render there below; the rest stay on your GPU.'
+            : 'Connection check finished. No generation was started.',
+        );
     } catch (failure) {
       // The API supplies sanitized error text. Never reflect the submitted key.
       setError((failure as Error).message);
@@ -159,7 +188,31 @@ export default function ComputeSettings({
     }
   }
 
+  async function chooseRendering(feature: string, renders: 'local' | 'comfy-cloud') {
+    if (busy) return;
+    setBusy(true);
+    setError('');
+    setNotice('');
+    try {
+      setStatus(
+        await computeRequest('/routing', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ feature, renders }),
+        }),
+      );
+    } catch (failure) {
+      setError((failure as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+
   const selectedConnection = status?.configured?.provider === destination;
+  const cloudOn = status?.state === 'cloud';
+  const studiosOnCloud = cloudOn
+    ? status.capabilities.filter((item) => item.renders === 'comfy-cloud').length
+    : 0;
   const remote = destination !== 'local';
   const connectionDraftChanged =
     apiKey.length > 0 ||
@@ -213,20 +266,33 @@ export default function ComputeSettings({
         <div className="eyebrow">YOUR RENDER SETUP</div>
         <h2>A place for every take.</h2>
         <p className="compute-intro">
-          Use your own GPU today. Prepare a Comfy connection for cloud rendering.
+          Render on your own GPU. Optionally, send images, video, upscales, motion and songs to
+          Comfy Cloud with your own key.
         </p>
         <div className={`compute-active-strip ${!browserDemo && !engine.ready ? 'not-ready' : ''}`}>
           <span className="compute-status-dot" aria-hidden="true" />
           <span>
             {browserDemo
               ? 'Recorded examples'
-              : engine.ready
-                ? 'Local engine is ready for this workflow'
-                : engine.connected
-                  ? 'Local engine connected · generation blocked'
-                  : 'Local engine is offline'}
+              : engine.gpu === comfyCloudEngine
+                ? engine.ready
+                  ? 'Comfy Cloud is ready for this workflow'
+                  : 'Comfy Cloud is not ready for this workflow'
+                : engine.ready
+                  ? 'Local engine is ready for this workflow'
+                  : engine.connected
+                    ? 'Local engine connected · generation blocked'
+                    : 'Local engine is offline'}
           </span>
-          <span>{browserDemo ? 'No credits used' : 'Cloud generation is not enabled'}</span>
+          <span>
+            {browserDemo
+              ? 'No credits used'
+              : cloudOn
+                ? studiosOnCloud
+                  ? `Comfy Cloud renders ${studiosOnCloud} ${studiosOnCloud === 1 ? 'studio' : 'studios'}`
+                  : 'Comfy Cloud connected · not used yet'
+                : 'Comfy Cloud is off'}
+          </span>
         </div>
         <div className="compute-tabs" role="tablist" aria-label="Render destinations">
           {destinations.map(({ id, label, icon: Icon }, index) => (
@@ -280,9 +346,11 @@ export default function ComputeSettings({
                   <strong>
                     {browserDemo
                       ? 'Explore before you install.'
-                      : engine.gpu
-                          ?.replace(/^cuda:\d+\s+/, '')
-                          .replace(/\s*:\s*cudaMallocAsync$/, '') || 'Your local ComfyUI engine'}
+                      : engine.gpu === comfyCloudEngine
+                        ? 'This workflow renders on Comfy Cloud'
+                        : engine.gpu
+                            ?.replace(/^cuda:\d+\s+/, '')
+                            .replace(/\s*:\s*cudaMallocAsync$/, '') || 'Your local ComfyUI engine'}
                   </strong>
                   <p>
                     {browserDemo
@@ -408,22 +476,31 @@ export default function ComputeSettings({
                 <div>
                   <strong>
                     {destination === 'comfy-cloud'
-                      ? 'Prepare Comfy Cloud.'
+                      ? 'Render on Comfy Cloud.'
                       : 'Bring a compatible deployment.'}
                   </strong>
                   <p>
                     {destination === 'comfy-cloud'
-                      ? 'Prepare your own Comfy API connection. Account billing and workflow support still need verification.'
+                      ? 'Optional. Choose which studios render on Comfy Cloud with your key and credits: images, text to video, upscaling, smooth and slow motion, and songs. Everything else stays on your GPU.'
                       : 'For a Comfy API environment containing the models and nodes your workflow needs.'}
                   </p>
                 </div>
-                <span className="compute-badge">Setup preview</span>
+                <span
+                  className={`compute-badge ${destination === 'comfy-cloud' && cloudOn ? 'ready' : ''}`}
+                >
+                  {destination === 'comfy-cloud'
+                    ? cloudOn
+                      ? 'Connected'
+                      : 'Off'
+                    : 'Setup preview'}
+                </span>
               </div>
               <div className="compute-cloud-notice">
                 <LockKeyhole size={17} />
                 <p>
-                  Cloud generation is unavailable in this release. Saving or checking a connection
-                  does not start a render or change the active local engine.
+                  {destination === 'comfy-cloud'
+                    ? 'Checking a saved key connects Comfy Cloud for this server session. Every studio keeps rendering on your GPU until you choose Comfy Cloud for it. Its API needs a paid Comfy Cloud plan.'
+                    : 'Managed deployments are not enabled in this release. Saving or checking a connection does not start a render or change the active local engine.'}
                 </p>
               </div>
               {browserDemo ? (
@@ -521,34 +598,83 @@ export default function ComputeSettings({
                   </div>
                 </form>
               )}
+              {!browserDemo && destination === 'comfy-cloud' && cloudOn && (
+                <section className="compute-routing" aria-labelledby="compute-routing-title">
+                  <h3 id="compute-routing-title">Where each studio renders</h3>
+                  <p>Every studio starts on your GPU. Choose Comfy Cloud only where you want it.</p>
+                  <ul>
+                    {status.capabilities
+                      .filter((item) => item.choices)
+                      .map((item) => {
+                        const name = featureNames[item.feature] || item.feature;
+                        return (
+                          <li key={item.feature}>
+                            <span>{name}</span>
+                            <div
+                              className="compute-segmented"
+                              role="radiogroup"
+                              aria-label={`Where ${name} renders`}
+                            >
+                              {(['local', 'comfy-cloud'] as const).map((place) => (
+                                <button
+                                  key={place}
+                                  type="button"
+                                  role="radio"
+                                  aria-checked={item.renders === place}
+                                  disabled={busy}
+                                  title={item.choices![place].message}
+                                  onClick={() =>
+                                    item.renders !== place &&
+                                    void chooseRendering(item.feature, place)
+                                  }
+                                >
+                                  {place === 'local' ? 'Your GPU' : 'Comfy Cloud'}
+                                  <small className={item.choices![place].ready ? 'ready' : ''}>
+                                    {item.choices![place].ready ? 'Ready' : 'Needs setup'}
+                                  </small>
+                                </button>
+                              ))}
+                            </div>
+                          </li>
+                        );
+                      })}
+                  </ul>
+                  <div className="compute-actions">
+                    <button
+                      className="button"
+                      type="button"
+                      disabled={busy}
+                      onClick={() => void chooseRendering('all', 'comfy-cloud')}
+                    >
+                      Use Comfy Cloud for all
+                    </button>
+                    <button
+                      className="button"
+                      type="button"
+                      disabled={busy}
+                      onClick={() => void chooseRendering('all', 'local')}
+                    >
+                      Use my GPU for all
+                    </button>
+                  </div>
+                  <p className="compute-hint">
+                    Character, region, depth and frame-edit tools need Aftertake's own nodes, so
+                    they always render on your GPU. Your choices are remembered in this workspace.
+                  </p>
+                </section>
+              )}
               <ol className="compute-roadmap">
-                <li>
-                  <span>01</span>
-                  <div>
-                    <strong>Your account</strong>
-                    <p>
-                      Add your own key when you're ready. Cloud workflow API access requires a paid
-                      Comfy plan.
-                    </p>
-                  </div>
-                </li>
-                <li>
-                  <span>02</span>
-                  <div>
-                    <strong>A compatible workflow</strong>
-                    <p>
-                      Aftertake's character models and custom nodes must be available on the
-                      selected cloud environment.
-                    </p>
-                  </div>
-                </li>
-                <li>
-                  <span>03</span>
-                  <div>
-                    <strong>Verified billing</strong>
-                    <p>Confirm whose credits pay for the run before enabling cloud generation.</p>
-                  </div>
-                </li>
+                {(destination === 'comfy-cloud' ? cloudSteps : deploymentSteps).map(
+                  ([title, text], index) => (
+                    <li key={title}>
+                      <span>{String(index + 1).padStart(2, '0')}</span>
+                      <div>
+                        <strong>{title}</strong>
+                        <p>{text}</p>
+                      </div>
+                    </li>
+                  ),
+                )}
               </ol>
               <a
                 className="compute-doc-link"
@@ -556,7 +682,7 @@ export default function ComputeSettings({
                 target="_blank"
                 rel="noreferrer"
               >
-                Cloud connection guide <ArrowUpRight size={13} />
+                Comfy Cloud rendering guide <ArrowUpRight size={13} />
               </a>
             </>
           )}
@@ -571,7 +697,7 @@ export default function ComputeSettings({
                           {item.state === 'pass'
                             ? 'Checked'
                             : item.state === 'blocked'
-                              ? 'Not enabled'
+                              ? 'Blocked'
                               : 'Needs verification'}
                         </span>
                         <p>{item.message}</p>

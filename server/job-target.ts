@@ -12,6 +12,8 @@ export const jobTargetMismatch =
   'This job belongs to a different engine target. Reconnect its original engine before recovering or canceling it.';
 export const legacyJobTargetBlocked =
   'This saved job has no engine binding. Legacy recovery is allowed only on the local loopback startup engine.';
+export const cloudJobDisconnected =
+  'This job runs on Comfy Cloud. Connect Comfy Cloud with the same account in Compute settings to rejoin or cancel it.';
 
 export class JobTargetError extends RequestError {
   constructor(message: string) {
@@ -72,6 +74,34 @@ export function createJobTarget({
   });
 }
 
+/**
+ * Comfy Cloud jobs bind to the account that submitted them, so a rotated key for
+ * the same account can still recover them. The account id is hashed; no
+ * credential or address is retained.
+ */
+export function createCloudJobTarget({ origin, account }: { origin: string; account: string }) {
+  if (typeof account !== 'string' || !account.trim() || account.length > 512)
+    throw new JobTargetError('Comfy Cloud did not identify the account for this connection.');
+  const binding: JobTargetBinding = {
+    format: 'aftertake-job-target/1',
+    kind: 'comfy-cloud',
+    fingerprint: createHash('sha256')
+      .update(JSON.stringify(['comfy-cloud', canonicalBase(origin).canonical, account.trim()]))
+      .digest('hex'),
+  };
+  return Object.freeze({ binding: Object.freeze(binding), legacyLoopbackAllowed: false });
+}
+
+/** True when a record says it was submitted to Comfy Cloud, whichever account. */
+export function boundToCloud(record: BoundRecord) {
+  const value = Object.hasOwn(record, 'jobTarget') ? record.jobTarget : undefined;
+  return (
+    value !== null &&
+    typeof value === 'object' &&
+    (value as Record<string, unknown>).kind === 'comfy-cloud'
+  );
+}
+
 /** Present but malformed bindings never receive historical-job compatibility. */
 export function jobTargetIssue(record: BoundRecord, target: JobTarget): string | undefined {
   if (!('jobTarget' in record))
@@ -90,7 +120,7 @@ export function jobTargetIssue(record: BoundRecord, target: JobTarget): string |
     Object.hasOwn(binding, 'kind') &&
     Object.hasOwn(binding, 'fingerprint') &&
     binding.format === 'aftertake-job-target/1' &&
-    binding.kind === 'startup-engine' &&
+    binding.kind === target.binding.kind &&
     typeof binding.fingerprint === 'string' &&
     /^[0-9a-f]{64}$/.test(binding.fingerprint) &&
     binding.fingerprint === target.binding.fingerprint

@@ -28,6 +28,17 @@ export function hardwareProfile(feature: (typeof computeFeatures)[number]) {
 }
 
 export type ComputeFeature = (typeof computeFeatures)[number];
+/**
+ * Workflows whose graphs use only nodes Comfy Cloud ships. Region effects,
+ * motion transfer, frame edits, depth and character work need Aftertake's own
+ * nodes or H3 Relay, so they always render on the local engine.
+ */
+export const cloudFeatures = ['image-gen', 'text-video', 'upscale', 'interpolate', 'song'] as const;
+export type CloudFeature = (typeof cloudFeatures)[number];
+/** The engine name a Comfy Cloud route reports in place of a GPU. */
+export const comfyCloudEngine = 'Comfy Cloud';
+export const cloudFeature = (feature: ComputeFeature): feature is CloudFeature =>
+  (cloudFeatures as readonly string[]).includes(feature);
 export type ComputeProvider = 'local' | 'comfy-cloud' | 'managed-deployment';
 
 const apiKey = z
@@ -79,15 +90,20 @@ export type ComputeCapability = {
   feature: ComputeFeature;
   ready: boolean;
   message: string;
+  /** Where a new job of this feature renders. */
+  renders?: 'local' | 'comfy-cloud';
+  /** For cloud-capable studios while Comfy Cloud is on: each destination's readiness. */
+  choices?: Record<'local' | 'comfy-cloud', { ready: boolean; message: string }>;
 };
 
 /** Public connection state contains credential presence only, never its value. */
 export type ComputeStatus = {
-  activeProvider: 'local';
+  activeProvider: 'local' | 'comfy-cloud';
   configured: { provider: ComputeProvider; endpoint?: string; hasApiKey: boolean } | null;
   credentialStorage: 'memory';
-  generationRouting: 'startup-local';
-  state: 'local' | 'configured' | 'blocked';
+  /** With Comfy Cloud on, each cloud-capable studio renders where the user chose. */
+  generationRouting: 'startup-local' | 'per-studio';
+  state: 'local' | 'configured' | 'blocked' | 'cloud';
   ready: boolean;
   checkedAt: string | null;
   checks: ComputeCheck[];

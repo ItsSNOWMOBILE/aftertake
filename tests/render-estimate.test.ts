@@ -4,6 +4,7 @@ import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
+  agentEstimate,
   describeEstimate,
   elapsedSeconds,
   estimate,
@@ -110,4 +111,20 @@ test('the estimate says where its time comes from', () => {
     'Median of 4 runs in this workspace',
   );
   assert.equal(describeEstimate(null), null);
+});
+
+test('a Comfy Cloud render says it spends credits instead of running free on the GPU', () => {
+  const cloud = {
+    time: 'Renders on Comfy Cloud · uses your credits',
+    basis: "Time depends on Comfy Cloud's queue",
+  };
+  assert.deepEqual(describeEstimate(estimate('video:final-720p', []), 'Comfy Cloud'), cloud);
+  assert.deepEqual(describeEstimate(null, 'Comfy Cloud'), cloud);
+  const reference = estimate('video:final-720p', []);
+  assert.equal(agentEstimate(reference)?.cost, 'none: it runs on the local GPU');
+  assert.equal(
+    agentEstimate(reference, true)?.cost,
+    'Comfy Cloud credits on the connected account',
+  );
+  assert.match(agentEstimate(reference, true)!.basis, /Comfy Cloud's time depends on its queue$/);
 });

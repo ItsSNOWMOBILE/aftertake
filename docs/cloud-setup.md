@@ -1,57 +1,59 @@
-# Compute connections
+# Comfy Cloud rendering
 
-Aftertake currently renders through the local studio's startup Comfy engine. The recorded browser demo does not accept API keys or send live generation requests.
+Aftertake renders on your own GPU, with local models, as it always has. Comfy Cloud is optional, studio by studio. With a key from a **paid** Comfy Cloud plan, you can choose to render any of these studios on [Comfy Cloud](https://comfy.org/cloud) instead:
 
-The local studio's compute settings prepare a connection to Comfy Cloud or a managed Comfy deployment. They do not activate cloud generation. A successful credential check is not proof that the account can run Aftertake's workflows or that a deployment will charge the intended account.
+| Studio | On Comfy Cloud |
+| :--- | :--- |
+| Create images (Z-Image Turbo) | The same graph as local |
+| Make a song (ACE-Step 1.5) | The same graph as local |
+| Upscale ×2 (SeedVR2 3B) | The local graph between Cloud's own video loader and a WebM saver |
+| Smooth and slow motion (RIFE 4.26) | The local graph between Cloud's own video loader and a WebM saver |
+| Create video (LTX-2.5) | The local graph with Cloud's full distilled transformer in place of the GGUF quant |
 
-## Prepare a connection
+Character replacement, painted region effects, camera guidance, motion transfer, reference-frame editing and still-image depth need Aftertake's own nodes or H3 Relay. Comfy Cloud does not have them, so those studios always use the local engine, even while Cloud is on.
 
-1. Open the local studio and its compute settings. Choose Local, Comfy Cloud or Managed deployment.
-2. For Comfy Cloud, enter your own API key when you are ready. You can leave the key unset while reviewing the setup.
-3. For a managed deployment, use its HTTPS `*.run.comfy.app` origin. Paths, custom ports, URL credentials, queries and fragments are rejected.
-4. Save the connection, then explicitly run a check. Cloud checks send the key only to `https://cloud.comfy.org/api/user` using the documented `X-API-Key` header. This read-only request has a five-second deadline and does not follow redirects. It does not submit a workflow, purchase credits or provision a deployment.
-5. Disconnect to discard the entered key. Restarting the studio also discards it.
+**Status.** Tested end to end on a Comfy Cloud Standard plan on October 22, 2026. Through the studio itself, each Cloud studio rendered one job: a 1024×1024 image in 16 s, a 10-second song in 25 s, 2-second clips upscaled ×2 in 42 s and smoothed to 48 fps in 15 s, and a 2-second text-to-video clip with sound in 28 s (submission to ready, including the local steps). Each result passed the same checks as a local render. The image kept its workflow in the PNG, and the videos have the exact frame count, frame rate and sound coverage. The record is in [`cloud/oct22-cloud-validation.json`](cloud/oct22-cloud-validation.json). The cloud graphs are also checked against Comfy Cloud's live node and model list (`tests/fixtures/comfy-cloud-object-info.json`), and the routing is tested against a simulated Cloud API. Free Comfy Cloud accounts can't use the API (`API key authentication is not available for free tier accounts`); any paid plan can.
 
-Keys entered in these settings are held only in the local server's memory. They are not written to `.env`, browser storage, project files, recipes, logs or status responses. Status responses expose only whether a key was supplied. Account documents and provider error bodies are not returned to the browser. The managed-deployment connection currently has no verified read-only metadata probe, so its authentication remains unverified.
+## Turn it on
 
-## What a check establishes
+1. Open **Render setup** and choose **Comfy Cloud**.
+2. Paste your Comfy Cloud API key and save it, then choose **Check saved connection**. Aftertake sends the key to Comfy Cloud's read-only account endpoint, `https://cloud.comfy.org/api/user`. It keeps only the account id, to bind jobs to the account that ran them.
+3. When the key is accepted, Aftertake starts a separate isolated Comfy SDK worker for `https://cloud.comfy.org` and reads Cloud's node list (`/api/object_info`). Nothing moves yet: every studio still renders on your GPU.
+4. Under **Where each studio renders**, switch the studios you want from **Your GPU** to **Comfy Cloud**. Each switch shows whether that destination is ready, and **Use Comfy Cloud for all** or **Use my GPU for all** changes them together. A typical mix keeps images local and sends text to video to Cloud.
+5. Start a job as usual. In a studio you switched, the time estimate beside the button says it renders on Comfy Cloud and uses your credits.
 
-Local checks report readiness separately for each workflow using the existing engine's nodes and model menus. Cloud checks distinguish reachability from credential acceptance. Subscription eligibility, available credits, billing ownership and workflow compatibility remain unverified. Every cloud generation capability therefore remains blocked, even after an accepted credential.
+Your choices are saved in the workspace (`cloud-choices.json` in the data folder, which holds no key) and apply again whenever Comfy Cloud is connected. To connect at startup, set `COMFY_CLOUD_API_KEY` in your `.env`. **Remove saved key** in Render setup disconnects Cloud, and every studio renders locally again.
 
-Saved connection settings are candidates. Local submissions, running jobs, saved-job recovery and cancellation continue using the same startup SDK client. Selecting or disconnecting a candidate does not reroute work or change the startup environment.
+Keys entered in Render setup are held only in the local server's memory and in the Cloud worker's copied environment. They are not written to `.env`, browser storage, project files, recipes, logs or status responses.
 
-New native jobs save a versioned fingerprint of the startup API and native-engine endpoints before asset upload or submission. Takes, images, text-to-video, frame edits and character jobs check that fingerprint before submission, polling, cancellation or recovery. A different startup endpoint blocks those operations and preserves the original job ID, operation key and workflow. Restore the original engine configuration to recover the job. The binding contains no endpoint addresses or credentials; it identifies endpoint configuration, not an engine instance, account, model set or verified cloud worker.
+## How a Cloud job runs
 
-Historical records without a binding are never silently assigned to a new target. Legacy recovery is permitted only when both startup endpoints use loopback addresses. A missing binding on a non-loopback target, or any malformed existing binding, blocks recovery. Completed local outputs remain available. Real provider account isolation and provider-specific recovery still require separate validation before cloud execution can be enabled.
+- **Images and songs** submit the local graph unchanged. If Comfy Cloud returns a PNG without its prompt metadata, the image keeps the graph it submitted.
+- **Upscale and interpolation.** Comfy Cloud has no Aftertake clip loader, so `scripts/cloud-media.py prepare` decodes the source on your computer onto the same 24 fps frame clock and canvas as `AftertakeLoadClip`. It writes that as near-lossless full-chroma H.264 for upload. Cloud loads it with `LoadVideo` and `GetVideoComponents`, runs the same SeedVR2 or RIFE nodes, and saves VP9 WebM frames. `scripts/cloud-media.py finish` then encodes the MP4 exactly as `AftertakeSaveVideo` does: H.264 CRF 17, the recipe and workflow in the comment tag, and the source's sound trimmed and padded to the picture. The existing checks then verify the request, size and frame count.
+- **Text to video.** Cloud saves frames as WebM and the generated sound as FLAC. Your computer applies the palette grade (the same math as `AftertakeFilmGrade`) and adds the sound. The result must then pass the same checks as a local video, against the cloud graph: canvas, frame clock, regular timestamps and sound covering the picture.
 
-## SDK execution boundary
+Comfy Cloud bills its GPU time to the account whose key you entered. Aftertake's own steps run on your CPU.
 
-The startup renderer uses the real Comfy SDK inside a dedicated Node worker. Its endpoint and credential are captured when the studio starts, in a copied worker environment; candidate connection changes do not mutate that environment or the main process. SDK jobs, workflows and assets stay inside the worker. The studio exchanges bounded workflow JSON, file bindings, safe job snapshots and progress. Inputs and streamed output files must stay within the configured local data directories, with real-path checks inside the worker.
+## Jobs, accounts and recovery
 
-Output identities are opaque. The tested local v2 proxy returns signed identifiers rather than UUIDs; the adapter retains these privately and passes them unchanged to SDK retrieval. They are bounded separately from job IDs and operation keys and are not included in browser job responses.
+Switching a studio affects only its new jobs. Every job records its target. Local jobs keep the startup engine's fingerprint; Cloud jobs record `kind: "comfy-cloud"` with a SHA-256 of the account id, never the key. A saved Cloud job can be rejoined or canceled only while Comfy Cloud is connected with the same account. After a restart without the key, it shows *connection lost* until you check the key again. It then resumes on its own, because Cloud kept running it. Local jobs never move to Cloud, and Cloud jobs never fall back to the local engine.
 
-Uploads retain the SDK's asset hashing, materialization and idempotency behavior. Output downloads stream to a temporary sibling file before publication. Progress uses a separate pull stream, so it does not block status polling, cancellation or concurrent downloads. Pending requests, streams and retained SDK handles are bounded. Errors expose fixed messages and an allow-listed code/status rather than provider response text, credentials or signed URLs.
+If Comfy Cloud refuses a job because the plan is free, the job fails with that explanation and Render setup marks the subscription check as blocked. Switch those studios back to your GPU, or check the saved connection again after upgrading. A job refused for missing credits says so. When a studio is on your GPU and the local engine isn't ready for it, the error also suggests Comfy Cloud while it's connected.
 
-A deadline, interrupted submit or stopped worker does not trigger a new generation. The existing job record and operation key remain the basis for recovery; the studio must be restarted after a worker failure. The SDK's job lookup currently has no abort parameter: a cancelled local wait discards its late result, while the SDK's own 30-second request timeout bounds the underlying lookup. Refresh, cancellation and event operations use the SDK's abort support.
+## Managed deployments
 
-Loopback contract tests exercise two workers with different endpoints and credentials but identical job and output IDs. They cover real SDK asset upload, a throttled submission retry with the same key, polling, cancellation, progress and streamed downloads. They also check ambiguous submission failures, bounded requests, file/client ownership and rejection of invalid mutated graphs before IPC. This validates the local adapter boundary; it does not establish a cloud account's billing ownership, compatibility or recovery behavior. Remote execution remains disabled.
-
-## Before cloud generation can become available
-
-A supported execution profile must provide Aftertake's exact custom nodes, models, media upload/download behavior and output metadata contract. Character replacement also needs the pinned H3 Relay recipe, SAM3 and its required model files. A generic Comfy endpoint is not sufficient evidence of compatibility.
-
-The account owner must separately establish an eligible subscription, credits and the deployment's billing rules before any cloud execution is enabled. This release performs no account creation, purchase, deployment provisioning or billable trial. It does not assume that a visitor's personal credits pay for another workspace's managed endpoint.
-
-The application also needs verified provider-specific job routing and recovery before it can activate a remote connection. A shared hosted service additionally needs authenticated users, isolated credentials, media and job ownership, and a secure credential lifecycle. The current settings are connection preparation for an owner-run local studio, not a shared hosted BYOK service.
+Managed `*.run.comfy.app` deployments can be saved and checked, but they stay blocked: they have no verified read-only probe, and Aftertake's custom nodes would need to be installed there. A deployment that carries the full node pack and models could run every studio. Use the offline inventory and metadata checker below to evaluate one.
 
 ## Local API
 
-- `GET /api/compute` returns safe connection and capability status.
-- `POST /api/compute/connection` accepts `{ "provider": "local" }`, `{ "provider": "comfy-cloud", "apiKey": "..." }`, or `{ "provider": "managed-deployment", "endpoint": "https://example.run.comfy.app", "apiKey": "..." }`. Remote keys can be omitted until a later connection update.
-- `POST /api/compute/probe` explicitly checks the selected candidate or local engine.
-- `DELETE /api/compute/connection` clears the candidate and its memory-held key.
+- `GET /api/compute` returns safe connection and capability status, including where each studio renders (`renders: "local" | "comfy-cloud"`) and, for the cloud-capable studios while Cloud is connected, both destinations' readiness (`choices`).
+- `POST /api/compute/connection` accepts `{ "provider": "local" }`, `{ "provider": "comfy-cloud", "apiKey": "..." }`, or `{ "provider": "managed-deployment", "endpoint": "https://example.run.comfy.app", "apiKey": "..." }`.
+- `POST /api/compute/probe` checks the selected connection, and connects Comfy Cloud when its key is accepted.
+- `POST /api/compute/routing` with `{ "feature": "text-video", "renders": "comfy-cloud" }` chooses where one cloud-capable studio renders; `"feature": "all"` sets all five. Choosing Comfy Cloud needs a connected key; choosing `"local"` always works.
+- `DELETE /api/compute/connection` clears the connection, its memory-held key and the Cloud worker.
+- `GET /api/engine?pipeline=...` reports Comfy Cloud's readiness for a studio you switched to Cloud, and the local engine's otherwise.
 
-These routes retain the local studio's existing loopback host and same-origin write restrictions. Client-supplied claims such as `billingVerified` or `compatibilityVerified` are rejected.
+These routes keep the local studio's loopback host and same-origin write restrictions. Client-supplied claims such as `billingVerified` or `compatibilityVerified` are rejected.
 
 ## Prepare an offline character-swap inventory
 

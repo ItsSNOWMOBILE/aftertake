@@ -17,7 +17,14 @@ import { buildImageWorkflow } from './image-workflow.js';
 import { inspectFramePng } from './frame-edits.js';
 import { submissionRejected } from './submission.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
-import { assertJobTarget, jobTargetIssue, type JobTarget } from './job-target.js';
+import { JobTargetError, type JobTarget } from './job-target.js';
+import {
+  localSetupError,
+  newJobRoute,
+  recordRoute,
+  type CloudRoutes,
+  type EngineRoute,
+} from './cloud-runtime.js';
 
 export async function imageRouter(context: {
   data: string;
@@ -25,10 +32,14 @@ export async function imageRouter(context: {
   target: JobTarget;
   uiUrl: string;
   engine: () => Promise<Engine>;
+  /** Present when Comfy Cloud can take new image jobs and rejoin its own. */
+  cloud?: CloudRoutes;
   takeBusy: () => boolean;
   setAdmitting: (value: boolean) => void;
 }) {
   const { data, client, target } = context,
+    local: EngineRoute = { provider: 'local', client, target },
+    routeOf = (image: ImageGeneration) => recordRoute(image, local, context.cloud),
     router = Router(),
     folder = path.join(data, 'images'),
     clips = path.join(data, 'clips');
@@ -48,8 +59,8 @@ export async function imageRouter(context: {
     }
   }
   async function targetMatches(image: ImageGeneration) {
-    const issue = jobTargetIssue(image, target);
-    if (!issue) return true;
+    const issue = routeOf(image);
+    if (typeof issue !== 'string') return true;
     const state = image.jobId ? 'connection_lost' : 'submission_unknown';
     if (image.state !== state || image.error !== issue) {
       const blocked = { ...image, state, error: issue };
@@ -64,7 +75,8 @@ export async function imageRouter(context: {
   }
   async function track(image: ImageGeneration, initial?: EngineJob) {
     if (active.has(image.id)) return;
-    if (jobTargetIssue(image, target)) {
+    const route = routeOf(image);
+    if (typeof route === 'string') {
       await targetMatches(image);
       return;
     }
@@ -72,7 +84,7 @@ export async function imageRouter(context: {
     const controller = new AbortController();
     let progress: number | null = null;
     try {
-      const job = initial || (await client.jobs.get(image.jobId!));
+      const job = initial || (await route.client.jobs.get(image.jobId!));
       handles.set(image.id, job);
       void (async () => {
         for await (const event of job.events(controller.signal))
@@ -105,21 +117,22 @@ export async function imageRouter(context: {
           try {
             await output.toFile(temporary);
             const bytes = await readFile(temporary),
-              png = inspectFramePng(bytes),
+              png = inspectFramePng(bytes, { workflowOptional: route.provider === 'comfy-cloud' }),
               [width, height] = imageDimensions(image.request.aspect, image.request.resolution);
             if (png.width !== width || png.height !== height)
               throw Error('The generated image has unexpected dimensions.');
-            const expected = buildImageWorkflow(image.request);
-            for (const id of Object.keys(expected)) {
-              const node = png.workflow[id] as
-                { class_type?: string; inputs?: unknown } | undefined;
+            const expected = buildImageWorkflow(image.request),
+              executed = png.workflow;
+            // Comfy Cloud may strip PNG text; its record keeps the graph it submitted.
+            for (const id of executed ? Object.keys(expected) : []) {
+              const node = executed![id] as { class_type?: string; inputs?: unknown } | undefined;
               if (
                 node?.class_type !== expected[id].class_type ||
                 !isDeepStrictEqual(node.inputs, expected[id].inputs)
               )
                 throw Error('The image metadata does not match its requested workflow.');
             }
-            image.workflow = png.workflow;
+            image.workflow = png.workflow ?? image.workflow;
             await rename(temporary, target);
             const clip = {
               id: image.id,
@@ -143,20 +156,21 @@ export async function imageRouter(context: {
           image.state = 'succeeded';
           image.progress = 1;
           image.stage = 'Ready to edit or animate';
-          try {
-            const queue = (await fetch(`${context.uiUrl}/queue`, {
-              signal: AbortSignal.timeout(3000),
-            }).then((r) => r.json())) as { queue_running?: unknown[]; queue_pending?: unknown[] };
-            if (queue.queue_running?.length === 0 && queue.queue_pending?.length === 0)
-              await fetch(`${context.uiUrl}/free`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ unload_models: true, free_memory: true }),
+          if (route.provider === 'local')
+            try {
+              const queue = (await fetch(`${context.uiUrl}/queue`, {
                 signal: AbortSignal.timeout(3000),
-              });
-          } catch {
-            /* Image completion does not depend on releasing an idle cache. */
-          }
+              }).then((r) => r.json())) as { queue_running?: unknown[]; queue_pending?: unknown[] };
+              if (queue.queue_running?.length === 0 && queue.queue_pending?.length === 0)
+                await fetch(`${context.uiUrl}/free`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ unload_models: true, free_memory: true }),
+                  signal: AbortSignal.timeout(3000),
+                });
+            } catch {
+              /* Image completion does not depend on releasing an idle cache. */
+            }
         } else if (status === 'failed') image.error = JSON.stringify(job.error);
         await persist(image);
         if (imageTerminal.has(status)) break;
@@ -178,18 +192,28 @@ export async function imageRouter(context: {
     }
   }
   async function submit(image: ImageGeneration) {
-    assertJobTarget(image, target);
+    const route = routeOf(image);
+    if (typeof route === 'string') throw new JobTargetError(route);
     if (!image.workflow)
       throw Error(
         'The original image workflow is missing. Keep this record for review and create a deliberate new image.',
       );
-    const job = await client.submit(client.workflows.fromJson(structuredClone(image.workflow)), {
-      idempotencyKey: image.id,
-    });
+    const job = await route.client.submit(
+      route.client.workflows.fromJson(structuredClone(image.workflow)),
+      { idempotencyKey: image.id },
+    );
     image.jobId = job.id;
     image.state = job.status === 'succeeded' ? 'finalizing' : job.status;
     await persist(image);
     void track(image, job);
+  }
+  function submissionMessage(image: ImageGeneration, error: unknown) {
+    const route = routeOf(image);
+    return (
+      (typeof route !== 'string' && route.provider === 'comfy-cloud'
+        ? context.cloud?.refused(error)
+        : undefined) ?? (error instanceof Error ? error.message : String(error))
+    );
   }
   for (const name of await readdir(folder)) {
     if (!/^[a-f0-9-]{36}\.json$/.test(name)) continue;
@@ -224,12 +248,25 @@ export async function imageRouter(context: {
       });
     context.setAdmitting(true);
     try {
-      if (!(await context.engine()).ready)
+      const { route, engine } = await newJobRoute(
+        'image-gen',
+        local,
+        context.engine,
+        context.cloud,
+      );
+      if (!engine.ready)
         return void res.status(409).json({
-          error: 'Install the optional Z-Image Turbo weights and start the local engine.',
+          error:
+            route.provider === 'comfy-cloud'
+              ? engine.message
+              : localSetupError(
+                  'Install the optional Z-Image Turbo weights and start the local engine.',
+                  'image-gen',
+                  context.cloud,
+                ),
         });
       const image: ImageGeneration = {
-        jobTarget: target.binding,
+        jobTarget: route.target.binding,
         id: randomUUID(),
         ...admission.identity,
         request,
@@ -246,7 +283,7 @@ export async function imageRouter(context: {
         res.status(201).json(image);
       } catch (error) {
         image.state = submissionRejected(error) ? 'failed' : 'submission_unknown';
-        image.error = error instanceof Error ? error.message : String(error);
+        image.error = submissionMessage(image, error);
         await persist(image);
         res.status(502).json({ error: image.error, image });
       }
@@ -258,8 +295,9 @@ export async function imageRouter(context: {
     const image = images.get(req.params.id);
     if (!image?.jobId || !imageBusy(image) || image.state === 'finalizing')
       return void res.status(409).json({ error: 'No active image job can be canceled.' });
-    assertJobTarget(image, target);
-    const job = handles.get(image.id) || (await client.jobs.get(image.jobId));
+    const route = routeOf(image);
+    if (typeof route === 'string') throw new JobTargetError(route);
+    const job = handles.get(image.id) || (await route.client.jobs.get(image.jobId));
     await cancelAndRefresh(job);
     if (job.status !== 'succeeded') image.state = job.status;
     await persist(image);
@@ -269,7 +307,8 @@ export async function imageRouter(context: {
     const image = images.get(req.params.id);
     if (!image || !['submission_unknown', 'connection_lost', 'output_error'].includes(image.state))
       return void res.status(409).json({ error: 'This image does not need recovery.' });
-    assertJobTarget(image, target);
+    const route = routeOf(image);
+    if (typeof route === 'string') throw new JobTargetError(route);
     if (image.jobId) {
       void track(image);
       return void res.json(image);
@@ -288,7 +327,7 @@ export async function imageRouter(context: {
         res.json(image);
       } catch (error) {
         image.state = submissionRejected(error) ? 'failed' : 'submission_unknown';
-        image.error = error instanceof Error ? error.message : String(error);
+        image.error = submissionMessage(image, error);
         await persist(image);
         res.status(502).json({ error: image.error, image });
       }

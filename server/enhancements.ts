@@ -26,8 +26,17 @@ import { resolveClipAsset } from './assets.js';
 import { readVideoMetadata } from './video-metadata.js';
 import { submissionRejected } from './submission.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
-import { assertJobTarget, jobTargetIssue, type JobTarget } from './job-target.js';
+import { JobTargetError, boundToCloud, type JobTarget } from './job-target.js';
 import { RequestError } from './http-errors.js';
+import {
+  localSetupError,
+  newJobRoute,
+  recordRoute,
+  type CloudRoutes,
+  type EngineRoute,
+} from './cloud-runtime.js';
+import { buildCloudEnhanceWorkflow, cloudEnhanceSource, cloudOutputs } from './cloud-workflow.js';
+import { CloudSourceError, runCloudMedia } from './cloud-media.js';
 
 const exec = promisify(execFile),
   sha = (bytes: Uint8Array) => createHash('sha256').update(bytes).digest('hex');
@@ -55,10 +64,17 @@ export async function enhancementRouter(context: {
   target: JobTarget;
   uiUrl: string;
   engine: (feature: EnhanceFeature) => Promise<Engine>;
+  /** Present when Comfy Cloud can take new jobs and rejoin its own. */
+  cloud?: CloudRoutes;
   takeBusy: () => boolean;
   setAdmitting: (value: boolean) => void;
 }) {
   const { data, client, target } = context,
+    local: EngineRoute = { provider: 'local', client, target },
+    routeOf = (job: Enhancement) => recordRoute(job, local, context.cloud),
+    // Cloud upscales and interpolations save WebM frames that are finished locally.
+    cloudVideo = (job: Enhancement) =>
+      boundToCloud(job) && job.request.format === 'aftertake-enhance/1',
     router = Router(),
     folder = path.join(data, 'enhancements'),
     clips = path.join(data, 'clips');
@@ -78,8 +94,8 @@ export async function enhancementRouter(context: {
     }
   }
   async function targetMatches(job: Enhancement) {
-    const issue = jobTargetIssue(job, target);
-    if (!issue) return true;
+    const issue = routeOf(job);
+    if (typeof issue !== 'string') return true;
     const state = job.jobId ? 'connection_lost' : 'submission_unknown';
     if (job.state !== state || job.error !== issue) {
       const blocked = { ...job, state, error: issue };
@@ -104,6 +120,30 @@ export async function enhancementRouter(context: {
       width?: number;
       height?: number;
     };
+  }
+  /** Add the source's sound to Cloud's frames and write the MP4 the local saver would. */
+  async function finishCloudVideo(job: Enhancement, frames: string, output: string) {
+    const request = job.request as EnhanceRequest,
+      expected = enhanceOutput(request),
+      clip = await resolveClipAsset(request.clip, clips, 'source clip');
+    await runCloudMedia(
+      context,
+      'finish',
+      {
+        frames,
+        output,
+        fps: expected.fps,
+        frame_count: expected.frames,
+        comment: {
+          recipe: { format: 'aftertake-enhance-output/1', request },
+          workflow: job.workflow,
+        },
+        ...(expected.sound
+          ? { source_audio: { path: path.join(clips, path.basename(clip.url)), start: 0 } }
+          : {}),
+      },
+      folder,
+    );
   }
   /** Check the downloaded file is this request's result, then publish it. */
   async function finish(job: Enhancement, downloaded: string) {
@@ -146,7 +186,8 @@ export async function enhancementRouter(context: {
   }
   async function track(job: Enhancement, initial?: EngineJob) {
     if (active.has(job.id)) return;
-    if (jobTargetIssue(job, target)) {
+    const route = routeOf(job);
+    if (typeof route === 'string') {
       await targetMatches(job);
       return;
     }
@@ -154,7 +195,7 @@ export async function enhancementRouter(context: {
     const controller = new AbortController();
     let progress: number | null = null;
     try {
-      const engineJob = initial || (await client.jobs.get(job.jobId!));
+      const engineJob = initial || (await route.client.jobs.get(job.jobId!));
       handles.set(job.id, engineJob);
       void (async () => {
         for await (const event of engineJob.events(controller.signal))
@@ -177,29 +218,37 @@ export async function enhancementRouter(context: {
         delete job.error;
         if (status === 'succeeded') {
           await persist(job);
-          const output = engineJob.getOutputs(enhanceOutputNode(job.request))[0];
+          const output = engineJob.getOutputs(
+            cloudVideo(job) ? cloudOutputs.frames : enhanceOutputNode(job.request),
+          )[0];
           if (!output) throw Error('The workflow finished without its result.');
-          const downloaded = path.join(folder, `${job.id}.${randomUUID()}.download`);
+          const downloaded = path.join(folder, `${job.id}.${randomUUID()}.download`),
+            frames = `${downloaded}.webm`;
           try {
-            await output.toFile(downloaded);
+            if (cloudVideo(job)) {
+              job.stage = 'Finishing the video on this computer';
+              await output.toFile(frames);
+              await finishCloudVideo(job, frames, downloaded);
+            } else await output.toFile(downloaded);
             await finish(job, downloaded);
           } finally {
-            await unlink(downloaded).catch(() => {});
+            await Promise.all([downloaded, frames].map((file) => unlink(file).catch(() => {})));
           }
           job.state = 'succeeded';
           job.progress = 1;
           job.stage =
             job.request.format === 'aftertake-song/1' ? 'Ready to add to Film' : 'Ready to use';
-          try {
-            await fetch(`${context.uiUrl}/free`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ unload_models: true, free_memory: true }),
-              signal: AbortSignal.timeout(3000),
-            });
-          } catch {
-            /* Completion does not depend on releasing an idle cache. */
-          }
+          if (route.provider === 'local')
+            try {
+              await fetch(`${context.uiUrl}/free`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ unload_models: true, free_memory: true }),
+                signal: AbortSignal.timeout(3000),
+              });
+            } catch {
+              /* Completion does not depend on releasing an idle cache. */
+            }
         } else if (status === 'failed') job.error = JSON.stringify(engineJob.error);
         await persist(job);
         if (enhancementTerminal.has(status)) break;
@@ -224,21 +273,48 @@ export async function enhancementRouter(context: {
     }
   }
   async function submit(job: Enhancement) {
-    assertJobTarget(job, target);
-    const workflow = client.workflows.fromJson(structuredClone(job.workflow));
+    const route = routeOf(job);
+    if (typeof route === 'string') throw new JobTargetError(route);
+    const workflow = route.client.workflows.fromJson(structuredClone(job.workflow));
+    let prepared: string | undefined;
     if (job.request.format === 'aftertake-enhance/1') {
-      const clip = await resolveClipAsset(job.request.clip, clips, 'source clip');
-      workflow.setInput(
-        '1',
-        'filename',
-        client.assets.fromFile(path.join(clips, path.basename(clip.url))),
-      );
+      const clip = await resolveClipAsset(job.request.clip, clips, 'source clip'),
+        source = path.join(clips, path.basename(clip.url));
+      if (cloudVideo(job)) {
+        // Cloud has no Aftertake loader: upload the frames it would have decoded.
+        prepared = path.join(folder, `${job.id}.${randomUUID()}.cloud-source.mp4`);
+        try {
+          await runCloudMedia(
+            context,
+            'prepare',
+            { source, output: prepared, ...cloudEnhanceSource(job.request) },
+            folder,
+          );
+        } catch {
+          await unlink(prepared).catch(() => {});
+          throw new CloudSourceError('The source could not be prepared for Comfy Cloud.');
+        }
+        workflow.setInput('1', 'file', route.client.assets.fromFile(prepared));
+      } else workflow.setInput('1', 'filename', route.client.assets.fromFile(source));
     }
-    const engineJob = await client.submit(workflow, { idempotencyKey: job.id });
+    let engineJob;
+    try {
+      engineJob = await route.client.submit(workflow, { idempotencyKey: job.id });
+    } finally {
+      if (prepared) await unlink(prepared).catch(() => {});
+    }
     job.jobId = engineJob.id;
     job.state = engineJob.status === 'succeeded' ? 'finalizing' : engineJob.status;
     await persist(job);
     void track(job, engineJob);
+  }
+  function submissionMessage(job: Enhancement, error: unknown) {
+    const route = routeOf(job);
+    return (
+      (typeof route !== 'string' && route.provider === 'comfy-cloud'
+        ? context.cloud?.refused(error)
+        : undefined) ?? (error instanceof Error ? error.message : String(error))
+    );
   }
   for (const name of await readdir(folder)) {
     if (!/^[a-f0-9-]{36}\.json$/.test(name)) continue;
@@ -275,20 +351,36 @@ export async function enhancementRouter(context: {
       });
     context.setAdmitting(true);
     try {
-      const feature = enhancementFeature(request);
-      if (!(await context.engine(feature)).ready)
+      const feature = enhancementFeature(request),
+        { route, engine } = await newJobRoute(
+          feature,
+          local,
+          () => context.engine(feature),
+          context.cloud,
+        );
+      if (!engine.ready)
         return void res.status(409).json({
-          error: `Install the ${feature} model profile and start the local engine: node scripts/aftertake.mjs setup-gpu --${feature}`,
+          error:
+            route.provider === 'comfy-cloud'
+              ? [engine.message, ...engine.missing].join(' ')
+              : localSetupError(
+                  `Install the ${feature} model profile and start the local engine: node scripts/aftertake.mjs setup-gpu --${feature}`,
+                  feature,
+                  context.cloud,
+                ),
         });
       if (request.format === 'aftertake-enhance/1')
         await resolveClipAsset(request.clip, clips, 'source clip');
       const id = randomUUID(),
         job: Enhancement = {
-          jobTarget: target.binding,
+          jobTarget: route.target.binding,
           id,
           ...admission.identity,
           request,
-          workflow: buildEnhanceWorkflow(id, request),
+          workflow:
+            route.provider === 'comfy-cloud' && request.format === 'aftertake-enhance/1'
+              ? buildCloudEnhanceWorkflow(id, request)
+              : buildEnhanceWorkflow(id, request),
           state: 'submitting',
           progress: null,
           createdAt: new Date().toISOString(),
@@ -300,8 +392,11 @@ export async function enhancementRouter(context: {
         await submit(job);
         res.status(201).json(job);
       } catch (error) {
-        job.state = submissionRejected(error) ? 'failed' : 'submission_unknown';
-        job.error = error instanceof Error ? error.message : String(error);
+        job.state =
+          submissionRejected(error) || error instanceof CloudSourceError
+            ? 'failed'
+            : 'submission_unknown';
+        job.error = submissionMessage(job, error);
         await persist(job);
         res.status(502).json({ error: job.error, enhancement: job });
       }
@@ -329,8 +424,9 @@ export async function enhancementRouter(context: {
     const job = jobs.get(req.params.id);
     if (!job?.jobId || !enhancementBusy(job) || job.state === 'finalizing')
       return void res.status(409).json({ error: 'No active job can be canceled.' });
-    assertJobTarget(job, target);
-    const engineJob = handles.get(job.id) || (await client.jobs.get(job.jobId));
+    const route = routeOf(job);
+    if (typeof route === 'string') throw new JobTargetError(route);
+    const engineJob = handles.get(job.id) || (await route.client.jobs.get(job.jobId));
     await cancelAndRefresh(engineJob);
     if (engineJob.status !== 'succeeded') job.state = engineJob.status;
     await persist(job);
@@ -340,7 +436,8 @@ export async function enhancementRouter(context: {
     const job = jobs.get(req.params.id);
     if (!job || !['submission_unknown', 'connection_lost', 'output_error'].includes(job.state))
       return void res.status(409).json({ error: 'This job does not need recovery.' });
-    assertJobTarget(job, target);
+    const route = routeOf(job);
+    if (typeof route === 'string') throw new JobTargetError(route);
     if (job.jobId) {
       void track(job);
       return void res.json(job);
@@ -358,8 +455,11 @@ export async function enhancementRouter(context: {
         await submit(job);
         res.json(job);
       } catch (error) {
-        job.state = submissionRejected(error) ? 'failed' : 'submission_unknown';
-        job.error = error instanceof Error ? error.message : String(error);
+        job.state =
+          submissionRejected(error) || error instanceof CloudSourceError
+            ? 'failed'
+            : 'submission_unknown';
+        job.error = submissionMessage(job, error);
         await persist(job);
         res.status(502).json({ error: job.error, enhancement: job });
       }

@@ -1,0 +1,108 @@
+{
+  "format": "aftertake-cloud-validation/1",
+  "date": "2026-10-22",
+  "plan": "Comfy Cloud Standard",
+  "path": "The local studio (server/index.ts) with Comfy Cloud connected in Render setup and all five cloud-capable studios switched to Comfy Cloud; jobs submitted through the studio API and finished by its own checks.",
+  "runs": [
+    {
+      "studio": "Create images",
+      "feature": "image-gen",
+      "request": {
+        "aspect": "square",
+        "style": "photo",
+        "seed": 42
+      },
+      "state": "succeeded",
+      "jobTarget": "comfy-cloud",
+      "output": {
+        "width": 1024,
+        "height": 1024,
+        "sha256": "bd4d6e3a84999da74533dff9ef5b7ee2a9afd076a91a30c728fd62ba2df67c05",
+        "workflowInPng": true
+      },
+      "secondsSubmitToReady": 16
+    },
+    {
+      "studio": "Make a song",
+      "feature": "song",
+      "request": {
+        "seconds": 10,
+        "bpm": 110,
+        "keyscale": "A minor"
+      },
+      "state": "succeeded",
+      "jobTarget": "comfy-cloud",
+      "output": {
+        "seconds": 10,
+        "format": "flac",
+        "sha256": "5027dc728d38aa007905703ae3705d5cfa44647ec1a7b8b3f5b46efc404f9a17"
+      },
+      "secondsSubmitToReady": 25
+    },
+    {
+      "studio": "Smooth and slow motion",
+      "feature": "interpolate",
+      "request": {
+        "source": "512x288, 2 s, with sound",
+        "multiplier": 2,
+        "timing": "smooth"
+      },
+      "state": "succeeded",
+      "jobTarget": "comfy-cloud",
+      "output": {
+        "width": 512,
+        "height": 288,
+        "fps": 48.0,
+        "frames": 95,
+        "sound": true,
+        "seconds": 1.979,
+        "sha256": "d2b69679c6460a9c8d9eff36b2b2049dbfbe5ed8e65b445b0cbf84843774219c"
+      },
+      "note": "The first local finish failed: the MP4 writer needed an explicit format for extensionless download names. Fixed in scripts/cloud-media.py, then the same Cloud job was rejoined and re-downloaded without running again.",
+      "secondsSubmitToReady": 15
+    },
+    {
+      "studio": "Upscale video",
+      "feature": "upscale",
+      "request": {
+        "source": "512x288, 2 s, with sound"
+      },
+      "state": "succeeded",
+      "jobTarget": "comfy-cloud",
+      "output": {
+        "width": 1024,
+        "height": 576,
+        "fps": 24.0,
+        "frames": 48,
+        "sound": true,
+        "seconds": 2.0,
+        "sha256": "4df63b3af1d2687954fc8da8c0263cc002970402b7d454d693e23b1211c5860e"
+      },
+      "secondsSubmitToReady": 42
+    },
+    {
+      "studio": "Create video",
+      "feature": "text-video",
+      "request": {
+        "quality": "draft",
+        "aspect": "landscape",
+        "seconds": 2,
+        "sound": true,
+        "palette": "cool"
+      },
+      "state": "succeeded",
+      "jobTarget": "comfy-cloud",
+      "output": {
+        "width": 512,
+        "height": 288,
+        "fps": 24.0,
+        "frames": 49,
+        "sound": true,
+        "seconds": 2.042,
+        "sha256": "aff57d483c5d30ac364aa676f984834aa47a8c697d41b32b3df574397d8ac48b"
+      },
+      "secondsSubmitToReady": 28
+    }
+  ],
+  "notRecorded": "The API key and account id. Job target fingerprints hash the account id."
+}

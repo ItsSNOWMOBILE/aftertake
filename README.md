@@ -121,6 +121,11 @@ node scripts/aftertake.mjs setup-gpu --video     # or --image, --character-swap,
 node scripts/aftertake.mjs setup-npu             # depth on the Neural Engine or an NPU, optional
 ```
 
+**No NVIDIA GPU, or missing a model?** Comfy Cloud is optional, studio by
+studio: add a key from a paid Comfy Cloud plan in Render setup, then choose
+[Comfy Cloud](docs/cloud-setup.md) for any of images, text to video, upscaling,
+smooth and slow motion, or songs. Everything else keeps your local models.
+
 <details>
 <summary><b>All model profiles</b></summary>
 
@@ -261,8 +266,11 @@ Aftertake is an independent, experimental project built for Comfy's
 [Open Source Higgsfield challenge](https://comfy.org/open-source-higgsfield/).
 Generative results still need human review: likeness, hands, occlusions and
 camera adherence vary by shot, and a passing technical check is not a judgment
-of visual quality. Cloud rendering is prepared but not yet enabled. Aftertake
-does not claim full Higgsfield feature parity.
+of visual quality. Optional Comfy Cloud rendering was tested end to end on a
+Standard plan on October 22, 2026: one image, song, smooth-motion clip, upscale
+and text-to-video clip, each finished by the studio's usual checks
+([record](docs/cloud/oct22-cloud-validation.json)). Aftertake does not claim
+full Higgsfield feature parity.
 
 ## License and acknowledgments
 

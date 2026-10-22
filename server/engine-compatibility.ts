@@ -44,6 +44,29 @@ function comboOptions(value: unknown): unknown {
   return type === 'COMBO' ? own(item(value, 1), 'options') : type;
 }
 
+/** Required node classes and model menu entries, from an engine's object_info. */
+export function componentChecks(
+  objectInfo: unknown,
+  needed: { nodes: string[]; menus: [string, string, string][] },
+): EngineCompatibilityCheck[] {
+  const checks: EngineCompatibilityCheck[] = [];
+  for (const name of needed.nodes)
+    checks.push({
+      id: `node:${name}`,
+      state: record(own(objectInfo, name)) ? 'pass' : 'blocked',
+      message: `Node: ${name}`,
+    });
+  for (const [name, input, filename] of needed.menus) {
+    const options = comboOptions(port(own(objectInfo, name), 'required', input));
+    checks.push({
+      id: `model:${name}.${input}:${filename}`,
+      state: strings(options) && options.includes(filename) ? 'pass' : 'blocked',
+      message: `Model: ${filename}`,
+    });
+  }
+  return checks;
+}
+
 /** Metadata checks only: no network, SDK work, GPU claim or deployment approval. */
 export function evaluateEngineCompatibility({
   feature,
@@ -218,18 +241,7 @@ export function evaluateEngineCompatibility({
       'H3 needs the installed Comfy Kitchen INT8 attention menu and a successful compiled-kernel probe on the selected GPU.',
     );
   }
-  for (const name of needed.nodes) {
-    check(`node:${name}`, record(own(objectInfo, name)), `Node: ${name}`);
-  }
-  for (const [name, input, filename] of needed.menus) {
-    const definition = port(own(objectInfo, name), 'required', input);
-    const options = comboOptions(definition);
-    check(
-      `model:${name}.${input}:${filename}`,
-      strings(options) && options.includes(filename),
-      `Model: ${filename}`,
-    );
-  }
+  for (const component of componentChecks(objectInfo, needed)) checks.push(component);
   if (needed.nodes.includes('AftertakeLoadClip')) {
     const output = own(own(objectInfo, 'AftertakeLoadClip'), 'output');
     check(

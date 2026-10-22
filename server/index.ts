@@ -37,12 +37,18 @@ import { scriptDraftRouter } from './script-drafts.js';
 import { characterRouter } from './characters.js';
 import { videoRouter } from './videos.js';
 import { computeRouter } from './compute.js';
+import { createCloudRuntime } from './cloud-runtime.js';
 import { subjectEffectsRouter } from './subject-effects.js';
 import { finishingRouter } from './finishing.js';
 import { recompositionRouter } from './recompositions.js';
 import { resolveFinishingLutSettings } from './finishing-luts.js';
 import { layerStackRouter } from './layer-stack.js';
-import { computeFeatures, hardwareProfile, type ComputeFeature } from '../src/compute.js';
+import {
+  cloudFeature,
+  computeFeatures,
+  hardwareProfile,
+  type ComputeFeature,
+} from '../src/compute.js';
 import { enhancementRouter } from './enhancements.js';
 import { depthEffectsRouter } from './depth-effects.js';
 import {
@@ -90,6 +96,15 @@ const client = await createIsolatedClient({
   readRoots: [data],
   writeRoots: [data],
 });
+// Comfy Cloud gets its own isolated worker once Compute settings accept a key.
+// Its key stays in this process's memory and that worker's copied environment.
+// It is optional per studio: the studios chosen for Cloud are kept in the workspace.
+const cloud = createCloudRuntime({
+  createClient: ({ baseUrl, apiKey }) =>
+    createIsolatedClient({ baseUrl, apiKey, readRoots: [data], writeRoots: [data] }),
+  choicesFile: path.join(data, 'cloud-choices.json'),
+});
+await cloud.loadChoices();
 const terminal = new Set(['succeeded', 'failed', 'canceled', 'expired', 'output_error']);
 // A browser's unresolved request must not be silently replayed into another
 // studio process when its original durable record cannot be found.
@@ -347,7 +362,12 @@ app.get('/previews/:name', (req, res) => {
 });
 app.get('/api/engine', async (req, res) => {
   const pipeline = computeFeatures.find((value) => value === req.query.pipeline) || 'structure';
-  res.json(await engine(pipeline));
+  // A studio whose new jobs go to Comfy Cloud shows Cloud's readiness instead.
+  res.json(
+    cloud.routes.route() && cloudFeature(pipeline) && cloud.routes.chosen(pipeline)
+      ? await cloud.engine(pipeline)
+      : await engine(pipeline),
+  );
 });
 app.get('/api/workspace', (_req, res) => {
   res.json({
@@ -498,7 +518,14 @@ app.post(
   },
 );
 app.use(express.json({ limit: '2mb' }));
-app.use('/api/compute', computeRouter({ localEngine: engine }));
+app.use(
+  '/api/compute',
+  computeRouter({
+    localEngine: engine,
+    cloud,
+    startupCloudKey: process.env.COMFY_CLOUD_API_KEY?.trim() || undefined,
+  }),
+);
 app.use('/api/script-drafts', await scriptDraftRouter({ root, data }));
 const frameEdits = await frameEditorRouter({
   target: jobTarget,
@@ -516,6 +543,7 @@ const images = await imageRouter({
   client,
   uiUrl,
   engine: () => engine('image-gen'),
+  cloud: cloud.routes,
   ...generation.forWorker('images'),
 });
 generation.register('images', images.busy);
@@ -578,6 +606,7 @@ const videos = await videoRouter({
   client,
   uiUrl,
   engine: () => engine('text-video'),
+  cloud: cloud.routes,
   ...generation.forWorker('videos'),
 });
 generation.register('videos', videos.busy);
@@ -590,6 +619,7 @@ const enhancements = await enhancementRouter({
   client,
   uiUrl,
   engine: (feature) => engine(feature),
+  cloud: cloud.routes,
   ...generation.forWorker('enhancements'),
 });
 generation.register('enhancements', enhancements.busy);

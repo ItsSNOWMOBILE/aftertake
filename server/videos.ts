@@ -7,6 +7,7 @@ import type { EngineClient, EngineJob } from './sdk-port.js';
 import type { Engine } from '../src/domain.js';
 import {
   videoBusy,
+  videoDimensions,
   videoRequestSchema,
   videoTerminal,
   type VideoGeneration,
@@ -15,7 +16,16 @@ import { buildVideoWorkflow } from './video-workflow.js';
 import { verifyGeneratedVideo } from './video-output.js';
 import { submissionRejected } from './submission.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
-import { assertJobTarget, jobTargetIssue, type JobTarget } from './job-target.js';
+import { JobTargetError, type JobTarget } from './job-target.js';
+import {
+  localSetupError,
+  newJobRoute,
+  recordRoute,
+  type CloudRoutes,
+  type EngineRoute,
+} from './cloud-runtime.js';
+import { buildCloudVideoWorkflow, cloudOutputs } from './cloud-workflow.js';
+import { runCloudMedia } from './cloud-media.js';
 
 export async function videoRouter(context: {
   data: string;
@@ -26,10 +36,14 @@ export async function videoRouter(context: {
   python: string;
   inspect?: Parameters<typeof verifyGeneratedVideo>[3];
   engine: () => Promise<Engine>;
+  /** Present when Comfy Cloud can take new videos and rejoin its own. */
+  cloud?: CloudRoutes;
   takeBusy: () => boolean;
   setAdmitting: (value: boolean) => void;
 }) {
   const { data, client, target } = context,
+    local: EngineRoute = { provider: 'local', client, target },
+    routeOf = (video: VideoGeneration) => recordRoute(video, local, context.cloud),
     router = Router(),
     folder = path.join(data, 'videos'),
     clips = path.join(data, 'clips');
@@ -49,8 +63,8 @@ export async function videoRouter(context: {
     }
   }
   async function targetMatches(video: VideoGeneration) {
-    const issue = jobTargetIssue(video, target);
-    if (!issue) return true;
+    const issue = routeOf(video);
+    if (typeof issue !== 'string') return true;
     const state = video.jobId ? 'connection_lost' : 'submission_unknown';
     if (video.state !== state || video.error !== issue) {
       const blocked = { ...video, state, error: issue };
@@ -65,7 +79,8 @@ export async function videoRouter(context: {
   }
   async function track(video: VideoGeneration, initial?: EngineJob) {
     if (active.has(video.id)) return;
-    if (jobTargetIssue(video, target)) {
+    const route = routeOf(video);
+    if (typeof route === 'string') {
       await targetMatches(video);
       return;
     }
@@ -73,7 +88,7 @@ export async function videoRouter(context: {
     const controller = new AbortController();
     let progress: number | null = null;
     try {
-      const job = initial || (await client.jobs.get(video.jobId!));
+      const job = initial || (await route.client.jobs.get(video.jobId!));
       handles.set(video.id, job);
       void (async () => {
         for await (const event of job.events(controller.signal))
@@ -99,19 +114,27 @@ export async function videoRouter(context: {
         if (status === 'succeeded') {
           video.stage = 'Downloading generated video';
           await persist(video);
-          const output = job.getOutputs('21')[0];
+          const onCloud = route.provider === 'comfy-cloud',
+            output = job.getOutputs(onCloud ? cloudOutputs.frames : '21')[0];
           if (!output) throw Error('The workflow finished without a video.');
           const target = path.join(clips, `${video.id}.mp4`),
-            temporary = `${target}.${randomUUID()}.tmp`;
+            temporary = `${target}.${randomUUID()}.tmp`,
+            frames = `${temporary}.webm`,
+            sound = `${temporary}.flac`;
           try {
-            await output.toFile(temporary);
+            if (onCloud) await finishCloudVideo(video, job, output, { frames, sound, temporary });
+            else await output.toFile(temporary);
             const bytes = await readFile(temporary);
             const media = await verifyGeneratedVideo(
               bytes,
               video.request,
               temporary,
               context.inspect,
-              { root: context.root, python: context.python },
+              {
+                root: context.root,
+                python: context.python,
+                ...(onCloud ? { expected: buildCloudVideoWorkflow(video.request) } : {}),
+              },
             );
             video.workflow = media.workflow;
             await rename(temporary, target);
@@ -132,25 +155,28 @@ export async function videoRouter(context: {
             await rename(metaTemp, metadata);
             video.clip = clip;
           } finally {
-            await unlink(temporary).catch(() => {});
+            await Promise.all(
+              [temporary, frames, sound].map((file) => unlink(file).catch(() => {})),
+            );
           }
           video.state = 'succeeded';
           video.progress = 1;
           video.stage = 'Ready to add to Film';
-          try {
-            const queue = (await fetch(`${context.uiUrl}/queue`, {
-              signal: AbortSignal.timeout(3000),
-            }).then((r) => r.json())) as { queue_running?: unknown[]; queue_pending?: unknown[] };
-            if (queue.queue_running?.length === 0 && queue.queue_pending?.length === 0)
-              await fetch(`${context.uiUrl}/free`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ unload_models: true, free_memory: true }),
+          if (route.provider === 'local')
+            try {
+              const queue = (await fetch(`${context.uiUrl}/queue`, {
                 signal: AbortSignal.timeout(3000),
-              });
-          } catch {
-            /* Video completion does not depend on releasing an idle cache. */
-          }
+              }).then((r) => r.json())) as { queue_running?: unknown[]; queue_pending?: unknown[] };
+              if (queue.queue_running?.length === 0 && queue.queue_pending?.length === 0)
+                await fetch(`${context.uiUrl}/free`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ unload_models: true, free_memory: true }),
+                  signal: AbortSignal.timeout(3000),
+                });
+            } catch {
+              /* Video completion does not depend on releasing an idle cache. */
+            }
         } else if (status === 'failed') video.error = JSON.stringify(job.error);
         await persist(video);
         if (videoTerminal.has(status)) break;
@@ -172,19 +198,57 @@ export async function videoRouter(context: {
       handles.delete(video.id);
     }
   }
+  /** Grade Cloud's frames, add its sound and write the MP4 the local saver would. */
+  async function finishCloudVideo(
+    video: VideoGeneration,
+    job: EngineJob,
+    output: { toFile(file: string): Promise<unknown> },
+    files: { frames: string; sound: string; temporary: string },
+  ) {
+    video.stage = 'Grading and adding sound on this computer';
+    await output.toFile(files.frames);
+    const audio = video.request.sound ? job.getOutputs(cloudOutputs.sound)[0] : undefined;
+    if (video.request.sound && !audio) throw Error('The workflow finished without its sound.');
+    if (audio) await audio.toFile(files.sound);
+    const d = videoDimensions(video.request);
+    await runCloudMedia(
+      context,
+      'finish',
+      {
+        frames: files.frames,
+        output: files.temporary,
+        fps: d.fps,
+        frame_count: d.frames,
+        palette: video.request.cinema?.palette || 'source',
+        comment: { recipe: video.request, workflow: video.workflow },
+        ...(audio ? { generated_audio: files.sound } : {}),
+      },
+      folder,
+    );
+  }
   async function submit(video: VideoGeneration) {
-    assertJobTarget(video, target);
+    const route = routeOf(video);
+    if (typeof route === 'string') throw new JobTargetError(route);
     if (!video.workflow)
       throw Error(
         'The original video workflow is missing. Keep this record for review and create a deliberate new video.',
       );
-    const job = await client.submit(client.workflows.fromJson(structuredClone(video.workflow)), {
-      idempotencyKey: video.id,
-    });
+    const job = await route.client.submit(
+      route.client.workflows.fromJson(structuredClone(video.workflow)),
+      { idempotencyKey: video.id },
+    );
     video.jobId = job.id;
     video.state = job.status === 'succeeded' ? 'finalizing' : job.status;
     await persist(video);
     void track(video, job);
+  }
+  function submissionMessage(video: VideoGeneration, error: unknown) {
+    const route = routeOf(video);
+    return (
+      (typeof route !== 'string' && route.provider === 'comfy-cloud'
+        ? context.cloud?.refused(error)
+        : undefined) ?? (error instanceof Error ? error.message : String(error))
+    );
   }
   for (const name of await readdir(folder)) {
     if (!/^[a-f0-9-]{36}\.json$/.test(name)) continue;
@@ -219,16 +283,32 @@ export async function videoRouter(context: {
       });
     context.setAdmitting(true);
     try {
-      if (!(await context.engine()).ready)
-        return void res
-          .status(409)
-          .json({ error: 'Install the text-to-video model profile and start the local engine.' });
+      const { route, engine } = await newJobRoute(
+        'text-video',
+        local,
+        context.engine,
+        context.cloud,
+      );
+      if (!engine.ready)
+        return void res.status(409).json({
+          error:
+            route.provider === 'comfy-cloud'
+              ? [engine.message, ...engine.missing].join(' ')
+              : localSetupError(
+                  'Install the text-to-video model profile and start the local engine.',
+                  'text-video',
+                  context.cloud,
+                ),
+        });
       const video: VideoGeneration = {
-        jobTarget: target.binding,
+        jobTarget: route.target.binding,
         id: randomUUID(),
         ...admission.identity,
         request,
-        workflow: buildVideoWorkflow(request),
+        workflow:
+          route.provider === 'comfy-cloud'
+            ? buildCloudVideoWorkflow(request)
+            : buildVideoWorkflow(request),
         state: 'submitting',
         progress: null,
         createdAt: new Date().toISOString(),
@@ -241,7 +321,7 @@ export async function videoRouter(context: {
         res.status(201).json(video);
       } catch (error) {
         video.state = submissionRejected(error) ? 'failed' : 'submission_unknown';
-        video.error = error instanceof Error ? error.message : String(error);
+        video.error = submissionMessage(video, error);
         await persist(video);
         res.status(502).json({ error: video.error, video });
       }
@@ -253,8 +333,9 @@ export async function videoRouter(context: {
     const video = videos.get(req.params.id);
     if (!video?.jobId || !videoBusy(video) || video.state === 'finalizing')
       return void res.status(409).json({ error: 'No active video job can be canceled.' });
-    assertJobTarget(video, target);
-    const job = handles.get(video.id) || (await client.jobs.get(video.jobId));
+    const route = routeOf(video);
+    if (typeof route === 'string') throw new JobTargetError(route);
+    const job = handles.get(video.id) || (await route.client.jobs.get(video.jobId));
     await cancelAndRefresh(job);
     if (job.status !== 'succeeded') video.state = job.status;
     await persist(video);
@@ -264,7 +345,8 @@ export async function videoRouter(context: {
     const video = videos.get(req.params.id);
     if (!video || !['submission_unknown', 'connection_lost', 'output_error'].includes(video.state))
       return void res.status(409).json({ error: 'This video does not need recovery.' });
-    assertJobTarget(video, target);
+    const route = routeOf(video);
+    if (typeof route === 'string') throw new JobTargetError(route);
     if (video.jobId) {
       void track(video);
       return void res.json(video);
@@ -283,7 +365,7 @@ export async function videoRouter(context: {
         res.json(video);
       } catch (error) {
         video.state = submissionRejected(error) ? 'failed' : 'submission_unknown';
-        video.error = error instanceof Error ? error.message : String(error);
+        video.error = submissionMessage(video, error);
         await persist(video);
         res.status(502).json({ error: video.error, video });
       }
