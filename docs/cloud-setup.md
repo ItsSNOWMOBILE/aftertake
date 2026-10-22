@@ -1,6 +1,6 @@
 # Comfy Cloud rendering
 
-Aftertake renders on your own GPU by default. With a key from a **paid** Comfy Cloud plan, it can also render these studios on [Comfy Cloud](https://comfy.org/cloud):
+Aftertake renders on your own GPU, with local models, as it always has. Comfy Cloud is optional, studio by studio. With a key from a **paid** Comfy Cloud plan, you can choose to render any of these studios on [Comfy Cloud](https://comfy.org/cloud) instead:
 
 | Studio | On Comfy Cloud |
 | :--- | :--- |
@@ -18,10 +18,11 @@ Character replacement, painted region effects, camera guidance, motion transfer,
 
 1. Open **Render setup** and choose **Comfy Cloud**.
 2. Paste your Comfy Cloud API key and save it, then choose **Check saved connection**. Aftertake sends the key to Comfy Cloud's read-only account endpoint, `https://cloud.comfy.org/api/user`. It keeps only the account id, to bind jobs to the account that ran them.
-3. When the key is accepted, Aftertake starts a separate isolated Comfy SDK worker for `https://cloud.comfy.org` and reads Cloud's node list (`/api/object_info`). Render setup then shows, for every studio, whether it renders on Comfy Cloud or on your GPU, and whether it's ready.
-4. Start a job as usual. The time estimate beside the button says it renders on Comfy Cloud and uses your credits.
+3. When the key is accepted, Aftertake starts a separate isolated Comfy SDK worker for `https://cloud.comfy.org` and reads Cloud's node list (`/api/object_info`). Nothing moves yet: every studio still renders on your GPU.
+4. Under **Where each studio renders**, switch the studios you want from **Your GPU** to **Comfy Cloud**. Each switch shows whether that destination is ready, and **Use Comfy Cloud for all** or **Use my GPU for all** changes them together. A typical mix keeps images local and sends text to video to Cloud.
+5. Start a job as usual. In a studio you switched, the time estimate beside the button says it renders on Comfy Cloud and uses your credits.
 
-To connect at startup instead, set `COMFY_CLOUD_API_KEY` in your `.env`. **Remove saved key** in Render setup turns Cloud off again.
+Your choices are saved in the workspace (`cloud-choices.json` in the data folder, which holds no key) and apply again whenever Comfy Cloud is connected. To connect at startup, set `COMFY_CLOUD_API_KEY` in your `.env`. **Remove saved key** in Render setup disconnects Cloud, and every studio renders locally again.
 
 Keys entered in Render setup are held only in the local server's memory and in the Cloud worker's copied environment. They are not written to `.env`, browser storage, project files, recipes, logs or status responses.
 
@@ -35,9 +36,9 @@ Comfy Cloud bills its GPU time to the account whose key you entered. Aftertake's
 
 ## Jobs, accounts and recovery
 
-Every job records its target. Local jobs keep the startup engine's fingerprint; Cloud jobs record `kind: "comfy-cloud"` with a SHA-256 of the account id, never the key. A saved Cloud job can be rejoined or canceled only while Comfy Cloud is connected with the same account. After a restart without the key, it shows *connection lost* until you check the key again. It then resumes on its own, because Cloud kept running it. Local jobs never move to Cloud, and Cloud jobs never fall back to the local engine.
+Switching a studio affects only its new jobs. Every job records its target. Local jobs keep the startup engine's fingerprint; Cloud jobs record `kind: "comfy-cloud"` with a SHA-256 of the account id, never the key. A saved Cloud job can be rejoined or canceled only while Comfy Cloud is connected with the same account. After a restart without the key, it shows *connection lost* until you check the key again. It then resumes on its own, because Cloud kept running it. Local jobs never move to Cloud, and Cloud jobs never fall back to the local engine.
 
-If Comfy Cloud refuses a job because the plan is free, the job fails with that explanation and Render setup marks the subscription check as blocked. Checking the saved connection again (after upgrading) clears it. A job refused for missing credits says so.
+If Comfy Cloud refuses a job because the plan is free, the job fails with that explanation and Render setup marks the subscription check as blocked. Switch those studios back to your GPU, or check the saved connection again after upgrading. A job refused for missing credits says so. When a studio is on your GPU and the local engine isn't ready for it, the error also suggests Comfy Cloud while it's connected.
 
 ## Managed deployments
 
@@ -45,11 +46,12 @@ Managed `*.run.comfy.app` deployments can be saved and checked, but they stay bl
 
 ## Local API
 
-- `GET /api/compute` returns safe connection and capability status, including where each studio renders (`renders: "local" | "comfy-cloud"`).
+- `GET /api/compute` returns safe connection and capability status, including where each studio renders (`renders: "local" | "comfy-cloud"`) and, for the cloud-capable studios while Cloud is connected, both destinations' readiness (`choices`).
 - `POST /api/compute/connection` accepts `{ "provider": "local" }`, `{ "provider": "comfy-cloud", "apiKey": "..." }`, or `{ "provider": "managed-deployment", "endpoint": "https://example.run.comfy.app", "apiKey": "..." }`.
-- `POST /api/compute/probe` checks the selected connection, and turns Comfy Cloud on when its key is accepted.
+- `POST /api/compute/probe` checks the selected connection, and connects Comfy Cloud when its key is accepted.
+- `POST /api/compute/routing` with `{ "feature": "text-video", "renders": "comfy-cloud" }` chooses where one cloud-capable studio renders; `"feature": "all"` sets all five. Choosing Comfy Cloud needs a connected key; choosing `"local"` always works.
 - `DELETE /api/compute/connection` clears the connection, its memory-held key and the Cloud worker.
-- `GET /api/engine?pipeline=...` reports Comfy Cloud's readiness for the cloud studios while Cloud is on.
+- `GET /api/engine?pipeline=...` reports Comfy Cloud's readiness for a studio you switched to Cloud, and the local engine's otherwise.
 
 These routes keep the local studio's loopback host and same-origin write restrictions. Client-supplied claims such as `billingVerified` or `compatibilityVerified` are rejected.
 

@@ -1,6 +1,9 @@
+import { randomUUID } from 'node:crypto';
+import { readFile, rename, unlink, writeFile } from 'node:fs/promises';
 import type { Engine } from '../src/domain.js';
 import {
   cloudFeature,
+  cloudFeatures,
   comfyCloudEngine,
   type CloudFeature,
   type ComputeFeature,
@@ -23,6 +26,8 @@ export const cloudCreditsExhausted =
   'Comfy Cloud has no credits left for this account. Add credits on comfy.org, then try again.';
 export const cloudOtherAccount =
   'This job was submitted from another Comfy Cloud account. Connect that account to rejoin or cancel it.';
+/** Added to a local setup error when Comfy Cloud could take the job instead. */
+export const cloudAlternative = ' Or choose Comfy Cloud for this studio in Render setup.';
 
 /** Where a job runs: its SDK client and the target its record is bound to. */
 export type EngineRoute = {
@@ -35,6 +40,8 @@ type CloudClient = EngineClient & { close?(): unknown };
 /** What the generation routers need from a Comfy Cloud connection. */
 export type CloudRoutes = {
   route(): EngineRoute | undefined;
+  /** True when the user chose Comfy Cloud for this studio's new jobs. */
+  chosen(feature: CloudFeature): boolean;
   engine(feature: CloudFeature): Promise<Engine>;
   /** A submission error's message for the user, recording a plan refusal. */
   refused(error: unknown): string | undefined;
@@ -44,6 +51,10 @@ export type CloudRoutes = {
  * One Comfy Cloud session: an isolated SDK worker holding the key, the job
  * target for its account, and Cloud's node list for readiness checks. The key
  * lives only in this process's memory and the worker's copied environment.
+ *
+ * Cloud is optional per studio. Every studio renders on the local engine until
+ * the user chooses Comfy Cloud for it; those choices (never the key) are kept
+ * in the workspace so they survive a restart.
  */
 export function createCloudRuntime({
   createClient,
@@ -51,13 +62,45 @@ export function createCloudRuntime({
   origin = comfyCloudOrigin,
   objectInfoTtlMs = 10 * 60 * 1000,
   now = () => Date.now(),
+  choicesFile,
 }: {
   createClient: (options: { baseUrl: string; apiKey: string }) => Promise<CloudClient>;
   fetch?: typeof fetch;
   origin?: string;
   objectInfoTtlMs?: number;
   now?: () => number;
+  /** Where the studios chosen for Comfy Cloud are remembered. */
+  choicesFile?: string;
 }) {
+  const chosen = new Set<CloudFeature>();
+  async function loadChoices() {
+    if (!choicesFile) return;
+    try {
+      const saved = JSON.parse(await readFile(choicesFile, 'utf8')) as { cloud?: unknown };
+      if (Array.isArray(saved.cloud))
+        for (const feature of saved.cloud)
+          if ((cloudFeatures as readonly unknown[]).includes(feature))
+            chosen.add(feature as CloudFeature);
+    } catch {
+      /* No saved choices: every studio renders locally. */
+    }
+  }
+  async function choose(features: CloudFeature[], destination: 'local' | 'comfy-cloud') {
+    for (const feature of features)
+      if (destination === 'comfy-cloud') chosen.add(feature);
+      else chosen.delete(feature);
+    if (!choicesFile) return;
+    const temporary = `${choicesFile}.${randomUUID()}.tmp`;
+    try {
+      await writeFile(
+        temporary,
+        JSON.stringify({ format: 'aftertake-cloud-choices/1', cloud: [...chosen].sort() }, null, 2),
+      );
+      await rename(temporary, choicesFile);
+    } finally {
+      await unlink(temporary).catch(() => {});
+    }
+  }
   let session:
     | {
         apiKey: string;
@@ -150,6 +193,7 @@ export function createCloudRuntime({
   }
   const routes: CloudRoutes = {
     route: () => session?.route,
+    chosen: (feature) => chosen.has(feature),
     engine,
     refused(error) {
       const code = (error as { code?: unknown } | null)?.code;
@@ -164,6 +208,8 @@ export function createCloudRuntime({
   return {
     connect,
     disconnect,
+    loadChoices,
+    choose,
     routes,
     engine,
     status: () => ({ connected: Boolean(session), planBlocked }),
@@ -188,7 +234,10 @@ export function recordRoute(
   return remote ? cloudOtherAccount : cloudJobDisconnected;
 }
 
-/** Where a new job of this feature goes, with that engine's readiness. */
+/**
+ * Where a new job of this feature goes, with that engine's readiness: Comfy
+ * Cloud only when it is connected and the user chose it for this studio.
+ */
 export async function newJobRoute(
   feature: ComputeFeature,
   local: EngineRoute,
@@ -196,7 +245,12 @@ export async function newJobRoute(
   cloud?: CloudRoutes,
 ): Promise<{ route: EngineRoute; engine: Engine }> {
   const remote = cloud?.route();
-  if (remote && cloudFeature(feature))
+  if (remote && cloudFeature(feature) && cloud!.chosen(feature))
     return { route: remote, engine: await cloud!.engine(feature) };
   return { route: local, engine: await localEngine() };
+}
+
+/** A local setup error, pointing at Comfy Cloud when it could take the job. */
+export function localSetupError(message: string, feature: ComputeFeature, cloud?: CloudRoutes) {
+  return cloud?.route() && cloudFeature(feature) ? message + cloudAlternative : message;
 }

@@ -92,6 +92,8 @@ export type ComputeCapability = {
   message: string;
   /** Where a new job of this feature renders. */
   renders?: 'local' | 'comfy-cloud';
+  /** For cloud-capable studios while Comfy Cloud is on: each destination's readiness. */
+  choices?: Record<'local' | 'comfy-cloud', { ready: boolean; message: string }>;
 };
 
 /** Public connection state contains credential presence only, never its value. */
@@ -99,8 +101,8 @@ export type ComputeStatus = {
   activeProvider: 'local' | 'comfy-cloud';
   configured: { provider: ComputeProvider; endpoint?: string; hasApiKey: boolean } | null;
   credentialStorage: 'memory';
-  /** Cloud routing sends only the cloud features there; everything else stays local. */
-  generationRouting: 'startup-local' | 'cloud-where-supported';
+  /** With Comfy Cloud on, each cloud-capable studio renders where the user chose. */
+  generationRouting: 'startup-local' | 'per-studio';
   state: 'local' | 'configured' | 'blocked' | 'cloud';
   ready: boolean;
   checkedAt: string | null;

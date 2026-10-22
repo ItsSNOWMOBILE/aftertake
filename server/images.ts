@@ -18,7 +18,13 @@ import { inspectFramePng } from './frame-edits.js';
 import { submissionRejected } from './submission.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
 import { JobTargetError, type JobTarget } from './job-target.js';
-import { newJobRoute, recordRoute, type CloudRoutes, type EngineRoute } from './cloud-runtime.js';
+import {
+  localSetupError,
+  newJobRoute,
+  recordRoute,
+  type CloudRoutes,
+  type EngineRoute,
+} from './cloud-runtime.js';
 
 export async function imageRouter(context: {
   data: string;
@@ -253,7 +259,11 @@ export async function imageRouter(context: {
           error:
             route.provider === 'comfy-cloud'
               ? engine.message
-              : 'Install the optional Z-Image Turbo weights and start the local engine.',
+              : localSetupError(
+                  'Install the optional Z-Image Turbo weights and start the local engine.',
+                  'image-gen',
+                  context.cloud,
+                ),
         });
       const image: ImageGeneration = {
         jobTarget: route.target.binding,

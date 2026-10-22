@@ -17,7 +17,13 @@ import { verifyGeneratedVideo } from './video-output.js';
 import { submissionRejected } from './submission.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
 import { JobTargetError, type JobTarget } from './job-target.js';
-import { newJobRoute, recordRoute, type CloudRoutes, type EngineRoute } from './cloud-runtime.js';
+import {
+  localSetupError,
+  newJobRoute,
+  recordRoute,
+  type CloudRoutes,
+  type EngineRoute,
+} from './cloud-runtime.js';
 import { buildCloudVideoWorkflow, cloudOutputs } from './cloud-workflow.js';
 import { runCloudMedia } from './cloud-media.js';
 
@@ -288,7 +294,11 @@ export async function videoRouter(context: {
           error:
             route.provider === 'comfy-cloud'
               ? [engine.message, ...engine.missing].join(' ')
-              : 'Install the text-to-video model profile and start the local engine.',
+              : localSetupError(
+                  'Install the text-to-video model profile and start the local engine.',
+                  'text-video',
+                  context.cloud,
+                ),
         });
       const video: VideoGeneration = {
         jobTarget: route.target.binding,

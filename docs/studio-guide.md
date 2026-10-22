@@ -805,11 +805,12 @@ Open http://127.0.0.1:4310. Installation and rendering run locally. The included
 room clip is rendered procedurally from original code, with no external media.
 Import a short, steady clip, paint a region, set its cue and render a take.
 
-**Render setup** can turn on Comfy Cloud. Enter a key from a paid Comfy Cloud
-plan and check it: new images, text-to-video clips, upscales, smooth or slow
-motion and songs then render on Comfy Cloud with your credits, and each job
-records the account it ran on. Character, region, depth and frame-edit tools
-need Aftertake's own nodes, so they keep using your GPU. See
+**Render setup** can also connect Comfy Cloud, which stays optional. Enter a key
+from a paid Comfy Cloud plan and check it, then choose, studio by studio, which
+of images, text to video, upscaling, smooth or slow motion and songs render on
+Comfy Cloud with your credits. Every studio starts on your GPU, and each job
+records where it ran. Character, region, depth and frame-edit tools need
+Aftertake's own nodes, so they always use your GPU. See
 [Comfy Cloud rendering](cloud-setup.md). CPU Film editing, existing-mask subject
 effects and color finishing need no GPU at all.
 

@@ -228,6 +228,7 @@ async function connectedRuntime(cloud: ReturnType<typeof fakeClient>, info?: unk
     },
   });
   await runtime.connect(secret, account);
+  await runtime.choose([...cloudFeatures], 'comfy-cloud');
   return runtime;
 }
 async function serve(router: express.Router, mount: string) {
@@ -442,6 +443,7 @@ test('a Cloud job binds to its account, never the key, and only that account can
     routes = (target?: typeof cloud) => ({
       route: () => (target ? route(target) : undefined),
       engine: async () => assert.fail(),
+      chosen: () => true,
       refused: () => undefined,
     });
   const record = { jobTarget: cloud.binding };
@@ -500,7 +502,7 @@ test('the cloud runtime checks Cloud nodes with its key, caches them and remembe
   assert.equal((await partial.engine('song')).ready, true);
 });
 
-test('compute settings send the cloud studios to Comfy Cloud once it accepts the key', async () => {
+test('connecting Comfy Cloud changes nothing until a studio is switched to it', async () => {
   const cloud = fakeClient(() => assert.fail()),
     runtime = createCloudRuntime({
       fetch: cloudFetch(),
@@ -509,49 +511,89 @@ test('compute settings send the cloud studios to Comfy Cloud once it accepts the
     connection = createComputeConnection({
       localEngine: async (feature) => ({
         connected: true,
-        ready: feature !== 'depth',
+        ready: !['depth', 'text-video'].includes(feature),
         missing: [],
         message: 'Local engine checked.',
       }),
       fetch: cloudFetch(),
       cloud: runtime,
     });
+  assert.equal(
+    await connection.choose({ feature: 'image-gen', renders: 'comfy-cloud' }),
+    undefined,
+  );
+  const choose = async (input: unknown) => {
+    const result = await connection.choose(input);
+    assert.ok(result, 'the choice is accepted');
+    return result;
+  };
   assert.equal(connection.configure({ provider: 'comfy-cloud', apiKey: secret }), true);
   assert.equal(connection.status().state, 'configured');
   const status = await connection.probe();
   assert.equal(status.state, 'cloud');
   assert.equal(status.activeProvider, 'comfy-cloud');
-  assert.equal(status.generationRouting, 'cloud-where-supported');
-  assert.equal(status.ready, true);
+  assert.equal(status.generationRouting, 'per-studio');
+  // Cloud is optional: every studio keeps the local engine until it is chosen.
   for (const capability of status.capabilities) {
-    const onCloud = (cloudFeatures as readonly string[]).includes(capability.feature);
-    assert.equal(capability.renders, onCloud ? 'comfy-cloud' : 'local', capability.feature);
-    assert.equal(capability.ready, capability.feature !== 'depth', capability.feature);
+    assert.equal(capability.renders, 'local', capability.feature);
+    assert.equal(
+      capability.ready,
+      !['depth', 'text-video'].includes(capability.feature),
+      capability.feature,
+    );
+    const supported = (cloudFeatures as readonly string[]).includes(capability.feature);
+    assert.equal(Boolean(capability.choices), supported, capability.feature);
+    if (supported) {
+      assert.equal(capability.choices!['comfy-cloud'].ready, true);
+      assert.equal(capability.choices!.local.ready, capability.feature !== 'text-video');
+    }
   }
-  const check = (id: string) => status.checks.find((item) => item.id === id)?.state;
+  assert.equal(runtime.routes.chosen('text-video'), false);
+  const check = (id: string, value = status) => value.checks.find((item) => item.id === id);
   assert.deepEqual(
     ['credential', 'authentication', 'billing', 'compatibility', 'routing', 'subscription'].map(
-      check,
+      (id) => check(id)?.state,
     ),
     ['pass', 'pass', 'pass', 'pass', 'pass', 'unverified'],
   );
+  assert.match(check('routing')!.message, /Every studio still renders on your GPU/);
   for (const hidden of [secret, account, 'private@example.com'])
     assert.equal(JSON.stringify(status).includes(hidden), false, hidden);
 
+  // Text to video has no local model here: send just that studio to Cloud.
+  const chosen = await choose({ feature: 'text-video', renders: 'comfy-cloud' });
+  const video = chosen.capabilities.find((item) => item.feature === 'text-video')!;
+  assert.deepEqual([video.renders, video.ready], ['comfy-cloud', true]);
+  assert.equal(chosen.capabilities.find((item) => item.feature === 'image-gen')?.renders, 'local');
+  assert.match(check('routing', chosen)!.message, /^1 of 5 supported studios/);
+  assert.equal(runtime.routes.chosen('text-video'), true);
+  assert.equal(await connection.choose({ feature: 'depth', renders: 'comfy-cloud' }), false);
+  assert.equal(await connection.choose({ feature: 'all', renders: 'gpu' }), false);
+  const all = await choose({ feature: 'all', renders: 'comfy-cloud' });
+  assert.deepEqual(
+    all.capabilities
+      .filter((item) => item.renders === 'comfy-cloud')
+      .map((item) => item.feature)
+      .sort(),
+    [...cloudFeatures].sort(),
+  );
+  assert.equal(all.capabilities.find((item) => item.feature === 'depth')?.renders, 'local');
+
   runtime.routes.refused(new ComfyError('Forbidden', { code: 'forbidden', httpStatus: 403 }));
   const refused = connection.status();
-  assert.equal(refused.checks.find((item) => item.id === 'subscription')?.state, 'blocked');
-  assert.equal(refused.checks.find((item) => item.id === 'compatibility')?.state, 'pass');
-  assert.ok(
-    refused.capabilities
-      .filter((capability) => capability.renders === 'comfy-cloud')
-      .every((capability) => !capability.ready && capability.message === cloudPlanRequired),
-  );
+  assert.equal(check('subscription', refused)?.state, 'blocked');
+  assert.equal(check('compatibility', refused)?.state, 'pass');
+  for (const capability of refused.capabilities.filter((item) => item.renders === 'comfy-cloud'))
+    assert.deepEqual([capability.ready, capability.message], [false, cloudPlanRequired]);
+  // Going back to the GPU is always allowed, connected or not.
+  const back = await choose({ feature: 'image-gen', renders: 'local' });
+  assert.equal(back.capabilities.find((item) => item.feature === 'image-gen')?.ready, true);
   const local = connection.disconnect();
   assert.equal(local.state, 'local');
   await new Promise((resolve) => setImmediate(resolve));
   assert.equal(cloud.closed(), 1);
   assert.equal(runtime.routes.route(), undefined);
+  await choose({ feature: 'all', renders: 'local' });
 
   const refusedKey = createComputeConnection({
     localEngine: ready,
@@ -564,6 +606,113 @@ test('compute settings send the cloud studios to Comfy Cloud once it accepts the
   const blocked = await refusedKey.probe();
   assert.equal(blocked.state, 'blocked');
   assert.equal(blocked.activeProvider, 'local');
+});
+
+test('studio choices are remembered in the workspace, never with the key', async () => {
+  const data = await mkdtemp(path.join(tmpdir(), 'aftertake-cloud-choices-')),
+    choicesFile = path.join(data, 'cloud-choices.json'),
+    make = () =>
+      createCloudRuntime({
+        fetch: cloudFetch(),
+        createClient: async () => fakeClient(() => assert.fail()).client as unknown as EngineClient,
+        choicesFile,
+      });
+  const first = make();
+  await first.loadChoices();
+  assert.ok(cloudFeatures.every((feature) => !first.routes.chosen(feature)));
+  await first.connect(secret, account);
+  await first.choose(['song', 'image-gen'], 'comfy-cloud');
+  const saved = await readFile(choicesFile, 'utf8');
+  assert.deepEqual(JSON.parse(saved), {
+    format: 'aftertake-cloud-choices/1',
+    cloud: ['image-gen', 'song'],
+  });
+  assert.equal(saved.includes(secret) || saved.includes(account), false);
+  const second = make();
+  await second.loadChoices();
+  assert.deepEqual(
+    cloudFeatures.filter((feature) => second.routes.chosen(feature)),
+    ['image-gen', 'song'],
+  );
+  await writeFile(choicesFile, JSON.stringify({ cloud: ['depth', 'song', 7] }));
+  const third = make();
+  await third.loadChoices();
+  assert.deepEqual(
+    cloudFeatures.filter((feature) => third.routes.chosen(feature)),
+    ['song'],
+  );
+});
+
+test('with Comfy Cloud connected, a studio left on the GPU keeps rendering locally', async () => {
+  const data = await mkdtemp(path.join(tmpdir(), 'aftertake-cloud-local-'));
+  let admitting = false,
+    localSubmissions = 0;
+  const local = fakeClient(() => {
+      localSubmissions++;
+      // The local run ends at once, so nothing keeps polling after the test.
+      const job = fakeJob({});
+      job.refresh = async () => {
+        job.status = 'canceled';
+      };
+      return job;
+    }),
+    remote = fakeClient(() => assert.fail('a studio left on the GPU must not reach Cloud')),
+    runtime = createCloudRuntime({
+      fetch: cloudFetch(),
+      createClient: async () => remote.client as unknown as EngineClient,
+    });
+  await runtime.connect(secret, account);
+  await runtime.choose(['song'], 'comfy-cloud');
+  const target = localTarget(),
+    images = await imageRouter({
+      data,
+      client: local.client as unknown as EngineClient,
+      target,
+      uiUrl: 'http://127.0.0.1:1',
+      engine: ready,
+      cloud: runtime.routes,
+      takeBusy: () => admitting,
+      setAdmitting: (value: boolean) => {
+        admitting = value;
+      },
+    }),
+    { server, base } = await serve(images.router, '/api/images');
+  try {
+    const created = await post(base, image);
+    assert.equal(created.status, 201);
+    const job = (await created.json()) as ImageGeneration;
+    assert.deepEqual(job.jobTarget, target.binding);
+    assert.equal(localSubmissions, 1);
+    assert.equal(remote.jobs.length, 0);
+  } finally {
+    server.close();
+  }
+  // A local setup error points at Comfy Cloud only while it is connected.
+  const offline = async () => ({ connected: false, ready: false, missing: [], message: '' });
+  const blocked = await imageRouter({
+      data: await mkdtemp(path.join(tmpdir(), 'aftertake-cloud-local-')),
+      client: local.client as unknown as EngineClient,
+      target,
+      uiUrl: 'http://127.0.0.1:1',
+      engine: offline,
+      cloud: runtime.routes,
+      takeBusy: () => false,
+      setAdmitting: () => {},
+    }),
+    second = await serve(blocked.router, '/api/images');
+  try {
+    const refused = await post(second.base, image);
+    assert.equal(refused.status, 409);
+    assert.match(
+      (await refused.json()).error,
+      /Or choose Comfy Cloud for this studio in Render setup\.$/,
+    );
+    await runtime.disconnect();
+    const plain = await post(second.base, image);
+    assert.doesNotMatch((await plain.json()).error, /Comfy Cloud/);
+  } finally {
+    second.server.close();
+  }
 });
 
 test('images render on Comfy Cloud, rejoin only through that account and explain a free plan', async () => {

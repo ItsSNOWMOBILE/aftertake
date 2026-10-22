@@ -121,9 +121,10 @@ node scripts/aftertake.mjs setup-gpu --video     # or --image, --character-swap,
 node scripts/aftertake.mjs setup-npu             # depth on the Neural Engine or an NPU, optional
 ```
 
-**No NVIDIA GPU?** Images, text to video, upscaling, smooth and slow motion, and
-songs can render on [Comfy Cloud](docs/cloud-setup.md) instead: add a key from a
-paid Comfy Cloud plan in Render setup.
+**No NVIDIA GPU, or missing a model?** Comfy Cloud is optional, studio by
+studio: add a key from a paid Comfy Cloud plan in Render setup, then choose
+[Comfy Cloud](docs/cloud-setup.md) for any of images, text to video, upscaling,
+smooth and slow motion, or songs. Everything else keeps your local models.
 
 <details>
 <summary><b>All model profiles</b></summary>

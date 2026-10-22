@@ -329,6 +329,69 @@
 .compute-capability.ready > span:last-child {
   color: var(--accent);
 }
+.compute-routing {
+  margin: 22px 0 6px;
+  padding-top: 18px;
+  border-top: 1px solid #3b4147;
+}
+.compute-routing h3 {
+  margin: 0;
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+  font-weight: 650;
+}
+.compute-dialog .compute-routing > p {
+  margin: 6px 0 10px;
+  font-size: 12px;
+}
+.compute-routing ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.compute-routing li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #3b4147;
+  font-size: 12px;
+}
+.compute-segmented {
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  background: #181b1e;
+  border-radius: 8px;
+}
+.compute-segmented button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 112px;
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  color: #c7ccd2;
+  font-size: 12px;
+}
+.compute-segmented button[aria-checked='true'] {
+  color: #edf4dc;
+  border-color: #46513a;
+  background: #293221;
+}
+.compute-segmented small {
+  color: #d4bc91;
+  font-size: 11px;
+}
+.compute-segmented small.ready {
+  color: var(--accent);
+}
 .compute-demo-note {
   border: 1px solid #4a5056;
   border-radius: 6px;
@@ -401,6 +464,13 @@
   }
   .compute-actions .compute-remove {
     margin-left: 0;
+  }
+  .compute-segmented,
+  .compute-routing li {
+    width: 100%;
+  }
+  .compute-segmented button {
+    min-width: 0;
   }
   .compute-footer {
     align-items: flex-end;

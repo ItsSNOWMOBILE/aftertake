@@ -1,6 +1,8 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import {
   cloudFeature,
+  cloudFeatures,
   computeConnectionSchema,
   computeFeatures,
   type ComputeCapability,
@@ -16,9 +18,18 @@ type Options = {
   localEngine: (feature: ComputeFeature) => Promise<Engine>;
   now?: () => Date;
   fetch?: typeof fetch;
-  /** Routes cloud-capable studios to Comfy Cloud once a key is accepted. */
-  cloud?: Pick<CloudRuntime, 'connect' | 'disconnect' | 'engine' | 'status'>;
+  /** Lets the cloud-capable studios render on Comfy Cloud once a key is accepted. */
+  cloud?: Pick<CloudRuntime, 'connect' | 'disconnect' | 'engine' | 'status' | 'choose' | 'routes'>;
 };
+
+/** Choose where one cloud-capable studio, or all of them, render new jobs. */
+const routingChoiceSchema = z
+  .object({
+    feature: z.union([z.enum(cloudFeatures), z.literal('all')]),
+    renders: z.enum(['local', 'comfy-cloud']),
+  })
+  .strict();
+type Readiness = { ready: boolean; message: string };
 
 const cloudUserUrl = 'https://cloud.comfy.org/api/user';
 
@@ -109,10 +120,11 @@ const uncheckedCapabilities = (): ComputeCapability[] =>
  * base URL from process.env at construction time.
  *
  * A Comfy Cloud key that the read-only account check accepts starts a separate
- * isolated Cloud worker (when a cloud runtime is supplied). New jobs of the
- * cloud features then render there and bind to that account; every other
- * studio keeps the local engine. Checking performs no job or billable work.
- * Managed deployments have no verified read-only probe and stay blocked.
+ * isolated Cloud worker (when a cloud runtime is supplied). Cloud stays
+ * optional: each cloud-capable studio keeps rendering on the local engine until
+ * the user chooses Comfy Cloud for it, and the other studios always do. Cloud
+ * jobs bind to the account that ran them. Checking performs no job or billable
+ * work. Managed deployments have no verified read-only probe and stay blocked.
  */
 export function createComputeConnection({
   localEngine,
@@ -124,10 +136,16 @@ export function createComputeConnection({
   let checkedAt: string | null = null;
   let remoteChecks: ComputeCheck[] | undefined;
   let localCapabilities = uncheckedCapabilities();
-  let cloudCapabilities: ComputeCapability[] | undefined;
+  // Both destinations' readiness, measured when Comfy Cloud was last checked.
+  let readiness:
+    | {
+        local: Record<ComputeFeature, Readiness>;
+        cloud: Partial<Record<ComputeFeature, Readiness>>;
+      }
+    | undefined;
   const cloudActive = () =>
     candidate?.provider === 'comfy-cloud' &&
-    Boolean(cloudCapabilities) &&
+    Boolean(readiness) &&
     Boolean(cloud?.status().connected);
   // A slow local probe must not publish a stale result over a newer selection.
   let revision = 0;
@@ -145,21 +163,35 @@ export function createComputeConnection({
       : null;
     if (cloudActive()) {
       const planBlocked = cloud!.status().planBlocked;
-      // A plan refusal after the check blocks every cloud workflow until the next check.
-      const capabilities = cloudCapabilities!.map((capability) =>
-        planBlocked && capability.renders === 'comfy-cloud'
-          ? { ...capability, ready: false, message: cloudPlanRequired }
-          : { ...capability },
-      );
+      const capabilities = computeFeatures.map((feature): ComputeCapability => {
+        const local = { ...readiness!.local[feature] };
+        if (!cloudFeature(feature))
+          return {
+            feature,
+            ...local,
+            message: `Needs Aftertake's own nodes, so it renders on your GPU. ${local.message}`,
+            renders: 'local',
+          };
+        // A plan refusal after the check blocks every cloud choice until the next check.
+        const remote = planBlocked
+          ? { ready: false, message: cloudPlanRequired }
+          : { ...readiness!.cloud[feature]! };
+        const onCloud = cloud!.routes.chosen(feature);
+        return {
+          feature,
+          ...(onCloud ? remote : local),
+          renders: onCloud ? 'comfy-cloud' : 'local',
+          choices: { local, 'comfy-cloud': remote },
+        };
+      });
       // Node and model coverage, judged apart from the plan.
-      const compatible = cloudCapabilities!
-        .filter((capability) => capability.renders === 'comfy-cloud')
-        .every((capability) => capability.ready);
+      const compatible = cloudFeatures.every((feature) => readiness!.cloud[feature]?.ready);
+      const onCloud = cloudFeatures.filter((feature) => cloud!.routes.chosen(feature)).length;
       return {
         activeProvider: 'comfy-cloud',
         configured,
         credentialStorage: 'memory',
-        generationRouting: 'cloud-where-supported',
+        generationRouting: 'per-studio',
         state: 'cloud',
         ready: capabilities.some((capability) => capability.ready),
         checkedAt,
@@ -191,13 +223,14 @@ export function createComputeConnection({
           {
             id: 'routing',
             state: 'pass',
-            message:
-              'Images, text to video, upscaling, smooth and slow motion, and songs render on Comfy Cloud. Other studios keep using the local engine.',
+            message: onCloud
+              ? `${onCloud} of ${cloudFeatures.length} supported studios render on Comfy Cloud; every other studio uses your GPU.`
+              : 'Every studio still renders on your GPU. Choose Comfy Cloud for the studios you want to render there.',
           },
         ],
         capabilities,
         message:
-          'Comfy Cloud is connected for this server session. New cloud-capable jobs render there with your credits; saved local jobs keep their engine.',
+          'Comfy Cloud is connected for this server session. Studios render where you choose; saved jobs keep their engine.',
       };
     }
     return {
@@ -280,7 +313,7 @@ export function createComputeConnection({
         ? candidate?.provider === 'comfy-cloud' && cloud
           ? 'Check the connection to start rendering on Comfy Cloud. Local jobs keep their engine.'
           : 'Cloud configuration is stored for this server session. It does not activate cloud generation or change local job routing.'
-        : 'Local rendering uses the existing engine. Connect Comfy Cloud to render images, text to video, upscaling, smooth or slow motion and songs there.',
+        : 'Local rendering uses the existing engine. Comfy Cloud is optional: connect it to render images, text to video, upscaling, smooth or slow motion and songs there.',
     };
   }
 
@@ -294,18 +327,29 @@ export function createComputeConnection({
       pendingProbe?.abort();
       checkedAt = null;
       remoteChecks = undefined;
-      cloudCapabilities = undefined;
+      readiness = undefined;
       localCapabilities = uncheckedCapabilities();
       revision++;
       void cloud?.disconnect();
       return true;
+    },
+    /** False for an invalid choice; undefined when Comfy Cloud is not connected. */
+    async choose(input: unknown) {
+      const parsed = routingChoiceSchema.safeParse(input);
+      if (!parsed.success || !cloud) return false;
+      if (parsed.data.renders === 'comfy-cloud' && !cloudActive()) return undefined;
+      await cloud.choose(
+        parsed.data.feature === 'all' ? [...cloudFeatures] : [parsed.data.feature],
+        parsed.data.renders,
+      );
+      return status();
     },
     disconnect() {
       candidate = undefined;
       pendingProbe?.abort();
       checkedAt = null;
       remoteChecks = undefined;
-      cloudCapabilities = undefined;
+      readiness = undefined;
       localCapabilities = uncheckedCapabilities();
       revision++;
       void cloud?.disconnect();
@@ -358,39 +402,32 @@ export function createComputeConnection({
           }
           if (current !== revision || attempt !== probeRevision) return status();
           if (cloud.status().connected) {
-            const capabilities = await Promise.all(
-              computeFeatures.map(async (feature): Promise<ComputeCapability> => {
-                try {
-                  if (cloudFeature(feature)) {
-                    const engine = await cloud.engine(feature);
-                    return {
-                      feature,
-                      ready: engine.connected && engine.ready,
-                      message: engine.missing.length
-                        ? `${engine.message} ${engine.missing.join(', ')}`
-                        : engine.message,
-                      renders: 'comfy-cloud',
-                    };
-                  }
-                  const engine = await localEngine(feature);
-                  return {
-                    feature,
-                    ready: engine.connected && engine.ready,
-                    message: `Renders on the local engine: it needs Aftertake's own nodes. ${engine.message}`,
-                    renders: 'local',
-                  };
-                } catch {
-                  return {
-                    feature,
-                    ready: false,
-                    message: 'The engine check failed.',
-                    renders: cloudFeature(feature) ? 'comfy-cloud' : 'local',
-                  };
-                }
-              }),
-            );
+            const check = async (engine: () => Promise<Engine>): Promise<Readiness> => {
+              try {
+                const result = await engine();
+                return {
+                  ready: result.connected && result.ready,
+                  message: result.missing.length
+                    ? `${result.message} ${result.missing.join(', ')}`
+                    : result.message,
+                };
+              } catch {
+                return { ready: false, message: 'The engine check failed.' };
+              }
+            };
+            const [local, remote] = await Promise.all([
+              Promise.all(computeFeatures.map((feature) => check(() => localEngine(feature)))),
+              Promise.all(cloudFeatures.map((feature) => check(() => cloud.engine(feature)))),
+            ]);
             if (current !== revision || attempt !== probeRevision) return status();
-            cloudCapabilities = capabilities;
+            readiness = {
+              local: Object.fromEntries(
+                computeFeatures.map((feature, index) => [feature, local[index]]),
+              ) as Record<ComputeFeature, Readiness>,
+              cloud: Object.fromEntries(
+                cloudFeatures.map((feature, index) => [feature, remote[index]]),
+              ),
+            };
           }
         }
       } else {
@@ -439,6 +476,18 @@ export function computeRouter(options: Options & { startupCloudKey?: string }) {
     res.json(connection.status());
   });
   router.post('/probe', async (_req, res) => res.json(await connection.probe()));
+  router.post('/routing', async (req, res) => {
+    const result = await connection.choose(req.body);
+    if (result === false)
+      return void res
+        .status(400)
+        .json({ error: 'Choose a supported studio and either local or comfy-cloud.' });
+    if (!result)
+      return void res
+        .status(409)
+        .json({ error: 'Connect and check Comfy Cloud before choosing it for a studio.' });
+    res.json(result);
+  });
   router.delete('/connection', (_req, res) => res.json(connection.disconnect()));
   return router;
 }

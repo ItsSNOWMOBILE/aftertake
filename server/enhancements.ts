@@ -28,7 +28,13 @@ import { submissionRejected } from './submission.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
 import { JobTargetError, boundToCloud, type JobTarget } from './job-target.js';
 import { RequestError } from './http-errors.js';
-import { newJobRoute, recordRoute, type CloudRoutes, type EngineRoute } from './cloud-runtime.js';
+import {
+  localSetupError,
+  newJobRoute,
+  recordRoute,
+  type CloudRoutes,
+  type EngineRoute,
+} from './cloud-runtime.js';
 import { buildCloudEnhanceWorkflow, cloudEnhanceSource, cloudOutputs } from './cloud-workflow.js';
 import { CloudSourceError, runCloudMedia } from './cloud-media.js';
 
@@ -357,7 +363,11 @@ export async function enhancementRouter(context: {
           error:
             route.provider === 'comfy-cloud'
               ? [engine.message, ...engine.missing].join(' ')
-              : `Install the ${feature} model profile and start the local engine: node scripts/aftertake.mjs setup-gpu --${feature}`,
+              : localSetupError(
+                  `Install the ${feature} model profile and start the local engine: node scripts/aftertake.mjs setup-gpu --${feature}`,
+                  feature,
+                  context.cloud,
+                ),
         });
       if (request.format === 'aftertake-enhance/1')
         await resolveClipAsset(request.clip, clips, 'source clip');

@@ -98,10 +98,13 @@ const client = await createIsolatedClient({
 });
 // Comfy Cloud gets its own isolated worker once Compute settings accept a key.
 // Its key stays in this process's memory and that worker's copied environment.
+// It is optional per studio: the studios chosen for Cloud are kept in the workspace.
 const cloud = createCloudRuntime({
   createClient: ({ baseUrl, apiKey }) =>
     createIsolatedClient({ baseUrl, apiKey, readRoots: [data], writeRoots: [data] }),
+  choicesFile: path.join(data, 'cloud-choices.json'),
 });
+await cloud.loadChoices();
 const terminal = new Set(['succeeded', 'failed', 'canceled', 'expired', 'output_error']);
 // A browser's unresolved request must not be silently replayed into another
 // studio process when its original durable record cannot be found.
@@ -361,7 +364,7 @@ app.get('/api/engine', async (req, res) => {
   const pipeline = computeFeatures.find((value) => value === req.query.pipeline) || 'structure';
   // A studio whose new jobs go to Comfy Cloud shows Cloud's readiness instead.
   res.json(
-    cloud.routes.route() && cloudFeature(pipeline)
+    cloud.routes.route() && cloudFeature(pipeline) && cloud.routes.chosen(pipeline)
       ? await cloud.engine(pipeline)
       : await engine(pipeline),
   );
