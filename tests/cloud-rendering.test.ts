@@ -49,7 +49,7 @@ import {
   createJobTarget,
   jobTargetIssue,
 } from '../server/job-target.js';
-import { createComputeConnection } from '../server/compute.js';
+import { computeRouter, createComputeConnection } from '../server/compute.js';
 import { imageRouter } from '../server/images.js';
 import { enhancementRouter } from '../server/enhancements.js';
 import { videoRouter } from '../server/videos.js';
@@ -1003,4 +1003,33 @@ test('Cloud text to video is graded and given its sound locally, then checked ag
   } finally {
     server.close();
   }
+});
+
+test('a startup key connects Comfy Cloud before saved jobs are read, without hanging startup', async () => {
+  const runtime = createCloudRuntime({
+      fetch: cloudFetch(),
+      createClient: async () => fakeClient(() => assert.fail()).client as unknown as EngineClient,
+    }),
+    router = computeRouter({
+      localEngine: ready,
+      fetch: cloudFetch(),
+      cloud: runtime,
+      startupCloudKey: secret,
+    });
+  await router.ready;
+  assert.equal(runtime.status().connected, true);
+  assert.equal(runtime.routes.route()?.provider, 'comfy-cloud');
+
+  // An unreachable Cloud delays startup only by the bounded wait.
+  const started = Date.now(),
+    stuck = computeRouter({
+      localEngine: ready,
+      fetch: (() => new Promise(() => {})) as unknown as typeof fetch,
+      cloud: createCloudRuntime({ createClient: async () => assert.fail() }),
+      startupCloudKey: secret,
+      startupWaitMs: 50,
+    });
+  await stuck.ready;
+  assert.ok(Date.now() - started < 2000);
+  assert.equal(await computeRouter({ localEngine: ready }).ready, undefined);
 });

@@ -452,16 +452,28 @@ export function createComputeConnection({
   };
 }
 
-export function computeRouter(options: Options & { startupCloudKey?: string }) {
+export function computeRouter(
+  options: Options & { startupCloudKey?: string; startupWaitMs?: number },
+) {
   const connection = createComputeConnection(options);
   // A key in the studio's environment connects Comfy Cloud at startup, so saved
   // Cloud jobs can rejoin without typing it again. It is never written anywhere.
-  if (
+  // `ready` lets the generation routers wait for it before reading saved jobs,
+  // so a running Cloud job is not marked lost; an unreachable Cloud only delays
+  // startup by the bounded wait.
+  const startup =
     options.startupCloudKey &&
     connection.configure({ provider: 'comfy-cloud', apiKey: options.startupCloudKey })
-  )
-    void connection.probe().catch(() => {});
-  const router = Router();
+      ? connection.probe().then(
+          () => {},
+          () => {},
+        )
+      : Promise.resolve();
+  const ready = Promise.race([
+    startup,
+    new Promise<void>((resolve) => setTimeout(resolve, options.startupWaitMs ?? 20000).unref()),
+  ]);
+  const router = Object.assign(Router(), { ready });
   router.use((_req, res, next) => {
     res.setHeader('Cache-Control', 'no-store');
     next();
