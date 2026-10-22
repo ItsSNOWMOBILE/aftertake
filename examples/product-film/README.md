@@ -1,7 +1,7 @@
 # Make it yours
 
-[Watch the narrated 40.5-second film](https://aftertake-studio.right-bard-9761.chatgpt.site/make-it-yours/)
-or [download the MP4](https://aftertake-studio.right-bard-9761.chatgpt.site/make-it-yours/review.mp4).
+[Watch the narrated 40.5-second film](https://itssnowmobile.github.io/aftertake/make-it-yours/)
+or [download the MP4](https://itssnowmobile.github.io/aftertake/make-it-yours/review.mp4).
 
 A vertical coffee ad becomes a different hook. One performance becomes three
 tracked dancers, then a finished grade. A native H3 comparison changes the
@@ -68,5 +68,5 @@ A [fresh-workspace replay](replay-receipt.json) imported both packaged projects
 through the normal importer and exported the main film through MCP with Comfy
 offline. All 972 decoded frames, audio samples and timestamps matched this film.
 
-The [earlier 39-second edit](https://aftertake-studio.right-bard-9761.chatgpt.site/edit-preview/)
+The [earlier 39-second edit](https://itssnowmobile.github.io/aftertake/edit-preview/)
 remains available with its original project and input bundle.

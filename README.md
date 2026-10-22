@@ -221,7 +221,7 @@ profile's exact files are pinned in `docs/models-*.json`; see
   </tr>
   <tr>
     <td>
-      <a href="https://aftertake-studio.right-bard-9761.chatgpt.site/make-it-yours/"><img src="docs/assets/make-it-yours-poster.jpg" alt="Make it yours"></a>
+      <a href="https://itssnowmobile.github.io/aftertake/make-it-yours/"><img src="docs/assets/make-it-yours-poster.jpg" alt="Make it yours"></a>
       <b>Make it yours</b> · 40 s<br><sub>A vertical ad whose hook changes in the real editor, then tracked copies and character replacement. <a href="examples/product-film/README.md">Editable projects</a></sub>
     </td>
     <td>
