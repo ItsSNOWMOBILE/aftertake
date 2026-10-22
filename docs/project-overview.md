@@ -33,9 +33,9 @@ The resulting project can be opened and revised in the application.
 
 ## Explore the implementation
 
-- [Public showcase](https://aftertake-studio.right-bard-9761.chatgpt.site/)
-- [Recorded browser editor](https://aftertake-studio.right-bard-9761.chatgpt.site/studio/)
-- [Narrated workflow demo](https://aftertake-studio.right-bard-9761.chatgpt.site/judges/)
+- [Public showcase](https://itssnowmobile.github.io/aftertake/)
+- [Recorded browser editor](https://itssnowmobile.github.io/aftertake/studio/)
+- [Narrated workflow demo](https://itssnowmobile.github.io/aftertake/judges/)
 - [GitHub source](https://github.com/ItsSNOWMOBILE/aftertake)
 - [Installation and studio guide](studio-guide.md)
 - [Agent interface](mcp.md)
