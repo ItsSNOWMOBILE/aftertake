@@ -1,0 +1,1108 @@
+{
+  "format": "aftertake-film/2",
+  "name": "Aftertake / make it yours",
+  "aspect": "landscape",
+  "shots": [
+    {
+      "assetId": "5041baf7-5277-4a92-8156-d180a6157d29",
+      "sha256": "412917ef4572d9a6910b81c8ecd60f4fa05d1050b0c4568f8c592effc50da1e3",
+      "start": 0,
+      "end": 5.25,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "cebfdc9b-cc79-4dcd-a045-61ffe63b357d",
+      "sha256": "51f802a81dca9c3e5133f2881429f197328aa9969c2a1e60112cd058fec33293",
+      "start": 0,
+      "end": 1,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.15,
+        "endZoom": 1.3,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain",
+        "keyframes": [
+          {
+            "at": 0,
+            "zoom": 1.15,
+            "x": 0.5,
+            "y": 0.5
+          },
+          {
+            "at": 0.6,
+            "zoom": 1.3,
+            "x": 0.5,
+            "y": 0.5,
+            "easing": "ease-out"
+          },
+          {
+            "at": 1,
+            "zoom": 1.3,
+            "x": 0.5,
+            "y": 0.5,
+            "easing": "hold"
+          }
+        ]
+      }
+    },
+    {
+      "assetId": "4ffd80f5-8794-4b34-ba6e-97481ceb6fa9",
+      "sha256": "e282241567cc9cb5806e289e2420f2ac1180f31e1934d5a4d62ca522f73cf993",
+      "start": 0,
+      "end": 1.5,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.3,
+        "endZoom": 1.15,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain",
+        "keyframes": [
+          {
+            "at": 0,
+            "zoom": 1.3,
+            "x": 0.5,
+            "y": 0.5
+          },
+          {
+            "at": 0.5,
+            "zoom": 1.3,
+            "x": 0.5,
+            "y": 0.5,
+            "easing": "hold"
+          },
+          {
+            "at": 1,
+            "zoom": 1.15,
+            "x": 0.5,
+            "y": 0.5,
+            "easing": "ease-in-out"
+          }
+        ]
+      }
+    },
+    {
+      "assetId": "5041baf7-5277-4a92-8156-d180a6157d29",
+      "sha256": "412917ef4572d9a6910b81c8ecd60f4fa05d1050b0c4568f8c592effc50da1e3",
+      "start": 7.75,
+      "end": 13.75,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "44c6ad07-50f1-4981-8a16-2387719c1aff",
+      "sha256": "c29b4e28631fe52c3cdbb2d4401672ee5837077e941588a33eb49a4e42e3c1d3",
+      "start": 0,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    },
+    {
+      "assetId": "c11168bd-97ee-4f5b-84b6-0d5e45a44295",
+      "sha256": "3a0dd291c52d3b56090bea1e05f01c1ae6cb67bbdafed0ceb37f081038b21558",
+      "start": 0,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    },
+    {
+      "assetId": "f4355a00-78de-46a1-ae86-a90eb532f91f",
+      "sha256": "5576f8612cb2af82b9415866e24ee94258b375973ec29f7c21e971125869a466",
+      "start": 0,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    },
+    {
+      "assetId": "9e901b04-1ffd-4ba4-a7fb-2da10cfa89f4",
+      "sha256": "8198d77f034db4b1761ad72c90db5adeccc113c26150c860615bf5c901974cbd",
+      "start": 0,
+      "end": 1.5,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.08,
+        "endZoom": 1.08,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "aeae18b4-3ecc-4f68-a702-87472a716b03",
+      "sha256": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92",
+      "start": 0,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    },
+    {
+      "assetId": "270d322a-45c0-4066-b690-d57f5fc76ac9",
+      "sha256": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe",
+      "start": 0,
+      "end": 3.0416666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      }
+    },
+    {
+      "assetId": "45c2e4c8-c859-4fc6-b1d1-079f1a5f75f2",
+      "sha256": "cf8f06acf85ae36b61e0ed29a0bf6d42fec65d9f4c071caac76c564ea9788816",
+      "start": 0,
+      "end": 3.75,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1.06,
+        "endZoom": 1.13,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "50d055d2-cc1e-4cba-b144-33248602be6d",
+      "sha256": "f809af9e5df35bb50914e18451f5bb8a48eca5f6c248ef3c6912d69e4973921c",
+      "start": 0,
+      "end": 3.5,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.08,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    },
+    {
+      "assetId": "34bf3efa-c9f3-4a0a-ad19-1e8be1cec67a",
+      "sha256": "e92b1b4e6ccf27cb6f1047ccc23db9ba2b68266f03711fc9a6e14536ebaec692",
+      "start": 0,
+      "end": 2.7916666666666665,
+      "dissolve": 0,
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "contain"
+      }
+    }
+  ],
+  "titles": [
+    {
+      "id": "9bebb96d-3595-5ec3-88b1-71e18d36ce3d",
+      "text": "Made for\nthe feed.",
+      "start": 0.1666667,
+      "end": 5.25,
+      "style": "headline",
+      "position": "center",
+      "animation": "none",
+      "fontSize": 62,
+      "fontWeight": 500,
+      "stroke": false,
+      "align": "left",
+      "color": "#f8f4ea"
+    },
+    {
+      "id": "8393ea6f-9bba-5801-8dff-68cb3cb003b4",
+      "text": "9:16 / AD PREVIEW",
+      "start": 0,
+      "end": 5.25,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 24,
+      "fontWeight": 400,
+      "stroke": false,
+      "align": "right",
+      "color": "#bec6bd"
+    },
+    {
+      "id": "43dc18ab-315a-5651-81eb-100ed51ca64b",
+      "text": "Made for\nthe feed.",
+      "start": 7.75,
+      "end": 13.75,
+      "style": "headline",
+      "position": "center",
+      "animation": "none",
+      "fontSize": 62,
+      "fontWeight": 500,
+      "stroke": false,
+      "align": "left",
+      "color": "#f8f4ea"
+    },
+    {
+      "id": "e41a8b39-ec76-53ea-892d-bd262ba64af8",
+      "text": "9:16 / REVISED HOOK",
+      "start": 7.75,
+      "end": 13.75,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 24,
+      "fontWeight": 400,
+      "stroke": false,
+      "align": "right",
+      "color": "#bec6bd"
+    },
+    {
+      "id": "1e2ba446-5c7b-56d7-8534-3009787dd3af",
+      "text": "Source",
+      "start": 24.375,
+      "end": 27.4166666667,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 25,
+      "fontWeight": 400,
+      "stroke": false,
+      "align": "left",
+      "color": "#17221a"
+    },
+    {
+      "id": "d75d1950-a7ef-5c30-8348-a4f8ac6e2ad0",
+      "text": "Character replaced",
+      "start": 27.4166666667,
+      "end": 30.4583333333,
+      "style": "headline",
+      "position": "top",
+      "animation": "none",
+      "fontSize": 25,
+      "fontWeight": 400,
+      "stroke": false,
+      "align": "left",
+      "color": "#17221a"
+    },
+    {
+      "id": "c98831c8-fc1e-5c41-8d52-56fe4792dd68",
+      "text": "Open weights.",
+      "start": 30.5833333333,
+      "end": 31.7083333333,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 42,
+      "fontWeight": 500,
+      "stroke": false,
+      "align": "center",
+      "color": "#f8f4ea"
+    },
+    {
+      "id": "14cccb08-af2a-5155-89a7-22e903aeb0f4",
+      "text": "One studio.",
+      "start": 31.7083333333,
+      "end": 32.75,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 42,
+      "fontWeight": 500,
+      "stroke": false,
+      "align": "center",
+      "color": "#f8f4ea"
+    },
+    {
+      "id": "4e38dace-a8e0-5007-8526-c270d460d41e",
+      "text": "Powered by Comfy.",
+      "start": 32.75,
+      "end": 34.1666666667,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 42,
+      "fontWeight": 500,
+      "stroke": false,
+      "align": "center",
+      "color": "#f8f4ea"
+    },
+    {
+      "id": "1cbef8af-f8c9-5b74-8114-fa7d88f1c649",
+      "text": "Made in Aftertake.",
+      "start": 35.9583333333,
+      "end": 37.625,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 42,
+      "fontWeight": 500,
+      "stroke": false,
+      "align": "center",
+      "color": "#f8f4ea"
+    },
+    {
+      "id": "8c2e4988-cb89-50e5-84d5-612117b5d277",
+      "text": "Aftertake.",
+      "start": 37.7083333333,
+      "end": 40.5,
+      "style": "headline",
+      "position": "center",
+      "animation": "none",
+      "fontSize": 100,
+      "fontWeight": 500,
+      "stroke": false,
+      "align": "center",
+      "color": "#17221a"
+    },
+    {
+      "id": "e9b9f4f4-13d2-5cf2-8d62-ad9717cd0372",
+      "text": "Michael Burrows + Antoni Shkraba / Pexels\nTears of Steel / Blender Foundation / CC BY 3.0",
+      "start": 37.7083333333,
+      "end": 40.5,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "none",
+      "fontSize": 17,
+      "fontWeight": 400,
+      "stroke": false,
+      "align": "center",
+      "color": "#4e574e"
+    }
+  ],
+  "audio": [
+    {
+      "assetId": "e1e7d604-046a-4fa6-bc14-36a8e1d3d796",
+      "sha256": "c2cff8b3d9544e9b2e65c952565a87b140819563038d8e4b7dc6adf7fc7c20f8",
+      "start": 0,
+      "sourceStart": 0,
+      "sourceEnd": 1.1406666666666667,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "c2cff8b3d9544e9b2e65c952565a87b140819563038d8e4b7dc6adf7fc7c20f8",
+        "duration": 1.1406666666666667,
+        "narration": {
+          "text": "Make time.",
+          "voice": "am_michael",
+          "speed": 1.03,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Make",
+                "start": 0.17266666666666666,
+                "end": 0.39766666666666667
+              },
+              {
+                "text": "time.",
+                "start": 0.44766666666666666,
+                "end": 1.1306666666666667
+              }
+            ]
+          }
+        }
+      },
+      "fadeIn": 0.02,
+      "fadeOut": 0.02
+    },
+    {
+      "assetId": "9a10aabb-4a2a-4d1f-8e00-ed3498c9328d",
+      "sha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac",
+      "start": 5.25,
+      "sourceStart": 1.03,
+      "sourceEnd": 1.95,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac",
+        "duration": 3.2573333333333334,
+        "narration": {
+          "text": "Cut an ad. Find the words. Make them move.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Cut",
+                "start": 0.144,
+                "end": 0.294
+              },
+              {
+                "text": "an",
+                "start": 0.319,
+                "end": 0.394
+              },
+              {
+                "text": "ad.",
+                "start": 0.469,
+                "end": 0.794
+              },
+              {
+                "text": "Find",
+                "start": 1.109,
+                "end": 1.359
+              },
+              {
+                "text": "the",
+                "start": 1.384,
+                "end": 1.434
+              },
+              {
+                "text": "words.",
+                "start": 1.484,
+                "end": 1.859
+              },
+              {
+                "text": "Make",
+                "start": 2.189,
+                "end": 2.364
+              },
+              {
+                "text": "them",
+                "start": 2.3890000000000002,
+                "end": 2.539
+              },
+              {
+                "text": "move.",
+                "start": 2.589,
+                "end": 3.2573333333333334
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "cdd85947-af7d-4093-9a82-00b60d786688",
+      "sha256": "57ebdce93ca43bc9ab5e28a233e676355153c4469e04ea214af9ef3f66cb9381",
+      "start": 7.75,
+      "sourceStart": 0,
+      "sourceEnd": 1.3226666666666667,
+      "volume": 1,
+      "asset": {
+        "kind": "audio",
+        "sha256": "57ebdce93ca43bc9ab5e28a233e676355153c4469e04ea214af9ef3f66cb9381",
+        "duration": 1.3226666666666667,
+        "narration": {
+          "text": "Make it yours.",
+          "voice": "am_michael",
+          "speed": 1.03,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Make",
+                "start": 0.15133333333333332,
+                "end": 0.37633333333333335
+              },
+              {
+                "text": "it",
+                "start": 0.4013333333333333,
+                "end": 0.5013333333333333
+              },
+              {
+                "text": "yours.",
+                "start": 0.5763333333333334,
+                "end": 1.3226666666666667
+              }
+            ]
+          }
+        }
+      },
+      "fadeIn": 0.02,
+      "fadeOut": 0.02
+    },
+    {
+      "assetId": "c1cf57f9-4510-4a9c-8a0d-586dac818487",
+      "sha256": "853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373",
+      "start": 13.75,
+      "sourceStart": 0,
+      "sourceEnd": 0.794,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373",
+        "duration": 0.794,
+        "narration": {
+          "text": "One.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "One.",
+                "start": 0.17266666666666666,
+                "end": 0.6976666666666667
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "0ce4319b-ab73-4cb8-8e09-29ddbdde1681",
+      "sha256": "b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5",
+      "start": 16.7916666667,
+      "sourceStart": 0,
+      "sourceEnd": 0.8392916666666667,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5",
+        "duration": 0.8392916666666667,
+        "narration": {
+          "text": "Three.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Three.",
+                "start": 0.14766666666666667,
+                "end": 0.7893333333333333
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "4e5bbf2a-b933-4751-9606-0972e0efcf22",
+      "sha256": "4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92",
+      "start": 19.8333333333,
+      "sourceStart": 0,
+      "sourceEnd": 1.8133333333333332,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92",
+        "duration": 1.8133333333333332,
+        "narration": {
+          "text": "Give every frame your look.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Give",
+                "start": 0.10133333333333333,
+                "end": 0.2763333333333333
+              },
+              {
+                "text": "every",
+                "start": 0.35133333333333333,
+                "end": 0.6263333333333333
+              },
+              {
+                "text": "frame",
+                "start": 0.7263333333333334,
+                "end": 1.0513333333333332
+              },
+              {
+                "text": "your",
+                "start": 1.1013333333333333,
+                "end": 1.2013333333333334
+              },
+              {
+                "text": "look.",
+                "start": 1.2513333333333334,
+                "end": 1.8013333333333332
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "2256b725-b6ac-4e00-9b6f-6145f5932cd6",
+      "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+      "start": 24.375,
+      "sourceStart": 0,
+      "sourceEnd": 1.28,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+        "duration": 2.7252916666666667,
+        "narration": {
+          "text": "Keep the performance. Change the character.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Keep",
+                "start": 0.09766666666666667,
+                "end": 0.2976666666666667
+              },
+              {
+                "text": "the",
+                "start": 0.32266666666666666,
+                "end": 0.37266666666666665
+              },
+              {
+                "text": "performance.",
+                "start": 0.4226666666666667,
+                "end": 1.1976666666666667
+              },
+              {
+                "text": "Change",
+                "start": 1.4276666666666666,
+                "end": 1.7776666666666667
+              },
+              {
+                "text": "the",
+                "start": 1.8026666666666666,
+                "end": 1.8526666666666667
+              },
+              {
+                "text": "character.",
+                "start": 1.9026666666666667,
+                "end": 2.7252916666666667
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "2256b725-b6ac-4e00-9b6f-6145f5932cd6",
+      "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+      "start": 27.4166666667,
+      "sourceStart": 1.34,
+      "sourceEnd": 2.7252916666666667,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+        "duration": 2.7252916666666667,
+        "narration": {
+          "text": "Keep the performance. Change the character.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Keep",
+                "start": 0.09766666666666667,
+                "end": 0.2976666666666667
+              },
+              {
+                "text": "the",
+                "start": 0.32266666666666666,
+                "end": 0.37266666666666665
+              },
+              {
+                "text": "performance.",
+                "start": 0.4226666666666667,
+                "end": 1.1976666666666667
+              },
+              {
+                "text": "Change",
+                "start": 1.4276666666666666,
+                "end": 1.7776666666666667
+              },
+              {
+                "text": "the",
+                "start": 1.8026666666666666,
+                "end": 1.8526666666666667
+              },
+              {
+                "text": "character.",
+                "start": 1.9026666666666667,
+                "end": 2.7252916666666667
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "197a5efd-103f-4fef-b1e7-43c54e38184e",
+      "sha256": "380e1f634dbb21be97cb0ca8a71344fda82d5d43d12b0de29537f66cfafa97c3",
+      "start": 30.4583333333,
+      "sourceStart": 0,
+      "sourceEnd": 3.526666666666667,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "380e1f634dbb21be97cb0ca8a71344fda82d5d43d12b0de29537f66cfafa97c3",
+        "duration": 3.526666666666667,
+        "narration": {
+          "text": "Open weights. One studio. Powered by Comfy.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Open",
+                "start": 0.12266666666666666,
+                "end": 0.4726666666666667
+              },
+              {
+                "text": "weights.",
+                "start": 0.5226666666666666,
+                "end": 1.0976666666666666
+              },
+              {
+                "text": "One",
+                "start": 1.2476666666666667,
+                "end": 1.4476666666666667
+              },
+              {
+                "text": "studio.",
+                "start": 1.4976666666666667,
+                "end": 1.9976666666666667
+              },
+              {
+                "text": "Powered",
+                "start": 2.292666666666667,
+                "end": 2.617666666666667
+              },
+              {
+                "text": "by",
+                "start": 2.667666666666667,
+                "end": 2.8176666666666668
+              },
+              {
+                "text": "Comfy.",
+                "start": 2.867666666666667,
+                "end": 3.526666666666667
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "24101f44-dafd-4836-852c-36760c69bb3c",
+      "sha256": "de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf",
+      "start": 34.875,
+      "sourceStart": 0,
+      "sourceEnd": 2.3553333333333333,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf",
+        "duration": 2.3553333333333333,
+        "narration": {
+          "text": "And this edit? Made in Aftertake.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "And",
+                "start": 0.14766666666666667,
+                "end": 0.24766666666666667
+              },
+              {
+                "text": "this",
+                "start": 0.27266666666666667,
+                "end": 0.44766666666666666
+              },
+              {
+                "text": "edit?",
+                "start": 0.5226666666666666,
+                "end": 0.9226666666666666
+              },
+              {
+                "text": "Made",
+                "start": 1.1026666666666667,
+                "end": 1.3276666666666668
+              },
+              {
+                "text": "in",
+                "start": 1.3526666666666667,
+                "end": 1.4276666666666666
+              },
+              {
+                "text": "Aftertake.",
+                "start": 1.5026666666666666,
+                "end": 2.3553333333333333
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "69216fb0-049d-4f70-a3cf-582001ebae8e",
+      "sha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c",
+      "start": 38.375,
+      "sourceStart": 0,
+      "sourceEnd": 1.792,
+      "volume": 1,
+      "fadeIn": 0.02,
+      "fadeOut": 0.02,
+      "asset": {
+        "kind": "audio",
+        "sha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c",
+        "duration": 1.792,
+        "narration": {
+          "text": "Your next take starts here.",
+          "voice": "am_michael",
+          "speed": 1.08,
+          "timedWords": true,
+          "model": "Kokoro-82M v1.0 (Apache-2.0)",
+          "modelSha256": "beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a",
+          "voicesSha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+          "runner": "kokoro-onnx 0.6.1 / CPUExecutionProvider",
+          "wordTimingMapper": "phoneme-boundaries/2",
+          "wordTiming": {
+            "method": "kokoro-phoneme-durations/1",
+            "words": [
+              {
+                "text": "Your",
+                "start": 0.19033333333333333,
+                "end": 0.29033333333333333
+              },
+              {
+                "text": "next",
+                "start": 0.3403333333333333,
+                "end": 0.5653333333333334
+              },
+              {
+                "text": "take",
+                "start": 0.6153333333333333,
+                "end": 0.8403333333333334
+              },
+              {
+                "text": "starts",
+                "start": 0.8903333333333333,
+                "end": 1.2153333333333334
+              },
+              {
+                "text": "here.",
+                "start": 1.2653333333333334,
+                "end": 1.7653333333333334
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "assetId": "35a6e867-68ae-488e-a1fe-9c9e44cfe40b",
+      "sha256": "aece5ce0048f626367951e0710a025f4a1e09e5ab0a2d51c243e25d793c40ff9",
+      "start": 1.5,
+      "sourceStart": 0,
+      "sourceEnd": 39,
+      "volume": 0.45,
+      "fadeIn": 0.3,
+      "fadeOut": 1.2
+    }
+  ],
+  "sourceVolume": 0,
+  "normalizeAudio": true,
+  "sourceFiles": {
+    "5041baf7-5277-4a92-8156-d180a6157d29": {
+      "path": "examples/product-film/full-demo-media/412917ef4572d9a6910b81c8ecd60f4fa05d1050b0c4568f8c592effc50da1e3.mp4",
+      "sha256": "412917ef4572d9a6910b81c8ecd60f4fa05d1050b0c4568f8c592effc50da1e3"
+    },
+    "cebfdc9b-cc79-4dcd-a045-61ffe63b357d": {
+      "path": "examples/product-film/full-demo-media/51f802a81dca9c3e5133f2881429f197328aa9969c2a1e60112cd058fec33293.png",
+      "sha256": "51f802a81dca9c3e5133f2881429f197328aa9969c2a1e60112cd058fec33293"
+    },
+    "4ffd80f5-8794-4b34-ba6e-97481ceb6fa9": {
+      "path": "examples/product-film/full-demo-media/e282241567cc9cb5806e289e2420f2ac1180f31e1934d5a4d62ca522f73cf993.png",
+      "sha256": "e282241567cc9cb5806e289e2420f2ac1180f31e1934d5a4d62ca522f73cf993"
+    },
+    "44c6ad07-50f1-4981-8a16-2387719c1aff": {
+      "path": "examples/subject-duplicates/prepared-source.mp4",
+      "sha256": "c29b4e28631fe52c3cdbb2d4401672ee5837077e941588a33eb49a4e42e3c1d3"
+    },
+    "c11168bd-97ee-4f5b-84b6-0d5e45a44295": {
+      "path": "examples/subject-duplicates/result.mp4",
+      "sha256": "3a0dd291c52d3b56090bea1e05f01c1ae6cb67bbdafed0ceb37f081038b21558"
+    },
+    "f4355a00-78de-46a1-ae86-a90eb532f91f": {
+      "path": "examples/product-film/full-demo-media/5576f8612cb2af82b9415866e24ee94258b375973ec29f7c21e971125869a466.mp4",
+      "sha256": "5576f8612cb2af82b9415866e24ee94258b375973ec29f7c21e971125869a466"
+    },
+    "9e901b04-1ffd-4ba4-a7fb-2da10cfa89f4": {
+      "path": "examples/product-film/full-demo-media/8198d77f034db4b1761ad72c90db5adeccc113c26150c860615bf5c901974cbd.jpg",
+      "sha256": "8198d77f034db4b1761ad72c90db5adeccc113c26150c860615bf5c901974cbd"
+    },
+    "aeae18b4-3ecc-4f68-a702-87472a716b03": {
+      "path": "examples/character-h3-high/prepared-source.mp4",
+      "sha256": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92"
+    },
+    "270d322a-45c0-4066-b690-d57f5fc76ac9": {
+      "path": "examples/character-h3-high/result.mp4",
+      "sha256": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe"
+    },
+    "45c2e4c8-c859-4fc6-b1d1-079f1a5f75f2": {
+      "path": "examples/product-film/full-demo-media/cf8f06acf85ae36b61e0ed29a0bf6d42fec65d9f4c071caac76c564ea9788816.jpg",
+      "sha256": "cf8f06acf85ae36b61e0ed29a0bf6d42fec65d9f4c071caac76c564ea9788816"
+    },
+    "34bf3efa-c9f3-4a0a-ad19-1e8be1cec67a": {
+      "path": "examples/product-film/full-demo-media/e92b1b4e6ccf27cb6f1047ccc23db9ba2b68266f03711fc9a6e14536ebaec692.png",
+      "sha256": "e92b1b4e6ccf27cb6f1047ccc23db9ba2b68266f03711fc9a6e14536ebaec692"
+    },
+    "e1e7d604-046a-4fa6-bc14-36a8e1d3d796": {
+      "path": "examples/product-film/full-demo-media/c2cff8b3d9544e9b2e65c952565a87b140819563038d8e4b7dc6adf7fc7c20f8.wav",
+      "sha256": "c2cff8b3d9544e9b2e65c952565a87b140819563038d8e4b7dc6adf7fc7c20f8"
+    },
+    "9a10aabb-4a2a-4d1f-8e00-ed3498c9328d": {
+      "path": "examples/product-film/full-demo-media/305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac.wav",
+      "sha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac"
+    },
+    "cdd85947-af7d-4093-9a82-00b60d786688": {
+      "path": "examples/product-film/full-demo-media/57ebdce93ca43bc9ab5e28a233e676355153c4469e04ea214af9ef3f66cb9381.wav",
+      "sha256": "57ebdce93ca43bc9ab5e28a233e676355153c4469e04ea214af9ef3f66cb9381"
+    },
+    "c1cf57f9-4510-4a9c-8a0d-586dac818487": {
+      "path": "examples/product-film/full-demo-media/853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373.wav",
+      "sha256": "853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373"
+    },
+    "0ce4319b-ab73-4cb8-8e09-29ddbdde1681": {
+      "path": "examples/product-film/full-demo-media/b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5.wav",
+      "sha256": "b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5"
+    },
+    "4e5bbf2a-b933-4751-9606-0972e0efcf22": {
+      "path": "examples/product-film/full-demo-media/4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92.wav",
+      "sha256": "4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92"
+    },
+    "2256b725-b6ac-4e00-9b6f-6145f5932cd6": {
+      "path": "examples/product-film/full-demo-media/97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867.wav",
+      "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867"
+    },
+    "197a5efd-103f-4fef-b1e7-43c54e38184e": {
+      "path": "examples/product-film/full-demo-media/380e1f634dbb21be97cb0ca8a71344fda82d5d43d12b0de29537f66cfafa97c3.wav",
+      "sha256": "380e1f634dbb21be97cb0ca8a71344fda82d5d43d12b0de29537f66cfafa97c3"
+    },
+    "24101f44-dafd-4836-852c-36760c69bb3c": {
+      "path": "examples/product-film/full-demo-media/de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf.wav",
+      "sha256": "de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf"
+    },
+    "69216fb0-049d-4f70-a3cf-582001ebae8e": {
+      "path": "examples/product-film/full-demo-media/12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c.wav",
+      "sha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c"
+    },
+    "35a6e867-68ae-488e-a1fe-9c9e44cfe40b": {
+      "path": "examples/product-film/full-demo-media/aece5ce0048f626367951e0710a025f4a1e09e5ab0a2d51c243e25d793c40ff9.wav",
+      "sha256": "aece5ce0048f626367951e0710a025f4a1e09e5ab0a2d51c243e25d793c40ff9"
+    },
+    "50d055d2-cc1e-4cba-b144-33248602be6d": {
+      "path": "examples/product-film/full-demo-media/f809af9e5df35bb50914e18451f5bb8a48eca5f6c248ef3c6912d69e4973921c.png",
+      "sha256": "f809af9e5df35bb50914e18451f5bb8a48eca5f6c248ef3c6912d69e4973921c"
+    }
+  },
+  "notes": "A 40.5-second landscape film with a vertical ad, genuine hook-edit UI stills, tracked source-pixel duplicates, a color grade and native H3 source/result comparison. The final reveal shows the actual full Film project. The saved portrait-ad export is source footage; coffee-ad-project.json retains its separate editable timeline. UI stills use authored camera movement. Source/result comparisons replay the same short performance. Source provenance and the input bundle are documented in README.md."
+}

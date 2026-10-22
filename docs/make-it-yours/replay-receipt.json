@@ -1,0 +1,17 @@
+{
+  "format": "aftertake-film-fresh-replay/1",
+  "mainProjectSha256": "102e7683f05dfc86d09446473757fedd5118813b2586f28b5147daab150bd071",
+  "childProjectSha256": "325d80ef82025a73923ee83fb2bd21a70db1a1ce8fb565b4e04a46f303e1b3e4",
+  "inputArchiveSha256": "aa6e20876a7f044d40ff4d8b2f107784cbcc018854310a23dc1ae46aaec76c37",
+  "freshEmptyWorkspace": true,
+  "importedUniqueMedia": 30,
+  "nativeMcpExport": true,
+  "comfyOffline": true,
+  "gpuGeneration": false,
+  "rgbFramesExact": 972,
+  "maxRgbChannelError": 0,
+  "decodedAudioExact": true,
+  "maxAudioSampleError": 0,
+  "videoAndAudioTimestampsExact": true,
+  "referenceMovieSha256": "48f4dcf16b3112073183864b35fd0f7640a1b7da45627856d16acce87da9bd49"
+}

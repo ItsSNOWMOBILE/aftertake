@@ -1,0 +1,444 @@
+{
+  "format": "aftertake-full-demo-source-provenance/1",
+  "files": [
+    {
+      "path": "examples/character-h3-high/prepared-source.mp4",
+      "sha256": "d407fdcfe42d5b182b40be9466a44abfa164da25a6ae57720e4766d697900b92",
+      "bytes": 2227459,
+      "provenance": {
+        "category": "character-example",
+        "creator": "Blender Foundation; Aftertake processing",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+        "receipts": [
+          "examples/character-h3-high/ATTRIBUTION.txt"
+        ]
+      }
+    },
+    {
+      "path": "examples/character-h3-high/result.mp4",
+      "sha256": "405d60314b6565cba67405d6807fa44b86596f11e78552d1bf75d61a7fc4fdfe",
+      "bytes": 1208054,
+      "provenance": {
+        "category": "character-example",
+        "creator": "Blender Foundation; Aftertake processing",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
+        "receipts": [
+          "examples/character-h3-high/ATTRIBUTION.txt"
+        ]
+      }
+    },
+    {
+      "path": "examples/subject-duplicates/prepared-source.mp4",
+      "sha256": "c29b4e28631fe52c3cdbb2d4401672ee5837077e941588a33eb49a4e42e3c1d3",
+      "bytes": 725856,
+      "provenance": {
+        "category": "tracked-dance-footage",
+        "creator": "Antoni Shkraba; Aftertake processing",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/",
+        "receipts": [
+          "examples/subject-duplicates/provenance.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/subject-duplicates/result.mp4",
+      "sha256": "3a0dd291c52d3b56090bea1e05f01c1ae6cb67bbdafed0ceb37f081038b21558",
+      "bytes": 889320,
+      "provenance": {
+        "category": "tracked-dance-footage",
+        "creator": "Antoni Shkraba; Aftertake processing",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/",
+        "receipts": [
+          "examples/subject-duplicates/provenance.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/02870edee059d439914e9c409adf45430c37042cf7a14e678aa16f7020175d24.mp4",
+      "sha256": "02870edee059d439914e9c409adf45430c37042cf7a14e678aa16f7020175d24",
+      "bytes": 3618526,
+      "provenance": {
+        "category": "licensed-coffee-footage",
+        "creator": "Michael Burrows",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/",
+        "receipts": [
+          "examples/social-ad/sources.json",
+          "examples/product-film/coffee-source-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c.wav",
+      "sha256": "12801120013f90e748a18510588b6c2a93ddc851ba306c0f7581b85a3f13fd8c",
+      "bytes": 86060,
+      "provenance": {
+        "category": "local-synthetic-narration",
+        "creator": "Aftertake contributors; local Kokoro",
+        "license": "Generated narration; model terms remain separate",
+        "receipts": [
+          "docs/models-narration.json",
+          "examples/product-film/voice-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/2aed8bf9b972cb02d0c4e206e4db00d4625bcf08e726560e6be899c9505f42c5.wav",
+      "sha256": "2aed8bf9b972cb02d0c4e206e4db00d4625bcf08e726560e6be899c9505f42c5",
+      "bytes": 74796,
+      "provenance": {
+        "category": "local-synthetic-narration",
+        "creator": "Aftertake contributors; local Kokoro",
+        "license": "Generated narration; model terms remain separate",
+        "receipts": [
+          "docs/models-narration.json",
+          "examples/product-film/voice-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac.wav",
+      "sha256": "305774c38686aca923074c38ecde3e6a4cc6fe0886d3722998c7bc339f95aeac",
+      "bytes": 156396,
+      "provenance": {
+        "category": "local-synthetic-narration",
+        "creator": "Aftertake contributors; local Kokoro",
+        "license": "Generated narration; model terms remain separate",
+        "receipts": [
+          "docs/models-narration.json",
+          "examples/product-film/voice-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/380e1f634dbb21be97cb0ca8a71344fda82d5d43d12b0de29537f66cfafa97c3.wav",
+      "sha256": "380e1f634dbb21be97cb0ca8a71344fda82d5d43d12b0de29537f66cfafa97c3",
+      "bytes": 169324,
+      "provenance": {
+        "category": "local-synthetic-narration",
+        "creator": "Aftertake contributors; local Kokoro",
+        "license": "Generated narration; model terms remain separate",
+        "receipts": [
+          "docs/models-narration.json",
+          "examples/product-film/voice-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/412917ef4572d9a6910b81c8ecd60f4fa05d1050b0c4568f8c592effc50da1e3.mp4",
+      "sha256": "412917ef4572d9a6910b81c8ecd60f4fa05d1050b0c4568f8c592effc50da1e3",
+      "bytes": 4244856,
+      "provenance": {
+        "category": "native-editable-child-film",
+        "creator": "Aftertake contributors; Michael Burrows footage",
+        "license": "Mixed original contributions and Pexels footage; see individual source credits",
+        "receipts": [
+          "examples/product-film/coffee-ad-project.json",
+          "examples/social-ad/sources.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/49c0142cb30d909a36a9b638b4bc867872081cce6983c3dc9cc9ea83cc6bb848.mp4",
+      "sha256": "49c0142cb30d909a36a9b638b4bc867872081cce6983c3dc9cc9ea83cc6bb848",
+      "bytes": 2908692,
+      "provenance": {
+        "category": "licensed-coffee-footage",
+        "creator": "Michael Burrows",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/",
+        "receipts": [
+          "examples/social-ad/sources.json",
+          "examples/product-film/coffee-source-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92.wav",
+      "sha256": "4de45a13513260bc82c3fbcf55d2dd1c4ebbaef5587b7b403cc5d55d471d9d92",
+      "bytes": 87084,
+      "provenance": {
+        "category": "local-synthetic-narration",
+        "creator": "Aftertake contributors; local Kokoro",
+        "license": "Generated narration; model terms remain separate",
+        "receipts": [
+          "docs/models-narration.json",
+          "examples/product-film/voice-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/51f802a81dca9c3e5133f2881429f197328aa9969c2a1e60112cd058fec33293.png",
+      "sha256": "51f802a81dca9c3e5133f2881429f197328aa9969c2a1e60112cd058fec33293",
+      "bytes": 61812,
+      "provenance": {
+        "category": "actual-editor-still-or-original-card",
+        "creator": "Aftertake contributors",
+        "license": "Original Aftertake contribution; depicted source media retain their own terms",
+        "receipts": [
+          "examples/product-film/source-provenance.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/5576f8612cb2af82b9415866e24ee94258b375973ec29f7c21e971125869a466.mp4",
+      "sha256": "5576f8612cb2af82b9415866e24ee94258b375973ec29f7c21e971125869a466",
+      "bytes": 930767,
+      "provenance": {
+        "category": "tracked-dance-footage",
+        "creator": "Antoni Shkraba; Aftertake processing",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/",
+        "receipts": [
+          "examples/subject-duplicates/provenance.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/57ebdce93ca43bc9ab5e28a233e676355153c4469e04ea214af9ef3f66cb9381.wav",
+      "sha256": "57ebdce93ca43bc9ab5e28a233e676355153c4469e04ea214af9ef3f66cb9381",
+      "bytes": 63532,
+      "provenance": {
+        "category": "local-synthetic-narration",
+        "creator": "Aftertake contributors; local Kokoro",
+        "license": "Generated narration; model terms remain separate",
+        "receipts": [
+          "docs/models-narration.json",
+          "examples/product-film/voice-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/5abfd38467ba4652932bb95d1311d96dcb4804354ce61ce2ce24f6564614cb73.wav",
+      "sha256": "5abfd38467ba4652932bb95d1311d96dcb4804354ce61ce2ce24f6564614cb73",
+      "bytes": 62380,
+      "provenance": {
+        "category": "local-synthetic-narration",
+        "creator": "Aftertake contributors; local Kokoro",
+        "license": "Generated narration; model terms remain separate",
+        "receipts": [
+          "docs/models-narration.json",
+          "examples/product-film/voice-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/68c9ff90dc1d3ec2cb5faa95186b54c99ff8bccb2c44b8881b0ad7e83777e1f7.png",
+      "sha256": "68c9ff90dc1d3ec2cb5faa95186b54c99ff8bccb2c44b8881b0ad7e83777e1f7",
+      "bytes": 5561,
+      "provenance": {
+        "category": "actual-editor-still-or-original-card",
+        "creator": "Aftertake contributors",
+        "license": "Original Aftertake contribution; depicted source media retain their own terms",
+        "receipts": [
+          "examples/product-film/source-provenance.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/8198d77f034db4b1761ad72c90db5adeccc113c26150c860615bf5c901974cbd.jpg",
+      "sha256": "8198d77f034db4b1761ad72c90db5adeccc113c26150c860615bf5c901974cbd",
+      "bytes": 108174,
+      "provenance": {
+        "category": "actual-editor-still-or-original-card",
+        "creator": "Aftertake contributors",
+        "license": "Original Aftertake contribution; depicted source media retain their own terms",
+        "receipts": [
+          "examples/product-film/source-provenance.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373.wav",
+      "sha256": "853415d850d43d498778d5c7b816821a968014b2b857d739f6464dad9bcfd373",
+      "bytes": 38156,
+      "provenance": {
+        "category": "local-synthetic-narration",
+        "creator": "Aftertake contributors; local Kokoro",
+        "license": "Generated narration; model terms remain separate",
+        "receipts": [
+          "docs/models-narration.json",
+          "examples/product-film/voice-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867.wav",
+      "sha256": "97b8e81bed7f22f31bfe39dceedfe60aa46d2e482d26475dc768c1e486386867",
+      "bytes": 130858,
+      "provenance": {
+        "category": "local-synthetic-narration",
+        "creator": "Aftertake contributors; local Kokoro",
+        "license": "Generated narration; model terms remain separate",
+        "receipts": [
+          "docs/models-narration.json",
+          "examples/product-film/voice-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/aece5ce0048f626367951e0710a025f4a1e09e5ab0a2d51c243e25d793c40ff9.wav",
+      "sha256": "aece5ce0048f626367951e0710a025f4a1e09e5ab0a2d51c243e25d793c40ff9",
+      "bytes": 11232044,
+      "provenance": {
+        "category": "original-score",
+        "creator": "Aftertake contributors",
+        "license": "CC0-1.0",
+        "receipts": [
+          "examples/product-film/MUSIC.md",
+          "examples/product-film/music-provenance.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5.wav",
+      "sha256": "b7a9feb69880856c947cff2aade649636137f7f5ffed67d394c886f69d52c8c5",
+      "bytes": 40330,
+      "provenance": {
+        "category": "local-synthetic-narration",
+        "creator": "Aftertake contributors; local Kokoro",
+        "license": "Generated narration; model terms remain separate",
+        "receipts": [
+          "docs/models-narration.json",
+          "examples/product-film/voice-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/c2cff8b3d9544e9b2e65c952565a87b140819563038d8e4b7dc6adf7fc7c20f8.wav",
+      "sha256": "c2cff8b3d9544e9b2e65c952565a87b140819563038d8e4b7dc6adf7fc7c20f8",
+      "bytes": 54796,
+      "provenance": {
+        "category": "local-synthetic-narration",
+        "creator": "Aftertake contributors; local Kokoro",
+        "license": "Generated narration; model terms remain separate",
+        "receipts": [
+          "docs/models-narration.json",
+          "examples/product-film/voice-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/cf8f06acf85ae36b61e0ed29a0bf6d42fec65d9f4c071caac76c564ea9788816.jpg",
+      "sha256": "cf8f06acf85ae36b61e0ed29a0bf6d42fec65d9f4c071caac76c564ea9788816",
+      "bytes": 67030,
+      "provenance": {
+        "category": "actual-editor-still-or-original-card",
+        "creator": "Aftertake contributors",
+        "license": "Original Aftertake contribution; depicted source media retain their own terms",
+        "receipts": [
+          "examples/product-film/source-provenance.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/d3f8ee4a65578fc0dc1744a4319c87e2d6f166b873190ab358c660358093decb.mp4",
+      "sha256": "d3f8ee4a65578fc0dc1744a4319c87e2d6f166b873190ab358c660358093decb",
+      "bytes": 14377325,
+      "provenance": {
+        "category": "licensed-coffee-footage",
+        "creator": "Michael Burrows",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/",
+        "receipts": [
+          "examples/social-ad/sources.json",
+          "examples/product-film/coffee-source-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf.wav",
+      "sha256": "de91fb08df61ce1dcdf427ee0b1a09efbf6b77abfca9ba2f3d538a05dd5cfabf",
+      "bytes": 113100,
+      "provenance": {
+        "category": "local-synthetic-narration",
+        "creator": "Aftertake contributors; local Kokoro",
+        "license": "Generated narration; model terms remain separate",
+        "receipts": [
+          "docs/models-narration.json",
+          "examples/product-film/voice-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/e0e6d1fdac0df7c9f39b22c228fad615cf1aa565ebf87adc34aac30bf4789390.mp4",
+      "sha256": "e0e6d1fdac0df7c9f39b22c228fad615cf1aa565ebf87adc34aac30bf4789390",
+      "bytes": 3841340,
+      "provenance": {
+        "category": "licensed-coffee-footage",
+        "creator": "Michael Burrows",
+        "license": "Pexels License",
+        "licenseUrl": "https://www.pexels.com/license/",
+        "receipts": [
+          "examples/social-ad/sources.json",
+          "examples/product-film/coffee-source-receipts.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/e282241567cc9cb5806e289e2420f2ac1180f31e1934d5a4d62ca522f73cf993.png",
+      "sha256": "e282241567cc9cb5806e289e2420f2ac1180f31e1934d5a4d62ca522f73cf993",
+      "bytes": 62480,
+      "provenance": {
+        "category": "actual-editor-still-or-original-card",
+        "creator": "Aftertake contributors",
+        "license": "Original Aftertake contribution; depicted source media retain their own terms",
+        "receipts": [
+          "examples/product-film/source-provenance.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/e92b1b4e6ccf27cb6f1047ccc23db9ba2b68266f03711fc9a6e14536ebaec692.png",
+      "sha256": "e92b1b4e6ccf27cb6f1047ccc23db9ba2b68266f03711fc9a6e14536ebaec692",
+      "bytes": 4321,
+      "provenance": {
+        "category": "actual-editor-still-or-original-card",
+        "creator": "Aftertake contributors",
+        "license": "Original Aftertake contribution; depicted source media retain their own terms",
+        "receipts": [
+          "examples/product-film/source-provenance.json"
+        ]
+      }
+    },
+    {
+      "path": "examples/product-film/full-demo-media/f809af9e5df35bb50914e18451f5bb8a48eca5f6c248ef3c6912d69e4973921c.png",
+      "sha256": "f809af9e5df35bb50914e18451f5bb8a48eca5f6c248ef3c6912d69e4973921c",
+      "bytes": 72639,
+      "provenance": {
+        "category": "actual-editor-still-or-original-card",
+        "creator": "Aftertake contributors",
+        "license": "Original Aftertake contribution; depicted source media retain their own terms",
+        "receipts": [
+          "examples/product-film/source-provenance.json"
+        ]
+      }
+    }
+  ],
+  "ui": {
+    "method": "Actual editor stills with native Film camera motion and direct before/after cuts.",
+    "continuousScreenRecording": false,
+    "fabricatedMouseActions": false
+  },
+  "child": {
+    "project": "examples/product-film/coffee-ad-project.json",
+    "outputSha256": "412917ef4572d9a6910b81c8ecd60f4fa05d1050b0c4568f8c592effc50da1e3",
+    "rendererRevision": 8,
+    "fps": 24,
+    "frames": 396,
+    "separatelyEditable": true
+  },
+  "redistribution": "Individual media retain their stated terms. Aftertake MIT does not relicense source footage, models or external node packs.",
+  "privateUserFootage": false,
+  "modelWeights": false,
+  "credentials": false,
+  "narration": {
+    "requestsAndMeasuredWordTiming": "project.json and coffee-ad-project.json audio[].asset.narration",
+    "modelReceipts": "docs/models-narration.json",
+    "newNarrationGeneratedDuringPackaging": false
+  }
+}

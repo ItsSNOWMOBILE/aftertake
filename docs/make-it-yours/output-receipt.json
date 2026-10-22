@@ -1,0 +1,20 @@
+{
+  "sha256": "48f4dcf16b3112073183864b35fd0f7640a1b7da45627856d16acce87da9bd49",
+  "embeddedProjectMatches": true,
+  "width": 1280,
+  "height": 720,
+  "fps": 24,
+  "frameCount": 972,
+  "duration": 40.5,
+  "rendererRevision": 9,
+  "portableProjectSha256": "102e7683f05dfc86d09446473757fedd5118813b2586f28b5147daab150bd071",
+  "maxVideoTimestampDeviationSeconds": 4.739264536368637e-15,
+  "audio": {
+    "decodedValues": 3888000,
+    "rms": 0.06498480859330785,
+    "samplePeak": 0.8395925760269165,
+    "samplesAtOrAboveFullScale": 0,
+    "maxTimestampGapSeconds": 7.105427357601002e-15
+  },
+  "verification": "Source hashes, native record, decoded embedded project, selected frames and all cut boundaries checked. Full playback and creative review remain with the viewer."
+}
