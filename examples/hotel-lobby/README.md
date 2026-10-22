@@ -17,7 +17,7 @@ The left performer is replaced using a supplied portrait, SAM3 tracking and H3 C
 
 ## Reopen
 
-[Start the local studio](../../README.md#run-locally), then import the bundled media:
+[Start the local studio](../../README.md#quick-start), then import the bundled media:
 
 ```sh
 python scripts/import-film-project.py examples/hotel-lobby/project.json

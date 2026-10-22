@@ -10,7 +10,7 @@ The actual app output is **1344 × 736, 73 frames at 24 fps** (3.042 seconds). T
 
 ## Reproduce without a generation engine
 
-Install the [local studio](../../README.md#run-locally) and its small CPU media runtime. From the repository root:
+Install the [local studio](../../README.md#quick-start) and its small CPU media runtime. From the repository root:
 
 ```sh
 pnpm install --frozen-lockfile

@@ -117,7 +117,7 @@ editor.
 
 ## Rebuild it
 
-Install the [local studio](../../README.md#run-locally) and its Film runtime.
+Install the [local studio](../../README.md#quick-start) and its Film runtime.
 Render the soundtrack by opening `build/aftertake-song-ace-step.json` in
 ComfyUI or Comfy Cloud. `build/generate-song.mjs` submits the same graph
 through the Comfy SDK, which requires a paid Comfy Cloud plan.
