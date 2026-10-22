@@ -1,4 +1,4 @@
-import { readFile, writeFile, readdir, realpath, lstat } from 'node:fs/promises';
+import { cp, readFile, writeFile, readdir, realpath, lstat } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -104,6 +104,9 @@ await build({
   ],
   build: { outDir: output, emptyOutDir: true },
 });
+// The start screen and starter gallery load their looping previews from public/.
+for (const folder of ['start', 'starters'])
+  await cp(path.join(root, 'public', folder), path.join(output, folder), { recursive: true });
 await writeFile(path.join(output, 'snapshot.json'), JSON.stringify(snapshot) + '\n');
 await writeFile(path.join(output, 'licenses.txt'), licenseText + '\n');
 for (const file of await readdir(path.join(output, 'assets'))) {

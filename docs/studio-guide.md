@@ -2,8 +2,8 @@
 
 [← Back to Aftertake](../README.md)
 
-[Try the browser editor](https://aftertake-studio.right-bard-9761.chatgpt.site/studio/) ·
-[Review the focused 53-second demo](https://aftertake-studio.right-bard-9761.chatgpt.site/) ·
+[Try the browser editor](https://itssnowmobile.github.io/aftertake/studio/) ·
+[Watch the 93-second film](https://itssnowmobile.github.io/aftertake/film/) ·
 [Open the demo chapter guide](https://aftertake-studio.right-bard-9761.chatgpt.site/judges/) ·
 [Review the native H3 character replacement](https://aftertake-studio.right-bard-9761.chatgpt.site/cast/h3.html) ·
 [Watch the narrated-cut workflow](https://aftertake-studio.right-bard-9761.chatgpt.site/ads/workflow.html) ·
@@ -727,13 +727,14 @@ If an older example workspace contains different records, preserve it and use
 
 ```sh
 pnpm install --frozen-lockfile
-pnpm build:browser-demo
+pnpm build:browser-demo --media-ref=<published SHA> --blob-previews
 ```
 
-This writes the static editor into `docs/studio/`, alongside the existing
-landing page. Generated assets and snapshots are excluded from version control;
-the small checked-in entry redirects to the current hosted trial until rebuilt.
-Its default recorded media snapshot is pinned to a
+This writes the static editor into `docs/studio/`, alongside the landing page.
+The build is checked in, so GitHub Pages serves it at
+https://itssnowmobile.github.io/aftertake/studio/; rebuild and commit it to
+refresh the trial. It includes the start screen's and starter gallery's
+previews. Its default recorded media snapshot is pinned to a
 published commit. The builder verifies every manifest asset and extracts each
 recorded take's executed graph from its MP4. Pass `--media-ref=<published SHA>`
 to use another published media revision. Publish that media first: the browser
