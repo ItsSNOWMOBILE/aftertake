@@ -1,9 +1,5 @@
 node_modules/
 dist/
-# Rebuild the static trial with pnpm build:browser-demo; keep source packages lean.
-/docs/studio/assets/
-/docs/studio/snapshot.json
-/docs/studio/licenses.txt
 /docs/judges/evidence.json
 .runtime/
 examples/spoken-type/alignment-rerun.json

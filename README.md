@@ -6,7 +6,8 @@
 
 Generate shots, recast characters, paint effects onto real footage and cut the
 final film in one local workspace, using open-weight models and native ComfyUI
-workflows. No credits, no uploads, no closed APIs.
+workflows. It runs locally with no credits, uploads or closed APIs; Comfy Cloud
+is optional, studio by studio.
 
 [![Code: MIT](https://img.shields.io/badge/code-MIT-d5eb94?labelColor=182015)](LICENSE)
 [![CI](https://github.com/ItsSNOWMOBILE/aftertake/actions/workflows/ci.yml/badge.svg?branch=aftertake-studio)](https://github.com/ItsSNOWMOBILE/aftertake/actions/workflows/ci.yml)
@@ -16,7 +17,7 @@ workflows. No credits, no uploads, no closed APIs.
 [![Windows · macOS · Linux](https://img.shields.io/badge/runs_on-Windows_·_macOS_·_Linux-c3d4a6?labelColor=182015)](#quick-start)
 
 **[Watch the film](https://itssnowmobile.github.io/aftertake/film/)** ·
-**[Try it in your browser](https://aftertake-studio.right-bard-9761.chatgpt.site/studio/)** ·
+**[Try it in your browser](https://itssnowmobile.github.io/aftertake/studio/)** ·
 **[Quick start](#quick-start)** ·
 **[How it's built](#how-its-built)** ·
 **[Docs](docs/studio-guide.md)**
@@ -232,7 +233,7 @@ profile's exact files are pinned in `docs/models-*.json`; see
 
 The [example library](examples/README.md) holds dozens of recorded projects with their
 inputs, outputs, recipes, executed graphs and attribution. Explore them without
-installing anything in the **[browser editor](https://aftertake-studio.right-bard-9761.chatgpt.site/studio/)**.
+installing anything in the **[browser editor](https://itssnowmobile.github.io/aftertake/studio/)**.
 
 ## Documentation
 
