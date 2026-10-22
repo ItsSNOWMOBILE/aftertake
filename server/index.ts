@@ -518,14 +518,14 @@ app.post(
   },
 );
 app.use(express.json({ limit: '2mb' }));
-app.use(
-  '/api/compute',
-  computeRouter({
-    localEngine: engine,
-    cloud,
-    startupCloudKey: process.env.COMFY_CLOUD_API_KEY?.trim() || undefined,
-  }),
-);
+const compute = computeRouter({
+  localEngine: engine,
+  cloud,
+  startupCloudKey: process.env.COMFY_CLOUD_API_KEY?.trim() || undefined,
+});
+app.use('/api/compute', compute);
+// Saved Cloud jobs rejoin only through a connected account: connect first.
+await compute.ready;
 app.use('/api/script-drafts', await scriptDraftRouter({ root, data }));
 const frameEdits = await frameEditorRouter({
   target: jobTarget,

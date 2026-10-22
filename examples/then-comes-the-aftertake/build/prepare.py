@@ -25,6 +25,33 @@ def run(*args):
     return subprocess.run([sys.executable, *map(str, args)], check=True, capture_output=True, text=True).stdout
 
 
+NEUTRAL = dict(exposureEV=0, contrast=0, saturation=0, temperature=0, tint=0, sharpen=0, vignette=0, grain=0,
+    preset='clean', lookStrength=0, seed=42)
+LOOKS = {
+    'castle-warm': dict(preset='warm-film', lookStrength=1, halationStrength=.6, halationRadius=10, vignette=.35, contrast=.15),
+    'castle-cool': dict(preset='cool-film', lookStrength=1, contrast=.2, vignette=.3, glowStrength=.25),
+    'castle-noir': dict(preset='noir', lookStrength=1, contrast=.35, grain=.35, vignette=.45),
+    'castle-vintage': dict(preset='vintage', lookStrength=1, grain=.4, chromaticStrength=.5, chromaticOffset=3, vignette=.4),
+}
+
+
+def castle_looks(castle, suffix=''):
+    """Color & finish exports of the lighthouse pull-back take; returns each look's file."""
+    probe = json.loads(subprocess.check_output(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries',
+        'stream=width,height:format=duration', '-of', 'json', str(castle)]))
+    clip = {'width': probe['streams'][0]['width'], 'height': probe['streams'][0]['height'],
+        'duration': float(probe['format']['duration']), 'sha256': hashlib.sha256(Path(castle).read_bytes()).hexdigest()}
+    outputs = {}
+    for name, look in LOOKS.items():
+        output = WORK / f'{name}{suffix}.mp4'
+        work = {'source': str(castle), 'output': str(output), 'receipt': str(WORK / f'{name}{suffix}.receipt.json'),
+            'mode': 'finish', 'request': {'format': 'aftertake-finishing/1', 'clip': clip, 'settings': {**NEUTRAL, **look}}}
+        (WORK / f'{name}{suffix}.work.json').write_text(json.dumps(work))
+        run(ROOT / 'scripts/finish-media.py', WORK / f'{name}{suffix}.work.json')
+        outputs[name] = output
+    return outputs
+
+
 def main(music):
     WORK.mkdir(exist_ok=True)
     track = json.loads((HERE / 'music.json').read_text(encoding='utf-8'))
@@ -60,24 +87,7 @@ def main(music):
         run(ROOT / 'scripts/subject-effects.py', WORK / f'{name}.json')
 
     # Four looks from Color & finish on the HD lighthouse pull-back take.
-    castle = ROOT / 'examples/castle-pullback-v2/result.mp4'
-    probe = json.loads(subprocess.check_output(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries',
-        'stream=width,height:format=duration', '-of', 'json', str(castle)]))
-    clip = {'width': probe['streams'][0]['width'], 'height': probe['streams'][0]['height'],
-        'duration': float(probe['format']['duration']), 'sha256': hashlib.sha256(castle.read_bytes()).hexdigest()}
-    neutral = dict(exposureEV=0, contrast=0, saturation=0, temperature=0, tint=0, sharpen=0, vignette=0, grain=0,
-        preset='clean', lookStrength=0, seed=42)
-    looks = {
-        'castle-warm': dict(preset='warm-film', lookStrength=1, halationStrength=.6, halationRadius=10, vignette=.35, contrast=.15),
-        'castle-cool': dict(preset='cool-film', lookStrength=1, contrast=.2, vignette=.3, glowStrength=.25),
-        'castle-noir': dict(preset='noir', lookStrength=1, contrast=.35, grain=.35, vignette=.45),
-        'castle-vintage': dict(preset='vintage', lookStrength=1, grain=.4, chromaticStrength=.5, chromaticOffset=3, vignette=.4),
-    }
-    for name, look in looks.items():
-        work = {'source': str(castle), 'output': str(WORK / f'{name}.mp4'), 'receipt': str(WORK / f'{name}.receipt.json'),
-            'mode': 'finish', 'request': {'format': 'aftertake-finishing/1', 'clip': clip, 'settings': {**neutral, **look}}}
-        (WORK / f'{name}.work.json').write_text(json.dumps(work))
-        run(ROOT / 'scripts/finish-media.py', WORK / f'{name}.work.json')
+    castle_looks(ROOT / 'examples/castle-pullback-v2/result.mp4')
     # Time-lapses of the real proof recordings (../proof). Each keeps its ending
     # in real time; the film labels the speed. The render recording loses the
     # browser chrome above the app and is letterboxed, so nothing is enlarged.
@@ -108,7 +118,7 @@ def main(music):
         'style': 'blur', 'match': {'at': 0.2, 'threshold': 0.9}}
     work = {'source': str(raw), 'output': str(WORK / 'proof-run.mp4'), 'receipt': str(WORK / 'proof-run.receipt.json'),
         'mode': 'finish', 'request': {'format': 'aftertake-finishing/1', 'name': 'Proof run, username hidden',
-            'clip': clip, 'settings': neutral, 'redactions': [username]}}
+            'clip': clip, 'settings': NEUTRAL, 'redactions': [username]}}
     (WORK / 'proof-run.work.json').write_text(json.dumps(work))
     run(ROOT / 'scripts/finish-media.py', WORK / 'proof-run.work.json')
     hidden = json.loads((WORK / 'proof-run.receipt.json').read_text())['redactions'][0]
