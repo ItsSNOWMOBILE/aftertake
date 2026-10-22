@@ -262,7 +262,11 @@ of job (keys like `video:final-720p`, `image`, `frame:fast` or
 for its own request. Each value is the median of earlier runs with the same
 settings in this workspace, or of the runs recorded on an RTX 5080 when there
 are none yet, and its `basis` says which. Use it to space status polls; it is a
-guide, not a deadline. Generation has no per-call price: it runs on the local GPU.
+guide, not a deadline. Generation on the local GPU has no per-call price. While
+Comfy Cloud is on in Render setup, images, videos, upscales, smooth or slow
+motion and songs render there instead: their `expected.cost` says they use the
+connected account's Cloud credits, and each job reports `renders: "comfy-cloud"`
+(otherwise `"local"`).
 
 Generate and inspect the reference before animating it. Poll actual generation
 status, inspect the completed take, then use its `renderId` and inspected hash

@@ -18,7 +18,17 @@ import { submissionRejected } from './submission.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
 import { assertJobTarget, jobTargetIssue, type JobTarget } from './job-target.js';
 
-export function inspectFramePng(bytes: Buffer) {
+export function inspectFramePng(bytes: Buffer): {
+  width: number;
+  height: number;
+  workflow: Record<string, unknown>;
+};
+export function inspectFramePng(
+  bytes: Buffer,
+  options: { workflowOptional: boolean },
+): { width: number; height: number; workflow?: Record<string, unknown> };
+/** Read a PNG's size and its executed ComfyUI prompt; Cloud output may omit the prompt. */
+export function inspectFramePng(bytes: Buffer, options?: { workflowOptional: boolean }) {
   if (
     bytes.length < 33 ||
     !bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
@@ -45,6 +55,8 @@ export function inspectFramePng(bytes: Buffer) {
     offset = end;
   }
   if (!ended) throw Error('The generated frame is incomplete.');
+  if (options?.workflowOptional && workflow === undefined)
+    return { width: bytes.readUInt32BE(16), height: bytes.readUInt32BE(20), workflow };
   if (!workflow || typeof workflow !== 'object' || Array.isArray(workflow))
     throw Error('The frame is missing its executed workflow. Enable PNG metadata in ComfyUI.');
   return { width: bytes.readUInt32BE(16), height: bytes.readUInt32BE(20), workflow };

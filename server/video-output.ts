@@ -30,10 +30,13 @@ export async function verifyGeneratedVideo(
   request: VideoRequest,
   filename: string,
   inspect: Inspect | undefined,
-  runtime: { root: string; python: string },
+  runtime: { root: string; python: string; expected?: Record<string, unknown> },
 ) {
   const metadata = readVideoMetadata(bytes),
-    expected = buildVideoWorkflow(request),
+    // A Comfy Cloud job records its own graph, which loads Cloud's model file.
+    expected = (runtime.expected ?? buildVideoWorkflow(request)) as ReturnType<
+      typeof buildVideoWorkflow
+    >,
     d = videoDimensions(request);
   if (!isDeepStrictEqual(metadata.recipe, request))
     throw Error('The generated video belongs to a different request.');

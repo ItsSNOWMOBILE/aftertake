@@ -104,6 +104,10 @@ export function registerGenerationTools(context: {
       jobId: value.jobId,
       requestKey: value.requestKey,
       requestDigest: value.requestDigest,
+      renders:
+        (value as { jobTarget?: { kind?: string } }).jobTarget?.kind === 'comfy-cloud'
+          ? 'comfy-cloud'
+          : 'local',
       clip: value.clip,
       renderId: type === 'take' && value.state === 'succeeded' ? value.id : undefined,
       video: value.output ? base + value.output : undefined,
@@ -132,13 +136,14 @@ export function registerGenerationTools(context: {
         'Restart the local studio with separate final blend area support before rendering this recipe.',
       );
     const history = await api<TimedJob[]>(routes[type]);
+    const result = await api<Generation>(routes[type], input, key(type, id));
     const expected = agentEstimate(
       estimate(
         estimateKey(type === 'take' ? { recipe: input as any } : { request: input as any }),
         history,
       ),
+      (result as { jobTarget?: { kind?: string } }).jobTarget?.kind === 'comfy-cloud',
     );
-    const result = await api<Generation>(routes[type], input, key(type, id));
     if (result.requestKey !== key(type, id))
       throw Error(
         'The studio did not retain this operation key. Inspect generation status before doing anything else.',
