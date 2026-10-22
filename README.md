@@ -266,11 +266,11 @@ Aftertake is an independent, experimental project built for Comfy's
 [Open Source Higgsfield challenge](https://comfy.org/open-source-higgsfield/).
 Generative results still need human review: likeness, hands, occlusions and
 camera adherence vary by shot, and a passing technical check is not a judgment
-of visual quality. Comfy Cloud rendering (images, text to video, upscaling,
-smooth and slow motion, songs) is implemented and tested against Comfy Cloud's
-node list and a simulated Cloud API, but has not yet completed a real Cloud
-render: the API needs a paid plan. Aftertake does not claim full Higgsfield
-feature parity.
+of visual quality. Optional Comfy Cloud rendering was tested end to end on a
+Standard plan on October 22, 2026: one image, song, smooth-motion clip, upscale
+and text-to-video clip, each finished by the studio's usual checks
+([record](docs/cloud/oct22-cloud-validation.json)). Aftertake does not claim
+full Higgsfield feature parity.
 
 ## License and acknowledgments
 

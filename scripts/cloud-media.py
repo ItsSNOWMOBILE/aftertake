@@ -63,7 +63,8 @@ def select_frames(path, width, height, frames, fps, trim_start):
 
 
 def encode(path, frames, fps, comment=None, pix_fmt='yuv420p', options=None):
-    with av.open(str(path), 'w') as container:
+    # The studio writes to temporary names without an extension: name the container.
+    with av.open(str(path), 'w', format='mp4') as container:
         if comment is not None:
             container.metadata['comment'] = comment
         stream = container.add_stream('libx264', rate=Fraction(str(fps)))

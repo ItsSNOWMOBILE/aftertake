@@ -12,7 +12,7 @@ Aftertake renders on your own GPU, with local models, as it always has. Comfy Cl
 
 Character replacement, painted region effects, camera guidance, motion transfer, reference-frame editing and still-image depth need Aftertake's own nodes or H3 Relay. Comfy Cloud does not have them, so those studios always use the local engine, even while Cloud is on.
 
-**Status.** The cloud graphs are checked against Comfy Cloud's live node and model list (`tests/fixtures/comfy-cloud-object-info.json`, captured October 22, 2026), and the routing is tested end to end against a simulated Cloud API. No real Cloud render has completed yet: Comfy Cloud refuses API jobs from free accounts (`API key authentication is not available for free tier accounts`), and the account used for development is on the free tier.
+**Status.** Tested end to end on a Comfy Cloud Standard plan on October 22, 2026. Through the studio itself, each Cloud studio rendered one job: a 1024×1024 image in 16 s, a 10-second song in 25 s, 2-second clips upscaled ×2 in 42 s and smoothed to 48 fps in 15 s, and a 2-second text-to-video clip with sound in 28 s (submission to ready, including the local steps). Each result passed the same checks as a local render. The image kept its workflow in the PNG, and the videos have the exact frame count, frame rate and sound coverage. The record is in [`cloud/oct22-cloud-validation.json`](cloud/oct22-cloud-validation.json). The cloud graphs are also checked against Comfy Cloud's live node and model list (`tests/fixtures/comfy-cloud-object-info.json`), and the routing is tested against a simulated Cloud API. Free Comfy Cloud accounts can't use the API (`API key authentication is not available for free tier accounts`); any paid plan can.
 
 ## Turn it on
 

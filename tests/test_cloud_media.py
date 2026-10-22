@@ -119,10 +119,11 @@ class CloudMediaTest(unittest.TestCase):
         folder = self.folder()
         write_video(folder / 'source.mp4', levels(24), 24, audio_seconds=1.0)
         write_video(folder / 'frames.webm', levels(24), 24, codec='libvpx-vp9')
-        job = {'frames': str(folder / 'frames.webm'), 'output': str(folder / 'out.mp4'), 'fps': 24,
+        # The studio's download names carry no extension.
+        job = {'frames': str(folder / 'frames.webm'), 'output': str(folder / 'out.download'), 'fps': 24,
                'comment': {'recipe': {}, 'workflow': {}}, 'source_audio': {'path': str(folder / 'source.mp4'), 'start': 0}}
         cloud.finish(job)
-        out = read(folder / 'out.mp4')
+        out = read(folder / 'out.download')
         self.assertEqual(len(out['frames']), 24)
         self.assertTrue(out['audio'])
         self.assertAlmostEqual(out['audio_seconds'], 1.0, delta=0.03)
