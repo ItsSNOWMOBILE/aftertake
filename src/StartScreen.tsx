@@ -53,7 +53,10 @@ export default function StartScreen({
       <header className="start-header">
         <AftertakeBrand />
         <h1 id={heading}>What do you want to make?</h1>
-        <p>Every tool runs on your own GPU with open-weight models.</p>
+        <p>
+          Every tool runs open-weight models on your own GPU; Comfy Cloud is optional, studio by
+          studio.
+        </p>
       </header>
       <div className="start-grid">
         {startTasks.map((task) => (
