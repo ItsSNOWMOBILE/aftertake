@@ -42,8 +42,11 @@ export function useTakeSets(kind: TakeSetKind) {
     setSets((all) => [set, ...all.filter((item) => item.id !== set.id)]);
   return {
     sets,
-    /** The newest set while it renders or still needs a keeper. */
-    open: sets.find((set) => !set.kept && set.state !== 'canceled' && set.state !== 'failed'),
+    /** The newest set, while it renders or still needs a keeper; older sets stay closed. */
+    open:
+      sets[0] && !sets[0].kept && sets[0].state !== 'canceled' && sets[0].state !== 'failed'
+        ? sets[0]
+        : undefined,
     running,
     async start(count: number, request: TakeSetRequest['request']) {
       if (browserDemo) throw Error('Render takes in the local studio.');
