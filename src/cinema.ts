@@ -15,9 +15,32 @@ export const cameraMovements = [
   'whip-pan',
   'handheld',
   'dolly-zoom',
+  'zoom-in',
+  'zoom-out',
+  'truck-right',
+  'boom-down',
+  'dutch-roll',
+  'impact-shake',
+  'orbit-360',
+  'arc',
+  'bullet-time',
+  'fpv-drone',
+  'drone-reveal',
+  'snorricam',
+  'rack-focus',
 ] as const;
 /** Moves that change perspective in depth, which flat screen-space tracks cannot describe. */
-export const promptOnlyMovements = new Set<string>(['orbit', 'dolly-zoom']);
+export const promptOnlyMovements = new Set<string>([
+  'orbit',
+  'dolly-zoom',
+  'orbit-360',
+  'arc',
+  'bullet-time',
+  'fpv-drone',
+  'drone-reveal',
+  'snorricam',
+  'rack-focus',
+]);
 export const cinemaSchema = z
   .object({
     movement: z.enum(cameraMovements),
@@ -28,7 +51,7 @@ export const cinemaSchema = z
   })
   .refine(
     (look) => !(look.guidance === 'tracks' && promptOnlyMovements.has(look.movement)),
-    'Orbit and dolly zoom use prompt guidance only.',
+    'This move changes perspective in depth, so it uses prompt guidance only.',
   );
 export type Cinema = z.infer<typeof cinemaSchema>;
 export const defaultCinema: Cinema = {
@@ -53,6 +76,19 @@ export const movementNotes: Record<Cinema['movement'], string> = {
   'whip-pan': 'A fast blur to the side, for a cut or a reveal.',
   handheld: 'A subtle sway, like a camera on the shoulder.',
   'dolly-zoom': 'The subject stays put while the world stretches behind.',
+  'zoom-in': 'The lens zooms closer; nothing shifts in depth.',
+  'zoom-out': 'The lens widens to show more; nothing shifts in depth.',
+  'truck-right': 'Slides to the right; near things pass faster.',
+  'boom-down': 'Lowers from above down to the subject.',
+  'dutch-roll': 'Rolls onto a tilted, uneasy angle.',
+  'impact-shake': 'A hard jolt, then the frame settles.',
+  'orbit-360': 'Circles all the way around the subject.',
+  arc: 'A wide half circle that swings past the subject.',
+  'bullet-time': 'Time freezes while the camera circles.',
+  'fpv-drone': 'A fast, banking drone dive through the scene.',
+  'drone-reveal': 'Lifts and pulls away to show the place from the air.',
+  snorricam: 'Rigged to the subject while the world sways behind.',
+  'rack-focus': 'Focus pulls from the background onto the subject.',
 };
 export const cinemaOptions = {
   movement: [
@@ -64,12 +100,25 @@ export const cinemaOptions = {
     ['tilt-up', 'Tilt up'],
     ['tilt-down', 'Tilt down'],
     ['crane-up', 'Crane up'],
-    ['truck', 'Truck sideways'],
+    ['truck', 'Truck left'],
     ['orbit', 'Gentle orbit'],
     ['crash-zoom', 'Crash zoom'],
     ['whip-pan', 'Whip pan'],
     ['handheld', 'Handheld'],
     ['dolly-zoom', 'Dolly zoom'],
+    ['zoom-in', 'Zoom in'],
+    ['zoom-out', 'Zoom out'],
+    ['truck-right', 'Truck right'],
+    ['boom-down', 'Boom down'],
+    ['dutch-roll', 'Dutch roll'],
+    ['impact-shake', 'Impact shake'],
+    ['orbit-360', '360° orbit'],
+    ['arc', 'Arc shot'],
+    ['bullet-time', 'Bullet time'],
+    ['fpv-drone', 'FPV drone'],
+    ['drone-reveal', 'Drone reveal'],
+    ['snorricam', 'Snorricam'],
+    ['rack-focus', 'Rack focus'],
   ],
   lens: [
     ['natural', 'Natural perspective'],
@@ -118,6 +167,31 @@ const language: { [K in Exclude<keyof Cinema, 'guidance'>]: Record<Cinema[K], st
       'A handheld camera with subtle natural sway and breathing movement, slightly imperfect but steady, documentary feel.',
     'dolly-zoom':
       'A dolly zoom: the camera moves backward while zooming in, so the subject stays the same size while the background appears to stretch and grow behind them.',
+    'zoom-in':
+      'A smooth optical zoom in from a fixed camera position: the framing tightens on the subject with no change in perspective or parallax.',
+    'zoom-out':
+      'A smooth optical zoom out from a fixed camera position: the framing widens to show more of the scene with no change in perspective or parallax.',
+    'truck-right':
+      'The camera dollies sideways to the right in one steady move, parallel to the scene; nearby objects pass faster than the background, with strong parallax.',
+    'boom-down':
+      'The camera lowers smoothly on a crane from a high angle down to the subject, the view settling at eye level.',
+    'dutch-roll':
+      'The camera slowly rolls around its lens axis onto a tilted Dutch angle, the horizon tipping diagonally for an uneasy feeling.',
+    'impact-shake':
+      'A sudden hard impact jolts the camera with a violent shake that quickly settles back to a steady frame.',
+    'orbit-360':
+      'The camera travels a complete 360-degree orbit around the subject at a constant distance and height, showing it from every side and returning to the front, the subject staying centered throughout.',
+    arc: 'The camera sweeps a wide half-circle arc around the subject from one side to the other, with strong parallax between the subject and the background.',
+    'bullet-time':
+      'Bullet time: the moment freezes in a single suspended instant while the camera glides around the motionless subject in a smooth arc; hair, particles and droplets hang still in the air.',
+    'fpv-drone':
+      'A fast first-person drone flight: the camera dives forward through the scene, banking and weaving close past objects with exhilarating speed.',
+    'drone-reveal':
+      'An aerial drone shot rises and pulls back smoothly, lifting high above the subject to reveal the whole landscape around it from the air.',
+    snorricam:
+      'A snorricam shot: the camera is rigged to the subject, so the subject stays fixed in the center of the frame while the world behind them sways and swings.',
+    'rack-focus':
+      'A rack focus: the shot begins focused on the background with the subject soft, then the focus pulls smoothly onto the subject while the background melts into soft bokeh. The camera does not move.',
   },
   lens: {
     natural: 'Natural perspective, crisp believable detail and moderate depth of field.',
@@ -182,7 +256,12 @@ export const cinemaLooks: SavedLook[] = [
 ];
 
 /** Where scene content moves on screen for each move; the camera moves the opposite way. */
-function trackOffset(movement: Cinema['movement'], fraction: number, ease: number, row: number) {
+function trackOffset(
+  movement: Cinema['movement'],
+  fraction: number,
+  ease: number,
+  row: number,
+): { scale: number; dx: number; dy: number; roll?: number } {
   switch (movement) {
     case 'push':
       return { scale: 1 + 0.18 * ease, dx: 0, dy: 0 };
@@ -209,6 +288,26 @@ function trackOffset(movement: Cinema['movement'], fraction: number, ease: numbe
       const fast = Math.min(1, Math.max(0, (fraction - 0.3) / 0.25));
       return { scale: 1, dx: 0.35 * fast * fast * (3 - 2 * fast), dy: 0 };
     }
+    case 'zoom-in':
+      return { scale: 1 + 0.3 * ease, dx: 0, dy: 0 };
+    case 'zoom-out':
+      return { scale: 1 - 0.22 * ease, dx: 0, dy: 0 };
+    case 'truck-right':
+      return { scale: 1, dx: -(0.04 + 0.16 * row) * ease, dy: 0 };
+    case 'boom-down':
+      return { scale: 1 + 0.06 * ease, dx: 0, dy: -0.14 * ease };
+    case 'dutch-roll':
+      return { scale: 1.04, dx: 0, dy: 0, roll: -0.21 * ease };
+    case 'impact-shake': {
+      // A jolt at a fifth of the shot that dies away over the next half.
+      const after = Math.max(0, fraction - 0.2),
+        decay = fraction > 0.2 ? Math.exp(-after * 7) : 0;
+      return {
+        scale: 1 + 0.03 * decay,
+        dx: 0.035 * decay * Math.sin(after * 95),
+        dy: 0.03 * decay * Math.sin(after * 71 + 1),
+      };
+    }
     case 'handheld':
       return {
         scale: 1,
@@ -234,11 +333,16 @@ export function cameraTracks(
       Array.from({ length: frames }, (_, frame) => {
         const fraction = frame / Math.max(1, frames - 1);
         const ease = fraction * fraction * (3 - 2 * fraction);
-        const { scale, dx, dy } = trackOffset(movement, fraction, ease, y);
+        const { scale, dx, dy, roll = 0 } = trackOffset(movement, fraction, ease, y);
+        // A roll turns content about the frame centre in pixels, so it stays square.
+        const px = (x - 0.5) * scale * width,
+          py = (y - 0.5) * scale * height,
+          rx = px * Math.cos(roll) - py * Math.sin(roll),
+          ry = px * Math.sin(roll) + py * Math.cos(roll);
         // Points stay on the canvas; content that would leave it waits at the edge.
         return {
-          x: Math.min(1, Math.max(0, (x - 0.5) * scale + 0.5 + dx)) * width,
-          y: Math.min(1, Math.max(0, (y - 0.5) * scale + 0.5 + dy)) * height,
+          x: Math.min(1, Math.max(0, rx / width + 0.5 + dx)) * width,
+          y: Math.min(1, Math.max(0, ry / height + 0.5 + dy)) * height,
         };
       }),
     ),

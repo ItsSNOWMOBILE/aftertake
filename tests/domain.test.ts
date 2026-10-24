@@ -347,4 +347,30 @@ test('every camera move has wording, a gallery line and on-canvas tracks that go
   assert.ok(Math.abs(crash[48].x - 256) > Math.abs(push[48].x - 256));
   const handheld = cameraTracks(512, 288, 49, 'handheld')[5];
   assert.ok(handheld.every((point) => Math.abs(point.x - handheld[0].x) < 512 * 0.04));
+  // Optical zooms scale about the centre without the truck's depth parallax.
+  const zoomIn = cameraTracks(512, 288, 49, 'zoom-in')[0],
+    zoomOut = cameraTracks(512, 288, 49, 'zoom-out')[0];
+  assert.ok(Math.abs(zoomIn[48].x - 256) > Math.abs(zoomIn[0].x - 256));
+  assert.ok(Math.abs(zoomOut[48].x - 256) < Math.abs(zoomOut[0].x - 256));
+  const right = cameraTracks(512, 288, 49, 'truck-right');
+  for (const [index, track] of right.entries())
+    assert.ok(
+      Math.abs(track[48].x - track[0].x + (truck[index][48].x - truck[index][0].x)) < 1e-9,
+      'truck right mirrors truck left',
+    );
+  assert.ok(middle('boom-down')[48].y < middle('boom-down')[0].y);
+  // A roll turns points about the centre and keeps their distance from it.
+  const roll = cameraTracks(512, 288, 49, 'dutch-roll')[5];
+  const angle = (point: { x: number; y: number }) => Math.atan2(point.y - 144, point.x - 256);
+  assert.ok(Math.abs(angle(roll[48]) - angle(roll[0]) + 0.21) < 1e-9);
+  assert.ok(
+    Math.abs(
+      Math.hypot(roll[48].x - 256, roll[48].y - 144) - Math.hypot(roll[0].x - 256, roll[0].y - 144),
+    ) < 1e-9,
+  );
+  // An impact shake is still before the jolt and has settled by the end.
+  const shake = cameraTracks(512, 288, 49, 'impact-shake')[5];
+  assert.deepEqual(shake[5], shake[0]);
+  assert.ok(shake.some((point) => Math.abs(point.x - shake[0].x) > 5));
+  assert.ok(Math.abs(shake[48].x - shake[0].x) < 1);
 });
