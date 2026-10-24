@@ -5089,6 +5089,54 @@
       "target": "one-tap/30e64882-cfbd-4a5d-9719-b4952e58304c.json",
       "sha256": "a2fe333a299facc512701fa1af86436390ab9fa969acc7670341fed8c3a65e15",
       "size": 3138
+    },
+    {
+      "source": "previews/e51e1b04f36e85fe9d3e282fa33d5d572dcaa9ef1ed8eec4c2c28dea19b3e890.jpg",
+      "target": "previews/e51e1b04f36e85fe9d3e282fa33d5d572dcaa9ef1ed8eec4c2c28dea19b3e890.jpg",
+      "sha256": "881b86cb2b1bef651fd50b9c54a713f20ff72afdb43be9085b5210e5be8079ff",
+      "size": 2599
+    },
+    {
+      "source": "previews/fba50e5bc519e1c9b865568caccf2d6582c540ad876aaecdbf5e2865632567ec.jpg",
+      "target": "previews/fba50e5bc519e1c9b865568caccf2d6582c540ad876aaecdbf5e2865632567ec.jpg",
+      "sha256": "2f635487a1f585b0eefa78e780fe883f3c4006b1a22131b218a32abc3988bddd",
+      "size": 5243
+    },
+    {
+      "source": "previews/b99187bfa971734c75166642b60e60a4957538addc21e52f2ecc41cf0a94819a.jpg",
+      "target": "previews/b99187bfa971734c75166642b60e60a4957538addc21e52f2ecc41cf0a94819a.jpg",
+      "sha256": "d7845a97afd113595a1ca58f33421a6cecf839383ec8c8075a8e87afa08c678c",
+      "size": 5337
+    },
+    {
+      "source": "previews/fa5ccb0be891b57c12eac9b2e6d99b29452902cf8f6ed90b928f178fa257a945.jpg",
+      "target": "previews/fa5ccb0be891b57c12eac9b2e6d99b29452902cf8f6ed90b928f178fa257a945.jpg",
+      "sha256": "25aad6837380dec5477b02cbd1849d68d645b4a57e946b3ed705154fc6602b67",
+      "size": 3157
+    },
+    {
+      "source": "previews/150da5315b967ce4b1f20d7a8b710753ebdb071e0cf15dcb7a6a03c29ac1a8ad.jpg",
+      "target": "previews/150da5315b967ce4b1f20d7a8b710753ebdb071e0cf15dcb7a6a03c29ac1a8ad.jpg",
+      "sha256": "bf00dde60ae640ed7b16c68047e2c039761cc5bec031a458f58d14a6586136ad",
+      "size": 4623
+    },
+    {
+      "source": "previews/9c87a44312bac9401efb07a58840022681a0a4d12d321476a105e9f22f091665.jpg",
+      "target": "previews/9c87a44312bac9401efb07a58840022681a0a4d12d321476a105e9f22f091665.jpg",
+      "sha256": "b16919e9e8b8b003a62ed310f0ac4e37033b951cd4783b350a699170ed5409ae",
+      "size": 5112
+    },
+    {
+      "source": "previews/dbc477ad349f6ac185f97ef547531b2e439b427d57fe31f0578a7011e3d74c71.jpg",
+      "target": "previews/dbc477ad349f6ac185f97ef547531b2e439b427d57fe31f0578a7011e3d74c71.jpg",
+      "sha256": "1982c464e188c46d0e11b5866140796889335ee11965447720f78aa3c8c12b02",
+      "size": 5762
+    },
+    {
+      "source": "previews/16f5c1bb9b683dda0c6adc212d674ce778b7f6953ab76a3dea58bdba8201f078.jpg",
+      "target": "previews/16f5c1bb9b683dda0c6adc212d674ce778b7f6953ab76a3dea58bdba8201f078.jpg",
+      "sha256": "d75e227adda14e85392a603eb932860b89986ac2c45b558b44953657438e0a0c",
+      "size": 5533
     }
   ]
 }

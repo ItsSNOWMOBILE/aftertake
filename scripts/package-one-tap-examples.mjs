@@ -48,6 +48,11 @@ async function photo(clip) {
   // A generated photo keeps its Create image record, so its recipe travels with it.
   if (await stat(path.join(data, `images/${clip.id}.json`)).catch(() => null))
     await add(`one-tap/photos/${clip.id}.image.json`, `images/${clip.id}.json`);
+  // The browser trial shows sources by the studio's own thumbnail of each one.
+  const thumbnail = `${createHash('sha256').update(`thumbnail/1:${clip.sha256}:0`).digest('hex')}.jpg`;
+  if (!(await stat(path.join(data, 'previews', thumbnail)).catch(() => null)))
+    throw Error(`Open /api/thumbnails/${clip.id} in the studio first to make its thumbnail.`);
+  await add(`previews/${thumbnail}`, `previews/${thumbnail}`);
 }
 for (const id of photos) await photo(await read(`clips/${id}.json`));
 
