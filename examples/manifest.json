@@ -5137,6 +5137,72 @@
       "target": "previews/16f5c1bb9b683dda0c6adc212d674ce778b7f6953ab76a3dea58bdba8201f078.jpg",
       "sha256": "d75e227adda14e85392a603eb932860b89986ac2c45b558b44953657438e0a0c",
       "size": 5533
+    },
+    {
+      "source": "camera-moves/ridge.png",
+      "target": "clips/4821d876-c4b0-4a63-bc5f-adb7d4dd915e.png",
+      "sha256": "6533364c996261ed0b03c4534f253c632ba08c389626bd5ab07a3bd907fd6154",
+      "size": 1331916
+    },
+    {
+      "source": "camera-moves/ridge.json",
+      "target": "clips/4821d876-c4b0-4a63-bc5f-adb7d4dd915e.json",
+      "sha256": "648370bf83f16d25abc726dd20391d027eae0dba4c5e31a1b931ee0cfff7de25",
+      "size": 378
+    },
+    {
+      "source": "previews/65bcf06a58cdc29c2e3dbad92b85787deda2385386e4b2f3577763a497c3576f.jpg",
+      "target": "previews/65bcf06a58cdc29c2e3dbad92b85787deda2385386e4b2f3577763a497c3576f.jpg",
+      "sha256": "e6894f44722c446a9be7223e0b9540d1e8be2ab0f6db9b07ff5c535dfaec543d",
+      "size": 14675
+    },
+    {
+      "source": "camera-moves/orbit-360/take.json",
+      "target": "renders/edde62bf-3967-4add-9647-4f2750fc2170.json",
+      "sha256": "f2eb4d632bcbecf698c0849bafdcea373e95149b6ac689836c83401e0acbcad1",
+      "size": 7732
+    },
+    {
+      "source": "camera-moves/orbit-360/take.mp4",
+      "target": "outputs/edde62bf-3967-4add-9647-4f2750fc2170.mp4",
+      "sha256": "2d22518df588d9043f50cbf6b026a6fa9172ff24459895a3f22fccc8cc7af086",
+      "size": 1849783
+    },
+    {
+      "source": "camera-moves/fpv-drone/take.json",
+      "target": "renders/ac5bba5c-dc29-4ddd-bbf3-8b24ab352c14.json",
+      "sha256": "2fe81b484ecd55c2a2f6c23163e4212deb13df849ed308f74f743f5893e93ff2",
+      "size": 7671
+    },
+    {
+      "source": "camera-moves/fpv-drone/take.mp4",
+      "target": "outputs/ac5bba5c-dc29-4ddd-bbf3-8b24ab352c14.mp4",
+      "sha256": "e065c7de7b3ffbdc327d7ac2115f8942471296b4e7eacf0b8122124b996bc6e9",
+      "size": 1785345
+    },
+    {
+      "source": "camera-moves/rack-focus/take.json",
+      "target": "renders/fe4898fc-95a9-47df-9e62-d53caa78b7d8.json",
+      "sha256": "51ecd339dfd169bf29da5e5956018b2181d4b99f23a887313fcd301f4dea7597",
+      "size": 7731
+    },
+    {
+      "source": "camera-moves/rack-focus/take.mp4",
+      "target": "outputs/fe4898fc-95a9-47df-9e62-d53caa78b7d8.mp4",
+      "sha256": "51a91fea1f764f01a800ffdf1845fd09e34e48e77be723cad0bb2aaa6fa77f6b",
+      "size": 706269
+    },
+    {
+      "source": "camera-moves/barrel-roll/take.json",
+      "target": "renders/01ed260d-1aa7-4a4c-ad4d-17802b62219e.json",
+      "sha256": "8ce3e62d9395c57c9ff38872ad5190d86475ce90f422497e033c3e597a717e0f",
+      "size": 7687
+    },
+    {
+      "source": "camera-moves/barrel-roll/take.mp4",
+      "target": "outputs/01ed260d-1aa7-4a4c-ad4d-17802b62219e.mp4",
+      "sha256": "c228b3dbdf5e29fef14c921ea108f3e7f11ba5146a66b19b52ced935b404e456",
+      "size": 1878589
     }
   ]
 }

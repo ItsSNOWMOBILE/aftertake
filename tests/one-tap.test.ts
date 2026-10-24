@@ -72,7 +72,7 @@ test('the preset schema refuses moves, layouts and titles that cannot render', (
     assert.match(result.error!.issues.map((item) => item.message).join(' '), pattern);
   };
   assert.equal(oneTapPresetSchema.safeParse(base).success, true);
-  refuses((p) => (p.motion.movement = 'barrel-roll'), /Invalid option/);
+  refuses((p) => (p.motion.movement = 'teleport'), /Invalid option/);
   refuses(
     (p) => Object.assign(p.motion, { movement: 'orbit', guidance: 'tracks' }),
     /prompt guidance/,

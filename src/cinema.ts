@@ -334,15 +334,19 @@ export function cameraTracks(
         const fraction = frame / Math.max(1, frames - 1);
         const ease = fraction * fraction * (3 - 2 * fraction);
         const { scale, dx, dy, roll = 0 } = trackOffset(movement, fraction, ease, y);
-        // A roll turns content about the frame centre in pixels, so it stays square.
-        const px = (x - 0.5) * scale * width,
-          py = (y - 0.5) * scale * height,
-          rx = px * Math.cos(roll) - py * Math.sin(roll),
-          ry = px * Math.sin(roll) + py * Math.cos(roll);
+        let u = (x - 0.5) * scale,
+          v = (y - 0.5) * scale;
+        if (roll) {
+          // A roll turns content about the frame centre in pixels, so it stays square.
+          const px = u * width,
+            py = v * height;
+          u = (px * Math.cos(roll) - py * Math.sin(roll)) / width;
+          v = (px * Math.sin(roll) + py * Math.cos(roll)) / height;
+        }
         // Points stay on the canvas; content that would leave it waits at the edge.
         return {
-          x: Math.min(1, Math.max(0, rx / width + 0.5 + dx)) * width,
-          y: Math.min(1, Math.max(0, ry / height + 0.5 + dy)) * height,
+          x: Math.min(1, Math.max(0, u + 0.5 + dx)) * width,
+          y: Math.min(1, Math.max(0, v + 0.5 + dy)) * height,
         };
       }),
     ),
