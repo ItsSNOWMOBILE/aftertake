@@ -201,16 +201,19 @@ export default function StoryboardStudio({
             </div>
             {viewed?.state === 'ready' && viewed.draft && (
               <div className="image-actions">
-                <button
-                  className="button image-generate"
-                  onClick={() => {
-                    onOpenFilm(viewed.draft!);
-                    onClose();
-                  }}
-                >
-                  <Film size={14} />
-                  Open in Film
-                </button>
+                {/* The browser trial has no Film media library to open the project into. */}
+                {!browserDemo && (
+                  <button
+                    className="button image-generate"
+                    onClick={() => {
+                      onOpenFilm(viewed.draft!);
+                      onClose();
+                    }}
+                  >
+                    <Film size={14} />
+                    Open in Film
+                  </button>
+                )}
                 <a
                   className="button"
                   href={mediaUrl(`${video(viewed)}?download=1`)}
@@ -339,9 +342,9 @@ export default function StoryboardStudio({
                   />
                 </label>
                 <label>
-                  SHARED LOOK
+                  WHO AND HOW IT LOOKS · ADDED TO EVERY SHOT
                   <textarea
-                    aria-label="Shared look"
+                    aria-label="Shared character and look"
                     rows={2}
                     maxLength={300}
                     value={plan.look}

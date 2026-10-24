@@ -32,7 +32,7 @@ export type StoryboardPlanRequest = z.infer<typeof storyboardPlanRequestSchema>;
 export const storyboardPlanSchema = z
   .object({
     title: z.string().trim().min(1).max(60),
-    /** One line of shared look, added to every shot so the shots match. */
+    /** The main character and the shared look, added to every shot so the shots match. */
     look: z.string().trim().max(300),
     shots: z.array(storyboardShotSchema).min(3).max(5),
     planner: z.enum(['local-model', 'template']),
@@ -291,7 +291,7 @@ export function templatePlan(request: StoryboardPlanRequest): StoryboardPlan {
       .slice(0, Math.min(4, words.length))
       .join(' ')
       .replace(/^\w/, (c) => c.toUpperCase()),
-    look: 'Cinematic, natural light, consistent colors and the same characters and place in every shot.',
+    look: 'Cinematic, natural light and consistent colors, with the same characters, clothes and place in every shot.',
     shots: picked.map((role, index) => ({
       prompt: `${role.text} ${idea}.`,
       movement: role.movement,

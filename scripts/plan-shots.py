@@ -18,7 +18,9 @@ SYSTEM = (
     'plain visual description. Keep the same characters, place and time of day in every shot so the shots '
     'match, and repeat what the main character looks like. Vary the framing: open wide, go closer, end on a '
     'strong final image. Choose one camera move per shot from the allowed list, and 3, 4 or 5 seconds per shot. '
-    'Write the look as one sentence of shared visual style. Give a short film title of two to four words. '
+    'Write the look as one or two sentences that name the main character exactly (age, gender, hair, clothes) '
+    'and the shared visual style; it is added to every shot so the same person appears throughout. '
+    'Give a short film title of two to four words. '
     'No text, logos or brand names in any shot. Return only the requested JSON.'
 )
 
@@ -65,7 +67,7 @@ def main():
         'type': 'object',
         'properties': {
             'title': {'type': 'string', 'minLength': 2, 'maxLength': 40},
-            'look': {'type': 'string', 'minLength': 10, 'maxLength': 240},
+            'look': {'type': 'string', 'minLength': 10, 'maxLength': 290},
             'shots': {'type': 'array', 'items': shot, 'minItems': count, 'maxItems': count},
         },
         'required': ['title', 'look', 'shots'],

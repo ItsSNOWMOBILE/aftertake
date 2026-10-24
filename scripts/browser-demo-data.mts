@@ -1,6 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync } from 'node:fs';
 import { oneTapMusicSchema, oneTapPresetSchema, type OneTapJob } from '../src/one-tap.js';
+import type { StoryboardJob } from '../src/storyboard.js';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { templateNotes, type Template } from '../src/templates.js';
@@ -74,7 +75,8 @@ export function buildDemoSnapshot(
     frameEdits: FrameEdit[] = [],
     images: ImageGeneration[] = [],
     videos: VideoGeneration[] = [],
-    oneTapJobs: OneTapJob[] = [];
+    oneTapJobs: OneTapJob[] = [],
+    storyboards: StoryboardJob[] = [];
   const byTarget = new Map<string, { source: string; sha256: string; size: number }>();
   for (const item of manifest.files) {
     const bytes = file(item.source);
@@ -102,6 +104,13 @@ export function buildDemoSnapshot(
     if (item.target.startsWith('outputs/')) media['/' + item.target] = remote(item.source);
     if (item.target.startsWith('one-tap/') && item.target.endsWith('.json'))
       oneTapJobs.push(JSON.parse(bytes.toString('utf8')));
+    if (/^storyboards\/[a-f0-9-]{36}\.json$/.test(item.target))
+      storyboards.push(JSON.parse(bytes.toString('utf8')));
+  }
+  for (const job of storyboards) {
+    const cut = job.filmId && byTarget.get(`films/${job.filmId}.mp4`);
+    if (job.state !== 'ready' || !cut) throw Error('A recorded storyboard has no finished film.');
+    media[`/api/storyboards/${job.id}/video`] = remote(cut.source);
   }
   for (const job of oneTapJobs) {
     const cut = job.exports.watermark && byTarget.get(`films/${job.exports.watermark.filmId}.mp4`);
@@ -348,6 +357,7 @@ export function buildDemoSnapshot(
     videos,
     characters,
     oneTap,
+    storyboards: storyboards.sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
     templates,
     media,
     thumbnails,
