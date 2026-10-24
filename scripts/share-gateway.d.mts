@@ -13,3 +13,4 @@ export function createShareGateway(options: {
   log?: (message: string) => void;
 }): Server;
 export function storyboardWeight(body: Buffer): number;
+export function takeSetWeight(body: Buffer): number;

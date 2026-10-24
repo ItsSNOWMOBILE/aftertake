@@ -85,15 +85,18 @@ test('browser recipe edits export runnable portable graphs while generation neve
   const recordedImages = await demo.request('/api/images').then((r) => r.json());
   const recordedVideos = await demo.request('/api/videos').then((r) => r.json());
   assert.ok(recordedImages.every((image: { state: string }) => image.state === 'succeeded'));
-  // Two recorded text videos, plus the shots of the recorded storyboards.
-  const storyboardShots = (snapshot.storyboards ?? []).flatMap((board) =>
-    board.shots.map((shot) => shot.videoId),
-  );
+  // Two recorded text videos, plus storyboard shots and video takes.
+  const madeBy = [
+    ...(snapshot.storyboards ?? []).flatMap((board) => board.shots.map((shot) => shot.videoId)),
+    ...(snapshot.takeSets ?? [])
+      .filter((set) => set.kind === 'video')
+      .flatMap((set) => set.takes.map((take) => take.id)),
+  ];
   assert.equal(
-    recordedVideos.filter((video: { id: string }) => !storyboardShots.includes(video.id)).length,
+    recordedVideos.filter((video: { id: string }) => !madeBy.includes(video.id)).length,
     2,
   );
-  assert.equal(recordedVideos.length, 2 + storyboardShots.length);
+  assert.equal(recordedVideos.length, 2 + madeBy.length);
   assert.ok(recordedVideos.every((video: { state: string }) => video.state === 'succeeded'));
   assert.equal((await demo.request('/api/workflow', { method: 'POST', body: '{}' })).status, 422);
 });

@@ -1,0 +1,251 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "9c55a080-8e83-44b2-9002-e9f550ff9b3a",
+  "requestKey": "takes-d4d6f1d6-6fec-46cb-8534-86e95ff9deb6-1",
+  "requestDigest": "f8838256ca04a9251b1b5c96c686900e0787989df5fdca46a32b2e9607a17d23",
+  "recipe": {
+    "format": "aftertake/1",
+    "name": "Takes: beach dog · take 2",
+    "clip": {
+      "id": "49f03158-99c7-43ec-b7ca-5b0b745227e4",
+      "name": "beach-dog.png",
+      "sha256": "63a14a015b4d265fdec6b2de3ed47de32e6390181a594efe8c5b63e5d3649074",
+      "originalSha256": "09b28bdfc544485ada0b42a1eca49a69883ccbbd01436a72127cc1129e05fbef",
+      "width": 720,
+      "height": 1280,
+      "duration": 1,
+      "url": "/media/49f03158-99c7-43ec-b7ca-5b0b745227e4.png",
+      "kind": "image"
+    },
+    "prompt": "A happy golden retriever in round sunglasses on a sunny beach; waves roll in behind it and its fur moves in the breeze.",
+    "cue": {
+      "start": 0,
+      "end": 1,
+      "fade": 0.25,
+      "feather": 0.06,
+      "strokes": []
+    },
+    "seed": 11252,
+    "quality": "final",
+    "trimStart": 0,
+    "pipeline": "cinema",
+    "cinema": {
+      "movement": "arc",
+      "lens": "natural",
+      "lighting": "source",
+      "palette": "source",
+      "guidance": "prompt"
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-24T22:52:46.052Z",
+  "updatedAt": "2026-10-24T22:54:04.167Z",
+  "workflow": {
+    "1": {
+      "class_type": "UnetLoaderGGUF",
+      "inputs": {
+        "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+        "type": "ltxv",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "The camera sweeps a wide half-circle arc around the subject from one side to the other, with strong parallax between the subject and the background. A happy golden retriever in round sunglasses on a sunny beach; waves roll in behind it and its fur moves in the breeze. One continuous cinematic shot, beginning from the supplied reference frame. Natural perspective, crisp believable detail and moderate depth of field. Lighting direction and exposure remain consistent with the reference frame. Keep the reference color relationships coherent throughout the shot. The scene remains coherent over time."
+      }
+    },
+    "6": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": ""
+      }
+    },
+    "7": {
+      "class_type": "LTXVConditioning",
+      "inputs": {
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "frame_rate": 24
+      }
+    },
+    "8": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "49f03158-99c7-43ec-b7ca-5b0b745227e4.png",
+        "width": 448,
+        "height": 768,
+        "frames": 1,
+        "fps": 24,
+        "trim_start": 0
+      }
+    },
+    "11": {
+      "class_type": "EmptyLTXVLatentVideo",
+      "inputs": {
+        "width": 448,
+        "height": 768,
+        "length": 97,
+        "batch_size": 1
+      }
+    },
+    "12": {
+      "class_type": "LTXVImgToVideoInplace",
+      "inputs": {
+        "vae": [
+          "3",
+          0
+        ],
+        "image": [
+          "8",
+          0
+        ],
+        "latent": [
+          "11",
+          0
+        ],
+        "strength": 1,
+        "bypass": false
+      }
+    },
+    "13": {
+      "class_type": "RandomNoise",
+      "inputs": {
+        "noise_seed": 11252
+      }
+    },
+    "14": {
+      "class_type": "KSamplerSelect",
+      "inputs": {
+        "sampler_name": "euler_ancestral"
+      }
+    },
+    "15": {
+      "class_type": "ManualSigmas",
+      "inputs": {
+        "sigmas": "1., 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+      }
+    },
+    "16": {
+      "class_type": "BasicGuider",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "conditioning": [
+          "7",
+          0
+        ]
+      }
+    },
+    "17": {
+      "class_type": "SamplerCustomAdvanced",
+      "inputs": {
+        "noise": [
+          "13",
+          0
+        ],
+        "guider": [
+          "16",
+          0
+        ],
+        "sampler": [
+          "14",
+          0
+        ],
+        "sigmas": [
+          "15",
+          0
+        ],
+        "latent_image": [
+          "12",
+          0
+        ]
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "20": {
+      "class_type": "AftertakeFilmGrade",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "palette": "source"
+      }
+    },
+    "21": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "20",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/cinema",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Takes: beach dog · take 2\",\"clip\":{\"id\":\"49f03158-99c7-43ec-b7ca-5b0b745227e4\",\"name\":\"beach-dog.png\",\"sha256\":\"63a14a015b4d265fdec6b2de3ed47de32e6390181a594efe8c5b63e5d3649074\",\"originalSha256\":\"09b28bdfc544485ada0b42a1eca49a69883ccbbd01436a72127cc1129e05fbef\",\"width\":720,\"height\":1280,\"duration\":1,\"url\":\"/media/49f03158-99c7-43ec-b7ca-5b0b745227e4.png\",\"kind\":\"image\"},\"prompt\":\"A happy golden retriever in round sunglasses on a sunny beach; waves roll in behind it and its fur moves in the breeze.\",\"cue\":{\"start\":0,\"end\":1,\"fade\":0.25,\"feather\":0.06,\"strokes\":[]},\"seed\":11252,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"arc\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"prompt\"}}",
+        "display_width": 432,
+        "display_height": 768
+      }
+    },
+    "22": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/generation",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Takes: beach dog · take 2\",\"clip\":{\"id\":\"49f03158-99c7-43ec-b7ca-5b0b745227e4\",\"name\":\"beach-dog.png\",\"sha256\":\"63a14a015b4d265fdec6b2de3ed47de32e6390181a594efe8c5b63e5d3649074\",\"originalSha256\":\"09b28bdfc544485ada0b42a1eca49a69883ccbbd01436a72127cc1129e05fbef\",\"width\":720,\"height\":1280,\"duration\":1,\"url\":\"/media/49f03158-99c7-43ec-b7ca-5b0b745227e4.png\",\"kind\":\"image\"},\"prompt\":\"A happy golden retriever in round sunglasses on a sunny beach; waves roll in behind it and its fur moves in the breeze.\",\"cue\":{\"start\":0,\"end\":1,\"fade\":0.25,\"feather\":0.06,\"strokes\":[]},\"seed\":11252,\"quality\":\"final\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"arc\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"prompt\"}}"
+      }
+    }
+  },
+  "jobId": "137d1bf4-df10-4894-b1ba-0e7a6b944cbc",
+  "stage": "Complete",
+  "output": "/outputs/9c55a080-8e83-44b2-9002-e9f550ff9b3a.mp4"
+}
