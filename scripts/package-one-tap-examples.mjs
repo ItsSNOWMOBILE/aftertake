@@ -1,5 +1,5 @@
 // Maintainer utility: record reviewed one-tap effects as examples.
-// usage: node scripts/package-one-tap-examples.mjs WORKSPACE JOB_ID...
+// usage: node scripts/package-one-tap-examples.mjs WORKSPACE [--photos=CLIP_ID,...] JOB_ID...
 // Copies each effect's finished clip, Film record, generated take and photo into
 // examples/one-tap, and lists them in examples/manifest.json so --examples, the
 // shared copy and the browser trial open with them.
@@ -9,7 +9,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const [workspace, ...jobIds] = process.argv.slice(2);
+const [workspace, ...rest] = process.argv.slice(2);
+// Extra sample photos for visitors to try, beyond those the effects used.
+const photos =
+  rest
+    .find((arg) => arg.startsWith('--photos='))
+    ?.slice(9)
+    .split(',') ?? [];
+const jobIds = rest.filter((arg) => !arg.startsWith('--'));
 if (!workspace || !jobIds.length)
   throw Error('usage: node scripts/package-one-tap-examples.mjs WORKSPACE JOB_ID...');
 const data = path.resolve(root, workspace);
@@ -34,6 +41,15 @@ async function add(source, target, bytes) {
   });
 }
 const json = (value) => Buffer.from(JSON.stringify(value, null, 2) + '\n');
+async function photo(clip) {
+  const name = path.basename(clip.url);
+  await add(`one-tap/photos/${name}`, `clips/${name}`);
+  await add(`one-tap/photos/${clip.id}.json`, `clips/${clip.id}.json`);
+  // A generated photo keeps its Create image record, so its recipe travels with it.
+  if (await stat(path.join(data, `images/${clip.id}.json`)).catch(() => null))
+    await add(`one-tap/photos/${clip.id}.image.json`, `images/${clip.id}.json`);
+}
+for (const id of photos) await photo(await read(`clips/${id}.json`));
 
 for (const id of jobIds) {
   const job = await read(`one-tap/${id}.json`);
@@ -42,20 +58,12 @@ for (const id of jobIds) {
   const folder = `one-tap/${job.preset.id}`;
   // The example opens on the shared cut; a visitor's own toggle re-cuts on the CPU.
   const recorded = { ...job, watermark: true, exports: { watermark: job.exports.watermark } };
-  for (const clip of [job.source, job.frame]) {
-    const name = path.basename(clip.url);
-    await add(`one-tap/photos/${name}`, `clips/${name}`);
-    await add(`one-tap/photos/${clip.id}.json`, `clips/${clip.id}.json`);
-    // A generated photo keeps its Create image record, so its recipe travels with it.
-    if (await stat(path.join(data, `images/${clip.id}.json`)).catch(() => null))
-      await add(`one-tap/photos/${clip.id}.image.json`, `images/${clip.id}.json`);
-  }
+  for (const clip of [job.source, job.frame, ...(job.still ? [job.still] : [])]) await photo(clip);
   for (const attempt of job.attempts) {
-    const take = await read(`renders/${attempt.renderId}.json`);
-    await add(`${folder}/take-${attempt.seed}.json`, `renders/${take.id}.json`);
+    // The graded take is all an effect cuts; its ungraded copy stays out of the repository.
+    const { rawOutput: _raw, ...take } = await read(`renders/${attempt.renderId}.json`);
+    await add(`${folder}/take-${attempt.seed}.json`, `renders/${take.id}.json`, json(take));
     await add(`${folder}/take-${attempt.seed}.mp4`, `outputs/${take.id}.mp4`);
-    if (take.rawOutput)
-      await add(`${folder}/take-${attempt.seed}-raw.mp4`, `outputs/${take.id}-raw.mp4`);
   }
   const filmId = job.exports.watermark.filmId;
   await add(`${folder}/result.mp4`, `films/${filmId}.mp4`);

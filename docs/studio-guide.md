@@ -92,7 +92,7 @@ Each card's preview loop is a real result made in Aftertake.
 | :--- | :--- |
 | Punch-in | Holds, then crash-zooms onto your subject under a slam title |
 | Product hero spin | A turntable arc around a product, a light sweep and a launch title |
-| Before / after | Your photo, then a wipe into a warm time-lapse version that moves |
+| Before / after | Your photo as a faded black-and-white still, then a wipe into full color that moves |
 | Wait for it | The photo under a typed tease, a flash, then a pull-back reveal |
 | Vertigo | A dolly zoom with a glitch title |
 | Golden hour | A slow push in warm low sun with a soft caption |
@@ -113,7 +113,9 @@ Each effect runs studios Aftertake already has, in order:
    once more with a new seed. If both takes fail, the effect stops and says why.
 4. **Cut.** A Film project at 720 × 1280 adds the titles, the transition from the
    held photo, an ACE-Step song shipped with Aftertake and, unless you turn it
-   off, a small Aftertake watermark. The finished clip is checked for length too.
+   off, a small Aftertake watermark. A held photo can first get a Color & finish
+   look, such as Before / after's faded black and white. The finished clip is
+   checked for length too.
 
 The result has **Download**, **Again (new seed)**, which runs the same effect on
 the same photo with a different seed, and an **Aftertake watermark** switch.
@@ -128,7 +130,8 @@ Every effect is one JSON file in `presets/one-tap`, checked against
 `oneTapPresetSchema` in `src/one-tap.ts`. Copy one, give it a new `id` (the file
 must be named `<id>.json`) and change what you want: the prompt and the camera
 move, lens, lighting and palette from Animate a frame; the layout (`motion`,
-`before-after` or `reveal`) with its held photo, transition and slow zoom; up to
+`before-after` or `reveal`) with its held photo, transition, slow zoom and an
+optional Color & finish look (`stillFinish`); up to
 three titles with any Film title style, one of them `editable`; and a song from
 `presets/music`. The gallery reads the folder each time it opens, so a new file
 appears without restarting. A file that fails the check is listed in the gallery

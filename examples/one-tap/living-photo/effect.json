@@ -1,0 +1,117 @@
+{
+  "id": "30e64882-cfbd-4a5d-9719-b4952e58304c",
+  "request": {
+    "preset": "living-photo",
+    "clipId": "f64c2048-c27f-4b38-a7f7-b8e966101d22",
+    "seed": 210,
+    "watermark": true
+  },
+  "preset": {
+    "format": "aftertake-one-tap/1",
+    "id": "living-photo",
+    "title": "Living photo",
+    "line": "The frame holds still while your photo quietly comes to life.",
+    "order": 100,
+    "accepts": [
+      "image",
+      "video"
+    ],
+    "motion": {
+      "prompt": "The photo quietly comes to life: subtle natural breathing and blinking, hair and fabric stirring in a light breeze, light shimmering softly; the framing never changes. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.",
+      "movement": "locked",
+      "lens": "natural",
+      "lighting": "source",
+      "palette": "source",
+      "quality": "final",
+      "resolution": "720p"
+    },
+    "cut": {
+      "layout": "motion"
+    },
+    "titles": [
+      {
+        "text": "still moving",
+        "editable": true,
+        "start": 1,
+        "end": 4,
+        "style": "caption",
+        "position": "bottom",
+        "animation": "fade",
+        "fontSize": 81,
+        "font": "display",
+        "color": "#ffffff"
+      }
+    ],
+    "music": {
+      "track": "drift",
+      "start": 2,
+      "volume": 0.8,
+      "fadeOut": 0.8
+    }
+  },
+  "source": {
+    "id": "f64c2048-c27f-4b38-a7f7-b8e966101d22",
+    "name": "One-tap sample: city portrait",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "cfe11fc4780a99f05014797dccbe947ceed8410cb7769e74bbb5a2800cadfd1e",
+    "url": "/media/f64c2048-c27f-4b38-a7f7-b8e966101d22.png"
+  },
+  "state": "ready",
+  "stage": "Ready to share",
+  "progress": 1,
+  "attempts": [
+    {
+      "seed": 210,
+      "renderId": "1dbb6780-b95d-4911-b298-ce0c96fcca1d",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4.041666666666667,
+          "frames": 97,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 110.97406768798828,
+          "lumaSpread": 61.52720642089844,
+          "motion": 3.8078284159950586
+        }
+      }
+    }
+  ],
+  "exports": {
+    "watermark": {
+      "filmId": "1ce0df7e-8dcd-463a-8813-0625fe1b8d56",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4,
+          "frames": 96,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 110.97216796875,
+          "lumaSpread": 61.980079650878906,
+          "motion": 3.7683507774187173
+        }
+      }
+    }
+  },
+  "watermark": true,
+  "createdAt": "2026-10-24T20:09:48.298Z",
+  "updatedAt": "2026-10-24T20:25:33.969Z",
+  "frame": {
+    "id": "f64c2048-c27f-4b38-a7f7-b8e966101d22",
+    "name": "One-tap sample: city portrait",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "cfe11fc4780a99f05014797dccbe947ceed8410cb7769e74bbb5a2800cadfd1e",
+    "url": "/media/f64c2048-c27f-4b38-a7f7-b8e966101d22.png"
+  }
+}

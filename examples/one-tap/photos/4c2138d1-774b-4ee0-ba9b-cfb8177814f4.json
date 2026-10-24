@@ -1,0 +1,11 @@
+{
+  "id": "4c2138d1-774b-4ee0-ba9b-cfb8177814f4",
+  "name": "One-tap sample: sneaker",
+  "kind": "image",
+  "width": 720,
+  "height": 1280,
+  "duration": 1,
+  "hasAudio": false,
+  "sha256": "d8cf30b98f478926d92eff1de2bc6b7237a08c052e0c460f2120efafc9d4656a",
+  "url": "/media/4c2138d1-774b-4ee0-ba9b-cfb8177814f4.png"
+}

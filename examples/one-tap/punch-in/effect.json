@@ -1,0 +1,118 @@
+{
+  "id": "8f71cd8d-5f92-44a0-9bd6-a38b0db3493b",
+  "request": {
+    "preset": "punch-in",
+    "clipId": "f64c2048-c27f-4b38-a7f7-b8e966101d22",
+    "seed": 201,
+    "watermark": true
+  },
+  "preset": {
+    "format": "aftertake-one-tap/1",
+    "id": "punch-in",
+    "title": "Punch-in",
+    "line": "Holds for a beat, then crash-zooms onto your subject under a slam title.",
+    "order": 10,
+    "accepts": [
+      "image",
+      "video"
+    ],
+    "motion": {
+      "prompt": "The scene holds still for a moment, then the camera punches in hard on the main subject with a burst of energy; hair, fabric and light react to the sudden move. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.",
+      "movement": "crash-zoom",
+      "lens": "natural",
+      "lighting": "source",
+      "palette": "source",
+      "quality": "final",
+      "resolution": "720p"
+    },
+    "cut": {
+      "layout": "motion"
+    },
+    "titles": [
+      {
+        "text": "NO WAY",
+        "editable": true,
+        "start": 1.4,
+        "end": 4,
+        "style": "headline",
+        "position": "top",
+        "animation": "slam",
+        "fontSize": 180,
+        "font": "display",
+        "box": "stamp",
+        "color": "#ffffff"
+      }
+    ],
+    "music": {
+      "track": "punch",
+      "start": 0,
+      "volume": 0.9,
+      "fadeOut": 0.5
+    }
+  },
+  "source": {
+    "id": "f64c2048-c27f-4b38-a7f7-b8e966101d22",
+    "name": "One-tap sample: city portrait",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "cfe11fc4780a99f05014797dccbe947ceed8410cb7769e74bbb5a2800cadfd1e",
+    "url": "/media/f64c2048-c27f-4b38-a7f7-b8e966101d22.png"
+  },
+  "state": "ready",
+  "stage": "Ready to share",
+  "progress": 1,
+  "attempts": [
+    {
+      "seed": 201,
+      "renderId": "6919c50c-5600-49dc-a211-1b6bb49948ff",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4.041666666666667,
+          "frames": 97,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 82.604736328125,
+          "lumaSpread": 49.336463928222656,
+          "motion": 13.964514514674311
+        }
+      }
+    }
+  ],
+  "exports": {
+    "watermark": {
+      "filmId": "25d163da-e2a7-49d4-8244-3e0d5fd97321",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4,
+          "frames": 96,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 87.2083511352539,
+          "lumaSpread": 55.56769943237305,
+          "motion": 14.438439234443333
+        }
+      }
+    }
+  },
+  "watermark": true,
+  "createdAt": "2026-10-24T20:09:47.323Z",
+  "updatedAt": "2026-10-24T20:11:43.713Z",
+  "frame": {
+    "id": "f64c2048-c27f-4b38-a7f7-b8e966101d22",
+    "name": "One-tap sample: city portrait",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "cfe11fc4780a99f05014797dccbe947ceed8410cb7769e74bbb5a2800cadfd1e",
+    "url": "/media/f64c2048-c27f-4b38-a7f7-b8e966101d22.png"
+  }
+}

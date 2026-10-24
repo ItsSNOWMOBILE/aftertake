@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { cameraMovements, cinemaSchema, promptOnlyMovements } from './cinema';
 import { punchAnimations, shotTransitions, titleBoxes, titleFonts, type FilmDraft } from './film';
 import type { Clip } from './domain';
+import { finishingPresets } from './finishing';
 
 /**
  * One-tap effects turn one photo, or a frame of a short clip, into a finished
@@ -90,6 +91,18 @@ export const oneTapPresetSchema = z
         transitionSeconds: z.number().min(0.1).max(1).optional(),
         /** A slow push on the held photo, as a Film camera zoom. */
         stillZoom: z.number().min(1).max(1.3).optional(),
+        /** A Color & finish look on the held photo, such as a faded black-and-white before. */
+        stillFinish: z
+          .object({
+            preset: z.enum(finishingPresets.map((preset) => preset.id) as [string, ...string[]]),
+            lookStrength: z.number().min(0).max(1),
+            saturation: z.number().min(-1).max(1).optional(),
+            contrast: z.number().min(-1).max(1).optional(),
+            grain: z.number().min(0).max(1).optional(),
+            vignette: z.number().min(0).max(1).optional(),
+          })
+          .strict()
+          .optional(),
       })
       .strict()
       .refine(
@@ -97,7 +110,7 @@ export const oneTapPresetSchema = z
         'Only before-after and reveal layouts hold the photo first.',
       )
       .refine(
-        (cut) => cut.layout !== 'motion' || (!cut.transition && !cut.stillZoom),
+        (cut) => cut.layout !== 'motion' || (!cut.transition && !cut.stillZoom && !cut.stillFinish),
         'A single-shot layout has no transition or held photo.',
       ),
     titles: z.array(oneTapTitleSchema).max(3),
@@ -241,6 +254,8 @@ export type OneTapJob = {
   source: Clip;
   /** The 9:16 still the move starts from. */
   frame?: Clip;
+  /** The held photo after the preset's Color & finish look, when it has one. */
+  still?: Clip;
   state: 'queued' | 'running' | 'ready' | 'failed' | 'canceled';
   stage: string;
   progress: number | null;
@@ -252,6 +267,15 @@ export type OneTapJob = {
   createdAt: string;
   updatedAt: string;
 };
+/** Clips an effect made for itself, which a photo picker leaves out. */
+export function oneTapIntermediates(jobs: OneTapJob[]) {
+  return new Set(
+    jobs.flatMap((job) => [
+      ...(job.frame && job.frame.id !== job.source.id ? [job.frame.id] : []),
+      ...(job.still ? [job.still.id] : []),
+    ]),
+  );
+}
 export const oneTapBusy = (job: Pick<OneTapJob, 'state'>) =>
   job.state === 'queued' || job.state === 'running';
 export function oneTapResult(job: OneTapJob) {

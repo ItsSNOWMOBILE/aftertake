@@ -7,6 +7,7 @@ import { promisify } from 'node:util';
 import { z } from 'zod';
 import type { Clip, Engine, Render } from '../src/domain.js';
 import type { Film, FilmAsset } from '../src/film.js';
+import { defaultFinishingSettings, type FinishingJob } from '../src/finishing.js';
 import {
   judgeClip,
   nextSeed,
@@ -32,6 +33,7 @@ const terminalTake = new Set(['succeeded', 'failed', 'canceled', 'expired', 'out
 // The studio's single-GPU admission refuses a second job; these mean "wait your turn".
 const gpuTaken = /already active|already being submitted|another generation/i;
 const filmBusy = /already being assembled/i;
+const finishingBusy = /current finishing operation/i;
 
 /** UUIDs that repeat for the same cut, so a resumed export keeps its idempotency key. */
 export function stableIds(seed: string) {
@@ -317,6 +319,39 @@ export async function oneTapRouter(context: {
     return imported.value;
   }
 
+  /** The held photo, through the preset's Color & finish look when it has one (CPU). */
+  async function finishedStill(job: OneTapJob) {
+    const look = job.preset.cut.stillFinish;
+    if (!look) return job.frame!;
+    await stage(job, 'Finishing the photo');
+    let started: { status: number; value: FinishingJob };
+    for (;;) {
+      started = await call<FinishingJob>('/api/finishing', {
+        body: {
+          format: 'aftertake-finishing/1',
+          name: `${job.preset.title} · before`,
+          clip: job.frame,
+          settings: { ...defaultFinishingSettings, ...look },
+        },
+        key: `one-tap-${job.id}-still`,
+      });
+      // One finishing job runs at a time; wait for another visitor's to end.
+      if (started.status !== 409 || !finishingBusy.test(failure(started.value, ''))) break;
+      await pause(2000);
+    }
+    if (started.status >= 300) throw Error(failure(started.value, 'Could not finish the photo.'));
+    let finished = started.value;
+    while (['queued', 'running', 'canceling'].includes(finished.state)) {
+      await pause(1000);
+      finished = (await call<FinishingJob>(`/api/finishing/${finished.id}`)).value;
+    }
+    if (finished.state !== 'succeeded' || !finished.clip)
+      throw Error(finished.error || 'Could not finish the photo.');
+    job.still = finished.clip;
+    await persist(job);
+    return finished.clip;
+  }
+
   /** Cut the checked take in Film; CPU only, so changing the watermark never re-renders. */
   async function cut(job: OneTapJob, watermark: boolean) {
     const variant = watermark ? 'watermark' : 'clean';
@@ -324,14 +359,14 @@ export async function oneTapRouter(context: {
     const take = job.attempts.at(-1)!,
       preset = job.preset;
     await stage(job, watermark ? 'Cutting with titles and music' : 'Cutting without the watermark');
+    const photo = preset.cut.layout === 'motion' ? undefined : await finishedStill(job);
     const still =
-      preset.cut.layout === 'motion'
-        ? undefined
-        : await asset(
-            `${preset.id}-photo.png`,
-            await readFile(path.join(data, 'clips', path.basename(job.frame!.url))),
-            'image',
-          );
+      photo &&
+      (await asset(
+        `${preset.id}-photo.png`,
+        await readFile(path.join(data, 'clips', path.basename(photo.url))),
+        'image',
+      ));
     const track = preset.music
       ? (await loadPresetLibrary(root)).music.find((item) => item.id === preset.music!.track)
       : undefined;

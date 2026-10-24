@@ -1,0 +1,121 @@
+{
+  "id": "881d6801-b86b-431c-8b7c-9acba390351b",
+  "request": {
+    "preset": "wait-for-it",
+    "clipId": "53cf2d2a-ae74-48a6-a820-76392a759617",
+    "seed": 204,
+    "watermark": true
+  },
+  "preset": {
+    "format": "aftertake-one-tap/1",
+    "id": "wait-for-it",
+    "title": "Wait for it",
+    "line": "The photo holds under a typed tease, then a flash cut into a pull-back reveal.",
+    "order": 40,
+    "accepts": [
+      "image",
+      "video"
+    ],
+    "motion": {
+      "prompt": "The camera glides backward and slightly upward, revealing more of the surroundings around the subject, with natural motion in the scene and drifting atmosphere. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.",
+      "movement": "pull",
+      "lens": "wide",
+      "lighting": "source",
+      "palette": "source",
+      "quality": "final",
+      "resolution": "720p"
+    },
+    "cut": {
+      "layout": "reveal",
+      "still": 1.6,
+      "transition": "flash",
+      "transitionSeconds": 0.25,
+      "stillZoom": 1.08
+    },
+    "titles": [
+      {
+        "text": "wait for it…",
+        "editable": true,
+        "start": 0.15,
+        "end": 1.55,
+        "style": "caption",
+        "position": "bottom",
+        "animation": "typewriter",
+        "fontSize": 81,
+        "font": "mono",
+        "color": "#ffffff"
+      }
+    ],
+    "music": {
+      "track": "rise",
+      "start": 0,
+      "volume": 0.9,
+      "fadeOut": 0.6
+    }
+  },
+  "source": {
+    "id": "53cf2d2a-ae74-48a6-a820-76392a759617",
+    "name": "One-tap sample: beach dog",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "09b28bdfc544485ada0b42a1eca49a69883ccbbd01436a72127cc1129e05fbef",
+    "url": "/media/53cf2d2a-ae74-48a6-a820-76392a759617.png"
+  },
+  "state": "ready",
+  "stage": "Ready to share",
+  "progress": 1,
+  "attempts": [
+    {
+      "seed": 204,
+      "renderId": "1e7b9c40-9316-47c3-be9b-1baf841b37d7",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4.041666666666667,
+          "frames": 97,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 178.8072967529297,
+          "lumaSpread": 35.571617126464844,
+          "motion": 7.357630491256714
+        }
+      }
+    }
+  ],
+  "exports": {
+    "watermark": {
+      "filmId": "725b5fd1-781a-4792-a654-f1f8f0285b1f",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 5.333333333333333,
+          "frames": 128,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 176.14703369140625,
+          "lumaSpread": 38.838661193847656,
+          "motion": 11.136574133582737
+        }
+      }
+    }
+  },
+  "watermark": true,
+  "createdAt": "2026-10-24T20:18:29.165Z",
+  "updatedAt": "2026-10-24T20:27:25.403Z",
+  "frame": {
+    "id": "53cf2d2a-ae74-48a6-a820-76392a759617",
+    "name": "One-tap sample: beach dog",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "09b28bdfc544485ada0b42a1eca49a69883ccbbd01436a72127cc1129e05fbef",
+    "url": "/media/53cf2d2a-ae74-48a6-a820-76392a759617.png"
+  }
+}

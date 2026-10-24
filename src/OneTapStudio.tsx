@@ -4,6 +4,7 @@ import type { Clip } from './domain';
 import {
   oneTapBusy,
   oneTapDuration,
+  oneTapIntermediates,
   oneTapResult,
   type OneTapJob,
   type OneTapPreset,
@@ -45,8 +46,9 @@ function checkLine(job: OneTapJob) {
   const last = tried.at(-1)?.check;
   if (!last) return '';
   const retried = tried.length > 1 ? ' after one automatic re-render' : '';
+  const finished = oneTapResult(job)?.check?.measured.duration;
   return last.ok
-    ? `Checked${retried}: not blank, moving, ${last.measured.duration.toFixed(2)} s.`
+    ? `Checked${retried}: not blank, moving, ${(finished ?? last.measured.duration).toFixed(2)} s.`
     : `Check failed${retried}: ${last.problems.join(' ')}`;
 }
 
@@ -85,8 +87,9 @@ export default function OneTapStudio({
           : Math.abs(clip.width / clip.height - 9 / 16) < 0.01
             ? 0
             : 1;
-    return clips.slice().sort((a, b) => rank(a) - rank(b));
-  }, [clips, uploaded]);
+    const made = oneTapIntermediates(jobs);
+    return clips.filter((clip) => !made.has(clip.id)).sort((a, b) => rank(a) - rank(b));
+  }, [clips, uploaded, jobs]);
   const preset = library.presets.find((item) => item.id === presetId) || library.presets[0];
   const editable = preset?.titles.find((item) => item.editable);
   const source = clips.find((clip) => clip.id === clipId);
@@ -119,6 +122,7 @@ export default function OneTapStudio({
     if (opened.current || !jobs.length) return;
     opened.current = true;
     setSelected(jobs[0].id);
+    setPresetId(jobs[0].preset.id);
   }, [jobs]);
   useEffect(() => {
     setTitle(editable?.text || '');
@@ -130,6 +134,7 @@ export default function OneTapStudio({
   function update(job: OneTapJob) {
     setJobs((all) => [job, ...all.filter((item) => item.id !== job.id)]);
     setSelected(job.id);
+    setPresetId(job.preset.id);
   }
   /** Start the chosen effect, or run a finished one again with the same photo and a new seed. */
   async function start(again?: OneTapJob) {
@@ -351,7 +356,10 @@ export default function OneTapStudio({
                   <button
                     key={job.id}
                     className={viewed?.id === job.id ? 'active' : ''}
-                    onClick={() => setSelected(job.id)}
+                    onClick={() => {
+                      setSelected(job.id);
+                      setPresetId(job.preset.id);
+                    }}
                   >
                     <strong>{job.preset.title}</strong>
                     <small>

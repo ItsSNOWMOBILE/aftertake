@@ -1,0 +1,122 @@
+{
+  "id": "3c1927e8-10a8-4f17-a717-e6b3c9741519",
+  "request": {
+    "preset": "whip-in",
+    "clipId": "4c2138d1-774b-4ee0-ba9b-cfb8177814f4",
+    "seed": 209,
+    "watermark": true
+  },
+  "preset": {
+    "format": "aftertake-one-tap/1",
+    "id": "whip-in",
+    "title": "Whip in",
+    "line": "The photo, a whip pan, then a sideways glide with parallax and a pop title.",
+    "order": 90,
+    "accepts": [
+      "image",
+      "video"
+    ],
+    "motion": {
+      "prompt": "The camera glides sideways past the subject with lively parallax, foreground and background sliding at different speeds while the scene moves naturally. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.",
+      "movement": "truck",
+      "lens": "wide",
+      "lighting": "daylight",
+      "palette": "source",
+      "quality": "final",
+      "resolution": "720p"
+    },
+    "cut": {
+      "layout": "reveal",
+      "still": 1,
+      "transition": "whip",
+      "transitionSeconds": 0.33,
+      "stillZoom": 1.04
+    },
+    "titles": [
+      {
+        "text": "NEW DROP",
+        "editable": true,
+        "start": 1.2,
+        "end": 4.65,
+        "style": "headline",
+        "position": "bottom",
+        "animation": "pop",
+        "fontSize": 144,
+        "font": "display",
+        "box": "stamp",
+        "color": "#ffffff"
+      }
+    ],
+    "music": {
+      "track": "sunny",
+      "start": 0.56,
+      "volume": 0.9,
+      "fadeOut": 0.5
+    }
+  },
+  "source": {
+    "id": "4c2138d1-774b-4ee0-ba9b-cfb8177814f4",
+    "name": "One-tap sample: sneaker",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "d8cf30b98f478926d92eff1de2bc6b7237a08c052e0c460f2120efafc9d4656a",
+    "url": "/media/4c2138d1-774b-4ee0-ba9b-cfb8177814f4.png"
+  },
+  "state": "ready",
+  "stage": "Ready to share",
+  "progress": 1,
+  "attempts": [
+    {
+      "seed": 209,
+      "renderId": "21c34f03-e79d-47a6-bc27-9b8ee2ee9abe",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4.041666666666667,
+          "frames": 97,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 63.6181640625,
+          "lumaSpread": 52.71644592285156,
+          "motion": 6.632045064283454
+        }
+      }
+    }
+  ],
+  "exports": {
+    "watermark": {
+      "filmId": "b6cf1191-ce61-4a1c-9c16-c43d9bf84268",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4.666666666666667,
+          "frames": 112,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 65.89339447021484,
+          "lumaSpread": 55.480316162109375,
+          "motion": 10.314110359419947
+        }
+      }
+    }
+  },
+  "watermark": true,
+  "createdAt": "2026-10-24T20:09:48.185Z",
+  "updatedAt": "2026-10-24T20:23:53.132Z",
+  "frame": {
+    "id": "4c2138d1-774b-4ee0-ba9b-cfb8177814f4",
+    "name": "One-tap sample: sneaker",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "d8cf30b98f478926d92eff1de2bc6b7237a08c052e0c460f2120efafc9d4656a",
+    "url": "/media/4c2138d1-774b-4ee0-ba9b-cfb8177814f4.png"
+  }
+}

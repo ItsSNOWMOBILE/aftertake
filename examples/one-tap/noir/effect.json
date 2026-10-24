@@ -1,0 +1,117 @@
+{
+  "id": "2c9aadaa-5095-4d13-83d4-f04d906fc1c5",
+  "request": {
+    "preset": "noir",
+    "clipId": "7b4bfe51-bf3d-4579-bc87-24109e7615c1",
+    "seed": 207,
+    "watermark": true
+  },
+  "preset": {
+    "format": "aftertake-one-tap/1",
+    "id": "noir",
+    "title": "Noir",
+    "line": "Black and white, handheld, smoky light and a typed chapter title.",
+    "order": 70,
+    "accepts": [
+      "image",
+      "video"
+    ],
+    "motion": {
+      "prompt": "A moody film-noir moment: soft haze drifts through hard slatted light, shadows shift slowly and the scene breathes with quiet tension. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.",
+      "movement": "handheld",
+      "lens": "anamorphic",
+      "lighting": "moonlight",
+      "palette": "monochrome",
+      "quality": "final",
+      "resolution": "720p"
+    },
+    "cut": {
+      "layout": "motion"
+    },
+    "titles": [
+      {
+        "text": "Chapter One",
+        "editable": true,
+        "start": 0.5,
+        "end": 4,
+        "style": "headline",
+        "position": "bottom",
+        "animation": "typewriter",
+        "fontSize": 96,
+        "font": "mono",
+        "color": "#f2f2f2"
+      }
+    ],
+    "music": {
+      "track": "rise",
+      "start": 4,
+      "volume": 0.8,
+      "fadeOut": 0.7
+    }
+  },
+  "source": {
+    "id": "7b4bfe51-bf3d-4579-bc87-24109e7615c1",
+    "name": "One-tap sample: man in a trench coat",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "7f21ec83d544519c0a9e394157dfa83b7a6200860717c32b75863645796cf44f",
+    "url": "/media/7b4bfe51-bf3d-4579-bc87-24109e7615c1.png"
+  },
+  "state": "ready",
+  "stage": "Ready to share",
+  "progress": 1,
+  "attempts": [
+    {
+      "seed": 207,
+      "renderId": "b139feda-bfeb-4b6c-95c7-6faddc47bcc8",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4.041666666666667,
+          "frames": 97,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 73.79271697998047,
+          "lumaSpread": 51.89049530029297,
+          "motion": 4.952965643094934
+        }
+      }
+    }
+  ],
+  "exports": {
+    "watermark": {
+      "filmId": "6e568e41-07b2-439b-9b03-55c818ce9a3c",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4,
+          "frames": 96,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 74.83296203613281,
+          "lumaSpread": 51.909095764160156,
+          "motion": 4.799189826716548
+        }
+      }
+    }
+  },
+  "watermark": true,
+  "createdAt": "2026-10-24T20:09:47.942Z",
+  "updatedAt": "2026-10-24T20:20:19.685Z",
+  "frame": {
+    "id": "7b4bfe51-bf3d-4579-bc87-24109e7615c1",
+    "name": "One-tap sample: man in a trench coat",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "7f21ec83d544519c0a9e394157dfa83b7a6200860717c32b75863645796cf44f",
+    "url": "/media/7b4bfe51-bf3d-4579-bc87-24109e7615c1.png"
+  }
+}

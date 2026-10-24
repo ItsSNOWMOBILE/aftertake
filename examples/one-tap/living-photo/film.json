@@ -1,0 +1,345 @@
+{
+  "id": "1ce0df7e-8dcd-463a-8813-0625fe1b8d56",
+  "name": "Living photo",
+  "aspect": "portrait",
+  "shots": [
+    {
+      "renderId": "1dbb6780-b95d-4911-b298-ce0c96fcca1d",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 4,
+      "title": "Living photo · seed 210",
+      "sha256": "d1142ece7de6c5d2c415f2e8d6dc19df8d0cf7d4c798c9e83f3867d1de268feb",
+      "recipe": {
+        "format": "aftertake/1",
+        "name": "Living photo · seed 210",
+        "clip": {
+          "id": "f64c2048-c27f-4b38-a7f7-b8e966101d22",
+          "name": "One-tap sample: city portrait",
+          "sha256": "cfe11fc4780a99f05014797dccbe947ceed8410cb7769e74bbb5a2800cadfd1e",
+          "width": 720,
+          "height": 1280,
+          "duration": 1,
+          "url": "/media/f64c2048-c27f-4b38-a7f7-b8e966101d22.png",
+          "kind": "image",
+          "hasAudio": false
+        },
+        "prompt": "The photo quietly comes to life: subtle natural breathing and blinking, hair and fabric stirring in a light breeze, light shimmering softly; the framing never changes. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.",
+        "cue": {
+          "start": 0,
+          "end": 1,
+          "fade": 0.25,
+          "feather": 0.06,
+          "strokes": []
+        },
+        "seed": 210,
+        "quality": "final",
+        "resolution": "720p",
+        "trimStart": 0,
+        "pipeline": "cinema",
+        "cinema": {
+          "movement": "locked",
+          "lens": "natural",
+          "lighting": "source",
+          "palette": "source",
+          "guidance": "prompt"
+        }
+      },
+      "workflow": {
+        "1": {
+          "class_type": "UnetLoaderGGUF",
+          "inputs": {
+            "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+            "type": "ltxv",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+          }
+        },
+        "5": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "text": "A stationary locked-off shot. The camera does not translate, rotate or zoom. Framing and perspective remain unchanged; any subject motion happens inside this fixed composition. The photo quietly comes to life: subtle natural breathing and blinking, hair and fabric stirring in a light breeze, light shimmering softly; the framing never changes. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people. One continuous cinematic shot, beginning from the supplied reference frame. Natural perspective, crisp believable detail and moderate depth of field. Lighting direction and exposure remain consistent with the reference frame. Keep the reference color relationships coherent throughout the shot. The scene remains coherent over time."
+          }
+        },
+        "6": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "text": ""
+          }
+        },
+        "7": {
+          "class_type": "LTXVConditioning",
+          "inputs": {
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "6",
+              0
+            ],
+            "frame_rate": 24
+          }
+        },
+        "8": {
+          "class_type": "AftertakeLoadClip",
+          "inputs": {
+            "filename": "f64c2048-c27f-4b38-a7f7-b8e966101d22.png",
+            "width": 720,
+            "height": 1280,
+            "frames": 1,
+            "fps": 24,
+            "trim_start": 0
+          }
+        },
+        "11": {
+          "class_type": "EmptyLTXVLatentVideo",
+          "inputs": {
+            "width": 736,
+            "height": 1280,
+            "length": 97,
+            "batch_size": 1
+          }
+        },
+        "12": {
+          "class_type": "LTXVImgToVideoInplace",
+          "inputs": {
+            "vae": [
+              "3",
+              0
+            ],
+            "image": [
+              "hd_pad_8",
+              0
+            ],
+            "latent": [
+              "11",
+              0
+            ],
+            "strength": 1,
+            "bypass": false
+          }
+        },
+        "13": {
+          "class_type": "RandomNoise",
+          "inputs": {
+            "noise_seed": 210
+          }
+        },
+        "14": {
+          "class_type": "KSamplerSelect",
+          "inputs": {
+            "sampler_name": "euler_ancestral"
+          }
+        },
+        "15": {
+          "class_type": "ManualSigmas",
+          "inputs": {
+            "sigmas": "1., 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+          }
+        },
+        "16": {
+          "class_type": "BasicGuider",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "conditioning": [
+              "7",
+              0
+            ]
+          }
+        },
+        "17": {
+          "class_type": "SamplerCustomAdvanced",
+          "inputs": {
+            "noise": [
+              "13",
+              0
+            ],
+            "guider": [
+              "16",
+              0
+            ],
+            "sampler": [
+              "14",
+              0
+            ],
+            "sigmas": [
+              "15",
+              0
+            ],
+            "latent_image": [
+              "12",
+              0
+            ]
+          }
+        },
+        "19": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "17",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "20": {
+          "class_type": "AftertakeFilmGrade",
+          "inputs": {
+            "images": [
+              "19",
+              0
+            ],
+            "palette": "source"
+          }
+        },
+        "21": {
+          "class_type": "AftertakeSaveVideo",
+          "inputs": {
+            "images": [
+              "hd_crop_21",
+              0
+            ],
+            "fps": 24,
+            "filename_prefix": "aftertake/cinema",
+            "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Living photo · seed 210\",\"clip\":{\"id\":\"f64c2048-c27f-4b38-a7f7-b8e966101d22\",\"name\":\"One-tap sample: city portrait\",\"sha256\":\"cfe11fc4780a99f05014797dccbe947ceed8410cb7769e74bbb5a2800cadfd1e\",\"width\":720,\"height\":1280,\"duration\":1,\"url\":\"/media/f64c2048-c27f-4b38-a7f7-b8e966101d22.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"The photo quietly comes to life: subtle natural breathing and blinking, hair and fabric stirring in a light breeze, light shimmering softly; the framing never changes. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.\",\"cue\":{\"start\":0,\"end\":1,\"fade\":0.25,\"feather\":0.06,\"strokes\":[]},\"seed\":210,\"quality\":\"final\",\"resolution\":\"720p\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"locked\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"prompt\"}}",
+            "display_width": 720,
+            "display_height": 1280
+          }
+        },
+        "22": {
+          "class_type": "AftertakeSaveVideo",
+          "inputs": {
+            "images": [
+              "19",
+              0
+            ],
+            "fps": 24,
+            "filename_prefix": "aftertake/generation",
+            "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Living photo · seed 210\",\"clip\":{\"id\":\"f64c2048-c27f-4b38-a7f7-b8e966101d22\",\"name\":\"One-tap sample: city portrait\",\"sha256\":\"cfe11fc4780a99f05014797dccbe947ceed8410cb7769e74bbb5a2800cadfd1e\",\"width\":720,\"height\":1280,\"duration\":1,\"url\":\"/media/f64c2048-c27f-4b38-a7f7-b8e966101d22.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"The photo quietly comes to life: subtle natural breathing and blinking, hair and fabric stirring in a light breeze, light shimmering softly; the framing never changes. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.\",\"cue\":{\"start\":0,\"end\":1,\"fade\":0.25,\"feather\":0.06,\"strokes\":[]},\"seed\":210,\"quality\":\"final\",\"resolution\":\"720p\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"locked\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"prompt\"}}"
+          }
+        },
+        "hd_pad_8": {
+          "class_type": "ImagePadForOutpaint",
+          "inputs": {
+            "image": [
+              "8",
+              0
+            ],
+            "left": 8,
+            "top": 0,
+            "right": 8,
+            "bottom": 0,
+            "feathering": 0
+          }
+        },
+        "hd_crop_21": {
+          "class_type": "ImageCrop",
+          "inputs": {
+            "image": [
+              "20",
+              0
+            ],
+            "width": 720,
+            "height": 1280,
+            "x": 8,
+            "y": 0
+          }
+        }
+      }
+    }
+  ],
+  "requestKey": "one-tap-30e64882-cfbd-4a5d-9719-b4952e58304c-watermark-1",
+  "requestDigest": "28f8d2f7e0fb187f9d7416702ad188e73704649f8d3bd82384e096f018978f00",
+  "titles": [
+    {
+      "id": "369bcf39-9e42-4fff-ac3c-ffb4af3d1946",
+      "text": "still moving",
+      "start": 1,
+      "end": 4,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "fontSize": 81,
+      "font": "display",
+      "color": "#ffffff"
+    }
+  ],
+  "graphics": [
+    {
+      "id": "ec06c8f8-d371-4753-bc43-f2ebf030a224",
+      "name": "Aftertake watermark",
+      "kind": "image",
+      "start": 0,
+      "end": 4,
+      "x": 0.84,
+      "y": 0.9492021276595745,
+      "width": 0.24,
+      "height": 0.03159574468085106,
+      "color": "#ffffff",
+      "opacity": 0.82,
+      "fit": "contain",
+      "assetId": "395f60be-bee4-4ca6-8416-4ef6010aa417",
+      "sha256": "035cdbf574a540bf7433f82449f1988277e644b69b50fc971c6c2740c567783c"
+    }
+  ],
+  "audio": [
+    {
+      "assetId": "9f375043-201a-4392-887c-1d6def23f9bf",
+      "start": 0,
+      "sourceStart": 2,
+      "sourceEnd": 6,
+      "volume": 0.8,
+      "fadeIn": 0,
+      "fadeOut": 0.8,
+      "sha256": "519ec69f2e59ae2a52c028df03795013b08701a4aa0c6fe580a3221ee6717002",
+      "asset": {
+        "kind": "audio",
+        "duration": 16,
+        "id": "9f375043-201a-4392-887c-1d6def23f9bf",
+        "name": "drift.m4a",
+        "extension": ".m4a",
+        "sha256": "519ec69f2e59ae2a52c028df03795013b08701a4aa0c6fe580a3221ee6717002",
+        "url": "/api/films/assets/9f375043-201a-4392-887c-1d6def23f9bf/media",
+        "createdAt": "2026-10-24T20:25:28.417Z"
+      }
+    }
+  ],
+  "sourceVolume": 0,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 4,
+  "createdAt": "2026-10-24T20:25:28.445Z",
+  "output": "/api/films/1ce0df7e-8dcd-463a-8813-0625fe1b8d56/video"
+}

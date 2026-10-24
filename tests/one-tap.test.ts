@@ -79,6 +79,10 @@ test('the preset schema refuses moves, layouts and titles that cannot render', (
   );
   refuses((p) => (p.titles[0].end = 9), /must end by 4\.00 s/);
   refuses((p) => (p.cut.still = 1), /hold the photo first/);
+  refuses(
+    (p) => (p.cut.stillFinish = { preset: 'noir', lookStrength: 1 }),
+    /no transition or held photo/,
+  );
   refuses((p) => (p.extra = true), /Unrecognized key/);
   refuses((p) => p.titles.push({ ...p.titles[0], text: 'TWO' }), /at most one title as editable/);
   refuses(
@@ -205,7 +209,20 @@ async function fakeStudio() {
   const app = express(),
     renders: { key?: string; recipe: any; id: string }[] = [],
     films: { key?: string; draft: any; id: string }[] = [],
+    finishing: { key?: string; request: any }[] = [],
     assets: any[] = [];
+  app.post('/api/finishing', express.json(), (req, res) => {
+    finishing.push({ key: req.get('Idempotency-Key'), request: req.body });
+    res.status(202).json({ id: randomUUID(), state: 'queued' });
+  });
+  // The finished photo is a new clip; this stand-in points at the same file.
+  app.get('/api/finishing/:id', (req, res) =>
+    res.json({
+      id: req.params.id,
+      state: 'succeeded',
+      clip: { ...finishing.at(-1)!.request.clip, id: randomUUID() },
+    }),
+  );
   app.post('/api/renders', express.json(), (req, res) => {
     const id = randomUUID();
     renders.push({ key: req.get('Idempotency-Key'), recipe: req.body, id });
@@ -239,6 +256,7 @@ async function fakeStudio() {
     base: `http://127.0.0.1:${(server.address() as AddressInfo).port}`,
     renders,
     films,
+    finishing,
     close: () => server.close(),
   };
 }
@@ -350,6 +368,11 @@ test('a blank take renders once more with a new seed, then the effect is cut and
   assert.equal(film.draft.shots[1].renderId, effects.studio.renders[1].id);
   assert.equal(film.draft.graphics.length, 1, 'the watermark is on');
   assert.equal(film.draft.audio.length, 1, 'the song is under the cut');
+  // The held photo went through its Color & finish look before the wipe.
+  assert.equal(effects.studio.finishing.length, 1);
+  assert.equal(effects.studio.finishing[0].key, `one-tap-${job.id}-still`);
+  assert.equal(effects.studio.finishing[0].request.settings.preset, 'noir');
+  assert.equal(effects.studio.finishing[0].request.clip.id, effects.clip.id);
 
   // Turning the watermark off re-cuts on the CPU: no new render.
   const clean = await effects.post(`/${job.id}/export`, { watermark: false });
@@ -361,6 +384,10 @@ test('a blank take renders once more with a new seed, then the effect is cut and
   // Switching back reuses the first cut.
   await effects.post(`/${job.id}/export`, { watermark: true });
   assert.equal(effects.studio.films.length, 2);
+  assert.ok(
+    effects.studio.finishing.every((item) => item.key === `one-tap-${job.id}-still`),
+    'a re-cut rejoins the same finished photo',
+  );
 });
 
 test('when both takes fail their checks the effect stops with the reason and no cut', async (t) => {

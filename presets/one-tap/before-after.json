@@ -2,14 +2,14 @@
   "format": "aftertake-one-tap/1",
   "id": "before-after",
   "title": "Before / after",
-  "line": "Your photo, then a wipe into a warm cinematic version that moves.",
+  "line": "Your photo as a faded black-and-white still, then a wipe into full color that moves.",
   "order": 30,
   "accepts": ["image", "video"],
   "motion": {
-    "prompt": "A time-lapse of the same place: golden evening light sweeps across the scene, clouds race through the sky, long warm shadows stretch and everything glows. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
+    "prompt": "The photo comes to life in rich full color: a gentle breeze moves hair, fabric and leaves, light shimmers across the scene and the air feels alive. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
     "movement": "push",
     "lens": "anamorphic",
-    "lighting": "tungsten",
+    "lighting": "source",
     "palette": "warm",
     "quality": "final",
     "resolution": "720p"
@@ -19,7 +19,15 @@
     "still": 1.25,
     "transition": "wipe",
     "transitionSeconds": 0.6,
-    "stillZoom": 1.03
+    "stillZoom": 1.03,
+    "stillFinish": {
+      "preset": "noir",
+      "lookStrength": 1,
+      "saturation": -1,
+      "contrast": -0.2,
+      "grain": 0.5,
+      "vignette": 0.4
+    }
   },
   "titles": [
     {
