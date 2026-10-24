@@ -32,6 +32,10 @@ turn a photo into a finished 9:16 clip with a camera move, titles, a transition
 and a song, checked automatically and re-rendered once if the take comes out
 blank, frozen or the wrong length. Each effect is a JSON file you can copy.
 
+**One idea, a cut film:** a [Storyboard](#storyboard) plans 3 to 5 shots from
+one idea with a local language model, renders each with LTX-2.5, scores them with
+an ACE-Step song and opens the result in Film, cut on the beat.
+
 **Finish existing footage:** **Color & finish** provides real processed-frame
 comparison, selective HSL, RGB curves, imported LUTs and texture controls.
 **Layers & masks** combines still images and adjustment layers with a real PNG
@@ -138,6 +142,34 @@ appears without restarting. A file that fails the check is listed in the gallery
 with the reason. Songs are ACE-Step renders with their Song studio recipe; add
 one with its JSON file beside the audio. After recording a result, run
 `python scripts/build-one-tap-previews.py` to cut its preview loop.
+
+## Storyboard
+
+**Storyboard** turns one idea into a short film. Open it from the start screen
+or the **Storyboard** button, describe the idea, choose 3, 4 or 5 shots and the
+frame, and press **Plan shots**.
+
+1. **Plan.** The optional local language model (Qwen3-4B on the CPU, about 20
+   seconds) writes a title, one line of shared look and each shot: what the camera
+   sees, one of the 27 camera moves and 3 to 5 seconds. Without the model, a
+   template frames the idea as an opening, a middle and an ending. The plan says
+   which one made it; **Plan again** asks for another version.
+2. **Edit.** Rewrite any shot, change its move or length, reorder shots, and edit
+   the title and the shared look, which is added to every shot so they match.
+   Choose a music style.
+3. **Make the film.** Each shot renders with Create video (LTX-2.5), then
+   ACE-Step composes a song in the chosen style. Aftertake detects the song's
+   beats and cuts the shots so each transition lands on one, with an opening
+   title, styled transitions and a closing title. Four shots take about 7
+   minutes on an RTX 5080. Storyboards started while the GPU is busy wait their
+   turn and resume after a restart.
+4. **Open in Film.** The result is a normal Film project with every shot, title,
+   transition and the song on the timeline. **Open in Film** loads it into the
+   Film editor to keep cutting; **Download** saves the exported MP4.
+
+When Create video and Songs are routed to Comfy Cloud in Render setup, a
+storyboard renders there too. In a shared copy, a storyboard counts one render
+per shot plus one for the song; planning it is free.
 
 ## Replace character
 

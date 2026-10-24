@@ -1,6 +1,15 @@
 // What the start screen offers, and whether it opens with Aftertake.
 export type StartTask =
-  'effects' | 'video' | 'image' | 'region' | 'person' | 'camera' | 'motion' | 'finish' | 'film';
+  | 'effects'
+  | 'storyboard'
+  | 'video'
+  | 'image'
+  | 'region'
+  | 'person'
+  | 'camera'
+  | 'motion'
+  | 'finish'
+  | 'film';
 
 /**
  * Task-first entry points; previews are cut from real outputs (scripts/build-start-previews.py,
@@ -11,6 +20,11 @@ export const startTasks: { id: StartTask; title: string; line: string }[] = [
     id: 'effects',
     title: 'One-tap effects',
     line: 'One photo in, a vertical clip to share out.',
+  },
+  {
+    id: 'storyboard',
+    title: 'Storyboard a film',
+    line: 'One idea becomes shots, a song and a cut.',
   },
   { id: 'video', title: 'Make a video', line: 'From a sentence, with sound if you want it.' },
   { id: 'image', title: 'Make an image', line: 'From a sentence, or from a product starter.' },

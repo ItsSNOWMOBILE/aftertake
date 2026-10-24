@@ -85,7 +85,15 @@ test('browser recipe edits export runnable portable graphs while generation neve
   const recordedImages = await demo.request('/api/images').then((r) => r.json());
   const recordedVideos = await demo.request('/api/videos').then((r) => r.json());
   assert.ok(recordedImages.every((image: { state: string }) => image.state === 'succeeded'));
-  assert.equal(recordedVideos.length, 2);
+  // Two recorded text videos, plus the shots of the recorded storyboards.
+  const storyboardShots = (snapshot.storyboards ?? []).flatMap((board) =>
+    board.shots.map((shot) => shot.videoId),
+  );
+  assert.equal(
+    recordedVideos.filter((video: { id: string }) => !storyboardShots.includes(video.id)).length,
+    2,
+  );
+  assert.equal(recordedVideos.length, 2 + storyboardShots.length);
   assert.ok(recordedVideos.every((video: { state: string }) => video.state === 'succeeded'));
   assert.equal((await demo.request('/api/workflow', { method: 'POST', body: '{}' })).status, 422);
 });

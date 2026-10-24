@@ -85,8 +85,10 @@ const ComputeSettings = deferred(() => import('./ComputeSettings'));
 const EnhanceStudio = deferred(() => import('./EnhanceStudio'));
 import { startScreenWanted, type StartTask } from './start-tasks';
 import { characterBusy, type CharacterJob } from './character';
-import { ImagePlus, ScanFace, WandSparkles } from 'lucide-react';
+import { ImagePlus, LayoutPanelTop, ScanFace, WandSparkles } from 'lucide-react';
 import OneTapStudio from './OneTapStudio';
+import StoryboardStudio from './StoryboardStudio';
+import type { FilmDraft } from './film';
 import { spatialMask } from './mask';
 import {
   canSeparateComposite,
@@ -188,6 +190,8 @@ export default function App() {
   const [videos, setVideos] = useState<VideoGeneration[]>([]);
   const [videoStudioOpen, setVideoStudioOpen] = useState(false);
   const [oneTapOpen, setOneTapOpen] = useState(false);
+  const [storyboardOpen, setStoryboardOpen] = useState(false);
+  const [filmOpened, setFilmOpened] = useState<{ key: string; draft: FilmDraft }>();
   const [filmMediaRevision, setFilmMediaRevision] = useState(0);
   const [characterStudioOpen, setCharacterStudioOpen] = useState(false);
   const [finishingClip, setFinishingClip] = useState<Clip | null>(null);
@@ -676,6 +680,7 @@ export default function App() {
   function chooseStart(task: StartTask) {
     setStartOpen(false);
     if (task === 'effects') setOneTapOpen(true);
+    else if (task === 'storyboard') setStoryboardOpen(true);
     else if (task === 'video') setVideoStudioOpen(true);
     else if (task === 'image') setImageStudioOpen(true);
     else if (task === 'person') setCharacterStudioOpen(true);
@@ -1657,6 +1662,13 @@ export default function App() {
               <small>Photo in, clip out</small>
             </span>
           </button>
+          <button onClick={() => setStoryboardOpen(true)}>
+            <LayoutPanelTop size={17} />
+            <span>
+              <strong>Storyboard</strong>
+              <small>One idea, a cut film</small>
+            </span>
+          </button>
           <button onClick={() => setVideoStudioOpen(true)}>
             <Clapperboard size={17} />
             <span>
@@ -2209,7 +2221,12 @@ export default function App() {
           selected={take?.id}
           onSelect={selectTake}
         />
-        <FilmDesk renders={renders} titles={exampleNames} mediaRevision={filmMediaRevision} />
+        <FilmDesk
+          renders={renders}
+          titles={exampleNames}
+          mediaRevision={filmMediaRevision}
+          opened={filmOpened}
+        />
       </main>
       <aside className="inspector">
         <div className="inspector-title">
@@ -2998,6 +3015,15 @@ export default function App() {
             setClips((all) => (all.some((item) => item.id === clip.id) ? all : [...all, clip]))
           }
           onClose={() => setOneTapOpen(false)}
+        />
+      )}
+      {storyboardOpen && (
+        <StoryboardStudio
+          onOpenFilm={(draft) => {
+            setFilmMediaRevision((value) => value + 1);
+            setFilmOpened({ key: crypto.randomUUID(), draft });
+          }}
+          onClose={() => setStoryboardOpen(false)}
         />
       )}
       {videoStudioOpen && (

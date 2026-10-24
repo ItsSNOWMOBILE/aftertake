@@ -1,0 +1,141 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "8cc5c81f-03d1-453a-a04d-475fb9cdc1f4",
+  "requestKey": "storyboard-9a6aa970-04a1-4f28-86b5-e3ca3e8f2179-song",
+  "requestDigest": "f87f413838fff3e78ccba79509e8186aa32e7901460bf308254759cb63ba7dcc",
+  "request": {
+    "format": "aftertake-song/1",
+    "name": "Dawn Brew · score",
+    "tags": "lo-fi hip hop, dusty drums, mellow electric piano, vinyl crackle, relaxed, instrumental",
+    "lyrics": "",
+    "seconds": 19,
+    "bpm": 84,
+    "keyscale": "C major",
+    "timesignature": "4",
+    "language": "unknown",
+    "seed": 2027
+  },
+  "workflow": {
+    "1": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "ace_step_1.5_turbo_aio.safetensors"
+      }
+    },
+    "2": {
+      "class_type": "ModelSamplingAuraFlow",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "shift": 3
+      }
+    },
+    "3": {
+      "class_type": "TextEncodeAceStepAudio1.5",
+      "inputs": {
+        "clip": [
+          "1",
+          1
+        ],
+        "tags": "lo-fi hip hop, dusty drums, mellow electric piano, vinyl crackle, relaxed, instrumental",
+        "lyrics": "[Instrumental]",
+        "seed": 2027,
+        "bpm": 84,
+        "duration": 19,
+        "timesignature": "4",
+        "language": "unknown",
+        "keyscale": "C major",
+        "generate_audio_codes": true,
+        "cfg_scale": 2,
+        "temperature": 0.85,
+        "top_p": 0.9,
+        "top_k": 0,
+        "min_p": 0
+      }
+    },
+    "4": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "3",
+          0
+        ]
+      }
+    },
+    "5": {
+      "class_type": "EmptyAceStep1.5LatentAudio",
+      "inputs": {
+        "seconds": 19,
+        "batch_size": 1
+      }
+    },
+    "6": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "2",
+          0
+        ],
+        "seed": 2027,
+        "steps": 8,
+        "cfg": 1,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "positive": [
+          "3",
+          0
+        ],
+        "negative": [
+          "4",
+          0
+        ],
+        "latent_image": [
+          "5",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "7": {
+      "class_type": "VAEDecodeAudio",
+      "inputs": {
+        "samples": [
+          "6",
+          0
+        ],
+        "vae": [
+          "1",
+          2
+        ]
+      }
+    },
+    "8": {
+      "class_type": "SaveAudioAdvanced",
+      "inputs": {
+        "audio": [
+          "7",
+          0
+        ],
+        "filename_prefix": "aftertake/songs/8cc5c81f-03d1-453a-a04d-475fb9cdc1f4",
+        "format": "flac"
+      }
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-24T22:24:26.264Z",
+  "updatedAt": "2026-10-24T22:24:38.710Z",
+  "jobId": "faef2034-aff2-4eca-8c85-b71ebfa68f0f",
+  "stage": "Ready to add to Film",
+  "audio": {
+    "sha256": "735ae7cb7c609722d0f91d1f11af77c13706050ff87b5860c641a34f4bdd94f0",
+    "duration": 19,
+    "bytes": 1100702
+  }
+}

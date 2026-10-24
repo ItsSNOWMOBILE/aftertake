@@ -988,10 +988,13 @@ export default function FilmComposer({
   renders,
   titles,
   mediaRevision = 0,
+  opened,
 }: {
   renders: Render[];
   titles: Record<string, string>;
   mediaRevision?: number;
+  /** A finished project handed over from another studio, such as a storyboard. */
+  opened?: { key: string; draft: FilmDraft };
 }) {
   const [draft, setDraftState] = useState<FilmDraft>(() => {
     try {
@@ -1058,6 +1061,30 @@ export default function FilmComposer({
   useEffect(() => {
     localStorage.setItem('aftertake-film-draft', JSON.stringify(draft));
   }, [draft]);
+  useEffect(() => {
+    if (!opened) return;
+    let live = true;
+    // Its media were imported by the studio that made it; read them before showing the cut.
+    void (browserDemo ? Promise.resolve(null) : request<FilmAsset[]>('/api/films/assets'))
+      .then((found) => {
+        if (!live) return;
+        if (found) setAssets(found);
+        setDraft(filmDraftSchema.parse(opened.draft));
+        setTime(0);
+        setSelected('');
+        document
+          .querySelector('.film-desk')
+          ?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      })
+      .catch((e) => {
+        if (live) setError(e.message);
+      });
+    return () => {
+      live = false;
+    };
+    // Only a newly opened project replaces the draft, not every re-render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [opened?.key]);
   useEffect(() => {
     setPreparedPreview(null);
   }, [draft]);

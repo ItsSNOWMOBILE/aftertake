@@ -2,7 +2,12 @@ import assert from 'node:assert/strict';
 import http, { type IncomingHttpHeaders, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 import test from 'node:test';
-import { createShareGateway, parseCookies, routeOf } from '../scripts/share-gateway.mjs';
+import {
+  createShareGateway,
+  parseCookies,
+  routeOf,
+  storyboardWeight,
+} from '../scripts/share-gateway.mjs';
 
 const token = 'a-long-enough-share-token';
 
@@ -194,6 +199,44 @@ test('a one-tap effect counts once; re-cutting it without the watermark is free'
     assert.equal(await post(path), 202, path);
   assert.equal(await post('/api/one-tap/'), 429, 'Again with a new seed is a new render');
   assert.equal(await post('/API/One-Tap'), 429);
+});
+
+test('a storyboard counts one render per shot plus its song; planning it is free', async (t) => {
+  const { base, upstream, admit } = await gateway(t, () => ({ status: 202 }), {
+    rendersPerVisitor: 9,
+  });
+  const cookie = await admit();
+  const post = (path: string, body: unknown) =>
+    fetch(base + path, {
+      method: 'POST',
+      headers: { cookie, 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  const shots = (count: number) => ({
+    title: 'Dawn',
+    shots: Array.from({ length: count }, () => ({})),
+  });
+  assert.equal((await post('/api/storyboards/plan', { idea: 'x', shots: 5 })).status, 202);
+  assert.equal((await post('/api/storyboards', shots(5))).status, 202);
+  // The studio still receives the exact request the visitor sent.
+  assert.deepEqual(JSON.parse(upstream.seen.at(-1)!.body), shots(5));
+  // Six of nine used; four shots would need five.
+  const refused = await post('/api/storyboards', shots(4));
+  assert.equal(refused.status, 429);
+  assert.match((await refused.json()).error, /starts 5 renders and you have 3 left/);
+  assert.equal(
+    (await post('/api/storyboards', { shots: [] })).status,
+    202,
+    'one shot and its song at least',
+  );
+  assert.equal((await post('/api/images', {})).status, 202);
+  assert.equal((await post('/api/images', {})).status, 429);
+  assert.equal(storyboardWeight(Buffer.from('{"shots":[1,2,3]}')), 4);
+  assert.equal(storyboardWeight(Buffer.from('not json')), 1);
+  assert.equal(
+    storyboardWeight(Buffer.from('{"shots":' + JSON.stringify(Array(50).fill(0)) + '}')),
+    6,
+  );
 });
 
 test('pages carry a dismissible note with the visitor’s renders left; other responses pass through', async (t) => {
