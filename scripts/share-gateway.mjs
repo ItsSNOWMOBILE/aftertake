@@ -11,11 +11,22 @@ const VISITOR_COOKIE = 'aftertake_visitor';
 const DAY = 24 * 60 * 60 * 1000;
 const COOKIE_DAYS = 45;
 // Starting one of these runs a Comfy graph on the GPU or spends Comfy Cloud
-// credits. A one-tap effect counts once, with its automatic re-render. CPU work,
-// such as Film export, finishing, layer renders and re-cutting an effect without
-// its watermark, is free.
+// credits. A one-tap effect counts once, with its automatic re-render; a
+// storyboard counts each shot and its song. CPU work, such as Film export,
+// finishing, layer renders, planning a storyboard and re-cutting an effect
+// without its watermark, is free.
 const renderRoutes =
-  /^\/api\/(images|videos|enhancements|renders|frame-edits|depth-effects|one-tap|characters\/(selections|replacements))$/;
+  /^\/api\/(images|videos|enhancements|renders|frame-edits|depth-effects|one-tap|storyboards|characters\/(selections|replacements))$/;
+/** Renders a storyboard starts: one video per shot, then its song. */
+export function storyboardWeight(body) {
+  try {
+    const shots = JSON.parse(body.toString('utf8'))?.shots;
+    return Array.isArray(shots) ? Math.min(5, Math.max(1, shots.length)) + 1 : 1;
+  } catch {
+    return 1;
+  }
+}
+const MAX_WEIGHED_BODY = 256 * 1024;
 const lockedRoutes = [
   [
     /^\/api\/compute\/connection$/,
@@ -118,7 +129,7 @@ export function createShareGateway({
   const json = (res, status, value) =>
     send(res, status, 'application/json; charset=utf-8', JSON.stringify(value));
 
-  function relay(req, res, url, visitor, counted) {
+  function relay(req, res, url, visitor, counted, body) {
     const headers = { ...req.headers, host: `127.0.0.1:${studioPort}` };
     // The studio accepts only loopback hosts and same-origin writes, and needs
     // none of the visitor's cookies.
@@ -138,7 +149,7 @@ export function createShareGateway({
       (response) => {
         const status = response.statusCode || 502;
         if (counted && status >= 200 && status < 300) {
-          renders.push({ visitor, at: now() });
+          for (let render = 0; render < counted; render++) renders.push({ visitor, at: now() });
           const { mine, all } = used(visitor);
           log(
             `[share] render ${mine}/${rendersPerVisitor} for this visitor, ${all}/${rendersPerDay} today`,
@@ -170,7 +181,8 @@ export function createShareGateway({
     res.on('close', () => {
       if (!res.writableFinished) upstream.destroy();
     });
-    req.pipe(upstream);
+    if (body) upstream.end(body);
+    else req.pipe(upstream);
   }
 
   const server = http.createServer((req, res) => {
@@ -209,19 +221,39 @@ export function createShareGateway({
     if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method || 'GET'))
       for (const [pattern, message] of lockedRoutes)
         if (pattern.test(route)) return json(res, 403, { error: message });
-    const counted = req.method === 'POST' && renderRoutes.test(route);
-    if (counted) {
+    if (!(req.method === 'POST' && renderRoutes.test(route)))
+      return relay(req, res, url, visitor, 0);
+    const admit = (weight, body) => {
       const { mine, all } = used(visitor);
-      if (mine >= rendersPerVisitor)
+      if (mine + weight > rendersPerVisitor)
         return json(res, 429, {
-          error: `You've started ${mine} renders today, the most this shared copy allows each visitor. Try again tomorrow.`,
+          error:
+            weight > 1 && mine < rendersPerVisitor
+              ? `This storyboard starts ${weight} renders and you have ${rendersPerVisitor - mine} left today. Plan fewer shots, or try again tomorrow.`
+              : `You've started ${mine} renders today, the most this shared copy allows each visitor. Try again tomorrow.`,
         });
-      if (all >= rendersPerDay)
+      if (all + weight > rendersPerDay)
         return json(res, 429, {
           error: 'This shared copy has reached its renders for today. Try again tomorrow.',
         });
-    }
-    relay(req, res, url, visitor, counted);
+      relay(req, res, url, visitor, weight, body);
+    };
+    if (route !== '/api/storyboards') return admit(1);
+    // A storyboard's cost is in its shot list, so read the small JSON body first.
+    const chunks = [];
+    let size = 0;
+    req.on('data', (chunk) => {
+      size += chunk.length;
+      if (size > MAX_WEIGHED_BODY) {
+        json(res, 413, { error: 'This storyboard request is too large.' });
+        req.destroy();
+      } else chunks.push(chunk);
+    });
+    req.on('end', () => {
+      if (size > MAX_WEIGHED_BODY) return;
+      const body = Buffer.concat(chunks);
+      admit(storyboardWeight(body), body);
+    });
   });
   // The production studio needs no WebSocket; refuse upgrades rather than relay them.
   server.on('upgrade', (_req, socket) => socket.destroy());
