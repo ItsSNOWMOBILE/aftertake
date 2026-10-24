@@ -577,14 +577,25 @@ grading is applied consistently after generation. The input frame is
 conditioned directly into the video latent. No inpainting adapter is needed
 for this mode.
 
-**Browse camera moves** opens a gallery of fourteen moves, each drawn as a small
-looping diagram: locked, push in, pull back, pan left and right, tilt up and
-down, crane up, truck sideways, orbit, crash zoom, whip pan, handheld and dolly
-zoom. Choosing one sets the camera; the same gallery is in Create video. Every
-move has its own prompt wording. Twelve also have screen-space framing tracks
-for the experimental track guidance; orbit and dolly zoom change perspective in
-depth, so they use prompt guidance only. As with every camera instruction,
-review the generated movement.
+**Browse camera moves** opens a gallery of 27 moves. Each card plays a real
+Animate a frame take of that move, rendered by Aftertake from the same still on
+an RTX 5080:
+
+| Group | Moves |
+| :--- | :--- |
+| In and out | Slow push in, slow pull back, zoom in, zoom out, crash zoom, dolly zoom |
+| Turn | Pan left and right, tilt up and down, whip pan, barrel roll |
+| Travel | Truck left and right, crane up, boom down |
+| Around the subject | Gentle orbit, arc shot, 360° orbit, bullet time |
+| Drone | FPV drone, drone reveal |
+| Feel | Locked, handheld, impact shake, snorricam, rack focus |
+
+Choosing one sets the camera; the same gallery is in Create video. Every move has
+its own prompt wording. Eighteen also have screen-space framing tracks for the
+experimental track guidance. The nine that change perspective in depth (orbit,
+arc, 360° orbit, bullet time, dolly zoom, FPV drone, drone reveal, snorricam and
+rack focus) use prompt guidance only, and the gallery says so. As with every
+camera instruction, review the generated movement.
 
 Add an optional **Ending frame** to give the shot a destination. Choose an
 imported image, upload a PNG/JPEG/WebP, or **Create an ending frame** with the

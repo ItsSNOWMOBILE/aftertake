@@ -11,6 +11,16 @@ Z-Image Turbo and keep their Create image records. `--examples`, the shared copy
 and the browser trial open with these effects and photos, so you can run any
 effect again on the same photo.
 
+## Camera moves
+
+`camera-moves/` holds the take behind each card in the moves gallery: all 27
+moves rendered with Animate a frame from the same still (`ridge.png`, made with
+Create image) with the same prompt and seed on an RTX 5080, so only the camera
+changes. `scripts/build-move-previews.py` cuts the gallery loops from them. The
+360° orbit, FPV drone, rack focus and barrel roll takes also open in `--examples`
+and the shared copy, with a second 360° orbit around the beach dog from the
+one-tap sample photos, made through the shared copy.
+
 ## Then comes the Aftertake
 
 The [93-second beat-cut film](then-comes-the-aftertake/README.md) is seven native

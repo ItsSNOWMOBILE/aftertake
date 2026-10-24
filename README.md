@@ -56,7 +56,7 @@ unchanged.
     <td width="25%"><a href="docs/studio-guide.md#replace-character"><img src="public/start/person.jpg" alt="Character replacement"></a><br><b>Replace a character</b><br><sub>Track a person with SAM3, recast them with MiniMax H3.</sub></td>
   </tr>
   <tr>
-    <td><a href="docs/studio-guide.md#animate-a-frame"><img src="public/start/camera.jpg" alt="Camera move from a still"></a><br><b>Move the camera</b><br><sub>Animate a frame with 14 camera moves.</sub></td>
+    <td><a href="docs/studio-guide.md#animate-a-frame"><img src="public/start/camera.jpg" alt="Camera move from a still"></a><br><b>Move the camera</b><br><sub>Animate a frame with 27 camera moves, from 360° orbit to FPV drone.</sub></td>
     <td><a href="docs/studio-guide.md#transfer-motion"><img src="public/start/motion.jpg" alt="Motion transfer"></a><br><b>Transfer motion</b><br><sub>Your character, their performance, with Wan Animate 2.</sub></td>
     <td><a href="docs/finishing.md"><img src="public/start/finish.jpg" alt="Color and finish"></a><br><b>Color &amp; finish</b><br><sub>Looks, curves, LUTs, grain and Hide details.</sub></td>
     <td><a href="docs/motion-graphics.md"><img src="public/start/film.jpg" alt="Film editor"></a><br><b>Cut the film</b><br><sub>Titles, transitions, narration and music on the beat.</sub></td>
@@ -96,8 +96,8 @@ or from a blank prompt.
   </tr>
 </table>
 
-**Also in the studio:** a [moves gallery](docs/studio-guide.md#animate-a-frame) of 14 camera moves, each drawn
-as a looping diagram · [punch titles and transitions](docs/motion-graphics.md#punch-typography)
+**Also in the studio:** a [moves gallery](docs/studio-guide.md#animate-a-frame) of 27 camera moves, each
+with a real preview loop · [punch titles and transitions](docs/motion-graphics.md#punch-typography)
 (slam, pop, glitch, whip, zoom, wipe) · beat detection that snaps cuts to music ·
 tracked [subject copies](examples/subject-duplicates/README.md) · [layers and masks](docs/layer-stack.md)
 with 27 blend modes · [depth and light](docs/depth-effects.md) for stills ·
