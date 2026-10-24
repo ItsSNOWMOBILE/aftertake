@@ -1,0 +1,11 @@
+{
+  "id": "faa91d1e-7941-4865-87c9-3fe6701d5592",
+  "name": "One-tap sample: latte",
+  "kind": "image",
+  "width": 720,
+  "height": 1280,
+  "duration": 1,
+  "hasAudio": false,
+  "sha256": "58fb0d82d41ffc25095b66771999e78da243266841bb3e38bdd988766ed09da8",
+  "url": "/media/faa91d1e-7941-4865-87c9-3fe6701d5592.png"
+}

@@ -1,0 +1,144 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "30ea6d42-d9b3-42e0-b0c2-fd9a934fa61a",
+  "request": {
+    "format": "aftertake-image/1",
+    "name": "One-tap sample: perfume bottle",
+    "prompt": "One unbranded amber glass perfume bottle with a heavy brushed-gold cap stands on a round travertine pedestal in the center of the frame, against a seamless warm sand-colored studio backdrop. Soft key light from the left, a crisp highlight along the glass edge, a gentle shadow on the pedestal. Premium product photography, sharp and minimal. No text, logos or watermarks.",
+    "seed": 5309,
+    "aspect": "portrait",
+    "resolution": "720p",
+    "style": "product"
+  },
+  "workflow": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "z_image_turbo_bf16.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen_3_4b.safetensors",
+        "type": "lumina2",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ae.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "ModelSamplingAuraFlow",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "shift": 3
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "One unbranded amber glass perfume bottle with a heavy brushed-gold cap stands on a round travertine pedestal in the center of the frame, against a seamless warm sand-colored studio backdrop. Soft key light from the left, a crisp highlight along the glass edge, a gentle shadow on the pedestal. Premium product photography, sharp and minimal. No text, logos or watermarks.\n\nPremium product photograph with controlled studio lighting, crisp material detail and a clean composition."
+      }
+    },
+    "6": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "EmptySD3LatentImage",
+      "inputs": {
+        "width": 720,
+        "height": 1280,
+        "batch_size": 1
+      }
+    },
+    "17": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "4",
+          0
+        ],
+        "seed": 5309,
+        "steps": 8,
+        "cfg": 1,
+        "sampler_name": "res_multistep",
+        "scheduler": "simple",
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "latent_image": [
+          "7",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "21": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "filename_prefix": "aftertake/imagine"
+      }
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-24T19:56:22.344Z",
+  "updatedAt": "2026-10-24T19:56:52.581Z",
+  "jobId": "b3215835-1c1b-4ea2-a185-208174fda2f5",
+  "stage": "Ready to edit or animate",
+  "clip": {
+    "id": "30ea6d42-d9b3-42e0-b0c2-fd9a934fa61a",
+    "name": "One-tap sample: perfume bottle",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "7a50444e8ab0e85fd8304cbdebf9e18bd57a718fe1548d4c1ffc0800ab19e8bf",
+    "url": "/media/30ea6d42-d9b3-42e0-b0c2-fd9a934fa61a.png"
+  }
+}

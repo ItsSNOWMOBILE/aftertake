@@ -1,5 +1,16 @@
 # Remixable examples
 
+## One-tap effects
+
+`one-tap/` holds one recorded result for each [one-tap effect](../docs/studio-guide.md#one-tap-effects),
+made by the effect itself on an RTX 5080: the finished 9:16 clip (`result.mp4`),
+its Film project (`film.json`), the effect record with its check results
+(`effect.json`) and the Animate a frame take it was cut from, with its recipe and
+graph. The sample photos in `one-tap/photos` were generated in Aftertake with
+Z-Image Turbo and keep their Create image records. `--examples`, the shared copy
+and the browser trial open with these effects and photos, so you can run any
+effect again on the same photo.
+
 ## Then comes the Aftertake
 
 The [93-second beat-cut film](then-comes-the-aftertake/README.md) is seven native

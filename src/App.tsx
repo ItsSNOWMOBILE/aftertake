@@ -85,7 +85,8 @@ const ComputeSettings = deferred(() => import('./ComputeSettings'));
 const EnhanceStudio = deferred(() => import('./EnhanceStudio'));
 import { startScreenWanted, type StartTask } from './start-tasks';
 import { characterBusy, type CharacterJob } from './character';
-import { ImagePlus, ScanFace } from 'lucide-react';
+import { ImagePlus, ScanFace, WandSparkles } from 'lucide-react';
+import OneTapStudio from './OneTapStudio';
 import { spatialMask } from './mask';
 import {
   canSeparateComposite,
@@ -186,6 +187,7 @@ export default function App() {
   const [imageStudioOpen, setImageStudioOpen] = useState(false);
   const [videos, setVideos] = useState<VideoGeneration[]>([]);
   const [videoStudioOpen, setVideoStudioOpen] = useState(false);
+  const [oneTapOpen, setOneTapOpen] = useState(false);
   const [filmMediaRevision, setFilmMediaRevision] = useState(0);
   const [characterStudioOpen, setCharacterStudioOpen] = useState(false);
   const [finishingClip, setFinishingClip] = useState<Clip | null>(null);
@@ -673,7 +675,8 @@ export default function App() {
   }
   function chooseStart(task: StartTask) {
     setStartOpen(false);
-    if (task === 'video') setVideoStudioOpen(true);
+    if (task === 'effects') setOneTapOpen(true);
+    else if (task === 'video') setVideoStudioOpen(true);
     else if (task === 'image') setImageStudioOpen(true);
     else if (task === 'person') setCharacterStudioOpen(true);
     else if (task === 'film')
@@ -1647,6 +1650,13 @@ export default function App() {
           </div>
         )}
         <div className="creation-modes" aria-label="Creation mode">
+          <button onClick={() => setOneTapOpen(true)}>
+            <WandSparkles size={17} />
+            <span>
+              <strong>One-tap effects</strong>
+              <small>Photo in, clip out</small>
+            </span>
+          </button>
           <button onClick={() => setVideoStudioOpen(true)}>
             <Clapperboard size={17} />
             <span>
@@ -2978,6 +2988,16 @@ export default function App() {
             setMode('source');
             setToast('Depth-finished still is ready to edit or animate.');
           }}
+        />
+      )}
+      {oneTapOpen && (
+        <OneTapStudio
+          clips={clips}
+          initialClip={recipe?.clip}
+          onImported={(clip) =>
+            setClips((all) => (all.some((item) => item.id === clip.id) ? all : [...all, clip]))
+          }
+          onClose={() => setOneTapOpen(false)}
         />
       )}
       {videoStudioOpen && (

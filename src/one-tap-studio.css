@@ -1,0 +1,196 @@
+.one-tap-studio code {
+  font-size: 12px;
+  color: var(--accent, #d5e991);
+}
+.one-tap-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
+  gap: 26px;
+  margin-top: 22px;
+}
+.one-tap-picture {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  width: 100%;
+  max-height: 64vh;
+  margin: 0 auto;
+  background: #111315;
+  border: 1px solid var(--control-border, #657168);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.one-tap-picture video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.one-tap-progress {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-secondary, #b7c1b9);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.one-tap-progress progress {
+  width: 160px;
+  accent-color: var(--accent, #d5e991);
+}
+.one-tap-receipt {
+  display: grid;
+  gap: 4px;
+  margin-top: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.one-tap-receipt small {
+  color: var(--text-secondary, #b7c1b9);
+  font-size: 12px;
+}
+.one-tap-controls {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+.one-tap-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 8px;
+}
+.one-tap-card {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  text-align: left;
+  padding: 0;
+  overflow: hidden;
+  background: var(--panel, #1b211d);
+  color: var(--text-primary, #eef1eb);
+  border: 1px solid var(--control-border, #657168);
+  border-radius: 7px;
+  cursor: pointer;
+}
+.one-tap-card[aria-checked='true'] {
+  border-color: var(--accent, #d5e991);
+  box-shadow: 0 0 0 1px var(--accent, #d5e991);
+}
+.one-tap-card video {
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  display: block;
+  background: #111315;
+}
+.one-tap-card strong {
+  padding: 6px 7px 8px;
+  font-size: 12px;
+  line-height: 1.3;
+}
+.one-tap-line {
+  margin: -4px 0 0;
+  color: var(--text-secondary, #b7c1b9);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.one-tap-chosen {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 3px;
+  border-radius: 50%;
+  background: var(--accent, #d5e991);
+  color: #141615;
+}
+.one-tap-label,
+.one-tap-controls label {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary, #b7c1b9);
+}
+.one-tap-controls label {
+  display: grid;
+  gap: 7px;
+}
+.one-tap-controls input:not([type='checkbox']) {
+  font: inherit;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+.one-tap-source {
+  display: grid;
+  gap: 9px;
+}
+.one-tap-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.one-tap-sources button {
+  width: 54px;
+  height: 72px;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid var(--control-border, #657168);
+  background: #111315;
+  color: var(--text-primary, #eef1eb);
+  cursor: pointer;
+}
+.one-tap-sources button[aria-checked='true'] {
+  border-color: var(--accent, #d5e991);
+  box-shadow: 0 0 0 1px var(--accent, #d5e991);
+}
+.one-tap-sources img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.one-tap-upload {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 2px;
+}
+.one-tap-studio .one-tap-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--text-primary, #eef1eb);
+}
+.one-tap-go {
+  justify-content: center;
+  min-height: 42px;
+}
+.one-tap-controls > small {
+  color: var(--text-secondary, #b7c1b9);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.one-tap-error {
+  color: #ffb4a8;
+  font-size: 13px;
+}
+.one-tap-problems {
+  font-size: 12px;
+  color: #ffd29a;
+}
+@media (max-width: 760px) {
+  .one-tap-grid {
+    grid-template-columns: 1fr;
+  }
+  .one-tap-picture {
+    width: auto;
+    height: 45vh;
+  }
+  .one-tap-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  }
+}

@@ -27,6 +27,11 @@ generation uses the local Comfy engine. Complete recorded examples are in
 [Watch the recorded MCP edit](https://itssnowmobile.github.io/aftertake/agent/).
 [Review the generated product shot and narrated export](https://itssnowmobile.github.io/aftertake/agent/generate.html).
 
+**One photo in, a clip to share out:** [One-tap effects](#one-tap-effects)
+turn a photo into a finished 9:16 clip with a camera move, titles, a transition
+and a song, checked automatically and re-rendered once if the take comes out
+blank, frozen or the wrong length. Each effect is a JSON file you can copy.
+
 **Finish existing footage:** **Color & finish** provides real processed-frame
 comparison, selective HSL, RGB curves, imported LUTs and texture controls.
 **Layers & masks** combines still images and adjustment layers with a real PNG
@@ -75,6 +80,64 @@ download recipes, portable workflows or the original recorded files. Changes
 affect the exported recipe; recorded results stay unchanged. Importing new media,
 generation, optical-flow tracking and film export require the local studio below.
 The public trial has no inference endpoint and uploads no user media.
+
+## One-tap effects
+
+**One-tap effects** turns one photo, or one moment of a short clip, into a
+finished 9:16 clip ready to post. Open it from the start screen or the
+**One-tap effects** button, pick an effect, pick a photo and press **Make it**.
+Each card's preview loop is a real result made in Aftertake.
+
+| Effect | What it does |
+| :--- | :--- |
+| Punch-in | Holds, then crash-zooms onto your subject under a slam title |
+| Product hero spin | A turntable arc around a product, a light sweep and a launch title |
+| Before / after | Your photo as a faded black-and-white still, then a wipe into full color that moves |
+| Wait for it | The photo under a typed tease, a flash, then a pull-back reveal |
+| Vertigo | A dolly zoom with a glitch title |
+| Golden hour | A slow push in warm low sun with a soft caption |
+| Noir | Black and white, handheld, with a typed chapter title |
+| Neon night | An arc in cyan and magenta neon with a glitch title |
+| Whip in | The photo, a whip pan, then a sideways glide with parallax |
+| Living photo | A locked frame while the photo quietly comes to life |
+
+Each effect runs studios Aftertake already has, in order:
+
+1. **Frame.** A wider or taller photo is cropped to 9:16 (a clip gives the frame
+   at the moment you choose). The cropped still is a normal source in your
+   workspace.
+2. **Animate a frame.** LTX-2.5 renders the effect's camera move at 720 × 1280
+   on your GPU, about 2 minutes on an RTX 5080.
+3. **Check.** Aftertake measures the take: a blank or flat picture, a picture
+   that never moves, or the wrong length fails the check, and the take renders
+   once more with a new seed. If both takes fail, the effect stops and says why.
+4. **Cut.** A Film project at 720 × 1280 adds the titles, the transition from the
+   held photo, an ACE-Step song shipped with Aftertake and, unless you turn it
+   off, a small Aftertake watermark. A held photo can first get a Color & finish
+   look, such as Before / after's faded black and white. The finished clip is
+   checked for length too.
+
+The result has **Download**, **Again (new seed)**, which runs the same effect on
+the same photo with a different seed, and an **Aftertake watermark** switch.
+Turning the watermark off or on re-cuts the Film on the CPU in a few seconds; it
+never renders again. Effects started while the GPU is busy wait in line in the
+order they were started, and resume after a restart. In a shared copy, one
+effect counts as one render, including its automatic re-render.
+
+### Add your own effect
+
+Every effect is one JSON file in `presets/one-tap`, checked against
+`oneTapPresetSchema` in `src/one-tap.ts`. Copy one, give it a new `id` (the file
+must be named `<id>.json`) and change what you want: the prompt and the camera
+move, lens, lighting and palette from Animate a frame; the layout (`motion`,
+`before-after` or `reveal`) with its held photo, transition, slow zoom and an
+optional Color & finish look (`stillFinish`); up to
+three titles with any Film title style, one of them `editable`; and a song from
+`presets/music`. The gallery reads the folder each time it opens, so a new file
+appears without restarting. A file that fails the check is listed in the gallery
+with the reason. Songs are ACE-Step renders with their Song studio recipe; add
+one with its JSON file beside the audio. After recording a result, run
+`python scripts/build-one-tap-previews.py` to cut its preview loop.
 
 ## Replace character
 
@@ -590,7 +653,7 @@ reorder cuts, add timed headline/caption/kicker layers with word builds,
 typewriter reveals, impact entrances, slams, word pops, line reveals, glitch
 and scramble entrances, wipes, fades or rises, styled with stamp/highlight boxes,
 display fonts and tilt; style each cut as a dissolve, whip, zoom punch, flash,
-glitch or push,
+glitch, push or wipe,
 then mix voiceover clips against the original sound. The draft player previews
 cuts, titles and audio. Export a 720p landscape, portrait or square MP4 and an
 editable `aftertake-film/2` project containing media hashes, source recipes,

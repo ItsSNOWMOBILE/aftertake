@@ -1,0 +1,117 @@
+{
+  "id": "a0f085f9-d698-4941-b87d-9f5a4334dbf6",
+  "request": {
+    "preset": "vertigo",
+    "clipId": "7b4bfe51-bf3d-4579-bc87-24109e7615c1",
+    "seed": 205,
+    "watermark": true
+  },
+  "preset": {
+    "format": "aftertake-one-tap/1",
+    "id": "vertigo",
+    "title": "Vertigo",
+    "line": "A dolly zoom: your subject stays put while the world stretches behind.",
+    "order": 50,
+    "accepts": [
+      "image",
+      "video"
+    ],
+    "motion": {
+      "prompt": "A tense dolly zoom: the subject stays the same size in the center while the background stretches and rushes away behind them, the light tightening with suspense. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.",
+      "movement": "dolly-zoom",
+      "lens": "natural",
+      "lighting": "source",
+      "palette": "cool",
+      "quality": "final",
+      "resolution": "720p"
+    },
+    "cut": {
+      "layout": "motion"
+    },
+    "titles": [
+      {
+        "text": "WHAT.",
+        "editable": true,
+        "start": 1.8,
+        "end": 4,
+        "style": "headline",
+        "position": "top",
+        "animation": "glitch",
+        "fontSize": 180,
+        "font": "display",
+        "color": "#ffffff"
+      }
+    ],
+    "music": {
+      "track": "rise",
+      "start": 2,
+      "volume": 0.9,
+      "fadeOut": 0.5
+    }
+  },
+  "source": {
+    "id": "7b4bfe51-bf3d-4579-bc87-24109e7615c1",
+    "name": "One-tap sample: man in a trench coat",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "7f21ec83d544519c0a9e394157dfa83b7a6200860717c32b75863645796cf44f",
+    "url": "/media/7b4bfe51-bf3d-4579-bc87-24109e7615c1.png"
+  },
+  "state": "ready",
+  "stage": "Ready to share",
+  "progress": 1,
+  "attempts": [
+    {
+      "seed": 205,
+      "renderId": "4ff945e8-2c22-43f1-9564-37f078964a31",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4.041666666666667,
+          "frames": 97,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 75.96727752685547,
+          "lumaSpread": 59.22465515136719,
+          "motion": 10.314278063566789
+        }
+      }
+    }
+  ],
+  "exports": {
+    "watermark": {
+      "filmId": "c4d84816-2bf8-4f13-916c-c3dba390f9d0",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4,
+          "frames": 96,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 77.35547637939453,
+          "lumaSpread": 60.375633239746094,
+          "motion": 10.322346303773964
+        }
+      }
+    }
+  },
+  "watermark": true,
+  "createdAt": "2026-10-24T20:18:29.212Z",
+  "updatedAt": "2026-10-24T20:29:09.839Z",
+  "frame": {
+    "id": "7b4bfe51-bf3d-4579-bc87-24109e7615c1",
+    "name": "One-tap sample: man in a trench coat",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "7f21ec83d544519c0a9e394157dfa83b7a6200860717c32b75863645796cf44f",
+    "url": "/media/7b4bfe51-bf3d-4579-bc87-24109e7615c1.png"
+  }
+}

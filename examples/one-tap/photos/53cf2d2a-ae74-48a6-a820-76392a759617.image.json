@@ -1,0 +1,144 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "53cf2d2a-ae74-48a6-a820-76392a759617",
+  "request": {
+    "format": "aftertake-image/1",
+    "name": "One-tap sample: beach dog",
+    "prompt": "A happy golden retriever wearing round sunglasses sits on a sunny beach, facing the camera with its tongue out, turquoise waves and a pale blue sky behind it. Bright summer daylight, playful and crisp, the whole dog in frame. No text, logos or watermarks.",
+    "seed": 2208,
+    "aspect": "portrait",
+    "resolution": "720p",
+    "style": "photo"
+  },
+  "workflow": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "z_image_turbo_bf16.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen_3_4b.safetensors",
+        "type": "lumina2",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ae.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "ModelSamplingAuraFlow",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "shift": 3
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "A happy golden retriever wearing round sunglasses sits on a sunny beach, facing the camera with its tongue out, turquoise waves and a pale blue sky behind it. Bright summer daylight, playful and crisp, the whole dog in frame. No text, logos or watermarks.\n\nPhotographic image, natural material detail, believable lighting and coherent perspective."
+      }
+    },
+    "6": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "EmptySD3LatentImage",
+      "inputs": {
+        "width": 720,
+        "height": 1280,
+        "batch_size": 1
+      }
+    },
+    "17": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "4",
+          0
+        ],
+        "seed": 2208,
+        "steps": 8,
+        "cfg": 1,
+        "sampler_name": "res_multistep",
+        "scheduler": "simple",
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "latent_image": [
+          "7",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "21": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "filename_prefix": "aftertake/imagine"
+      }
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-24T19:57:26.668Z",
+  "updatedAt": "2026-10-24T19:57:54.845Z",
+  "jobId": "297e911c-d2a1-4144-97b8-43812648dd61",
+  "stage": "Ready to edit or animate",
+  "clip": {
+    "id": "53cf2d2a-ae74-48a6-a820-76392a759617",
+    "name": "One-tap sample: beach dog",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "09b28bdfc544485ada0b42a1eca49a69883ccbbd01436a72127cc1129e05fbef",
+    "url": "/media/53cf2d2a-ae74-48a6-a820-76392a759617.png"
+  }
+}

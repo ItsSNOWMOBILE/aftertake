@@ -1,0 +1,40 @@
+{
+  "format": "aftertake-one-tap/1",
+  "id": "vertigo",
+  "title": "Vertigo",
+  "line": "A dolly zoom: your subject stays put while the world stretches behind.",
+  "order": 50,
+  "accepts": ["image", "video"],
+  "motion": {
+    "prompt": "A tense dolly zoom: the subject stays the same size in the center while the background stretches and rushes away behind them, the light tightening with suspense. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
+    "movement": "dolly-zoom",
+    "lens": "natural",
+    "lighting": "source",
+    "palette": "cool",
+    "quality": "final",
+    "resolution": "720p"
+  },
+  "cut": {
+    "layout": "motion"
+  },
+  "titles": [
+    {
+      "text": "WHAT.",
+      "editable": true,
+      "start": 1.8,
+      "end": 4,
+      "style": "headline",
+      "position": "top",
+      "animation": "glitch",
+      "font": "display",
+      "fontSize": 180,
+      "color": "#ffffff"
+    }
+  ],
+  "music": {
+    "track": "rise",
+    "start": 2,
+    "volume": 0.9,
+    "fadeOut": 0.5
+  }
+}

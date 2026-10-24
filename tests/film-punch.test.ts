@@ -18,7 +18,13 @@ import {
   slamMotion,
   titleMotion,
 } from '../src/title-motion.js';
-import { transitionPose, zoomScale, flashAmount, whipBlur } from '../src/film-transitions.js';
+import {
+  transitionPose,
+  zoomScale,
+  flashAmount,
+  whipBlur,
+  wipeEdge,
+} from '../src/film-transitions.js';
 
 const sha256 = 'a'.repeat(64);
 const shot = (patch = {}) => ({ assetId: randomUUID(), start: 0, end: 2, ...patch });
@@ -146,4 +152,14 @@ test('transition poses hand over between pictures without gaps', () => {
     assert.equal(transitionPose(kind, 0.5, 'outgoing').visible, false);
   }
   assert.equal(transitionPose(undefined, 0.25, 'incoming').opacity, 0.25);
+});
+
+test('a wipe reveals the incoming picture from the left at the renderer edge', () => {
+  assert.equal(wipeEdge(0), 0);
+  assert.equal(wipeEdge(0.5), 0.5);
+  assert.equal(wipeEdge(1), 1);
+  assert.equal(transitionPose('wipe', 0.25, 'incoming').reveal, wipeEdge(0.25));
+  const outgoing = transitionPose('wipe', 0.25, 'outgoing');
+  assert.equal(outgoing.reveal, undefined);
+  assert.equal(outgoing.visible && outgoing.opacity, 1);
 });

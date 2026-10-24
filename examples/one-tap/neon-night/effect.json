@@ -1,0 +1,117 @@
+{
+  "id": "b66778b0-1b68-40eb-8cd7-34b2d9d68f1b",
+  "request": {
+    "preset": "neon-night",
+    "clipId": "7b4bfe51-bf3d-4579-bc87-24109e7615c1",
+    "seed": 701,
+    "watermark": true
+  },
+  "preset": {
+    "format": "aftertake-one-tap/1",
+    "id": "neon-night",
+    "title": "Neon night",
+    "line": "An arc around your subject in cyan and magenta neon, cut with a glitch title.",
+    "order": 80,
+    "accepts": [
+      "image",
+      "video"
+    ],
+    "motion": {
+      "prompt": "Night falls into a neon-lit scene: cyan and magenta light glows and reflects across every surface, a faint haze hangs in the air and signs flicker softly. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
+      "movement": "orbit",
+      "lens": "anamorphic",
+      "lighting": "neon",
+      "palette": "cool",
+      "quality": "final",
+      "resolution": "720p"
+    },
+    "cut": {
+      "layout": "motion"
+    },
+    "titles": [
+      {
+        "text": "AFTER DARK",
+        "editable": true,
+        "start": 0.8,
+        "end": 4,
+        "style": "headline",
+        "position": "top",
+        "animation": "glitch",
+        "fontSize": 165,
+        "font": "condensed",
+        "color": "#ffffff"
+      }
+    ],
+    "music": {
+      "track": "punch",
+      "start": 3.43,
+      "volume": 0.9,
+      "fadeOut": 0.5
+    }
+  },
+  "source": {
+    "id": "7b4bfe51-bf3d-4579-bc87-24109e7615c1",
+    "name": "One-tap sample: man in a trench coat",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "7f21ec83d544519c0a9e394157dfa83b7a6200860717c32b75863645796cf44f",
+    "url": "/media/7b4bfe51-bf3d-4579-bc87-24109e7615c1.png"
+  },
+  "state": "ready",
+  "stage": "Ready to share",
+  "progress": 1,
+  "attempts": [
+    {
+      "seed": 701,
+      "renderId": "2180d62d-830a-4544-a922-ecb691e7dda8",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4.041666666666667,
+          "frames": 97,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 70.51598358154297,
+          "lumaSpread": 46.861778259277344,
+          "motion": 10.111085904681165
+        }
+      }
+    }
+  ],
+  "exports": {
+    "watermark": {
+      "filmId": "7cd2bb6d-16a7-41fc-8f64-5dd19f94a7a8",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4,
+          "frames": 96,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 73.7351303100586,
+          "lumaSpread": 49.723487854003906,
+          "motion": 10.108485970808113
+        }
+      }
+    }
+  },
+  "watermark": true,
+  "createdAt": "2026-10-24T20:46:19.891Z",
+  "updatedAt": "2026-10-24T20:48:12.332Z",
+  "frame": {
+    "id": "7b4bfe51-bf3d-4579-bc87-24109e7615c1",
+    "name": "One-tap sample: man in a trench coat",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "7f21ec83d544519c0a9e394157dfa83b7a6200860717c32b75863645796cf44f",
+    "url": "/media/7b4bfe51-bf3d-4579-bc87-24109e7615c1.png"
+  }
+}

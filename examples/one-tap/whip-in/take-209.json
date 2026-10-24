@@ -1,0 +1,279 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "21c34f03-e79d-47a6-bc27-9b8ee2ee9abe",
+  "requestKey": "one-tap-3c1927e8-10a8-4f17-a717-e6b3c9741519-0",
+  "requestDigest": "cd9731e35b70e3fa7e98a411e9b71009a632df045767264f7c41475b4fd60451",
+  "recipe": {
+    "format": "aftertake/1",
+    "name": "Whip in · seed 209",
+    "clip": {
+      "id": "4c2138d1-774b-4ee0-ba9b-cfb8177814f4",
+      "name": "One-tap sample: sneaker",
+      "sha256": "d8cf30b98f478926d92eff1de2bc6b7237a08c052e0c460f2120efafc9d4656a",
+      "width": 720,
+      "height": 1280,
+      "duration": 1,
+      "url": "/media/4c2138d1-774b-4ee0-ba9b-cfb8177814f4.png",
+      "kind": "image",
+      "hasAudio": false
+    },
+    "prompt": "The camera glides sideways past the subject with lively parallax, foreground and background sliding at different speeds while the scene moves naturally. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.",
+    "cue": {
+      "start": 0,
+      "end": 1,
+      "fade": 0.25,
+      "feather": 0.06,
+      "strokes": []
+    },
+    "seed": 209,
+    "quality": "final",
+    "resolution": "720p",
+    "trimStart": 0,
+    "pipeline": "cinema",
+    "cinema": {
+      "movement": "truck",
+      "lens": "wide",
+      "lighting": "daylight",
+      "palette": "source",
+      "guidance": "prompt"
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-24T20:21:59.499Z",
+  "updatedAt": "2026-10-24T20:23:41.464Z",
+  "workflow": {
+    "1": {
+      "class_type": "UnetLoaderGGUF",
+      "inputs": {
+        "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+        "type": "ltxv",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "The camera dollies sideways to the left in one steady move, parallel to the scene; nearby objects pass faster than the background, with strong parallax. The camera glides sideways past the subject with lively parallax, foreground and background sliding at different speeds while the scene moves naturally. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people. One continuous cinematic shot, beginning from the supplied reference frame. Wide-angle perspective with deep focus and an expansive sense of space. Soft diffused daylight, gently modeled shadows and a natural range of brightness. Keep the reference color relationships coherent throughout the shot. The scene remains coherent over time."
+      }
+    },
+    "6": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": ""
+      }
+    },
+    "7": {
+      "class_type": "LTXVConditioning",
+      "inputs": {
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "frame_rate": 24
+      }
+    },
+    "8": {
+      "class_type": "AftertakeLoadClip",
+      "inputs": {
+        "filename": "4c2138d1-774b-4ee0-ba9b-cfb8177814f4.png",
+        "width": 720,
+        "height": 1280,
+        "frames": 1,
+        "fps": 24,
+        "trim_start": 0
+      }
+    },
+    "11": {
+      "class_type": "EmptyLTXVLatentVideo",
+      "inputs": {
+        "width": 736,
+        "height": 1280,
+        "length": 97,
+        "batch_size": 1
+      }
+    },
+    "12": {
+      "class_type": "LTXVImgToVideoInplace",
+      "inputs": {
+        "vae": [
+          "3",
+          0
+        ],
+        "image": [
+          "hd_pad_8",
+          0
+        ],
+        "latent": [
+          "11",
+          0
+        ],
+        "strength": 1,
+        "bypass": false
+      }
+    },
+    "13": {
+      "class_type": "RandomNoise",
+      "inputs": {
+        "noise_seed": 209
+      }
+    },
+    "14": {
+      "class_type": "KSamplerSelect",
+      "inputs": {
+        "sampler_name": "euler_ancestral"
+      }
+    },
+    "15": {
+      "class_type": "ManualSigmas",
+      "inputs": {
+        "sigmas": "1., 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+      }
+    },
+    "16": {
+      "class_type": "BasicGuider",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "conditioning": [
+          "7",
+          0
+        ]
+      }
+    },
+    "17": {
+      "class_type": "SamplerCustomAdvanced",
+      "inputs": {
+        "noise": [
+          "13",
+          0
+        ],
+        "guider": [
+          "16",
+          0
+        ],
+        "sampler": [
+          "14",
+          0
+        ],
+        "sigmas": [
+          "15",
+          0
+        ],
+        "latent_image": [
+          "12",
+          0
+        ]
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "20": {
+      "class_type": "AftertakeFilmGrade",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "palette": "source"
+      }
+    },
+    "21": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "hd_crop_21",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/cinema",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Whip in · seed 209\",\"clip\":{\"id\":\"4c2138d1-774b-4ee0-ba9b-cfb8177814f4\",\"name\":\"One-tap sample: sneaker\",\"sha256\":\"d8cf30b98f478926d92eff1de2bc6b7237a08c052e0c460f2120efafc9d4656a\",\"width\":720,\"height\":1280,\"duration\":1,\"url\":\"/media/4c2138d1-774b-4ee0-ba9b-cfb8177814f4.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"The camera glides sideways past the subject with lively parallax, foreground and background sliding at different speeds while the scene moves naturally. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.\",\"cue\":{\"start\":0,\"end\":1,\"fade\":0.25,\"feather\":0.06,\"strokes\":[]},\"seed\":209,\"quality\":\"final\",\"resolution\":\"720p\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"truck\",\"lens\":\"wide\",\"lighting\":\"daylight\",\"palette\":\"source\",\"guidance\":\"prompt\"}}",
+        "display_width": 720,
+        "display_height": 1280
+      }
+    },
+    "22": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/generation",
+        "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Whip in · seed 209\",\"clip\":{\"id\":\"4c2138d1-774b-4ee0-ba9b-cfb8177814f4\",\"name\":\"One-tap sample: sneaker\",\"sha256\":\"d8cf30b98f478926d92eff1de2bc6b7237a08c052e0c460f2120efafc9d4656a\",\"width\":720,\"height\":1280,\"duration\":1,\"url\":\"/media/4c2138d1-774b-4ee0-ba9b-cfb8177814f4.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"The camera glides sideways past the subject with lively parallax, foreground and background sliding at different speeds while the scene moves naturally. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.\",\"cue\":{\"start\":0,\"end\":1,\"fade\":0.25,\"feather\":0.06,\"strokes\":[]},\"seed\":209,\"quality\":\"final\",\"resolution\":\"720p\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"truck\",\"lens\":\"wide\",\"lighting\":\"daylight\",\"palette\":\"source\",\"guidance\":\"prompt\"}}"
+      }
+    },
+    "hd_pad_8": {
+      "class_type": "ImagePadForOutpaint",
+      "inputs": {
+        "image": [
+          "8",
+          0
+        ],
+        "left": 8,
+        "top": 0,
+        "right": 8,
+        "bottom": 0,
+        "feathering": 0
+      }
+    },
+    "hd_crop_21": {
+      "class_type": "ImageCrop",
+      "inputs": {
+        "image": [
+          "20",
+          0
+        ],
+        "width": 720,
+        "height": 1280,
+        "x": 8,
+        "y": 0
+      }
+    }
+  },
+  "jobId": "113f91c0-0d5b-4d74-b6a9-d30f9959db16",
+  "stage": "Complete",
+  "output": "/outputs/21c34f03-e79d-47a6-bc27-9b8ee2ee9abe.mp4"
+}

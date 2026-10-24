@@ -1,0 +1,346 @@
+{
+  "id": "25d163da-e2a7-49d4-8244-3e0d5fd97321",
+  "name": "Punch-in",
+  "aspect": "portrait",
+  "shots": [
+    {
+      "renderId": "6919c50c-5600-49dc-a211-1b6bb49948ff",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 4,
+      "title": "Punch-in · seed 201",
+      "sha256": "c9c4b516296e83ad10d38fc576032f687c243b131c97aa49cf8c80b8dc5a6685",
+      "recipe": {
+        "format": "aftertake/1",
+        "name": "Punch-in · seed 201",
+        "clip": {
+          "id": "f64c2048-c27f-4b38-a7f7-b8e966101d22",
+          "name": "One-tap sample: city portrait",
+          "sha256": "cfe11fc4780a99f05014797dccbe947ceed8410cb7769e74bbb5a2800cadfd1e",
+          "width": 720,
+          "height": 1280,
+          "duration": 1,
+          "url": "/media/f64c2048-c27f-4b38-a7f7-b8e966101d22.png",
+          "kind": "image",
+          "hasAudio": false
+        },
+        "prompt": "The scene holds still for a moment, then the camera punches in hard on the main subject with a burst of energy; hair, fabric and light react to the sudden move. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.",
+        "cue": {
+          "start": 0,
+          "end": 1,
+          "fade": 0.25,
+          "feather": 0.06,
+          "strokes": []
+        },
+        "seed": 201,
+        "quality": "final",
+        "resolution": "720p",
+        "trimStart": 0,
+        "pipeline": "cinema",
+        "cinema": {
+          "movement": "crash-zoom",
+          "lens": "natural",
+          "lighting": "source",
+          "palette": "source",
+          "guidance": "prompt"
+        }
+      },
+      "workflow": {
+        "1": {
+          "class_type": "UnetLoaderGGUF",
+          "inputs": {
+            "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+            "type": "ltxv",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+          }
+        },
+        "5": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "text": "The camera holds, then zooms in fast and hard on the subject in a sudden energetic crash zoom that lands close. The scene holds still for a moment, then the camera punches in hard on the main subject with a burst of energy; hair, fabric and light react to the sudden move. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people. One continuous cinematic shot, beginning from the supplied reference frame. Natural perspective, crisp believable detail and moderate depth of field. Lighting direction and exposure remain consistent with the reference frame. Keep the reference color relationships coherent throughout the shot. The scene remains coherent over time."
+          }
+        },
+        "6": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "text": ""
+          }
+        },
+        "7": {
+          "class_type": "LTXVConditioning",
+          "inputs": {
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "6",
+              0
+            ],
+            "frame_rate": 24
+          }
+        },
+        "8": {
+          "class_type": "AftertakeLoadClip",
+          "inputs": {
+            "filename": "f64c2048-c27f-4b38-a7f7-b8e966101d22.png",
+            "width": 720,
+            "height": 1280,
+            "frames": 1,
+            "fps": 24,
+            "trim_start": 0
+          }
+        },
+        "11": {
+          "class_type": "EmptyLTXVLatentVideo",
+          "inputs": {
+            "width": 736,
+            "height": 1280,
+            "length": 97,
+            "batch_size": 1
+          }
+        },
+        "12": {
+          "class_type": "LTXVImgToVideoInplace",
+          "inputs": {
+            "vae": [
+              "3",
+              0
+            ],
+            "image": [
+              "hd_pad_8",
+              0
+            ],
+            "latent": [
+              "11",
+              0
+            ],
+            "strength": 1,
+            "bypass": false
+          }
+        },
+        "13": {
+          "class_type": "RandomNoise",
+          "inputs": {
+            "noise_seed": 201
+          }
+        },
+        "14": {
+          "class_type": "KSamplerSelect",
+          "inputs": {
+            "sampler_name": "euler_ancestral"
+          }
+        },
+        "15": {
+          "class_type": "ManualSigmas",
+          "inputs": {
+            "sigmas": "1., 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+          }
+        },
+        "16": {
+          "class_type": "BasicGuider",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "conditioning": [
+              "7",
+              0
+            ]
+          }
+        },
+        "17": {
+          "class_type": "SamplerCustomAdvanced",
+          "inputs": {
+            "noise": [
+              "13",
+              0
+            ],
+            "guider": [
+              "16",
+              0
+            ],
+            "sampler": [
+              "14",
+              0
+            ],
+            "sigmas": [
+              "15",
+              0
+            ],
+            "latent_image": [
+              "12",
+              0
+            ]
+          }
+        },
+        "19": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "17",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "20": {
+          "class_type": "AftertakeFilmGrade",
+          "inputs": {
+            "images": [
+              "19",
+              0
+            ],
+            "palette": "source"
+          }
+        },
+        "21": {
+          "class_type": "AftertakeSaveVideo",
+          "inputs": {
+            "images": [
+              "hd_crop_21",
+              0
+            ],
+            "fps": 24,
+            "filename_prefix": "aftertake/cinema",
+            "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Punch-in · seed 201\",\"clip\":{\"id\":\"f64c2048-c27f-4b38-a7f7-b8e966101d22\",\"name\":\"One-tap sample: city portrait\",\"sha256\":\"cfe11fc4780a99f05014797dccbe947ceed8410cb7769e74bbb5a2800cadfd1e\",\"width\":720,\"height\":1280,\"duration\":1,\"url\":\"/media/f64c2048-c27f-4b38-a7f7-b8e966101d22.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"The scene holds still for a moment, then the camera punches in hard on the main subject with a burst of energy; hair, fabric and light react to the sudden move. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.\",\"cue\":{\"start\":0,\"end\":1,\"fade\":0.25,\"feather\":0.06,\"strokes\":[]},\"seed\":201,\"quality\":\"final\",\"resolution\":\"720p\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"crash-zoom\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"prompt\"}}",
+            "display_width": 720,
+            "display_height": 1280
+          }
+        },
+        "22": {
+          "class_type": "AftertakeSaveVideo",
+          "inputs": {
+            "images": [
+              "19",
+              0
+            ],
+            "fps": 24,
+            "filename_prefix": "aftertake/generation",
+            "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Punch-in · seed 201\",\"clip\":{\"id\":\"f64c2048-c27f-4b38-a7f7-b8e966101d22\",\"name\":\"One-tap sample: city portrait\",\"sha256\":\"cfe11fc4780a99f05014797dccbe947ceed8410cb7769e74bbb5a2800cadfd1e\",\"width\":720,\"height\":1280,\"duration\":1,\"url\":\"/media/f64c2048-c27f-4b38-a7f7-b8e966101d22.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"The scene holds still for a moment, then the camera punches in hard on the main subject with a burst of energy; hair, fabric and light react to the sudden move. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.\",\"cue\":{\"start\":0,\"end\":1,\"fade\":0.25,\"feather\":0.06,\"strokes\":[]},\"seed\":201,\"quality\":\"final\",\"resolution\":\"720p\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"crash-zoom\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"prompt\"}}"
+          }
+        },
+        "hd_pad_8": {
+          "class_type": "ImagePadForOutpaint",
+          "inputs": {
+            "image": [
+              "8",
+              0
+            ],
+            "left": 8,
+            "top": 0,
+            "right": 8,
+            "bottom": 0,
+            "feathering": 0
+          }
+        },
+        "hd_crop_21": {
+          "class_type": "ImageCrop",
+          "inputs": {
+            "image": [
+              "20",
+              0
+            ],
+            "width": 720,
+            "height": 1280,
+            "x": 8,
+            "y": 0
+          }
+        }
+      }
+    }
+  ],
+  "requestKey": "one-tap-8f71cd8d-5f92-44a0-9bd6-a38b0db3493b-watermark-1",
+  "requestDigest": "46ce0cf3d043d3f4a02032ef4dfb6a96588a2bfe3ed388c8473380d17cf03a17",
+  "titles": [
+    {
+      "id": "54a6f5e6-c799-4547-9e35-0e534b748f23",
+      "text": "NO WAY",
+      "start": 1.4,
+      "end": 4,
+      "style": "headline",
+      "position": "top",
+      "animation": "slam",
+      "fontSize": 180,
+      "font": "display",
+      "box": "stamp",
+      "color": "#ffffff"
+    }
+  ],
+  "graphics": [
+    {
+      "id": "aea83fd9-055a-4d7f-bfc2-679a6ab58566",
+      "name": "Aftertake watermark",
+      "kind": "image",
+      "start": 0,
+      "end": 4,
+      "x": 0.84,
+      "y": 0.9492021276595745,
+      "width": 0.24,
+      "height": 0.03159574468085106,
+      "color": "#ffffff",
+      "opacity": 0.82,
+      "fit": "contain",
+      "assetId": "395f60be-bee4-4ca6-8416-4ef6010aa417",
+      "sha256": "035cdbf574a540bf7433f82449f1988277e644b69b50fc971c6c2740c567783c"
+    }
+  ],
+  "audio": [
+    {
+      "assetId": "6a58b072-ce3a-4f96-ab64-2d8e9e83fe13",
+      "start": 0,
+      "sourceStart": 0,
+      "sourceEnd": 4,
+      "volume": 0.9,
+      "fadeIn": 0,
+      "fadeOut": 0.5,
+      "sha256": "06b8f434a6a0b0a1eb5c37755a281d59bee81e671b93a9e2b2a628e1a00446c7",
+      "asset": {
+        "kind": "audio",
+        "duration": 16,
+        "id": "6a58b072-ce3a-4f96-ab64-2d8e9e83fe13",
+        "name": "punch.m4a",
+        "extension": ".m4a",
+        "sha256": "06b8f434a6a0b0a1eb5c37755a281d59bee81e671b93a9e2b2a628e1a00446c7",
+        "url": "/api/films/assets/6a58b072-ce3a-4f96-ab64-2d8e9e83fe13/media",
+        "createdAt": "2026-10-24T20:05:15.268Z"
+      }
+    }
+  ],
+  "sourceVolume": 0,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 4,
+  "createdAt": "2026-10-24T20:11:35.043Z",
+  "output": "/api/films/25d163da-e2a7-49d4-8244-3e0d5fd97321/video"
+}

@@ -1,0 +1,40 @@
+{
+  "format": "aftertake-one-tap/1",
+  "id": "neon-night",
+  "title": "Neon night",
+  "line": "An arc around your subject in cyan and magenta neon, cut with a glitch title.",
+  "order": 80,
+  "accepts": ["image", "video"],
+  "motion": {
+    "prompt": "Night falls into a neon-lit scene: cyan and magenta light glows and reflects across every surface, a faint haze hangs in the air and signs flicker softly. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
+    "movement": "orbit",
+    "lens": "anamorphic",
+    "lighting": "neon",
+    "palette": "cool",
+    "quality": "final",
+    "resolution": "720p"
+  },
+  "cut": {
+    "layout": "motion"
+  },
+  "titles": [
+    {
+      "text": "AFTER DARK",
+      "editable": true,
+      "start": 0.8,
+      "end": 4,
+      "style": "headline",
+      "position": "top",
+      "animation": "glitch",
+      "font": "condensed",
+      "fontSize": 165,
+      "color": "#ffffff"
+    }
+  ],
+  "music": {
+    "track": "punch",
+    "start": 3.43,
+    "volume": 0.9,
+    "fadeOut": 0.5
+  }
+}

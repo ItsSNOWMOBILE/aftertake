@@ -394,6 +394,9 @@ function ShotPicture({
         }
       : {}),
     ...(pose?.blur ? { filter: `blur(${pose.blur * 30}cqw)` } : {}),
+    ...(pose?.reveal !== undefined
+      ? { clipPath: `inset(0 ${((1 - pose.reveal) * 100).toFixed(3)}% 0 0)` }
+      : {}),
   };
   useEffect(() => {
     onReadiness(false);

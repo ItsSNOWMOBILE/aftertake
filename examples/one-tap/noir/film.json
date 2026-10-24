@@ -1,0 +1,345 @@
+{
+  "id": "6e568e41-07b2-439b-9b03-55c818ce9a3c",
+  "name": "Noir",
+  "aspect": "portrait",
+  "shots": [
+    {
+      "renderId": "b139feda-bfeb-4b6c-95c7-6faddc47bcc8",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 4,
+      "title": "Noir · seed 207",
+      "sha256": "5608fa8297a10c09468d2c69e3d2815a9d388ed3c77c118c3ccddd57e981721c",
+      "recipe": {
+        "format": "aftertake/1",
+        "name": "Noir · seed 207",
+        "clip": {
+          "id": "7b4bfe51-bf3d-4579-bc87-24109e7615c1",
+          "name": "One-tap sample: man in a trench coat",
+          "sha256": "7f21ec83d544519c0a9e394157dfa83b7a6200860717c32b75863645796cf44f",
+          "width": 720,
+          "height": 1280,
+          "duration": 1,
+          "url": "/media/7b4bfe51-bf3d-4579-bc87-24109e7615c1.png",
+          "kind": "image",
+          "hasAudio": false
+        },
+        "prompt": "A moody film-noir moment: soft haze drifts through hard slatted light, shadows shift slowly and the scene breathes with quiet tension. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.",
+        "cue": {
+          "start": 0,
+          "end": 1,
+          "fade": 0.25,
+          "feather": 0.06,
+          "strokes": []
+        },
+        "seed": 207,
+        "quality": "final",
+        "resolution": "720p",
+        "trimStart": 0,
+        "pipeline": "cinema",
+        "cinema": {
+          "movement": "handheld",
+          "lens": "anamorphic",
+          "lighting": "moonlight",
+          "palette": "monochrome",
+          "guidance": "prompt"
+        }
+      },
+      "workflow": {
+        "1": {
+          "class_type": "UnetLoaderGGUF",
+          "inputs": {
+            "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+            "type": "ltxv",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+          }
+        },
+        "5": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "text": "A handheld camera with subtle natural sway and breathing movement, slightly imperfect but steady, documentary feel. A moody film-noir moment: soft haze drifts through hard slatted light, shadows shift slowly and the scene breathes with quiet tension. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people. One continuous cinematic shot, beginning from the supplied reference frame. Anamorphic lens character, soft oval bokeh, restrained horizontal highlights and gentle edge falloff. Cool moonlight, delicate silvery edges and restrained atmospheric darkness. Black-and-white cinematography with nuanced grayscale and deep tonal separation. The scene remains coherent over time."
+          }
+        },
+        "6": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "text": ""
+          }
+        },
+        "7": {
+          "class_type": "LTXVConditioning",
+          "inputs": {
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "6",
+              0
+            ],
+            "frame_rate": 24
+          }
+        },
+        "8": {
+          "class_type": "AftertakeLoadClip",
+          "inputs": {
+            "filename": "7b4bfe51-bf3d-4579-bc87-24109e7615c1.png",
+            "width": 720,
+            "height": 1280,
+            "frames": 1,
+            "fps": 24,
+            "trim_start": 0
+          }
+        },
+        "11": {
+          "class_type": "EmptyLTXVLatentVideo",
+          "inputs": {
+            "width": 736,
+            "height": 1280,
+            "length": 97,
+            "batch_size": 1
+          }
+        },
+        "12": {
+          "class_type": "LTXVImgToVideoInplace",
+          "inputs": {
+            "vae": [
+              "3",
+              0
+            ],
+            "image": [
+              "hd_pad_8",
+              0
+            ],
+            "latent": [
+              "11",
+              0
+            ],
+            "strength": 1,
+            "bypass": false
+          }
+        },
+        "13": {
+          "class_type": "RandomNoise",
+          "inputs": {
+            "noise_seed": 207
+          }
+        },
+        "14": {
+          "class_type": "KSamplerSelect",
+          "inputs": {
+            "sampler_name": "euler_ancestral"
+          }
+        },
+        "15": {
+          "class_type": "ManualSigmas",
+          "inputs": {
+            "sigmas": "1., 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+          }
+        },
+        "16": {
+          "class_type": "BasicGuider",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "conditioning": [
+              "7",
+              0
+            ]
+          }
+        },
+        "17": {
+          "class_type": "SamplerCustomAdvanced",
+          "inputs": {
+            "noise": [
+              "13",
+              0
+            ],
+            "guider": [
+              "16",
+              0
+            ],
+            "sampler": [
+              "14",
+              0
+            ],
+            "sigmas": [
+              "15",
+              0
+            ],
+            "latent_image": [
+              "12",
+              0
+            ]
+          }
+        },
+        "19": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "17",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "20": {
+          "class_type": "AftertakeFilmGrade",
+          "inputs": {
+            "images": [
+              "19",
+              0
+            ],
+            "palette": "monochrome"
+          }
+        },
+        "21": {
+          "class_type": "AftertakeSaveVideo",
+          "inputs": {
+            "images": [
+              "hd_crop_21",
+              0
+            ],
+            "fps": 24,
+            "filename_prefix": "aftertake/cinema",
+            "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Noir · seed 207\",\"clip\":{\"id\":\"7b4bfe51-bf3d-4579-bc87-24109e7615c1\",\"name\":\"One-tap sample: man in a trench coat\",\"sha256\":\"7f21ec83d544519c0a9e394157dfa83b7a6200860717c32b75863645796cf44f\",\"width\":720,\"height\":1280,\"duration\":1,\"url\":\"/media/7b4bfe51-bf3d-4579-bc87-24109e7615c1.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A moody film-noir moment: soft haze drifts through hard slatted light, shadows shift slowly and the scene breathes with quiet tension. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.\",\"cue\":{\"start\":0,\"end\":1,\"fade\":0.25,\"feather\":0.06,\"strokes\":[]},\"seed\":207,\"quality\":\"final\",\"resolution\":\"720p\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"handheld\",\"lens\":\"anamorphic\",\"lighting\":\"moonlight\",\"palette\":\"monochrome\",\"guidance\":\"prompt\"}}",
+            "display_width": 720,
+            "display_height": 1280
+          }
+        },
+        "22": {
+          "class_type": "AftertakeSaveVideo",
+          "inputs": {
+            "images": [
+              "19",
+              0
+            ],
+            "fps": 24,
+            "filename_prefix": "aftertake/generation",
+            "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Noir · seed 207\",\"clip\":{\"id\":\"7b4bfe51-bf3d-4579-bc87-24109e7615c1\",\"name\":\"One-tap sample: man in a trench coat\",\"sha256\":\"7f21ec83d544519c0a9e394157dfa83b7a6200860717c32b75863645796cf44f\",\"width\":720,\"height\":1280,\"duration\":1,\"url\":\"/media/7b4bfe51-bf3d-4579-bc87-24109e7615c1.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"A moody film-noir moment: soft haze drifts through hard slatted light, shadows shift slowly and the scene breathes with quiet tension. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.\",\"cue\":{\"start\":0,\"end\":1,\"fade\":0.25,\"feather\":0.06,\"strokes\":[]},\"seed\":207,\"quality\":\"final\",\"resolution\":\"720p\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"handheld\",\"lens\":\"anamorphic\",\"lighting\":\"moonlight\",\"palette\":\"monochrome\",\"guidance\":\"prompt\"}}"
+          }
+        },
+        "hd_pad_8": {
+          "class_type": "ImagePadForOutpaint",
+          "inputs": {
+            "image": [
+              "8",
+              0
+            ],
+            "left": 8,
+            "top": 0,
+            "right": 8,
+            "bottom": 0,
+            "feathering": 0
+          }
+        },
+        "hd_crop_21": {
+          "class_type": "ImageCrop",
+          "inputs": {
+            "image": [
+              "20",
+              0
+            ],
+            "width": 720,
+            "height": 1280,
+            "x": 8,
+            "y": 0
+          }
+        }
+      }
+    }
+  ],
+  "requestKey": "one-tap-2c9aadaa-5095-4d13-83d4-f04d906fc1c5-watermark-1",
+  "requestDigest": "87e5fe80b6ce640b31bc15db1fc236519d1b27220fec9c5d4ddddf47351801cd",
+  "titles": [
+    {
+      "id": "323655c6-3d2c-4459-8c2f-b5260896aac3",
+      "text": "Chapter One",
+      "start": 0.5,
+      "end": 4,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "typewriter",
+      "fontSize": 96,
+      "font": "mono",
+      "color": "#f2f2f2"
+    }
+  ],
+  "graphics": [
+    {
+      "id": "f48ee008-9a03-4bd3-8423-d91ed3fd7624",
+      "name": "Aftertake watermark",
+      "kind": "image",
+      "start": 0,
+      "end": 4,
+      "x": 0.84,
+      "y": 0.9492021276595745,
+      "width": 0.24,
+      "height": 0.03159574468085106,
+      "color": "#ffffff",
+      "opacity": 0.82,
+      "fit": "contain",
+      "assetId": "395f60be-bee4-4ca6-8416-4ef6010aa417",
+      "sha256": "035cdbf574a540bf7433f82449f1988277e644b69b50fc971c6c2740c567783c"
+    }
+  ],
+  "audio": [
+    {
+      "assetId": "31ace06e-8a8c-4497-8a98-befb68920b7e",
+      "start": 0,
+      "sourceStart": 4,
+      "sourceEnd": 8,
+      "volume": 0.8,
+      "fadeIn": 0,
+      "fadeOut": 0.7,
+      "sha256": "3bada0eef9902488a00ce91e01a28fe80823f08be5633f6dd19d17b7e1df1d3c",
+      "asset": {
+        "kind": "audio",
+        "duration": 16,
+        "id": "31ace06e-8a8c-4497-8a98-befb68920b7e",
+        "name": "rise.m4a",
+        "extension": ".m4a",
+        "sha256": "3bada0eef9902488a00ce91e01a28fe80823f08be5633f6dd19d17b7e1df1d3c",
+        "url": "/api/films/assets/31ace06e-8a8c-4497-8a98-befb68920b7e/media",
+        "createdAt": "2026-10-24T20:16:47.250Z"
+      }
+    }
+  ],
+  "sourceVolume": 0,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 4,
+  "createdAt": "2026-10-24T20:20:14.158Z",
+  "output": "/api/films/6e568e41-07b2-439b-9b03-55c818ce9a3c/video"
+}

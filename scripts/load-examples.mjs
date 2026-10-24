@@ -13,6 +13,25 @@ function within(base, relative) {
     throw new Error('Example path must stay inside its directory');
   return resolved;
 }
+/**
+ * A recorded one-tap effect gains cuts when someone switches its watermark, which
+ * rewrites its record. The same effect, newer, is kept rather than refused.
+ */
+export function visitorCopy(target, existing, recorded) {
+  if (!/^one-tap\/[a-f0-9-]{36}\.json$/.test(target)) return false;
+  try {
+    const mine = JSON.parse(existing.toString('utf8')),
+      theirs = JSON.parse(recorded.toString('utf8'));
+    return (
+      mine.id === theirs.id &&
+      mine.createdAt === theirs.createdAt &&
+      mine.state === 'ready' &&
+      mine.exports?.watermark?.filmId === theirs.exports?.watermark?.filmId
+    );
+  } catch {
+    return false;
+  }
+}
 export async function loadExamples(directory = '.data-demo') {
   const data = path.resolve(root, directory);
   const manifest = JSON.parse(await readFile(path.join(examples, 'manifest.json'), 'utf8'));
@@ -34,7 +53,7 @@ export async function loadExamples(directory = '.data-demo') {
           );
         } catch {}
       }
-      if (hash(existing) !== file.sha256 && !sameJson)
+      if (hash(existing) !== file.sha256 && !sameJson && !visitorCopy(file.target, existing, bytes))
         throw new Error(`Preserving an existing different file: ${target}`);
       continue;
     }

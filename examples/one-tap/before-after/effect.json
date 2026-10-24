@@ -1,0 +1,153 @@
+{
+  "id": "6e7863b3-af74-461b-83b3-71189b422ed4",
+  "request": {
+    "preset": "before-after",
+    "clipId": "f64c2048-c27f-4b38-a7f7-b8e966101d22",
+    "seed": 604,
+    "watermark": true
+  },
+  "preset": {
+    "format": "aftertake-one-tap/1",
+    "id": "before-after",
+    "title": "Before / after",
+    "line": "Your photo as a faded black-and-white still, then a wipe into full color that moves.",
+    "order": 30,
+    "accepts": [
+      "image",
+      "video"
+    ],
+    "motion": {
+      "prompt": "The photo comes to life in rich full color: a gentle breeze moves hair, fabric and leaves, light shimmers across the scene and the air feels alive. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
+      "movement": "push",
+      "lens": "anamorphic",
+      "lighting": "source",
+      "palette": "warm",
+      "quality": "final",
+      "resolution": "720p"
+    },
+    "cut": {
+      "layout": "before-after",
+      "still": 1.25,
+      "transition": "wipe",
+      "transitionSeconds": 0.6,
+      "stillZoom": 1.03,
+      "stillFinish": {
+        "preset": "noir",
+        "lookStrength": 1,
+        "saturation": -1,
+        "contrast": -0.2,
+        "grain": 0.5,
+        "vignette": 0.4
+      }
+    },
+    "titles": [
+      {
+        "text": "BEFORE",
+        "start": 0,
+        "end": 1,
+        "style": "kicker",
+        "position": "top",
+        "animation": "none",
+        "fontSize": 72,
+        "font": "condensed",
+        "box": "highlight",
+        "color": "#e7ff8a"
+      },
+      {
+        "text": "AFTER",
+        "start": 1.3,
+        "end": 4.65,
+        "style": "kicker",
+        "position": "top",
+        "animation": "pop",
+        "fontSize": 72,
+        "font": "condensed",
+        "box": "highlight",
+        "color": "#e7ff8a"
+      }
+    ],
+    "music": {
+      "track": "sunny",
+      "start": 0,
+      "volume": 0.85,
+      "fadeOut": 0.6
+    }
+  },
+  "source": {
+    "id": "f64c2048-c27f-4b38-a7f7-b8e966101d22",
+    "name": "One-tap sample: city portrait",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "cfe11fc4780a99f05014797dccbe947ceed8410cb7769e74bbb5a2800cadfd1e",
+    "url": "/media/f64c2048-c27f-4b38-a7f7-b8e966101d22.png"
+  },
+  "state": "ready",
+  "stage": "Ready to share",
+  "progress": 1,
+  "attempts": [
+    {
+      "seed": 604,
+      "renderId": "a01fa1dd-9acf-4340-97a7-3476e3d0fdad",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4.041666666666667,
+          "frames": 97,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 106.81622314453125,
+          "lumaSpread": 62.25286102294922,
+          "motion": 6.708752590677013
+        }
+      }
+    }
+  ],
+  "exports": {
+    "watermark": {
+      "filmId": "6c823573-47dd-4edd-a4ee-ddcb8bc7d6b1",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4.666666666666667,
+          "frames": 112,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 105.64334869384766,
+          "lumaSpread": 61.89922332763672,
+          "motion": 6.844051894934281
+        }
+      }
+    }
+  },
+  "watermark": true,
+  "createdAt": "2026-10-24T20:36:51.442Z",
+  "updatedAt": "2026-10-24T20:45:41.359Z",
+  "frame": {
+    "id": "f64c2048-c27f-4b38-a7f7-b8e966101d22",
+    "name": "One-tap sample: city portrait",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "cfe11fc4780a99f05014797dccbe947ceed8410cb7769e74bbb5a2800cadfd1e",
+    "url": "/media/f64c2048-c27f-4b38-a7f7-b8e966101d22.png"
+  },
+  "still": {
+    "id": "98174001-c8b9-4362-b1de-9ad042268a15",
+    "name": "Before / after · before",
+    "sha256": "5c990511a838207652fec78865d8a3efa53884b6b5be6534f46421aa212fa391",
+    "originalSha256": "cfe11fc4780a99f05014797dccbe947ceed8410cb7769e74bbb5a2800cadfd1e",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "kind": "image",
+    "hasAudio": false,
+    "url": "/media/98174001-c8b9-4362-b1de-9ad042268a15.png"
+  }
+}

@@ -527,7 +527,7 @@ def film_frame_count(shots):
     return total
 
 
-TRANSITIONS = {'dissolve', 'whip', 'zoom', 'flash', 'glitch', 'slide'}
+TRANSITIONS = {'dissolve', 'whip', 'zoom', 'flash', 'glitch', 'slide', 'wipe'}
 
 
 def smooth(value):
@@ -570,6 +570,16 @@ def transition_frame(kind, outgoing, incoming, progress):
             return smear(canvas, .06 * 4 * progress * (1 - progress))
         canvas.paste(outgoing, (0, round(-travel * height)))
         canvas.paste(incoming, (0, round((1 - travel) * height)))
+        return canvas
+    if kind == 'wipe':
+        # A hard vertical edge sweeps left to right with a thin light bar on it.
+        edge = round(smooth(progress) * width)
+        canvas = outgoing.copy()
+        if edge > 0:
+            canvas.paste(incoming.crop((0, 0, edge, height)), (0, 0))
+        bar = max(2, round(width / 240))
+        if 0 < edge < width:
+            canvas.paste((255, 255, 255), (max(0, edge - bar // 2), 0, min(width, edge + (bar + 1) // 2), height))
         return canvas
     picture = incoming if progress >= .5 else outgoing
     if kind == 'zoom':

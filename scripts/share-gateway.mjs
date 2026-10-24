@@ -11,9 +11,11 @@ const VISITOR_COOKIE = 'aftertake_visitor';
 const DAY = 24 * 60 * 60 * 1000;
 const COOKIE_DAYS = 45;
 // Starting one of these runs a Comfy graph on the GPU or spends Comfy Cloud
-// credits. CPU work, such as Film export, finishing and layer renders, is free.
+// credits. A one-tap effect counts once, with its automatic re-render. CPU work,
+// such as Film export, finishing, layer renders and re-cutting an effect without
+// its watermark, is free.
 const renderRoutes =
-  /^\/api\/(images|videos|enhancements|renders|frame-edits|depth-effects|characters\/(selections|replacements))$/;
+  /^\/api\/(images|videos|enhancements|renders|frame-edits|depth-effects|one-tap|characters\/(selections|replacements))$/;
 const lockedRoutes = [
   [
     /^\/api\/compute\/connection$/,

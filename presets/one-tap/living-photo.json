@@ -1,0 +1,40 @@
+{
+  "format": "aftertake-one-tap/1",
+  "id": "living-photo",
+  "title": "Living photo",
+  "line": "The frame holds still while your photo quietly comes to life.",
+  "order": 100,
+  "accepts": ["image", "video"],
+  "motion": {
+    "prompt": "The photo quietly comes to life: subtle natural breathing and blinking, hair and fabric stirring in a light breeze, light shimmering softly; the framing never changes. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
+    "movement": "locked",
+    "lens": "natural",
+    "lighting": "source",
+    "palette": "source",
+    "quality": "final",
+    "resolution": "720p"
+  },
+  "cut": {
+    "layout": "motion"
+  },
+  "titles": [
+    {
+      "text": "still moving",
+      "editable": true,
+      "start": 1,
+      "end": 4,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "fade",
+      "font": "display",
+      "fontSize": 81,
+      "color": "#ffffff"
+    }
+  ],
+  "music": {
+    "track": "drift",
+    "start": 2,
+    "volume": 0.8,
+    "fadeOut": 0.8
+  }
+}

@@ -1,0 +1,373 @@
+{
+  "id": "725b5fd1-781a-4792-a654-f1f8f0285b1f",
+  "name": "Wait for it",
+  "aspect": "portrait",
+  "shots": [
+    {
+      "assetId": "92cec2d8-7ef1-4e6c-a756-4aab6b764e76",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1.08,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 1.5833333333333333,
+      "title": "wait-for-it-photo.png",
+      "sha256": "09b28bdfc544485ada0b42a1eca49a69883ccbbd01436a72127cc1129e05fbef",
+      "asset": {
+        "kind": "image",
+        "width": 720,
+        "height": 1280,
+        "duration": 30,
+        "id": "92cec2d8-7ef1-4e6c-a756-4aab6b764e76",
+        "name": "wait-for-it-photo.png",
+        "extension": ".png",
+        "sha256": "09b28bdfc544485ada0b42a1eca49a69883ccbbd01436a72127cc1129e05fbef",
+        "url": "/api/films/assets/92cec2d8-7ef1-4e6c-a756-4aab6b764e76/media",
+        "createdAt": "2026-10-24T20:16:47.113Z"
+      }
+    },
+    {
+      "renderId": "1e7b9c40-9316-47c3-be9b-1baf841b37d7",
+      "dissolve": 0.25,
+      "transition": "flash",
+      "framing": {
+        "zoom": 1,
+        "endZoom": 1,
+        "x": 0.5,
+        "y": 0.5,
+        "fit": "cover"
+      },
+      "start": 0,
+      "end": 4,
+      "title": "Wait for it · seed 204",
+      "sha256": "8aa9803581427b7878388c41615159bf9eaabab327b2484ba7163604fc3b583c",
+      "recipe": {
+        "format": "aftertake/1",
+        "name": "Wait for it · seed 204",
+        "clip": {
+          "id": "53cf2d2a-ae74-48a6-a820-76392a759617",
+          "name": "One-tap sample: beach dog",
+          "sha256": "09b28bdfc544485ada0b42a1eca49a69883ccbbd01436a72127cc1129e05fbef",
+          "width": 720,
+          "height": 1280,
+          "duration": 1,
+          "url": "/media/53cf2d2a-ae74-48a6-a820-76392a759617.png",
+          "kind": "image",
+          "hasAudio": false
+        },
+        "prompt": "The camera glides backward and slightly upward, revealing more of the surroundings around the subject, with natural motion in the scene and drifting atmosphere. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.",
+        "cue": {
+          "start": 0,
+          "end": 1,
+          "fade": 0.25,
+          "feather": 0.06,
+          "strokes": []
+        },
+        "seed": 204,
+        "quality": "final",
+        "resolution": "720p",
+        "trimStart": 0,
+        "pipeline": "cinema",
+        "cinema": {
+          "movement": "pull",
+          "lens": "wide",
+          "lighting": "source",
+          "palette": "source",
+          "guidance": "prompt"
+        }
+      },
+      "workflow": {
+        "1": {
+          "class_type": "UnetLoaderGGUF",
+          "inputs": {
+            "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+          }
+        },
+        "2": {
+          "class_type": "CLIPLoader",
+          "inputs": {
+            "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+            "type": "ltxv",
+            "device": "default"
+          }
+        },
+        "3": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+          }
+        },
+        "5": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "text": "The camera slowly tracks backward in one steady continuous move, gradually revealing more of the environment. The camera glides backward and slightly upward, revealing more of the surroundings around the subject, with natural motion in the scene and drifting atmosphere. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people. One continuous cinematic shot, beginning from the supplied reference frame. Wide-angle perspective with deep focus and an expansive sense of space. Lighting direction and exposure remain consistent with the reference frame. Keep the reference color relationships coherent throughout the shot. The scene remains coherent over time."
+          }
+        },
+        "6": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "clip": [
+              "2",
+              0
+            ],
+            "text": ""
+          }
+        },
+        "7": {
+          "class_type": "LTXVConditioning",
+          "inputs": {
+            "positive": [
+              "5",
+              0
+            ],
+            "negative": [
+              "6",
+              0
+            ],
+            "frame_rate": 24
+          }
+        },
+        "8": {
+          "class_type": "AftertakeLoadClip",
+          "inputs": {
+            "filename": "53cf2d2a-ae74-48a6-a820-76392a759617.png",
+            "width": 720,
+            "height": 1280,
+            "frames": 1,
+            "fps": 24,
+            "trim_start": 0
+          }
+        },
+        "11": {
+          "class_type": "EmptyLTXVLatentVideo",
+          "inputs": {
+            "width": 736,
+            "height": 1280,
+            "length": 97,
+            "batch_size": 1
+          }
+        },
+        "12": {
+          "class_type": "LTXVImgToVideoInplace",
+          "inputs": {
+            "vae": [
+              "3",
+              0
+            ],
+            "image": [
+              "hd_pad_8",
+              0
+            ],
+            "latent": [
+              "11",
+              0
+            ],
+            "strength": 1,
+            "bypass": false
+          }
+        },
+        "13": {
+          "class_type": "RandomNoise",
+          "inputs": {
+            "noise_seed": 204
+          }
+        },
+        "14": {
+          "class_type": "KSamplerSelect",
+          "inputs": {
+            "sampler_name": "euler_ancestral"
+          }
+        },
+        "15": {
+          "class_type": "ManualSigmas",
+          "inputs": {
+            "sigmas": "1., 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+          }
+        },
+        "16": {
+          "class_type": "BasicGuider",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "conditioning": [
+              "7",
+              0
+            ]
+          }
+        },
+        "17": {
+          "class_type": "SamplerCustomAdvanced",
+          "inputs": {
+            "noise": [
+              "13",
+              0
+            ],
+            "guider": [
+              "16",
+              0
+            ],
+            "sampler": [
+              "14",
+              0
+            ],
+            "sigmas": [
+              "15",
+              0
+            ],
+            "latent_image": [
+              "12",
+              0
+            ]
+          }
+        },
+        "19": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "17",
+              0
+            ],
+            "vae": [
+              "3",
+              0
+            ]
+          }
+        },
+        "20": {
+          "class_type": "AftertakeFilmGrade",
+          "inputs": {
+            "images": [
+              "19",
+              0
+            ],
+            "palette": "source"
+          }
+        },
+        "21": {
+          "class_type": "AftertakeSaveVideo",
+          "inputs": {
+            "images": [
+              "hd_crop_21",
+              0
+            ],
+            "fps": 24,
+            "filename_prefix": "aftertake/cinema",
+            "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Wait for it · seed 204\",\"clip\":{\"id\":\"53cf2d2a-ae74-48a6-a820-76392a759617\",\"name\":\"One-tap sample: beach dog\",\"sha256\":\"09b28bdfc544485ada0b42a1eca49a69883ccbbd01436a72127cc1129e05fbef\",\"width\":720,\"height\":1280,\"duration\":1,\"url\":\"/media/53cf2d2a-ae74-48a6-a820-76392a759617.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"The camera glides backward and slightly upward, revealing more of the surroundings around the subject, with natural motion in the scene and drifting atmosphere. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.\",\"cue\":{\"start\":0,\"end\":1,\"fade\":0.25,\"feather\":0.06,\"strokes\":[]},\"seed\":204,\"quality\":\"final\",\"resolution\":\"720p\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"wide\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"prompt\"}}",
+            "display_width": 720,
+            "display_height": 1280
+          }
+        },
+        "22": {
+          "class_type": "AftertakeSaveVideo",
+          "inputs": {
+            "images": [
+              "19",
+              0
+            ],
+            "fps": 24,
+            "filename_prefix": "aftertake/generation",
+            "recipe_json": "{\"format\":\"aftertake/1\",\"name\":\"Wait for it · seed 204\",\"clip\":{\"id\":\"53cf2d2a-ae74-48a6-a820-76392a759617\",\"name\":\"One-tap sample: beach dog\",\"sha256\":\"09b28bdfc544485ada0b42a1eca49a69883ccbbd01436a72127cc1129e05fbef\",\"width\":720,\"height\":1280,\"duration\":1,\"url\":\"/media/53cf2d2a-ae74-48a6-a820-76392a759617.png\",\"kind\":\"image\",\"hasAudio\":false},\"prompt\":\"The camera glides backward and slightly upward, revealing more of the surroundings around the subject, with natural motion in the scene and drifting atmosphere. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.\",\"cue\":{\"start\":0,\"end\":1,\"fade\":0.25,\"feather\":0.06,\"strokes\":[]},\"seed\":204,\"quality\":\"final\",\"resolution\":\"720p\",\"trimStart\":0,\"pipeline\":\"cinema\",\"cinema\":{\"movement\":\"pull\",\"lens\":\"wide\",\"lighting\":\"source\",\"palette\":\"source\",\"guidance\":\"prompt\"}}"
+          }
+        },
+        "hd_pad_8": {
+          "class_type": "ImagePadForOutpaint",
+          "inputs": {
+            "image": [
+              "8",
+              0
+            ],
+            "left": 8,
+            "top": 0,
+            "right": 8,
+            "bottom": 0,
+            "feathering": 0
+          }
+        },
+        "hd_crop_21": {
+          "class_type": "ImageCrop",
+          "inputs": {
+            "image": [
+              "20",
+              0
+            ],
+            "width": 720,
+            "height": 1280,
+            "x": 8,
+            "y": 0
+          }
+        }
+      }
+    }
+  ],
+  "requestKey": "one-tap-881d6801-b86b-431c-8b7c-9acba390351b-watermark-1",
+  "requestDigest": "21de1d7230ee687cbc1d3f5b1627c9715122b64d5bc45e5ab0cdbc7897b329f7",
+  "titles": [
+    {
+      "id": "2097090e-cab0-4136-9eee-6b101780bd63",
+      "text": "wait for it…",
+      "start": 0.15,
+      "end": 1.55,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "typewriter",
+      "fontSize": 81,
+      "font": "mono",
+      "color": "#ffffff"
+    }
+  ],
+  "graphics": [
+    {
+      "id": "ce358852-0eba-43e7-aefc-d130bb7da8ef",
+      "name": "Aftertake watermark",
+      "kind": "image",
+      "start": 0,
+      "end": 5.333333333333333,
+      "x": 0.84,
+      "y": 0.9492021276595745,
+      "width": 0.24,
+      "height": 0.03159574468085106,
+      "color": "#ffffff",
+      "opacity": 0.82,
+      "fit": "contain",
+      "assetId": "395f60be-bee4-4ca6-8416-4ef6010aa417",
+      "sha256": "035cdbf574a540bf7433f82449f1988277e644b69b50fc971c6c2740c567783c"
+    }
+  ],
+  "audio": [
+    {
+      "assetId": "31ace06e-8a8c-4497-8a98-befb68920b7e",
+      "start": 0,
+      "sourceStart": 0,
+      "sourceEnd": 5.333333333333333,
+      "volume": 0.9,
+      "fadeIn": 0,
+      "fadeOut": 0.6,
+      "sha256": "3bada0eef9902488a00ce91e01a28fe80823f08be5633f6dd19d17b7e1df1d3c",
+      "asset": {
+        "kind": "audio",
+        "duration": 16,
+        "id": "31ace06e-8a8c-4497-8a98-befb68920b7e",
+        "name": "rise.m4a",
+        "extension": ".m4a",
+        "sha256": "3bada0eef9902488a00ce91e01a28fe80823f08be5633f6dd19d17b7e1df1d3c",
+        "url": "/api/films/assets/31ace06e-8a8c-4497-8a98-befb68920b7e/media",
+        "createdAt": "2026-10-24T20:16:47.250Z"
+      }
+    }
+  ],
+  "sourceVolume": 0,
+  "normalizeAudio": false,
+  "state": "ready",
+  "duration": 5.333333333333333,
+  "createdAt": "2026-10-24T20:27:15.017Z",
+  "output": "/api/films/725b5fd1-781a-4792-a654-f1f8f0285b1f/video"
+}

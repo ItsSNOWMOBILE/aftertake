@@ -1,0 +1,20 @@
+{
+  "format": "aftertake-one-tap-music/1",
+  "id": "drift",
+  "title": "Drift",
+  "file": "drift.m4a",
+  "sha256": "519ec69f2e59ae2a52c028df03795013b08701a4aa0c6fe580a3221ee6717002",
+  "duration": 16.0,
+  "recipe": {
+    "format": "aftertake-song/1",
+    "name": "One-tap song: Drift",
+    "tags": "dreamy lo-fi chillwave, mellow electric piano, dusty drums, warm tape saturation, nostalgic and calm, instrumental",
+    "lyrics": "",
+    "seconds": 16,
+    "bpm": 86,
+    "keyscale": "F major",
+    "timesignature": "4",
+    "language": "unknown",
+    "seed": 5521
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "format": "aftertake-one-tap/1",
+  "id": "noir",
+  "title": "Noir",
+  "line": "Black and white, handheld, smoky light and a typed chapter title.",
+  "order": 70,
+  "accepts": ["image", "video"],
+  "motion": {
+    "prompt": "A moody film-noir moment: soft haze drifts through hard slatted light, shadows shift slowly and the scene breathes with quiet tension. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
+    "movement": "handheld",
+    "lens": "anamorphic",
+    "lighting": "moonlight",
+    "palette": "monochrome",
+    "quality": "final",
+    "resolution": "720p"
+  },
+  "cut": {
+    "layout": "motion"
+  },
+  "titles": [
+    {
+      "text": "Chapter One",
+      "editable": true,
+      "start": 0.5,
+      "end": 4,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "typewriter",
+      "font": "mono",
+      "fontSize": 96,
+      "color": "#f2f2f2"
+    }
+  ],
+  "music": {
+    "track": "rise",
+    "start": 4,
+    "volume": 0.8,
+    "fadeOut": 0.7
+  }
+}

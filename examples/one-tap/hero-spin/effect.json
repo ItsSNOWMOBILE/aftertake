@@ -1,0 +1,128 @@
+{
+  "id": "cf9fc8b4-7777-43c0-8d80-f8c7f5c77b9d",
+  "request": {
+    "preset": "hero-spin",
+    "clipId": "4c2138d1-774b-4ee0-ba9b-cfb8177814f4",
+    "seed": 306,
+    "watermark": true
+  },
+  "preset": {
+    "format": "aftertake-one-tap/1",
+    "id": "hero-spin",
+    "title": "Product hero spin",
+    "line": "A slow turntable arc around your product, a sweep of studio light and a launch title.",
+    "order": 20,
+    "accepts": [
+      "image",
+      "video"
+    ],
+    "motion": {
+      "prompt": "A smooth product turntable shot: the camera circles a quarter turn around the product at a constant height, revealing its side as a band of studio light glides across its surface; the backdrop stays clean. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.",
+      "movement": "orbit",
+      "lens": "portrait",
+      "lighting": "source",
+      "palette": "source",
+      "quality": "final",
+      "resolution": "720p"
+    },
+    "cut": {
+      "layout": "motion"
+    },
+    "titles": [
+      {
+        "text": "NEW",
+        "start": 0.3,
+        "end": 4,
+        "style": "kicker",
+        "position": "top",
+        "animation": "pop",
+        "fontSize": 110,
+        "font": "condensed",
+        "color": "#e7ff8a"
+      },
+      {
+        "text": "MEET THE ICON",
+        "editable": true,
+        "start": 0.9,
+        "end": 4,
+        "style": "headline",
+        "position": "bottom",
+        "animation": "reveal",
+        "fontSize": 138,
+        "font": "condensed",
+        "color": "#ffffff"
+      }
+    ],
+    "music": {
+      "track": "luxe",
+      "start": 0.5,
+      "volume": 0.9,
+      "fadeOut": 0.6
+    }
+  },
+  "source": {
+    "id": "4c2138d1-774b-4ee0-ba9b-cfb8177814f4",
+    "name": "One-tap sample: sneaker",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "d8cf30b98f478926d92eff1de2bc6b7237a08c052e0c460f2120efafc9d4656a",
+    "url": "/media/4c2138d1-774b-4ee0-ba9b-cfb8177814f4.png"
+  },
+  "state": "ready",
+  "stage": "Ready to share",
+  "progress": 1,
+  "attempts": [
+    {
+      "seed": 306,
+      "renderId": "d7d44ec8-605d-4bd7-a66a-f670a90325a9",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4.041666666666667,
+          "frames": 97,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 59.40712356567383,
+          "lumaSpread": 52.257320404052734,
+          "motion": 4.4038093349208
+        }
+      }
+    }
+  ],
+  "exports": {
+    "watermark": {
+      "filmId": "1280e1af-730c-460a-baac-4c6256779c9c",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4,
+          "frames": 96,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 62.29759216308594,
+          "lumaSpread": 55.79889678955078,
+          "motion": 4.589321634043818
+        }
+      }
+    }
+  },
+  "watermark": true,
+  "createdAt": "2026-10-24T20:18:29.770Z",
+  "updatedAt": "2026-10-24T20:38:27.582Z",
+  "frame": {
+    "id": "4c2138d1-774b-4ee0-ba9b-cfb8177814f4",
+    "name": "One-tap sample: sneaker",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "d8cf30b98f478926d92eff1de2bc6b7237a08c052e0c460f2120efafc9d4656a",
+    "url": "/media/4c2138d1-774b-4ee0-ba9b-cfb8177814f4.png"
+  }
+}

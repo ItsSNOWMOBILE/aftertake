@@ -1,0 +1,117 @@
+{
+  "id": "727fb6c6-ac49-48e0-8be9-dd8d3e3c7f92",
+  "request": {
+    "preset": "golden-hour",
+    "clipId": "faa91d1e-7941-4865-87c9-3fe6701d5592",
+    "seed": 206,
+    "watermark": true
+  },
+  "preset": {
+    "format": "aftertake-one-tap/1",
+    "id": "golden-hour",
+    "title": "Golden hour",
+    "line": "A slow push in warm low sun, with drifting dust and a soft caption.",
+    "order": 60,
+    "accepts": [
+      "image",
+      "video"
+    ],
+    "motion": {
+      "prompt": "Warm late-afternoon sunlight pours across the scene with gentle lens flares, golden dust drifting through the light and a soft breeze moving hair, fabric and plants. Keep the main subject recognizable, sharp and true to the photo; do not add text, logos or new people.",
+      "movement": "push",
+      "lens": "portrait",
+      "lighting": "tungsten",
+      "palette": "warm",
+      "quality": "final",
+      "resolution": "720p"
+    },
+    "cut": {
+      "layout": "motion"
+    },
+    "titles": [
+      {
+        "text": "golden hour",
+        "editable": true,
+        "start": 0.6,
+        "end": 4,
+        "style": "caption",
+        "position": "bottom",
+        "animation": "rise",
+        "fontSize": 90,
+        "font": "display",
+        "color": "#fff4dc"
+      }
+    ],
+    "music": {
+      "track": "drift",
+      "start": 0,
+      "volume": 0.85,
+      "fadeOut": 0.7
+    }
+  },
+  "source": {
+    "id": "faa91d1e-7941-4865-87c9-3fe6701d5592",
+    "name": "One-tap sample: latte",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "58fb0d82d41ffc25095b66771999e78da243266841bb3e38bdd988766ed09da8",
+    "url": "/media/faa91d1e-7941-4865-87c9-3fe6701d5592.png"
+  },
+  "state": "ready",
+  "stage": "Ready to share",
+  "progress": 1,
+  "attempts": [
+    {
+      "seed": 206,
+      "renderId": "2a0de5fa-5ea6-440e-aec8-5ea834acb989",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4.041666666666667,
+          "frames": 97,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 131.1356964111328,
+          "lumaSpread": 58.714149475097656,
+          "motion": 3.1274406443471494
+        }
+      }
+    }
+  ],
+  "exports": {
+    "watermark": {
+      "filmId": "606eb330-be7e-4c35-9a0d-997df001d562",
+      "check": {
+        "ok": true,
+        "problems": [],
+        "measured": {
+          "duration": 4,
+          "frames": 96,
+          "width": 720,
+          "height": 1280,
+          "meanLuma": 130.51377868652344,
+          "lumaSpread": 58.946075439453125,
+          "motion": 3.2291750856067822
+        }
+      }
+    }
+  },
+  "watermark": true,
+  "createdAt": "2026-10-24T20:18:29.323Z",
+  "updatedAt": "2026-10-24T20:30:53.251Z",
+  "frame": {
+    "id": "faa91d1e-7941-4865-87c9-3fe6701d5592",
+    "name": "One-tap sample: latte",
+    "kind": "image",
+    "width": 720,
+    "height": 1280,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "58fb0d82d41ffc25095b66771999e78da243266841bb3e38bdd988766ed09da8",
+    "url": "/media/faa91d1e-7941-4865-87c9-3fe6701d5592.png"
+  }
+}
