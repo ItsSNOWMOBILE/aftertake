@@ -1,7 +1,7 @@
 import { Router, type Response } from 'express';
 import { execFile } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
-import { mkdir, readFile, readdir, rename, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, rename, stat, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import { z } from 'zod';
@@ -323,6 +323,12 @@ export async function oneTapRouter(context: {
   async function finishedStill(job: OneTapJob) {
     const look = job.preset.cut.stillFinish;
     if (!look) return job.frame!;
+    // A recorded or earlier cut already finished this photo; reuse it.
+    if (
+      job.still &&
+      (await stat(path.join(data, 'clips', path.basename(job.still.url))).catch(() => null))
+    )
+      return job.still;
     await stage(job, 'Finishing the photo');
     let started: { status: number; value: FinishingJob };
     for (;;) {
