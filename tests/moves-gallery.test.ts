@@ -44,7 +44,7 @@ test('the Higgsfield signature moves are in the gallery, with depth moves on pro
     'zoom-in',
     'zoom-out',
     'truck-right',
-    'dutch-roll',
+    'barrel-roll',
     'impact-shake',
   ])
     assert.ok(!promptOnlyMovements.has(move), move);

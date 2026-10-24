@@ -584,7 +584,7 @@ an RTX 5080:
 | Group | Moves |
 | :--- | :--- |
 | In and out | Slow push in, slow pull back, zoom in, zoom out, crash zoom, dolly zoom |
-| Turn | Pan left and right, tilt up and down, whip pan, Dutch roll |
+| Turn | Pan left and right, tilt up and down, whip pan, barrel roll |
 | Travel | Truck left and right, crane up, boom down |
 | Around the subject | Gentle orbit, arc shot, 360° orbit, bullet time |
 | Drone | FPV drone, drone reveal |

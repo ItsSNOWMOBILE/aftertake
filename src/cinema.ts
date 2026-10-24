@@ -19,7 +19,7 @@ export const cameraMovements = [
   'zoom-out',
   'truck-right',
   'boom-down',
-  'dutch-roll',
+  'barrel-roll',
   'impact-shake',
   'orbit-360',
   'arc',
@@ -80,7 +80,7 @@ export const movementNotes: Record<Cinema['movement'], string> = {
   'zoom-out': 'The lens widens to show more; nothing shifts in depth.',
   'truck-right': 'Slides to the right; near things pass faster.',
   'boom-down': 'Lowers from above down to the subject.',
-  'dutch-roll': 'Rolls onto a tilted, uneasy angle.',
+  'barrel-roll': 'Rolls all the way over around the lens.',
   'impact-shake': 'A hard jolt, then the frame settles.',
   'orbit-360': 'Circles all the way around the subject.',
   arc: 'A wide half circle that swings past the subject.',
@@ -110,7 +110,7 @@ export const cinemaOptions = {
     ['zoom-out', 'Zoom out'],
     ['truck-right', 'Truck right'],
     ['boom-down', 'Boom down'],
-    ['dutch-roll', 'Dutch roll'],
+    ['barrel-roll', 'Barrel roll'],
     ['impact-shake', 'Impact shake'],
     ['orbit-360', '360° orbit'],
     ['arc', 'Arc shot'],
@@ -175,8 +175,8 @@ const language: { [K in Exclude<keyof Cinema, 'guidance'>]: Record<Cinema[K], st
       'The camera dollies sideways to the right in one steady move, parallel to the scene; nearby objects pass faster than the background, with strong parallax.',
     'boom-down':
       'The camera lowers smoothly on a crane from a high angle down to the subject, the view settling at eye level.',
-    'dutch-roll':
-      'The camera slowly rolls around its lens axis onto a tilted Dutch angle, the horizon tipping diagonally for an uneasy feeling.',
+    'barrel-roll':
+      'The camera rolls around its lens axis in one continuous barrel roll, the horizon tipping diagonally, then sideways, upside down and back upright.',
     'impact-shake':
       'A sudden hard impact jolts the camera with a violent shake that quickly settles back to a steady frame.',
     'orbit-360':
@@ -189,7 +189,7 @@ const language: { [K in Exclude<keyof Cinema, 'guidance'>]: Record<Cinema[K], st
     'drone-reveal':
       'An aerial drone shot rises and pulls back smoothly, lifting high above the subject to reveal the whole landscape around it from the air.',
     snorricam:
-      'A snorricam shot: the camera is rigged to the subject, so the subject stays fixed in the center of the frame while the world behind them sways and swings.',
+      'A snorricam shot: the camera is strapped to the subject, so the subject stays large and locked in the center of the frame while the world behind them bobs, sways and swings with every movement.',
     'rack-focus':
       'A rack focus: the shot begins focused on the background with the subject soft, then the focus pulls smoothly onto the subject while the background melts into soft bokeh. The camera does not move.',
   },
@@ -296,8 +296,8 @@ function trackOffset(
       return { scale: 1, dx: -(0.04 + 0.16 * row) * ease, dy: 0 };
     case 'boom-down':
       return { scale: 1 + 0.06 * ease, dx: 0, dy: -0.14 * ease };
-    case 'dutch-roll':
-      return { scale: 1.04, dx: 0, dy: 0, roll: -0.21 * ease };
+    case 'barrel-roll':
+      return { scale: 1.04, dx: 0, dy: 0, roll: -2 * Math.PI * ease };
     case 'impact-shake': {
       // A jolt at a fifth of the shot that dies away over the next half.
       const after = Math.max(0, fraction - 0.2),

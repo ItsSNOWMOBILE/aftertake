@@ -359,14 +359,15 @@ test('every camera move has wording, a gallery line and on-canvas tracks that go
       'truck right mirrors truck left',
     );
   assert.ok(middle('boom-down')[48].y < middle('boom-down')[0].y);
-  // A roll turns points about the centre and keeps their distance from it.
-  const roll = cameraTracks(512, 288, 49, 'dutch-roll')[5];
-  const angle = (point: { x: number; y: number }) => Math.atan2(point.y - 144, point.x - 256);
-  assert.ok(Math.abs(angle(roll[48]) - angle(roll[0]) + 0.21) < 1e-9);
+  // A barrel roll turns points once around the centre, keeping their distance from it.
+  const roll = cameraTracks(512, 288, 49, 'barrel-roll')[5];
+  const from = { x: roll[0].x - 256, y: roll[0].y - 144 },
+    halfway = { x: roll[24].x - 256, y: roll[24].y - 144 };
+  assert.ok(Math.abs(halfway.x + from.x) < 1e-9 && Math.abs(halfway.y + from.y) < 1e-9);
+  assert.ok(Math.abs(roll[48].x - roll[0].x) < 1e-9 && Math.abs(roll[48].y - roll[0].y) < 1e-9);
   assert.ok(
-    Math.abs(
-      Math.hypot(roll[48].x - 256, roll[48].y - 144) - Math.hypot(roll[0].x - 256, roll[0].y - 144),
-    ) < 1e-9,
+    roll.some((point) => Math.abs(point.y - 144) > 30),
+    'the point leaves the horizon',
   );
   // An impact shake is still before the jolt and has settled by the end.
   const shake = cameraTracks(512, 288, 49, 'impact-shake')[5];
