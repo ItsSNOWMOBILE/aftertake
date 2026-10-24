@@ -37,7 +37,7 @@ async function files() {
 
 test('on Windows a briefly busy target is retried until the replace succeeds', async (t) => {
   const { source, target } = await files();
-  const calls = failRenames(t, ['EPERM', 'EBUSY', 'EACCES']);
+  const calls = failRenames(t, ['EPERM', 'EBUSY', 'EPERM']);
   await replaceFile(source, target, { platform: 'win32' });
   assert.equal(calls(), 4);
   assert.equal(await readFile(target, 'utf8'), 'new');
@@ -45,14 +45,16 @@ test('on Windows a briefly busy target is retried until the replace succeeds', a
 
 test('other errors, other systems and a target that stays busy fail as before', async (t) => {
   const { source, target } = await files();
-  const calls = failRenames(t, ['EIO', 'EPERM', 'EPERM', 'EPERM', 'EPERM']);
+  const calls = failRenames(t, ['EIO', 'EACCES', 'EPERM', 'EPERM', 'EPERM', 'EPERM']);
   await assert.rejects(replaceFile(source, target, { platform: 'win32' }), { code: 'EIO' });
   assert.equal(calls(), 1, 'a real write failure is not retried');
+  await assert.rejects(replaceFile(source, target, { platform: 'win32' }), { code: 'EACCES' });
+  assert.equal(calls(), 2, 'a permission failure is not retried');
   await assert.rejects(replaceFile(source, target, { platform: 'linux' }), { code: 'EPERM' });
-  assert.equal(calls(), 2, 'only Windows retries a busy file');
+  assert.equal(calls(), 3, 'only Windows retries a busy file');
   await assert.rejects(replaceFile(source, target, { platform: 'win32', attempts: 3 }), {
     code: 'EPERM',
   });
-  assert.equal(calls(), 5, 'the retries stop after the last attempt');
+  assert.equal(calls(), 6, 'the retries stop after the last attempt');
   assert.equal(await readFile(target, 'utf8'), 'old');
 });

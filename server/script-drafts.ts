@@ -1,6 +1,5 @@
 import { Router } from 'express';
-import { mkdir, readFile, writeFile, readdir, stat, unlink } from 'node:fs/promises';
-import { replaceFile } from './replace-file.js';
+import { mkdir, readFile, writeFile, rename, readdir, stat, unlink } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { execFile } from 'node:child_process';
@@ -50,7 +49,7 @@ export async function scriptDraftRouter(context: {
       await writeFile(tmp, JSON.stringify({ ...job, updatedAt }, null, 2));
       for (let attempt = 0; ; attempt++) {
         try {
-          await replaceFile(tmp, target);
+          await rename(tmp, target);
           job.updatedAt = updatedAt;
           return;
         } catch (error) {

@@ -2,8 +2,10 @@ import { rename } from 'node:fs/promises';
 import { setTimeout as delay } from 'node:timers/promises';
 
 // Windows refuses to replace a file while another process briefly holds it open,
-// such as an antivirus scan, the search indexer or a reader of the old copy.
-const busy = new Set(['EPERM', 'EACCES', 'EBUSY']);
+// such as an antivirus scan, the search indexer or a reader of the old copy; Node
+// reports that as EPERM or EBUSY. EACCES is a real permission problem and is not
+// retried.
+const busy = new Set(['EPERM', 'EBUSY']);
 
 /**
  * Move `source` over `target` in one step, as the studio does to save records.
