@@ -2,16 +2,8 @@ import { Router } from 'express';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { createReadStream } from 'node:fs';
-import {
-  mkdir,
-  readFile,
-  readdir,
-  realpath,
-  rename,
-  stat,
-  unlink,
-  writeFile,
-} from 'node:fs/promises';
+import { mkdir, readFile, readdir, realpath, stat, unlink, writeFile } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import { createHash, randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { z } from 'zod';
@@ -158,7 +150,7 @@ export async function layerStackRouter(context: {
     const temporary = file + '.' + randomUUID() + '.tmp';
     try {
       await writeFile(temporary, JSON.stringify(value, null, 2));
-      await rename(temporary, file);
+      await replaceFile(temporary, file);
     } finally {
       await unlink(temporary).catch(() => {});
     }
@@ -335,7 +327,7 @@ export async function layerStackRouter(context: {
         hasAudio: false,
         url: '/media/' + job.id + '.png',
       };
-      await rename(result.output, target);
+      await replaceFile(result.output, target);
       promoted = true;
       await atomic(path.join(clips, job.id + '.json'), clip);
       job.clip = clip;

@@ -1,7 +1,8 @@
 import { Router, type Response } from 'express';
 import { execFile } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
-import { mkdir, readFile, readdir, rename, stat, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, stat, unlink, writeFile } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import { z } from 'zod';
@@ -140,7 +141,7 @@ export async function oneTapRouter(context: {
       temporary = `${target}.${randomUUID()}.tmp`;
     try {
       await writeFile(temporary, JSON.stringify(job, null, 2));
-      await rename(temporary, target);
+      await replaceFile(temporary, target);
     } finally {
       await unlink(temporary).catch(() => {});
     }

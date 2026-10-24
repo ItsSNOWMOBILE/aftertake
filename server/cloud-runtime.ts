@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
-import { readFile, rename, unlink, writeFile } from 'node:fs/promises';
+import { readFile, unlink, writeFile } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import type { Engine } from '../src/domain.js';
 import {
   cloudFeature,
@@ -96,7 +97,7 @@ export function createCloudRuntime({
         temporary,
         JSON.stringify({ format: 'aftertake-cloud-choices/1', cloud: [...chosen].sort() }, null, 2),
       );
-      await rename(temporary, choicesFile);
+      await replaceFile(temporary, choicesFile);
     } finally {
       await unlink(temporary).catch(() => {});
     }

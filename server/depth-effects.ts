@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { createHash, randomUUID } from 'node:crypto';
-import { mkdir, readFile, readdir, rename, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import path from 'node:path';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -45,7 +46,7 @@ export async function depthEffectsRouter(context: {
     const temporary = filename + '.' + randomUUID() + '.tmp';
     try {
       await writeFile(temporary, JSON.stringify(value, null, 2));
-      await rename(temporary, filename);
+      await replaceFile(temporary, filename);
     } finally {
       await unlink(temporary).catch(() => {});
     }
@@ -102,7 +103,7 @@ export async function depthEffectsRouter(context: {
         !/^[a-f0-9]{64}$/.test(info.rawSha256)
       )
         throw Error('The depth output does not match its source and model receipt.');
-      await rename(temporary, output);
+      await replaceFile(temporary, output);
       job.depth = {
         sha256: info.depthSha256,
         rawSha256: info.rawSha256,

@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { randomUUID } from 'node:crypto';
-import { mkdir, readFile, readdir, rename, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import path from 'node:path';
 import { z } from 'zod';
 import {
@@ -44,7 +45,7 @@ export async function takeSetRouter(context: { data: string; studio: string }) {
       temporary = `${target}.${randomUUID()}.tmp`;
     try {
       await writeFile(temporary, JSON.stringify(set, null, 2));
-      await rename(temporary, target);
+      await replaceFile(temporary, target);
     } finally {
       await unlink(temporary).catch(() => {});
     }

@@ -1,7 +1,8 @@
 import { GenerationCoordinator } from './generation-coordinator.js';
 import express from 'express';
 import { createServer } from 'node:http';
-import { mkdir, readFile, writeFile, rename, readdir, stat, unlink } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, readdir, stat, unlink } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import { createHash, randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -132,7 +133,7 @@ async function persist(render: Render) {
   const temp = `${dest}.${randomUUID()}.tmp`;
   try {
     await writeFile(temp, JSON.stringify(render, null, 2));
-    await rename(temp, dest);
+    await replaceFile(temp, dest);
   } finally {
     await unlink(temp).catch(() => {});
   }
@@ -494,7 +495,7 @@ app.post(
       if (meta.duration < 1) throw new Error('Use a clip at least one second long.');
       if (image) {
         await unlink(dest);
-        await rename(normalized, path.join(clipDir, `${id}.png`));
+        await replaceFile(normalized, path.join(clipDir, `${id}.png`));
       }
       const bytes = image ? await readFile(path.join(clipDir, `${id}.png`)) : req.body;
       const clip: Clip = {

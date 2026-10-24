@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { execFile } from 'node:child_process';
 import { createHash, randomUUID } from 'node:crypto';
-import { mkdir, readFile, readdir, rename, stat, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, stat, unlink, writeFile } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import { cameraMovements } from '../src/cinema.js';
@@ -98,7 +99,7 @@ export async function storyboardRouter(context: {
       temporary = `${target}.${randomUUID()}.tmp`;
     try {
       await writeFile(temporary, JSON.stringify(job, null, 2));
-      await rename(temporary, target);
+      await replaceFile(temporary, target);
     } finally {
       await unlink(temporary).catch(() => {});
     }

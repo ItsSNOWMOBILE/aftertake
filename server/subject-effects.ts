@@ -1,5 +1,6 @@
 import { Router, raw } from 'express';
-import { mkdir, readFile, readdir, rename, writeFile, unlink, stat } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile, unlink, stat } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import { createHash, randomUUID } from 'node:crypto';
 import { createReadStream } from 'node:fs';
 import { execFile } from 'node:child_process';
@@ -61,7 +62,7 @@ export async function subjectEffectsRouter(context: {
     const temporary = file + '.' + randomUUID() + '.tmp';
     try {
       await writeFile(temporary, JSON.stringify(value, null, 2));
-      await rename(temporary, file);
+      await replaceFile(temporary, file);
     } finally {
       await unlink(temporary).catch(() => {});
     }

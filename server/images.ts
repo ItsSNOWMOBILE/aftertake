@@ -1,6 +1,7 @@
 import { cancelAndRefresh } from './job-cancel.js';
 import { Router } from 'express';
-import { mkdir, readFile, readdir, rename, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import { createHash, randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { isDeepStrictEqual } from 'node:util';
@@ -53,7 +54,7 @@ export async function imageRouter(context: {
       temporary = `${target}.${randomUUID()}.tmp`;
     try {
       await writeFile(temporary, JSON.stringify(image, null, 2));
-      await rename(temporary, target);
+      await replaceFile(temporary, target);
     } finally {
       await unlink(temporary).catch(() => {});
     }
@@ -133,7 +134,7 @@ export async function imageRouter(context: {
                 throw Error('The image metadata does not match its requested workflow.');
             }
             image.workflow = png.workflow ?? image.workflow;
-            await rename(temporary, target);
+            await replaceFile(temporary, target);
             const clip = {
               id: image.id,
               name: image.request.name,
@@ -148,7 +149,7 @@ export async function imageRouter(context: {
             const metadata = path.join(clips, `${image.id}.json`),
               metaTemp = `${metadata}.${randomUUID()}.tmp`;
             await writeFile(metaTemp, JSON.stringify(clip, null, 2));
-            await rename(metaTemp, metadata);
+            await replaceFile(metaTemp, metadata);
             image.clip = clip;
           } finally {
             await unlink(temporary).catch(() => {});

@@ -1,6 +1,7 @@
 import { RequestError } from './http-errors.js';
 import { Router, raw } from 'express';
-import { mkdir, readFile, readdir, writeFile, rename, stat, unlink } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile, stat, unlink } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import { createHash, randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { execFile } from 'node:child_process';
@@ -126,7 +127,7 @@ export async function filmRouter(
           temporary = target + '.' + randomUUID() + '.tmp';
         try {
           await writeFile(temporary, JSON.stringify(restored, null, 2));
-          await rename(temporary, target);
+          await replaceFile(temporary, target);
           assets.set(id, restored);
         } finally {
           await unlink(temporary).catch(() => {});
@@ -144,7 +145,7 @@ export async function filmRouter(
     const target = path.join(folder, `${film.id}.json`),
       temporary = `${target}.${randomUUID()}.tmp`;
     await writeFile(temporary, JSON.stringify(film, null, 2));
-    await rename(temporary, target);
+    await replaceFile(temporary, target);
   }
   for (const name of await readdir(folder)) {
     if (!/^[a-f0-9-]{36}\.json$/.test(name)) continue;
@@ -379,7 +380,7 @@ export async function filmRouter(
         }
         const temporary = file + '.' + randomUUID() + '.tmp';
         await writeFile(temporary, JSON.stringify(compiled, null, 2));
-        await rename(temporary, file);
+        await replaceFile(temporary, file);
         return compiled;
       })();
       cutLocks.set(id, saving);

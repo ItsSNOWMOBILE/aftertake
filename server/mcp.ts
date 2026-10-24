@@ -2,7 +2,8 @@ import { McpServer } from '@modelcontextprotocol/server';
 import { StdioServerTransport } from '@modelcontextprotocol/server/stdio';
 import { z } from 'zod';
 import { createHash, randomUUID } from 'node:crypto';
-import { mkdir, readFile, writeFile, rename, realpath, stat } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, realpath, stat } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import path from 'node:path';
@@ -99,7 +100,7 @@ async function persist(id: string, value: unknown) {
   const file = path.join(state, id + '.json'),
     temp = file + '.' + randomUUID() + '.tmp';
   await writeFile(temp, JSON.stringify(value, null, 2));
-  await rename(temp, file);
+  await replaceFile(temp, file);
   return file;
 }
 async function planFile(id: string) {
