@@ -129,6 +129,10 @@ studio: add a key from a paid Comfy Cloud plan in Render setup, then choose
 [Comfy Cloud](docs/cloud-setup.md) for any of images, text to video, upscaling,
 smooth and slow motion, or songs. Everything else keeps your local models.
 
+**Show it to someone?** `node scripts/aftertake.mjs share` runs a separate copy
+behind an access link, with a daily render allowance for each visitor.
+[Share a live link](docs/share.md) puts it online with a free Tailscale Funnel.
+
 <details>
 <summary><b>All model profiles</b></summary>
 
@@ -246,6 +250,7 @@ installing anything in the **[browser editor](https://itssnowmobile.github.io/af
 | [Narrated cuts](docs/narrated-cut.md) | Scripts, measured voices, captions and pacing |
 | [MCP reference](docs/mcp.md) | Agent setup, all 45 tools and recovery behavior |
 | [Hardware](docs/hardware.md) | GPU selection, memory policy and precision |
+| [Share a live link](docs/share.md) | Let someone use your studio through an access link and a tunnel |
 | [Architecture](docs/competition.md) | How the build works and what is reproducible |
 | [Media attribution](docs/media-attribution.md) | Footage, fonts, music and generated references |
 

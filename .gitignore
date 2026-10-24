@@ -5,6 +5,7 @@ dist/
 examples/spoken-type/alignment-rerun.json
 .data/
 .data-demo/
+.data-share/
 .env
 .env.*
 !.env.example

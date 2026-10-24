@@ -4,11 +4,13 @@
 //
 //   node scripts/aftertake.mjs              check, install what is missing, launch the studio
 //   node scripts/aftertake.mjs --examples   the same, in the recorded example workspace
+//   node scripts/aftertake.mjs share        share a separate copy through an access link (docs/share.md)
 //   node scripts/aftertake.mjs doctor       print the setup checklist only
 //   node scripts/aftertake.mjs setup-gpu    install local generation (NVIDIA, Windows or Linux)
 //   node scripts/aftertake.mjs setup-npu    install local depth on the Neural Engine, an NPU or the CPU
 import { spawn, spawnSync } from 'node:child_process';
-import { existsSync, statfsSync } from 'node:fs';
+import { randomBytes } from 'node:crypto';
+import { existsSync, readFileSync, rmSync, statfsSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -228,7 +230,8 @@ function openBrowser(url) {
     .unref();
 }
 
-async function start() {
+/** Install what is missing and start the local engine when it is installed. */
+async function prepare() {
   let state = checks();
   report(state);
   if (!state.node.ok) throw new Error('Install Node.js 22.12 or newer, then run this again.');
@@ -251,11 +254,14 @@ async function start() {
       '--no-node-cache',
     ]);
   }
-  const env = { PORT: String(port) };
-  if (flag('examples')) {
-    const { loadExamples } = await import('./load-examples.mjs');
-    const { data, manifest } = await loadExamples('.data-demo');
-    Object.assign(env, {
+}
+/** Load the recorded examples into a workspace folder and describe it to the studio. */
+async function exampleWorkspace(directory) {
+  const { loadExamples } = await import('./load-examples.mjs');
+  const { data, manifest } = await loadExamples(directory);
+  return {
+    data,
+    env: {
       AFTERTAKE_DATA_DIR: data,
       AFTERTAKE_EXAMPLES: '1',
       AFTERTAKE_EXAMPLE_COUNT: String(manifest.cases.length),
@@ -263,8 +269,18 @@ async function start() {
         Object.fromEntries(manifest.cases.map((item) => [item.renderId, item.title])),
       ),
       AFTERTAKE_FEATURED_RENDER: manifest.featuredRenderId,
-    });
-  }
+    },
+  };
+}
+async function waitFor(url) {
+  for (let attempt = 0; attempt < 120 && !(await live(url)); attempt++)
+    await new Promise((resolve) => setTimeout(resolve, 500));
+}
+
+async function start() {
+  await prepare();
+  const env = { PORT: String(port) };
+  if (flag('examples')) Object.assign(env, (await exampleWorkspace('.data-demo')).env);
   const studio = background(
     'studio',
     process.execPath,
@@ -273,10 +289,88 @@ async function start() {
   );
   studio.on('exit', (code) => process.exit(code ?? 0));
   const url = `http://127.0.0.1:${port}`;
-  for (let attempt = 0; attempt < 120 && !(await live(`${url}/api/workspace`)); attempt++)
-    await new Promise((resolve) => setTimeout(resolve, 500));
+  await waitFor(`${url}/api/workspace`);
   console.log(`\nAftertake is ready: ${url}\nPress Ctrl+C to stop.\n`);
   if (!flag('no-open')) openBrowser(url);
+}
+
+/** This computer's HTTPS address on Tailscale, when Tailscale is installed and signed in. */
+function tailscaleAddress() {
+  const result = spawnSync('tailscale', ['status', '--json'], { encoding: 'utf8' });
+  if (result.status !== 0) return null;
+  try {
+    const name = JSON.parse(result.stdout).Self?.DNSName;
+    return name ? `https://${name.replace(/\.$/, '')}` : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Share a separate copy of the studio, with its own workspace of recorded
+ * examples, through a gateway that only admits holders of the access link.
+ * A tunnel such as Tailscale Funnel then points at the gateway's port.
+ */
+async function share() {
+  await prepare();
+  pnpm(['exec', 'vite', 'build'], 'Building the studio');
+  if (flag('reset')) rmSync(path.join(root, '.data-share'), { recursive: true, force: true });
+  const { data, env } = await exampleWorkspace('.data-share').catch((failure) => {
+    throw new Error(
+      `${failure.message}\nA visitor may have changed a recorded example. Run share --reset to start the shared workspace fresh.`,
+    );
+  });
+  let token = process.env.AFTERTAKE_SHARE_TOKEN?.trim();
+  if (!token) {
+    const saved = path.join(data, 'share-token');
+    if (flag('new-link') || !existsSync(saved))
+      writeFileSync(saved, `${randomBytes(18).toString('base64url')}\n`, { mode: 0o600 });
+    token = readFileSync(saved, 'utf8').trim();
+  }
+  if (token.length < 16) throw new Error('Use an AFTERTAKE_SHARE_TOKEN of at least 16 characters.');
+  const studioPort = Number(option('studio-port') || 4311);
+  const sharePort = Number(option('share-port') || 7860);
+  const perVisitor = Number(option('renders-per-visitor') || 20);
+  const perDay = Number(option('renders-per-day') || 150);
+  const studio = background(
+    'studio',
+    process.execPath,
+    ['--import', 'tsx', 'server/index.ts', '--production'],
+    { ...env, PORT: String(studioPort) },
+  );
+  studio.on('exit', (code) => process.exit(code ?? 0));
+  const local = `http://127.0.0.1:${studioPort}`;
+  await waitFor(`${local}/api/workspace`);
+  const { createShareGateway } = await import('./share-gateway.mjs');
+  const gateway = createShareGateway({
+    studioPort,
+    token,
+    rendersPerVisitor: perVisitor,
+    rendersPerDay: perDay,
+  });
+  await new Promise((resolve, reject) =>
+    gateway.once('error', reject).listen(sharePort, '127.0.0.1', resolve),
+  ).catch((failure) => {
+    studio.removeAllListeners('exit');
+    studio.kill();
+    throw new Error(
+      failure.code === 'EADDRINUSE'
+        ? `Port ${sharePort} is already in use. Stop what uses it, or choose another with --share-port=N.`
+        : failure.message,
+    );
+  });
+  const tunnel = tailscaleAddress();
+  console.log(`\nAftertake is shared on port ${sharePort} of this computer.`);
+  if (tunnel) {
+    console.log(`  Send this link:  ${tunnel}/?access=${token}`);
+    console.log(`  Turn on the tunnel once with:  tailscale funnel --bg ${sharePort}`);
+  } else
+    console.log(
+      `  Point a tunnel at port ${sharePort}, then send <tunnel address>/?access=${token}\n  docs/share.md sets up a free Tailscale Funnel.`,
+    );
+  console.log(
+    `  Choose where its studios render at ${local} (Render setup). Visitors can't change it.\n  Each visitor can start ${perVisitor} renders a day, ${perDay} in all. Press Ctrl+C to stop sharing.\n`,
+  );
 }
 
 function setupNpu() {
@@ -328,9 +422,10 @@ try {
   else if (command === 'setup-gpu') setupGpu();
   else if (command === 'setup-npu') setupNpu();
   else if (command === 'start') await start();
+  else if (command === 'share') await share();
   else
     throw new Error(
-      `Unknown command "${command}". Use doctor, setup-gpu, setup-npu, or no command to start.`,
+      `Unknown command "${command}". Use doctor, setup-gpu, setup-npu, share, or no command to start.`,
     );
 } catch (failure) {
   console.error(`\n${failure.message}\n`);
