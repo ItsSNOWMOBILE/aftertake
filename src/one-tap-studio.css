@@ -59,7 +59,7 @@
 }
 .one-tap-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   gap: 8px;
 }
 .one-tap-card {
@@ -81,8 +81,7 @@
 }
 .one-tap-card video {
   width: 100%;
-  /* A centre crop of each 9:16 loop keeps the whole gallery above the controls. */
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 9 / 16;
   object-fit: cover;
   display: block;
   background: #111315;
@@ -188,9 +187,10 @@
     grid-template-columns: 1fr;
   }
   .one-tap-picture {
-    max-height: 60vh;
+    width: auto;
+    height: 45vh;
   }
   .one-tap-gallery {
-    grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
   }
 }
