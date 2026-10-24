@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { createHash, randomUUID } from 'node:crypto';
 import { createReadStream } from 'node:fs';
-import { mkdir, readFile, readdir, rename, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import path from 'node:path';
 import {
   clipSchema,
@@ -75,7 +76,7 @@ export async function recompositionRouter(context: {
     const temporary = `${file}.${randomUUID()}.tmp`;
     try {
       await writeFile(temporary, JSON.stringify(value, null, 2));
-      await rename(temporary, file);
+      await replaceFile(temporary, file);
     } finally {
       await unlink(temporary).catch(() => {});
     }
@@ -333,7 +334,7 @@ export async function recompositionRouter(context: {
         };
         // The original take and raw file are never overwritten. Publication and
         // cancellation serialize here; a canceled worker cannot publish a take.
-        await rename(output, target);
+        await replaceFile(output, target);
         await atomicJson(path.join(renderFolder, `${job.id}.json`), render);
         const completed: RecompositionJob = {
           ...job,

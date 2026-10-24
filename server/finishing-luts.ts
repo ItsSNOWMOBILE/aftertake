@@ -1,6 +1,7 @@
 import { Router, raw } from 'express';
 import { createHash, randomUUID } from 'node:crypto';
-import { mkdir, readFile, rename, stat, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, stat, unlink, writeFile } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import path from 'node:path';
 import { lutDescriptorSchema, type LutDescriptor } from '../src/grading.js';
 import { parseCube, MAX_CUBE_BYTES } from './cube-lut.js';
@@ -77,7 +78,7 @@ export async function finishingLutStore(data: string) {
         temporary = path.join(folder, `${randomUUID()}.tmp`);
       try {
         await writeFile(temporary, req.body);
-        await rename(temporary, target);
+        await replaceFile(temporary, target);
       } finally {
         await unlink(temporary).catch(() => {});
       }

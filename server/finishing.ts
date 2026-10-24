@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import { spawn } from 'node:child_process';
 import { createReadStream } from 'node:fs';
-import { mkdir, readFile, readdir, rename, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import { createHash, randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { z } from 'zod';
@@ -195,7 +196,7 @@ export async function finishingRouter(context: {
     const temporary = `${target}.${randomUUID()}.tmp`;
     try {
       await writeFile(temporary, JSON.stringify(value, null, 2));
-      await rename(temporary, target);
+      await replaceFile(temporary, target);
     } finally {
       await unlink(temporary).catch(() => {});
     }
@@ -413,7 +414,7 @@ export async function finishingRouter(context: {
       // Cancellation can interleave across each await. Success is published only
       // after admission, never from a worker that has already been canceled.
       if (controller.signal.aborted) throw new Error('Canceled.');
-      await rename(output, target);
+      await replaceFile(output, target);
       admitted = true;
       if (controller.signal.aborted) throw new Error('Canceled.');
       await atomicJson(path.join(clips, `${job.id}.json`), clip);

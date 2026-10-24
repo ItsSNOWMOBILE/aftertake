@@ -1,6 +1,7 @@
 import { cancelAndRefresh } from './job-cancel.js';
 import { Router } from 'express';
-import { mkdir, readFile, readdir, rename, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import { createHash, randomUUID } from 'node:crypto';
 import path from 'node:path';
 import type { EngineClient, EngineJob } from './sdk-port.js';
@@ -85,7 +86,7 @@ export async function frameEditorRouter(context: {
       temporary = `${target}.${randomUUID()}.tmp`;
     try {
       await writeFile(temporary, JSON.stringify(edit, null, 2));
-      await rename(temporary, target);
+      await replaceFile(temporary, target);
     } finally {
       await unlink(temporary).catch(() => {});
     }
@@ -161,7 +162,7 @@ export async function frameEditorRouter(context: {
               png = inspectFramePng(bytes);
             if (png.width !== edit.request.clip.width || png.height !== edit.request.clip.height)
               throw Error('The edited frame does not match the source dimensions.');
-            await rename(temporary, target);
+            await replaceFile(temporary, target);
             edit.workflow = png.workflow;
             edit.clip = {
               id: edit.id,
@@ -177,7 +178,7 @@ export async function frameEditorRouter(context: {
             const metadata = path.join(clips, `${edit.id}.json`),
               metaTemp = `${metadata}.${randomUUID()}.tmp`;
             await writeFile(metaTemp, JSON.stringify(edit.clip, null, 2));
-            await rename(metaTemp, metadata);
+            await replaceFile(metaTemp, metadata);
           } finally {
             await unlink(temporary).catch(() => {});
           }

@@ -1,7 +1,8 @@
 import { cancelAndRefresh } from './job-cancel.js';
 import { Router } from 'express';
 import { execFile } from 'node:child_process';
-import { mkdir, readFile, readdir, rename, unlink, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import { createHash, randomUUID } from 'node:crypto';
 import { promisify, isDeepStrictEqual } from 'node:util';
 import path from 'node:path';
@@ -88,7 +89,7 @@ export async function enhancementRouter(context: {
       temporary = `${dest}.${randomUUID()}.tmp`;
     try {
       await writeFile(temporary, JSON.stringify(job, null, 2));
-      await rename(temporary, dest);
+      await replaceFile(temporary, dest);
     } finally {
       await unlink(temporary).catch(() => {});
     }
@@ -152,7 +153,7 @@ export async function enhancementRouter(context: {
       const media = await probe(downloaded);
       if (media.kind !== 'audio' || Math.abs(media.duration - job.request.seconds) > 1.5)
         throw Error('The song does not have the requested length.');
-      await rename(downloaded, path.join(folder, `${job.id}.flac`));
+      await replaceFile(downloaded, path.join(folder, `${job.id}.flac`));
       job.audio = { sha256: sha(bytes), duration: media.duration, bytes: bytes.length };
       return;
     }
@@ -167,7 +168,7 @@ export async function enhancementRouter(context: {
     if (media.width !== expected.width || media.height !== expected.height)
       throw Error('The enhanced video does not have the expected size.');
     job.workflow = metadata.workflow;
-    await rename(downloaded, path.join(clips, `${job.id}.mp4`));
+    await replaceFile(downloaded, path.join(clips, `${job.id}.mp4`));
     job.clip = {
       id: job.id,
       name: job.request.name,
@@ -182,7 +183,7 @@ export async function enhancementRouter(context: {
     const meta = path.join(clips, `${job.id}.json`),
       temporary = `${meta}.${randomUUID()}.tmp`;
     await writeFile(temporary, JSON.stringify(job.clip, null, 2));
-    await rename(temporary, meta);
+    await replaceFile(temporary, meta);
   }
   async function track(job: Enhancement, initial?: EngineJob) {
     if (active.has(job.id)) return;

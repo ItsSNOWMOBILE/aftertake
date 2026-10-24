@@ -1,7 +1,8 @@
 import { cancelAndRefresh } from './job-cancel.js';
 import { RequestError } from './http-errors.js';
 import { Router } from 'express';
-import { copyFile, mkdir, readFile, readdir, rename, writeFile, unlink } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, readdir, writeFile, unlink } from 'node:fs/promises';
+import { replaceFile } from './replace-file.js';
 import { createHash, randomUUID } from 'node:crypto';
 import { execFile, spawn } from 'node:child_process';
 import { promisify, isDeepStrictEqual } from 'node:util';
@@ -63,7 +64,7 @@ export async function characterRouter(context: {
       .then(async () => {
         try {
           await writeFile(tmp, snapshot);
-          await rename(tmp, dest);
+          await replaceFile(tmp, dest);
         } finally {
           await unlink(tmp).catch(() => {});
         }
@@ -269,7 +270,7 @@ export async function characterRouter(context: {
         info = selection.selection!;
       const media = await inspect(pending, info),
         dest = path.join(clips, record.id + '.mp4');
-      await rename(pending, dest);
+      await replaceFile(pending, dest);
       record.clip = {
         id: record.id,
         name: (record.request as CharacterRequest).name,
@@ -283,7 +284,7 @@ export async function characterRouter(context: {
       };
       const tmp = path.join(clips, record.id + '.json.tmp');
       await writeFile(tmp, JSON.stringify(record.clip, null, 2));
-      await rename(tmp, path.join(clips, record.id + '.json'));
+      await replaceFile(tmp, path.join(clips, record.id + '.json'));
       record.stage = 'Character replacement ready';
     }
     record.state = 'succeeded';
@@ -814,7 +815,7 @@ export async function characterRouter(context: {
       };
       const tmp = path.join(clips, record.id + '.json.tmp');
       await writeFile(tmp, JSON.stringify(record.clip, null, 2));
-      await rename(tmp, path.join(clips, record.id + '.json'));
+      await replaceFile(tmp, path.join(clips, record.id + '.json'));
       terminal = { state: 'succeeded', progress: 1, stage: 'Foreground kept from the source' };
     } catch (error) {
       terminal = { state: 'failed', error: error instanceof Error ? error.message : String(error) };
