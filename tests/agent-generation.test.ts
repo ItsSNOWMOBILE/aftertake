@@ -157,8 +157,8 @@ test('real MCP generation transport preserves operation IDs across reconnect, ch
     assert.ok(!first.isError && !again.isError);
     assert.equal((first.structuredContent as any).id, (again.structuredContent as any).id);
     assert.deepEqual((first.structuredContent as any).expected, {
-      seconds: 10,
-      basis: 'median of 4 runs recorded on an RTX 5080',
+      seconds: 17,
+      basis: 'median of 8 runs recorded on an RTX 5080',
       cost: 'none: it runs on the local GPU',
     });
     assert.equal(admissions, 1);

@@ -1,0 +1,263 @@
+{
+  "id": "9a6aa970-04a1-4f28-86b5-e3ca3e8f2179",
+  "requestKey": "board-dawn-2",
+  "requestDigest": "a9be938e1e5a7bb0c2b208479a3f122673a58245ac61592df3b61b4c48488c18",
+  "request": {
+    "idea": "A barista opens a tiny seaside café at dawn and pours the first coffee of the day",
+    "title": "Dawn Brew",
+    "look": "30-year-old woman, short dark hair, worn apron, weathered hands, soft natural light, muted color palette with cool tones and warm accents",
+    "aspect": "landscape",
+    "shots": [
+      {
+        "prompt": "A narrow wooden door creaks open as the woman steps into the fog-drenched morning, her apron dusted with morning dew.",
+        "movement": "push",
+        "seconds": 3
+      },
+      {
+        "prompt": "She kneels by the counter, wiping the condensation from the glass of a steaming coffee pot.",
+        "movement": "dolly-zoom",
+        "seconds": 4
+      },
+      {
+        "prompt": "Her hands trace the rim of the pot, her eyes fixed on the swirling steam rising into the pale sunlight.",
+        "movement": "crane-up",
+        "seconds": 3
+      },
+      {
+        "prompt": "The woman lifts the pot, a single drop of coffee liquid falls onto the wooden surface, and the camera lingers on the droplet as it begins to evaporate.",
+        "movement": "pull",
+        "seconds": 5
+      }
+    ],
+    "song": {
+      "tags": "lo-fi hip hop, dusty drums, mellow electric piano, vinyl crackle, relaxed, instrumental",
+      "bpm": 84
+    },
+    "seed": 2027
+  },
+  "state": "ready",
+  "stage": "Ready to open in Film",
+  "progress": 1,
+  "shots": [
+    {
+      "videoId": "c82d394d-5823-47c4-9df2-852f93be8241",
+      "clip": {
+        "id": "c82d394d-5823-47c4-9df2-852f93be8241",
+        "name": "Dawn Brew · shot 1",
+        "kind": "video",
+        "width": 1024,
+        "height": 576,
+        "duration": 3.0416666666666665,
+        "hasAudio": false,
+        "sha256": "cafb3dd77a36c08e2250516976350f56904a7874959250311d3b9c781daa2563",
+        "url": "/media/c82d394d-5823-47c4-9df2-852f93be8241.mp4"
+      },
+      "assetId": "da63db4a-1341-4f1e-9679-3ff71ece1218"
+    },
+    {
+      "videoId": "f3e535a6-95ba-4278-b6eb-746e6373c948",
+      "clip": {
+        "id": "f3e535a6-95ba-4278-b6eb-746e6373c948",
+        "name": "Dawn Brew · shot 2",
+        "kind": "video",
+        "width": 1024,
+        "height": 576,
+        "duration": 4.041666666666667,
+        "hasAudio": false,
+        "sha256": "2c60f8cc46a7f785280517a13cf31085ceb3a7142d96c912ac9ccc4419d17967",
+        "url": "/media/f3e535a6-95ba-4278-b6eb-746e6373c948.mp4"
+      },
+      "assetId": "e5f26300-4014-4fed-9c74-1f3920759286"
+    },
+    {
+      "videoId": "214686eb-c41c-4f9a-a1bb-c10a2a248471",
+      "clip": {
+        "id": "214686eb-c41c-4f9a-a1bb-c10a2a248471",
+        "name": "Dawn Brew · shot 3",
+        "kind": "video",
+        "width": 1024,
+        "height": 576,
+        "duration": 3.0416666666666665,
+        "hasAudio": false,
+        "sha256": "01769d5640b0ef666092f6cec50df698a172197ee890a2560f8fb0705ff2f6f5",
+        "url": "/media/214686eb-c41c-4f9a-a1bb-c10a2a248471.mp4"
+      },
+      "assetId": "08f09ff7-3435-4074-9bc8-3388f905609e"
+    },
+    {
+      "videoId": "c1e41553-56f1-4807-8ccb-afa8f9920c4b",
+      "clip": {
+        "id": "c1e41553-56f1-4807-8ccb-afa8f9920c4b",
+        "name": "Dawn Brew · shot 4",
+        "kind": "video",
+        "width": 1024,
+        "height": 576,
+        "duration": 5.041666666666667,
+        "hasAudio": false,
+        "sha256": "756db384360c9c57de03da3f3b8b7a6e8d9d316cf751fcbcf3481db6a4962c19",
+        "url": "/media/c1e41553-56f1-4807-8ccb-afa8f9920c4b.mp4"
+      },
+      "assetId": "f9477028-24d8-4b34-b49a-aa8f45a0f144"
+    }
+  ],
+  "createdAt": "2026-10-24T22:18:16.441Z",
+  "updatedAt": "2026-10-24T22:24:58.093Z",
+  "song": {
+    "enhancementId": "8cc5c81f-03d1-453a-a04d-475fb9cdc1f4",
+    "assetId": "9248b9ef-9851-4e11-9fe9-36762132190c",
+    "beats": [
+      0.3483,
+      0.6966,
+      1.0681,
+      1.4396,
+      1.7879,
+      2.1362,
+      2.5078,
+      2.8561,
+      3.2276,
+      3.5759,
+      3.9474,
+      4.2957,
+      4.6672,
+      5.0155,
+      5.387,
+      5.7353,
+      6.1068,
+      6.4551,
+      6.8267,
+      7.1982,
+      7.5465,
+      7.8948,
+      8.2663,
+      8.6146,
+      8.9861,
+      9.3344,
+      9.7059,
+      10.0542,
+      10.4258,
+      10.7741,
+      11.1456,
+      11.4939,
+      11.8654,
+      12.2369,
+      12.6084,
+      12.98,
+      13.3515,
+      13.723,
+      14.0945,
+      14.466,
+      14.8376,
+      15.2091,
+      15.5806,
+      15.9521,
+      16.3236,
+      16.6951,
+      17.0667,
+      17.4382,
+      17.8097,
+      18.1812,
+      18.5527,
+      18.9243
+    ]
+  },
+  "draft": {
+    "name": "Dawn Brew",
+    "aspect": "landscape",
+    "shots": [
+      {
+        "assetId": "da63db4a-1341-4f1e-9679-3ff71ece1218",
+        "start": 0,
+        "end": 3.0416666666666665,
+        "framing": {
+          "zoom": 1,
+          "endZoom": 1,
+          "x": 0.5,
+          "y": 0.5,
+          "fit": "cover"
+        }
+      },
+      {
+        "assetId": "e5f26300-4014-4fed-9c74-1f3920759286",
+        "start": 0,
+        "end": 4,
+        "framing": {
+          "zoom": 1,
+          "endZoom": 1,
+          "x": 0.5,
+          "y": 0.5,
+          "fit": "cover"
+        },
+        "dissolve": 0.3333333333333333,
+        "transition": "whip"
+      },
+      {
+        "assetId": "08f09ff7-3435-4074-9bc8-3388f905609e",
+        "start": 0,
+        "end": 2.9583333333333335,
+        "framing": {
+          "zoom": 1,
+          "endZoom": 1,
+          "x": 0.5,
+          "y": 0.5,
+          "fit": "cover"
+        },
+        "dissolve": 0.5,
+        "transition": "dissolve"
+      },
+      {
+        "assetId": "f9477028-24d8-4b34-b49a-aa8f45a0f144",
+        "start": 0,
+        "end": 5,
+        "framing": {
+          "zoom": 1,
+          "endZoom": 1,
+          "x": 0.5,
+          "y": 0.5,
+          "fit": "cover"
+        },
+        "dissolve": 0.3333333333333333,
+        "transition": "zoom"
+      }
+    ],
+    "titles": [
+      {
+        "id": "30645cfa-f3f3-4242-9731-7b9cbb2210a9",
+        "text": "Dawn Brew",
+        "start": 0.4,
+        "end": 2.9416666666666664,
+        "style": "headline",
+        "position": "center",
+        "animation": "reveal",
+        "font": "display",
+        "fontSize": 110,
+        "color": "#ffffff"
+      },
+      {
+        "id": "61900eac-811d-4df8-b73b-d923e8393c6d",
+        "text": "Dawn Brew",
+        "start": 12.033333333333333,
+        "end": 13.833333333333334,
+        "style": "kicker",
+        "position": "bottom",
+        "animation": "fade",
+        "font": "condensed",
+        "fontSize": 44,
+        "color": "#ffffff"
+      }
+    ],
+    "audio": [
+      {
+        "assetId": "9248b9ef-9851-4e11-9fe9-36762132190c",
+        "start": 0,
+        "sourceStart": 0,
+        "sourceEnd": 13.833333333333334,
+        "volume": 0.9,
+        "fadeIn": 0,
+        "fadeOut": 1.5
+      }
+    ],
+    "sourceVolume": 0,
+    "normalizeAudio": true
+  },
+  "filmId": "797713a5-51e5-44b4-9570-7edeeb3a8aa1"
+}

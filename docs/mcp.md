@@ -121,6 +121,12 @@ root, including resolved symbolic links; remote media URLs are not accepted.
 | `aftertake_make_one_tap_effect` | Starts or rejoins a one-tap effect on a workspace photo or clip by stable `requestId`: an Animate a frame take, output checks with one automatic re-render, then a 9:16 Film cut. |
 | `aftertake_one_tap_status` | Reads an effect by ID or `requestId`: its stage, each take's check results and the finished video URL. |
 | `aftertake_one_tap_watermark` | Shows a finished effect with or without the Aftertake watermark by re-cutting its Film on the CPU; never renders again. |
+| `aftertake_plan_storyboard` | Plans a 3–5 shot list from one idea with the local Qwen3-4B on the CPU, or a template when it is not installed; starts no GPU work. |
+| `aftertake_make_storyboard` | Starts or rejoins a storyboard by stable `requestId`: one Create video render per shot, an ACE-Step song, then a Film cut on the song's beats. |
+| `aftertake_storyboard_status` | Reads a storyboard's stage, shots and song, and when ready the film URL and its editable Film project. |
+| `aftertake_make_takes` | Renders one Create image, Create video or Animate a frame request 2–4 times with different seeds, one after another; rejoins by `requestId`. |
+| `aftertake_takes_status` | Reads a set of takes: each take's seed, studio record and state, and which one was kept. |
+| `aftertake_keep_take` | Keeps one finished take as the result; the others stay in their studio's history. |
 
 For saved regional takes, [Refine a saved take’s blend](refining-a-take.md)
 explains the supported final-area controls, CPU dependencies and provenance.
@@ -151,6 +157,29 @@ a time; an effect started while the GPU is busy waits its turn. Poll
 take's `checks` say whether it came out blank, frozen or the wrong length; a
 failed take renders once more with a new seed. For another take, start the same
 request with a new `seed` and a new `requestId`.
+
+## Storyboards
+
+`aftertake_plan_storyboard` takes `{ "idea": "...", "shots": 4 }` and returns a
+title, a shared look and the shots. Edit them, then start the film:
+
+```json
+{
+  "requestId": "dawn-cafe-1",
+  "request": {
+    "idea": "A barista opens a tiny seaside café at dawn",
+    "title": "Dawn Brew",
+    "look": "Soft dawn light, warm wood and sea mist.",
+    "aspect": "landscape",
+    "shots": [{ "prompt": "Wide view of the café on the shore at dawn.", "movement": "drone-reveal", "seconds": 4 }],
+    "song": { "tags": "lo-fi hip hop, mellow electric piano, instrumental", "bpm": 84 },
+    "seed": 11
+  }
+}
+```
+
+A storyboard needs 3 to 5 shots. Poll `aftertake_storyboard_status` until
+`ready`; `project` is the cut as an editable Film project.
 
 ## Character replacement
 

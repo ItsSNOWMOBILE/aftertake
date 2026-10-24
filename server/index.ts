@@ -53,6 +53,8 @@ import {
 import { enhancementRouter } from './enhancements.js';
 import { depthEffectsRouter } from './depth-effects.js';
 import { oneTapRouter } from './one-tap.js';
+import { storyboardRouter } from './storyboards.js';
+import { takeSetRouter } from './take-sets.js';
 import {
   assertJobTarget,
   canonicalNativeBaseUrl,
@@ -638,6 +640,19 @@ const oneTap = await oneTapRouter({
   gpuBusy: () => generation.busy() || [...renders.values()].some((r) => !terminal.has(r.state)),
 });
 app.use('/api/one-tap', oneTap.router);
+// Storyboards also drive the studio's own routes: Create video, Enhance and Film.
+const storyboards = await storyboardRouter({
+  root,
+  data,
+  studio: `http://127.0.0.1:${Number(process.env.PORT || 4310)}`,
+});
+app.use('/api/storyboards', storyboards.router);
+// Take sets render one request several times through the same routes.
+const takeSets = await takeSetRouter({
+  data,
+  studio: `http://127.0.0.1:${Number(process.env.PORT || 4310)}`,
+});
+app.use('/api/take-sets', takeSets.router);
 app.post('/api/cue-preview', async (req, res) => {
   if (characters.busy() || videos.busy() || depthEffects.busy())
     return void res.status(409).json({
@@ -874,6 +889,11 @@ else {
 }
 app.use(handleRequestError);
 const port = Number(process.env.PORT || 4310);
+// Unfinished storyboards continue once the studio answers its own routes.
+httpServer.once('listening', () => {
+  storyboards.resume();
+  takeSets.resume();
+});
 httpServer.listen(port, '127.0.0.1', () => {
   console.log(`Aftertake studio: http://127.0.0.1:${port}`);
   // Effects drive the studio's own routes, so they resume once it answers.

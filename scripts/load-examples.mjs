@@ -14,20 +14,22 @@ function within(base, relative) {
   return resolved;
 }
 /**
- * A recorded one-tap effect gains cuts when someone switches its watermark, which
- * rewrites its record. The same effect, newer, is kept rather than refused.
+ * Visitors change some recorded examples by using them: a one-tap effect gains a
+ * cut when someone switches its watermark, and a set of takes gains the take
+ * someone kept. The same record, newer, is kept rather than refused.
  */
 export function visitorCopy(target, existing, recorded) {
-  if (!/^one-tap\/[a-f0-9-]{36}\.json$/.test(target)) return false;
+  const kind = /^(one-tap|take-sets)\/[a-f0-9-]{36}\.json$/.exec(target)?.[1];
+  if (!kind) return false;
   try {
     const mine = JSON.parse(existing.toString('utf8')),
       theirs = JSON.parse(recorded.toString('utf8'));
-    return (
-      mine.id === theirs.id &&
-      mine.createdAt === theirs.createdAt &&
-      mine.state === 'ready' &&
-      mine.exports?.watermark?.filmId === theirs.exports?.watermark?.filmId
-    );
+    if (mine.id !== theirs.id || mine.createdAt !== theirs.createdAt || mine.state !== 'ready')
+      return false;
+    if (kind === 'one-tap')
+      return mine.exports?.watermark?.filmId === theirs.exports?.watermark?.filmId;
+    const takes = (set) => JSON.stringify(set.takes?.map((take) => take.id));
+    return takes(mine) === takes(theirs) && mine.takes.some((take) => take.id === mine.kept);
   } catch {
     return false;
   }

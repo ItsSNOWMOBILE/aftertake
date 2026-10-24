@@ -577,6 +577,8 @@ export async function oneTapRouter(context: {
     const job = jobs.get(req.params.id);
     if (!job) throw new RequestError('Effect not found.', 404);
     if (job.state !== 'ready') throw new RequestError('Wait for the effect to finish.', 409);
+    // A just-finished effect releases its driver a moment after it reads as ready.
+    for (let wait = 0; driving.has(job.id) && wait < 50; wait++) await pause(100);
     if (driving.has(job.id)) throw new RequestError('This effect is already being cut.', 409);
     driving.add(job.id);
     try {

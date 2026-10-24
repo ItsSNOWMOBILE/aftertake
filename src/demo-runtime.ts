@@ -4,6 +4,8 @@ import type { ImageGeneration } from './image-generation';
 import type { VideoGeneration } from './video-generation';
 import type { CharacterJob } from './character';
 import type { OneTapJob, OneTapPreset } from './one-tap';
+import type { StoryboardJob } from './storyboard';
+import type { TakeSet } from './take-sets';
 import type { Template } from './templates';
 import { buildWorkflow } from '../server/workflow';
 
@@ -22,6 +24,10 @@ export type DemoSnapshot = {
     music: { id: string; title: string; duration: number }[];
     jobs: OneTapJob[];
   };
+  /** Recorded storyboards; their films play from the media map. */
+  storyboards?: StoryboardJob[];
+  /** Recorded sets of takes; each take is a record in its own studio's list. */
+  takeSets?: TakeSet[];
   templates: Template[];
   media: Record<string, string>;
   thumbnails: Record<string, Record<string, string>>;
@@ -89,6 +95,8 @@ export function createDemoRuntime(snapshot: DemoSnapshot) {
           problems: [],
         });
       if (path === '/api/one-tap') return json(data.oneTap?.jobs || []);
+      if (path === '/api/storyboards') return json(data.storyboards || []);
+      if (path === '/api/take-sets') return json(data.takeSets || []);
       const effect = path.match(/^\/api\/one-tap\/([a-f0-9-]+)$/);
       if (effect) {
         const job = data.oneTap?.jobs.find((item) => item.id === effect[1]);

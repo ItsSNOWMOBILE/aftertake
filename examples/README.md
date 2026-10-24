@@ -11,6 +11,24 @@ Z-Image Turbo and keep their Create image records. `--examples`, the shared copy
 and the browser trial open with these effects and photos, so you can run any
 effect again on the same photo.
 
+## Takes
+
+`takes/` holds three sets of takes rendered one after another on an RTX 5080: four
+Create image takes of a ceramic teapot (`teapot`), three Create video takes of a
+paper boat (`paper-boat`) and two Animate a frame takes of the beach dog
+(`beach-dog`). Each take is an ordinary studio record with its own seed. The sets
+open in Create image, Create video and the main studio with their comparison,
+in `--examples`, the shared copy and the browser trial.
+
+## Storyboards
+
+`storyboards/` holds two storyboards made end to end on an RTX 5080: `skate`
+(portrait) and `dawn-brew` (landscape). Each has the four Create video shots with
+their records, the ACE-Step song, the Film assets and the exported film, so
+**Open in Film** loads the cut in `--examples` and the shared copy. Both shot
+lists were planned by the local Qwen3-4B; in `skate` the character was edited
+to an adult before rendering.
+
 ## Camera moves
 
 `camera-moves/` holds the take behind each card in the moves gallery: all 27

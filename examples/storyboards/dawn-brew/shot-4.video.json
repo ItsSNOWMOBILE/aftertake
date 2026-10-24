@@ -1,0 +1,244 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "c1e41553-56f1-4807-8ccb-afa8f9920c4b",
+  "requestKey": "storyboard-9a6aa970-04a1-4f28-86b5-e3ca3e8f2179-shot-3",
+  "requestDigest": "791716854f40fc78b73fe93e07a9b84eda3370a752938e60a646251736d64a5a",
+  "request": {
+    "format": "aftertake-text-video/1",
+    "name": "Dawn Brew · shot 4",
+    "prompt": "The woman lifts the pot, a single drop of coffee liquid falls onto the wooden surface, and the camera lingers on the droplet as it begins to evaporate. 30-year-old woman, short dark hair, worn apron, weathered hands, soft natural light, muted color palette with cool tones and warm accents",
+    "seed": 25784,
+    "aspect": "landscape",
+    "quality": "final",
+    "seconds": 5,
+    "sound": false,
+    "cinema": {
+      "movement": "pull",
+      "lens": "natural",
+      "lighting": "source",
+      "palette": "source"
+    }
+  },
+  "workflow": {
+    "1": {
+      "class_type": "UnetLoaderGGUF",
+      "inputs": {
+        "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+        "type": "ltxv",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ltx-2.5-audio-vae-bf16.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "The camera slowly tracks backward in one steady continuous move, gradually revealing more of the environment. The woman lifts the pot, a single drop of coffee liquid falls onto the wooden surface, and the camera lingers on the droplet as it begins to evaporate. 30-year-old woman, short dark hair, worn apron, weathered hands, soft natural light, muted color palette with cool tones and warm accents One continuous cinematic shot. Natural perspective, crisp believable detail and moderate depth of field. Keep lighting direction and exposure consistent throughout the shot. Keep natural color relationships coherent throughout the shot. The scene remains coherent over time."
+      }
+    },
+    "6": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "LTXVConditioning",
+      "inputs": {
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "frame_rate": 24
+      }
+    },
+    "8": {
+      "class_type": "EmptyLTXVLatentVideo",
+      "inputs": {
+        "width": 1024,
+        "height": 576,
+        "length": 121,
+        "batch_size": 1
+      }
+    },
+    "9": {
+      "class_type": "LTXVEmptyLatentAudio",
+      "inputs": {
+        "frames_number": 121,
+        "frame_rate": 24,
+        "batch_size": 1,
+        "audio_vae": [
+          "4",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "LTXVConcatAVLatent",
+      "inputs": {
+        "video_latent": [
+          "8",
+          0
+        ],
+        "audio_latent": [
+          "9",
+          0
+        ]
+      }
+    },
+    "13": {
+      "class_type": "RandomNoise",
+      "inputs": {
+        "noise_seed": 25784
+      }
+    },
+    "14": {
+      "class_type": "KSamplerSelect",
+      "inputs": {
+        "sampler_name": "euler_ancestral"
+      }
+    },
+    "15": {
+      "class_type": "ManualSigmas",
+      "inputs": {
+        "sigmas": "1., 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+      }
+    },
+    "16": {
+      "class_type": "LTXVDualCFGGuider",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "positive": [
+          "7",
+          0
+        ],
+        "negative": [
+          "7",
+          1
+        ],
+        "video_cfg": 1,
+        "audio_cfg": 1
+      }
+    },
+    "17": {
+      "class_type": "SamplerCustomAdvanced",
+      "inputs": {
+        "noise": [
+          "13",
+          0
+        ],
+        "guider": [
+          "16",
+          0
+        ],
+        "sampler": [
+          "14",
+          0
+        ],
+        "sigmas": [
+          "15",
+          0
+        ],
+        "latent_image": [
+          "10",
+          0
+        ]
+      }
+    },
+    "18": {
+      "class_type": "LTXVSeparateAVLatent",
+      "inputs": {
+        "av_latent": [
+          "17",
+          0
+        ]
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "18",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "20": {
+      "class_type": "AftertakeFilmGrade",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "palette": "source"
+      }
+    },
+    "21": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "20",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/text-video",
+        "recipe_json": "{\"format\":\"aftertake-text-video/1\",\"name\":\"Dawn Brew · shot 4\",\"prompt\":\"The woman lifts the pot, a single drop of coffee liquid falls onto the wooden surface, and the camera lingers on the droplet as it begins to evaporate. 30-year-old woman, short dark hair, worn apron, weathered hands, soft natural light, muted color palette with cool tones and warm accents\",\"seed\":25784,\"aspect\":\"landscape\",\"quality\":\"final\",\"seconds\":5,\"sound\":false,\"cinema\":{\"movement\":\"pull\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\"}}"
+      }
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-24T22:22:45.651Z",
+  "updatedAt": "2026-10-24T22:24:25.730Z",
+  "jobId": "b7a8f433-fdf1-428f-b493-d71d3481582c",
+  "stage": "Ready to add to Film",
+  "clip": {
+    "id": "c1e41553-56f1-4807-8ccb-afa8f9920c4b",
+    "name": "Dawn Brew · shot 4",
+    "kind": "video",
+    "width": 1024,
+    "height": 576,
+    "duration": 5.041666666666667,
+    "hasAudio": false,
+    "sha256": "756db384360c9c57de03da3f3b8b7a6e8d9d316cf751fcbcf3481db6a4962c19",
+    "url": "/media/c1e41553-56f1-4807-8ccb-afa8f9920c4b.mp4"
+  }
+}

@@ -1,0 +1,124 @@
+.storyboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 1fr);
+  gap: 26px;
+  margin-top: 22px;
+}
+.storyboard-picture {
+  width: 100%;
+  background: #111315;
+  border: 1px solid var(--control-border, #657168);
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+.storyboard-picture.landscape {
+  aspect-ratio: 16 / 9;
+}
+.storyboard-picture.square {
+  aspect-ratio: 1;
+  max-height: 60vh;
+}
+.storyboard-picture.portrait {
+  aspect-ratio: 9 / 16;
+  max-height: 64vh;
+  width: auto;
+  height: 64vh;
+  margin: 0 auto;
+}
+.storyboard-picture video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+.storyboard-picture > div {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-secondary, #b7c1b9);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.storyboard-picture progress {
+  width: 160px;
+  accent-color: var(--accent, #d5e991);
+}
+.storyboard-receipt {
+  margin: 14px 0 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-secondary, #b7c1b9);
+}
+.storyboard-receipt strong {
+  color: var(--text-primary, #eef1eb);
+}
+.storyboard-controls {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+.storyboard-controls label {
+  display: grid;
+  gap: 7px;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary, #b7c1b9);
+}
+.storyboard-controls textarea,
+.storyboard-controls input {
+  font: inherit;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+.storyboard-controls > small {
+  color: var(--text-secondary, #b7c1b9);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.storyboard-shots {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.storyboard-shots li {
+  display: grid;
+  gap: 7px;
+  padding: 10px;
+  border: 1px solid var(--control-border, #657168);
+  border-radius: 6px;
+  background: var(--panel, #1b211d);
+}
+.storyboard-shot-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.storyboard-shot-head strong {
+  margin-right: auto;
+}
+.storyboard-shot-head select {
+  font-size: 12px;
+}
+.storyboard-error {
+  color: #ffb4a8;
+  font-size: 13px;
+}
+@media (max-width: 760px) {
+  .storyboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .storyboard-picture.portrait {
+    height: 45vh;
+  }
+}

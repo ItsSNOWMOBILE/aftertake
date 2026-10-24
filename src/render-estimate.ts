@@ -81,15 +81,15 @@ export function elapsedSeconds(job: TimedJob): number | null {
  */
 export const referenceSeconds: Record<string, number[]> = {
   'video:draft': [62, 83],
-  'video:final': [84],
+  'video:final': [84, 84, 85, 85, 85, 87, 88, 91, 91, 94, 98, 100],
   'video:final-720p': [117, 117, 119, 120, 120, 122, 123, 123, 123, 125, 125, 125, 126, 134],
-  image: [10, 10, 10, 10],
+  image: [10, 10, 10, 10, 24, 24, 28, 30],
   'image-720p': [24, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 30, 30, 37, 44, 45],
   'frame:fast': [39, 39, 47, 47, 47],
   'frame:detail': [148, 199],
   'take:cinema:final': [
-    73, 75, 75, 76, 76, 76, 76, 76, 78, 78, 78, 78, 78, 78, 78, 79, 79, 79, 79, 80, 80, 80, 80, 81,
-    81, 81, 81, 81, 82, 83, 83, 85, 89, 91,
+    73, 75, 75, 76, 76, 76, 76, 76, 77, 78, 78, 78, 78, 78, 78, 78, 78, 79, 79, 79, 79, 80, 80, 80,
+    80, 81, 81, 81, 81, 81, 82, 83, 83, 85, 89, 91,
   ],
   'take:cinema:final-720p': [101, 102, 102, 102, 103, 104, 104, 104, 105, 107, 543],
   'take:inpaint:final': [96, 100, 102, 107, 108, 112, 118],
@@ -100,7 +100,7 @@ export const referenceSeconds: Record<string, number[]> = {
   character: [214, 328, 376, 381, 630, 678, 716],
   'enhance:slow-motion-x4': [10],
   'enhance:smooth-x2': [6],
-  song: [8, 14],
+  song: [8, 12, 12, 14],
   'enhance:upscale': [390],
 };
 export const referenceGpu = 'RTX 5080';

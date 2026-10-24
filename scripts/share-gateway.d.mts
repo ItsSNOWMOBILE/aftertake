@@ -12,3 +12,5 @@ export function createShareGateway(options: {
   now?: () => number;
   log?: (message: string) => void;
 }): Server;
+export function storyboardWeight(body: Buffer): number;
+export function takeSetWeight(body: Buffer): number;

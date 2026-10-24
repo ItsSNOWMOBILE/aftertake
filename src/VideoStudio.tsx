@@ -26,6 +26,8 @@ import CreativeRecipePicker from './CreativeRecipePicker';
 import RenderEstimate from './RenderEstimate';
 import MovesGallery from './MovesGallery';
 import { applyVideoCreativeRecipe } from './creative-recipes';
+import TakeSetView from './TakeSetView';
+import { useTakeSets } from './use-take-sets';
 import './image-studio.css';
 import './video-studio.css';
 
@@ -128,9 +130,11 @@ export default function VideoStudio({
     [notice, setNotice] = useState('');
   const dialog = useRef<HTMLElement>(null),
     input = useRef<HTMLInputElement>(null);
+  const [takes, setTakes] = useState(1);
+  const takeSets = useTakeSets('video');
   const pending = videos.find(videoBusy),
     viewed = videos.find((v) => v.id === selected) || videos[0],
-    locked = sending || !!pending || otherBusy || !!admission;
+    locked = sending || !!pending || otherBusy || !!admission || takeSets.running;
   const d = videoDimensions(request),
     look = request.cinema || { ...defaultCinema, movement: 'locked' as const };
   useEffect(() => save('aftertake-video-draft', request), [request]);
@@ -175,6 +179,18 @@ export default function VideoStudio({
     setError('');
     setNotice('');
     setSending(true);
+    if (takes > 1) {
+      // Several takes render one after another on the server, then compare side by side.
+      try {
+        await takeSets.start(takes, videoRequestSchema.parse(request));
+        reviewTop();
+      } catch (e) {
+        setError((e as Error).message);
+      } finally {
+        setSending(false);
+      }
+      return;
+    }
     let operation = admission;
     try {
       operation = operation || {
@@ -312,6 +328,28 @@ export default function VideoStudio({
         </p>
         <div className="image-studio-grid">
           <div className="image-picture-column">
+            {takeSets.open && (
+              <TakeSetView
+                set={takeSets.open}
+                busy={sending}
+                media={(id) => {
+                  const clip = videos.find((v) => v.id === id)?.clip;
+                  return clip && { kind: 'video', url: clip.url };
+                }}
+                onKeep={(id) =>
+                  void takeSets
+                    .keep(takeSets.open!, id)
+                    .then(() => {
+                      setSelected(id);
+                      setNotice('Take kept. It is now this studio’s result.');
+                    })
+                    .catch((e) => setError(e.message))
+                }
+                onCancel={() =>
+                  void takeSets.cancel(takeSets.open!).catch((e) => setError(e.message))
+                }
+              />
+            )}
             <div className="video-picture">
               {viewed?.clip && viewed.state === 'succeeded' ? (
                 <PreviewVideo
@@ -517,6 +555,22 @@ export default function VideoStudio({
                 </select>
               </label>
               <label>
+                TAKES
+                <select
+                  aria-label="Video takes"
+                  value={takes}
+                  disabled={locked}
+                  onChange={(e) => setTakes(Number(e.target.value))}
+                >
+                  <option value={1}>1 take</option>
+                  {[2, 3, 4].map((n) => (
+                    <option key={n} value={n}>
+                      {n} takes to compare
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
                 CAMERA
                 <select
                   aria-label="Video movement"
@@ -663,17 +717,26 @@ export default function VideoStudio({
                 (!admission &&
                   (!!pending ||
                     otherBusy ||
+                    takeSets.running ||
                     !engine?.ready ||
                     !videoRequestSchema.safeParse(request).success))
               }
               onClick={() => void generate()}
             >
-              {pending || sending ? (
+              {pending || sending || takeSets.running ? (
                 <LoaderCircle size={15} className="spin" />
               ) : (
                 <Clapperboard size={15} />
               )}{' '}
-              {admission ? 'Rejoin original request' : pending ? 'Creating video…' : 'Create video'}
+              {admission
+                ? 'Rejoin original request'
+                : takeSets.running
+                  ? 'Rendering takes…'
+                  : pending
+                    ? 'Creating video…'
+                    : takes > 1
+                      ? `Create ${takes} takes`
+                      : 'Create video'}
             </button>
             <RenderEstimate job={{ request }} history={videos} gpu={engine?.gpu} />
             <small>

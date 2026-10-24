@@ -23,6 +23,8 @@ import { apiFetch, browserDemo, mediaUrl } from './transport';
 import CreativeRecipePicker from './CreativeRecipePicker';
 import RenderEstimate from './RenderEstimate';
 import { applyImageCreativeRecipe } from './creative-recipes';
+import TakeSetView from './TakeSetView';
+import { useTakeSets } from './use-take-sets';
 import './image-studio.css';
 
 async function api<T>(url: string, body?: unknown): Promise<T> {
@@ -90,9 +92,11 @@ export default function ImageStudio({
     [sending, setSending] = useState(false);
   const input = useRef<HTMLInputElement>(null),
     dialog = useRef<HTMLElement>(null);
+  const [takes, setTakes] = useState(1);
+  const takeSets = useTakeSets('image');
   const viewed = images.find((image) => image.id === selected) || images[0],
     pending = images.find(imageBusy);
-  const busy = sending || !!pending || otherBusy,
+  const busy = sending || !!pending || otherBusy || takeSets.running,
     dimensions = imageDimensions(request.aspect, request.resolution);
   useEffect(() => {
     try {
@@ -127,6 +131,17 @@ export default function ImageStudio({
   async function generate() {
     setError('');
     setSending(true);
+    if (takes > 1) {
+      // Several takes render one after another on the server, then compare side by side.
+      try {
+        await takeSets.start(takes, imageRequestSchema.parse(request));
+      } catch (error) {
+        setError((error as Error).message);
+      } finally {
+        setSending(false);
+      }
+      return;
+    }
     try {
       const image = await api<ImageGeneration>('/api/images', imageRequestSchema.parse(request));
       onUpdate(image);
@@ -205,6 +220,28 @@ export default function ImageStudio({
         </p>
         <div className="image-studio-grid">
           <div className="image-picture-column">
+            {takeSets.open && (
+              <TakeSetView
+                set={takeSets.open}
+                busy={sending}
+                media={(id) => {
+                  const clip = images.find((image) => image.id === id)?.clip;
+                  return clip && { kind: 'image', url: clip.url };
+                }}
+                onKeep={(id) =>
+                  void takeSets
+                    .keep(takeSets.open!, id)
+                    .then(() => {
+                      setSelected(id);
+                      setNotice('Take kept. It is now this studio’s result.');
+                    })
+                    .catch((failure) => setError(failure.message))
+                }
+                onCancel={() =>
+                  void takeSets.cancel(takeSets.open!).catch((failure) => setError(failure.message))
+                }
+              />
+            )}
             <div className="image-picture">
               {viewed?.clip && viewed.state === 'succeeded' ? (
                 <img src={mediaUrl(viewed.clip.url)} alt={viewed.request.name} />
@@ -352,6 +389,22 @@ export default function ImageStudio({
                 </select>
               </label>
               <label>
+                TAKES
+                <select
+                  aria-label="Image takes"
+                  value={takes}
+                  disabled={busy}
+                  onChange={(event) => setTakes(Number(event.target.value))}
+                >
+                  <option value={1}>1 take</option>
+                  {[2, 3, 4].map((n) => (
+                    <option key={n} value={n}>
+                      {n} takes to compare
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
                 LOOK
                 <select
                   aria-label="Image style"
@@ -484,8 +537,18 @@ export default function ImageStudio({
               }
               onClick={() => void generate()}
             >
-              {pending ? <LoaderCircle size={15} className="spin" /> : <ImagePlus size={15} />}{' '}
-              {pending ? 'Creating image…' : 'Create image'}
+              {pending || takeSets.running ? (
+                <LoaderCircle size={15} className="spin" />
+              ) : (
+                <ImagePlus size={15} />
+              )}{' '}
+              {takeSets.running
+                ? 'Rendering takes…'
+                : pending
+                  ? 'Creating image…'
+                  : takes > 1
+                    ? `Create ${takes} takes`
+                    : 'Create image'}
             </button>
             <RenderEstimate job={{ request }} history={images} gpu={engine?.gpu} />
             <small>

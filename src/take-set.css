@@ -1,0 +1,114 @@
+.take-set {
+  display: grid;
+  gap: 10px;
+  margin: 14px 0;
+  padding: 12px;
+  border: 1px solid var(--control-border, #657168);
+  border-radius: 7px;
+  background: var(--panel, #1b211d);
+}
+.take-set > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+.take-set-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.take-set-grid.takes-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.take-set-grid.takes-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.take-set figure {
+  margin: 0;
+  display: grid;
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+.take-set figure.kept {
+  border-color: var(--accent, #d5e991);
+}
+.take-set-picture {
+  display: grid;
+  place-items: center;
+  min-height: 90px;
+  background: #111315;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.take-set-picture video,
+.take-set-picture img {
+  width: 100%;
+  max-height: 46vh;
+  object-fit: contain;
+  display: block;
+}
+.take-set-picture span {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 16px 8px;
+  color: var(--text-secondary, #b7c1b9);
+  font-size: 12px;
+  text-align: center;
+}
+.take-set figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary, #b7c1b9);
+}
+.take-set figcaption .button {
+  font-size: 12px;
+  padding: 5px 9px;
+}
+.take-set-kept {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent, #d5e991);
+  font-weight: 600;
+}
+.take-set-transport {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.take-set-transport input {
+  flex: 1;
+  accent-color: var(--accent, #d5e991);
+}
+.take-set-transport small {
+  color: var(--text-secondary, #b7c1b9);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 760px) {
+  .take-set-grid.takes-3,
+  .take-set-grid.takes-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.render-takes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: var(--text-secondary, #b7c1b9);
+}
+.render-takes select {
+  font-size: 12px;
+}
