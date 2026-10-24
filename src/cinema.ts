@@ -180,7 +180,7 @@ const language: { [K in Exclude<keyof Cinema, 'guidance'>]: Record<Cinema[K], st
     'impact-shake':
       'A sudden hard impact jolts the camera with a violent shake that quickly settles back to a steady frame.',
     'orbit-360':
-      'The camera travels a complete 360-degree orbit around the subject at a constant distance and height, showing it from every side and returning to the front, the subject staying centered throughout.',
+      'The camera orbits in one full circle around the subject, travelling sideways around it so the background sweeps past behind it and the subject is seen from the side, the back and the front again; the horizon stays level.',
     arc: 'The camera sweeps a wide half-circle arc around the subject from one side to the other, with strong parallax between the subject and the background.',
     'bullet-time':
       'Bullet time: the moment freezes in a single suspended instant while the camera glides around the motionless subject in a smooth arc; hair, particles and droplets hang still in the air.',

@@ -18,7 +18,8 @@ moves rendered with Animate a frame from the same still (`ridge.png`, made with
 Create image) with the same prompt and seed on an RTX 5080, so only the camera
 changes. `scripts/build-move-previews.py` cuts the gallery loops from them. The
 360° orbit, FPV drone, rack focus and barrel roll takes also open in `--examples`
-and the shared copy.
+and the shared copy, with a second 360° orbit around the beach dog from the
+one-tap sample photos, made through the shared copy.
 
 ## Then comes the Aftertake
 

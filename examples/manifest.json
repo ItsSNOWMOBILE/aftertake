@@ -5157,18 +5157,6 @@
       "size": 14675
     },
     {
-      "source": "camera-moves/orbit-360/take.json",
-      "target": "renders/edde62bf-3967-4add-9647-4f2750fc2170.json",
-      "sha256": "f2eb4d632bcbecf698c0849bafdcea373e95149b6ac689836c83401e0acbcad1",
-      "size": 7732
-    },
-    {
-      "source": "camera-moves/orbit-360/take.mp4",
-      "target": "outputs/edde62bf-3967-4add-9647-4f2750fc2170.mp4",
-      "sha256": "2d22518df588d9043f50cbf6b026a6fa9172ff24459895a3f22fccc8cc7af086",
-      "size": 1849783
-    },
-    {
       "source": "camera-moves/fpv-drone/take.json",
       "target": "renders/ac5bba5c-dc29-4ddd-bbf3-8b24ab352c14.json",
       "sha256": "2fe81b484ecd55c2a2f6c23163e4212deb13df849ed308f74f743f5893e93ff2",
@@ -5203,6 +5191,30 @@
       "target": "outputs/01ed260d-1aa7-4a4c-ad4d-17802b62219e.mp4",
       "sha256": "c228b3dbdf5e29fef14c921ea108f3e7f11ba5146a66b19b52ced935b404e456",
       "size": 1878589
+    },
+    {
+      "source": "camera-moves/orbit-360/take.json",
+      "target": "renders/5c2279fe-6bbd-4c54-a4f6-c7fc5bec7c66.json",
+      "sha256": "f69e146572da72a4fb8fbd2fd5ff1f7b984cdee76f44bafe526b1a86f3d5918f",
+      "size": 7882
+    },
+    {
+      "source": "camera-moves/orbit-360/take.mp4",
+      "target": "outputs/5c2279fe-6bbd-4c54-a4f6-c7fc5bec7c66.mp4",
+      "sha256": "388435adc030169908211bbd60eff6eab0601100425477f552e4bbce4f02fde0",
+      "size": 2065397
+    },
+    {
+      "source": "camera-moves/orbit-360/beach-dog.json",
+      "target": "renders/a9ddb98a-a3b1-4cc2-a9f8-5395b5117e8b.json",
+      "sha256": "676f1cfbd37c3a56f3a51913867603ba5e5c157f3d10ebcc9b36fd2b0e9c5845",
+      "size": 7455
+    },
+    {
+      "source": "camera-moves/orbit-360/beach-dog.mp4",
+      "target": "outputs/a9ddb98a-a3b1-4cc2-a9f8-5395b5117e8b.mp4",
+      "sha256": "65772b25639dc4013eadad2df4dd80a69dc3b51cdc9489d6b7efcec9b3ed65f7",
+      "size": 1993097
     }
   ]
 }
