@@ -5587,6 +5587,234 @@
       "target": "storyboards/9a6aa970-04a1-4f28-86b5-e3ca3e8f2179.json",
       "sha256": "7678b90a6149216cd36f9b9c6da5cca800c66b0ff9c8e5117c587c71913d1bf1",
       "size": 7087
+    },
+    {
+      "source": "takes/teapot/take-1.json",
+      "target": "images/35ca0d25-548a-4693-8544-f99d23902c88.json",
+      "sha256": "459d0a1d335733cd70344c637d3fafca634e930ce117e2e875f55d20f1647a18",
+      "size": 3625
+    },
+    {
+      "source": "takes/teapot/take-1.png",
+      "target": "clips/35ca0d25-548a-4693-8544-f99d23902c88.png",
+      "sha256": "54e3193410837190ef0108cb69cd1890c56f424ecbb24498145b0254fe5f7f82",
+      "size": 1152716
+    },
+    {
+      "source": "takes/teapot/take-1.clip.json",
+      "target": "clips/35ca0d25-548a-4693-8544-f99d23902c88.json",
+      "sha256": "aebf3133062196ffe74a1793b52f0a43e0a378153efb3654572506f5a97723bd",
+      "size": 327
+    },
+    {
+      "source": "previews/3cd50a883c8beccf4c431ca769f74ca4f9568b9008e9863c4b755b62012d26bd.jpg",
+      "target": "previews/3cd50a883c8beccf4c431ca769f74ca4f9568b9008e9863c4b755b62012d26bd.jpg",
+      "sha256": "340ee0ec109b9b91f0fabe157562d92e85f705c432b321f69e226b1b82e66988",
+      "size": 5961
+    },
+    {
+      "source": "takes/teapot/take-2.json",
+      "target": "images/cc167d73-e11a-497a-a705-aa2d8ffb16b4.json",
+      "sha256": "a92cc6404c250a06122dc46aecebb50a1969174a02e17b2a48377ac4d892023c",
+      "size": 3625
+    },
+    {
+      "source": "takes/teapot/take-2.png",
+      "target": "clips/cc167d73-e11a-497a-a705-aa2d8ffb16b4.png",
+      "sha256": "459e63f15026d5715b6eafc54a599e4beee07e3910a8877b09f1b219ac7befe7",
+      "size": 1204634
+    },
+    {
+      "source": "takes/teapot/take-2.clip.json",
+      "target": "clips/cc167d73-e11a-497a-a705-aa2d8ffb16b4.json",
+      "sha256": "78490e54ca8ef433f977ea84127adeb3b902f24d7fc652e068239ebc01134889",
+      "size": 327
+    },
+    {
+      "source": "previews/8241d7016929964fb8ddb01e8f2b78427b9602d9f5ec4089ef0bfe0096986abd.jpg",
+      "target": "previews/8241d7016929964fb8ddb01e8f2b78427b9602d9f5ec4089ef0bfe0096986abd.jpg",
+      "sha256": "a29b076e2f7aada4842ad1dd78e3c28352a1e78ac60cab673bfce4e5fe075e95",
+      "size": 6065
+    },
+    {
+      "source": "takes/teapot/take-3.json",
+      "target": "images/eda15e77-5096-4859-9ca3-d46e6b88ebac.json",
+      "sha256": "6ad089bdb52f4a351d423601c8f1db46b6c95406d079db2a932393282f22f4d3",
+      "size": 3627
+    },
+    {
+      "source": "takes/teapot/take-3.png",
+      "target": "clips/eda15e77-5096-4859-9ca3-d46e6b88ebac.png",
+      "sha256": "10c0b84e7bb57e26a83a9c7114f12921658e336509ed05613f4a454cf468eb59",
+      "size": 1121298
+    },
+    {
+      "source": "takes/teapot/take-3.clip.json",
+      "target": "clips/eda15e77-5096-4859-9ca3-d46e6b88ebac.json",
+      "sha256": "d77ece79e4b3b38e1f39bc2c16b72afd61b30584e3257367be532ca8ebd79ed6",
+      "size": 327
+    },
+    {
+      "source": "previews/f339336727676c0455c739823d8c77cace9e3dc622f348b59e15ae288f720d19.jpg",
+      "target": "previews/f339336727676c0455c739823d8c77cace9e3dc622f348b59e15ae288f720d19.jpg",
+      "sha256": "6ece4ea30850232c6af04b42424ed31ec4b7363fd4aaa587515c9da660a74af7",
+      "size": 5474
+    },
+    {
+      "source": "takes/teapot/take-4.json",
+      "target": "images/0830c929-77f5-4d33-a088-611f8f6c58e4.json",
+      "sha256": "252f8ae73067eaf7ef7421509141ad55955e8ac44dfdc8c237c0bc2ceb4384c4",
+      "size": 3627
+    },
+    {
+      "source": "takes/teapot/take-4.png",
+      "target": "clips/0830c929-77f5-4d33-a088-611f8f6c58e4.png",
+      "sha256": "eb24d6ca3715f141ff37ae51886eea4c02a02b33f5706c15a9f406a8fb1db955",
+      "size": 1155349
+    },
+    {
+      "source": "takes/teapot/take-4.clip.json",
+      "target": "clips/0830c929-77f5-4d33-a088-611f8f6c58e4.json",
+      "sha256": "594fd2ccb73c0225ffaf8ed2496f63acc599cbf1b7b427f56e2da82f835d2188",
+      "size": 327
+    },
+    {
+      "source": "previews/158f227d253c21baa33e9f68343ef39980d8bc81bbe3c6682abe30bfb651bf04.jpg",
+      "target": "previews/158f227d253c21baa33e9f68343ef39980d8bc81bbe3c6682abe30bfb651bf04.jpg",
+      "sha256": "54f9270e2076e6458b53bfad2c86f0895c306c47c9150bf221c993acdca25573",
+      "size": 6070
+    },
+    {
+      "source": "takes/teapot/set.json",
+      "target": "take-sets/38b04ab9-569f-4d5f-a39e-339e7775c3a8.json",
+      "sha256": "89356dfcb6491cfe864ea6bb0473d63c05f461d140bcb4b51b2dbd2815388439",
+      "size": 1194
+    },
+    {
+      "source": "takes/paper-boat/take-1.json",
+      "target": "videos/d2f3da0f-d260-4aad-ab71-4fa34c998fbc.json",
+      "sha256": "2e796a2661e6d1eec11339d7126c0f2f701159203712cb44df0d02f51747423e",
+      "size": 6206
+    },
+    {
+      "source": "takes/paper-boat/take-1.mp4",
+      "target": "clips/d2f3da0f-d260-4aad-ab71-4fa34c998fbc.mp4",
+      "sha256": "ee2e785be7ac6ed90a423e9c1b21543c586a9965fb1514ef3dfe9b1a3c686b7d",
+      "size": 1623684
+    },
+    {
+      "source": "takes/paper-boat/take-1.clip.json",
+      "target": "clips/d2f3da0f-d260-4aad-ab71-4fa34c998fbc.json",
+      "sha256": "56250d299818ff6d49723468dcd1bf255baf974e425cf21c341b379fcf209ac2",
+      "size": 339
+    },
+    {
+      "source": "previews/052048eff09ec3403c13bea644ecf363ca8f4c04aef7c425fadb4ff58cd68fc1.jpg",
+      "target": "previews/052048eff09ec3403c13bea644ecf363ca8f4c04aef7c425fadb4ff58cd68fc1.jpg",
+      "sha256": "21a2d050b5f0c6c0dc3c45e004d8f235ea7fa97af03db583230588b4d04e55c1",
+      "size": 10223
+    },
+    {
+      "source": "takes/paper-boat/take-2.json",
+      "target": "videos/93c1f0db-c9fb-4d8f-8c70-330b8ea71bdc.json",
+      "sha256": "517baadeeccd3cf2c317bdd9ff138ee8bdd54ebb29a44e6045c2d87b0d696962",
+      "size": 6209
+    },
+    {
+      "source": "takes/paper-boat/take-2.mp4",
+      "target": "clips/93c1f0db-c9fb-4d8f-8c70-330b8ea71bdc.mp4",
+      "sha256": "4729f6788ebe6e9204b392b019e4aff58e5ef453ee4dbac09c349ed37f740539",
+      "size": 1927268
+    },
+    {
+      "source": "takes/paper-boat/take-2.clip.json",
+      "target": "clips/93c1f0db-c9fb-4d8f-8c70-330b8ea71bdc.json",
+      "sha256": "99367cad8e2c4bedf9def8a7294dfbc7547b1d4bdd97a17f696fd5302d7cc0a2",
+      "size": 339
+    },
+    {
+      "source": "previews/3140d1fef7bc64f8a7bc467decab52304fb366e40259b8da114e48fd747f5c29.jpg",
+      "target": "previews/3140d1fef7bc64f8a7bc467decab52304fb366e40259b8da114e48fd747f5c29.jpg",
+      "sha256": "016bfd8be485f9e3105931ae34a4fa36433e6706b7bd38f416a3896ba5f1ec2e",
+      "size": 8471
+    },
+    {
+      "source": "takes/paper-boat/take-3.json",
+      "target": "videos/9099df45-4b68-4438-8895-31eb41ee2d69.json",
+      "sha256": "2699d10d72e3477930c0bc2195e30e87b1116e99b3b346289b5f35cfc359bab7",
+      "size": 6209
+    },
+    {
+      "source": "takes/paper-boat/take-3.mp4",
+      "target": "clips/9099df45-4b68-4438-8895-31eb41ee2d69.mp4",
+      "sha256": "3e640d626f5d0c194c8cefa08700ddfcf71f9aaae9319131a2afb24751c4971e",
+      "size": 1342376
+    },
+    {
+      "source": "takes/paper-boat/take-3.clip.json",
+      "target": "clips/9099df45-4b68-4438-8895-31eb41ee2d69.json",
+      "sha256": "d03a23545d437c0f5f0c5db6a501550fd24e3b6c590f5933a2010df97997b1dc",
+      "size": 339
+    },
+    {
+      "source": "previews/ef65a47818a10ca791f668925f56a9d1ca3610db4b9c91229284dfe119711031.jpg",
+      "target": "previews/ef65a47818a10ca791f668925f56a9d1ca3610db4b9c91229284dfe119711031.jpg",
+      "sha256": "3d0d6eca7316038cb31149376ee92ed27011c14e0399d5e13603ce66fbf20996",
+      "size": 9081
+    },
+    {
+      "source": "takes/paper-boat/set.json",
+      "target": "take-sets/ae185d24-4578-4a28-8d84-c15ba6e2bd8c.json",
+      "sha256": "5c962d7a8f162570147485336f858439ae446c43d58f348a56851a16a360f335",
+      "size": 1211
+    },
+    {
+      "source": "takes/beach-dog/source.png",
+      "target": "clips/49f03158-99c7-43ec-b7ca-5b0b745227e4.png",
+      "sha256": "63a14a015b4d265fdec6b2de3ed47de32e6390181a594efe8c5b63e5d3649074",
+      "size": 1031033
+    },
+    {
+      "source": "takes/beach-dog/source.clip.json",
+      "target": "clips/49f03158-99c7-43ec-b7ca-5b0b745227e4.json",
+      "sha256": "c7056b21d3ca7e1c591599296d9ae339e33f67bc2da500a4945f199972e6b78a",
+      "size": 375
+    },
+    {
+      "source": "previews/faad46ca233b634e9ca77428e46b7df842bb1dc53d2537affec07b4fd017cd74.jpg",
+      "target": "previews/faad46ca233b634e9ca77428e46b7df842bb1dc53d2537affec07b4fd017cd74.jpg",
+      "sha256": "b16919e9e8b8b003a62ed310f0ac4e37033b951cd4783b350a699170ed5409ae",
+      "size": 5112
+    },
+    {
+      "source": "takes/beach-dog/take-1.json",
+      "target": "renders/14d77e94-6caf-4cbc-9403-04792168b758.json",
+      "sha256": "671db3962cbd171f31df65bca0dc1ab5780fa1a8bfaf9f205c3e87c004d539a6",
+      "size": 7669
+    },
+    {
+      "source": "takes/beach-dog/take-1.mp4",
+      "target": "outputs/14d77e94-6caf-4cbc-9403-04792168b758.mp4",
+      "sha256": "cfbdeeb31085dccbbca6096bbef8cb6ded7fb090a473a88c3ddc74f6dac7172f",
+      "size": 1406848
+    },
+    {
+      "source": "takes/beach-dog/take-2.json",
+      "target": "renders/9c55a080-8e83-44b2-9002-e9f550ff9b3a.json",
+      "sha256": "721385375d5ec8fa86c8155693ffcbe267f74b7f4ce8ed4b508fd42b568f35d1",
+      "size": 7673
+    },
+    {
+      "source": "takes/beach-dog/take-2.mp4",
+      "target": "outputs/9c55a080-8e83-44b2-9002-e9f550ff9b3a.mp4",
+      "sha256": "e735f39171a226ce4a0748afdf077c413301c19045bdc2fb19f650092649f883",
+      "size": 2105032
+    },
+    {
+      "source": "takes/beach-dog/set.json",
+      "target": "take-sets/d4d6f1d6-6fec-46cb-8534-86e95ff9deb6.json",
+      "sha256": "9fe59c696b5a80b7392a41857f68e7776697c0ef1bd20e304350c985e4224861",
+      "size": 1593
     }
   ]
 }

@@ -143,6 +143,18 @@ with the reason. Songs are ACE-Step renders with their Song studio recipe; add
 one with its JSON file beside the audio. After recording a result, run
 `python scripts/build-one-tap-previews.py` to cut its preview loop.
 
+## Takes
+
+Create image, Create video and Animate a frame can make 2 to 4 takes of one
+request to compare. Choose **Takes** next to the other settings (in Animate a
+frame, above **Render take**) and start as usual. The takes render one after
+another with the same settings and different seeds; the first keeps your seed.
+They appear side by side as they finish. Video takes play, pause and scrub
+together, so the same moment of every take is on screen. **Keep this take**
+makes the chosen one the studio's current result; the other takes stay in the
+studio's history. A set keeps rendering if you close the studio or the page, and
+resumes after a restart. In a shared copy, each take counts as one render.
+
 ## Storyboard
 
 **Storyboard** turns one idea into a short film. Open it from the start screen

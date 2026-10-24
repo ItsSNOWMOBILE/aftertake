@@ -7,6 +7,7 @@ import {
   parseCookies,
   routeOf,
   storyboardWeight,
+  takeSetWeight,
 } from '../scripts/share-gateway.mjs';
 
 const token = 'a-long-enough-share-token';
@@ -237,6 +238,27 @@ test('a storyboard counts one render per shot plus its song; planning it is free
     storyboardWeight(Buffer.from('{"shots":' + JSON.stringify(Array(50).fill(0)) + '}')),
     6,
   );
+});
+
+test('a set of takes counts one render per take', async (t) => {
+  const { base, upstream, admit } = await gateway(t, () => ({ status: 202 }), {
+    rendersPerVisitor: 6,
+  });
+  const cookie = await admit();
+  const post = (body: unknown) =>
+    fetch(`${base}/api/take-sets`, {
+      method: 'POST',
+      headers: { cookie, 'content-type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+  assert.equal((await post({ kind: 'image', count: 4 })).status, 202);
+  assert.deepEqual(JSON.parse(upstream.seen.at(-1)!.body), { kind: 'image', count: 4 });
+  const refused = await post({ kind: 'video', count: 3 });
+  assert.equal(refused.status, 429);
+  assert.match((await refused.json()).error, /starts 3 renders and you have 2 left/);
+  assert.equal((await post({ kind: 'video', count: 2 })).status, 202);
+  assert.equal(takeSetWeight(Buffer.from('{"count":9}')), 4);
+  assert.equal(takeSetWeight(Buffer.from('{"count":"x"}')), 1);
 });
 
 test('pages carry a dismissible note with the visitor’s renders left; other responses pass through', async (t) => {

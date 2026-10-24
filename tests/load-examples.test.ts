@@ -31,3 +31,19 @@ test('any other change to a recorded file is still refused', () => {
     false,
   );
 });
+
+test('a recorded set of takes that only gained a kept take keeps the newer record', () => {
+  const set = {
+    id: '38b04ab9-569f-4d5f-a39e-339e7775c3a8',
+    createdAt: '2026-10-24T22:47:00.000Z',
+    state: 'ready',
+    takes: [{ id: 'a' }, { id: 'b' }],
+  };
+  const target = `take-sets/${set.id}.json`;
+  assert.equal(visitorCopy(target, bytes({ ...set, kept: 'b' }), bytes(set)), true);
+  assert.equal(visitorCopy(target, bytes({ ...set, kept: 'z' }), bytes(set)), false);
+  assert.equal(
+    visitorCopy(target, bytes({ ...set, kept: 'a', takes: [{ id: 'a' }] }), bytes(set)),
+    false,
+  );
+});

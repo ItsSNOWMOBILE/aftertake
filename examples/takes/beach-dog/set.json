@@ -1,0 +1,57 @@
+{
+  "id": "d4d6f1d6-6fec-46cb-8534-86e95ff9deb6",
+  "requestKey": "takes-frame-1",
+  "requestDigest": "daa6a6e328a1161e489c50c79058053f6922212781140344e9e4d8de594df11c",
+  "kind": "frame",
+  "count": 2,
+  "request": {
+    "format": "aftertake/1",
+    "name": "Takes: beach dog",
+    "clip": {
+      "id": "49f03158-99c7-43ec-b7ca-5b0b745227e4",
+      "name": "beach-dog.png",
+      "sha256": "63a14a015b4d265fdec6b2de3ed47de32e6390181a594efe8c5b63e5d3649074",
+      "originalSha256": "09b28bdfc544485ada0b42a1eca49a69883ccbbd01436a72127cc1129e05fbef",
+      "width": 720,
+      "height": 1280,
+      "duration": 1,
+      "url": "/media/49f03158-99c7-43ec-b7ca-5b0b745227e4.png",
+      "kind": "image"
+    },
+    "prompt": "A happy golden retriever in round sunglasses on a sunny beach; waves roll in behind it and its fur moves in the breeze.",
+    "cue": {
+      "start": 0,
+      "end": 1,
+      "fade": 0.25,
+      "feather": 0.06,
+      "strokes": []
+    },
+    "seed": 3333,
+    "quality": "final",
+    "trimStart": 0,
+    "pipeline": "cinema",
+    "cinema": {
+      "movement": "arc",
+      "lens": "natural",
+      "lighting": "source",
+      "palette": "source",
+      "guidance": "prompt"
+    }
+  },
+  "takes": [
+    {
+      "seed": 3333,
+      "id": "14d77e94-6caf-4cbc-9403-04792168b758",
+      "state": "succeeded"
+    },
+    {
+      "seed": 11252,
+      "id": "9c55a080-8e83-44b2-9002-e9f550ff9b3a",
+      "state": "succeeded"
+    }
+  ],
+  "state": "ready",
+  "stage": "Pick the take to keep",
+  "createdAt": "2026-10-24T22:47:55.275Z",
+  "updatedAt": "2026-10-24T22:54:06.432Z"
+}

@@ -87,6 +87,8 @@ import { startScreenWanted, type StartTask } from './start-tasks';
 import { characterBusy, type CharacterJob } from './character';
 import { ImagePlus, LayoutPanelTop, ScanFace, WandSparkles } from 'lucide-react';
 import OneTapStudio from './OneTapStudio';
+import TakeSetView from './TakeSetView';
+import { useTakeSets } from './use-take-sets';
 import StoryboardStudio from './StoryboardStudio';
 import type { FilmDraft } from './film';
 import { spatialMask } from './mask';
@@ -173,6 +175,9 @@ export default function App() {
     message: 'Checking local engine…',
   });
   const [renders, setRenders] = useState<Render[]>([]);
+  // Animate a frame can render several takes of one shot to compare and keep one.
+  const [frameTakes, setFrameTakes] = useState(1);
+  const frameTakeSets = useTakeSets('frame');
   const [takeClient] = useState(
     () =>
       new TakeClient(apiFetch, {
@@ -1089,6 +1094,15 @@ export default function App() {
       setToast('Choose an appearance image before transferring motion.');
       return;
     }
+    if (recipe.pipeline === 'cinema' && frameTakes > 1) {
+      try {
+        await frameTakeSets.start(frameTakes, recipe);
+        setToast(`${frameTakes} takes render one after another; compare them under the shot.`);
+      } catch (error) {
+        setToast((error as Error).message);
+      }
+      return;
+    }
     takeRequestActive.current = true;
     setRendering(true);
     setTakeIssue('');
@@ -1280,6 +1294,7 @@ export default function App() {
   const busy =
     rendering ||
     takeAction ||
+    frameTakeSets.running ||
     Boolean(takeAdmission) ||
     Boolean(activeTake) ||
     frameBusy ||
@@ -2205,6 +2220,30 @@ export default function App() {
             onChange={(e) => seek(Number(e.target.value))}
           />
         </section>
+        {frameTakeSets.open && (
+          <TakeSetView
+            set={frameTakeSets.open}
+            media={(id) => {
+              const output = renders.find((item) => item.id === id)?.output;
+              return output ? { kind: 'video', url: output } : undefined;
+            }}
+            onKeep={(id) =>
+              void frameTakeSets
+                .keep(frameTakeSets.open!, id)
+                .then(() => {
+                  const kept = renders.find((item) => item.id === id);
+                  if (kept) selectTake(kept);
+                  setToast('Take kept. It is now the current take for this shot.');
+                })
+                .catch((error) => setToast(error.message))
+            }
+            onCancel={() =>
+              void frameTakeSets
+                .cancel(frameTakeSets.open!)
+                .catch((error) => setToast(error.message))
+            }
+          />
+        )}
         <TakeBlend
           take={take}
           recipe={recipe}
@@ -2749,6 +2788,24 @@ export default function App() {
           />
         </div>
         <div className="render-footer">
+          {isCinema && !browserDemo && (
+            <label className="render-takes">
+              Takes
+              <select
+                aria-label="Takes to render"
+                value={frameTakes}
+                disabled={busy}
+                onChange={(event) => setFrameTakes(Number(event.target.value))}
+              >
+                <option value={1}>1</option>
+                {[2, 3, 4].map((n) => (
+                  <option key={n} value={n}>
+                    {n} to compare
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
           <button
             className="render-button"
             disabled={!recipe || busy || !engine.ready || browserDemo}
@@ -2769,11 +2826,15 @@ export default function App() {
                   ? 'Check your original request'
                   : activeTake && takeRecoverable(activeTake)
                     ? 'Check take status'
-                    : busy
-                      ? 'Making your take…'
-                      : recipe?.transfer?.finish
-                        ? 'Composite saved take'
-                        : 'Render take'}
+                    : frameTakeSets.running
+                      ? 'Rendering takes…'
+                      : busy
+                        ? 'Making your take…'
+                        : recipe?.transfer?.finish
+                          ? 'Composite saved take'
+                          : isCinema && frameTakes > 1
+                            ? `Render ${frameTakes} takes`
+                            : 'Render take'}
             <ArrowUpRight size={18} />
           </button>
           {recipe && !busy && (

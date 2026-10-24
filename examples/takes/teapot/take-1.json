@@ -1,0 +1,145 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "35ca0d25-548a-4693-8544-f99d23902c88",
+  "requestKey": "takes-38b04ab9-569f-4d5f-a39e-339e7775c3a8-0",
+  "requestDigest": "1316dfd83b1741ad7091a574c6d1ba653824455b05f440c6a0004d8550f9b4f6",
+  "request": {
+    "format": "aftertake-image/1",
+    "name": "Takes: ceramic teapot · take 1",
+    "prompt": "A handmade speckled ceramic teapot with a bamboo handle on a sunlit linen tablecloth, a small cup beside it, soft morning window light and gentle shadows. Calm product photograph. No text, logos or watermarks.",
+    "seed": 1111,
+    "aspect": "square",
+    "style": "product"
+  },
+  "workflow": {
+    "1": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "z_image_turbo_bf16.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "qwen_3_4b.safetensors",
+        "type": "lumina2",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ae.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "ModelSamplingAuraFlow",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "shift": 3
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "A handmade speckled ceramic teapot with a bamboo handle on a sunlit linen tablecloth, a small cup beside it, soft morning window light and gentle shadows. Calm product photograph. No text, logos or watermarks.\n\nPremium product photograph with controlled studio lighting, crisp material detail and a clean composition."
+      }
+    },
+    "6": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "EmptySD3LatentImage",
+      "inputs": {
+        "width": 1024,
+        "height": 1024,
+        "batch_size": 1
+      }
+    },
+    "17": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "4",
+          0
+        ],
+        "seed": 1111,
+        "steps": 8,
+        "cfg": 1,
+        "sampler_name": "res_multistep",
+        "scheduler": "simple",
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "latent_image": [
+          "7",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "17",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "21": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "filename_prefix": "aftertake/imagine"
+      }
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-24T22:47:55.174Z",
+  "updatedAt": "2026-10-24T22:48:25.426Z",
+  "jobId": "25535275-4c91-4bf6-a408-cb413387e2bc",
+  "stage": "Ready to edit or animate",
+  "clip": {
+    "id": "35ca0d25-548a-4693-8544-f99d23902c88",
+    "name": "Takes: ceramic teapot · take 1",
+    "kind": "image",
+    "width": 1024,
+    "height": 1024,
+    "duration": 1,
+    "hasAudio": false,
+    "sha256": "54e3193410837190ef0108cb69cd1890c56f424ecbb24498145b0254fe5f7f82",
+    "url": "/media/35ca0d25-548a-4693-8544-f99d23902c88.png"
+  }
+}

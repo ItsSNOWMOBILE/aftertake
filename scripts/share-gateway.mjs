@@ -12,11 +12,11 @@ const DAY = 24 * 60 * 60 * 1000;
 const COOKIE_DAYS = 45;
 // Starting one of these runs a Comfy graph on the GPU or spends Comfy Cloud
 // credits. A one-tap effect counts once, with its automatic re-render; a
-// storyboard counts each shot and its song. CPU work, such as Film export,
-// finishing, layer renders, planning a storyboard and re-cutting an effect
-// without its watermark, is free.
+// storyboard counts each shot and its song; a set of takes counts each take.
+// CPU work, such as Film export, finishing, layer renders, planning a storyboard
+// and re-cutting an effect without its watermark, is free.
 const renderRoutes =
-  /^\/api\/(images|videos|enhancements|renders|frame-edits|depth-effects|one-tap|storyboards|characters\/(selections|replacements))$/;
+  /^\/api\/(images|videos|enhancements|renders|frame-edits|depth-effects|one-tap|storyboards|take-sets|characters\/(selections|replacements))$/;
 /** Renders a storyboard starts: one video per shot, then its song. */
 export function storyboardWeight(body) {
   try {
@@ -26,6 +26,17 @@ export function storyboardWeight(body) {
     return 1;
   }
 }
+/** Renders a set of takes starts: one per take. */
+export function takeSetWeight(body) {
+  try {
+    const count = Number(JSON.parse(body.toString('utf8'))?.count);
+    return Number.isInteger(count) ? Math.min(4, Math.max(1, count)) : 1;
+  } catch {
+    return 1;
+  }
+}
+/** Routes whose cost is in their request body. */
+const weighedRoutes = { '/api/storyboards': storyboardWeight, '/api/take-sets': takeSetWeight };
 const MAX_WEIGHED_BODY = 256 * 1024;
 const lockedRoutes = [
   [
@@ -229,7 +240,7 @@ export function createShareGateway({
         return json(res, 429, {
           error:
             weight > 1 && mine < rendersPerVisitor
-              ? `This storyboard starts ${weight} renders and you have ${rendersPerVisitor - mine} left today. Plan fewer shots, or try again tomorrow.`
+              ? `This starts ${weight} renders and you have ${rendersPerVisitor - mine} left today. Ask for fewer shots or takes, or try again tomorrow.`
               : `You've started ${mine} renders today, the most this shared copy allows each visitor. Try again tomorrow.`,
         });
       if (all + weight > rendersPerDay)
@@ -238,21 +249,22 @@ export function createShareGateway({
         });
       relay(req, res, url, visitor, weight, body);
     };
-    if (route !== '/api/storyboards') return admit(1);
-    // A storyboard's cost is in its shot list, so read the small JSON body first.
+    const weigh = weighedRoutes[route];
+    if (!weigh) return admit(1);
+    // A storyboard's or take set's cost is in its request, so read the small JSON body first.
     const chunks = [];
     let size = 0;
     req.on('data', (chunk) => {
       size += chunk.length;
       if (size > MAX_WEIGHED_BODY) {
-        json(res, 413, { error: 'This storyboard request is too large.' });
+        json(res, 413, { error: 'This request is too large.' });
         req.destroy();
       } else chunks.push(chunk);
     });
     req.on('end', () => {
       if (size > MAX_WEIGHED_BODY) return;
       const body = Buffer.concat(chunks);
-      admit(storyboardWeight(body), body);
+      admit(weigh(body), body);
     });
   });
   // The production studio needs no WebSocket; refuse upgrades rather than relay them.

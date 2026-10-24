@@ -1,0 +1,41 @@
+{
+  "id": "38b04ab9-569f-4d5f-a39e-339e7775c3a8",
+  "requestKey": "takes-img-1",
+  "requestDigest": "b71691eaaf45ee3768e315a59af3360c3d9033777fe9684cbce82443cb85bb4c",
+  "kind": "image",
+  "count": 4,
+  "request": {
+    "format": "aftertake-image/1",
+    "name": "Takes: ceramic teapot",
+    "prompt": "A handmade speckled ceramic teapot with a bamboo handle on a sunlit linen tablecloth, a small cup beside it, soft morning window light and gentle shadows. Calm product photograph. No text, logos or watermarks.",
+    "seed": 1111,
+    "aspect": "square",
+    "style": "product"
+  },
+  "takes": [
+    {
+      "seed": 1111,
+      "id": "35ca0d25-548a-4693-8544-f99d23902c88",
+      "state": "succeeded"
+    },
+    {
+      "seed": 9030,
+      "id": "cc167d73-e11a-497a-a705-aa2d8ffb16b4",
+      "state": "succeeded"
+    },
+    {
+      "seed": 16949,
+      "id": "eda15e77-5096-4859-9ca3-d46e6b88ebac",
+      "state": "succeeded"
+    },
+    {
+      "seed": 24868,
+      "id": "0830c929-77f5-4d33-a088-611f8f6c58e4",
+      "state": "succeeded"
+    }
+  ],
+  "state": "ready",
+  "stage": "Pick the take to keep",
+  "createdAt": "2026-10-24T22:47:55.066Z",
+  "updatedAt": "2026-10-24T22:56:53.733Z"
+}

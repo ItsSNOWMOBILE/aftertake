@@ -124,6 +124,9 @@ root, including resolved symbolic links; remote media URLs are not accepted.
 | `aftertake_plan_storyboard` | Plans a 3–5 shot list from one idea with the local Qwen3-4B on the CPU, or a template when it is not installed; starts no GPU work. |
 | `aftertake_make_storyboard` | Starts or rejoins a storyboard by stable `requestId`: one Create video render per shot, an ACE-Step song, then a Film cut on the song's beats. |
 | `aftertake_storyboard_status` | Reads a storyboard's stage, shots and song, and when ready the film URL and its editable Film project. |
+| `aftertake_make_takes` | Renders one Create image, Create video or Animate a frame request 2–4 times with different seeds, one after another; rejoins by `requestId`. |
+| `aftertake_takes_status` | Reads a set of takes: each take's seed, studio record and state, and which one was kept. |
+| `aftertake_keep_take` | Keeps one finished take as the result; the others stay in their studio's history. |
 
 For saved regional takes, [Refine a saved take’s blend](refining-a-take.md)
 explains the supported final-area controls, CPU dependencies and provenance.

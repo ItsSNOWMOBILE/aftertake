@@ -1,0 +1,44 @@
+{
+  "id": "ae185d24-4578-4a28-8d84-c15ba6e2bd8c",
+  "requestKey": "takes-vid-1",
+  "requestDigest": "7a2e18641d4e66bdf109c9dd6c8dea52ff56fd772b8b0b362d857ce900c18529",
+  "kind": "video",
+  "count": 3,
+  "request": {
+    "format": "aftertake-text-video/1",
+    "name": "Takes: paper boat",
+    "prompt": "A small white paper boat drifts along a rain-filled street gutter, ripples spreading around it as raindrops fall, glowing shop lights reflecting in the water at dusk.",
+    "seed": 2222,
+    "aspect": "landscape",
+    "quality": "final",
+    "seconds": 3,
+    "sound": false,
+    "cinema": {
+      "movement": "truck",
+      "lens": "portrait",
+      "lighting": "source",
+      "palette": "source"
+    }
+  },
+  "takes": [
+    {
+      "seed": 2222,
+      "id": "d2f3da0f-d260-4aad-ab71-4fa34c998fbc",
+      "state": "succeeded"
+    },
+    {
+      "seed": 10141,
+      "id": "93c1f0db-c9fb-4d8f-8c70-330b8ea71bdc",
+      "state": "succeeded"
+    },
+    {
+      "seed": 18060,
+      "id": "9099df45-4b68-4438-8895-31eb41ee2d69",
+      "state": "succeeded"
+    }
+  ],
+  "state": "ready",
+  "stage": "Pick the take to keep",
+  "createdAt": "2026-10-24T22:47:55.150Z",
+  "updatedAt": "2026-10-24T22:55:32.859Z"
+}

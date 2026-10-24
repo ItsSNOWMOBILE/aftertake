@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { readFileSync, readdirSync } from 'node:fs';
 import { oneTapMusicSchema, oneTapPresetSchema, type OneTapJob } from '../src/one-tap.js';
 import type { StoryboardJob } from '../src/storyboard.js';
+import type { TakeSet } from '../src/take-sets.js';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { templateNotes, type Template } from '../src/templates.js';
@@ -76,7 +77,8 @@ export function buildDemoSnapshot(
     images: ImageGeneration[] = [],
     videos: VideoGeneration[] = [],
     oneTapJobs: OneTapJob[] = [],
-    storyboards: StoryboardJob[] = [];
+    storyboards: StoryboardJob[] = [],
+    takeSets: TakeSet[] = [];
   const byTarget = new Map<string, { source: string; sha256: string; size: number }>();
   for (const item of manifest.files) {
     const bytes = file(item.source);
@@ -106,6 +108,8 @@ export function buildDemoSnapshot(
       oneTapJobs.push(JSON.parse(bytes.toString('utf8')));
     if (/^storyboards\/[a-f0-9-]{36}\.json$/.test(item.target))
       storyboards.push(JSON.parse(bytes.toString('utf8')));
+    if (/^take-sets\/[a-f0-9-]{36}\.json$/.test(item.target))
+      takeSets.push(JSON.parse(bytes.toString('utf8')));
   }
   for (const job of storyboards) {
     const cut = job.filmId && byTarget.get(`films/${job.filmId}.mp4`);
@@ -358,6 +362,7 @@ export function buildDemoSnapshot(
     characters,
     oneTap,
     storyboards: storyboards.sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+    takeSets: takeSets.sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
     templates,
     media,
     thumbnails,

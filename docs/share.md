@@ -24,7 +24,8 @@ send. Leave it running while people use it; Ctrl+C stops sharing.
   Cloud: images, videos, one-tap effects, enhancements, region effects, frame
   edits, depth effects, tracking and character replacement. A one-tap effect
   counts once, including its automatic re-render; a storyboard counts one per
-  shot plus one for its song, and planning one is free. Editing, previews, Color &
+  shot plus one for its song, and planning one is free; a set of takes counts
+  one per take. Editing, previews, Color &
   finish, layers, Film export and turning an effect's watermark on or off run on
   the CPU and do not count, and neither does a refused render.
 - **Nothing to change in your setup.** Visitors can't change Render setup, connect
