@@ -13,7 +13,7 @@ is optional, studio by studio.
 [![CI](https://github.com/ItsSNOWMOBILE/aftertake/actions/workflows/ci.yml/badge.svg?branch=aftertake-studio)](https://github.com/ItsSNOWMOBILE/aftertake/actions/workflows/ci.yml)
 [![Open weights only](https://img.shields.io/badge/models-open_weights_only-d5eb94?labelColor=182015)](#how-its-built)
 [![Comfy SDK](https://img.shields.io/badge/powered_by-ComfyUI_%2B_Comfy_SDK-d5eb94?labelColor=182015)](https://github.com/Comfy-Org/comfy-typescript-sdk)
-[![MCP: 49 tools](https://img.shields.io/badge/MCP-49_tools-d5eb94?labelColor=182015)](docs/mcp.md)
+[![MCP: 52 tools](https://img.shields.io/badge/MCP-52_tools-d5eb94?labelColor=182015)](docs/mcp.md)
 [![Windows · macOS · Linux](https://img.shields.io/badge/runs_on-Windows_·_macOS_·_Linux-c3d4a6?labelColor=182015)](#quick-start)
 
 **[Watch the film](https://itssnowmobile.github.io/aftertake/film/)** ·
@@ -168,7 +168,7 @@ tools are ready and the command that fixes each one. See
 ```mermaid
 flowchart LR
   UI["Studio UI<br/>React · Vite"] --> Server["Local studio server<br/>Node · Express"]
-  Agent["Any MCP client<br/>(your agent)"] --> MCP["Aftertake MCP<br/>49 tools"] --> Server
+  Agent["Any MCP client<br/>(your agent)"] --> MCP["Aftertake MCP<br/>52 tools"] --> Server
   Server --> SDK["@comfyorg/sdk<br/>isolated worker"] --> Comfy["ComfyUI 0.41<br/>+ Aftertake nodes"] --> GPU[("NVIDIA GPU<br/>open-weight models")]
   Server --> Media["Media runtime<br/>PyAV · Pillow · FFmpeg"]
   Server --> Depth["ONNX Runtime depth<br/>Neural Engine · NPU · GPU · CPU"]
@@ -252,7 +252,7 @@ installing anything in the **[browser editor](https://itssnowmobile.github.io/af
 | [Motion graphics](docs/motion-graphics.md) · [scenes](docs/motion-scenes.md) | Titles, shapes, transitions, groups and depth |
 | [Color & finish](docs/finishing.md) | Looks, curves, LUTs, optical effects and Hide details |
 | [Narrated cuts](docs/narrated-cut.md) | Scripts, measured voices, captions and pacing |
-| [MCP reference](docs/mcp.md) | Agent setup, all 49 tools and recovery behavior |
+| [MCP reference](docs/mcp.md) | Agent setup, all 52 tools and recovery behavior |
 | [Hardware](docs/hardware.md) | GPU selection, memory policy and precision |
 | [Share a live link](docs/share.md) | Let someone use your studio through an access link and a tunnel |
 | [Architecture](docs/competition.md) | How the build works and what is reproducible |
