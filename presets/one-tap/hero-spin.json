@@ -1,0 +1,51 @@
+{
+  "format": "aftertake-one-tap/1",
+  "id": "hero-spin",
+  "title": "Product hero spin",
+  "line": "A slow turntable arc around your product, a sweep of studio light and a launch title.",
+  "order": 20,
+  "accepts": ["image", "video"],
+  "motion": {
+    "prompt": "A smooth product turntable shot: the camera circles a quarter turn around the product at a constant height, revealing its side as a band of studio light glides across its surface; the backdrop stays clean. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
+    "movement": "orbit",
+    "lens": "portrait",
+    "lighting": "source",
+    "palette": "source",
+    "quality": "final",
+    "resolution": "720p"
+  },
+  "cut": {
+    "layout": "motion"
+  },
+  "titles": [
+    {
+      "text": "NEW",
+      "start": 0.3,
+      "end": 4,
+      "style": "kicker",
+      "position": "top",
+      "animation": "pop",
+      "font": "condensed",
+      "fontSize": 110,
+      "color": "#e7ff8a"
+    },
+    {
+      "text": "MEET THE ICON",
+      "editable": true,
+      "start": 0.9,
+      "end": 4,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "reveal",
+      "font": "condensed",
+      "fontSize": 138,
+      "color": "#ffffff"
+    }
+  ],
+  "music": {
+    "track": "luxe",
+    "start": 0.5,
+    "volume": 0.9,
+    "fadeOut": 0.6
+  }
+}

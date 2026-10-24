@@ -34,7 +34,15 @@ export const titleWordSchema = spokenWordSchema.safeExtend({
 export const punchAnimations = ['slam', 'pop', 'reveal', 'glitch', 'scramble'] as const;
 export const titleFonts = ['display', 'condensed', 'mono'] as const;
 export const titleBoxes = ['stamp', 'highlight', 'underline'] as const;
-export const shotTransitions = ['dissolve', 'whip', 'zoom', 'flash', 'glitch', 'slide'] as const;
+export const shotTransitions = [
+  'dissolve',
+  'whip',
+  'zoom',
+  'flash',
+  'glitch',
+  'slide',
+  'wipe',
+] as const;
 
 export const filmShotSchema = z
   .object({

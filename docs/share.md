@@ -21,10 +21,11 @@ send. Leave it running while people use it; Ctrl+C stops sharing.
   renders they have left.
 - **A daily allowance.** Each visitor can start 20 renders a day and all visitors
   together 150. A render is anything that runs a model on your GPU or on Comfy
-  Cloud: images, videos, enhancements, region effects, frame edits, depth effects,
-  tracking and character replacement. Editing, previews, Color & finish, layers
-  and Film export run on the CPU and do not count, and neither does a refused
-  render.
+  Cloud: images, videos, one-tap effects, enhancements, region effects, frame
+  edits, depth effects, tracking and character replacement. A one-tap effect
+  counts once, including its automatic re-render. Editing, previews, Color &
+  finish, layers, Film export and turning an effect's watermark on or off run on
+  the CPU and do not count, and neither does a refused render.
 - **Nothing to change in your setup.** Visitors can't change Render setup, connect
   or disconnect Comfy Cloud, or read your Comfy Cloud key.
 

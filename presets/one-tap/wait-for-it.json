@@ -1,0 +1,44 @@
+{
+  "format": "aftertake-one-tap/1",
+  "id": "wait-for-it",
+  "title": "Wait for it",
+  "line": "The photo holds under a typed tease, then a flash cut into a pull-back reveal.",
+  "order": 40,
+  "accepts": ["image", "video"],
+  "motion": {
+    "prompt": "The camera glides backward and slightly upward, revealing more of the surroundings around the subject, with natural motion in the scene and drifting atmosphere. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
+    "movement": "pull",
+    "lens": "wide",
+    "lighting": "source",
+    "palette": "source",
+    "quality": "final",
+    "resolution": "720p"
+  },
+  "cut": {
+    "layout": "reveal",
+    "still": 1.6,
+    "transition": "flash",
+    "transitionSeconds": 0.25,
+    "stillZoom": 1.08
+  },
+  "titles": [
+    {
+      "text": "wait for it…",
+      "editable": true,
+      "start": 0.15,
+      "end": 1.55,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "typewriter",
+      "font": "mono",
+      "fontSize": 81,
+      "color": "#ffffff"
+    }
+  ],
+  "music": {
+    "track": "rise",
+    "start": 0,
+    "volume": 0.9,
+    "fadeOut": 0.6
+  }
+}

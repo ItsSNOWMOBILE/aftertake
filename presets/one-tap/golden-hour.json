@@ -1,0 +1,40 @@
+{
+  "format": "aftertake-one-tap/1",
+  "id": "golden-hour",
+  "title": "Golden hour",
+  "line": "A slow push in warm low sun, with drifting dust and a soft caption.",
+  "order": 60,
+  "accepts": ["image", "video"],
+  "motion": {
+    "prompt": "Warm late-afternoon sunlight pours across the scene with gentle lens flares, golden dust drifting through the light and a soft breeze moving hair, fabric and plants. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
+    "movement": "push",
+    "lens": "portrait",
+    "lighting": "tungsten",
+    "palette": "warm",
+    "quality": "final",
+    "resolution": "720p"
+  },
+  "cut": {
+    "layout": "motion"
+  },
+  "titles": [
+    {
+      "text": "golden hour",
+      "editable": true,
+      "start": 0.6,
+      "end": 4,
+      "style": "caption",
+      "position": "bottom",
+      "animation": "rise",
+      "font": "display",
+      "fontSize": 90,
+      "color": "#fff4dc"
+    }
+  ],
+  "music": {
+    "track": "drift",
+    "start": 0,
+    "volume": 0.85,
+    "fadeOut": 0.7
+  }
+}

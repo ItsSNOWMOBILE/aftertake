@@ -20,6 +20,8 @@ const idempotentWrites = new Set([
   'aftertake_depth_effect',
   'aftertake_compose_layers',
   'aftertake_refine_blend',
+  'aftertake_make_one_tap_effect',
+  'aftertake_one_tap_watermark',
 ]);
 const destructiveWrites = new Set([
   'aftertake_generation_action',

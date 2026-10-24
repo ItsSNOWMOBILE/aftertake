@@ -1,0 +1,20 @@
+{
+  "format": "aftertake-one-tap-music/1",
+  "id": "luxe",
+  "title": "Luxe",
+  "file": "luxe.m4a",
+  "sha256": "204891a5fc4ed065c9ef009be15e470c2e40ba38cffa3b3bf6e22b4f14b27afc",
+  "duration": 16.0,
+  "recipe": {
+    "format": "aftertake-song/1",
+    "name": "One-tap song: Luxe",
+    "tags": "sleek minimal deep house, warm sub bass, soft plucked synth, airy pads, glossy luxury fashion mood, instrumental",
+    "lyrics": "",
+    "seconds": 16,
+    "bpm": 120,
+    "keyscale": "A minor",
+    "timesignature": "4",
+    "language": "unknown",
+    "seed": 1203
+  }
+}

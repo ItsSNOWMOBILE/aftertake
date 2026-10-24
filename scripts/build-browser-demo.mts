@@ -104,8 +104,8 @@ await build({
   ],
   build: { outDir: output, emptyOutDir: true },
 });
-// The start screen and starter gallery load their looping previews from public/.
-for (const folder of ['start', 'starters'])
+// The start screen, starter gallery and one-tap effects load their looping previews from public/.
+for (const folder of ['start', 'starters', 'one-tap'])
   await cp(path.join(root, 'public', folder), path.join(output, folder), { recursive: true });
 await writeFile(path.join(output, 'snapshot.json'), JSON.stringify(snapshot) + '\n');
 await writeFile(path.join(output, 'licenses.txt'), licenseText + '\n');

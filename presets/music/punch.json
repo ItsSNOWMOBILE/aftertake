@@ -1,0 +1,20 @@
+{
+  "format": "aftertake-one-tap-music/1",
+  "id": "punch",
+  "title": "Punch",
+  "file": "punch.m4a",
+  "sha256": "06b8f434a6a0b0a1eb5c37755a281d59bee81e671b93a9e2b2a628e1a00446c7",
+  "duration": 16.0,
+  "recipe": {
+    "format": "aftertake-song/1",
+    "name": "One-tap song: Punch",
+    "tags": "hard-hitting trap beat, booming 808 bass, crisp snappy hi-hats, big clap on every downbeat, confident and energetic, instrumental",
+    "lyrics": "",
+    "seconds": 16,
+    "bpm": 140,
+    "keyscale": "C minor",
+    "timesignature": "4",
+    "language": "unknown",
+    "seed": 811
+  }
+}

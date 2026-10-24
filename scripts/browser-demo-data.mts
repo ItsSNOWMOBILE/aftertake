@@ -1,4 +1,6 @@
 import { execFileSync } from 'node:child_process';
+import { readFileSync, readdirSync } from 'node:fs';
+import { oneTapMusicSchema, oneTapPresetSchema, type OneTapJob } from '../src/one-tap.js';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { templateNotes, type Template } from '../src/templates.js';
@@ -71,7 +73,8 @@ export function buildDemoSnapshot(
     clips: Clip[] = [],
     frameEdits: FrameEdit[] = [],
     images: ImageGeneration[] = [],
-    videos: VideoGeneration[] = [];
+    videos: VideoGeneration[] = [],
+    oneTapJobs: OneTapJob[] = [];
   const byTarget = new Map<string, { source: string; sha256: string; size: number }>();
   for (const item of manifest.files) {
     const bytes = file(item.source);
@@ -97,7 +100,29 @@ export function buildDemoSnapshot(
     if (item.target.startsWith('clips/') && !item.target.endsWith('.json'))
       media['/media/' + path.posix.basename(item.target)] = remote(item.source);
     if (item.target.startsWith('outputs/')) media['/' + item.target] = remote(item.source);
+    if (item.target.startsWith('one-tap/') && item.target.endsWith('.json'))
+      oneTapJobs.push(JSON.parse(bytes.toString('utf8')));
   }
+  for (const job of oneTapJobs) {
+    const cut = job.exports.watermark && byTarget.get(`films/${job.exports.watermark.filmId}.mp4`);
+    if (job.state !== 'ready' || !cut) throw Error('A recorded effect has no finished clip.');
+    media[`/api/one-tap/${job.id}/video`] = remote(cut.source);
+  }
+  // Presets are data files beside the code, so the trial shows the gallery this build ships.
+  const presetFolder = (name: string) =>
+    readdirSync(path.join(root, 'presets', name))
+      .filter((file) => file.endsWith('.json'))
+      .map((file) => JSON.parse(readFileSync(path.join(root, 'presets', name, file), 'utf8')));
+  const oneTap = {
+    presets: presetFolder('one-tap')
+      .map((value) => oneTapPresetSchema.parse(value))
+      .sort((a, b) => a.order - b.order || a.id.localeCompare(b.id)),
+    music: presetFolder('music').map((value) => {
+      const { id, title, duration } = oneTapMusicSchema.parse(value);
+      return { id, title, duration };
+    }),
+    jobs: oneTapJobs.sort((a, b) => b.createdAt.localeCompare(a.createdAt)),
+  };
   for (const video of videos) {
     const clip = clips.find((c) => c.id === video.clip!.id),
       entry = byTarget.get('clips/' + path.posix.basename(video.clip!.url));
@@ -322,6 +347,7 @@ export function buildDemoSnapshot(
     images,
     videos,
     characters,
+    oneTap,
     templates,
     media,
     thumbnails,

@@ -51,6 +51,7 @@ import {
 } from '../src/compute.js';
 import { enhancementRouter } from './enhancements.js';
 import { depthEffectsRouter } from './depth-effects.js';
+import { oneTapRouter } from './one-tap.js';
 import {
   assertJobTarget,
   canonicalNativeBaseUrl,
@@ -626,6 +627,16 @@ generation.register('enhancements', enhancements.busy);
 app.use('/api/enhancements', enhancements.router);
 app.use('/api/templates', await templateRouter(root, data, renders));
 app.use('/api/films', await filmRouter(root, data, python, renders));
+// One-tap effects drive the studio's own routes, so they reach it on loopback.
+const oneTap = await oneTapRouter({
+  root,
+  data,
+  python,
+  studio: `http://127.0.0.1:${Number(process.env.PORT || 4310)}`,
+  engine: (pipeline) => engine(pipeline),
+  gpuBusy: () => generation.busy() || [...renders.values()].some((r) => !terminal.has(r.state)),
+});
+app.use('/api/one-tap', oneTap.router);
 app.post('/api/cue-preview', async (req, res) => {
   if (characters.busy() || videos.busy() || depthEffects.busy())
     return void res.status(409).json({
@@ -862,9 +873,11 @@ else {
 }
 app.use(handleRequestError);
 const port = Number(process.env.PORT || 4310);
-httpServer.listen(port, '127.0.0.1', () =>
-  console.log(`Aftertake studio: http://127.0.0.1:${port}`),
-);
+httpServer.listen(port, '127.0.0.1', () => {
+  console.log(`Aftertake studio: http://127.0.0.1:${port}`);
+  // Effects drive the studio's own routes, so they resume once it answers.
+  oneTap.resume();
+});
 for (const render of renders.values()) {
   if (!terminal.has(render.state) && !(await targetMatches(render))) continue;
   if (render.jobId && !terminal.has(render.state)) void track(render);

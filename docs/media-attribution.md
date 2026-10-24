@@ -234,3 +234,15 @@ Pexels or CC BY footage and is not relicensed under MIT. Source rights and model
 terms remain separate. No performer, COLORS or model publisher endorsement is
 implied. See the [example notes](../examples/hotel-lobby/README.md) for the exact
 source range, preparation, compositing graphs and review limits.
+
+## One-tap effects
+
+The sample photos in `examples/one-tap/photos` were generated in Aftertake with
+Z-Image Turbo; each keeps its Create image record with the prompt and seed. The
+people in them are fictional, and the products are unbranded. The five songs in
+`presets/music` were composed with ACE-Step 1.5 in Aftertake's Song studio, and
+each JSON file beside its audio holds the exact Song request. The watermark in
+`presets/watermark.png` is drawn from Aftertake's own wordmark. The recorded
+effects and the gallery's preview loops in `public/one-tap` were made from these
+with LTX-2.5 and the Film renderer on an RTX 5080. No third-party footage, music
+or photography is used.

@@ -1,0 +1,20 @@
+{
+  "format": "aftertake-one-tap-music/1",
+  "id": "sunny",
+  "title": "Sunny",
+  "file": "sunny.m4a",
+  "sha256": "c3868d983f3e09f46a358040349237f7f90bc874d364ec2d8c137dca031d9093",
+  "duration": 16.0,
+  "recipe": {
+    "format": "aftertake-song/1",
+    "name": "One-tap song: Sunny",
+    "tags": "sunny upbeat funk pop, bright slap bass, ukulele strums, handclaps, whistled hook, playful summer vibe, instrumental",
+    "lyrics": "",
+    "seconds": 16,
+    "bpm": 112,
+    "keyscale": "G major",
+    "timesignature": "4",
+    "language": "unknown",
+    "seed": 4409
+  }
+}

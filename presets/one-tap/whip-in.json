@@ -1,0 +1,45 @@
+{
+  "format": "aftertake-one-tap/1",
+  "id": "whip-in",
+  "title": "Whip in",
+  "line": "The photo, a whip pan, then a sideways glide with parallax and a pop title.",
+  "order": 90,
+  "accepts": ["image", "video"],
+  "motion": {
+    "prompt": "The camera glides sideways past the subject with lively parallax, foreground and background sliding at different speeds while the scene moves naturally. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
+    "movement": "truck",
+    "lens": "wide",
+    "lighting": "daylight",
+    "palette": "source",
+    "quality": "final",
+    "resolution": "720p"
+  },
+  "cut": {
+    "layout": "reveal",
+    "still": 1.0,
+    "transition": "whip",
+    "transitionSeconds": 0.33,
+    "stillZoom": 1.04
+  },
+  "titles": [
+    {
+      "text": "NEW DROP",
+      "editable": true,
+      "start": 1.2,
+      "end": 4.65,
+      "style": "headline",
+      "position": "bottom",
+      "animation": "pop",
+      "font": "display",
+      "box": "stamp",
+      "fontSize": 144,
+      "color": "#ffffff"
+    }
+  ],
+  "music": {
+    "track": "sunny",
+    "start": 0.56,
+    "volume": 0.9,
+    "fadeOut": 0.5
+  }
+}

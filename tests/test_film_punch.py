@@ -99,6 +99,15 @@ class FilmPunchTest(unittest.TestCase):
             for frame in [10, 70]:
                 self.assertLess(np.abs(outputs['whip'][frame].astype(int) - outputs['dissolve'][frame].astype(int)).mean(), 1)
 
+    def test_wipe_reveals_the_incoming_picture_left_to_right_behind_a_light_edge(self):
+        outgoing, incoming = Image.new('RGB', (240, 120), (200, 0, 0)), Image.new('RGB', (240, 120), (0, 0, 200))
+        self.assertEqual(renderer.transition_frame('wipe', outgoing, incoming, 0).getpixel((5, 60)), (200, 0, 0))
+        middle = renderer.transition_frame('wipe', outgoing, incoming, .5)
+        self.assertEqual(middle.getpixel((20, 60)), (0, 0, 200))
+        self.assertEqual(middle.getpixel((220, 60)), (200, 0, 0))
+        self.assertEqual(middle.getpixel((120, 60)), (255, 255, 255))
+        self.assertEqual(renderer.transition_frame('wipe', outgoing, incoming, 1).getpixel((235, 60)), (0, 0, 200))
+
     def test_unknown_transition_is_rejected_before_encoding(self):
         with tempfile.TemporaryDirectory(prefix='aftertake-film-punch-') as temporary:
             folder = Path(temporary)

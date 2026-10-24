@@ -1,0 +1,41 @@
+{
+  "format": "aftertake-one-tap/1",
+  "id": "punch-in",
+  "title": "Punch-in",
+  "line": "Holds for a beat, then crash-zooms onto your subject under a slam title.",
+  "order": 10,
+  "accepts": ["image", "video"],
+  "motion": {
+    "prompt": "The scene holds still for a moment, then the camera punches in hard on the main subject with a burst of energy; hair, fabric and light react to the sudden move. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
+    "movement": "crash-zoom",
+    "lens": "natural",
+    "lighting": "source",
+    "palette": "source",
+    "quality": "final",
+    "resolution": "720p"
+  },
+  "cut": {
+    "layout": "motion"
+  },
+  "titles": [
+    {
+      "text": "NO WAY",
+      "editable": true,
+      "start": 1.4,
+      "end": 4,
+      "style": "headline",
+      "position": "top",
+      "animation": "slam",
+      "font": "display",
+      "box": "stamp",
+      "fontSize": 180,
+      "color": "#ffffff"
+    }
+  ],
+  "music": {
+    "track": "punch",
+    "start": 0,
+    "volume": 0.9,
+    "fadeOut": 0.5
+  }
+}

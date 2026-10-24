@@ -9,6 +9,7 @@ export const transitionLabels: Record<ShotTransition, string> = {
   flash: 'Flash',
   glitch: 'Glitch cut',
   slide: 'Push up',
+  wipe: 'Wipe',
 };
 /** Seconds suggested when a styled transition is chosen on a hard cut. */
 export const transitionDefaults: Record<ShotTransition, number> = {
@@ -18,6 +19,7 @@ export const transitionDefaults: Record<ShotTransition, number> = {
   flash: 0.25,
   glitch: 0.17,
   slide: 0.38,
+  wipe: 0.5,
 };
 
 export type TransitionPose = {
@@ -31,6 +33,8 @@ export type TransitionPose = {
   blur: number;
   /** White overlay strength above both pictures. */
   flash: number;
+  /** Fraction of the canvas width, from the left, where the incoming picture shows. */
+  reveal?: number;
 };
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
@@ -40,6 +44,8 @@ export const whipBlur = (progress: number) => 0.06 * 4 * progress * (1 - progres
 export const zoomScale = (progress: number) =>
   progress < 0.5 ? 1 + 1.5 * (2 * progress) ** 3 : 1 + 1.5 * (1 - (2 * progress - 1)) ** 3;
 export const flashAmount = (progress: number) => clamp((1 - Math.abs(2 * progress - 1)) * 1.5);
+/** A hard vertical edge sweeps left to right; render-film.py draws it at the same place. */
+export const wipeEdge = (progress: number) => smooth(clamp(progress));
 export const glitchAmount = (progress: number) => 1 - Math.abs(2 * progress - 1);
 
 /** Pose one side of an overlapping cut. Progress runs from the first overlap frame (0) toward 1. */
@@ -56,6 +62,8 @@ export function transitionPose(
       return { ...rest, x: (incoming ? 1 : 0) - smooth(p), blur: whipBlur(p) };
     case 'slide':
       return { ...rest, y: (incoming ? 1 : 0) - smooth(p) };
+    case 'wipe':
+      return incoming ? { ...rest, reveal: wipeEdge(p) } : rest;
     case 'zoom':
       return { ...rest, visible: incoming === p >= 0.5, scale: zoomScale(p) };
     case 'flash':

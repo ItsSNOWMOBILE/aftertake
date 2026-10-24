@@ -117,6 +117,10 @@ root, including resolved symbolic links; remote media URLs are not accepted.
 | `aftertake_refine_blend` | Re-composites a saved native region edit with a different final painted area or source color match, using its original raw video and preserving the original take. No model is invoked. |
 | `aftertake_blend_status` | Reads that CPU job by record ID or original request ID, including its processing receipt and completed take. |
 | `aftertake_cancel_blend` | Cancels the CPU worker without deleting the original take or starting another generation. |
+| `aftertake_one_tap_effects` | Lists the one-tap effect presets with their camera move, length, editable title and song, plus any preset file that fails validation. |
+| `aftertake_make_one_tap_effect` | Starts or rejoins a one-tap effect on a workspace photo or clip by stable `requestId`: an Animate a frame take, output checks with one automatic re-render, then a 9:16 Film cut. |
+| `aftertake_one_tap_status` | Reads an effect by ID or `requestId`: its stage, each take's check results and the finished video URL. |
+| `aftertake_one_tap_watermark` | Shows a finished effect with or without the Aftertake watermark by re-cutting its Film on the CPU; never renders again. |
 
 For saved regional takes, [Refine a saved take’s blend](refining-a-take.md)
 explains the supported final-area controls, CPU dependencies and provenance.
@@ -128,6 +132,25 @@ text-to-video results also use `clipId`, while finished reference/editing takes
 use `renderId`. Exactly one media role must be selected. Text-to-video status
 and actions use `kind: "video"`; check `profile: "text-video"` in the generation
 workspace first. New text videos need no source file. See `text-video.md`.
+
+## One-tap effects
+
+`aftertake_one_tap_effects` lists the presets in `presets/one-tap`. Import or
+choose a photo, then start one with its clip ID:
+
+```json
+{
+  "requestId": "launch-post-1",
+  "request": { "preset": "punch-in", "clipId": "<clip id>", "title": "NO WAY", "watermark": true }
+}
+```
+
+For a video clip, add `time` in seconds to choose the frame. One render runs at
+a time; an effect started while the GPU is busy waits its turn. Poll
+`aftertake_one_tap_status` until `state` is `ready`, then fetch `video`. Each
+take's `checks` say whether it came out blank, frozen or the wrong length; a
+failed take renders once more with a new seed. For another take, start the same
+request with a new `seed` and a new `requestId`.
 
 ## Character replacement
 

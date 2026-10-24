@@ -22,6 +22,7 @@ import { displayDimensions, renderDimensions, type Render, type Clip } from '../
 import { clipMediaRoute, registerGenerationTools } from './generation-tools.js';
 import { registerCharacterTools } from './character-tools.js';
 import { registerEffectsTools } from './effects-tools.js';
+import { registerOneTapTools } from './one-tap-tools.js';
 import { registerRecompositionTools } from './recomposition-tools.js';
 import { scriptRequestSchema } from '../src/script-draft.js';
 import { toolAnnotations } from './tool-annotations.js';
@@ -768,5 +769,6 @@ tool(
 registerGenerationTools({ tool, api, bytes, base });
 registerCharacterTools({ tool, api, bytes, root, python, state });
 registerEffectsTools({ tool, api, base });
+registerOneTapTools({ tool, api, base });
 registerRecompositionTools({ tool, api });
 await server.connect(new StdioServerTransport());

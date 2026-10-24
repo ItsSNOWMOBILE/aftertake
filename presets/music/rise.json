@@ -1,0 +1,20 @@
+{
+  "format": "aftertake-one-tap-music/1",
+  "id": "rise",
+  "title": "Rise",
+  "file": "rise.m4a",
+  "sha256": "3bada0eef9902488a00ce91e01a28fe80823f08be5633f6dd19d17b7e1df1d3c",
+  "duration": 16.0,
+  "recipe": {
+    "format": "aftertake-song/1",
+    "name": "One-tap song: Rise",
+    "tags": "epic cinematic trailer, rising strings, pounding taiko drums, deep braam hits, triumphant and huge, instrumental",
+    "lyrics": "",
+    "seconds": 16,
+    "bpm": 100,
+    "keyscale": "D minor",
+    "timesignature": "4",
+    "language": "unknown",
+    "seed": 3307
+  }
+}

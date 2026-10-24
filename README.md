@@ -13,7 +13,7 @@ is optional, studio by studio.
 [![CI](https://github.com/ItsSNOWMOBILE/aftertake/actions/workflows/ci.yml/badge.svg?branch=aftertake-studio)](https://github.com/ItsSNOWMOBILE/aftertake/actions/workflows/ci.yml)
 [![Open weights only](https://img.shields.io/badge/models-open_weights_only-d5eb94?labelColor=182015)](#how-its-built)
 [![Comfy SDK](https://img.shields.io/badge/powered_by-ComfyUI_%2B_Comfy_SDK-d5eb94?labelColor=182015)](https://github.com/Comfy-Org/comfy-typescript-sdk)
-[![MCP: 45 tools](https://img.shields.io/badge/MCP-45_tools-d5eb94?labelColor=182015)](docs/mcp.md)
+[![MCP: 49 tools](https://img.shields.io/badge/MCP-49_tools-d5eb94?labelColor=182015)](docs/mcp.md)
 [![Windows · macOS · Linux](https://img.shields.io/badge/runs_on-Windows_·_macOS_·_Linux-c3d4a6?labelColor=182015)](#quick-start)
 
 **[Watch the film](https://itssnowmobile.github.io/aftertake/film/)** ·
@@ -45,6 +45,10 @@ unchanged.
 ## What you can make
 
 <table>
+  <tr>
+    <td colspan="2" width="50%"><a href="docs/studio-guide.md#one-tap-effects"><img src="public/start/effects.jpg" alt="Three one-tap effects side by side"></a></td>
+    <td colspan="2" width="50%" valign="middle"><b>One-tap effects</b><br><sub>One photo in, a vertical clip to share out. Pick one of ten effects: Animate a frame moves the camera on LTX-2.5, an automatic check re-renders a blank, frozen or short take, and Film adds titles, a transition, an ACE-Step song and a small watermark you can turn off. Every effect is one JSON file.</sub></td>
+  </tr>
   <tr>
     <td width="25%"><a href="docs/text-video.md"><img src="public/start/video.jpg" alt="Generated product video"></a><br><b>Create video</b><br><sub>Text to video with sound, native LTX-2.5.</sub></td>
     <td width="25%"><a href="docs/studio-guide.md#create-image"><img src="public/start/image.jpg" alt="Generated product still"></a><br><b>Create image</b><br><sub>Stills and first frames with Z-Image Turbo.</sub></td>
@@ -94,7 +98,7 @@ or from a blank prompt.
 
 **Also in the studio:** a [moves gallery](docs/studio-guide.md#animate-a-frame) of 14 camera moves, each drawn
 as a looping diagram · [punch titles and transitions](docs/motion-graphics.md#punch-typography)
-(slam, pop, glitch, whip, zoom) · beat detection that snaps cuts to music ·
+(slam, pop, glitch, whip, zoom, wipe) · beat detection that snaps cuts to music ·
 tracked [subject copies](examples/subject-duplicates/README.md) · [layers and masks](docs/layer-stack.md)
 with 27 blend modes · [depth and light](docs/depth-effects.md) for stills ·
 local [narration](docs/narrated-cut.md) · selective HSL, curves and 3D LUTs ·
@@ -164,7 +168,7 @@ tools are ready and the command that fixes each one. See
 ```mermaid
 flowchart LR
   UI["Studio UI<br/>React · Vite"] --> Server["Local studio server<br/>Node · Express"]
-  Agent["Any MCP client<br/>(your agent)"] --> MCP["Aftertake MCP<br/>45 tools"] --> Server
+  Agent["Any MCP client<br/>(your agent)"] --> MCP["Aftertake MCP<br/>49 tools"] --> Server
   Server --> SDK["@comfyorg/sdk<br/>isolated worker"] --> Comfy["ComfyUI 0.41<br/>+ Aftertake nodes"] --> GPU[("NVIDIA GPU<br/>open-weight models")]
   Server --> Media["Media runtime<br/>PyAV · Pillow · FFmpeg"]
   Server --> Depth["ONNX Runtime depth<br/>Neural Engine · NPU · GPU · CPU"]
@@ -248,7 +252,7 @@ installing anything in the **[browser editor](https://itssnowmobile.github.io/af
 | [Motion graphics](docs/motion-graphics.md) · [scenes](docs/motion-scenes.md) | Titles, shapes, transitions, groups and depth |
 | [Color & finish](docs/finishing.md) | Looks, curves, LUTs, optical effects and Hide details |
 | [Narrated cuts](docs/narrated-cut.md) | Scripts, measured voices, captions and pacing |
-| [MCP reference](docs/mcp.md) | Agent setup, all 45 tools and recovery behavior |
+| [MCP reference](docs/mcp.md) | Agent setup, all 49 tools and recovery behavior |
 | [Hardware](docs/hardware.md) | GPU selection, memory policy and precision |
 | [Share a live link](docs/share.md) | Let someone use your studio through an access link and a tunnel |
 | [Architecture](docs/competition.md) | How the build works and what is reproducible |

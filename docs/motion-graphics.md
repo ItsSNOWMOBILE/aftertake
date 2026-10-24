@@ -65,9 +65,11 @@ fills in a suggested length.
 | Flash | A white flash hides the cut at its midpoint |
 | Glitch cut | RGB separation and displaced bands around the switch |
 | Push up | The incoming picture pushes the outgoing one upward |
+| Wipe | A hard edge with a thin light bar sweeps left to right, revealing the incoming picture; good for before and after |
 
 Audio still crossfades over the same overlap. The preview poses each picture with
-the export's curves; the export adds the smear, zoom blur and glitch bands.
+the export's curves; the export adds the smear, zoom blur, glitch bands and the
+wipe's light bar.
 Projects using punch typography or a styled transition save as
 **`aftertake-film/5`**; older formats reject them rather than dropping them.
 

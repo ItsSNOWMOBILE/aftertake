@@ -220,7 +220,7 @@ syncBuiltinESMExports();
   try {
     await client.connect(transport);
     const list = await client.listTools();
-    assert.equal(list.tools.length, 45);
+    assert.equal(list.tools.length, 49);
     for (const name of [
       'aftertake_character_workspace',
       'aftertake_track_character',
@@ -242,6 +242,10 @@ syncBuiltinESMExports();
       'aftertake_refine_blend',
       'aftertake_blend_status',
       'aftertake_cancel_blend',
+      'aftertake_one_tap_effects',
+      'aftertake_make_one_tap_effect',
+      'aftertake_one_tap_status',
+      'aftertake_one_tap_watermark',
     ])
       assert.ok(
         list.tools.some((tool) => tool.name === name),

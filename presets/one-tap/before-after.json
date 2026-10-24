@@ -1,0 +1,56 @@
+{
+  "format": "aftertake-one-tap/1",
+  "id": "before-after",
+  "title": "Before / after",
+  "line": "Your photo, then a wipe into a warm cinematic version that moves.",
+  "order": 30,
+  "accepts": ["image", "video"],
+  "motion": {
+    "prompt": "A time-lapse of the same place: golden evening light sweeps across the scene, clouds race through the sky, long warm shadows stretch and everything glows. Keep the main subject recognizable, sharp and true to the photo. No hands, people, text or logos enter the frame.",
+    "movement": "push",
+    "lens": "anamorphic",
+    "lighting": "tungsten",
+    "palette": "warm",
+    "quality": "final",
+    "resolution": "720p"
+  },
+  "cut": {
+    "layout": "before-after",
+    "still": 1.25,
+    "transition": "wipe",
+    "transitionSeconds": 0.6,
+    "stillZoom": 1.03
+  },
+  "titles": [
+    {
+      "text": "BEFORE",
+      "start": 0,
+      "end": 1,
+      "style": "kicker",
+      "position": "top",
+      "animation": "none",
+      "font": "condensed",
+      "box": "highlight",
+      "fontSize": 72,
+      "color": "#e7ff8a"
+    },
+    {
+      "text": "AFTER",
+      "start": 1.3,
+      "end": 4.65,
+      "style": "kicker",
+      "position": "top",
+      "animation": "pop",
+      "font": "condensed",
+      "box": "highlight",
+      "fontSize": 72,
+      "color": "#e7ff8a"
+    }
+  ],
+  "music": {
+    "track": "sunny",
+    "start": 0,
+    "volume": 0.85,
+    "fadeOut": 0.6
+  }
+}

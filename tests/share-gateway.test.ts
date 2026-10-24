@@ -181,6 +181,21 @@ test('each visitor gets a daily render allowance; only accepted renders count', 
   assert.equal(await render(first), 201, 'a new day restores the allowance');
 });
 
+test('a one-tap effect counts once; re-cutting it without the watermark is free', async (t) => {
+  const { base, admit } = await gateway(t, () => ({ status: 202 }), { rendersPerVisitor: 1 });
+  const cookie = await admit();
+  const post = (path: string) =>
+    fetch(base + path, { method: 'POST', headers: { cookie } }).then((r) => r.status);
+  assert.equal(await post('/api/one-tap'), 202);
+  for (const path of [
+    '/api/one-tap/5f0c7a52-3d1e-4b8a-9b55-2f4d8c1e9a10/export',
+    '/api/one-tap/5f0c7a52-3d1e-4b8a-9b55-2f4d8c1e9a10/cancel',
+  ])
+    assert.equal(await post(path), 202, path);
+  assert.equal(await post('/api/one-tap/'), 429, 'Again with a new seed is a new render');
+  assert.equal(await post('/API/One-Tap'), 429);
+});
+
 test('pages carry a dismissible note with the visitor’s renders left; other responses pass through', async (t) => {
   const { base, admit } = await gateway(
     t,
