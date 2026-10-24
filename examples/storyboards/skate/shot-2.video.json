@@ -1,0 +1,244 @@
+{
+  "jobTarget": {
+    "format": "aftertake-job-target/1",
+    "kind": "startup-engine",
+    "fingerprint": "e1748b70ca191fa7a07c317122b17d5ed0a443130e87f8670f4fd31f993941c3"
+  },
+  "id": "a48c6df1-e906-473e-8f29-72696d936fd1",
+  "requestKey": "storyboard-ea4566a2-f5bb-4fc1-ab51-49b22fe0ee02-shot-1",
+  "requestDigest": "c768907c68d9654b535649cf821fc11a1b52bd22238971ffe8139e139f7caa3e",
+  "request": {
+    "format": "aftertake-text-video/1",
+    "name": "Skate at Dusk · shot 2",
+    "prompt": "He adjusts his grip on the skateboard, eyes fixed on the distant ramp as the sky turns a muted orange. An Asian-American man in his mid-twenties with short black hair, a faded blue hoodie, and white sneakers; desaturated color palette with soft light and long shadows; low-angle shots and shallow depth of field",
+    "seed": 10950,
+    "aspect": "portrait",
+    "quality": "final",
+    "seconds": 4,
+    "sound": false,
+    "cinema": {
+      "movement": "zoom-in",
+      "lens": "natural",
+      "lighting": "source",
+      "palette": "source"
+    }
+  },
+  "workflow": {
+    "1": {
+      "class_type": "UnetLoaderGGUF",
+      "inputs": {
+        "unet_name": "ltx-2.5-22b-distilled-Q4_K_M.gguf"
+      }
+    },
+    "2": {
+      "class_type": "CLIPLoader",
+      "inputs": {
+        "clip_name": "gemma4-12b-with-proj-ltx-2.5-bf16.safetensors",
+        "type": "ltxv",
+        "device": "default"
+      }
+    },
+    "3": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ltx-2.5-video-vae-conv-bf16.safetensors"
+      }
+    },
+    "4": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ltx-2.5-audio-vae-bf16.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "clip": [
+          "2",
+          0
+        ],
+        "text": "A smooth optical zoom in from a fixed camera position: the framing tightens on the subject with no change in perspective or parallax. He adjusts his grip on the skateboard, eyes fixed on the distant ramp as the sky turns a muted orange. An Asian-American man in his mid-twenties with short black hair, a faded blue hoodie, and white sneakers; desaturated color palette with soft light and long shadows; low-angle shots and shallow depth of field One continuous cinematic shot. Natural perspective, crisp believable detail and moderate depth of field. Keep lighting direction and exposure consistent throughout the shot. Keep natural color relationships coherent throughout the shot. The scene remains coherent over time."
+      }
+    },
+    "6": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "5",
+          0
+        ]
+      }
+    },
+    "7": {
+      "class_type": "LTXVConditioning",
+      "inputs": {
+        "positive": [
+          "5",
+          0
+        ],
+        "negative": [
+          "6",
+          0
+        ],
+        "frame_rate": 24
+      }
+    },
+    "8": {
+      "class_type": "EmptyLTXVLatentVideo",
+      "inputs": {
+        "width": 576,
+        "height": 1024,
+        "length": 97,
+        "batch_size": 1
+      }
+    },
+    "9": {
+      "class_type": "LTXVEmptyLatentAudio",
+      "inputs": {
+        "frames_number": 97,
+        "frame_rate": 24,
+        "batch_size": 1,
+        "audio_vae": [
+          "4",
+          0
+        ]
+      }
+    },
+    "10": {
+      "class_type": "LTXVConcatAVLatent",
+      "inputs": {
+        "video_latent": [
+          "8",
+          0
+        ],
+        "audio_latent": [
+          "9",
+          0
+        ]
+      }
+    },
+    "13": {
+      "class_type": "RandomNoise",
+      "inputs": {
+        "noise_seed": 10950
+      }
+    },
+    "14": {
+      "class_type": "KSamplerSelect",
+      "inputs": {
+        "sampler_name": "euler_ancestral"
+      }
+    },
+    "15": {
+      "class_type": "ManualSigmas",
+      "inputs": {
+        "sigmas": "1., 0.99375, 0.9875, 0.98125, 0.975, 0.909375, 0.725, 0.421875, 0.0"
+      }
+    },
+    "16": {
+      "class_type": "LTXVDualCFGGuider",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "positive": [
+          "7",
+          0
+        ],
+        "negative": [
+          "7",
+          1
+        ],
+        "video_cfg": 1,
+        "audio_cfg": 1
+      }
+    },
+    "17": {
+      "class_type": "SamplerCustomAdvanced",
+      "inputs": {
+        "noise": [
+          "13",
+          0
+        ],
+        "guider": [
+          "16",
+          0
+        ],
+        "sampler": [
+          "14",
+          0
+        ],
+        "sigmas": [
+          "15",
+          0
+        ],
+        "latent_image": [
+          "10",
+          0
+        ]
+      }
+    },
+    "18": {
+      "class_type": "LTXVSeparateAVLatent",
+      "inputs": {
+        "av_latent": [
+          "17",
+          0
+        ]
+      }
+    },
+    "19": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "18",
+          0
+        ],
+        "vae": [
+          "3",
+          0
+        ]
+      }
+    },
+    "20": {
+      "class_type": "AftertakeFilmGrade",
+      "inputs": {
+        "images": [
+          "19",
+          0
+        ],
+        "palette": "source"
+      }
+    },
+    "21": {
+      "class_type": "AftertakeSaveVideo",
+      "inputs": {
+        "images": [
+          "20",
+          0
+        ],
+        "fps": 24,
+        "filename_prefix": "aftertake/text-video",
+        "recipe_json": "{\"format\":\"aftertake-text-video/1\",\"name\":\"Skate at Dusk · shot 2\",\"prompt\":\"He adjusts his grip on the skateboard, eyes fixed on the distant ramp as the sky turns a muted orange. An Asian-American man in his mid-twenties with short black hair, a faded blue hoodie, and white sneakers; desaturated color palette with soft light and long shadows; low-angle shots and shallow depth of field\",\"seed\":10950,\"aspect\":\"portrait\",\"quality\":\"final\",\"seconds\":4,\"sound\":false,\"cinema\":{\"movement\":\"zoom-in\",\"lens\":\"natural\",\"lighting\":\"source\",\"palette\":\"source\"}}"
+      }
+    }
+  },
+  "state": "succeeded",
+  "progress": 1,
+  "createdAt": "2026-10-24T22:12:23.239Z",
+  "updatedAt": "2026-10-24T22:13:54.544Z",
+  "jobId": "afbfe690-9ca3-441c-acea-7d8d03bb937b",
+  "stage": "Ready to add to Film",
+  "clip": {
+    "id": "a48c6df1-e906-473e-8f29-72696d936fd1",
+    "name": "Skate at Dusk · shot 2",
+    "kind": "video",
+    "width": 576,
+    "height": 1024,
+    "duration": 4.041666666666667,
+    "hasAudio": false,
+    "sha256": "7d902a6b8289a0acd5af29a2ad23849eba29f79b825119e02a45a14299cc22b4",
+    "url": "/media/a48c6df1-e906-473e-8f29-72696d936fd1.mp4"
+  }
+}

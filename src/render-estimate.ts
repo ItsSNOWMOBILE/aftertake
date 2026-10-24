@@ -81,7 +81,7 @@ export function elapsedSeconds(job: TimedJob): number | null {
  */
 export const referenceSeconds: Record<string, number[]> = {
   'video:draft': [62, 83],
-  'video:final': [84],
+  'video:final': [84, 84, 85, 85, 87, 91, 94, 98, 100],
   'video:final-720p': [117, 117, 119, 120, 120, 122, 123, 123, 123, 125, 125, 125, 126, 134],
   image: [10, 10, 10, 10],
   'image-720p': [24, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 30, 30, 37, 44, 45],
@@ -100,7 +100,7 @@ export const referenceSeconds: Record<string, number[]> = {
   character: [214, 328, 376, 381, 630, 678, 716],
   'enhance:slow-motion-x4': [10],
   'enhance:smooth-x2': [6],
-  song: [8, 14],
+  song: [8, 12, 12, 14],
   'enhance:upscale': [390],
 };
 export const referenceGpu = 'RTX 5080';

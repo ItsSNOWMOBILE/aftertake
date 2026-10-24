@@ -50,6 +50,10 @@ unchanged.
     <td colspan="2" width="50%" valign="middle"><b>One-tap effects</b><br><sub>One photo in, a vertical clip to share out. Pick one of ten effects: Animate a frame moves the camera on LTX-2.5, an automatic check re-renders a blank, frozen or short take, and Film adds titles, a transition, an ACE-Step song and a small watermark you can turn off. Every effect is one JSON file.</sub></td>
   </tr>
   <tr>
+    <td colspan="2" valign="middle"><b>Storyboard</b><br><sub>One idea becomes a film. A local language model plans 3 to 5 shots you can edit, each renders with LTX-2.5, ACE-Step scores them, and the cut lands on the song's beats with titles and transitions, ready to keep editing in Film.</sub></td>
+    <td colspan="2"><a href="docs/studio-guide.md#storyboard"><img src="public/start/storyboard.jpg" alt="Three moments of a storyboarded skateboard film"></a></td>
+  </tr>
+  <tr>
     <td width="25%"><a href="docs/text-video.md"><img src="public/start/video.jpg" alt="Generated product video"></a><br><b>Create video</b><br><sub>Text to video with sound, native LTX-2.5.</sub></td>
     <td width="25%"><a href="docs/studio-guide.md#create-image"><img src="public/start/image.jpg" alt="Generated product still"></a><br><b>Create image</b><br><sub>Stills and first frames with Z-Image Turbo.</sub></td>
     <td width="25%"><a href="docs/studio-guide.md#animate-a-frame"><img src="public/start/region.jpg" alt="Painted region effect"></a><br><b>Transform a region</b><br><sub>Paint a timed cue; the effect composites onto your footage.</sub></td>

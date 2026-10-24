@@ -246,3 +246,7 @@ each JSON file beside its audio holds the exact Song request. The watermark in
 effects and the gallery's preview loops in `public/one-tap` were made from these
 with LTX-2.5 and the Film renderer on an RTX 5080. No third-party footage, music
 or photography is used.
+
+The storyboards in `examples/storyboards` were planned by Qwen3-4B on the CPU and
+rendered with LTX-2.5 text to video and ACE-Step 1.5 in Aftertake; their people
+are fictional and nothing in them is third-party media.

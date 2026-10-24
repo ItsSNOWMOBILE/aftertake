@@ -43,6 +43,9 @@ for (const pair of pairs) {
     await add(`${folder}/shot-${index + 1}.mp4`, `clips/${name}`);
     await add(`${folder}/shot-${index + 1}.clip.json`, `clips/${shot.clip.id}.json`);
     await add(`${folder}/shot-${index + 1}.video.json`, `videos/${shot.videoId}.json`);
+    // The browser trial shows each source by the studio's own first-frame thumbnail.
+    const thumbnail = `${createHash('sha256').update(`thumbnail/1:${shot.clip.sha256}:0`).digest('hex')}.jpg`;
+    await add(`previews/${thumbnail}`, `previews/${thumbnail}`);
   }
   const song = job.song.enhancementId;
   await add(`${folder}/song.json`, `enhancements/${song}.json`);
@@ -55,8 +58,9 @@ for (const pair of pairs) {
         ? 'song'
         : `shot-${job.shots.findIndex((shot) => shot.assetId === assetId) + 1}`;
     await add(`${folder}/${role}.asset.json`, `films/assets/${assetId}.json`);
+    // Film assets hold the same bytes as the shot clips and the song, so they share files.
     await add(
-      `${folder}/${role}.asset${asset.extension}`,
+      asset.kind === 'audio' ? `${folder}/song.flac` : `${folder}/${role}.mp4`,
       `films/assets/${assetId}${asset.extension}`,
     );
   }

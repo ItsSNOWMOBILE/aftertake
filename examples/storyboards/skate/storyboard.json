@@ -1,0 +1,236 @@
+{
+  "id": "ea4566a2-f5bb-4fc1-ab51-49b22fe0ee02",
+  "requestKey": "board-skate-1",
+  "requestDigest": "185d64475309deeadeebf3fa3eee70cd7d4be6ac96a63fe4ec13b669177f5807",
+  "request": {
+    "idea": "A young skateboarder practices alone in an empty city plaza at sunset and finally lands a big kickflip",
+    "title": "Skate at Dusk",
+    "look": "An Asian-American man in his mid-twenties with short black hair, a faded blue hoodie, and white sneakers; desaturated color palette with soft light and long shadows; low-angle shots and shallow depth of field",
+    "aspect": "portrait",
+    "shots": [
+      {
+        "prompt": "A young skateboarder stands at the edge of a deserted city plaza, the sun casting long shadows across cracked concrete.",
+        "movement": "pan",
+        "seconds": 3
+      },
+      {
+        "prompt": "He adjusts his grip on the skateboard, eyes fixed on the distant ramp as the sky turns a muted orange.",
+        "movement": "zoom-in",
+        "seconds": 4
+      },
+      {
+        "prompt": "He takes a few tentative steps, the wheels screeching slightly as he balances on the edge of a puddle.",
+        "movement": "dolly-zoom",
+        "seconds": 3
+      },
+      {
+        "prompt": "With a burst of motion, he launches into a kickflip, the board spinning perfectly as the sun sets behind him.",
+        "movement": "crane-up",
+        "seconds": 5
+      }
+    ],
+    "song": {
+      "tags": "upbeat indie pop, bright guitars, claps, punchy drums, feel-good, instrumental",
+      "bpm": 118
+    },
+    "seed": 3031
+  },
+  "state": "ready",
+  "stage": "Ready to open in Film",
+  "progress": 1,
+  "shots": [
+    {
+      "videoId": "7a08bf66-1399-4936-833b-e8f7a83e9a4e",
+      "clip": {
+        "id": "7a08bf66-1399-4936-833b-e8f7a83e9a4e",
+        "name": "Skate at Dusk · shot 1",
+        "kind": "video",
+        "width": 576,
+        "height": 1024,
+        "duration": 3.0416666666666665,
+        "hasAudio": false,
+        "sha256": "e853ba2c40416d97f101133dec803eb4cade0b0406d646447da0774de4b0ac6f",
+        "url": "/media/7a08bf66-1399-4936-833b-e8f7a83e9a4e.mp4"
+      },
+      "assetId": "27fa74e5-4477-4e90-9ca8-179efd1728ae"
+    },
+    {
+      "videoId": "a48c6df1-e906-473e-8f29-72696d936fd1",
+      "clip": {
+        "id": "a48c6df1-e906-473e-8f29-72696d936fd1",
+        "name": "Skate at Dusk · shot 2",
+        "kind": "video",
+        "width": 576,
+        "height": 1024,
+        "duration": 4.041666666666667,
+        "hasAudio": false,
+        "sha256": "7d902a6b8289a0acd5af29a2ad23849eba29f79b825119e02a45a14299cc22b4",
+        "url": "/media/a48c6df1-e906-473e-8f29-72696d936fd1.mp4"
+      },
+      "assetId": "8d99d1ed-b107-4e08-933c-e1a08df80c43"
+    },
+    {
+      "videoId": "0687ec85-987d-46ba-9575-548a2f8c6fa8",
+      "clip": {
+        "id": "0687ec85-987d-46ba-9575-548a2f8c6fa8",
+        "name": "Skate at Dusk · shot 3",
+        "kind": "video",
+        "width": 576,
+        "height": 1024,
+        "duration": 3.0416666666666665,
+        "hasAudio": false,
+        "sha256": "8e81b1c8b82a86e31152c8931fda370fa68f1736f994c253a135ff401d7982d5",
+        "url": "/media/0687ec85-987d-46ba-9575-548a2f8c6fa8.mp4"
+      },
+      "assetId": "7ed02de5-57a2-4ecb-ab72-9a91db164346"
+    },
+    {
+      "videoId": "df34abb8-a4a8-458a-a431-ce97d77a5627",
+      "clip": {
+        "id": "df34abb8-a4a8-458a-a431-ce97d77a5627",
+        "name": "Skate at Dusk · shot 4",
+        "kind": "video",
+        "width": 576,
+        "height": 1024,
+        "duration": 5.041666666666667,
+        "hasAudio": false,
+        "sha256": "0108aea710355461d041c6365c920af64ba7589be7b887de2fe1b4e9ff8e4edf",
+        "url": "/media/df34abb8-a4a8-458a-a431-ce97d77a5627.mp4"
+      },
+      "assetId": "426a3471-e378-4bb2-9aae-2b278c93c3fb"
+    }
+  ],
+  "createdAt": "2026-10-24T22:10:57.584Z",
+  "updatedAt": "2026-10-24T22:17:34.038Z",
+  "song": {
+    "enhancementId": "a33d05ba-0d58-4d87-9b10-121258bb5121",
+    "assetId": "9cca765d-3690-4ddd-90c7-9289af709b54",
+    "beats": [
+      0.0232,
+      0.7663,
+      1.5325,
+      2.2988,
+      3.0418,
+      3.8081,
+      4.5743,
+      5.3406,
+      6.1068,
+      6.8499,
+      7.6161,
+      8.3824,
+      9.1487,
+      9.8917,
+      10.658,
+      11.4242,
+      12.1905,
+      12.9567,
+      13.6998,
+      14.466,
+      15.2323,
+      15.9985,
+      16.7648,
+      17.5311,
+      18.2973
+    ]
+  },
+  "draft": {
+    "name": "Skate at Dusk",
+    "aspect": "portrait",
+    "shots": [
+      {
+        "assetId": "27fa74e5-4477-4e90-9ca8-179efd1728ae",
+        "start": 0,
+        "end": 2.4583333333333335,
+        "framing": {
+          "zoom": 1,
+          "endZoom": 1,
+          "x": 0.5,
+          "y": 0.5,
+          "fit": "cover"
+        }
+      },
+      {
+        "assetId": "8d99d1ed-b107-4e08-933c-e1a08df80c43",
+        "start": 0,
+        "end": 3.4583333333333335,
+        "framing": {
+          "zoom": 1,
+          "endZoom": 1,
+          "x": 0.5,
+          "y": 0.5,
+          "fit": "cover"
+        },
+        "dissolve": 0.3333333333333333,
+        "transition": "whip"
+      },
+      {
+        "assetId": "7ed02de5-57a2-4ecb-ab72-9a91db164346",
+        "start": 0,
+        "end": 2.7083333333333335,
+        "framing": {
+          "zoom": 1,
+          "endZoom": 1,
+          "x": 0.5,
+          "y": 0.5,
+          "fit": "cover"
+        },
+        "dissolve": 0.5,
+        "transition": "dissolve"
+      },
+      {
+        "assetId": "426a3471-e378-4bb2-9aae-2b278c93c3fb",
+        "start": 0,
+        "end": 5,
+        "framing": {
+          "zoom": 1,
+          "endZoom": 1,
+          "x": 0.5,
+          "y": 0.5,
+          "fit": "cover"
+        },
+        "dissolve": 0.3333333333333333,
+        "transition": "zoom"
+      }
+    ],
+    "titles": [
+      {
+        "id": "9bfac59a-6d78-4390-a556-a2445885773e",
+        "text": "Skate at Dusk",
+        "start": 0.4,
+        "end": 2.3583333333333334,
+        "style": "headline",
+        "position": "center",
+        "animation": "reveal",
+        "font": "display",
+        "fontSize": 150,
+        "color": "#ffffff"
+      },
+      {
+        "id": "16bc27a1-141d-4a8b-948c-4176cb384b3e",
+        "text": "Skate at Dusk",
+        "start": 10.658333333333333,
+        "end": 12.458333333333334,
+        "style": "kicker",
+        "position": "bottom",
+        "animation": "fade",
+        "font": "condensed",
+        "fontSize": 64,
+        "color": "#ffffff"
+      }
+    ],
+    "audio": [
+      {
+        "assetId": "9cca765d-3690-4ddd-90c7-9289af709b54",
+        "start": 0,
+        "sourceStart": 0,
+        "sourceEnd": 12.458333333333334,
+        "volume": 0.9,
+        "fadeIn": 0,
+        "fadeOut": 1.5
+      }
+    ],
+    "sourceVolume": 0,
+    "normalizeAudio": true
+  },
+  "filmId": "ed4a00f7-d514-474f-a225-362fd3b8b247"
+}
