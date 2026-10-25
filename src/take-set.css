@@ -111,4 +111,10 @@
 }
 .render-takes select {
   font-size: 12px;
+  min-height: 30px;
+  padding: 3px 8px;
+  border: 1px solid var(--control-border, #657168);
+  border-radius: 5px;
+  background: var(--control-bg, #101612);
+  color: var(--text-primary, #eef1eb);
 }

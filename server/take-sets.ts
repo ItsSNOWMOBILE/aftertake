@@ -120,7 +120,7 @@ export async function takeSetRouter(context: { data: string; studio: string }) {
         await call(`${takeSetRoutes[set.kind]}/${take.id}/cancel`, {}).catch(() => undefined);
         return false;
       }
-      set.stage = `${label} · ${record.stage || 'rendering on your GPU'}`;
+      set.stage = `Rendering ${label.toLowerCase()}`;
       await persist(set);
       await pause(2500);
     }

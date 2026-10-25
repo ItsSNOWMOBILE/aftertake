@@ -3,6 +3,7 @@ import { cameraMovements, cinemaSchema, promptOnlyMovements } from './cinema';
 import { punchAnimations, shotTransitions, titleBoxes, titleFonts, type FilmDraft } from './film';
 import type { Clip } from './domain';
 import { finishingPresets } from './finishing';
+import type { JobEta } from './job-eta';
 
 /**
  * One-tap effects turn one photo, or a frame of a short clip, into a finished
@@ -266,6 +267,8 @@ export type OneTapJob = {
   error?: string;
   createdAt: string;
   updatedAt: string;
+  /** Steps and time left while it runs; added when the job is sent, never saved. */
+  eta?: JobEta;
 };
 /** Clips an effect made for itself, which a photo picker leaves out. */
 export function oneTapIntermediates(jobs: OneTapJob[]) {

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { Check, LoaderCircle, Pause, Play } from 'lucide-react';
+import { Check, Pause, Play } from 'lucide-react';
 import type { TakeSet } from './take-sets';
 import { mediaUrl } from './transport';
+import './job-progress.css';
 import './take-set.css';
 
 export type TakeMedia = { kind: 'image' | 'video'; url: string };
@@ -71,7 +72,11 @@ export default function TakeSetView({
     <section className="take-set" aria-label="Takes to compare">
       <header>
         <strong>
-          {set.count} takes · {set.kept ? 'kept one' : set.stage}
+          {set.kept
+            ? `Kept take ${set.takes.findIndex((take) => take.id === set.kept) + 1} of ${set.count}`
+            : set.state === 'running'
+              ? `${set.count} takes · ${set.stage}`
+              : `${set.count} takes · pick the one to keep`}
         </strong>
         {set.state === 'running' && onCancel && (
           <button type="button" className="button" disabled={busy} onClick={onCancel}>
@@ -110,17 +115,15 @@ export default function TakeSetView({
                     tile.error
                   ) : (
                     <>
-                      <LoaderCircle className="spin" size={20} aria-hidden="true" />
-                      {tile.id ? 'Rendering' : 'Waiting'}
+                      {tile.id && <span className="job-progress-ring small" aria-hidden="true" />}
+                      {tile.id ? 'Rendering' : 'Up next'}
                     </>
                   )}
                 </span>
               )}
             </div>
             <figcaption>
-              <span>
-                Take {index + 1} · seed {tile.seed}
-              </span>
+              <span title={`Seed ${tile.seed}`}>Take {index + 1}</span>
               {set.kept && set.kept === tile.id ? (
                 <span className="take-set-kept">
                   <Check size={13} aria-hidden="true" /> Kept

@@ -4,6 +4,7 @@ import { filmTimeline, type FilmDraft } from './film';
 import type { Clip } from './domain';
 import type { VideoRequest } from './video-generation';
 import type { SongRequest } from './enhance';
+import type { JobEta } from './job-eta';
 
 /**
  * A storyboard turns one idea into a short film: an editable list of 3–5 shots,
@@ -118,6 +119,8 @@ export type StoryboardJob = {
   error?: string;
   createdAt: string;
   updatedAt: string;
+  /** Steps and time left while it runs; added when the job is sent, never saved. */
+  eta?: JobEta;
 };
 export const storyboardBusy = (job: Pick<StoryboardJob, 'state'>) =>
   job.state === 'queued' || job.state === 'running';

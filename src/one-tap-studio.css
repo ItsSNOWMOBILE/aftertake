@@ -4,15 +4,20 @@
 }
 .one-tap-grid {
   display: grid;
-  grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
-  gap: 26px;
+  grid-template-columns: minmax(200px, 260px) minmax(0, 1fr);
+  gap: 28px;
   margin-top: 22px;
+  align-items: start;
+}
+.one-tap-result-column {
+  position: sticky;
+  top: 0;
 }
 .one-tap-picture {
   position: relative;
   aspect-ratio: 9 / 16;
   width: 100%;
-  max-height: 64vh;
+  max-height: min(58vh, 462px);
   margin: 0 auto;
   background: #111315;
   border: 1px solid var(--control-border, #657168);
@@ -27,20 +32,6 @@
   object-fit: cover;
   display: block;
 }
-.one-tap-progress {
-  display: grid;
-  justify-items: center;
-  gap: 12px;
-  padding: 24px;
-  text-align: center;
-  color: var(--text-secondary, #b7c1b9);
-  font-size: 13px;
-  line-height: 1.6;
-}
-.one-tap-progress progress {
-  width: 160px;
-  accent-color: var(--accent, #d5e991);
-}
 .one-tap-receipt {
   display: grid;
   gap: 4px;
@@ -52,6 +43,9 @@
   color: var(--text-secondary, #b7c1b9);
   font-size: 12px;
 }
+.one-tap-receipt small.failed {
+  color: #ffb4a8;
+}
 .one-tap-controls {
   display: grid;
   gap: 16px;
@@ -59,8 +53,8 @@
 }
 .one-tap-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  gap: 7px;
 }
 .one-tap-card {
   position: relative;
@@ -87,8 +81,8 @@
   background: #111315;
 }
 .one-tap-card strong {
-  padding: 6px 7px 8px;
-  font-size: 12px;
+  padding: 5px 6px 7px;
+  font-size: 11px;
   line-height: 1.3;
 }
 .one-tap-line {
@@ -116,10 +110,26 @@
   display: grid;
   gap: 7px;
 }
-.one-tap-controls input:not([type='checkbox']) {
+.one-tap-controls input:not([type='checkbox']):not([type='range']) {
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 11px;
+  border: 1px solid var(--control-border, #657168);
+  border-radius: 6px;
+  background: var(--control-bg, #101612);
+  color: var(--text-primary, #eef1eb);
   font: inherit;
   font-size: 14px;
   letter-spacing: 0;
+}
+.one-tap-controls input:not([type='checkbox']):not([type='range']):focus {
+  border-color: var(--accent, #d5e991);
+  outline: none;
+}
+.one-tap-studio input[type='checkbox'] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent, #d5e991);
 }
 .one-tap-source {
   display: grid;
@@ -127,10 +137,13 @@
 }
 .one-tap-sources {
   display: flex;
-  flex-wrap: wrap;
   gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
 }
 .one-tap-sources button {
+  flex: none;
   width: 54px;
   height: 72px;
   padding: 0;
@@ -151,11 +164,24 @@
   object-fit: cover;
   display: block;
 }
-.one-tap-upload {
+.one-tap-sources .one-tap-upload {
   display: grid;
   place-items: center;
   align-content: center;
   gap: 2px;
+  border-style: dashed;
+  color: var(--text-secondary, #b7c1b9);
+  text-align: center;
+  line-height: 1.2;
+}
+.one-tap-finish {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 16px;
+}
+.one-tap-finish .one-tap-toggle {
+  min-height: 40px;
 }
 .one-tap-studio .one-tap-toggle {
   display: flex;
@@ -167,12 +193,28 @@
 }
 .one-tap-go {
   justify-content: center;
-  min-height: 42px;
+  width: 100%;
+  min-height: 46px;
+  font-size: 15px;
+  letter-spacing: 0;
 }
+/* The button stays in view at the bottom while the gallery and photos scroll. */
+.one-tap-action {
+  position: sticky;
+  bottom: -30px;
+  z-index: 2;
+  display: grid;
+  gap: 7px;
+  margin: 0 -2px -30px;
+  padding: 12px 2px 26px;
+  background: linear-gradient(to bottom, #1c231e00, #1c231e 14px);
+}
+.one-tap-action small,
 .one-tap-controls > small {
   color: var(--text-secondary, #b7c1b9);
   font-size: 12px;
   line-height: 1.6;
+  text-align: center;
 }
 .one-tap-error {
   color: #ffb4a8;
@@ -185,6 +227,9 @@
 @media (max-width: 760px) {
   .one-tap-grid {
     grid-template-columns: 1fr;
+  }
+  .one-tap-result-column {
+    position: static;
   }
   .one-tap-picture {
     width: auto;
