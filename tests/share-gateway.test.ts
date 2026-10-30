@@ -187,6 +187,54 @@ test('each visitor gets a daily render allowance; only accepted renders count', 
   assert.equal(await render(first), 201, 'a new day restores the allowance');
 });
 
+test('the owner is told when someone opens the link, comes back and starts a render', async (t) => {
+  let clock = 0;
+  let status = 202;
+  const notices: string[] = [];
+  const { base, admit } = await gateway(t, () => ({ status, type: 'text/html' }), {
+    now: () => clock,
+    notify: (message: string) => {
+      notices.push(message);
+    },
+  });
+  const cookie = await admit();
+  const page = () => fetch(`${base}/`, { headers: { cookie, accept: 'text/html' } });
+  await page();
+  assert.equal(notices.length, 1, 'opening the link and its first page is one notice');
+  const [opened] = notices;
+  assert.match(opened, /^Someone new opened the link \(Visitor [a-f0-9]{4}\)\.$/);
+  const name = opened.match(/Visitor [a-f0-9]{4}/)![0];
+  status = 409;
+  await fetch(`${base}/api/videos`, { method: 'POST', headers: { cookie } });
+  status = 202;
+  await fetch(`${base}/api/one-tap`, { method: 'POST', headers: { cookie } });
+  await fetch(`${base}/api/films`, { method: 'POST', headers: { cookie } });
+  assert.deepEqual(notices.slice(1), [
+    `${name} started a one-tap effect: 1 of 20 for them today, 1 of 150 in all.`,
+  ]);
+  clock += 10 * 60 * 1000;
+  await page();
+  assert.equal(notices.length, 2, 'a visitor still browsing is not announced again');
+  clock += 31 * 60 * 1000;
+  await page();
+  assert.equal(notices.at(-1), `${name} is back on the link.`);
+  for (const message of notices)
+    assert.ok(!message.includes(token), 'notices never carry the link');
+});
+
+test('a failing notice never affects the visitor', async (t) => {
+  const { base, admit } = await gateway(t, () => ({ status: 201 }), {
+    notify: () => {
+      throw new Error('offline');
+    },
+  });
+  const cookie = await admit();
+  assert.equal(
+    (await fetch(`${base}/api/images`, { method: 'POST', headers: { cookie } })).status,
+    201,
+  );
+});
+
 test('a one-tap effect counts once; re-cutting it without the watermark is free', async (t) => {
   const { base, admit } = await gateway(t, () => ({ status: 202 }), { rendersPerVisitor: 1 });
   const cookie = await admit();

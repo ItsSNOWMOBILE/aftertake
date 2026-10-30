@@ -13,6 +13,7 @@ import { randomBytes } from 'node:crypto';
 import { existsSync, readFileSync, rmSync, statfsSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { parseEnv } from 'node:util';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const windows = process.platform === 'win32';
@@ -311,6 +312,31 @@ function tailscaleAddress() {
  * examples, through a gateway that only admits holders of the access link.
  * A tunnel such as Tailscale Funnel then points at the gateway's port.
  */
+/**
+ * Post the share gateway's notices to a Discord webhook, when one is set in the
+ * environment or in .env. Returns undefined when none is set.
+ */
+function discordNotices() {
+  let url = process.env.AFTERTAKE_SHARE_DISCORD_WEBHOOK?.trim();
+  const file = path.join(root, '.env');
+  if (!url && existsSync(file))
+    url = parseEnv(readFileSync(file, 'utf8')).AFTERTAKE_SHARE_DISCORD_WEBHOOK?.trim();
+  if (!url) return undefined;
+  if (!/^https:\/\/(discord|discordapp)\.com\/api\/webhooks\//.test(url)) {
+    console.warn('AFTERTAKE_SHARE_DISCORD_WEBHOOK is not a Discord webhook URL; notices are off.');
+    return undefined;
+  }
+  return async (message) => {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ content: message, allowed_mentions: { parse: [] } }),
+      signal: AbortSignal.timeout(10_000),
+    }).catch((failure) => ({ ok: false, status: failure.message }));
+    if (!response.ok) console.warn(`[share] Discord notice not sent (${response.status}).`);
+  };
+}
+
 async function share() {
   await prepare();
   pnpm(['exec', 'vite', 'build'], 'Building the studio');
@@ -342,11 +368,13 @@ async function share() {
   const local = `http://127.0.0.1:${studioPort}`;
   await waitFor(`${local}/api/workspace`);
   const { createShareGateway } = await import('./share-gateway.mjs');
+  const notify = discordNotices();
   const gateway = createShareGateway({
     studioPort,
     token,
     rendersPerVisitor: perVisitor,
     rendersPerDay: perDay,
+    notify,
   });
   await new Promise((resolve, reject) =>
     gateway.once('error', reject).listen(sharePort, '127.0.0.1', resolve),
@@ -371,6 +399,10 @@ async function share() {
   console.log(
     `  Choose where its studios render at ${local} (Render setup). Visitors can't change it.\n  Each visitor can start ${perVisitor} renders a day, ${perDay} in all. Press Ctrl+C to stop sharing.\n`,
   );
+  if (notify) {
+    console.log('  Visits and renders are posted to your Discord webhook.\n');
+    void notify(`Aftertake is shared again. Each visitor can start ${perVisitor} renders a day.`);
+  }
 }
 
 function setupNpu() {

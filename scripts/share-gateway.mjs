@@ -10,6 +10,8 @@ const ACCESS_COOKIE = 'aftertake_access';
 const VISITOR_COOKIE = 'aftertake_visitor';
 const DAY = 24 * 60 * 60 * 1000;
 const COOKIE_DAYS = 45;
+// A visitor who opens a page after this long away is announced again as back.
+const AWAY = 30 * 60 * 1000;
 // Starting one of these runs a Comfy graph on the GPU or spends Comfy Cloud
 // credits. A one-tap effect counts once, with its automatic re-render; a
 // storyboard counts each shot and its song; a set of takes counts each take.
@@ -35,6 +37,20 @@ export function takeSetWeight(body) {
     return 1;
   }
 }
+/** What each counted route starts, for the owner's notices. */
+const renderNames = {
+  images: 'an image',
+  videos: 'a video',
+  enhancements: 'an upscale or slow motion',
+  renders: 'a camera move or region effect',
+  'frame-edits': 'a frame edit',
+  'depth-effects': 'a depth effect',
+  'one-tap': 'a one-tap effect',
+  storyboards: 'a storyboard',
+  'take-sets': 'a set of takes',
+  'characters/selections': 'person tracking',
+  'characters/replacements': 'a character replacement',
+};
 /** Routes whose cost is in their request body. */
 const weighedRoutes = { '/api/storyboards': storyboardWeight, '/api/take-sets': takeSetWeight };
 const MAX_WEIGHED_BODY = 256 * 1024;
@@ -110,6 +126,8 @@ export function createShareGateway({
   rendersPerDay = 150,
   now = Date.now,
   log = console.log,
+  /** Told when someone opens the link or starts a render, such as a Discord webhook. */
+  notify = undefined,
 }) {
   if (typeof token !== 'string' || token.length < 16)
     throw new Error('Use an access token of at least 16 characters.');
@@ -117,6 +135,25 @@ export function createShareGateway({
   // The cookie proves the visitor had the link without storing the link itself.
   const accessValue = createHash('sha256').update(`aftertake-share:${token}`).digest('hex');
   let renders = [];
+  const seen = new Map();
+  // A short, stable name for a visitor; it reveals nothing about them.
+  const nameOf = (visitor) => `Visitor ${visitor.slice(0, 4)}`;
+  function tell(message) {
+    if (!notify) return;
+    try {
+      Promise.resolve(notify(message)).catch(() => {});
+    } catch {
+      // A notice must never affect the visitor's request.
+    }
+  }
+  /** Announce a visitor who arrives, or comes back after a while away. */
+  function arrive(visitor, isNew) {
+    const last = seen.get(visitor);
+    seen.set(visitor, now());
+    if (isNew) tell(`Someone new opened the link (${nameOf(visitor)}).`);
+    else if (last === undefined || now() - last > AWAY)
+      tell(`${nameOf(visitor)} is back on the link.`);
+  }
 
   function used(visitor) {
     renders = renders.filter((render) => now() - render.at < DAY);
@@ -165,6 +202,10 @@ export function createShareGateway({
           log(
             `[share] render ${mine}/${rendersPerVisitor} for this visitor, ${all}/${rendersPerDay} today`,
           );
+          const what = renderNames[routeOf(url.pathname).slice('/api/'.length)] || 'a render';
+          tell(
+            `${nameOf(visitor)} started ${what}${counted > 1 ? ` (${counted} renders)` : ''}: ${mine} of ${rendersPerVisitor} for them today, ${all} of ${rendersPerDay} in all.`,
+          );
         }
         const outgoing = { ...response.headers };
         for (const name of hopHeaders) delete outgoing[name];
@@ -206,9 +247,9 @@ export function createShareGateway({
       if (!timingSafeEqual(digest(offered), expected))
         return send(res, 401, 'text/html; charset=utf-8', deniedPage);
       url.searchParams.delete('access');
-      const visitor = /^[a-f0-9]{32}$/.test(cookies[VISITOR_COOKIE] || '')
-        ? cookies[VISITOR_COOKIE]
-        : randomBytes(16).toString('hex');
+      const known = /^[a-f0-9]{32}$/.test(cookies[VISITOR_COOKIE] || '');
+      const visitor = known ? cookies[VISITOR_COOKIE] : randomBytes(16).toString('hex');
+      arrive(visitor, !known);
       res.writeHead(303, {
         location: url.pathname + url.search,
         'set-cookie': [
@@ -228,6 +269,9 @@ export function createShareGateway({
     const visitor = /^[a-f0-9]{32}$/.test(cookies[VISITOR_COOKIE] || '')
       ? cookies[VISITOR_COOKIE]
       : 'unnamed';
+    if (req.method === 'GET' && String(req.headers.accept || '').includes('text/html'))
+      arrive(visitor, false);
+    else if (seen.has(visitor)) seen.set(visitor, now());
     const route = routeOf(url.pathname);
     if (!['GET', 'HEAD', 'OPTIONS'].includes(req.method || 'GET'))
       for (const [pattern, message] of lockedRoutes)

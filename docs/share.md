@@ -81,6 +81,14 @@ warning page first.
 Set `AFTERTAKE_SHARE_TOKEN` to use your own access token of 16 characters or
 more instead of the saved one in `.data-share/share-token`.
 
+To hear when someone uses the link, add a Discord webhook to `.env`:
+`AFTERTAKE_SHARE_DISCORD_WEBHOOK=https://discord.com/api/webhooks/...` (in Discord:
+channel settings, Integrations, Webhooks). The share command then posts a message
+when someone new opens the link, when a visitor comes back after 30 minutes away,
+and when a visitor starts a render, with what it is and how many they have left.
+Visitors appear as a short random name such as `Visitor 3fa2`; messages never
+include their address or the access link.
+
 ## How it works
 
 The shared studio listens on `127.0.0.1:4311` and accepts only requests from

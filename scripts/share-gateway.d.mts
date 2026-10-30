@@ -11,6 +11,8 @@ export function createShareGateway(options: {
   rendersPerDay?: number;
   now?: () => number;
   log?: (message: string) => void;
+  /** Told when someone opens the link, comes back or starts a render. */
+  notify?: (message: string) => unknown;
 }): Server;
 export function storyboardWeight(body: Buffer): number;
 export function takeSetWeight(body: Buffer): number;
