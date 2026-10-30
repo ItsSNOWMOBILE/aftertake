@@ -19,11 +19,25 @@ import {
   type StoryboardPlan,
   type StoryboardShot,
 } from './storyboard';
+import type { Clip } from './domain';
+import { formatDuration } from './render-estimate';
 import { apiFetch, browserDemo, mediaUrl, saveMedia } from './transport';
+import JobProgress from './JobProgress';
 import PreviewVideo from './PreviewVideo';
 import './image-studio.css';
 import './video-studio.css';
 import './storyboard-studio.css';
+
+const still = (clip: Clip) => mediaUrl(`/api/thumbnails/${clip.id}?time=0`);
+const moveName = (movement: string) =>
+  cinemaOptions.movement.find(([value]) => value === movement)?.[1] || movement;
+/** One word or two for where a storyboard is, for its row in the history. */
+function status(job: StoryboardJob) {
+  if (job.state === 'ready') return 'Ready';
+  if (job.state === 'failed') return 'Failed';
+  if (job.state === 'canceled') return 'Canceled';
+  return job.stage.includes('waiting') ? 'In line' : 'Making';
+}
 
 async function api<T>(url: string, body?: unknown, key?: string): Promise<T> {
   const response = await apiFetch(
@@ -144,7 +158,7 @@ export default function StoryboardStudio({
     }
   }
   const video = (job: StoryboardJob) => `/api/storyboards/${job.id}/video`;
-  const minutes = plan ? Math.max(2, Math.round((plan.shots.length * 90 + 60) / 60)) : 0;
+  const seconds = plan ? plan.shots.length * 90 + 40 : 0;
 
   return (
     <div className="modal-backdrop image-studio-backdrop" onClick={onClose}>
@@ -165,16 +179,17 @@ export default function StoryboardStudio({
         <button className="modal-close" aria-label="Close storyboard" onClick={onClose}>
           <X size={19} />
         </button>
-        <div className="eyebrow">STORYBOARD / CREATE VIDEO + SONG + FILM</div>
+        <div className="eyebrow">STORYBOARD / LTX-2.5 + ACE-STEP + FILM</div>
         <h2>One idea. A film cut to music.</h2>
         <p className="image-intro">
-          Describe an idea and Aftertake plans 3 to 5 shots with a local language model. Edit the
-          shots, then each one renders with LTX-2.5, ACE-Step composes the score, and the shots are
-          cut on its beats in Film with titles and transitions, ready to keep editing.
+          Describe an idea and Aftertake plans the shots. Edit them, then each shot renders, a song
+          is composed for it, and the film is cut on the beat, ready to keep editing in Film.
         </p>
         <div className="storyboard-grid">
           <div className="storyboard-result">
-            <div className={`storyboard-picture ${viewed?.request.aspect || aspect}`}>
+            <div
+              className={`storyboard-picture ${viewed?.request.aspect || (plan ? aspect : 'landscape')}`}
+            >
               {viewed?.state === 'ready' ? (
                 <PreviewVideo
                   key={viewed.id}
@@ -185,15 +200,25 @@ export default function StoryboardStudio({
                   aria-label={`${viewed.request.title} storyboard film`}
                 />
               ) : viewed && storyboardBusy(viewed) ? (
-                <div role="status">
-                  <LoaderCircle className="spin" size={28} aria-hidden="true" />
-                  <p>{viewed.stage}</p>
-                  {viewed.progress !== null && (
-                    <progress max={1} value={viewed.progress} aria-label="Shot progress" />
-                  )}
-                </div>
+                <JobProgress
+                  headline={
+                    viewed.stage.includes('waiting')
+                      ? 'Waiting for the GPU'
+                      : viewed.stage === 'Starting'
+                        ? 'Starting'
+                        : viewed.stage
+                  }
+                  detail={
+                    viewed.stage.includes('waiting') ? 'Another render is using it' : undefined
+                  }
+                  eta={viewed.eta}
+                  poster={(() => {
+                    const done = viewed.shots.filter((shot) => shot.clip);
+                    return done.length ? still(done.at(-1)!.clip!) : undefined;
+                  })()}
+                />
               ) : (
-                <div>
+                <div className="storyboard-empty">
                   <Clapperboard size={30} aria-hidden="true" />
                   <p>{viewed?.error || 'Your film appears here, cut and scored.'}</p>
                 </div>
@@ -250,34 +275,43 @@ export default function StoryboardStudio({
               </button>
             )}
             {viewed && (
-              <ol className="storyboard-receipt">
-                {viewed.request.shots.map((shot, index) => (
-                  <li key={index}>
-                    <strong>
-                      {cinemaOptions.movement.find(([value]) => value === shot.movement)?.[1]} ·{' '}
-                      {shot.seconds} s
-                    </strong>{' '}
-                    {shot.prompt}
-                    {viewed.shots[index]?.clip ? ' ✓' : ''}
-                  </li>
-                ))}
+              <ol className="storyboard-strip" aria-label={`${viewed.request.title} shots`}>
+                {viewed.request.shots.map((shot, index) => {
+                  const clip = viewed.shots[index]?.clip;
+                  return (
+                    <li key={index}>
+                      <div className={`storyboard-strip-frame ${viewed.request.aspect}`}>
+                        {clip ? <img src={still(clip)} alt="" /> : <span>{index + 1}</span>}
+                      </div>
+                      <div>
+                        <strong>
+                          Shot {index + 1} · {moveName(shot.movement)} · {shot.seconds} s
+                        </strong>
+                        <p>{shot.prompt}</p>
+                      </div>
+                    </li>
+                  );
+                })}
               </ol>
             )}
             {jobs.length > 1 && (
-              <div className="video-history" aria-label="Storyboard history">
-                {jobs.map((job) => (
-                  <button
-                    key={job.id}
-                    className={viewed?.id === job.id ? 'active' : ''}
-                    onClick={() => setSelected(job.id)}
-                  >
-                    <strong>{job.request.title}</strong>
-                    <small>
-                      {job.state === 'running' ? job.stage : job.state} · {job.request.shots.length}{' '}
-                      shots · {job.request.aspect}
-                    </small>
-                  </button>
-                ))}
+              <div className="job-history" aria-label="Your storyboards">
+                <span>YOUR STORYBOARDS</span>
+                {jobs.map((job) => {
+                  const first = job.shots.find((shot) => shot.clip)?.clip;
+                  return (
+                    <button
+                      key={job.id}
+                      type="button"
+                      aria-pressed={viewed?.id === job.id}
+                      onClick={() => setSelected(job.id)}
+                    >
+                      {first ? <img src={still(first)} alt="" /> : <span aria-hidden="true" />}
+                      <strong>{job.request.title}</strong>
+                      <span className={`job-status ${job.state}`}>{status(job)}</span>
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -327,11 +361,11 @@ export default function StoryboardStudio({
               onClick={() => void planShots(plan ? variation + 1 : variation)}
             >
               {planning ? <LoaderCircle className="spin" size={14} /> : <Sparkles size={14} />}
-              {planning ? 'Planning on your CPU…' : plan ? 'Plan again' : 'Plan shots'}
+              {planning ? 'Planning the shots…' : plan ? 'Plan again' : 'Plan shots'}
             </button>
             {plan && (
               <>
-                <small>{plan.note}</small>
+                <small className="storyboard-note">{plan.note}</small>
                 <label>
                   TITLE
                   <input
@@ -427,23 +461,25 @@ export default function StoryboardStudio({
                     ))}
                   </select>
                 </label>
-                <button
-                  className="button image-generate"
-                  disabled={
-                    sending ||
-                    browserDemo ||
-                    plan.shots.some((shot) => shot.prompt.trim().length < 10)
-                  }
-                  title={browserDemo ? 'Render storyboards in the local studio.' : undefined}
-                  onClick={() => void make()}
-                >
-                  {sending ? <LoaderCircle className="spin" size={15} /> : <Film size={15} />}
-                  Make the film
-                </button>
-                <small>
-                  {storyboardRenders(plan)} renders: one per shot with LTX-2.5 and one ACE-Step
-                  song, about {minutes} minutes on an RTX 5080. The cut runs on the CPU.
-                </small>
+                <div className="storyboard-action">
+                  <button
+                    className="button image-generate"
+                    disabled={
+                      sending ||
+                      browserDemo ||
+                      plan.shots.some((shot) => shot.prompt.trim().length < 10)
+                    }
+                    title={browserDemo ? 'Render storyboards in the local studio.' : undefined}
+                    onClick={() => void make()}
+                  >
+                    {sending ? <LoaderCircle className="spin" size={15} /> : <Film size={15} />}
+                    Make the film
+                  </button>
+                  <small>
+                    {plan.shots.length} shots and a song · about {formatDuration(seconds)} ·{' '}
+                    {storyboardRenders(plan)} renders
+                  </small>
+                </div>
               </>
             )}
             {browserDemo && (

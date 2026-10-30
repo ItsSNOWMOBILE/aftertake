@@ -341,8 +341,15 @@ test('a blank take renders once more with a new seed, then the effect is cut and
     watermark: true,
   });
   assert.equal(started.status, 202);
+  // A running effect carries its steps and the time left, timed from the reference runs.
+  assert.deepEqual(
+    started.value.eta.steps.map((step: { label: string }) => step.label),
+    ['Frame your photo', 'Move the camera', 'Check the take', 'Cut with titles and music'],
+  );
+  assert.ok(started.value.eta.seconds > 60, 'a 720p take alone takes over a minute');
   const job = await effects.settle(started.value.id);
   assert.equal(job.state, 'ready', job.error || 'ready');
+  assert.equal(job.eta, undefined, 'a finished effect has no time left');
   assert.deepEqual(
     job.attempts.map((attempt) => attempt.seed),
     [42, nextSeed(42)],

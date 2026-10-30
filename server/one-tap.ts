@@ -26,6 +26,8 @@ import {
   type OneTapPreset,
 } from '../src/one-tap.js';
 import { RequestError } from './http-errors.js';
+import { jobEta } from '../src/job-eta.js';
+import { estimate, estimateKey, type TimedJob } from '../src/render-estimate.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
 
 const exec = promisify(execFile);
@@ -134,6 +136,80 @@ export async function oneTapRouter(context: {
     driving = new Set<string>(),
     cancels = new Set<string>(),
     line: string[] = [];
+  // For the time left: each running effect's step and when it began, what it waits on, and
+  // when its run started. Kept in memory only; after a restart the times are measured again.
+  const steps = new Map<string, { step: number; at: number }>(),
+    waits = new Map<string, 'line' | 'gpu'>(),
+    runs = new Map<string, number>();
+  const enter = (job: OneTapJob, step: number) => {
+    if (steps.get(job.id)?.step !== step) steps.set(job.id, { step, at: Date.now() });
+  };
+  let timed: { at: number; history: TimedJob[] } = { at: 0, history: [] };
+  /** The usual render time of a take: this workspace's earlier takes, else the RTX 5080 runs. */
+  async function renderSeconds({ quality, resolution }: OneTapPreset['motion']) {
+    if (Date.now() - timed.at > 60000)
+      try {
+        const response = await fetch(`${context.studio}/api/renders`, {
+          signal: AbortSignal.timeout(5000),
+        });
+        if (response.ok) timed = { at: Date.now(), history: (await response.json()) as TimedJob[] };
+      } catch {
+        // Keep the last history; the estimate falls back to the reference runs.
+      }
+    return (
+      estimate(estimateKey({ recipe: { pipeline: 'cinema', quality, resolution } }), timed.history)
+        ?.seconds ?? 100
+    );
+  }
+  /** A job as sent: while it runs, it carries its steps and the time left. */
+  async function view(job: OneTapJob): Promise<OneTapJob> {
+    if (!oneTapBusy(job)) return job;
+    const render = await renderSeconds(job.preset.motion);
+    // It may have finished while the history was read.
+    if (!oneTapBusy(job)) return job;
+    const now = Date.now(),
+      at = steps.get(job.id) ?? { step: 0, at: now },
+      waiting = waits.get(job.id);
+    const plan = [
+      { label: 'Frame your photo', seconds: job.frame ? 0 : 4 },
+      {
+        label: job.attempts.length > 1 ? 'Render again with a new seed' : 'Move the camera',
+        seconds: render,
+      },
+      { label: 'Check the take', seconds: 3 },
+      {
+        label: 'Cut with titles and music',
+        seconds: 10 + (job.preset.cut.stillFinish && !job.still ? 8 : 0),
+      },
+    ];
+    let wait: number | null = 0;
+    if (waiting) {
+      // The take rendering now finishes first, then one take for each effect ahead.
+      const rendering = [...jobs.values()].filter(
+        (other) =>
+          other.id !== job.id &&
+          oneTapBusy(other) &&
+          steps.get(other.id)?.step === 1 &&
+          !waits.has(other.id),
+      );
+      wait =
+        waiting === 'gpu' && !rendering.length
+          ? null
+          : rendering.reduce(
+              (sum, other) => sum + Math.max(render - (now - steps.get(other.id)!.at) / 1000, 3),
+              0,
+            ) +
+            Math.max(line.indexOf(job.id), 0) * render;
+    }
+    return {
+      ...job,
+      eta: jobEta(plan, at.step, {
+        inStep: waiting ? 0 : (now - at.at) / 1000,
+        total: (now - (runs.get(job.id) ?? Date.parse(job.createdAt))) / 1000,
+        wait,
+      }),
+    };
+  }
 
   async function persist(job: OneTapJob) {
     job.updatedAt = new Date().toISOString();
@@ -206,7 +282,8 @@ export async function oneTapRouter(context: {
     const source = job.source,
       ratio = source.width / source.height;
     if (source.kind === 'image' && Math.abs(Math.log(ratio / (9 / 16))) < 0.01) return source;
-    await stage(job, 'Framing your photo for 9:16');
+    enter(job, 0);
+    await stage(job, 'Framing your photo');
     const output = path.join(folder, `${job.id}.frame.png`);
     try {
       await exec(
@@ -270,7 +347,9 @@ export async function oneTapRouter(context: {
         for (;;) {
           if (canceled(job)) return undefined;
           const ahead = line.indexOf(job.id);
+          enter(job, 1);
           if (ahead > 0) {
+            waits.set(job.id, 'line');
             await stage(job, `Waiting for the GPU · ${ahead} ahead`);
             await pause(3000);
             continue;
@@ -280,18 +359,22 @@ export async function oneTapRouter(context: {
             key: `one-tap-${job.id}-${attempt}`,
           });
           if (started.status === 409 && gpuTaken.test(failure(started.value, ''))) {
-            await stage(job, 'Waiting for the GPU · another render is running');
+            waits.set(job.id, 'gpu');
+            await stage(job, 'Waiting for the GPU to finish another render');
             await pause(4000);
             continue;
           }
           if (started.status >= 300)
             throw new RequestError(failure(started.value, 'The render could not start.'), 409);
           entry.renderId = started.value.id;
+          waits.delete(job.id);
+          steps.set(job.id, { step: 1, at: Date.now() });
           await persist(job);
           break;
         }
       } finally {
         leave(job);
+        waits.delete(job.id);
       }
     }
     for (;;) {
@@ -300,8 +383,10 @@ export async function oneTapRouter(context: {
       if (terminalTake.has(take.state)) return take;
       if (cancels.has(job.id) && take.jobId && take.state !== 'finalizing')
         await call(`/api/renders/${take.id}/cancel`, { body: {} }).catch(() => undefined);
-      const label = job.attempts.length > 1 ? 'Re-rendering with a new seed' : 'Moving the camera';
-      job.stage = `${label} · ${take.stage || 'on your GPU'}`;
+      // A take that was rendering before a restart is timed from when it was admitted.
+      if (steps.get(job.id)?.step !== 1)
+        steps.set(job.id, { step: 1, at: Date.parse(take.createdAt) || Date.now() });
+      job.stage = job.attempts.length > 1 ? 'Rendering again with a new seed' : 'Moving the camera';
       job.progress = take.progress;
       await persist(job);
       await pause(2000);
@@ -330,6 +415,7 @@ export async function oneTapRouter(context: {
       (await stat(path.join(data, 'clips', path.basename(job.still.url))).catch(() => null))
     )
       return job.still;
+    enter(job, 3);
     await stage(job, 'Finishing the photo');
     let started: { status: number; value: FinishingJob };
     for (;;) {
@@ -365,6 +451,7 @@ export async function oneTapRouter(context: {
     if (job.exports[variant]?.check?.ok) return;
     const take = job.attempts.at(-1)!,
       preset = job.preset;
+    enter(job, 3);
     await stage(job, watermark ? 'Cutting with titles and music' : 'Cutting without the watermark');
     const photo = preset.cut.layout === 'motion' ? undefined : await finishedStill(job);
     const still =
@@ -431,6 +518,7 @@ export async function oneTapRouter(context: {
   async function drive(job: OneTapJob) {
     if (driving.has(job.id)) return;
     driving.add(job.id);
+    runs.set(job.id, Date.now());
     // Hold a place before the first await, so framing a photo never loses it.
     if (!job.attempts.some((attempt) => attempt.renderId && !attempt.check)) join(job);
     try {
@@ -446,6 +534,7 @@ export async function oneTapRouter(context: {
           const take = await render(job, attempt);
           if (!take || canceled(job)) return await persist(job);
           if (take.state === 'succeeded' && take.output) {
+            enter(job, 2);
             await stage(job, 'Checking the take');
             entry.check = await measure(
               path.join(data, 'outputs', `${take.id}.mp4`),
@@ -492,6 +581,9 @@ export async function oneTapRouter(context: {
     } finally {
       leave(job);
       driving.delete(job.id);
+      steps.delete(job.id);
+      waits.delete(job.id);
+      runs.delete(job.id);
     }
   }
 
@@ -505,28 +597,40 @@ export async function oneTapRouter(context: {
     }
   }
 
-  const send = (res: Response, job: OneTapJob, status = 200) => res.status(status).json(job);
+  const send = async (res: Response, job: OneTapJob, status = 200) =>
+    void res.status(status).json(await view(job));
   router.get('/presets', async (_req, res) => {
     const library = await loadPresetLibrary(root);
+    // The usual time from Make it to a finished clip, for beside the button.
+    const seconds = Object.fromEntries(
+      await Promise.all(
+        library.presets.map(async (preset) => [
+          preset.id,
+          Math.round((await renderSeconds(preset.motion)) + 17 + (preset.cut.stillFinish ? 8 : 0)),
+        ]),
+      ),
+    );
     res.json({
       presets: library.presets,
       music: library.music.map(({ id, title, duration }) => ({ id, title, duration })),
       problems: library.problems,
+      seconds,
     });
   });
-  router.get('/', (_req, res) => {
-    res.json([...jobs.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt)));
+  router.get('/', async (_req, res) => {
+    const sorted = [...jobs.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    res.json(await Promise.all(sorted.map(view)));
   });
-  router.get('/:id', (req, res) => {
+  router.get('/:id', async (req, res) => {
     const job = jobs.get(req.params.id);
     if (!job) return void res.status(404).json({ error: 'Effect not found.' });
-    send(res, job);
+    await send(res, job);
   });
   router.post('/', async (req, res) => {
     const request = oneTapRequestSchema.parse(req.body),
       admission = generationAdmission(req.get('Idempotency-Key'), request, jobs.values());
     if (admission.conflict) throw new RequestError(generationKeyConflict, 409);
-    if (admission.existing) return void send(res, admission.existing, 200);
+    if (admission.existing) return void (await send(res, admission.existing, 200));
     const preset = (await loadPresetLibrary(root)).presets.find(
       (item) => item.id === request.preset,
     );
@@ -569,7 +673,7 @@ export async function oneTapRouter(context: {
     await persist(job);
     jobs.set(job.id, job);
     void drive(job);
-    send(res, job, 202);
+    await send(res, job, 202);
   });
   /** Show or download the result with or without the watermark; a missing cut is made on the CPU. */
   router.post('/:id/export', async (req, res) => {
@@ -589,7 +693,7 @@ export async function oneTapRouter(context: {
     } finally {
       driving.delete(job.id);
     }
-    send(res, job);
+    await send(res, job);
   });
   router.post('/:id/cancel', async (req, res) => {
     const job = jobs.get(req.params.id);
@@ -599,7 +703,7 @@ export async function oneTapRouter(context: {
       canceled(job);
       await persist(job);
     }
-    send(res, job);
+    await send(res, job);
   });
   router.get('/:id/video', (req, res) => {
     const job = jobs.get(req.params.id),

@@ -24,6 +24,8 @@ import {
 import { contentDigest } from './edit-plan.js';
 import { generationAdmission, generationKeyConflict } from './generation-admission.js';
 import { RequestError } from './http-errors.js';
+import { jobEta } from '../src/job-eta.js';
+import { estimate, estimateKey, type TimedJob } from '../src/render-estimate.js';
 
 const exec = promisify(execFile);
 const pause = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -63,6 +65,72 @@ export async function storyboardRouter(context: {
   const jobs = new Map<string, StoryboardJob>(),
     driving = new Set<string>(),
     cancels = new Set<string>();
+  // For the time left: each running storyboard's step and when it began, whether it waits for
+  // the GPU, and when its run started. Kept in memory; a restart measures again.
+  const steps = new Map<string, { step: number; at: number }>(),
+    waits = new Set<string>(),
+    runs = new Map<string, number>();
+  const enter = (job: StoryboardJob, step: number, at = Date.now()) => {
+    waits.delete(job.id);
+    if (steps.get(job.id)?.step !== step) steps.set(job.id, { step, at });
+  };
+  let timed: { at: number; videos: TimedJob[]; songs: TimedJob[] } = {
+    at: 0,
+    videos: [],
+    songs: [],
+  };
+  /** Usual seconds for one shot and for the song: this workspace's runs, else the reference. */
+  async function typical() {
+    if (Date.now() - timed.at > 60000)
+      try {
+        const [videos, songs] = await Promise.all(
+          ['/api/videos', '/api/enhancements'].map(async (route) => {
+            const response = await fetch(context.studio + route, {
+              signal: AbortSignal.timeout(5000),
+            });
+            return response.ok ? ((await response.json()) as TimedJob[]) : [];
+          }),
+        );
+        timed = { at: Date.now(), videos, songs };
+      } catch {
+        // Keep the last history; the estimates fall back to the reference runs.
+      }
+    return {
+      shot:
+        estimate(
+          estimateKey({ request: { format: 'aftertake-text-video/1', quality: 'final' } }),
+          timed.videos,
+        )?.seconds ?? 90,
+      song: estimate('song', timed.songs)?.seconds ?? 15,
+    };
+  }
+  /** A storyboard as sent: while it runs, it carries its steps and the time left. */
+  async function view(job: StoryboardJob): Promise<StoryboardJob> {
+    if (!storyboardBusy(job)) return job;
+    const { shot, song } = await typical();
+    // It may have finished while the history was read.
+    if (!storyboardBusy(job)) return job;
+    const now = Date.now(),
+      count = job.request.shots.length,
+      at = steps.get(job.id) ?? { step: 0, at: now };
+    const plan = [
+      ...job.request.shots.map((_, index) => ({
+        label: `Render shot ${index + 1}`,
+        seconds: shot,
+      })),
+      { label: 'Compose the song', seconds: song },
+      { label: 'Cut it on the beat', seconds: 15 + 3 * count },
+    ];
+    const waiting = waits.has(job.id);
+    return {
+      ...job,
+      eta: jobEta(plan, at.step, {
+        inStep: waiting ? 0 : (now - at.at) / 1000,
+        total: (now - (runs.get(job.id) ?? Date.parse(job.createdAt))) / 1000,
+        wait: waiting ? null : 0,
+      }),
+    };
+  }
   let planning: Promise<unknown> = Promise.resolve();
 
   const scriptPython = path.join(
@@ -157,6 +225,7 @@ export async function storyboardRouter(context: {
       if (canceled(job)) return undefined;
       const started = await call<T>(route, { body, key });
       if (started.status === 409 && gpuTaken.test(failure(started.value, ''))) {
+        waits.add(job.id);
         await stage(job, `${label} · waiting for the GPU`);
         await pause(4000);
         continue;
@@ -182,6 +251,7 @@ export async function storyboardRouter(context: {
     const entry = job.shots[index],
       label = `Shot ${index + 1} of ${job.request.shots.length}`;
     if (entry.clip) return true;
+    steps.set(job.id, { step: index, at: Date.now() });
     if (!entry.videoId) {
       const video = await start<VideoGeneration>(
         job,
@@ -210,13 +280,19 @@ export async function storyboardRouter(context: {
         canceled(job);
         return false;
       }
-      await stage(job, `${label} · ${video.stage || 'rendering on your GPU'}`, video.progress);
+      enter(job, index, Date.parse(video.createdAt) || Date.now());
+      await stage(
+        job,
+        `Rendering shot ${index + 1} of ${job.request.shots.length}`,
+        video.progress,
+      );
       await pause(2500);
     }
   }
   async function renderSong(job: StoryboardJob) {
     job.song ||= {};
     if (job.song.assetId) return true;
+    steps.set(job.id, { step: job.request.shots.length, at: Date.now() });
     if (!job.song.enhancementId) {
       const song = await start<Enhancement>(
         job,
@@ -239,11 +315,8 @@ export async function storyboardRouter(context: {
           throw Error(`The song did not finish: ${song.error || song.state}.`);
         break;
       }
-      await stage(
-        job,
-        `Composing the song · ${song.stage || 'ACE-Step on your GPU'}`,
-        song.progress,
-      );
+      enter(job, job.request.shots.length, Date.parse(song.createdAt) || Date.now());
+      await stage(job, 'Composing the song', song.progress);
       await pause(2500);
     }
     const audio = await fetch(`${context.studio}/api/enhancements/${job.song.enhancementId}/audio`);
@@ -265,12 +338,14 @@ export async function storyboardRouter(context: {
   async function drive(job: StoryboardJob) {
     if (driving.has(job.id)) return;
     driving.add(job.id);
+    runs.set(job.id, Date.now());
     try {
       job.state = 'running';
       for (let index = 0; index < job.request.shots.length; index++)
         if (!(await renderShot(job, index))) return await persist(job);
       if (!(await renderSong(job))) return await persist(job);
-      await stage(job, 'Cutting the film to the beat');
+      enter(job, job.request.shots.length + 1);
+      await stage(job, 'Cutting the film on the beat');
       for (const [index, shot] of job.shots.entries())
         if (!shot.assetId) {
           const bytes = await readFile(path.join(data, 'clips', path.basename(shot.clip!.url)));
@@ -320,6 +395,9 @@ export async function storyboardRouter(context: {
       await persist(job).catch(() => {});
     } finally {
       driving.delete(job.id);
+      steps.delete(job.id);
+      waits.delete(job.id);
+      runs.delete(job.id);
     }
   }
 
@@ -367,13 +445,14 @@ export async function storyboardRouter(context: {
     if (plan.planner === 'local-model') await writeFile(cache, JSON.stringify(plan));
     res.json(plan satisfies StoryboardPlan);
   });
-  router.get('/', (_req, res) => {
-    res.json([...jobs.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt)));
+  router.get('/', async (_req, res) => {
+    const sorted = [...jobs.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    res.json(await Promise.all(sorted.map(view)));
   });
-  router.get('/:id', (req, res) => {
+  router.get('/:id', async (req, res) => {
     const job = jobs.get(req.params.id);
     if (!job) return void res.status(404).json({ error: 'Storyboard not found.' });
-    res.json(job);
+    res.json(await view(job));
   });
   router.post('/', async (req, res) => {
     const request = storyboardRequestSchema.parse(req.body),
@@ -395,7 +474,7 @@ export async function storyboardRouter(context: {
     await persist(job);
     jobs.set(job.id, job);
     void drive(job);
-    res.status(202).json(job);
+    res.status(202).json(await view(job));
   });
   router.post('/:id/cancel', async (req, res) => {
     const job = jobs.get(req.params.id);

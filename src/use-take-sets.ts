@@ -21,9 +21,27 @@ async function call<T>(url: string, body?: unknown, key?: string): Promise<T> {
   return value;
 }
 
+// Sets started in this browser tab, so a reload keeps showing the comparison it made.
+const startedKey = 'aftertake-started-take-sets';
+function startedHere(): string[] {
+  try {
+    return JSON.parse(sessionStorage.getItem(startedKey) || '[]');
+  } catch {
+    return [];
+  }
+}
+function remember(id: string) {
+  try {
+    sessionStorage.setItem(startedKey, JSON.stringify([id, ...startedHere()].slice(0, 20)));
+  } catch {
+    // Without storage the comparison still shows until the tab reloads.
+  }
+}
+
 /** A studio's sets of takes: the newest first, refreshed while any is rendering. */
 export function useTakeSets(kind: TakeSetKind) {
   const [sets, setSets] = useState<TakeSet[]>([]);
+  const [mine, setMine] = useState(startedHere);
   const running = sets.some(takeSetBusy);
   useEffect(() => {
     let live = true;
@@ -42,9 +60,14 @@ export function useTakeSets(kind: TakeSetKind) {
     setSets((all) => [set, ...all.filter((item) => item.id !== set.id)]);
   return {
     sets,
-    /** The newest set, while it renders or still needs a keeper; older sets stay closed. */
+    /**
+     * The newest set while it renders, or while one started here still needs a keeper.
+     * Recorded examples and sets from another visit stay closed, so the studio opens clean.
+     */
     open:
-      sets[0] && !sets[0].kept && sets[0].state !== 'canceled' && sets[0].state !== 'failed'
+      sets[0] &&
+      (takeSetBusy(sets[0]) ||
+        (mine.includes(sets[0].id) && !sets[0].kept && sets[0].state === 'ready'))
         ? sets[0]
         : undefined,
     running,
@@ -55,6 +78,8 @@ export function useTakeSets(kind: TakeSetKind) {
         { kind, count, request } as TakeSetRequest,
         crypto.randomUUID(),
       );
+      remember(set.id);
+      setMine(startedHere());
       replace(set);
       return set;
     },

@@ -121,8 +121,13 @@ Each effect runs studios Aftertake already has, in order:
    look, such as Before / after's faded black and white. The finished clip is
    checked for length too.
 
-The result has **Download**, **Again (new seed)**, which runs the same effect on
-the same photo with a different seed, and an **Aftertake watermark** switch.
+While an effect runs, your photo shows behind its four steps (frame, move the
+camera, check, cut) with the time left. The time comes from earlier renders in
+this workspace, or from the RTX 5080 reference times before there are any, and
+counts the effects ahead of it in the line.
+
+The result has **Download**, **Try again**, which runs the same effect on
+the same photo with a different seed, and a **Watermark** switch.
 Turning the watermark off or on re-cuts the Film on the CPU in a few seconds; it
 never renders again. Effects started while the GPU is busy wait in line in the
 order they were started, and resume after a restart. In a shared copy, one
@@ -153,7 +158,9 @@ They appear side by side as they finish. Video takes play, pause and scrub
 together, so the same moment of every take is on screen. **Keep this take**
 makes the chosen one the studio's current result; the other takes stay in the
 studio's history. A set keeps rendering if you close the studio or the page, and
-resumes after a restart. In a shared copy, each take counts as one render.
+resumes after a restart. The comparison opens for a set that is rendering or that
+you started in this tab; recorded example sets stay in the history, so a studio
+opens clean. In a shared copy, each take counts as one render.
 
 ## Storyboard
 
@@ -173,7 +180,9 @@ frame, and press **Plan shots**.
    ACE-Step composes a song in the chosen style. Aftertake detects the song's
    beats and cuts the shots so each transition lands on one, with an opening
    title, styled transitions and a closing title. Four shots take about 7
-   minutes on an RTX 5080. Storyboards started while the GPU is busy wait their
+   minutes on an RTX 5080. While it runs, the picture shows the last finished
+   shot, every step and the time left, and the shot list fills in with a still of
+   each shot as it lands. Storyboards started while the GPU is busy wait their
    turn and resume after a restart.
 4. **Open in Film.** The result is a normal Film project with every shot, title,
    transition and the song on the timeline. **Open in Film** loads it into the
